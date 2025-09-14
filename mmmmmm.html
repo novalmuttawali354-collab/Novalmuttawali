@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Absensi Karyawan</title>
+    <title>Database FAQ - Layanan Pelanggan</title>
     <style>
         * {
             margin: 0;
@@ -25,420 +25,327 @@
         }
         
         header {
-            background: linear-gradient(135deg, #3498db, #2c3e50);
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
             color: white;
             padding: 20px 0;
-            text-align: center;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        header h1 {
+        h1 {
+            text-align: center;
             font-size: 2.2rem;
             margin-bottom: 10px;
         }
         
-        .date-time {
-            font-size: 1.2rem;
-            margin-top: 10px;
+        .description {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .main-content {
+        .search-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        #searchInput:focus {
+            border-color: #4a6491;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .category-btn {
+            padding: 8px 16px;
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            background-color: #dde5ec;
+        }
+        
+        .category-btn.active {
+            background-color: #4a6491;
+            color: white;
+        }
+        
+        .faq-list {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
         
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
+        .faq-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .attendance-form {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        .faq-header {
+            padding: 15px;
+            background-color: #4a6491;
+            color: white;
             font-weight: 600;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-content {
+            padding: 15px;
+            display: none;
+        }
+        
+        .faq-content.active {
+            display: block;
+        }
+        
+        .faq-question {
             font-weight: 600;
-            transition: all 0.3s ease;
-            flex: 1;
-        }
-        
-        .btn-clockin {
-            background-color: #2ecc71;
-            color: white;
-        }
-        
-        .btn-clockin:hover {
-            background-color: #27ae60;
-        }
-        
-        .btn-clockout {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .btn-clockout:hover {
-            background-color: #c0392b;
-        }
-        
-        .attendance-history {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .attendance-history h2 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: #2c3e50;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .faq-answer {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
         }
         
-        table th, table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        .expand-icon {
+            font-size: 18px;
         }
         
-        table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-        
-        table tr:hover {
-            background-color: #f1f2f6;
-        }
-        
-        .status-present {
-            color: #2ecc71;
-            font-weight: 600;
-        }
-        
-        .status-late {
-            color: #f39c12;
-            font-weight: 600;
-        }
-        
-        .status-absent {
-            color: #e74c3c;
-            font-weight: 600;
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            grid-column: 1 / -1;
+            color: #6c757d;
         }
         
         footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
             padding: 20px;
-            color: #7f8c8d;
+            color: #6c757d;
+            font-size: 14px;
         }
         
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 4px;
-            color: white;
-            font-weight: 600;
-            opacity: 0;
-            transform: translateX(100px);
-            transition: all 0.3s ease;
-        }
-        
-        .notification.success {
-            background-color: #2ecc71;
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .notification.error {
-            background-color: #e74c3c;
-            opacity: 1;
-            transform: translateX(0);
+        @media (max-width: 768px) {
+            .faq-list {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Sistem Absensi Karyawan</h1>
-            <div class="date-time">
-                <span id="current-date"></span> | 
-                <span id="current-time"></span>
-            </div>
+            <h1>Database FAQ Layanan Pelanggan</h1>
+            <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
         </header>
         
-        <div class="main-content">
-            <div class="attendance-form">
-                <h2>Form Absensi</h2>
-                <form id="attendanceForm">
-                    <div class="form-group">
-                        <label for="employeeId">ID Karyawan</label>
-                        <input type="text" id="employeeId" placeholder="Masukkan ID karyawan" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="employeeName">Nama Karyawan</label>
-                        <input type="text" id="employeeName" placeholder="Nama lengkap" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="department">Departemen</label>
-                        <select id="department" required>
-                            <option value="">Pilih Departemen</option>
-                            <option value="hr">HR</option>
-                            <option value="it">IT</option>
-                            <option value="finance">Keuangan</option>
-                            <option value="marketing">Pemasaran</option>
-                            <option value="operations">Operasional</option>
-                        </select>
-                    </div>
-                    
-                    <div class="btn-group">
-                        <button type="button" class="btn-clockin" id="clockInBtn">Clock In</button>
-                        <button type="button" class="btn-clockout" id="clockOutBtn">Clock Out</button>
-                    </div>
-                </form>
-            </div>
-            
-            <div class="attendance-history">
-                <h2>Riwayat Absensi Hari Ini</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Dept</th>
-                            <th>Clock In</th>
-                            <th>Clock Out</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendanceTableBody">
-                        <!-- Data akan diisi oleh JavaScript -->
-                    </tbody>
-                </table>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
+            <div class="categories">
+                <button class="category-btn active" data-category="all">Semua Kategori</button>
+                <button class="category-btn" data-category="deposit">Deposit</button>
+                <button class="category-btn" data-category="withdraw">Withdraw</button>
+                <button class="category-btn" data-category="permainan">Permainan</button>
+                <button class="category-btn" data-category="teknis">Teknis</button>
+                <button class="category-btn" data-category="bonus">Bonus & Promo</button>
             </div>
         </div>
         
-        <footer>
-            <p>&copy; 2023 Sistem Absensi Karyawan. All rights reserved.</p>
-        </footer>
+        <div class="faq-list" id="faqList">
+            <!-- FAQ items will be generated here by JavaScript -->
+        </div>
     </div>
     
-    <div class="notification" id="notification"></div>
+    <footer>
+        <p>© 2023 Layanan Pelanggan - Database FAQ</p>
+    </footer>
 
     <script>
-        // Fungsi untuk menampilkan tanggal dan waktu terkini
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Format tanggal: DD/MM/YYYY
-            const date = now.toLocaleDateString('id-ID', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-            
-            // Format waktu: HH:MM:SS
-            const time = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            
-            document.getElementById('current-date').textContent = date;
-            document.getElementById('current-time').textContent = time;
-        }
-        
-        // Update waktu setiap detik
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Panggil pertama kali
-        
-        // Data absensi contoh
-        let attendanceData = [
-            { id: 'EMP001', name: 'Ahmad Rizki', department: 'IT', clockIn: '07:55:12', clockOut: '16:30:45', status: 'Hadir' },
-            { id: 'EMP002', name: 'Siti Rahayu', department: 'HR', clockIn: '08:00:32', clockOut: '17:15:20', status: 'Hadir' },
-            { id: 'EMP003', name: 'Budi Santoso', department: 'Keuangan', clockIn: '08:15:45', clockOut: '17:05:33', status: 'Terlambat' },
-            { id: 'EMP004', name: 'Dewi Anggraini', department: 'Pemasaran', clockIn: '07:45:22', clockOut: '16:45:10', status: 'Hadir' },
-            { id: 'EMP005', name: 'Joko Prasetyo', department: 'Operasional', clockIn: '', clockOut: '', status: 'Absen' }
+        // Data FAQ dalam bentuk array of objects
+        const faqData = [
+            {
+                category: "teknis",
+                question: "QRIS TIDAK MUNCUL",
+                answer: "Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS silahkan dicoba hapus cookies / history dari settingan internet bosku / bosku bisa coba gunakan browser lainnya. Silakan ikuti cara dibawah ini ya bosku : 1. Clear history dan cache browser bos di menu Setting > Privacy > History (atau tergantung browser bosku) 2. Bersihkan history, cookies, dan cache browser bosku 3. Keluar dari browser 4. Buka kembali browser dan kembali login ke situs kami NB : Jika anda telah melakukan hal yang kami informasikan di atas dan masih tetap tidak memunculkan barcode Qris, maka kami sarankan deposit antar bank ke bank deposit kami yang aktif dan online lain ya bosku"
+            },
+            {
+                category: "teknis",
+                question: "TELAT RESULT PASARAN",
+                answer: "Yth kami ingin menginformasikan bahwa untuk pasaran tersebut untuk saat ini terjadi keterlambatan result dari pihak penyedia belum mengeluarkan angka result. Mohon untuk menunggu dan bersabar estimasi waktu tidak dapat kami tentukan, Terima kasih."
+            },
+            {
+                category: "teknis",
+                question: "CARA KIRIM GAMBAR",
+                answer: "Cara mengirimkan screenshot ke Live Chat : 1. Klik tombol kirim file : https://prnt.sc/me8qnc0bjCVk 2. Pilih foto yang ingin ada kirimkan dan klik kirim ya bosku."
+            },
+            {
+                category: "deposit",
+                question: "REJECT DEPOSIT",
+                answer: "Mohon maaf bosku untuk perihal tersebut anda sebelumnya sudah mengisi form deposit namun terpending pada sistem kami, untuk perihal deposit anda sudah kami bantu reject ya bosku, dalam waktu 1 menit kedepan silahkan untuk mengisi form deposit kembali dengan nominal yang sesuai yang anda kirimkan ke kami ya bosku, Terima kasih"
+            },
+            {
+                category: "deposit",
+                question: "QRIS PENDING",
+                answer: "Mohon maaf bosku, setelah kami melakukan pengecekan dana anda tidak tercetak pada sistem kami sehingga belum diproseskan ya bosku. Saat ini kami sedang menghubungi pihak kami yang terkait untuk membantu terkait kendala anda ya bosku. Untuk estimasi waktu tidak dapat kami pastikan ya bosku Mohon ditunggu & Mohon maaf atas ketidaknyamananya. Terima kasih"
+            },
+            {
+                category: "deposit",
+                question: "MINT DETAIL BUKTI TRANSAKSI",
+                answer: "Untuk pengiriman dana deposit anda tersebut di bantu isi data-data di bawah ini agar kami dapat mengeceknya ya bosku : User id : Nama rekening tujuan : Nomor rekening tujuan : Jam dan tanggal : Nominal deposit : Nama pengirim dana deposit :"
+            },
+            // Data lainnya akan ditambahkan di sini
+            // Saya akan menambahkan beberapa contoh lagi
+            {
+                category: "permainan",
+                question: "CARA BERMAIN SOCCER ROULETTE",
+                answer: "Untuk permainan Roullet Soccers sama dengan permainan roullet pada umumnya, Namun disini Soccer Roulette memiliki perkalian yang sangat Tinggi di banding Roulette biasa nya. Berikut ini Cara bermainnya: 1.Tentukan taruhan Anda Setelah memilih jenis roulette yang ingin dimainkan, pemain harus menentukan taruhan yang ingin mereka pasang. Taruhan dalam roulette dapat berupa taruhan dalam (pada nomor tunggal), taruhan luar (pada kombinasi angka atau warna), atau taruhan khusus lainnya seperti taruhan split (pada dua nomor) atau taruhan sudut (pada empat nomor). Contoh seperti gambar yang ada pada link diatas ini Perkalian yang akan di berikan pada kalian saat bermain 2.Letakkan taruhan Anda Setelah menentukan taruhan, pemain harus meletakkan chip mereka di atas meja roulette sesuai dengan taruhan yang dipilih. Dealer akan memutar roda roulette dan melemparkan bola ke dalamnya. Pemain dapat terus memasang taruhan hingga dealer mengumumkan bahwa taruhan tidak lagi diterima. 3.Tunggu hasil putaran Setelah bola berhenti di salah satu slot roda roulette, dealer akan mengumumkan hasilnya dan membayar pemain yang berhasil menebak hasilnya dengan benar. Pemain yang kalah harus menyerahkan chip mereka kepada dealer. 4.Ulangi prosesnya Permainan roulette consiste dari serangkaian putaran yang independen satu sama lain. Pemain dapat terus memasang taruhan pada setiap putaran baru dan mencoba keberuntungan mereka dalam memprediksi hasil putaran berikutnya"
+            },
+            {
+                category: "withdraw",
+                question: "WITHDRAW PENDING",
+                answer: "Untuk permintaan penarikan dana anda sudah kami proses ya bosku untuk status pengiriman sedang dalam proses dan telah mengurangi saldo bank kami ya bosku jika terjadi keterlambatan dan masuk pada rekening anda maka kami sarankan di tunggu dalam estimasi selambatnya 7x24 jam ya bos terima kasih"
+            },
+            {
+                category: "bonus",
+                question: "CLAIM SCATTER",
+                answer: "Untuk perihal klaim bonus scatter Mahjong Ways I dan Mahjong Ways II yang dimana anda hanya perlu melengkapi data data yang kami butuhkan saat anda mendapatkan scatter ya bosku : 1. Screenshot Mendapatkan Scatter 2. Screenshot Kemenangan Akhir 3. Screenshot History Kemenangan"
+            }
         ];
-        
-        // Fungsi untuk menampilkan data absensi di tabel
-        function renderAttendanceTable() {
-            const tableBody = document.getElementById('attendanceTableBody');
-            tableBody.innerHTML = '';
+
+        // Fungsi untuk merender FAQ items
+        function renderFAQItems(items) {
+            const faqList = document.getElementById('faqList');
+            faqList.innerHTML = '';
             
-            attendanceData.forEach(employee => {
-                const row = document.createElement('tr');
+            if (items.length === 0) {
+                faqList.innerHTML = '<div class="no-results">Tidak ada hasil ditemukan</div>';
+                return;
+            }
+            
+            items.forEach(item => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                faqItem.dataset.category = item.category;
                 
-                // Tentukan kelas status untuk styling
-                let statusClass = '';
-                if (employee.status === 'Hadir') statusClass = 'status-present';
-                else if (employee.status === 'Terlambat') statusClass = 'status-late';
-                else if (employee.status === 'Absen') statusClass = 'status-absent';
-                
-                row.innerHTML = `
-                    <td>${employee.id}</td>
-                    <td>${employee.name}</td>
-                    <td>${employee.department}</td>
-                    <td>${employee.clockIn || '-'}</td>
-                    <td>${employee.clockOut || '-'}</td>
-                    <td class="${statusClass}">${employee.status}</td>
+                faqItem.innerHTML = `
+                    <div class="faq-header">
+                        <span>${item.question}</span>
+                        <span class="expand-icon">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-question">${item.question}</div>
+                        <div class="faq-answer">${item.answer}</div>
+                    </div>
                 `;
                 
-                tableBody.appendChild(row);
-            });
-        }
-        
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, isSuccess = true) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = isSuccess ? 'notification success' : 'notification error';
-            
-            // Sembunyikan notifikasi setelah 3 detik
-            setTimeout(() => {
-                notification.className = 'notification';
-            }, 3000);
-        }
-        
-        // Fungsi untuk menangani clock in
-        function handleClockIn() {
-            const employeeId = document.getElementById('employeeId').value;
-            const employeeName = document.getElementById('employeeName').value;
-            const department = document.getElementById('department').value;
-            
-            // Validasi input
-            if (!employeeId || !employeeName || !department) {
-                showNotification('Harap isi semua field!', false);
-                return;
-            }
-            
-            const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
+                faqList.appendChild(faqItem);
             });
             
-            // Cek apakah karyawan sudah ada di data
-            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
-            
-            if (existingEmployeeIndex !== -1) {
-                // Update data karyawan yang sudah ada
-                attendanceData[existingEmployeeIndex].clockIn = time;
-                attendanceData[existingEmployeeIndex].status = now.getHours() > 8 ? 'Terlambat' : 'Hadir';
-                showNotification(`Clock In berhasil untuk ${employeeName}`);
-            } else {
-                // Tambahkan karyawan baru
-                attendanceData.push({
-                    id: employeeId,
-                    name: employeeName,
-                    department: department,
-                    clockIn: time,
-                    clockOut: '',
-                    status: now.getHours() > 8 ? 'Terlambat' : 'Hadir'
+            // Add event listeners to FAQ items
+            document.querySelectorAll('.faq-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const isActive = content.classList.contains('active');
+                    
+                    // Close all open items first
+                    document.querySelectorAll('.faq-content').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    document.querySelectorAll('.expand-icon').forEach(icon => {
+                        icon.textContent = '+';
+                    });
+                    
+                    // Open clicked item if it wasn't already open
+                    if (!isActive) {
+                        content.classList.add('active');
+                        header.querySelector('.expand-icon').textContent = '-';
+                    }
                 });
-                showNotification(`Clock In berhasil untuk ${employeeName}`);
-            }
-            
-            // Perbarui tabel
-            renderAttendanceTable();
-            
-            // Reset form
-            document.getElementById('attendanceForm').reset();
+            });
         }
         
-        // Fungsi untuk menangani clock out
-        function handleClockOut() {
-            const employeeId = document.getElementById('employeeId').value;
-            const employeeName = document.getElementById('employeeName').value;
-            const department = document.getElementById('department').value;
+        // Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
+        function filterFAQ() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
             
-            // Validasi input
-            if (!employeeId || !employeeName || !department) {
-                showNotification('Harap isi semua field!', false);
-                return;
-            }
-            
-            const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
+            const filteredItems = faqData.filter(item => {
+                const matchesSearch = item.question.toLowerCase().includes(searchText) || 
+                                     item.answer.toLowerCase().includes(searchText);
+                const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+                
+                return matchesSearch && matchesCategory;
             });
             
-            // Cari karyawan di data
-            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
-            
-            if (existingEmployeeIndex !== -1) {
-                // Update data clock out
-                attendanceData[existingEmployeeIndex].clockOut = time;
-                showNotification(`Clock Out berhasil untuk ${employeeName}`);
-            } else {
-                // Jika belum clock in, buat entri baru
-                attendanceData.push({
-                    id: employeeId,
-                    name: employeeName,
-                    department: department,
-                    clockIn: '',
-                    clockOut: time,
-                    status: 'Absen'
-                });
-                showNotification(`Clock Out berhasil untuk ${employeeName}. Catatan: Anda belum melakukan Clock In hari ini.`, false);
-            }
-            
-            // Perbarui tabel
-            renderAttendanceTable();
-            
-            // Reset form
-            document.getElementById('attendanceForm').reset();
+            renderFAQItems(filteredItems);
         }
         
-        // Event listeners untuk tombol
-        document.getElementById('clockInBtn').addEventListener('click', handleClockIn);
-        document.getElementById('clockOutBtn').addEventListener('click', handleClockOut);
-        
-        // Inisialisasi tabel saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', renderAttendanceTable);
+        // Inisialisasi event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render semua FAQ items pada awal
+            renderFAQItems(faqData);
+            
+            // Search input event listener
+            document.getElementById('searchInput').addEventListener('input', filterFAQ);
+            
+            // Category buttons event listeners
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    button.classList.add('active');
+                    filterFAQ();
+                });
+            });
+        });
     </script>
 </body>
 </html>
