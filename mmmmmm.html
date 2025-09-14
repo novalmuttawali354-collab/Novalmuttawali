@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Absensi Karyawan</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -33,7 +32,6 @@
             border-radius: 8px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         
         header h1 {
@@ -44,24 +42,6 @@
         .date-time {
             font-size: 1.2rem;
             margin-top: 10px;
-        }
-        
-        .admin-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-        
-        .admin-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
         }
         
         .main-content {
@@ -140,24 +120,11 @@
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         
         .attendance-history h2 {
             margin-bottom: 20px;
             color: #2c3e50;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .admin-controls {
-            display: none;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            border-left: 4px solid #3498db;
         }
         
         table {
@@ -180,24 +147,6 @@
             background-color: #f1f2f6;
         }
         
-        .action-btn {
-            padding: 6px 10px;
-            margin: 0 3px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        .btn-delete {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-edit {
-            background: #f39c12;
-            color: white;
-        }
-        
         .status-present {
             color: #2ecc71;
             font-weight: 600;
@@ -210,11 +159,6 @@
         
         .status-absent {
             color: #e74c3c;
-            font-weight: 600;
-        }
-        
-        .status-permission {
-            color: #3498db;
             font-weight: 600;
         }
         
@@ -236,7 +180,6 @@
             opacity: 0;
             transform: translateX(100px);
             transition: all 0.3s ease;
-            z-index: 1000;
         }
         
         .notification.success {
@@ -250,115 +193,6 @@
             opacity: 1;
             transform: translateX(0);
         }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .modal h2 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-cancel {
-            background: #95a5a6;
-            color: white;
-        }
-        
-        .btn-confirm {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .admin-panel {
-            display: none;
-            margin-top: 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .admin-panel h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f1f2f6;
-        }
-        
-        .filter-controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-controls select, .filter-controls input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .summary-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            border-left: 4px solid #3498db;
-        }
-        
-        .summary-card.present {
-            border-left-color: #2ecc71;
-        }
-        
-        .summary-card.late {
-            border-left-color: #f39c12;
-        }
-        
-        .summary-card.absent {
-            border-left-color: #e74c3c;
-        }
-        
-        .summary-card.permission {
-            border-left-color: #3498db;
-        }
-        
-        .summary-card h3 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-        }
     </style>
 </head>
 <body>
@@ -369,9 +203,6 @@
                 <span id="current-date"></span> | 
                 <span id="current-time"></span>
             </div>
-            <button class="admin-btn" id="adminToggleBtn">
-                <i class="fas fa-user-cog"></i> Mode Admin
-            </button>
         </header>
         
         <div class="main-content">
@@ -401,42 +232,14 @@
                     </div>
                     
                     <div class="btn-group">
-                        <button type="button" class="btn-clockin" id="clockInBtn">
-                            <i class="fas fa-fingerprint"></i> Clock In
-                        </button>
-                        <button type="button" class="btn-clockout" id="clockOutBtn">
-                            <i class="fas fa-sign-out-alt"></i> Clock Out
-                        </button>
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 20px;">
-                        <button type="button" id="permissionBtn" style="background: #3498db;">
-                            <i class="fas fa-user-clock"></i> Izin
-                        </button>
+                        <button type="button" class="btn-clockin" id="clockInBtn">Clock In</button>
+                        <button type="button" class="btn-clockout" id="clockOutBtn">Clock Out</button>
                     </div>
                 </form>
             </div>
             
             <div class="attendance-history">
-                <h2>
-                    Riwayat Absensi Hari Ini
-                    <button id="toggleAdminControls" class="admin-btn" style="position: static; display: none;">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </h2>
-                
-                <div class="admin-controls" id="adminControls">
-                    <h3>Kontrol Admin</h3>
-                    <div class="btn-group">
-                        <button type="button" id="clearPermissionBtn" style="background: #3498db;">
-                            <i class="fas fa-broom"></i> Clear Izin
-                        </button>
-                        <button type="button" id="clearAllBtn" style="background: #e74c3c;">
-                            <i class="fas fa-trash"></i> Clear All
-                        </button>
-                    </div>
-                </div>
-                
+                <h2>Riwayat Absensi Hari Ini</h2>
                 <table>
                     <thead>
                         <tr>
@@ -446,7 +249,6 @@
                             <th>Clock In</th>
                             <th>Clock Out</th>
                             <th>Status</th>
-                            <th id="actionHeader" style="display: none;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="attendanceTableBody">
@@ -456,68 +258,6 @@
             </div>
         </div>
         
-        <div class="admin-panel" id="adminPanel">
-            <h2><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h2>
-            
-            <div class="summary-cards">
-                <div class="summary-card present">
-                    <h3 id="presentCount">0</h3>
-                    <p>Hadir</p>
-                </div>
-                <div class="summary-card late">
-                    <h3 id="lateCount">0</h3>
-                    <p>Terlambat</p>
-                </div>
-                <div class="summary-card absent">
-                    <h3 id="absentCount">0</h3>
-                    <p>Absen</p>
-                </div>
-                <div class="summary-card permission">
-                    <h3 id="permissionCount">0</h3>
-                    <p>Izin</p>
-                </div>
-            </div>
-            
-            <div class="filter-controls">
-                <select id="filterDepartment">
-                    <option value="">Semua Departemen</option>
-                    <option value="hr">HR</option>
-                    <option value="it">IT</option>
-                    <option value="finance">Keuangan</option>
-                    <option value="marketing">Pemasaran</option>
-                    <option value="operations">Operasional</option>
-                </select>
-                
-                <select id="filterStatus">
-                    <option value="">Semua Status</option>
-                    <option value="Hadir">Hadir</option>
-                    <option value="Terlambat">Terlambat</option>
-                    <option value="Absen">Absen</option>
-                    <option value="Izin">Izin</option>
-                </select>
-                
-                <input type="date" id="filterDate">
-            </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Dept</th>
-                        <th>Tanggal</th>
-                        <th>Clock In</th>
-                        <th>Clock Out</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="adminTableBody">
-                    <!-- Data akan diisi oleh JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        
         <footer>
             <p>&copy; 2023 Sistem Absensi Karyawan. All rights reserved.</p>
         </footer>
@@ -525,23 +265,180 @@
     
     <div class="notification" id="notification"></div>
 
-    <div class="modal" id="confirmModal">
-        <div class="modal-content">
-            <h2>Konfirmasi</h2>
-            <p id="modalMessage">Anda yakin ingin menghapus data izin?</p>
-            <div class="modal-buttons">
-                <button class="btn-cancel" id="modalCancel">Batal</button>
-                <button class="btn-confirm" id="modalConfirm">Hapus</button>
-            </div>
-        </div>
-    </div>
-
     <script>
+        // Fungsi untuk menampilkan tanggal dan waktu terkini
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Format tanggal: DD/MM/YYYY
+            const date = now.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+            // Format waktu: HH:MM:SS
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            document.getElementById('current-date').textContent = date;
+            document.getElementById('current-time').textContent = time;
+        }
+        
+        // Update waktu setiap detik
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Panggil pertama kali
+        
         // Data absensi contoh
         let attendanceData = [
-            { id: 'EMP001', name: 'Ahmad Rizki', department: 'IT', date: '2023-06-15', clockIn: '07:55:12', clockOut: '16:30:45', status: 'Hadir' },
-            { id: 'EMP002', name: 'Siti Rahayu', department: 'HR', date: '2023-06-15', clockIn: '08:00:32', clockOut: '17:15:20', status: 'Hadir' },
-            { id: 'EMP003', name: 'Budi Santoso', department: 'Keuangan', date: '2023-06-15', clockIn: '08:15:45', clockOut: '17:05:33', status: 'Terlambat' },
-            { id: 'EMP004', name: 'Dewi Anggraini', department: 'Pemasaran', date: '2023-06-15', clockIn: '07:45:22', clockOut: '16:45:10', status: 'Hadir' },
-            { id: 'EMP005', name: 'Joko Prasetyo', department: 'Operasional', date: '2023-06-15', clockIn: '', clockOut: '', status: 'Absen' },
-            { id: 'EMP006', name: 'Rina Wijaya', department: 'IT', date: '2023-06-15', clockIn: '', clockOut: '', status:
+            { id: 'EMP001', name: 'Ahmad Rizki', department: 'IT', clockIn: '07:55:12', clockOut: '16:30:45', status: 'Hadir' },
+            { id: 'EMP002', name: 'Siti Rahayu', department: 'HR', clockIn: '08:00:32', clockOut: '17:15:20', status: 'Hadir' },
+            { id: 'EMP003', name: 'Budi Santoso', department: 'Keuangan', clockIn: '08:15:45', clockOut: '17:05:33', status: 'Terlambat' },
+            { id: 'EMP004', name: 'Dewi Anggraini', department: 'Pemasaran', clockIn: '07:45:22', clockOut: '16:45:10', status: 'Hadir' },
+            { id: 'EMP005', name: 'Joko Prasetyo', department: 'Operasional', clockIn: '', clockOut: '', status: 'Absen' }
+        ];
+        
+        // Fungsi untuk menampilkan data absensi di tabel
+        function renderAttendanceTable() {
+            const tableBody = document.getElementById('attendanceTableBody');
+            tableBody.innerHTML = '';
+            
+            attendanceData.forEach(employee => {
+                const row = document.createElement('tr');
+                
+                // Tentukan kelas status untuk styling
+                let statusClass = '';
+                if (employee.status === 'Hadir') statusClass = 'status-present';
+                else if (employee.status === 'Terlambat') statusClass = 'status-late';
+                else if (employee.status === 'Absen') statusClass = 'status-absent';
+                
+                row.innerHTML = `
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.clockIn || '-'}</td>
+                    <td>${employee.clockOut || '-'}</td>
+                    <td class="${statusClass}">${employee.status}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = isSuccess ? 'notification success' : 'notification error';
+            
+            // Sembunyikan notifikasi setelah 3 detik
+            setTimeout(() => {
+                notification.className = 'notification';
+            }, 3000);
+        }
+        
+        // Fungsi untuk menangani clock in
+        function handleClockIn() {
+            const employeeId = document.getElementById('employeeId').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const department = document.getElementById('department').value;
+            
+            // Validasi input
+            if (!employeeId || !employeeName || !department) {
+                showNotification('Harap isi semua field!', false);
+                return;
+            }
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Cek apakah karyawan sudah ada di data
+            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
+            
+            if (existingEmployeeIndex !== -1) {
+                // Update data karyawan yang sudah ada
+                attendanceData[existingEmployeeIndex].clockIn = time;
+                attendanceData[existingEmployeeIndex].status = now.getHours() > 8 ? 'Terlambat' : 'Hadir';
+                showNotification(`Clock In berhasil untuk ${employeeName}`);
+            } else {
+                // Tambahkan karyawan baru
+                attendanceData.push({
+                    id: employeeId,
+                    name: employeeName,
+                    department: department,
+                    clockIn: time,
+                    clockOut: '',
+                    status: now.getHours() > 8 ? 'Terlambat' : 'Hadir'
+                });
+                showNotification(`Clock In berhasil untuk ${employeeName}`);
+            }
+            
+            // Perbarui tabel
+            renderAttendanceTable();
+            
+            // Reset form
+            document.getElementById('attendanceForm').reset();
+        }
+        
+        // Fungsi untuk menangani clock out
+        function handleClockOut() {
+            const employeeId = document.getElementById('employeeId').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const department = document.getElementById('department').value;
+            
+            // Validasi input
+            if (!employeeId || !employeeName || !department) {
+                showNotification('Harap isi semua field!', false);
+                return;
+            }
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Cari karyawan di data
+            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
+            
+            if (existingEmployeeIndex !== -1) {
+                // Update data clock out
+                attendanceData[existingEmployeeIndex].clockOut = time;
+                showNotification(`Clock Out berhasil untuk ${employeeName}`);
+            } else {
+                // Jika belum clock in, buat entri baru
+                attendanceData.push({
+                    id: employeeId,
+                    name: employeeName,
+                    department: department,
+                    clockIn: '',
+                    clockOut: time,
+                    status: 'Absen'
+                });
+                showNotification(`Clock Out berhasil untuk ${employeeName}. Catatan: Anda belum melakukan Clock In hari ini.`, false);
+            }
+            
+            // Perbarui tabel
+            renderAttendanceTable();
+            
+            // Reset form
+            document.getElementById('attendanceForm').reset();
+        }
+        
+        // Event listeners untuk tombol
+        document.getElementById('clockInBtn').addEventListener('click', handleClockIn);
+        document.getElementById('clockOutBtn').addEventListener('click', handleClockOut);
+        
+        // Inisialisasi tabel saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', renderAttendanceTable);
+    </script>
+</body>
+</html>
