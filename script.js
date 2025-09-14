@@ -4,7 +4,11 @@ const faqData = [
 {
 category: "teknis",
 question: "QRIS TIDAK MUNCUL",
-answer: "Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS silahkan dicoba hapus cookies / hsitory dari settingan internet bosku / bosku bisa coba gunakan browser lainnya Silakan ikuti cara dibawah ini ya bosku : 1. Clear history dan cache browser bos di menu Setting > Privacy > History (atau tergantung browser bosku) 2. Bersihkan history, cookies, dan cache browser bosku 3. Keluar dari browser 4. Buka kembali browser dan kembali login ke situs kami NB : Jika anda telah melakukan hal yang kami informasikan di atas dan masih tetap tidak memunculkan barcode Qris , maka kami sarankan deposit antar bank ke bank deposit kami yang aktif dan online lain ya bosku."
+answer: "Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS silahkan dicoba hapus cookies / hsitory dari settingan internet bosku / bosku bisa coba gunakan browser lainnya Silakan ikuti cara dibawah ini ya bosku : 
+  1. Clear history dan cache browser bos di menu Setting > Privacy > History (atau tergantung browser bosku) 
+  2. Bersihkan history, cookies, dan cache browser bosku 
+  3. Keluar dari browser 
+  4. Buka kembali browser dan kembali login ke situs kami NB : Jika anda telah melakukan hal yang kami informasikan di atas dan masih tetap tidak memunculkan barcode Qris , maka kami sarankan deposit antar bank ke bank deposit kami yang aktif dan online lain ya bosku."
 },
 {
 category: "teknis",
