@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi Karyawan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .date-time {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .attendance-form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-clockin {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-clockin:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-clockout {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-clockout:hover {
+            background-color: #c0392b;
+        }
+        
+        .attendance-history {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .attendance-history h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f1f2f6;
+        }
+        
+        .status-present {
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        
+        .status-late {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        .status-absent {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.success {
+            background-color: #2ecc71;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistem Absensi Karyawan</h1>
+            <div class="date-time">
+                <span id="current-date"></span> | 
+                <span id="current-time"></span>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="attendance-form">
+                <h2>Form Absensi</h2>
+                <form id="attendanceForm">
+                    <div class="form-group">
+                        <label for="employeeId">ID Karyawan</label>
+                        <input type="text" id="employeeId" placeholder="Masukkan ID karyawan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employeeName">Nama Karyawan</label>
+                        <input type="text" id="employeeName" placeholder="Nama lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">Departemen</label>
+                        <select id="department" required>
+                            <option value="">Pilih Departemen</option>
+                            <option value="hr">HR</option>
+                            <option value="it">IT</option>
+                            <option value="finance">Keuangan</option>
+                            <option value="marketing">Pemasaran</option>
+                            <option value="operations">Operasional</option>
+                        </select>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn-clockin" id="clockInBtn">Clock In</button>
+                        <button type="button" class="btn-clockout" id="clockOutBtn">Clock Out</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="attendance-history">
+                <h2>Riwayat Absensi Hari Ini</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Dept</th>
+                            <th>Clock In</th>
+                            <th>Clock Out</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Sistem Absensi Karyawan. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Fungsi untuk menampilkan tanggal dan waktu terkini
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Format tanggal: DD/MM/YYYY
+            const date = now.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+            // Format waktu: HH:MM:SS
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            document.getElementById('current-date').textContent = date;
+            document.getElementById('current-time').textContent = time;
+        }
+        
+        // Update waktu setiap detik
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Panggil pertama kali
+        
+        // Data absensi contoh
+        let attendanceData = [
+            { id: 'EMP001', name: 'Ahmad Rizki', department: 'IT', clockIn: '07:55:12', clockOut: '16:30:45', status: 'Hadir' },
+            { id: 'EMP002', name: 'Siti Rahayu', department: 'HR', clockIn: '08:00:32', clockOut: '17:15:20', status: 'Hadir' },
+            { id: 'EMP003', name: 'Budi Santoso', department: 'Keuangan', clockIn: '08:15:45', clockOut: '17:05:33', status: 'Terlambat' },
+            { id: 'EMP004', name: 'Dewi Anggraini', department: 'Pemasaran', clockIn: '07:45:22', clockOut: '16:45:10', status: 'Hadir' },
+            { id: 'EMP005', name: 'Joko Prasetyo', department: 'Operasional', clockIn: '', clockOut: '', status: 'Absen' }
+        ];
+        
+        // Fungsi untuk menampilkan data absensi di tabel
+        function renderAttendanceTable() {
+            const tableBody = document.getElementById('attendanceTableBody');
+            tableBody.innerHTML = '';
+            
+            attendanceData.forEach(employee => {
+                const row = document.createElement('tr');
+                
+                // Tentukan kelas status untuk styling
+                let statusClass = '';
+                if (employee.status === 'Hadir') statusClass = 'status-present';
+                else if (employee.status === 'Terlambat') statusClass = 'status-late';
+                else if (employee.status === 'Absen') statusClass = 'status-absent';
+                
+                row.innerHTML = `
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.clockIn || '-'}</td>
+                    <td>${employee.clockOut || '-'}</td>
+                    <td class="${statusClass}">${employee.status}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = isSuccess ? 'notification success' : 'notification error';
+            
+            // Sembunyikan notifikasi setelah 3 detik
+            setTimeout(() => {
+                notification.className = 'notification';
+            }, 3000);
+        }
+        
+        // Fungsi untuk menangani clock in
+        function handleClockIn() {
+            const employeeId = document.getElementById('employeeId').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const department = document.getElementById('department').value;
+            
+            // Validasi input
+            if (!employeeId || !employeeName || !department) {
+                showNotification('Harap isi semua field!', false);
+                return;
+            }
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Cek apakah karyawan sudah ada di data
+            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
+            
+            if (existingEmployeeIndex !== -1) {
+                // Update data karyawan yang sudah ada
+                attendanceData[existingEmployeeIndex].clockIn = time;
+                attendanceData[existingEmployeeIndex].status = now.getHours() > 8 ? 'Terlambat' : 'Hadir';
+                showNotification(`Clock In berhasil untuk ${employeeName}`);
+            } else {
+                // Tambahkan karyawan baru
+                attendanceData.push({
+                    id: employeeId,
+                    name: employeeName,
+                    department: department,
+                    clockIn: time,
+                    clockOut: '',
+                    status: now.getHours() > 8 ? 'Terlambat' : 'Hadir'
+                });
+                showNotification(`Clock In berhasil untuk ${employeeName}`);
+            }
+            
+            // Perbarui tabel
+            renderAttendanceTable();
+            
+            // Reset form
+            document.getElementById('attendanceForm').reset();
+        }
+        
+        // Fungsi untuk menangani clock out
+        function handleClockOut() {
+            const employeeId = document.getElementById('employeeId').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const department = document.getElementById('department').value;
+            
+            // Validasi input
+            if (!employeeId || !employeeName || !department) {
+                showNotification('Harap isi semua field!', false);
+                return;
+            }
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Cari karyawan di data
+            const existingEmployeeIndex = attendanceData.findIndex(emp => emp.id === employeeId);
+            
+            if (existingEmployeeIndex !== -1) {
+                // Update data clock out
+                attendanceData[existingEmployeeIndex].clockOut = time;
+                showNotification(`Clock Out berhasil untuk ${employeeName}`);
+            } else {
+                // Jika belum clock in, buat entri baru
+                attendanceData.push({
+                    id: employeeId,
+                    name: employeeName,
+                    department: department,
+                    clockIn: '',
+                    clockOut: time,
+                    status: 'Absen'
+                });
+                showNotification(`Clock Out berhasil untuk ${employeeName}. Catatan: Anda belum melakukan Clock In hari ini.`, false);
+            }
+            
+            // Perbarui tabel
+            renderAttendanceTable();
+            
+            // Reset form
+            document.getElementById('attendanceForm').reset();
+        }
+        
+        // Event listeners untuk tombol
+        document.getElementById('clockInBtn').addEventListener('click', handleClockIn);
+        document.getElementById('clockOutBtn').addEventListener('click', handleClockOut);
+        
+        // Inisialisasi tabel saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', renderAttendanceTable);
+    </script>
+</body>
+</html>
