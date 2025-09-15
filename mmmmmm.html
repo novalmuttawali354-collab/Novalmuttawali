@@ -1,422 +1,517 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database FAQ - Layanan Pelanggan</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-            background-image: url('https://i.pinimg.com/originals/c0/6d/d0/c06dd0bacf2db432aeb8c39ad00fbbb9.gif');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #2c3e50, #4a6491);
-            color: white;
-            padding: 30px 0;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .search-container {
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-        
-        #searchInput {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-            margin-bottom: 15px;
-        }
-        
-        #searchInput:focus {
-            border-color: #4a6491;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
-        }
-        
-        .categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .category-btn {
-            padding: 10px 18px;
-            background-color: #e9ecef;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .category-btn:hover {
-            background-color: #dde5ec;
-            transform: translateY(-2px);
-        }
-        
-        .category-btn.active {
-            background-color: #4a6491;
-            color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .faq-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        
-        .faq-item {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .faq-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        .faq-header {
-            padding: 18px;
-            background: linear-gradient(to right, #4a6491, #5b7ab8);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .faq-content {
-            padding: 20px;
-            display: none;
-            position: relative;
-        }
-        
-        .faq-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .faq-question {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        
-        .faq-answer {
-            color: #555;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            white-space: pre-line;
-        }
-        
-        .expand-icon {
-            font-size: 20px;
-            transition: transform 0.3s;
-        }
-        
-        .faq-header.active .expand-icon {
-            transform: rotate(45deg);
-        }
-        
-        .copy-btn {
-            background-color: #4a6491;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .copy-btn:hover {
-            background-color: #3a547e;
-        }
-        
-        .copy-btn::before {
-            content: "📋";
-        }
-        
-        .copy-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .copy-notification.show {
-            opacity: 1;
-        }
-        
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            grid-column: 1 / -1;
-            color: #6c757d;
-            font-size: 18px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 25px;
-            color: #6c757d;
-            font-size: 14px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        @media (max-width: 768px) {
-            .faq-list {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .categories {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database FAQ - Layanan Pelanggan</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+background-color: #f5f7fa;
+color: #333;
+line-height: 1.6;
+background-image: url('https://i.pinimg.com/originals/c0/6d/d0/c06dd0bacf2db432aeb8c39ad00fbbb9.gif');
+background-size: center;
+background-position: center;
+background-attachment: fixed;
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+header {
+background: linear-gradient(135deg, #2c3e50, #4a6491);
+color: white;
+padding: 20px 0;
+border-radius: 10px;
+margin-bottom: 30px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+text-align: center;
+font-size: 2.2rem;
+margin-bottom: 10px;
+}
+
+.description {
+text-align: center;
+font-size: 1.1rem;
+opacity: 0.9;
+max-width: 800px;
+margin: 0 auto;
+}
+
+.search-container {
+background-color: white;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+margin-bottom: 30px;
+}
+
+#searchInput {
+width: 100%;
+padding: 14px;
+border: 1px solid #ddd;
+border-radius: 8px;
+font-size: 16px;
+transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+border-color: #4a6491;
+outline: none;
+box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
+}
+
+.categories {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 15px;
+}
+
+.category-btn {
+padding: 8px 16px;
+background-color: #e9ecef;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+font-size: 14px;
+transition: all 0.3s;
+}
+
+.category-btn:hover {
+background-color: #dde5ec;
+}
+
+.category-btn.active {
+background-color: #4a6491;
+color: white;
+}
+
+.faq-list {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+}
+
+.faq-item {
+background-color: white;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.faq-item:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.faq-header {
+padding: 15px;
+background-color: #4a6491;
+color: white;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.faq-content {
+padding: 15px;
+display: none;
+position: relative;
+}
+
+.faq-content.active {
+display: block;
+}
+
+.faq-question {
+font-weight: 600;
+margin-bottom: 10px;
+color: #2c3e50;
+}
+
+.faq-answer {
+color: #555;
+font-size: 14px;
+line-height: 1.5;
+margin-bottom: 10px;
+white-space: pre-line;
+}
+
+.faq-answer p {
+margin-bottom: 10px;
+}
+
+.faq-answer ul, .faq-answer ol {
+margin-left: 20px;
+margin-bottom: 10px;
+}
+
+.faq-answer li {
+margin-bottom: 5px;
+}
+
+.step-number {
+display: inline-block;
+width: 24px;
+height: 24px;
+background-color: #4a6491;
+color: white;
+border-radius: 50%;
+text-align: center;
+line-height: 24px;
+margin-right: 8px;
+font-size: 12px;
+}
+
+.important-note {
+background-color: #fff9e6;
+padding: 10px;
+border-left: 4px solid #ffcc00;
+margin: 10px 0;
+border-radius: 4px;
+font-size: 13px;
+}
+
+.expand-icon {
+font-size: 18px;
+}
+
+.copy-btn {
+position: absolute;
+bottom: 10px;
+right: 10px;
+background-color: #4a6491;
+color: white;
+border: none;
+padding: 5px 10px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 12px;
+transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+background-color: #3a547e;
+}
+
+.copy-notification {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: #4CAF50;
+color: white;
+padding: 10px 20px;
+border-radius: 4px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.copy-notification.show {
+opacity: 1;
+}
+
+.no-results {
+text-align: center;
+padding: 30px;
+grid-column: 1 / -1;
+color: #6c757d;
+}
+
+footer {
+text-align: center;
+margin-top: 50px;
+padding: 20px;
+color: #6c757d;
+font-size: 14px;
+}
+
+@media (max-width: 768px) {
+.faq-list {
+grid-template-columns: 1fr;
+}
+
+h1 {
+font-size: 1.8rem;
+}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>PELURU ANTI AIR</h1>
-            <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
-        </header>
-        
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
-            <div class="categories">
-                <button class="category-btn active" data-category="all">Semua Kategori</button>
-                <button class="category-btn" data-category="deposit">Deposit</button>
-                <button class="category-btn" data-category="withdraw">Withdraw</button>
-                <button class="category-btn" data-category="permainan">Permainan</button>
-                <button class="category-btn" data-category="teknis">Teknis</button>
-                <button class="category-btn" data-category="bonus">Bonus & Promo</button>
-            </div>
-        </div>
-        
-        <div class="faq-list" id="faqList">
-            <!-- FAQ items will be generated here by JavaScript -->
-        </div>
-    </div>
-    
-    <div id="copyNotification" class="copy-notification">Teks berhasil disalin!</div>
-    
-    <footer>
-        <p>FYI. Untuk ITOTO rencana akan ada penggunaan PASSKEY untuk seluruh agen, pada tanggal 11 September 2025. Akan kami infokan lebih lanjut bila ada info terbaru. Terima kasih.</p>
-    </footer>
+<div class="container">
+<header>
+<h1><<<<< PELURU ANTI AIR >>>>></h1>
+<p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
+</header>
 
-    <script>
-        // Data FAQ dalam bentuk array of objects
-        const faqData = [
-            {
-                category: "teknis",
-                question: "QRIS TIDAK MUNCUL",
-                answer: "Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS silahkan dicoba hapus cookies / history dari settingan internet bosku / bosku bisa coba gunakan browser lainnya.\n\nSilakan ikuti cara dibawah ini ya bosku:\n1. Clear history dan cache browser bos di menu Setting > Privacy > History (atau tergantung browser bosku)\n2. Bersihkan history, cookies, dan cache browser bosku\n3. Keluar dari browser\n4. Buka kembali browser dan kembali login ke situs kami\n\nNB: Jika anda telah melakukan hal yang kami informasikan di atas dan masih tetap tidak memunculkan barcode Qris, maka kami sarankan deposit antar bank ke bank deposit kami yang aktif dan online lain ya bosku."
-            },
-            {
-                category: "teknis",
-                question: "TELAT RESULT PASARAN",
-                answer: "Yth kami ingin menginformasikan bahwa untuk pasaran tersebut untuk saat ini terjadi keterlambatan result dari pihak penyedia belum mengeluarkan angka result. Mohon untuk menunggu dan bersabar estimasi waktu tidak dapat kami tentukan, Terima kasih."
-            },
-            {
-                category: "teknis",
-                question: "CARA KIRIM GAMBAR",
-                answer: "Cara mengirimkan screenshot ke Live Chat:\n1. Klik tombol kirim file: https://prnt.sc/me8qnc0bjCVk\n2. Pilih foto yang ingin ada kirimkan dan klik kirim ya bosku."
-            },
-            {
-                category: "deposit",
-                question: "REJECT DEPOSIT",
-                answer: "Mohon maaf bosku untuk perihal tersebut anda sebelumnya sudah mengisi form deposit namun terpending pada sistem kami, untuk perihal deposit anda sudah kami bantu reject ya bosku, dalam waktu 1 menit kedepan silahkan untuk mengisi form deposit kembali dengan nominal yang sesuai yang anda kirimkan ke kami ya bosku, Terima kasih"
-            },
-            {
-                category: "deposit",
-                question: "QRIS PENDING",
-                answer: "Mohon maaf bosku, setelah kami melakukan pengecekan dana anda tidak tercetak pada sistem kami sehingga belum diproseskan ya bosku. Saat ini kami sedang menghubungi pihak kami yang terkait untuk membantu terkait kendala anda ya bosku. Untuk estimasi waktu tidak dapat kami pastikan ya bosku Mohon ditunggu & Mohon maaf atas ketidaknyamananya. Terima kasih"
-            },
-            {
-                category: "deposit",
-                question: "MINT DETAIL BUKTI TRANSAKSI",
-                answer: "Untuk pengiriman dana deposit anda tersebut di bantu isi data-data di bawah ini agar kami dapat mengeceknya ya bosku:\n\n- User id:\n- Nama rekening tujuan:\n- Nomor rekening tujuan:\n- Jam dan tanggal:\n- Nominal deposit:\n- Nama pengirim dana deposit:"
-            },
-            {
-                category: "permainan",
-                question: "CARA BERMAIN SOCCER ROULETTE",
-                answer: "Untuk permainan Roullet Soccers sama dengan permainan roullet pada umumnya, Namun disini Soccer Roulette memiliki perkalian yang sangat Tinggi di banding Roulette biasa nya.\n\nBerikut ini Cara bermainnya:\n1. Tentukan taruhan Anda Setelah memilih jenis roulette yang ingin dimainkan, pemain harus menentukan taruhan yang ingin mereka pasang. Taruhan dalam roulette dapat berupa taruhan dalam (pada nomor tunggal), taruhan luar (pada kombinasi angka atau warna), atau taruhan khusus lainnya seperti taruhan split (pada dua nomor) atau taruhan sudut (pada empat nomor). Contoh seperti gambar yang ada pada link diatas ini Perkalian yang akan di berikan pada kalian saat bermain\n\n2. Letakkan taruhan Anda Setelah menentukan taruhan, pemain harus meletakkan chip mereka di atas meja roulette sesuai dengan taruhan yang dipilih. Dealer akan memutar roda roulette dan melemparkan bola ke dalamnya. Pemain dapat terus memasang taruhan hingga dealer mengumumkan bahwa taruhan tidak lagi diterima.\n\n3. Tunggu hasil putaran Setelah bola berhalti di salah satu slot roda roulette, dealer akan mengumumkan hasilnya dan membayar pemain yang berhasil menebak hasilnya dengan benar. Pemain yang kalah harus menyerahkan chip mereka kepada dealer.\n\n4. Ulangi prosesnya Permainan roulette consiste dari serangkaian putaran yang independen satu sama lain. Pemain dapat terus memasang taruhan pada setiap putaran baru dan mencoba keberuntungan mereka dalam memprediksi hasil putaran berikutnya"
-            },
-            {
-                category: "withdraw",
-                question: "WITHDRAW PENDING",
-                answer: "Untuk permintaan penarikan dana anda sudah kami proses ya bosku untuk status pengiriman sedang dalam proses dan telah mengurangi saldo bank kami ya bosku jika terjadi keterlambatan dan masuk pada rekening anda maka kami sarankan di tunggu dalam estimasi selambatnya 7x24 jam ya bos terima kasih"
-            },
-            {
-                category: "bonus",
-                question: "CLAIM SCATTER",
-                answer: "Untuk perihal klaim bonus scatter Mahjong Ways I dan Mahjong Ways II yang dimana anda hanya perlu melengkapi data data yang kami butuhkan saat anda mendapatkan scatter ya bosku:\n\n1. Screenshot Mendapatkan Scatter\n2. Screenshot Kemenangan Akhir\n3. Screenshot History Kemenangan"
-            }
-        ];
+<div class="search-container">
+<input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
+<div class="categories">
+<button class="category-btn active" data-category="all">Semua Kategori</button>
+<button class="category-btn" data-category="deposit">Deposit</button>
+<button class="category-btn" data-category="withdraw">Withdraw</button>
+<button class="category-btn" data-category="permainan">Permainan</button>
+<button class="category-btn" data-category="teknis">Teknis</button>
+<button class="category-btn" data-category="bonus">Bonus & Promo</button>
+</div>
+</div>
 
-        // Fungsi untuk menyalin teks ke clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                // Tampilkan notifikasi
-                const notification = document.getElementById('copyNotification');
-                notification.classList.add('show');
-                
-                // Sembunyikan notifikasi setelah 2 detik
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 2000);
-            }).catch(err => {
-                console.error('Gagal menyalin teks: ', err);
-            });
-        }
+<div class="faq-list" id="faqList">
+<!-- FAQ items will be generated here by JavaScript -->
+</div>
+</div>
 
-        // Fungsi untuk merender FAQ items
-        function renderFAQItems(items) {
-            const faqList = document.getElementById('faqList');
-            faqList.innerHTML = '';
-            
-            if (items.length === 0) {
-                faqList.innerHTML = '<div class="no-results">Tidak ada hasil ditemukan</div>';
-                return;
-            }
-            
-            items.forEach((item, index) => {
-                const faqItem = document.createElement('div');
-                faqItem.className = 'faq-item';
-                faqItem.dataset.category = item.category;
-                
-                faqItem.innerHTML = `
-                    <div class="faq-header">
-                        <span>${item.question}</span>
-                        <span class="expand-icon">+</span>
-                    </div>
-                    <div class="faq-content">
-                        <div class="faq-question">${item.question}</div>
-                        <div class="faq-answer">${item.answer}</div>
-                        <button class="copy-btn" data-index="${index}">Salin Teks</button>
-                    </div>
-                `;
-                
-                faqList.appendChild(faqItem);
-            });
-            
-            // Add event listeners to FAQ items
-            document.querySelectorAll('.faq-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    const isActive = content.classList.contains('active');
-                    
-                    // Close all open items first
-                    document.querySelectorAll('.faq-content').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    
-                    document.querySelectorAll('.faq-header').forEach(h => {
-                        h.classList.remove('active');
-                    });
-                    
-                    document.querySelectorAll('.expand-icon').forEach(icon => {
-                        icon.textContent = '+';
-                    });
-                    
-                    // Open clicked item if it wasn't already open
-                    if (!isActive) {
-                        content.classList.add('active');
-                        header.classList.add('active');
-                        header.querySelector('.expand-icon').textContent = '×';
-                    }
-                });
-            });
-            
-            // Add event listeners to copy buttons
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Mencegah event bubbling ke parent
-                    const index = button.getAttribute('data-index');
-                    copyToClipboard(faqData[index].answer);
-                });
-            });
-        }
-        
-        // Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
-        function filterFAQ() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
-            
-            const filteredItems = faqData.filter(item => {
-                const matchesSearch = item.question.toLowerCase
+<div id="copyNotification" class="copy-notification">Teks berhasil disalin!</div>
+
+<footer>
+<p>FYI. Untuk ITOTO rencana akan ada penggunaan PASSKEY untuk seluruh agen, pada tanggal 11 September 2025. Akan kami infokan lebih lanjut bila ada info terbaru. Terima kasih.</p>
+</footer>
+
+<script>
+// Data FAQ dalam bentuk array of objects dengan format yang lebih rapi
+const faqData = [
+{
+category: "teknis",
+question: "QRIS TIDAK MUNCUL",
+answer: `<p>Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS, silakan ikuti langkah-langkah berikut:</p>
+<ol>
+<li>Hapus cookies/history dari browser yang digunakan</li>
+<li>Coba gunakan browser lainnya</li>
+</ol>
+<p>Langkah detail:</p>
+<ol>
+<li>Clear history dan cache browser di menu Setting > Privacy > History (atau tergantung browser)</li>
+<li>Bersihkan history, cookies, dan cache browser</li>
+<li>Keluar dari browser</li>
+<li>Buka kembali browser dan login kembali ke situs kami</li>
+</ol>
+<div class="important-note">
+<strong>NB:</strong> Jika Anda telah melakukan langkah-langkah di atas dan QRIS masih tidak muncul, disarankan untuk melakukan deposit melalui transfer antar bank ke bank deposit kami yang aktif dan online lainnya.
+</div>`
+},
+{
+category: "teknis",
+question: "TELAT RESULT PASARAN",
+answer: `<p>Kami ingin menginformasikan bahwa untuk pasaran tersebut saat ini terjadi keterlambatan result dari pihak penyedia yang belum mengeluarkan angka result.</p>
+<p>Mohon menunggu dan bersabar. Estimasi waktu tidak dapat kami tentukan.</p>
+<p>Terima kasih atas pengertiannya.</p>`
+},
+{
+category: "teknis",
+question: "CARA KIRIM GAMBAR",
+answer: `<p>Cara mengirimkan screenshot ke Live Chat:</p>
+<ol>
+<li>Klik tombol kirim file: <span style="background-color:#f0f0f0;padding:2px 5px;border-radius:3px;">https://prnt.sc/me8qnc0bjCVk</span></li>
+<li>Pilih foto yang ingin dikirimkan</li>
+<li>Klik kirim</li>
+</ol>`
+},
+{
+category: "deposit",
+question: "REJECT DEPOSIT",
+answer: `<p>Mohon maaf, deposit Anda sebelumnya telah terpending pada sistem kami.</p>
+<p>Kami telah membantu melakukan reject pada deposit tersebut. Dalam waktu 1 menit ke depan, silakan isi form deposit kembali dengan nominal yang sesuai dengan yang Anda kirimkan.</p>
+<p>Terima kasih.</p>`
+},
+{
+category: "deposit",
+question: "QRIS PENDING",
+answer: `<p>Mohon maaf, setelah kami melakukan pengecekan, dana Anda tidak tercatat pada sistem kami sehingga belum dapat diproses.</p>
+<p>Kami sedang menghubungi pihak terkait untuk membantu menyelesaikan kendala ini.</p>
+<p>Estimasi waktu penyelesaian tidak dapat dipastikan.</p>
+<p>Mohon ditunggu dan maaf atas ketidaknyamanannya.</p>
+<p>Terima kasih.</p>`
+},
+{
+category: "deposit",
+question: "MINT DETAIL BUKTI TRANSAKSI",
+answer: `<p>Untuk membantu proses pengecekan deposit Anda, silakan lengkapi data-data berikut:</p>
+<ul>
+<li>User ID</li>
+<li>Nama rekening tujuan</li>
+<li>Nomor rekening tujuan</li>
+<li>Jam dan tanggal transaksi</li>
+<li>Nominal deposit</li>
+<li>Nama pengirim dana deposit</li>
+</ul>`
+},
+{
+category: "permainan",
+question: "CARA BERMAIN SOCCER ROULETTE",
+answer: `<p>Permainan Soccer Roulette memiliki mekanisme yang sama dengan roulette pada umumnya, namun dengan perkalian yang lebih tinggi.</p>
+<p><strong>Cara bermain:</strong></p>
+<ol>
+<li><strong>Tentukan taruhan Anda</strong> - Pilih jenis taruhan yang ingin dipasang:
+<ul>
+<li>Taruhan dalam (pada nomor tunggal)</li>
+<li>Taruhan luar (pada kombinasi angka atau warna)</li>
+<li>Taruhan khusus (split pada dua nomor, sudut pada empat nomor)</li>
+</ul>
+</li>
+<li><strong>Letakkan taruhan Anda</strong> - Tempatkan chip pada meja roulette sesuai dengan taruhan yang dipilih</li>
+<li><strong>Tunggu hasil putaran</strong> - Dealer akan memutar roda dan melemparkan bola</li>
+<li><strong>Ulangi prosesnya</strong> - Permainan terdiri dari putaran-putaran independen</li>
+</ol>
+<p>Perkalian yang diberikan dalam Soccer Roulette lebih tinggi dibandingkan roulette biasa.</p>`
+},
+{
+category: "withdraw",
+question: "WITHDRAW PENDING",
+answer: `<p>Permintaan penarikan dana Anda telah kami proses.</p>
+<p>Status pengiriman sedang dalam proses dan telah mengurangi saldo bank kami.</p>
+<p>Jika terjadi keterlambatan hingga dana masuk ke rekening Anda, mohon ditunggu dalam estimasi selambatnya 7x24 jam.</p>
+<p>Terima kasih.</p>`
+},
+{
+category: "bonus",
+question: "CLAIM SCATTER",
+answer: `<p>Untuk klaim bonus scatter Mahjong Ways I dan Mahjong Ways II, silakan lengkapi data-data berikut:</p>
+<ol>
+<li>Screenshot mendapatkan scatter</li>
+<li>Screenshot kemenangan akhir</li>
+<li>Screenshot history kemenangan</li>
+</ol>`
+}
+];
+
+// Fungsi untuk menyalin teks ke clipboard
+function copyToClipboard(text) {
+// Hapus tag HTML dari teks sebelum menyalin
+const tempDiv = document.createElement('div');
+tempDiv.innerHTML = text;
+const plainText = tempDiv.textContent || tempDiv.innerText || '';
+  
+navigator.clipboard.writeText(plainText).then(() => {
+// Tampilkan notifikasi
+const notification = document.getElementById('copyNotification');
+notification.classList.add('show');
+
+// Sembunyikan notifikasi setelah 2 detik
+setTimeout(() => {
+notification.classList.remove('show');
+}, 2000);
+}).catch(err => {
+console.error('Gagal menyalin teks: ', err);
+});
+}
+
+// Fungsi untuk merender FAQ items
+function renderFAQItems(items) {
+const faqList = document.getElementById('faqList');
+faqList.innerHTML = '';
+
+if (items.length === 0) {
+faqList.innerHTML = '<div class="no-results">Tidak ada hasil ditemukan</div>';
+return;
+}
+
+items.forEach((item, index) => {
+const faqItem = document.createElement('div');
+faqItem.className = 'faq-item';
+faqItem.dataset.category = item.category;
+
+faqItem.innerHTML = `
+<div class="faq-header">
+<span>${item.question}</span>
+<span class="expand-icon">+</span>
+</div>
+<div class="faq-content">
+<div class="faq-question">${item.question}</div>
+<div class="faq-answer">${item.answer}</div>
+<button class="copy-btn" data-index="${index}">Salin Teks</button>
+</div>
+`;
+
+faqList.appendChild(faqItem);
+});
+
+// Add event listeners to FAQ items
+document.querySelectorAll('.faq-header').forEach(header => {
+header.addEventListener('click', () => {
+const content = header.nextElementSibling;
+const isActive = content.classList.contains('active');
+
+// Close all open items first
+document.querySelectorAll('.faq-content').forEach(item => {
+item.classList.remove('active');
+});
+
+document.querySelectorAll('.expand-icon').forEach(icon => {
+icon.textContent = '+';
+});
+
+// Open clicked item if it wasn't already open
+if (!isActive) {
+content.classList.add('active');
+header.querySelector('.expand-icon').textContent = '-';
+}
+});
+});
+
+// Add event listeners to copy buttons
+document.querySelectorAll('.copy-btn').forEach(button => {
+button.addEventListener('click', (e) => {
+e.stopPropagation(); // Mencegah event bubbling ke parent
+const index = button.getAttribute('data-index');
+copyToClipboard(faqData[index].answer);
+});
+});
+}
+
+// Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
+function filterFAQ() {
+const searchText = document.getElementById('searchInput').value.toLowerCase();
+const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+
+const filteredItems = faqData.filter(item => {
+const matchesSearch = item.question.toLowerCase().includes(searchText) ||
+item.answer.toLowerCase().includes(searchText);
+const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+
+return matchesSearch && matchesCategory;
+});
+
+renderFAQItems(filteredItems);
+}
+
+// Inisialisasi event listeners
+document.addEventListener('DOMContentLoaded', () => {
+// Render semua FAQ items pada awal
+renderFAQItems(faqData);
+
+// Search input event listener
+document.getElementById('searchInput').addEventListener('input', filterFAQ);
+
+// Category buttons event listeners
+document.querySelectorAll('.category-btn').forEach(button => {
+button.addEventListener('click', () => {
+document.querySelectorAll('.category-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+
+button.classList.add('active');
+filterFAQ();
+});
+});
+});
+</script>
+</body>
+</html>
