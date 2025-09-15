@@ -100,6 +100,37 @@ background-color: #4a6491;
 color: white;
 }
 
+.subcategories {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-top: 10px;
+display: none;
+}
+
+.subcategories.active {
+display: flex;
+}
+
+.subcategory-btn {
+padding: 6px 12px;
+background-color: #f1f3f5;
+border: none;
+border-radius: 16px;
+cursor: pointer;
+font-size: 12px;
+transition: all 0.3s;
+}
+
+.subcategory-btn:hover {
+background-color: #e1e7ec;
+}
+
+.subcategory-btn.active {
+background-color: #3a547e;
+color: white;
+}
+
 .faq-list {
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -189,6 +220,15 @@ border-radius: 4px;
 font-size: 13px;
 }
 
+.warning-note {
+background-color: #ffe6e6;
+padding: 10px;
+border-left: 4px solid #ff3333;
+margin: 10px 0;
+border-radius: 4px;
+font-size: 13px;
+}
+
 .expand-icon {
 font-size: 18px;
 }
@@ -252,6 +292,11 @@ grid-template-columns: 1fr;
 h1 {
 font-size: 1.8rem;
 }
+
+.categories, .subcategories {
+flex-direction: column;
+align-items: flex-start;
+}
 }
 </style>
 </head>
@@ -271,7 +316,16 @@ font-size: 1.8rem;
 <button class="category-btn" data-category="permainan">Permainan</button>
 <button class="category-btn" data-category="teknis">Teknis</button>
 <button class="category-btn" data-category="bonus">Bonus & Promo</button>
-<button class="category-btn" data-category="Peraturan">peraturan</button>
+<button class="category-btn" data-category="peraturan">Peraturan</button>
+</div>
+<div class="subcategories" id="bonusSubcategories">
+<button class="subcategory-btn" data-subcategory="all-bonus">Semua Bonus</button>
+<button class="subcategory-btn" data-subcategory="bonus-all">Bonus All</button>
+<button class="subcategory-btn" data-subcategory="bonus-arcade">Bonus Arcade</button>
+<button class="subcategory-btn" data-subcategory="bonus-cashback">Bonus Cashback</button>
+<button class="subcategory-btn" data-subcategory="bonus-e-lottery">Bonus E-Lottery</button>
+<button class="subcategory-btn" data-subcategory="bonus-live-games">Bonus Live Games</button>
+<button class="subcategory-btn" data-subcategory="bonus-mingguan">Bonus Mingguan</button>
 </div>
 </div>
 
@@ -445,6 +499,138 @@ answer: `<p>Untuk keterangan tersebut dikarenakan Anda terpilih sebagai member y
 }
 ];
 
+// Data Bonus dalam bentuk array of objects
+const bonusData = [
+{
+category: "bonus",
+subcategory: "bonus-all",
+question: "BONUS ALL",
+answer: `<p>Untuk promo bonus saat ini kami memiliki :</p>
+<ul>
+<li>Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)</li>
+<li>Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+<li>Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+<li>Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+<li>Bonus Referral ARCADE  = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+<li>Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+<li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+<li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+<li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+<li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+<li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
+<li>Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+<li>Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level
+( berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari )</li>
+</ul>
+<p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
+<div class="important-note">
+<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+</div>`
+},
+{
+category: "bonus",
+subcategory: "bonus-arcade",
+question: "BONUS ARCADE",
+answer: `<p>Untuk bonus Arcade  yang kami miliki saat ini :</p>
+<ul>
+<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE
+dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+</ul>`
+},
+{
+category: "bonus",
+subcategory: "bonus-cashback",
+question: "BONUS CASHBACK",
+answer: `<p>Untuk bonus cashback kekalahan yang kami miliki saat ini :</p>
+<ul>
+<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+</ul>
+<div class="important-note">
+<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+</div>`
+},
+{
+category: "bonus",
+subcategory: "bonus-e-lottery",
+question: "BONUS E - LOTTERY",
+answer: `<p>Untuk bonus E-lottery yang kami miliki saat ini :</p>
+<ul>
+<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari selasa tanpa perlu diklaim</li>
+<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan E-lottery
+dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+</ul>`
+},
+{
+category: "bonus",
+subcategory: "bonus-live-games",
+question: "BONUS LIVE GAMES",
+answer: `<p>Untuk bonus live games yang kami miliki saat ini :</p>
+<ul>
+<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan LIVE GAMES, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+<li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5 dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+</ul>`
+},
+{
+category: "bonus",
+subcategory: "bonus-mingguan",
+question: "BONUS MINGGUAN",
+answer: `<p>Untuk promo bonus Mingguan saat ini kami memiliki :</p>
+<ul>
+<li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+<li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+<li>Bonus Rollingan turnover PRAGMATIC PLAY sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+<li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+<li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5%  ( PRAGMATIC PLAY) = Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY.
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
+<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade 
+Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+</ul>
+<p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
+<div class="important-note">
+<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+</div>`
+}
+];
+
+// Gabungkan data FAQ dan Bonus
+const allData = [...faqData, ...bonusData];
+
 // Fungsi untuk menyalin teks ke clipboard
 function copyToClipboard(text) {
 // Hapus tag HTML dari teks sebelum menyalin
@@ -480,6 +666,9 @@ items.forEach((item, index) => {
 const faqItem = document.createElement('div');
 faqItem.className = 'faq-item';
 faqItem.dataset.category = item.category;
+if (item.subcategory) {
+faqItem.dataset.subcategory = item.subcategory;
+}
 
 faqItem.innerHTML = `
 <div class="faq-header">
@@ -489,7 +678,7 @@ faqItem.innerHTML = `
 <div class="faq-content">
 <div class="faq-question">${item.question}</div>
 <div class="faq-answer">${item.answer}</div>
-<button class="copy-btn" data-index="${index}">Salin Teks</button>
+<button class="copy-btn" data-index="${allData.findIndex(dataItem => dataItem === item)}">Salin Teks</button>
 </div>
 `;
 
@@ -524,22 +713,30 @@ document.querySelectorAll('.copy-btn').forEach(button => {
 button.addEventListener('click', (e) => {
 e.stopPropagation(); // Mencegah event bubbling ke parent
 const index = button.getAttribute('data-index');
-copyToClipboard(faqData[index].answer);
+copyToClipboard(allData[index].answer);
 });
 });
 }
 
-// Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
+// Fungsi untuk memfilter FAQ berdasarkan pencarian, kategori, dan subkategori
 function filterFAQ() {
 const searchText = document.getElementById('searchInput').value.toLowerCase();
 const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+const activeSubcategory = document.querySelector('.subcategory-btn.active') ? 
+document.querySelector('.subcategory-btn.active').dataset.subcategory : 'all-bonus';
 
-const filteredItems = faqData.filter(item => {
+const filteredItems = allData.filter(item => {
 const matchesSearch = item.question.toLowerCase().includes(searchText) ||
 item.answer.toLowerCase().includes(searchText);
 const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+let matchesSubcategory = true;
 
-return matchesSearch && matchesCategory;
+// Jika kategori bonus aktif dan ada subkategori yang dipilih
+if (activeCategory === 'bonus' && activeSubcategory !== 'all-bonus') {
+matchesSubcategory = item.subcategory === activeSubcategory;
+}
+
+return matchesSearch && matchesCategory && matchesSubcategory;
 });
 
 renderFAQItems(filteredItems);
@@ -548,7 +745,7 @@ renderFAQItems(filteredItems);
 // Inisialisasi event listeners
 document.addEventListener('DOMContentLoaded', () => {
 // Render semua FAQ items pada awal
-renderFAQItems(faqData);
+renderFAQItems(allData);
 
 // Search input event listener
 document.getElementById('searchInput').addEventListener('input', filterFAQ);
@@ -557,6 +754,33 @@ document.getElementById('searchInput').addEventListener('input', filterFAQ);
 document.querySelectorAll('.category-btn').forEach(button => {
 button.addEventListener('click', () => {
 document.querySelectorAll('.category-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+
+button.classList.add('active');
+
+// Tampilkan subkategori hanya jika kategori bonus dipilih
+const bonusSubcategories = document.getElementById('bonusSubcategories');
+if (button.dataset.category === 'bonus') {
+bonusSubcategories.classList.add('active');
+// Aktifkan subkategori "all-bonus" secara default
+document.querySelector('[data-subcategory="all-bonus"]').classList.add('active');
+} else {
+bonusSubcategories.classList.remove('active');
+// Reset subkategori aktif
+document.querySelectorAll('.subcategory-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+}
+
+filterFAQ();
+});
+});
+
+// Subcategory buttons event listeners
+document.querySelectorAll('.subcategory-btn').forEach(button => {
+button.addEventListener('click', () => {
+document.querySelectorAll('.subcategory-btn').forEach(btn => {
 btn.classList.remove('active');
 });
 
