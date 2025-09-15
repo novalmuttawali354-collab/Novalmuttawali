@@ -155,6 +155,7 @@
             justify-content: space-between;
             align-items: center;
             transition: background-color 0.2s ease;
+            position: relative;
         }
         
         .bonus-item:hover {
@@ -182,6 +183,27 @@
             color: #e74c3c;
             font-weight: bold;
             font-size: 1.1rem;
+        }
+        
+        .copy-btn {
+            background: #f1f2f6;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #7f8c8d;
+        }
+        
+        .copy-btn:hover {
+            background: #3498db;
+            color: white;
+            transform: scale(1.1);
         }
         
         .note {
@@ -230,6 +252,12 @@
             .categories {
                 flex-direction: column;
             }
+            
+            .copy-btn {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
         }
         
         .highlight {
@@ -239,6 +267,30 @@
         
         .category-icon {
             font-size: 1.2rem;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
@@ -289,86 +341,137 @@
                     <div class="bonus-name">Bonus Referral Togel</div>
                     <div class="bonus-detail">Dibagikan setiap hari saat buka pasaran</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Bonus Referral Togel: Dibagikan setiap hari saat buka pasaran (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Bonus Referral Slot</div>
                     <div class="bonus-detail">Dibagikan setiap hari</div>
                     <div class="bonus-percentage">0.1%</div>
+                    <button class="copy-btn" data-text="Bonus Referral Slot: Dibagikan setiap hari (0.1%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Bonus Referral Live Games</div>
                     <div class="bonus-detail">Dibagikan setiap hari</div>
                     <div class="bonus-percentage">0.1%</div>
+                    <button class="copy-btn" data-text="Bonus Referral Live Games: Dibagikan setiap hari (0.1%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Bonus Referral Live Games Pragmatic</div>
                     <div class="bonus-detail">Dibagikan setiap hari</div>
                     <div class="bonus-percentage">0.1%</div>
+                    <button class="copy-btn" data-text="Bonus Referral Live Games Pragmatic: Dibagikan setiap hari (0.1%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Bonus Referral Arcade</div>
                     <div class="bonus-detail">Dibagikan setiap hari</div>
                     <div class="bonus-percentage">0.1%</div>
+                    <button class="copy-btn" data-text="Bonus Referral Arcade: Dibagikan setiap hari (0.1%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Bonus Referral E-lottery</div>
                     <div class="bonus-detail">Dibagikan setiap hari</div>
                     <div class="bonus-percentage">0.1%</div>
+                    <button class="copy-btn" data-text="Bonus Referral E-lottery: Dibagikan setiap hari (0.1%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan Live Games</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Live Games: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Rollingan Slot</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Slot: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan Live Games Pragmatic</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Live Games Pragmatic: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Rollingan Arcade</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Arcade: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan E-lottery</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan E-lottery: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Cashback Live Games</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">2.5% - 5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games: Min. kekalahan Rp.100.000, dibagikan Senin (2.5% - 5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Cashback Slot Games</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Selasa</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Slot Games: Min. kekalahan Rp.100.000, dibagikan Selasa (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Cashback Live Games Pragmatic</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games Pragmatic: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Cashback E-lottery</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Selasa</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback E-lottery: Min. kekalahan Rp.100.000, dibagikan Selasa (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Cashback Arcade</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Arcade: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Bonus Extra Slot</div>
                     <div class="bonus-detail">Tanggal 1, 11, 21 berdasarkan level</div>
                     <div class="bonus-percentage">-</div>
+                    <button class="copy-btn" data-text="Bonus Extra Slot: Tanggal 1, 11, 21 berdasarkan level">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -382,11 +485,17 @@
                     <div class="bonus-name">Cashback Arcade</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Arcade: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan Turnover Arcade</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Turnover Arcade: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -400,26 +509,41 @@
                     <div class="bonus-name">Cashback Live Games</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">2.5% - 5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games: Min. kekalahan Rp.100.000, dibagikan Senin (2.5% - 5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Cashback Slot Games</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Selasa</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Slot Games: Min. kekalahan Rp.100.000, dibagikan Selasa (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Cashback Live Games Pragmatic</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games Pragmatic: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Cashback E-lottery</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Selasa</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback E-lottery: Min. kekalahan Rp.100.000, dibagikan Selasa (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Cashback Arcade</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Arcade: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -433,11 +557,17 @@
                     <div class="bonus-name">Cashback E-lottery</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Selasa</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback E-lottery: Min. kekalahan Rp.100.000, dibagikan Selasa (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan Turnover E-lottery</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Turnover E-lottery: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -451,21 +581,33 @@
                     <div class="bonus-name">Cashback Live Games</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">2.5% - 5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games: Min. kekalahan Rp.100.000, dibagikan Senin (2.5% - 5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Cashback Live Games Pragmatic</div>
                     <div class="bonus-detail">Min. kekalahan Rp.100.000, dibagikan Senin</div>
                     <div class="bonus-percentage">5%</div>
+                    <button class="copy-btn" data-text="Cashback Live Games Pragmatic: Min. kekalahan Rp.100.000, dibagikan Senin (5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item">
                     <div class="bonus-name">Rollingan Live Games</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Live Games: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
                 <div class="bonus-item highlight">
                     <div class="bonus-name">Rollingan Live Games Pragmatic</div>
                     <div class="bonus-detail">Dibagikan setiap Kamis</div>
                     <div class="bonus-percentage">0.5%</div>
+                    <button class="copy-btn" data-text="Rollingan Live Games Pragmatic: Dibagikan setiap Kamis (0.5%)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -479,12 +621,20 @@
         </div>
     </div>
 
+    <!-- Toast notification -->
+    <div class="toast" id="copyToast">
+        <i class="fas fa-check-circle"></i>
+        <span>Teks berhasil disalin!</span>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const categoryButtons = document.querySelectorAll('.category-btn');
             const bonusSections = document.querySelectorAll('.bonus-section');
             const searchInput = document.getElementById('searchInput');
             const noResults = document.getElementById('noResults');
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            const copyToast = document.getElementById('copyToast');
             
             // Filter by category
             categoryButtons.forEach(button => {
@@ -549,6 +699,27 @@
                 } else {
                     noResults.style.display = 'none';
                 }
+            });
+            
+            // Copy functionality
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.getAttribute('data-text');
+                    
+                    // Using the Clipboard API
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // Show success toast
+                        copyToast.classList.add('show');
+                        
+                        // Hide toast after 3 seconds
+                        setTimeout(() => {
+                            copyToast.classList.remove('show');
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('Gagal menyalin teks: ', err);
+                        alert('Gagal menyalin teks. Silakan coba lagi.');
+                    });
+                });
             });
         });
     </script>
