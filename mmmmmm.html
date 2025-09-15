@@ -151,6 +151,7 @@ color: #555;
 font-size: 14px;
 line-height: 1.5;
 margin-bottom: 10px;
+white-space: pre-line;
 }
 
 .faq-answer p {
@@ -183,15 +184,6 @@ font-size: 12px;
 background-color: #fff9e6;
 padding: 10px;
 border-left: 4px solid #ffcc00;
-margin: 10px 0;
-border-radius: 4px;
-font-size: 13px;
-}
-
-.warning-note {
-background-color: #ffe6e6;
-padding: 10px;
-border-left: 4px solid #ff3333;
 margin: 10px 0;
 border-radius: 4px;
 font-size: 13px;
@@ -279,7 +271,6 @@ font-size: 1.8rem;
 <button class="category-btn" data-category="permainan">Permainan</button>
 <button class="category-btn" data-category="teknis">Teknis</button>
 <button class="category-btn" data-category="bonus">Bonus & Promo</button>
-<button class="category-btn" data-category="peraturan">Peraturan</button>
 </div>
 </div>
 
@@ -398,74 +389,129 @@ answer: `<p>Untuk klaim bonus scatter Mahjong Ways I dan Mahjong Ways II, silaka
 <li>Screenshot kemenangan akhir</li>
 <li>Screenshot history kemenangan</li>
 </ol>`
-},
-{
-category: "peraturan",
-question: "PIHAK KETIGA",
-answer: `<p>Seperti peraturan kami No. 3, transaksi deposit hanya dapat dilakukan melalui rekening bank yang terdaftar pada User-ID Anda.</p>
-<div class="warning-note">
-<strong>Penting:</strong> Pengiriman dana dari rekening yang tidak terdaftar pada User ID Anda akan kami anggap DONATUR, dan kami tidak melayani keluhan dalam hal ini.
-</div>`
-},
-{
-category: "deposit",
-question: "QRIS BCA",
-answer: `<p>Mohon maaf apabila pada menu inbox QRIS Anda tidak tercetak bukti transfer yang detail yang menunjukkan RRN, mohon tunggu dari pihak bank terkait untuk mencetak bukti pada inbox QRIS tersebut 10-30 menit ke depan.</p>
-<p>Apabila sudah tercetak, mohon lampirkan bukti pengiriman detail Anda yang ada RRN pada menu inbox QRIS Anda.</p>
-<p>Anda juga bisa menghubungi langsung ke pihak bank terkait jika kendala belum tercetaknya bukti transfer yang detail pada menu inbox pengiriman QRIS Anda.</p>`
-},
-{
-category: "peraturan",
-question: "PERATURAN PIHAK KE TIGA",
-answer: `<p>Pengiriman dana deposit menggunakan rekening pihak ke-3 atau rekening individu milik orang lain tidak diperbolehkan.</p>
-<p>Contoh: rekening teman / anak / istri / keluarga, dan sejenisnya.</p>
-<div class="warning-note">
-<strong>Penting:</strong> Jika menggunakan rekening pihak ke-3 maka tidak dapat kami proseskan.
+}
+];
+
+// Fungsi untuk menyalin teks ke clipboard
+function copyToClipboard(text) {
+// Hapus tag HTML dari teks sebelum menyalin
+const tempDiv = document.createElement('div');
+tempDiv.innerHTML = text;
+const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+navigator.clipboard.writeText(plainText).then(() => {
+// Tampilkan notifikasi
+const notification = document.getElementById('copyNotification');
+notification.classList.add('show');
+
+// Sembunyikan notifikasi setelah 2 detik
+setTimeout(() => {
+notification.classList.remove('show');
+}, 2000);
+}).catch(err => {
+console.error('Gagal menyalin teks: ', err);
+});
+}
+
+// Fungsi untuk merender FAQ items
+function renderFAQItems(items) {
+const faqList = document.getElementById('faqList');
+faqList.innerHTML = '';
+
+if (items.length === 0) {
+faqList.innerHTML = '<div class="no-results">Tidak ada hasil ditemukan</div>';
+return;
+}
+
+items.forEach((item, index) => {
+const faqItem = document.createElement('div');
+faqItem.className = 'faq-item';
+faqItem.dataset.category = item.category;
+
+faqItem.innerHTML = `
+<div class="faq-header">
+<span>${item.question}</span>
+<span class="expand-icon">+</span>
 </div>
-<p>Pihak ketiga yang diperbolehkan untuk melakukan pengiriman dana deposit ke rekening kami adalah sebagai berikut:</p>
-<ul>
-<li>BRILink (AGEN)</li>
-<li>TopUp melalui Alfamart</li>
-<li>NBMB (BRIMO KIOS MERCHANT)</li>
-</ul>`
-},
-{
-category: "deposit",
-question: "Deposit DANA yang dialihkan ke Qris",
-answer: `<p>Cara Deposit QRIS Via DANA Tanpa Perlu Scan Barcode:</p>
-<ol>
-<li>Login ke akun Linetogel Anda dan Pilih Menu Deposit</li>
-<li>Pada Menu Deposit Silahkan Pilih Bank tujuan DANA dan isi nominal deposit Anda (<a href="https://prnt.sc/n33otjkNHl-9" target="_blank">lihat contoh</a>)</li>
-<li>Kemudian Silahkan Klik pada menu Generate QR maka akan otomatis masuk ke aplikasi DANA Anda</li>
-<li>Jika Anda belum memiliki aplikasi DANA maka akan muncul keterangan (<a href="https://prnt.sc/ZwaZqdryZDJo" target="_blank">lihat contoh</a>) dan silahkan klik Download DANA</li>
-<li>Jika Anda sudah memiliki akun DANA maka akan langsung masuk ke akun DANA Anda dan menampilkan jumlah deposit Anda kemudian klik bayar</li>
-<li>Pembayaran berhasil dan saldo otomatis masuk ke akun Linetogel Anda</li>
-</ol>
-<div class="important-note">
-<strong>NB:</strong> Untuk Deposit Via DANA Tanpa scan barcode hanya berlaku pada link situs versi mobile dan ketika Deposit DANA sedang dialihkan ke layanan QRIS.
-</div>`
-},
-{
-category: "bonus",
-question: "KETERANGAN TO x 1",
-answer: `<p>Untuk keterangan tersebut dikarenakan Anda terpilih sebagai member yang mendapat bonus dari kami.</p>
-<p>Anda dapat melakukan withdraw dengan catatan harus mencapai TURNOVER x1 terlebih dahulu.</p>`
-},
-{
-category: "permainan",
-question: "Pengertian PRIZE 123",
-answer: `<p>Untuk bet tipe Prize togel adalah jenis kemenangan yang akan Anda terima apabila berhasil menebak angka yang keluar.</p>
-<p>Dalam kemenangan yang diterima:</p>
-<ul>
-<li>Prize 1 adalah prize yang paling besar bayarannya</li>
-<li>Prize 2 dan Prize 3 adalah pendukung apabila Anda tidak menang di Prize 1</li>
-</ul>
-<p><strong>Contoh:</strong></p>
-<p>Anda betting pada angka 1234</p>
-<p>Lalu result sebagai berikut:</p>
-<ul>
-<li>Prize 1 : 5677</li>
-<li>Prize 2 : 1234</li>
-<li>Prize 3 : 8867</li>
-</ul>
-<p>Se
+<div class="faq-content">
+<div class="faq-question">${item.question}</div>
+<div class="faq-answer">${item.answer}</div>
+<button class="copy-btn" data-index="${index}">Salin Teks</button>
+</div>
+`;
+
+faqList.appendChild(faqItem);
+});
+
+// Add event listeners to FAQ items
+document.querySelectorAll('.faq-header').forEach(header => {
+header.addEventListener('click', () => {
+const content = header.nextElementSibling;
+const isActive = content.classList.contains('active');
+
+// Close all open items first
+document.querySelectorAll('.faq-content').forEach(item => {
+item.classList.remove('active');
+});
+
+document.querySelectorAll('.expand-icon').forEach(icon => {
+icon.textContent = '+';
+});
+
+// Open clicked item if it wasn't already open
+if (!isActive) {
+content.classList.add('active');
+header.querySelector('.expand-icon').textContent = '-';
+}
+});
+});
+
+// Add event listeners to copy buttons
+document.querySelectorAll('.copy-btn').forEach(button => {
+button.addEventListener('click', (e) => {
+e.stopPropagation(); // Mencegah event bubbling ke parent
+const index = button.getAttribute('data-index');
+copyToClipboard(faqData[index].answer);
+});
+});
+}
+
+// Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
+function filterFAQ() {
+const searchText = document.getElementById('searchInput').value.toLowerCase();
+const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+
+const filteredItems = faqData.filter(item => {
+const matchesSearch = item.question.toLowerCase().includes(searchText) ||
+item.answer.toLowerCase().includes(searchText);
+const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+
+return matchesSearch && matchesCategory;
+});
+
+renderFAQItems(filteredItems);
+}
+
+// Inisialisasi event listeners
+document.addEventListener('DOMContentLoaded', () => {
+// Render semua FAQ items pada awal
+renderFAQItems(faqData);
+
+// Search input event listener
+document.getElementById('searchInput').addEventListener('input', filterFAQ);
+
+// Category buttons event listeners
+document.querySelectorAll('.category-btn').forEach(button => {
+button.addEventListener('click', () => {
+document.querySelectorAll('.category-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+
+button.classList.add('active');
+filterFAQ();
+});
+});
+});
+</script>
+</body>
+</html>
