@@ -1,794 +1,852 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Database FAQ - Layanan Pelanggan</title>
-<style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database FAQ - Layanan Pelanggan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-body {
-background-color: #f5f7fa;
-color: #333;
-line-height: 1.6;
-background-image: url('https://img95.lovepik.com/photo/40105/0625.gif_wh860.gif');
-background-size: cover;
-background-position: center;
-background-attachment: fixed;
-}
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            background-image: linear-gradient(rgba(245, 247, 250, 0.9), rgba(245, 247, 250, 0.9)), url('https://img95.lovepik.com/photo/40105/0625.gif_wh860.gif');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-.container {
-max-width: 1200px;
-margin: 0 auto;
-padding: 20px;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-header {
-background: linear-gradient(135deg, #2c3e50, #4a6491);
-color: white;
-padding: 20px 0;
-border-radius: 10px;
-margin-bottom: 30px;
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px 0;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-h1 {
-text-align: center;
-font-size: 2.2rem;
-margin-bottom: 10px;
-}
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
 
-.description {
-text-align: center;
-font-size: 1.1rem;
-opacity: 0.9;
-max-width: 800px;
-margin: 0 auto;
-}
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            letter-spacing: 1px;
+        }
 
-.search-container {
-background-color: white;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-margin-bottom: 30px;
-}
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
 
-#searchInput {
-width: 100%;
-padding: 14px;
-border: 1px solid #ddd;
-border-radius: 8px;
-font-size: 16px;
-transition: border-color 0.3s;
-}
+        .search-container {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            position: relative;
+        }
 
-#searchInput:focus {
-border-color: #4a6491;
-outline: none;
-box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
-}
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-.categories {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-margin-top: 15px;
-}
+        #searchInput {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
 
-.category-btn {
-padding: 8px 16px;
-background-color: #e9ecef;
-border: none;
-border-radius: 20px;
-cursor: pointer;
-font-size: 14px;
-transition: all 0.3s;
-}
+        #searchInput:focus {
+            border-color: #4a6491;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+        }
 
-.category-btn:hover {
-background-color: #dde5ec;
-}
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 18px;
+        }
 
-.category-btn.active {
-background-color: #4a6491;
-color: white;
-}
+        .categories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-.subcategories {
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-margin-top: 10px;
-display: none;
-}
+        .categories-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.subcategories.active {
-display: flex;
-}
+        .categories-title i {
+            color: #4a6491;
+        }
 
-.subcategory-btn {
-padding: 6px 12px;
-background-color: #f1f3f5;
-border: none;
-border-radius: 16px;
-cursor: pointer;
-font-size: 12px;
-transition: all 0.3s;
-}
+        .categories-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 5px 0 15px;
+            scrollbar-width: thin;
+            scrollbar-color: #c5c5c5 #f1f1f1;
+        }
 
-.subcategory-btn:hover {
-background-color: #e1e7ec;
-}
+        .categories-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
 
-.subcategory-btn.active {
-background-color: #3a547e;
-color: white;
-}
+        .categories-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
 
-.faq-list {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-gap: 20px;
-}
+        .categories-scroll::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 10px;
+        }
 
-.faq-item {
-background-color: white;
-border-radius: 10px;
-overflow: hidden;
-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-transition: transform 0.3s, box-shadow 0.3s;
-}
+        .category-btn {
+            padding: 12px 20px;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #495057;
+        }
 
-.faq-item:hover {
-transform: translateY(-5px);
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
+        .category-btn:hover {
+            background: linear-gradient(to bottom, #e9ecef, #dee2e6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.faq-header {
-padding: 15px;
-background-color: #4a6491;
-color: white;
-font-weight: 600;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
+        .category-btn.active {
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 8px rgba(74, 100, 145, 0.3);
+        }
 
-.faq-content {
-padding: 15px;
-display: none;
-position: relative;
-}
+        .category-btn i {
+            font-size: 16px;
+        }
 
-.faq-content.active {
-display: block;
-}
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
 
-.faq-question {
-font-weight: 600;
-margin-bottom: 10px;
-color: #2c3e50;
-}
+        .faq-card {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
-.faq-answer {
-color: #555;
-font-size: 14px;
-line-height: 1.5;
-margin-bottom: 10px;
-white-space: pre-line;
-}
+        .faq-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
 
-.faq-answer p {
-margin-bottom: 10px;
-}
+        .faq-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+        }
 
-.faq-answer ul, .faq-answer ol {
-margin-left: 20px;
-margin-bottom: 10px;
-}
+        .faq-content {
+            padding: 20px;
+            display: none;
+            position: relative;
+            flex-grow: 1;
+        }
 
-.faq-answer li {
-margin-bottom: 5px;
-}
+        .faq-content.active {
+            display: block;
+        }
 
-.step-number {
-display: inline-block;
-width: 24px;
-height: 24px;
-background-color: #4a6491;
-color: white;
-border-radius: 50%;
-text-align: center;
-line-height: 24px;
-margin-right: 8px;
-font-size: 12px;
-}
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
 
-.important-note {
-background-color: #fff9e6;
-padding: 10px;
-border-left: 4px solid #ffcc00;
-margin: 10px 0;
-border-radius: 4px;
-font-size: 13px;
-}
+        .faq-answer {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
 
-.warning-note {
-background-color: #ffe6e6;
-padding: 10px;
-border-left: 4px solid #ff3333;
-margin: 10px 0;
-border-radius: 4px;
-font-size: 13px;
-}
+        .faq-answer p {
+            margin-bottom: 12px;
+        }
 
-.expand-icon {
-font-size: 18px;
-}
+        .faq-answer ul, .faq-answer ol {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
 
-.copy-btn {
-position: absolute;
-bottom: 10px;
-right: 10px;
-background-color: #4a6491;
-color: white;
-border: none;
-padding: 5px 10px;
-border-radius: 4px;
-cursor: pointer;
-font-size: 12px;
-transition: background-color 0.3s;
-}
+        .faq-answer li {
+            margin-bottom: 8px;
+        }
 
-.copy-btn:hover {
-background-color: #3a547e;
-}
+        .important-note {
+            background-color: #fff9e6;
+            padding: 12px;
+            border-left: 4px solid #ffcc00;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
 
-.copy-notification {
-position: fixed;
-top: 20px;
-right: 20px;
-background-color: #4CAF50;
-color: white;
-padding: 10px 20px;
-border-radius: 4px;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-z-index: 1000;
-opacity: 0;
-transition: opacity 0.3s;
-}
+        .warning-note {
+            background-color: #ffe6e6;
+            padding: 12px;
+            border-left: 4px solid #ff3333;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
 
-.copy-notification.show {
-opacity: 1;
-}
+        .expand-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
 
-.no-results {
-text-align: center;
-padding: 30px;
-grid-column: 1 / -1;
-color: #6c757d;
-}
+        .faq-card.active .expand-icon {
+            transform: rotate(180deg);
+        }
 
-footer {
-text-align: center;
-margin-top: 50px;
-padding: 20px;
-color: #6c757d;
-font-size: 14px;
-}
+        .copy-btn {
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+        }
 
-@media (max-width: 768px) {
-.faq-list {
-grid-template-columns: 1fr;
-}
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #3a547e, #1c2e40);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
 
-h1 {
-font-size: 1.8rem;
-}
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.categories, .subcategories {
-flex-direction: column;
-align-items: flex-start;
-}
-}
-</style>
+        .copy-notification.show {
+            opacity: 1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            grid-column: 1 / -1;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #dee2e6;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #6c757d;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .category-btn {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+        }
+
+        .category-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .category-deposit { background-color: #4CAF50; }
+        .category-withdraw { background-color: #2196F3; }
+        .category-permainan { background-color: #9C27B0; }
+        .category-teknis { background-color: #FF9800; }
+        .category-bonus { background-color: #E91E63; }
+        .category-peraturan { background-color: #607D8B; }
+    </style>
 </head>
 <body>
-<div class="container">
-<header>
-<h1><<<<< PELURU ANTI AIR >>>>></h1>
-<p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
-</header>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-alt"></i> PELURU ANTI AIR</h1>
+            <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
+        </header>
 
-<div class="search-container">
-<input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
-<div class="categories">
-<button class="category-btn active" data-category="all">Semua Kategori</button>
-<button class="category-btn" data-category="deposit">Deposit</button>
-<button class="category-btn" data-category="withdraw">Withdraw</button>
-<button class="category-btn" data-category="permainan">Permainan</button>
-<button class="category-btn" data-category="teknis">Teknis</button>
-<button class="category-btn" data-category="bonus">Bonus & Promo</button>
-<button class="category-btn" data-category="peraturan">Peraturan</button>
-</div>
-<div class="subcategories" id="bonusSubcategories">
-<button class="subcategory-btn" data-subcategory="all-bonus">Semua Bonus</button>
-<button class="subcategory-btn" data-subcategory="bonus-all">Bonus All</button>
-<button class="subcategory-btn" data-subcategory="bonus-arcade">Bonus Arcade</button>
-<button class="subcategory-btn" data-subcategory="bonus-cashback">Bonus Cashback</button>
-<button class="subcategory-btn" data-subcategory="bonus-e-lottery">Bonus E-Lottery</button>
-<button class="subcategory-btn" data-subcategory="bonus-live-games">Bonus Live Games</button>
-<button class="subcategory-btn" data-subcategory="bonus-mingguan">Bonus Mingguan</button>
-</div>
-</div>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
+            </div>
+            
+            <div class="categories-container">
+                <div class="categories-title">
+                    <i class="fas fa-tags"></i>
+                    Pilih Kategori:
+                </div>
+                <div class="categories-scroll">
+                    <button class="category-btn active" data-category="all">
+                        <i class="fas fa-layer-group"></i> Semua Kategori
+                    </button>
+                    <button class="category-btn" data-category="deposit">
+                        <span class="category-indicator category-deposit"></span>
+                        <i class="fas fa-money-bill-wave"></i> Deposit
+                    </button>
+                    <button class="category-btn" data-category="withdraw">
+                        <span class="category-indicator category-withdraw"></span>
+                        <i class="fas fa-wallet"></i> Withdraw
+                    </button>
+                    <button class="category-btn" data-category="permainan">
+                        <span class="category-indicator category-permainan"></span>
+                        <i class="fas fa-gamepad"></i> Permainan
+                    </button>
+                    <button class="category-btn" data-category="teknis">
+                        <span class="category-indicator category-teknis"></span>
+                        <i class="fas fa-tools"></i> Teknis
+                    </button>
+                    <button class="category-btn" data-category="bonus">
+                        <span class="category-indicator category-bonus"></span>
+                        <i class="fas fa-gift"></i> Bonus & Promo
+                    </button>
+                    <button class="category-btn" data-category="peraturan">
+                        <span class="category-indicator category-peraturan"></span>
+                        <i class="fas fa-file-alt"></i> Peraturan
+                    </button>
+                </div>
+            </div>
+        </div>
 
-<div class="faq-list" id="faqList">
-<!-- FAQ items will be generated here by JavaScript -->
-</div>
-</div>
+        <div class="faq-grid" id="faqList">
+            <!-- FAQ items will be generated here by JavaScript -->
+        </div>
+    </div>
 
-<div id="copyNotification" class="copy-notification">Teks berhasil disalin!</div>
+    <div id="copyNotification" class="copy-notification">
+        <i class="fas fa-check-circle"></i> Teks berhasil disalin!
+    </div>
 
-<footer>
-<p>FYI. Untuk ITOTO rencana akan ada penggunaan PASSKEY untuk seluruh agen, pada tanggal 11 September 2025. Akan kami infokan lebih lanjut bila ada info terbaru. Terima kasih.</p>
-</footer>
+    <footer>
+        <p>FYI. Untuk ITOTO rencana akan ada penggunaan PASSKEY untuk seluruh agen, pada tanggal 11 September 2025. Akan kami infokan lebih lanjut bila ada info terbaru. Terima kasih.</p>
+    </footer>
 
-<script>
-// Data FAQ dalam bentuk array of objects dengan format yang lebih rapi
-const faqData = [
-{
-category: "teknis",
-question: "QRIS TIDAK MUNCUL",
-answer: `<p>Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS, silakan ikuti langkah-langkah berikut:</p>
-<ol>
-<li>Hapus cookies/history dari browser yang digunakan</li>
-<li>Coba gunakan browser lainnya</li>
-</ol>
-<p>Langkah detail:</p>
-<ol>
-<li>Clear history dan cache browser di menu Setting > Privacy > History (atau tergantung browser)</li>
-<li>Bersihkan history, cookies, dan cache browser</li>
-<li>Keluar dari browser</li>
-<li>Buka kembali browser dan login kembali ke situs kami</li>
-</ol>
-<div class="important-note">
-<strong>NB:</strong> Jika Anda telah melakukan langkah-langkah di atas dan QRIS masih tidak muncul, disarankan untuk melakukan deposit melalui transfer antar bank ke bank deposit kami yang aktif dan online lainnya.
-</div>`
-},
-{
-category: "teknis",
-question: "TELAT RESULT PASARAN",
-answer: `<p>Kami ingin menginformasikan bahwa untuk pasaran tersebut saat ini terjadi keterlambatan result dari pihak penyedia yang belum mengeluarkan angka result.</p>
-<p>Mohon menunggu dan bersabar. Estimasi waktu tidak dapat kami tentukan.</p>
-<p>Terima kasih atas pengertiannya.</p>`
-},
-{
-category: "teknis",
-question: "CARA KIRIM GAMBAR",
-answer: `<p>Cara mengirimkan screenshot ke Live Chat:</p>
-<ol>
-<li>Klik tombol kirim file: <span style="background-color:#f0f0f0;padding:2px 5px;border-radius:3px;">https://prnt.sc/me8qnc0bjCVk</span></li>
-<li>Pilih foto yang ingin dikirimkan</li>
-<li>Klik kirim</li>
-</ol>`
-},
-{
-category: "deposit",
-question: "REJECT DEPOSIT",
-answer: `<p>Mohon maaf, deposit Anda sebelumnya telah terpending pada sistem kami.</p>
-<p>Kami telah membantu melakukan reject pada deposit tersebut. Dalam waktu 1 menit ke depan, silakan isi form deposit kembali dengan nominal yang sesuai dengan yang Anda kirimkan.</p>
-<p>Terima kasih.</p>`
-},
-{
-category: "deposit",
-question: "QRIS PENDING",
-answer: `<p>Mohon maaf, setelah kami melakukan pengecekan, dana Anda tidak tercatat pada sistem kami sehingga belum dapat diproses.</p>
-<p>Kami sedang menghubungi pihak terkait untuk membantu menyelesaikan kendala ini.</p>
-<p>Estimasi waktu penyelesaian tidak dapat dipastikan.</p>
-<p>Mohon ditunggu dan maaf atas ketidaknyamanannya.</p>
-<p>Terima kasih.</p>`
-},
-{
-category: "deposit",
-question: "MINT DETAIL BUKTI TRANSAKSI",
-answer: `<p>Untuk membantu proses pengecekan deposit Anda, silakan lengkapi data-data berikut:</p>
-<ul>
-<li>User ID</li>
-<li>Nama rekening tujuan</li>
-<li>Nomor rekening tujuan</li>
-<li>Jam dan tanggal transaksi</li>
-<li>Nominal deposit</li>
-<li>Nama pengirim dana deposit</li>
-</ul>`
-},
-{
-category: "permainan",
-question: "CARA BERMAIN SOCCER ROULETTE",
-answer: `<p>Permainan Soccer Roulette memiliki mekanisme yang sama dengan roulette pada umumnya, namun dengan perkalian yang lebih tinggi.</p>
-<p><strong>Cara bermain:</strong></p>
-<ol>
-<li><strong>Tentukan taruhan Anda</strong> - Pilih jenis taruhan yang ingin dipasang:
-<ul>
-<li>Taruhan dalam (pada nomor tunggal)</li>
-<li>Taruhan luar (pada kombinasi angka atau warna)</li>
-<li>Taruhan khusus (split pada dua nomor, sudut pada empat nomor)</li>
-</ul>
-</li>
-<li><strong>Letakkan taruhan Anda</strong> - Tempatkan chip pada meja roulette sesuai dengan taruhan yang dipilih</li>
-<li><strong>Tunggu hasil putaran</strong> - Dealer akan memutar roda dan melemparkan bola</li>
-<li><strong>Ulangi prosesnya</strong> - Permainan terdiri dari putaran-putaran independen</li>
-</ol>
-<p>Perkalian yang diberikan dalam Soccer Roulette lebih tinggi dibandingkan roulette biasa.</p>`
-},
-{
-category: "withdraw",
-question: "WITHDRAW PENDING",
-answer: `<p>Permintaan penarikan dana Anda telah kami proses.</p>
-<p>Status pengiriman sedang dalam proses dan telah mengurangi saldo bank kami.</p>
-<p>Jika terjadi keterlambatan hingga dana masuk ke rekening Anda, mohon ditunggu dalam estimasi selambatnya 7x24 jam.</p>
-<p>Terima kasih.</p>`
-},
-{
-category: "bonus",
-question: "CLAIM SCATTER",
-answer: `<p>Untuk klaim bonus scatter Mahjong Ways I dan Mahjong Ways II, silakan lengkapi data-data berikut:</p>
-<ol>
-<li>Screenshot mendapatkan scatter</li>
-<li>Screenshot kemenangan akhir</li>
-<li>Screenshot history kemenangan</li>
-</ol>`
-},
-{
-category: "peraturan",
-question: "PIHAK KETIGA",
-answer: `<p>Seperti peraturan kami No. 3, transaksi deposit hanya dapat dilakukan melalui rekening bank yang terdaftar pada User-ID Anda.</p>
-<div class="warning-note">
-<strong>Penting:</strong> Pengiriman dana dari rekening yang tidak terdaftar pada User ID Anda akan kami anggap DONATUR, dan kami tidak melayani keluhan dalam hal ini.
-</div>`
-},
-{
-category: "deposit",
-question: "QRIS BCA",
-answer: `<p>Mohon maaf apabila pada menu inbox QRIS Anda tidak tercetak bukti transfer yang detail yang menunjukkan RRN, mohon tunggu dari pihak bank terkait untuk mencetak bukti pada inbox QRIS tersebut 10-30 menit ke depan.</p>
-<p>Apabila sudah tercetak, mohon lampirkan bukti pengiriman detail Anda yang ada RRN pada menu inbox QRIS Anda.</p>
-<p>Anda juga bisa menghubungi langsung ke pihak bank terkait jika kendala belum tercetaknya bukti transfer yang detail pada menu inbox pengiriman QRIS Anda.</p>`
-},
-{
-category: "peraturan",
-question: "PERATURAN PIHAK KE TIGA",
-answer: `<p>Pengiriman dana deposit menggunakan rekening pihak ke-3 atau rekening individu milik orang lain tidak diperbolehkan.</p>
-<p>Contoh: rekening teman / anak / istri / keluarga, dan sejenisnya.</p>
-<div class="warning-note">
-<strong>Penting:</strong> Jika menggunakan rekening pihak ke-3 maka tidak dapat kami proseskan.
-</div>
-<p>Pihak ketiga yang diperbolehkan untuk melakukan pengiriman dana deposit ke rekening kami adalah sebagai berikut:</p>
-<ul>
-<li>BRILink (AGEN)</li>
-<li>TopUp melalui Alfamart</li>
-<li>NBMB (BRIMO KIOS MERCHANT)</li>
-</ul>`
-},
-{
-category: "deposit",
-question: "Deposit DANA yang dialihkan ke Qris",
-answer: `<p>Cara Deposit QRIS Via DANA Tanpa Perlu Scan Barcode:</p>
-<ol>
-<li>1. Login ke akun Linetogel Anda dan Pilih Menu Deposit</li>
-<li>2. Pada Menu Deposit Silahkan Pilih Bank tujuan DANA dan isi nominal deposit Anda (<a href="https://prnt.sc/n33otjkNHl-9" target="_blank">lihat contoh</a>)</li>
-<li>3. Kemudian Silahkan Klik pada menu Generate QR maka akan otomatis masuk ke aplikasi DANA Anda</li>
-<li>4. Jika Anda belum memiliki aplikasi DANA maka akan muncul keterangan (<a href="https://prnt.sc/ZwaZqdryZDJo" target="_blank">lihat contoh</a>) dan silahkan klik Download DANA</li>
-<li>5. Jika Anda sudah memiliki akun DANA maka akan langsung masuk ke akun DANA Anda dan menampilkan jumlah deposit Anda kemudian klik bayar</li>
-<li>6. Pembayaran berhasil dan saldo otomatis masuk ke akun Linetogel Anda</li>
-</ol>
-<div class="important-note">
-<strong>NB:</strong> Untuk Deposit Via DANA Tanpa scan barcode hanya berlaku pada link situs versi mobile dan ketika Deposit DANA sedang dialihkan ke layanan QRIS.
-</div>`
-},
-{
-category: "bonus",
-question: "KETERANGAN TO x 1",
-answer: `<p>Untuk keterangan tersebut dikarenakan Anda terpilih sebagai member yang mendapat bonus dari kami.</p>
-<p>Anda dapat melakukan withdraw dengan catatan harus mencapai TURNOVER x1 terlebih dahulu.</p>`
-}
-];
+    <script>
+        // Data FAQ dalam bentuk array of objects dengan format yang lebih rapi
+        const faqData = [
+            {
+                category: "teknis",
+                question: "QRIS TIDAK MUNCUL",
+                answer: `<p>Untuk perihal tampilan error atau tidak muncul menu download kode QR pada menu deposit via QRIS, silakan ikuti langkah-langkah berikut:</p>
+                <ol>
+                <li>Hapus cookies/history dari browser yang digunakan</li>
+                <li>Coba gunakan browser lainnya</li>
+                </ol>
+                <p>Langkah detail:</p>
+                <ol>
+                <li>Clear history dan cache browser di menu Setting > Privacy > History (atau tergantung browser)</li>
+                <li>Bersihkan history, cookies, dan cache browser</li>
+                <li>Keluar dari browser</li>
+                <li>Buka kembali browser dan login kembali ke situs kami</li>
+                </ol>
+                <div class="important-note">
+                <strong>NB:</strong> Jika Anda telah melakukan langkah-langkah di atas dan QRIS masih tidak muncul, disarankan untuk melakukan deposit melalui transfer antar bank ke bank deposit kami yang aktif dan online lainnya.
+                </div>`
+            },
+            {
+                category: "teknis",
+                question: "TELAT RESULT PASARAN",
+                answer: `<p>Kami ingin menginformasikan bahwa untuk pasaran tersebut saat ini terjadi keterlambatan result dari pihak penyedia yang belum mengeluarkan angka result.</p>
+                <p>Mohon menunggu dan bersabar. Estimasi waktu tidak dapat kami tentukan.</p>
+                <p>Terima kasih atas pengertiannya.</p>`
+            },
+            {
+                category: "teknis",
+                question: "CARA KIRIM GAMBAR",
+                answer: `<p>Cara mengirimkan screenshot ke Live Chat:</p>
+                <ol>
+                <li>Klik tombol kirim file: <span style="background-color:#f0f0f0;padding:2px 5px;border-radius:3px;">https://prnt.sc/me8qnc0bjCVk</span></li>
+                <li>Pilih foto yang ingin dikirimkan</li>
+                <li>Klik kirim</li>
+                </ol>`
+            },
+            {
+                category: "deposit",
+                question: "REJECT DEPOSIT",
+                answer: `<p>Mohon maaf, deposit Anda sebelumnya telah terpending pada sistem kami.</p>
+                <p>Kami telah membantu melakukan reject pada deposit tersebut. Dalam waktu 1 menit ke depan, silakan isi form deposit kembali dengan nominal yang sesuai dengan yang Anda kirimkan.</p>
+                <p>Terima kasih.</p>`
+            },
+            {
+                category: "deposit",
+                question: "QRIS PENDING",
+                answer: `<p>Mohon maaf, setelah kami melakukan pengecekan, dana Anda tidak tercatat pada sistem kami sehingga belum dapat diproses.</p>
+                <p>Kami sedang menghubungi pihak terkait untuk membantu menyelesaikan kendala ini.</p>
+                <p>Estimasi waktu penyelesaian tidak dapat dipastikan.</p>
+                <p>Mohon ditunggu dan maaf atas ketidaknyamanannya.</p>
+                <p>Terima kasih.</p>`
+            },
+            {
+                category: "deposit",
+                question: "MINT DETAIL BUKTI TRANSAKSI",
+                answer: `<p>Untuk membantu proses pengecekan deposit Anda, silakan lengkapi data-data berikut:</p>
+                <ul>
+                <li>User ID</li>
+                <li>Nama rekening tujuan</li>
+                <li>Nomor rekening tujuan</li>
+                <li>Jam dan tanggal transaksi</li>
+                <li>Nominal deposit</li>
+                <li>Nama pengirim dana deposit</li>
+                </ul>`
+            },
+            {
+                category: "permainan",
+                question: "CARA BERMAIN SOCCER ROULETTE",
+                answer: `<p>Permainan Soccer Roulette memiliki mekanisme yang sama dengan roulette pada umumnya, namun dengan perkalian yang lebih tinggi.</p>
+                <p><strong>Cara bermain:</strong></p>
+                <ol>
+                <li><strong>Tentukan taruhan Anda</strong> - Pilih jenis taruhan yang ingin dipasang:
+                <ul>
+                <li>Taruhan dalam (pada nomor tunggal)</li>
+                <li>Taruhan luar (pada kombinasi angka atau warna)</li>
+                <li>Taruhan khusus (split pada dua nomor, sudut pada empat nomor)</li>
+                </ul>
+                </li>
+                <li><strong>Letakkan taruhan Anda</strong> - Tempatkan chip pada meja roulette sesuai dengan taruhan yang dipilih</li>
+                <li><strong>Tunggu hasil putaran</strong> - Dealer akan memutar roda dan melemparkan bola</li>
+                <li><strong>Ulangi prosesnya</strong> - Permainan terdiri dari putaran-putaran independen</li>
+                </ol>
+                <p>Perkalian yang diberikan dalam Soccer Roulette lebih tinggi dibandingkan roulette biasa.</p>`
+            },
+            {
+                category: "withdraw",
+                question: "WITHDRAW PENDING",
+                answer: `<p>Permintaan penarikan dana Anda telah kami proses.</p>
+                <p>Status pengiriman sedang dalam proses dan telah mengurangi saldo bank kami.</p>
+                <p>Jika terjadi keterlambatan hingga dana masuk ke rekening Anda, mohon ditunggu dalam estimasi selambatnya 7x24 jam.</p>
+                <p>Terima kasih.</p>`
+            },
+            {
+                category: "bonus",
+                question: "CLAIM SCATTER",
+                answer: `<p>Untuk klaim bonus scatter Mahjong Ways I dan Mahjong Ways II, silakan lengkapi data-data berikut:</p>
+                <ol>
+                <li>Screenshot mendapatkan scatter</li>
+                <li>Screenshot kemenangan akhir</li>
+                <li>Screenshot history kemenangan</li>
+                </ol>`
+            },
+            {
+                category: "peraturan",
+                question: "PIHAK KETIGA",
+                answer: `<p>Seperti peraturan kami No. 3, transaksi deposit hanya dapat dilakukan melalui rekening bank yang terdaftar pada User-ID Anda.</p>
+                <div class="warning-note">
+                <strong>Penting:</strong> Pengiriman dana dari rekening yang tidak terdaftar pada User ID Anda akan kami anggap DONATUR, dan kami tidak melayani keluhan dalam hal ini.
+                </div>`
+            },
+            {
+                category: "deposit",
+                question: "QRIS BCA",
+                answer: `<p>Mohon maaf apabila pada menu inbox QRIS Anda tidak tercetak bukti transfer yang detail yang menunjukkan RRN, mohon tunggu dari pihak bank terkait untuk mencetak bukti pada inbox QRIS tersebut 10-30 menit ke depan.</p>
+                <p>Apabila sudah tercetak, mohon lampirkan bukti pengiriman detail Anda yang ada RRN pada menu inbox QRIS Anda.</p>
+                <p>Anda juga bisa menghubungi langsung ke pihak bank terkait jika kendala belum tercetaknya bukti transfer yang detail pada menu inbox pengiriman QRIS Anda.</p>`
+            },
+            {
+                category: "peraturan",
+                question: "PERATURAN PIHAK KE TIGA",
+                answer: `<p>Pengiriman dana deposit menggunakan rekening pihak ke-3 atau rekening individu milik orang lain tidak diperbolehkan.</p>
+                <p>Contoh: rekening teman / anak / istri / keluarga, dan sejenisnya.</p>
+                <div class="warning-note">
+                <strong>Penting:</strong> Jika menggunakan rekening pihak ke-3 maka tidak dapat kami proseskan.
+                </div>
+                <p>Pihak ketiga yang diperbolehkan untuk melakukan pengiriman dana deposit ke rekening kami adalah sebagai berikut:</p>
+                <ul>
+                <li>BRILink (AGEN)</li>
+                <li>TopUp melalui Alfamart</li>
+                <li>NBMB (BRIMO KIOS MERCHANT)</li>
+                </ul>`
+            },
+            {
+                category: "deposit",
+                question: "Deposit DANA yang dialihkan ke Qris",
+                answer: `<p>Cara Deposit QRIS Via DANA Tanpa Perlu Scan Barcode:</p>
+                <ol>
+                <li>1. Login ke akun Linetogel Anda dan Pilih Menu Deposit</li>
+                <li>2. Pada Menu Deposit Silahkan Pilih Bank tujuan DANA dan isi nominal deposit Anda (<a href="https://prnt.sc/n33otjkNHl-9" target="_blank">lihat contoh</a>)</li>
+                <li>3. Kemudian Silahkan Klik pada menu Generate QR maka akan otomatis masuk ke aplikasi DANA Anda</li>
+                <li>4. Jika Anda belum memiliki aplikasi DANA maka akan muncul keterangan (<a href="https://prnt.sc/ZwaZqdryZDJo" target="_blank">lihat contoh</a>) dan silahkan klik Download DANA</li>
+                <li>5. Jika Anda sudah memiliki akun DANA maka akan langsung masuk ke akun DANA Anda dan menampilkan jumlah deposit Anda kemudian klik bayar</li>
+                <li>6. Pembayaran berhasil dan saldo otomatis masuk ke akun Linetogel Anda</li>
+                </ol>
+                <div class="important-note">
+                <strong>NB:</strong> Untuk Deposit Via DANA Tanpa scan barcode hanya berlaku pada link situs versi mobile dan ketika Deposit DANA sedang dialihkan ke layanan QRIS.
+                </div>`
+            },
+            {
+                category: "bonus",
+                question: "KETERANGAN TO x 1",
+                answer: `<p>Untuk keterangan tersebut dikarenakan Anda terpilih sebagai member yang mendapat bonus dari kami.</p>
+                <p>Anda dapat melakukan withdraw dengan catatan harus mencapai TURNOVER x1 terlebih dahulu.</p>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS ALL",
+                answer: `<p>Untuk promo bonus saat ini kami memiliki :</p>
+                <ul>
+                <li>Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)</li>
+                <li>Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+                <li>Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+                <li>Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+                <li>Bonus Referral ARCADE  = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+                <li>Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
+                <li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+                <li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+                <li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                <li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                <li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                <li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+                Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+                Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
+                <li>Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+                <li>Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level
+                ( berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari )</li>
+                </ul>
+                <p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
+                <div class="important-note">
+                <strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+                </div>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS ARCADE",
+                answer: `<p>Untuk bonus Arcade  yang kami miliki saat ini :</p>
+                <ul>
+                <li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+                <li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE
+                dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+                </ul>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS CASHBACK",
+                answer: `<p>Untuk bonus cashback kekalahan yang kami miliki saat ini :</p>
+                <ul>
+                <li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+                Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+                Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+                </ul>
+                <div class="important-note">
+                <strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+                </div>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS E - LOTTERY",
+                answer: `<p>Untuk bonus E-lottery yang kami miliki saat ini :</p>
+                <ul>
+                <li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari selasa tanpa perlu diklaim</li>
+                <li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan E-lottery
+                dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+                </ul>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS LIVE GAMES",
+                answer: `<p>Untuk bonus live games yang kami miliki saat ini :</p>
+                <ul>
+                <li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+                Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+                Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan LIVE GAMES, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
+                <li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5 dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                </ul>`
+            },
+            {
+                category: "bonus",
+                question: "BONUS MINGGUAN",
+                answer: `<p>Untuk promo bonus Mingguan saat ini kami memiliki :</p>
+                <ul>
+                <li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+                <li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+                <li>Bonus Rollingan turnover PRAGMATIC PLAY sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
+                <li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                <li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
+                <li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
+                Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
+                Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5%  ( PRAGMATIC PLAY) = Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY.
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
+                <li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                <li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade 
+                Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
+                </ul>
+                <p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
+                <div class="important-note">
+                <strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
+                </div>`
+            }
+        ];
 
-// Data Bonus dalam bentuk array of objects
-const bonusData = [
-{
-category: "bonus",
-subcategory: "bonus-all",
-question: "BONUS ALL",
-answer: `<p>Untuk promo bonus saat ini kami memiliki :</p>
-<ul>
-<li>Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)</li>
-<li>Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
-<li>Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
-<li>Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
-<li>Bonus Referral ARCADE  = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
-<li>Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</li>
-<li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
-<li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
-<li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-<li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-<li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
-Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
-Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
-<li>Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
-<li>Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level
-( berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari )</li>
-</ul>
-<p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
-<div class="important-note">
-<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
-</div>`
-},
-{
-category: "bonus",
-subcategory: "bonus-arcade",
-question: "BONUS ARCADE",
-answer: `<p>Untuk bonus Arcade  yang kami miliki saat ini :</p>
-<ul>
-<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
-<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE
-dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
-</ul>`
-},
-{
-category: "bonus",
-subcategory: "bonus-cashback",
-question: "BONUS CASHBACK",
-answer: `<p>Untuk bonus cashback kekalahan yang kami miliki saat ini :</p>
-<ul>
-<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
-Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
-Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
-</ul>
-<div class="important-note">
-<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
-</div>`
-},
-{
-category: "bonus",
-subcategory: "bonus-e-lottery",
-question: "BONUS E - LOTTERY",
-answer: `<p>Untuk bonus E-lottery yang kami miliki saat ini :</p>
-<ul>
-<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari selasa tanpa perlu diklaim</li>
-<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan E-lottery
-dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
-</ul>`
-},
-{
-category: "bonus",
-subcategory: "bonus-live-games",
-question: "BONUS LIVE GAMES",
-answer: `<p>Untuk bonus live games yang kami miliki saat ini :</p>
-<ul>
-<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
-Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
-Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5%  ( Live Games PRAGMATIC  ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan LIVE GAMES, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai</li>
-<li>Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5 dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-</ul>`
-},
-{
-category: "bonus",
-subcategory: "bonus-mingguan",
-question: "BONUS MINGGUAN",
-answer: `<p>Untuk promo bonus Mingguan saat ini kami memiliki :</p>
-<ul>
-<li>Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
-<li>Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
-<li>Bonus Rollingan turnover PRAGMATIC PLAY sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</li>
-<li>Bonus Rollingan turnover  ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-<li>Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )</li>
-<li>Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.
-Minimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan
-Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5%  ( PRAGMATIC PLAY) = Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY.
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
-<li>Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
-<li>Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade 
-Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim</li>
-</ul>
-<p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
-<div class="important-note">
-<strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.
-</div>`
-}
-];
+        // Fungsi untuk menyalin teks ke clipboard
+        function copyToClipboard(text) {
+            // Hapus tag HTML dari teks sebelum menyalin
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
 
-// Gabungkan data FAQ dan Bonus
-const allData = [...faqData, ...bonusData];
+            navigator.clipboard.writeText(plainText).then(() => {
+                // Tampilkan notifikasi
+                const notification = document.getElementById('copyNotification');
+                notification.classList.add('show');
 
-// Fungsi untuk menyalin teks ke clipboard
-function copyToClipboard(text) {
-// Hapus tag HTML dari teks sebelum menyalin
-const tempDiv = document.createElement('div');
-tempDiv.innerHTML = text;
-const plainText = tempDiv.textContent || tempDiv.innerText || '';
+                // Sembunyikan notifikasi setelah 2 detik
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin teks: ', err);
+            });
+        }
 
-navigator.clipboard.writeText(plainText).then(() => {
-// Tampilkan notifikasi
-const notification = document.getElementById('copyNotification');
-notification.classList.add('show');
+        // Fungsi untuk merender FAQ items
+        function renderFAQItems(items) {
+            const faqList = document.getElementById('faqList');
+            faqList.innerHTML = '';
 
-// Sembunyikan notifikasi setelah 2 detik
-setTimeout(() => {
-notification.classList.remove('show');
-}, 2000);
-}).catch(err => {
-console.error('Gagal menyalin teks: ', err);
-});
-}
+            if (items.length === 0) {
+                faqList.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>Tidak ada hasil ditemukan untuk pencarian Anda</p>
+                    </div>
+                `;
+                return;
+            }
 
-// Fungsi untuk merender FAQ items
-function renderFAQItems(items) {
-const faqList = document.getElementById('faqList');
-faqList.innerHTML = '';
+            items.forEach((item, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-card';
+                faqItem.dataset.category = item.category;
 
-if (items.length === 0) {
-faqList.innerHTML = '<div class="no-results">Tidak ada hasil ditemukan</div>';
-return;
-}
+                faqItem.innerHTML = `
+                    <div class="faq-header">
+                        <span>${item.question}</span>
+                        <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-question">${item.question}</div>
+                        <div class="faq-answer">${item.answer}</div>
+                        <button class="copy-btn" data-index="${index}">
+                            <i class="fas fa-copy"></i> Salin Teks
+                        </button>
+                    </div>
+                `;
 
-items.forEach((item, index) => {
-const faqItem = document.createElement('div');
-faqItem.className = 'faq-item';
-faqItem.dataset.category = item.category;
-if (item.subcategory) {
-faqItem.dataset.subcategory = item.subcategory;
-}
+                faqList.appendChild(faqItem);
+            });
 
-faqItem.innerHTML = `
-<div class="faq-header">
-<span>${item.question}</span>
-<span class="expand-icon">+</span>
-</div>
-<div class="faq-content">
-<div class="faq-question">${item.question}</div>
-<div class="faq-answer">${item.answer}</div>
-<button class="copy-btn" data-index="${allData.findIndex(dataItem => dataItem === item)}">Salin Teks</button>
-</div>
-`;
+            // Add event listeners to FAQ items
+            document.querySelectorAll('.faq-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const card = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const isActive = content.classList.contains('active');
 
-faqList.appendChild(faqItem);
-});
+                    // Close all open items first
+                    document.querySelectorAll('.faq-content').forEach(item => {
+                        item.classList.remove('active');
+                    });
 
-// Add event listeners to FAQ items
-document.querySelectorAll('.faq-header').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isActive = content.classList.contains('active');
+                    document.querySelectorAll('.faq-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
 
-// Close all open items first
-document.querySelectorAll('.faq-content').forEach(item => {
-item.classList.remove('active');
-});
+                    // Open clicked item if it wasn't already open
+                    if (!isActive) {
+                        content.classList.add('active');
+                        card.classList.add('active');
+                    }
+                });
+            });
 
-document.querySelectorAll('.expand-icon').forEach(icon => {
-icon.textContent = '+';
-});
+            // Add event listeners to copy buttons
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Mencegah event bubbling ke parent
+                    const index = button.getAttribute('data-index');
+                    copyToClipboard(faqData[index].answer);
+                });
+            });
+        }
 
-// Open clicked item if it wasn't already open
-if (!isActive) {
-content.classList.add('active');
-header.querySelector('.expand-icon').textContent = '-';
-}
-});
-});
+        // Fungsi untuk memfilter FAQ berdasarkan pencarian dan kategori
+        function filterFAQ() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
 
-// Add event listeners to copy buttons
-document.querySelectorAll('.copy-btn').forEach(button => {
-button.addEventListener('click', (e) => {
-e.stopPropagation(); // Mencegah event bubbling ke parent
-const index = button.getAttribute('data-index');
-copyToClipboard(allData[index].answer);
-});
-});
-}
+            const filteredItems = faqData.filter(item => {
+                const matchesSearch = item.question.toLowerCase().includes(searchText) ||
+                    item.answer.toLowerCase().includes(searchText);
+                const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
 
-// Fungsi untuk memfilter FAQ berdasarkan pencarian, kategori, dan subkategori
-function filterFAQ() {
-const searchText = document.getElementById('searchInput').value.toLowerCase();
-const activeCategory = document.querySelector('.category-btn.active').dataset.category;
-const activeSubcategory = document.querySelector('.subcategory-btn.active') ? 
-document.querySelector('.subcategory-btn.active').dataset.subcategory : 'all-bonus';
+                return matchesSearch && matchesCategory;
+            });
 
-const filteredItems = allData.filter(item => {
-const matchesSearch = item.question.toLowerCase().includes(searchText) ||
-item.answer.toLowerCase().includes(searchText);
-const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
-let matchesSubcategory = true;
+            renderFAQItems(filteredItems);
+        }
 
-// Jika kategori bonus aktif dan ada subkategori yang dipilih
-if (activeCategory === 'bonus' && activeSubcategory !== 'all-bonus') {
-matchesSubcategory = item.subcategory === activeSubcategory;
-}
+        // Inisialisasi event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render semua FAQ items pada awal
+            renderFAQItems(faqData);
 
-return matchesSearch && matchesCategory && matchesSubcategory;
-});
+            // Search input event listener
+            document.getElementById('searchInput').addEventListener('input', filterFAQ);
 
-renderFAQItems(filteredItems);
-}
+            // Category buttons event listeners
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
 
-// Inisialisasi event listeners
-document.addEventListener('DOMContentLoaded', () => {
-// Render semua FAQ items pada awal
-renderFAQItems(allData);
-
-// Search input event listener
-document.getElementById('searchInput').addEventListener('input', filterFAQ);
-
-// Category buttons event listeners
-document.querySelectorAll('.category-btn').forEach(button => {
-button.addEventListener('click', () => {
-document.querySelectorAll('.category-btn').forEach(btn => {
-btn.classList.remove('active');
-});
-
-button.classList.add('active');
-
-// Tampilkan subkategori hanya jika kategori bonus dipilih
-const bonusSubcategories = document.getElementById('bonusSubcategories');
-if (button.dataset.category === 'bonus') {
-bonusSubcategories.classList.add('active');
-// Aktifkan subkategori "all-bonus" secara default
-document.querySelector('[data-subcategory="all-bonus"]').classList.add('active');
-} else {
-bonusSubcategories.classList.remove('active');
-// Reset subkategori aktif
-document.querySelectorAll('.subcategory-btn').forEach(btn => {
-btn.classList.remove('active');
-});
-}
-
-filterFAQ();
-});
-});
-
-// Subcategory buttons event listeners
-document.querySelectorAll('.subcategory-btn').forEach(button => {
-button.addEventListener('click', () => {
-document.querySelectorAll('.subcategory-btn').forEach(btn => {
-btn.classList.remove('active');
-});
-
-button.classList.add('active');
-filterFAQ();
-});
-});
-});
-</script>
+                    button.classList.add('active');
+                    filterFAQ();
+                });
+            });
+        });
+    </script>
 </body>
 </html>
