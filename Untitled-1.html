@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Bonus</title>
+    <title>Program Bonus - Sistem Pencarian Kategori</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,10 +14,11 @@
         }
         
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             line-height: 1.6;
             padding: 20px;
+            min-height: 100vh;
         }
         
         .container {
@@ -27,36 +29,115 @@
         header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px;
+            padding: 25px;
             background: linear-gradient(135deg, #2c3e50, #4a6491);
             color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
         
         h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .description {
             font-size: 1.1rem;
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+        
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .category-btn {
+            padding: 12px 25px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
         }
         
         .bonus-section {
             margin-bottom: 30px;
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+        
+        .bonus-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .section-header {
             background: linear-gradient(135deg, #3498db, #2c3e50);
             color: white;
-            padding: 15px 20px;
+            padding: 18px 25px;
             font-size: 1.4rem;
             display: flex;
             align-items: center;
@@ -64,15 +145,20 @@
         }
         
         .section-content {
-            padding: 20px;
+            padding: 25px;
         }
         
         .bonus-item {
-            padding: 15px;
+            padding: 18px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        
+        .bonus-item:hover {
+            background-color: #f9f9f9;
         }
         
         .bonus-item:last-child {
@@ -81,7 +167,8 @@
         
         .bonus-name {
             flex: 2;
-            font-weight: 500;
+            font-weight: 600;
+            color: #2c3e50;
         }
         
         .bonus-detail {
@@ -99,21 +186,33 @@
         
         .note {
             background-color: #fff8e1;
-            padding: 15px;
+            padding: 20px;
             border-left: 4px solid #ffc107;
-            margin-top: 20px;
-            border-radius: 4px;
+            margin-top: 30px;
+            border-radius: 8px;
+            font-size: 0.95rem;
         }
         
         .footer {
             text-align: center;
             margin-top: 40px;
-            padding: 20px;
+            padding: 25px;
             color: #7f8c8d;
             font-size: 0.9rem;
         }
         
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            
             .bonus-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -127,24 +226,63 @@
             h1 {
                 font-size: 2rem;
             }
+            
+            .categories {
+                flex-direction: column;
+            }
         }
         
         .highlight {
             background-color: #f8f9fa;
-            border-radius: 5px;
+            border-radius: 8px;
+        }
+        
+        .category-icon {
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Program Bonus</h1>
-            <p class="description">Berikut adalah daftar lengkap bonus yang tersedia untuk member kami. Semua bonus memiliki syarat dan ketentuan yang berlaku.</p>
+            <h1><i class="fas fa-gift"></i> Program Bonus</h1>
+            <p class="description">Temukan berbagai bonus menarik yang tersedia. Klik kategori untuk melihat detail atau gunakan pencarian.</p>
         </header>
         
-        <div class="bonus-section">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari bonus...">
+            </div>
+        </div>
+        
+        <div class="categories">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-star category-icon"></i> Semua Bonus
+            </button>
+            <button class="category-btn" data-category="arcade">
+                <i class="fas fa-gamepad category-icon"></i> Arcade
+            </button>
+            <button class="category-btn" data-category="cashback">
+                <i class="fas fa-money-bill-wave category-icon"></i> Cashback
+            </button>
+            <button class="category-btn" data-category="lottery">
+                <i class="fas fa-ticket-alt category-icon"></i> E-Lottery
+            </button>
+            <button class="category-btn" data-category="live">
+                <i class="fas fa-dice category-icon"></i> Live Games
+            </button>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <i class="fas fa-search fa-3x" style="margin-bottom: 15px;"></i>
+            <h3>Bonus tidak ditemukan</h3>
+            <p>Coba gunakan kata kunci lain atau pilih kategori berbeda</p>
+        </div>
+        
+        <div class="bonus-section active" id="all">
             <div class="section-header">
-                <span>Bonus Semua Kategori (ALL)</span>
+                <span><i class="fas fa-star"></i> Bonus Semua Kategori (ALL)</span>
             </div>
             <div class="section-content">
                 <div class="bonus-item highlight">
@@ -235,9 +373,9 @@
             </div>
         </div>
         
-        <div class="bonus-section">
+        <div class="bonus-section" id="arcade">
             <div class="section-header">
-                <span>Bonus Arcade</span>
+                <span><i class="fas fa-gamepad"></i> Bonus Arcade</span>
             </div>
             <div class="section-content">
                 <div class="bonus-item">
@@ -253,9 +391,9 @@
             </div>
         </div>
         
-        <div class="bonus-section">
+        <div class="bonus-section" id="cashback">
             <div class="section-header">
-                <span>Bonus Cashback</span>
+                <span><i class="fas fa-money-bill-wave"></i> Bonus Cashback</span>
             </div>
             <div class="section-content">
                 <div class="bonus-item">
@@ -286,9 +424,9 @@
             </div>
         </div>
         
-        <div class="bonus-section">
+        <div class="bonus-section" id="lottery">
             <div class="section-header">
-                <span>Bonus E-Lottery</span>
+                <span><i class="fas fa-ticket-alt"></i> Bonus E-Lottery</span>
             </div>
             <div class="section-content">
                 <div class="bonus-item">
@@ -304,9 +442,9 @@
             </div>
         </div>
         
-        <div class="bonus-section">
+        <div class="bonus-section" id="live">
             <div class="section-header">
-                <span>Bonus Live Games</span>
+                <span><i class="fas fa-dice"></i> Bonus Live Games</span>
             </div>
             <div class="section-content">
                 <div class="bonus-item">
@@ -340,5 +478,79 @@
             <p>&copy; 2023 Semua Hak Dilindungi. Informasi bonus dapat berubah tanpa pemberitahuan sebelumnya.</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const bonusSections = document.querySelectorAll('.bonus-section');
+            const searchInput = document.getElementById('searchInput');
+            const noResults = document.getElementById('noResults');
+            
+            // Filter by category
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected category, hide others
+                    if (category === 'all') {
+                        bonusSections.forEach(section => section.classList.add('active'));
+                        noResults.style.display = 'none';
+                    } else {
+                        bonusSections.forEach(section => {
+                            if (section.id === category) {
+                                section.classList.add('active');
+                            } else {
+                                section.classList.remove('active');
+                            }
+                        });
+                        noResults.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let hasResults = false;
+                
+                bonusSections.forEach(section => {
+                    const bonusItems = section.querySelectorAll('.bonus-item');
+                    let sectionHasResults = false;
+                    
+                    bonusItems.forEach(item => {
+                        const bonusName = item.querySelector('.bonus-name').textContent.toLowerCase();
+                        const bonusDetail = item.querySelector('.bonus-detail').textContent.toLowerCase();
+                        
+                        if (bonusName.includes(searchTerm) || bonusDetail.includes(searchTerm)) {
+                            item.style.display = 'flex';
+                            sectionHasResults = true;
+                            hasResults = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Show section if it has results, hide if not
+                    if (sectionHasResults) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                
+                // Show no results message if no matches
+                if (!hasResults) {
+                    noResults.style.display = 'block';
+                    bonusSections.forEach(section => section.classList.remove('active'));
+                } else {
+                    noResults.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
