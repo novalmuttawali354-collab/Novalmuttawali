@@ -385,8 +385,69 @@ Untuk promo bonus Mingguan saat ini :
 NB : tidak ada bonus deposit harian / bonus new member`
   }
 ];
-</script>
+    <div class="categories">
+  <!-- tombol kategori FAQ yg lama -->
+  <button id="showBonusBtn" class="category-btn" style="background:#28a745;color:white;">
+    📌 Daftar Bonus
+  </button>
+</div>
 
+<div id="bonusContainer" style="display:none; margin-top:20px;">
+  <!-- Bonus items akan muncul di sini -->
+</div>
+<script>
+function renderBonus() {
+  const container = document.getElementById('bonusContainer');
+  container.innerHTML = '';
+
+  bonusData.forEach((b, i) => {
+    const card = document.createElement('div');
+    card.className = 'faq-item';
+    card.innerHTML = `
+      <div class="faq-header">
+        <span>${b.title}</span>
+        <span class="expand-icon">+</span>
+      </div>
+      <div class="faq-content">
+        <div class="faq-answer">${b.content}</div>
+        <button class="copy-btn" data-bonus="${i}">Salin Teks</button>
+      </div>`;
+    container.appendChild(card);
+  });
+
+  // toggle konten
+  container.querySelectorAll('.faq-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const c = h.nextElementSibling;
+      const act = c.classList.contains('active');
+      container.querySelectorAll('.faq-content').forEach(x => x.classList.remove('active'));
+      container.querySelectorAll('.expand-icon').forEach(ic => ic.textContent = '+');
+      if (!act) {
+        c.classList.add('active');
+        h.querySelector('.expand-icon').textContent = '-';
+      }
+    });
+  });
+
+  // tombol salin
+  container.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx = btn.getAttribute('data-bonus');
+      copyToClipboard(bonusData[idx].content);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('showBonusBtn').addEventListener('click', () => {
+    const box = document.getElementById('bonusContainer');
+    const isShow = box.style.display === 'block';
+    box.style.display = isShow ? 'none' : 'block';
+    if (!isShow) renderBonus();
+  });
+});
+</script>
 <script>
 // Data FAQ dalam bentuk array of objects dengan format yang lebih rapi
 const faqData = [
@@ -669,6 +730,7 @@ filterFAQ();
 </script>
 </body>
 </html>
+
 
 
 
