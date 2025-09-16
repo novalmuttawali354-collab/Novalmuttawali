@@ -68,6 +68,13 @@ margin: 0 auto;
 position: relative;
 }
 
+.wib-clock {
+font-size: 1.2rem;
+margin-top: 10px;
+font-weight: 600;
+color: #ffcc00;
+}
+
 .search-container {
 background: linear-gradient(to bottom, #ffffff, #f8f9fa);
 padding: 25px;
@@ -376,6 +383,174 @@ margin-right: 8px;
 .category-teknis { background-color: #FF9800; }
 .category-bonus { background-color: #E91E63; }
 .category-peraturan { background-color: #607D8B; }
+
+/* Navigation Tabs */
+.nav-tabs {
+display: flex;
+background: white;
+border-radius: 12px;
+overflow: hidden;
+margin-bottom: 30px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nav-tab {
+flex: 1;
+padding: 16px;
+text-align: center;
+background: #f8f9fa;
+cursor: pointer;
+transition: all 0.3s;
+font-weight: 600;
+color: #495057;
+border-bottom: 3px solid transparent;
+}
+
+.nav-tab.active {
+background: white;
+color: #4a6491;
+border-bottom: 3px solid #4a6491;
+}
+
+.nav-tab:hover:not(.active) {
+background: #e9ecef;
+}
+
+/* Data Form Styles */
+.data-form-container {
+background: white;
+border-radius: 15px;
+padding: 25px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+margin-bottom: 30px;
+display: none;
+}
+
+.data-form-container.active {
+display: block;
+}
+
+.form-title {
+font-size: 1.5rem;
+color: #2c3e50;
+margin-bottom: 20px;
+text-align: center;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-weight: 600;
+color: #2c3e50;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+width: 100%;
+padding: 12px 15px;
+border: 2px solid #e1e5eb;
+border-radius: 8px;
+font-size: 16px;
+transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+border-color: #4a6491;
+outline: none;
+box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+}
+
+.form-group textarea {
+min-height: 120px;
+resize: vertical;
+}
+
+.submit-btn {
+background: linear-gradient(135deg, #4a6491, #2c3e50);
+color: white;
+border: none;
+padding: 12px 25px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+font-weight: 600;
+transition: all 0.3s;
+display: block;
+width: 100%;
+}
+
+.submit-btn:hover {
+background: linear-gradient(135deg, #3a547e, #1c2e40);
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Data Table Styles */
+.data-table-container {
+background: white;
+border-radius: 15px;
+padding: 25px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+margin-bottom: 30px;
+display: none;
+overflow-x: auto;
+}
+
+.data-table-container.active {
+display: block;
+}
+
+.data-table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+padding: 12px 15px;
+text-align: left;
+border-bottom: 1px solid #e1e5eb;
+}
+
+.data-table th {
+background-color: #f8f9fa;
+font-weight: 600;
+color: #2c3e50;
+}
+
+.data-table tr:hover {
+background-color: #f5f7fa;
+}
+
+.action-btn {
+background: none;
+border: none;
+cursor: pointer;
+font-size: 16px;
+margin-right: 10px;
+color: #4a6491;
+transition: all 0.3s;
+}
+
+.action-btn:hover {
+color: #2c3e50;
+transform: translateY(-2px);
+}
+
+.delete-btn {
+color: #e74c3c;
+}
+
+.delete-btn:hover {
+color: #c0392b;
+}
 </style>
 </head>
 <body>
@@ -383,9 +558,18 @@ margin-right: 8px;
 <header>
 <h1><i class="fas fa-shield-alt"></i> PELURU ANTI AIR</h1>
 <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
+<div class="wib-clock" id="wibClock">WIB: Loading...</div>
 </header>
 
-<div class="search-container">
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+<div class="nav-tab active" data-tab="faq">FAQ & Bantuan</div>
+<div class="nav-tab" data-tab="data-form">Input Data</div>
+<div class="nav-tab" data-tab="data-table">Lihat Data</div>
+</div>
+
+<!-- FAQ Section -->
+<div class="search-container" id="faq-section">
 <div class="search-box">
 <i class="fas fa-search search-icon"></i>
 <input type="text" id="searchInput" placeholder="Cari masalah atau solusi...">
@@ -431,6 +615,50 @@ Pilih Kategori:
 <div class="faq-grid" id="faqList">
 <!-- FAQ items will be generated here by JavaScript -->
 </div>
+
+<!-- Data Input Form -->
+<div class="data-form-container" id="data-form-section">
+<h2 class="form-title">Input Data Baru</h2>
+<form id="dataForm">
+<div class="form-group">
+<label for="dataCategory">Kategori</label>
+<select id="dataCategory" required>
+<option value="">Pilih Kategori</option>
+<option value="deposit">Deposit</option>
+<option value="withdraw">Withdraw</option>
+<option value="permainan">Permainan</option>
+<option value="teknis">Teknis</option>
+<option value="bonus">Bonus & Promo</option>
+<option value="peraturan">Peraturan</option>
+</select>
+</div>
+<div class="form-group">
+<label for="dataQuestion">Pertanyaan</label>
+<input type="text" id="dataQuestion" placeholder="Masukkan pertanyaan" required>
+</div>
+<div class="form-group">
+<label for="dataAnswer">Jawaban</label>
+<textarea id="dataAnswer" placeholder="Masukkan jawaban atau solusi" required></textarea>
+</div>
+<button type="submit" class="submit-btn">Simpan Data</button>
+</form>
+</div>
+
+<!-- Data Table -->
+<div class="data-table-container" id="data-table-section">
+<h2 class="form-title">Data Tersimpan</h2>
+<table class="data-table">
+<thead>
+<tr>
+<th>Kategori</th>
+<th>Pertanyaan</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="dataTableBody">
+<!-- Data will be populated here -->
+</tbody>
+</table>
 </div>
 
 <div id="copyNotification" class="copy-notification">
@@ -719,6 +947,27 @@ Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu d
 }
 ];
 
+// Fungsi untuk menampilkan jam WIB
+function updateWIBClock() {
+const now = new Date();
+const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+const wibTime = new Date(utc + (3600000 * 7)); // UTC+7 for WIB
+  
+const options = { 
+  weekday: 'long', 
+  year: 'numeric', 
+  month: 'long', 
+  day: 'numeric',
+  hour: '2-digit', 
+  minute: '2-digit', 
+  second: '2-digit',
+  timeZone: 'Asia/Jakarta'
+};
+  
+const wibTimeString = wibTime.toLocaleString('id-ID', options);
+document.getElementById('wibClock').textContent = `WIB: ${wibTimeString}`;
+}
+
 // Fungsi untuk menyalin teks ke clipboard
 function copyToClipboard(text) {
 // Hapus tag HTML dari teks sebelum menyalin
@@ -827,8 +1076,127 @@ return matchesSearch && matchesCategory;
 renderFAQItems(filteredItems);
 }
 
+// Fungsi untuk beralih antar tab
+function switchTab(tabName) {
+// Sembunyikan semua section
+document.getElementById('faq-section').style.display = 'none';
+document.getElementById('data-form-section').style.display = 'none';
+document.getElementById('data-table-section').style.display = 'none';
+  
+// Nonaktifkan semua tab
+document.querySelectorAll('.nav-tab').forEach(tab => {
+tab.classList.remove('active');
+});
+  
+// Tampilkan section yang dipilih dan aktifkan tab
+if (tabName === 'faq') {
+document.getElementById('faq-section').style.display = 'block';
+document.querySelector('[data-tab="faq"]').classList.add('active');
+} else if (tabName === 'data-form') {
+document.getElementById('data-form-section').style.display = 'block';
+document.querySelector('[data-tab="data-form"]').classList.add('active');
+} else if (tabName === 'data-table') {
+document.getElementById('data-table-section').style.display = 'block';
+document.querySelector('[data-tab="data-table"]').classList.add('active');
+loadSavedData();
+}
+}
+
+// Fungsi untuk menyimpan data ke localStorage
+function saveDataToStorage(category, question, answer) {
+// Ambil data yang sudah ada
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+  
+// Tambahkan data baru
+savedData.push({
+category,
+question,
+answer,
+id: Date.now() // Gunakan timestamp sebagai ID unik
+});
+  
+// Simpan kembali ke localStorage
+localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+}
+
+// Fungsi untuk memuat data dari localStorage
+function loadSavedData() {
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+const tableBody = document.getElementById('dataTableBody');
+  
+tableBody.innerHTML = '';
+  
+if (savedData.length === 0) {
+tableBody.innerHTML = `
+<tr>
+<td colspan="3" style="text-align: center; padding: 20px;">
+Tidak ada data yang tersimpan
+</td>
+</tr>
+`;
+return;
+}
+  
+savedData.forEach(item => {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td>${item.category}</td>
+<td>${item.question}</td>
+<td>
+<button class="action-btn view-btn" data-id="${item.id}" title="Lihat Detail">
+<i class="fas fa-eye"></i>
+</button>
+<button class="action-btn delete-btn" data-id="${item.id}" title="Hapus">
+<i class="fas fa-trash"></i>
+</button>
+</td>
+`;
+tableBody.appendChild(row);
+});
+  
+// Tambahkan event listener untuk tombol hapus
+document.querySelectorAll('.delete-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const id = parseInt(e.currentTarget.getAttribute('data-id'));
+deleteData(id);
+});
+});
+  
+// Tambahkan event listener untuk tombol lihat
+document.querySelectorAll('.view-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const id = parseInt(e.currentTarget.getAttribute('data-id'));
+viewData(id);
+});
+});
+}
+
+// Fungsi untuk menghapus data
+function deleteData(id) {
+if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+savedData = savedData.filter(item => item.id !== id);
+localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+loadSavedData(); // Muat ulang tabel
+}
+}
+
+// Fungsi untuk melihat data
+function viewData(id) {
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+const item = savedData.find(data => data.id === id);
+  
+if (item) {
+alert(`Pertanyaan: ${item.question}\n\nJawaban: ${item.answer}`);
+}
+}
+
 // Inisialisasi event listeners
 document.addEventListener('DOMContentLoaded', () => {
+// Update jam WIB setiap detik
+updateWIBClock();
+setInterval(updateWIBClock, 1000);
+  
 // Render semua FAQ items pada awal
 renderFAQItems(faqData);
 
@@ -846,11 +1214,36 @@ button.classList.add('active');
 filterFAQ();
 });
 });
+
+// Tab navigation event listeners
+document.querySelectorAll('.nav-tab').forEach(tab => {
+tab.addEventListener('click', () => {
+const tabName = tab.getAttribute('data-tab');
+switchTab(tabName);
+});
+});
+
+// Form submission event listener
+document.getElementById('dataForm').addEventListener('submit', (e) => {
+e.preventDefault();
+  
+const category = document.getElementById('dataCategory').value;
+const question = document.getElementById('dataQuestion').value;
+const answer = document.getElementById('dataAnswer').value;
+  
+// Simpan data
+saveDataToStorage(category, question, answer);
+  
+// Reset form
+document.getElementById('dataForm').reset();
+  
+// Tampilkan pesan sukses
+alert('Data berhasil disimpan!');
+  
+// Beralih ke tab data table
+switchTab('data-table');
+});
 });
 </script>
 </body>
 </html>
-
-
-
-
