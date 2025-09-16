@@ -551,6 +551,102 @@ color: #e74c3c;
 .delete-btn:hover {
 color: #c0392b;
 }
+
+/* Success Notification */
+.success-notification {
+position: fixed;
+top: 20px;
+right: 20px;
+background: linear-gradient(135deg, #4CAF50, #2E7D32);
+color: white;
+padding: 12px 24px;
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+opacity: 0;
+transition: opacity 0.3s;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.success-notification.show {
+opacity: 1;
+}
+
+/* Data View Modal */
+.modal {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+background-color: white;
+margin: 5% auto;
+padding: 25px;
+border-radius: 15px;
+width: 80%;
+max-width: 700px;
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+position: relative;
+}
+
+.close-modal {
+position: absolute;
+top: 15px;
+right: 20px;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+color: #6c757d;
+transition: color 0.3s;
+}
+
+.close-modal:hover {
+color: #2c3e50;
+}
+
+.modal-title {
+font-size: 1.5rem;
+color: #2c3e50;
+margin-bottom: 20px;
+text-align: center;
+}
+
+.modal-body {
+max-height: 60vh;
+overflow-y: auto;
+padding: 10px;
+}
+
+/* Filter for Data Table */
+.data-filter {
+display: flex;
+gap: 15px;
+margin-bottom: 20px;
+flex-wrap: wrap;
+}
+
+.data-filter select,
+.data-filter input {
+padding: 10px 15px;
+border: 2px solid #e1e5eb;
+border-radius: 8px;
+font-size: 14px;
+}
+
+.data-filter select:focus,
+.data-filter input:focus {
+border-color: #4a6491;
+outline: none;
+box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+}
 </style>
 </head>
 <body>
@@ -647,11 +743,26 @@ Pilih Kategori:
 <!-- Data Table -->
 <div class="data-table-container" id="data-table-section">
 <h2 class="form-title">Data Tersimpan</h2>
+    
+<div class="data-filter">
+<select id="filterCategory">
+<option value="">Semua Kategori</option>
+<option value="deposit">Deposit</option>
+<option value="withdraw">Withdraw</option>
+<option value="permainan">Permainan</option>
+<option value="teknis">Teknis</option>
+<option value="bonus">Bonus & Promo</option>
+<option value="peraturan">Peraturan</option>
+</select>
+<input type="text" id="filterSearch" placeholder="Cari data...">
+</div>
+    
 <table class="data-table">
 <thead>
 <tr>
 <th>Kategori</th>
 <th>Pertanyaan</th>
+<th>Tanggal Dibuat</th>
 <th>Aksi</th>
 </tr>
 </thead>
@@ -663,6 +774,21 @@ Pilih Kategori:
 
 <div id="copyNotification" class="copy-notification">
 <i class="fas fa-check-circle"></i> Teks berhasil disalin!
+</div>
+
+<div id="successNotification" class="success-notification">
+<i class="fas fa-check-circle"></i> Data berhasil disimpan!
+</div>
+
+<!-- Data View Modal -->
+<div id="dataModal" class="modal">
+<div class="modal-content">
+<span class="close-modal">&times;</span>
+<h2 class="modal-title" id="modalTitle">Detail Data</h2>
+<div class="modal-body" id="modalBody">
+<!-- Modal content will be inserted here -->
+</div>
+</div>
 </div>
 
 <footer>
@@ -1112,7 +1238,8 @@ savedData.push({
 category,
 question,
 answer,
-id: Date.now() // Gunakan timestamp sebagai ID unik
+id: Date.now(), // Gunakan timestamp sebagai ID unik
+createdAt: new Date().toISOString()
 });
   
 // Simpan kembali ke localStorage
@@ -1124,12 +1251,24 @@ function loadSavedData() {
 const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
 const tableBody = document.getElementById('dataTableBody');
   
+// Filter data berdasarkan kategori dan pencarian
+const categoryFilter = document.getElementById('filterCategory').value;
+const searchFilter = document.getElementById('filterSearch').value.toLowerCase();
+  
+const filteredData = savedData.filter(item => {
+const matchesCategory = !categoryFilter || item.category === categoryFilter;
+const matchesSearch = !searchFilter || 
+item.question.toLowerCase().includes(searchFilter) || 
+item.answer.toLowerCase().includes(searchFilter);
+return matchesCategory && matchesSearch;
+});
+  
 tableBody.innerHTML = '';
   
-if (savedData.length === 0) {
+if (filteredData.length === 0) {
 tableBody.innerHTML = `
 <tr>
-<td colspan="3" style="text-align: center; padding: 20px;">
+<td colspan="4" style="text-align: center; padding: 20px;">
 Tidak ada data yang tersimpan
 </td>
 </tr>
@@ -1137,11 +1276,23 @@ Tidak ada data yang tersimpan
 return;
 }
   
-savedData.forEach(item => {
+// Urutkan data berdasarkan tanggal dibuat (terbaru pertama)
+filteredData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+filteredData.forEach(item => {
 const row = document.createElement('tr');
+const createdDate = new Date(item.createdAt).toLocaleDateString('id-ID', {
+day: '2-digit',
+month: '2-digit',
+year: 'numeric',
+hour: '2-digit',
+minute: '2-digit'
+});
+  
 row.innerHTML = `
-<td>${item.category}</td>
+<td><span class="category-indicator category-${item.category}"></span> ${getCategoryName(item.category)}</td>
 <td>${item.question}</td>
+<td>${createdDate}</td>
 <td>
 <button class="action-btn view-btn" data-id="${item.id}" title="Lihat Detail">
 <i class="fas fa-eye"></i>
@@ -1171,6 +1322,19 @@ viewData(id);
 });
 }
 
+// Fungsi untuk mendapatkan nama kategori dari value
+function getCategoryName(categoryValue) {
+const categories = {
+'deposit': 'Deposit',
+'withdraw': 'Withdraw',
+'permainan': 'Permainan',
+'teknis': 'Teknis',
+'bonus': 'Bonus & Promo',
+'peraturan': 'Peraturan'
+};
+return categories[categoryValue] || categoryValue;
+}
+
 // Fungsi untuk menghapus data
 function deleteData(id) {
 if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
@@ -1187,8 +1351,26 @@ const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
 const item = savedData.find(data => data.id === id);
   
 if (item) {
-alert(`Pertanyaan: ${item.question}\n\nJawaban: ${item.answer}`);
+document.getElementById('modalTitle').textContent = item.question;
+document.getElementById('modalBody').innerHTML = `
+<p><strong>Kategori:</strong> ${getCategoryName(item.category)}</p>
+<p><strong>Tanggal Dibuat:</strong> ${new Date(item.createdAt).toLocaleString('id-ID')}</p>
+<div class="faq-answer">${item.answer}</div>
+`;
+document.getElementById('dataModal').style.display = 'block';
 }
+}
+
+// Fungsi untuk menampilkan notifikasi sukses
+function showSuccessNotification(message) {
+const notification = document.getElementById('successNotification');
+notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+notification.classList.add('show');
+
+// Sembunyikan notifikasi setelah 3 detik
+setTimeout(() => {
+notification.classList.remove('show');
+}, 3000);
 }
 
 // Inisialisasi event listeners
@@ -1238,10 +1420,28 @@ saveDataToStorage(category, question, answer);
 document.getElementById('dataForm').reset();
   
 // Tampilkan pesan sukses
-alert('Data berhasil disimpan!');
+showSuccessNotification('Data berhasil disimpan!');
   
 // Beralih ke tab data table
+setTimeout(() => {
 switchTab('data-table');
+}, 1000);
+});
+
+// Filter event listeners
+document.getElementById('filterCategory').addEventListener('change', loadSavedData);
+document.getElementById('filterSearch').addEventListener('input', loadSavedData);
+
+// Modal close event listener
+document.querySelector('.close-modal').addEventListener('click', () => {
+document.getElementById('dataModal').style.display = 'none';
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+if (e.target === document.getElementById('dataModal')) {
+document.getElementById('dataModal').style.display = 'none';
+}
 });
 });
 </script>
