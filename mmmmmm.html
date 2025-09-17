@@ -950,31 +950,49 @@ Pilih Kategori:
 <span class="category-icon"><i class="fas fa-money-bill-wave"></i></span>
 <span class="category-name">Deposit</span>
 <span class="category-count">5 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="withdraw">
 <span class="category-icon"><i class="fas fa-wallet"></i></span>
 <span class="category-name">Withdraw</span>
 <span class="category-count">1 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="permainan">
 <span class="category-icon"><i class="fas fa-gamepad"></i></span>
 <span class="category-name">Permainan</span>
 <span class="category-count">1 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="teknis">
 <span class="category-icon"><i class="fas fa-tools"></i></span>
 <span class="category-name">Teknis</span>
 <span class="category-count">3 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="bonus">
 <span class="category-icon"><i class="fas fa-gift"></i></span>
 <span class="category-name">Bonus & Promo</span>
 <span class="category-count">10 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="peraturan">
 <span class="category-icon"><i class="fas fa-file-alt"></i></span>
 <span class="category-name">Peraturan</span>
 <span class="category-count">4 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <div class="category-card" data-category="custom">
 <span class="category-icon"><i class="fas fa-user-edit"></i></span>
@@ -1564,16 +1582,15 @@ const countElement = card.querySelector('.category-count');
 if (countElement && categoryCounts[category] !== undefined) {
   countElement.textContent = `${categoryCounts[category]} FAQ`;
 }
-});
-
-// Tampilkan atau sembunyikan tombol hapus kategori "Data Saya"
-const customCategoryCard = document.querySelector('.category-card[data-category="custom"]');
-const deleteCategoryBtn = customCategoryCard.querySelector('.delete-category-btn');
-if (categoryCounts.custom > 0) {
-deleteCategoryBtn.style.display = 'flex';
-} else {
-deleteCategoryBtn.style.display = 'none';
+  
+// Tampilkan atau sembunyikan tombol hapus untuk semua kategori kecuali "Semua Kategori"
+const deleteCategoryBtn = card.querySelector('.delete-category-btn');
+if (deleteCategoryBtn && category !== 'all') {
+  // Tampilkan tombol hapus jika ada data custom dalam kategori ini
+  const hasCustomData = savedData.some(item => item.category === category);
+  deleteCategoryBtn.style.display = hasCustomData ? 'flex' : 'none';
 }
+});
 }
 
 // Fungsi untuk menampilkan data dalam bentuk tabel untuk kategori "Data Saya"
@@ -1809,24 +1826,36 @@ renderCustomDataTable();
 showSuccessNotification('FAQ berhasil dihapus!');
 }
 
-// Fungsi untuk menghapus kategori "Data Saya"
-function deleteCustomCategory() {
+// Fungsi untuk menghapus kategori
+function deleteCategory(category) {
+// Periksa apakah kategori valid
+if (category === 'all') {
+showSuccessNotification('Kategori "Semua Kategori" tidak dapat dihapus!');
+return;
+}
+
+// Dapatkan nama kategori untuk ditampilkan di dialog
+const categoryName = getCategoryName(category);
+
 showConfirmDialog(
-  'Hapus Kategori',
-  'Apakah Anda yakin ingin menghapus kategori "Data Saya" dan semua data di dalamnya?',
+  `Hapus Kategori "${categoryName}"`,
+  `Apakah Anda yakin ingin menghapus semua data dalam kategori "${categoryName}"?`,
   () => {
-    // Hapus semua data dengan kategori "custom"
+    // Hapus semua data dengan kategori yang dipilih
     let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
-    savedData = savedData.filter(item => item.category !== 'custom');
+    const initialCount = savedData.length;
+    savedData = savedData.filter(item => item.category !== category);
+    const deletedCount = initialCount - savedData.length;
+    
     localStorage.setItem('faqCustomData', JSON.stringify(savedData));
     
     // Perbarui tampilan
     updateCategoriesDisplay();
     renderCustomDataTable();
     
-    // Jika sedang melihat kategori "custom", pindah ke "Semua Kategori"
+    // Jika sedang melihat kategori yang dihapus, pindah ke "Semua Kategori"
     const activeCategory = document.querySelector('.category-card.active');
-    if (activeCategory && activeCategory.dataset.category === 'custom') {
+    if (activeCategory && activeCategory.dataset.category === category) {
       document.querySelectorAll('.category-card').forEach(card => {
         card.classList.remove('active');
       });
@@ -1834,7 +1863,11 @@ showConfirmDialog(
       filterFAQ();
     }
     
-    showSuccessNotification('Kategori "Data Saya" berhasil dihapus!');
+    if (deletedCount > 0) {
+      showSuccessNotification(`${deletedCount} data dalam kategori "${categoryName}" berhasil dihapus!`);
+    } else {
+      showSuccessNotification(`Tidak ada data dalam kategori "${categoryName}" yang perlu dihapus.`);
+    }
   }
 );
 }
@@ -1938,14 +1971,15 @@ document.getElementById('customDataContainer').classList.remove('active');
 });
 });
 
-// Delete category button event listener
-const deleteCategoryBtn = document.querySelector('.category-card[data-category="custom"] .delete-category-btn');
-if (deleteCategoryBtn) {
-deleteCategoryBtn.addEventListener('click', (e) => {
+// Delete category button event listeners untuk semua kategori
+document.querySelectorAll('.delete-category-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
 e.stopPropagation();
-deleteCustomCategory();
+const categoryCard = e.target.closest('.category-card');
+const category = categoryCard.dataset.category;
+deleteCategory(category);
 });
-}
+});
 
 // Tab navigation event listeners
 document.querySelectorAll('.nav-tab').forEach(tab => {
