@@ -204,6 +204,34 @@ margin-top: 5px;
 opacity: 0.8;
 }
 
+.delete-category-btn {
+position: absolute;
+top: 8px;
+right: 8px;
+background: rgba(231, 76, 60, 0.8);
+color: white;
+border: none;
+border-radius: 50%;
+width: 24px;
+height: 24px;
+font-size: 12px;
+cursor: pointer;
+transition: all 0.3s;
+display: none;
+z-index: 2;
+}
+
+.category-card:hover .delete-category-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.delete-category-btn:hover {
+background: rgba(192, 57, 43, 0.9);
+transform: scale(1.1);
+}
+
 .faq-grid {
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -221,6 +249,7 @@ height: 100%;
 display: flex;
 flex-direction: column;
 border-left: 5px solid transparent;
+position: relative;
 }
 
 .faq-card:hover {
@@ -249,6 +278,34 @@ border-left-color: #607D8B;
 }
 .faq-card[data-category="custom"] {
 border-left-color: #00BCD4;
+}
+
+.delete-faq-btn {
+position: absolute;
+top: 10px;
+right: 10px;
+background: rgba(231, 76, 60, 0.8);
+color: white;
+border: none;
+border-radius: 50%;
+width: 28px;
+height: 28px;
+font-size: 14px;
+cursor: pointer;
+transition: all 0.3s;
+z-index: 2;
+display: none;
+}
+
+.faq-card:hover .delete-faq-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.delete-faq-btn:hover {
+background: rgba(192, 57, 43, 0.9);
+transform: scale(1.1);
 }
 
 .faq-header {
@@ -776,6 +833,83 @@ background: linear-gradient(135deg, #0097A7, #00838F);
 transform: translateY(-2px);
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+/* Confirmation Dialog */
+.confirm-dialog {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 2000;
+}
+
+.confirm-dialog.show {
+display: flex;
+}
+
+.confirm-content {
+background-color: white;
+border-radius: 15px;
+padding: 30px;
+max-width: 500px;
+width: 90%;
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+text-align: center;
+}
+
+.confirm-title {
+font-size: 1.5rem;
+color: #2c3e50;
+margin-bottom: 15px;
+}
+
+.confirm-message {
+font-size: 1rem;
+color: #555;
+margin-bottom: 25px;
+line-height: 1.5;
+}
+
+.confirm-actions {
+display: flex;
+gap: 15px;
+justify-content: center;
+}
+
+.confirm-btn, .cancel-btn {
+padding: 10px 20px;
+border: none;
+border-radius: 8px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.confirm-btn {
+background-color: #e74c3c;
+color: white;
+}
+
+.confirm-btn:hover {
+background-color: #c0392b;
+transform: translateY(-2px);
+}
+
+.cancel-btn {
+background-color: #95a5a6;
+color: white;
+}
+
+.cancel-btn:hover {
+background-color: #7f8c8d;
+transform: translateY(-2px);
+}
 </style>
 </head>
 <body>
@@ -846,6 +980,9 @@ Pilih Kategori:
 <span class="category-icon"><i class="fas fa-user-edit"></i></span>
 <span class="category-name">Data Saya</span>
 <span class="category-count">0 FAQ</span>
+<button class="delete-category-btn" title="Hapus Kategori">
+<i class="fas fa-times"></i>
+</button>
 </div>
 <!-- Custom category akan ditambahkan di sini secara dinamis -->
 </div>
@@ -955,6 +1092,18 @@ Pilih Kategori:
 <h2 class="modal-title" id="modalTitle">Detail Data</h2>
 <div class="modal-body" id="modalBody">
 <!-- Modal content will be inserted here -->
+</div>
+</div>
+</div>
+
+<!-- Confirmation Dialog -->
+<div id="confirmDialog" class="confirm-dialog">
+<div class="confirm-content">
+<h3 class="confirm-title" id="confirmTitle">Konfirmasi Hapus</h3>
+<p class="confirm-message" id="confirmMessage">Apakah Anda yakin ingin menghapus item ini?</p>
+<div class="confirm-actions">
+<button class="cancel-btn" id="cancelBtn">Batal</button>
+<button class="confirm-btn" id="confirmBtn">Hapus</button>
 </div>
 </div>
 </div>
@@ -1303,7 +1452,11 @@ const faqItem = document.createElement('div');
 faqItem.className = 'faq-card';
 faqItem.dataset.category = item.category;
 
+// Cek apakah item dari data custom (bisa dihapus)
+const isCustomItem = item.id !== undefined;
+  
 faqItem.innerHTML = `
+${isCustomItem ? `<button class="delete-faq-btn" data-id="${item.id}" title="Hapus FAQ"><i class="fas fa-times"></i></button>` : ''}
 <div class="faq-header">
 <span>${item.question}</span>
 <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
@@ -1350,6 +1503,19 @@ button.addEventListener('click', (e) => {
 e.stopPropagation(); // Mencegah event bubbling ke parent
 const index = button.getAttribute('data-index');
 copyToClipboard(items[index].answer);
+});
+});
+
+// Add event listeners to delete FAQ buttons
+document.querySelectorAll('.delete-faq-btn').forEach(button => {
+button.addEventListener('click', (e) => {
+e.stopPropagation(); // Mencegah event bubbling ke parent
+const id = parseInt(button.getAttribute('data-id'));
+showConfirmDialog(
+  'Hapus FAQ',
+  'Apakah Anda yakin ingin menghapus FAQ ini?',
+  () => deleteFAQItem(id)
+);
 });
 });
 }
@@ -1399,6 +1565,15 @@ if (countElement && categoryCounts[category] !== undefined) {
   countElement.textContent = `${categoryCounts[category]} FAQ`;
 }
 });
+
+// Tampilkan atau sembunyikan tombol hapus kategori "Data Saya"
+const customCategoryCard = document.querySelector('.category-card[data-category="custom"]');
+const deleteCategoryBtn = customCategoryCard.querySelector('.delete-category-btn');
+if (categoryCounts.custom > 0) {
+deleteCategoryBtn.style.display = 'flex';
+} else {
+deleteCategoryBtn.style.display = 'none';
+}
 }
 
 // Fungsi untuk menampilkan data dalam bentuk tabel untuk kategori "Data Saya"
@@ -1456,7 +1631,11 @@ customDataTableBody.appendChild(row);
 document.querySelectorAll('#customDataTableBody .delete-btn').forEach(btn => {
 btn.addEventListener('click', (e) => {
 const id = parseInt(e.currentTarget.getAttribute('data-id'));
-deleteData(id);
+showConfirmDialog(
+  'Hapus Data',
+  'Apakah Anda yakin ingin menghapus data ini?',
+  () => deleteData(id)
+);
 });
 });
   
@@ -1574,15 +1753,19 @@ tableBody.appendChild(row);
 });
   
 // Tambahkan event listener untuk tombol hapus
-document.querySelectorAll('.delete-btn').forEach(btn => {
+document.querySelectorAll('#dataTableBody .delete-btn').forEach(btn => {
 btn.addEventListener('click', (e) => {
 const id = parseInt(e.currentTarget.getAttribute('data-id'));
-deleteData(id);
+showConfirmDialog(
+  'Hapus Data',
+  'Apakah Anda yakin ingin menghapus data ini?',
+  () => deleteData(id)
+);
 });
 });
   
 // Tambahkan event listener untuk tombol lihat
-document.querySelectorAll('.view-btn').forEach(btn => {
+document.querySelectorAll('#dataTableBody .view-btn').forEach(btn => {
 btn.addEventListener('click', (e) => {
 const id = parseInt(e.currentTarget.getAttribute('data-id'));
 viewData(id);
@@ -1604,16 +1787,56 @@ const categories = {
 return categories[categoryValue] || categoryValue;
 }
 
-// Fungsi untuk menghapus data
+// Fungsi untuk menghapus data individual
 function deleteData(id) {
-if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
 let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
 savedData = savedData.filter(item => item.id !== id);
 localStorage.setItem('faqCustomData', JSON.stringify(savedData));
-loadSavedData(); // Muat ulang tabel
-updateCategoriesDisplay(); // Perbarui tampilan kategori
-renderCustomDataTable(); // Perbarui tabel Data Saya
+loadSavedData();
+updateCategoriesDisplay();
+renderCustomDataTable();
+showSuccessNotification('Data berhasil dihapus!');
 }
+
+// Fungsi untuk menghapus item FAQ individual
+function deleteFAQItem(id) {
+let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+savedData = savedData.filter(item => item.id !== id);
+localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+filterFAQ();
+updateCategoriesDisplay();
+renderCustomDataTable();
+showSuccessNotification('FAQ berhasil dihapus!');
+}
+
+// Fungsi untuk menghapus kategori "Data Saya"
+function deleteCustomCategory() {
+showConfirmDialog(
+  'Hapus Kategori',
+  'Apakah Anda yakin ingin menghapus kategori "Data Saya" dan semua data di dalamnya?',
+  () => {
+    // Hapus semua data dengan kategori "custom"
+    let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+    savedData = savedData.filter(item => item.category !== 'custom');
+    localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+    
+    // Perbarui tampilan
+    updateCategoriesDisplay();
+    renderCustomDataTable();
+    
+    // Jika sedang melihat kategori "custom", pindah ke "Semua Kategori"
+    const activeCategory = document.querySelector('.category-card.active');
+    if (activeCategory && activeCategory.dataset.category === 'custom') {
+      document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      document.querySelector('.category-card[data-category="all"]').classList.add('active');
+      filterFAQ();
+    }
+    
+    showSuccessNotification('Kategori "Data Saya" berhasil dihapus!');
+  }
+);
 }
 
 // Fungsi untuk melihat data
@@ -1630,6 +1853,35 @@ document.getElementById('modalBody').innerHTML = `
 `;
 document.getElementById('dataModal').style.display = 'block';
 }
+}
+
+// Fungsi untuk menampilkan dialog konfirmasi
+function showConfirmDialog(title, message, onConfirm) {
+document.getElementById('confirmTitle').textContent = title;
+document.getElementById('confirmMessage').textContent = message;
+document.getElementById('confirmDialog').classList.add('show');
+  
+// Hapus event listener sebelumnya
+const confirmBtn = document.getElementById('confirmBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+  
+// Buat fungsi baru untuk event handler
+const handleConfirm = () => {
+  onConfirm();
+  document.getElementById('confirmDialog').classList.remove('show');
+  confirmBtn.removeEventListener('click', handleConfirm);
+  cancelBtn.removeEventListener('click', handleCancel);
+};
+  
+const handleCancel = () => {
+  document.getElementById('confirmDialog').classList.remove('show');
+  confirmBtn.removeEventListener('click', handleConfirm);
+  cancelBtn.removeEventListener('click', handleCancel);
+};
+  
+// Tambahkan event listener
+confirmBtn.addEventListener('click', handleConfirm);
+cancelBtn.addEventListener('click', handleCancel);
 }
 
 // Fungsi untuk menampilkan notifikasi sukses
@@ -1661,7 +1913,12 @@ document.getElementById('searchInput').addEventListener('input', filterFAQ);
 
 // Category cards event listeners
 document.querySelectorAll('.category-card').forEach(card => {
-card.addEventListener('click', () => {
+card.addEventListener('click', (e) => {
+// Jika yang diklik adalah tombol hapus, jangan pindah kategori
+if (e.target.closest('.delete-category-btn')) {
+  return;
+}
+  
 document.querySelectorAll('.category-card').forEach(c => {
 c.classList.remove('active');
 });
@@ -1680,6 +1937,15 @@ document.getElementById('customDataContainer').classList.remove('active');
 }
 });
 });
+
+// Delete category button event listener
+const deleteCategoryBtn = document.querySelector('.category-card[data-category="custom"] .delete-category-btn');
+if (deleteCategoryBtn) {
+deleteCategoryBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+deleteCustomCategory();
+});
+}
 
 // Tab navigation event listeners
 document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -1757,6 +2023,9 @@ document.getElementById('dataModal').style.display = 'none';
 window.addEventListener('click', (e) => {
 if (e.target === document.getElementById('dataModal')) {
 document.getElementById('dataModal').style.display = 'none';
+}
+if (e.target === document.getElementById('confirmDialog')) {
+document.getElementById('confirmDialog').classList.remove('show');
 }
 });
 });
