@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Bonus - Semua Jenis Bonus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header:before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a6491;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h2 .copy-btn {
+            background: #4a6491;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        h2 .copy-btn:hover {
+            background: #3a506b;
+            transform: translateY(-2px);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 20px 0 10px;
+            color: #3a506b;
+            padding-left: 10px;
+            border-left: 4px solid #4a6491;
+        }
+        
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            background: white;
+            border: 2px solid #4a6491;
+            color: #4a6491;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-btn:hover {
+            background: #4a6491;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-btn.active {
+            background: #4a6491;
+            color: white;
+        }
+        
+        .bonus-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bonus-section:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4a6491, #2c3e50);
+        }
+        
+        .bonus-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .bonus-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            padding-left: 40px;
+            position: relative;
+            background: #f9fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .bonus-item:hover {
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+        
+        .bonus-item:before {
+            content: "•";
+            position: absolute;
+            left: 20px;
+            color: #4a6491;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .highlight {
+            background-color: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffcc00;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .note {
+            font-style: italic;
+            color: #e74c3c;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffeeee;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4a6491;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .bonus-section {
+                padding: 20px 15px;
+            }
+            
+            .category-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .category-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gift"></i> PROMO BONUS</h1>
+            <p>Daftar lengkap bonus dan promosi yang tersedia</p>
+        </header>
+        
+        <div class="category-nav">
+            <button class="category-btn active" data-category="all">Semua Bonus</button>
+            <button class="category-btn" data-category="bonus-all">Bonus All</button>
+            <button class="category-btn" data-category="bonus-arcade">Bonus Arcade</button>
+            <button class="category-btn" data-category="bonus-cashback">Bonus Cashback</button>
+        </div>
+        
+        <section id="bonus-all" class="bonus-section">
+            <h2>
+                BONUS ALL
+                <button class="copy-btn" data-section="bonus-all">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </h2>
+            <p>Untuk promo bonus saat ini kami memiliki :</p>
+            
+            <h3>Bonus Referral</h3>
+            <div class="bonus-item">Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)</div>
+            <div class="bonus-item">Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</div>
+            <div class="bonus-item">Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</div>
+            <div class="bonus-item">Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</div>
+            <div class="bonus-item">Bonus Referral ARCADE = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</div>
+            <div class="bonus-item">Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)</div>
+            
+            <h3>Bonus Rollingan Turnover</h3>
+            <div class="bonus-item">Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</div>
+            <div class="bonus-item">Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)</div>
+            <div class="bonus-item">Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai)</div>
+            <div class="bonus-item">Bonus Rollingan turnover ARCADE sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai)</div>
+            <div class="bonus-item">Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai)</div>
+            
+            <h3>Bonus Cashback</h3>
+            <div class="bonus-item">Bonus Cashback up to 5% (Live Games) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games. Minimal kekalahan Rp.100.000. Untuk nominal 100,000-249,999,999 = Bonus yang didapat 2,5% dari total kekalahan. Untuk nominal 250,000,000 - 999,999,999,999 = Bonus yang didapat 5% dari total kekalahan. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Slot Games) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Selasa.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Live Games PRAGMATIC) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (E-lottery) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Arcade) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            
+            <h3>Bonus Extra Slot</h3>
+            <div class="bonus-item">Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level (berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari)</div>
+            
+            <div class="highlight">
+                <p>Untuk syarat dan ketentuan bonus dapat dilihat di menu promosi pada situs</p>
+            </div>
+            
+            <div class="note">
+                <p>NB : tidak ada bonus deposit harian / bonus new member.</p>
+            </div>
+        </section>
+        
+        <section id="bonus-arcade" class="bonus-section">
+            <h2>
+                BONUS ARCADE
+                <button class="copy-btn" data-section="bonus-arcade">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </h2>
+            <p>Untuk bonus Arcade yang kami miliki saat ini :</p>
+            
+            <div class="bonus-item">Bonus Cashback 5% (Arcade) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE. Dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</div>
+        </section>
+        
+        <section id="bonus-cashback" class="bonus-section">
+            <h2>
+                BONUS CASHBACK
+                <button class="copy-btn" data-section="bonus-cashback">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </h2>
+            <p>Untuk bonus cashback kekalahan yang kami miliki saat ini :</p>
+            
+            <div class="bonus-item">Bonus Cashback up to 5% (Live Games) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games. Minimal kekalahan Rp.100.000. Untuk nominal 100,000-249,999,999 = Bonus yang didapat 2,5% dari total kekalahan. Untuk nominal 250,000,000 - 999,999,999,999 = Bonus yang didapat 5% dari total kekalahan. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Slot Games) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Live Games PRAGMATIC) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (E-lottery) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</div>
+            <div class="bonus-item">Bonus Cashback 5% (Arcade) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000. Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</div>
+            
+            <div class="note">
+                <p>NB : tidak ada bonus deposit harian / bonus new member.</p>
+            </div>
+        </section>
+        
+        <div class="footer">
+            <p>&copy; 2023 Semua Hak Dilindungi. Informasi promo dapat berubah sewaktu-waktu.</p>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copyNotification">
+        <i class="fas fa-check-circle"></i> Konten berhasil disalin!
+    </div>
+
+    <script>
+        // Fungsi untuk filter kategori
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Hapus kelas aktif dari semua tombol
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Tambahkan kelas aktif ke tombol yang diklik
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                
+                // Tampilkan/sembunyikan section berdasarkan kategori
+                if (category === 'all') {
+                    document.querySelectorAll('.bonus-section').forEach(section => {
+                        section.style.display = 'block';
+                    });
+                } else {
+                    document.querySelectorAll('.bonus-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById(category).style.display = 'block';
+                }
+                
+                // Scroll ke section yang dipilih
+                if (category !== 'all') {
+                    document.getElementById(category).scrollIntoView({behavior: 'smooth'});
+                }
+            });
+        });
+        
+        // Fungsi untuk copy konten
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                
+                // Buat teks yang akan disalin
+                let textToCopy = section.querySelector('h2').firstChild.textContent + "\n\n";
+                
+                // Ambil semua teks dalam section
+                section.querySelectorAll('p, .bonus-item, .highlight p, .note p').forEach(element => {
+                    textToCopy += element.textContent + "\n\n";
+                });
+                
+                // Salin ke clipboard
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Tampilkan notifikasi
+                    const notification = document.getElementById('copyNotification');
+                    notification.classList.add('show');
+                    
+                    // Sembunyikan notifikasi setelah 3 detik
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
