@@ -834,6 +834,29 @@ transform: translateY(-2px);
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Custom Link Styling */
+.custom-link {
+display: inline-block;
+background: linear-gradient(135deg, #4a6491, #2c3e50);
+color: white;
+padding: 12px 20px;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 600;
+transition: all 0.3s;
+margin: 10px 0;
+}
+
+.custom-link:hover {
+background: linear-gradient(135deg, #3a547e, #1c2e40);
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-link i {
+margin-right: 8px;
+}
+
 /* Confirmation Dialog */
 .confirm-dialog {
 position: fixed;
@@ -997,7 +1020,7 @@ Pilih Kategori:
 <div class="category-card" data-category="custom">
 <span class="category-icon"><i class="fas fa-user-edit"></i></span>
 <span class="category-name">Data Saya</span>
-<span class="category-count">0 FAQ</span>
+<span class="category-count">1 FAQ</span>
 <button class="delete-category-btn" title="Hapus Kategori">
 <i class="fas fa-times"></i>
 </button>
@@ -1929,12 +1952,44 @@ notification.classList.remove('show');
 }, 3000);
 }
 
+// Fungsi untuk menambahkan data kustom
+function addCustomData() {
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+  
+// Cek apakah data dengan judul "wecaanovalmutta" sudah ada
+const existingData = savedData.find(item => item.question === "wecaanovalmutta");
+if (!existingData) {
+  // Tambahkan data baru
+  const newData = {
+    category: "custom",
+    question: "wecaanovalmutta",
+    answer: `<a href="https://agwl2.admitoto.com/index.php" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
+    id: Date.now(),
+    createdAt: new Date().toISOString()
+  };
+  savedData.push(newData);
+  localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+  
+  // Perbarui tampilan kategori
+  updateCategoriesDisplay();
+  
+  // Jika saat ini sedang di tab FAQ dan kategori "custom" aktif, maka perbarui tampilan FAQ
+  const activeCategory = document.querySelector('.category-card.active');
+  if (activeCategory && activeCategory.dataset.category === 'custom') {
+    renderCustomDataTable();
+  }
+}
+}
+
 // Inisialisasi event listeners
 document.addEventListener('DOMContentLoaded', () => {
 // Update jam WIB setiap detik
 updateWIBClock();
 setInterval(updateWIBClock, 1000);
   
+// Tambahkan data kustom
+addCustomData();
+
 // Render semua FAQ items pada awal
 renderFAQItems(faqData);
 
@@ -2066,4 +2121,3 @@ document.getElementById('confirmDialog').classList.remove('show');
 </script>
 </body>
 </html>
-
