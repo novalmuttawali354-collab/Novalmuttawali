@@ -29,6 +29,101 @@ margin: 0 auto;
 padding: 20px;
 }
 
+/* Login Page Styles */
+.login-container {
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+padding: 20px;
+}
+
+.login-form {
+background: rgba(255, 255, 255, 0.95);
+border-radius: 15px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+padding: 40px;
+width: 100%;
+max-width: 400px;
+backdrop-filter: blur(10px);
+}
+
+.login-title {
+text-align: center;
+margin-bottom: 30px;
+color: #2c3e50;
+font-size: 1.8rem;
+}
+
+.login-logo {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.login-logo i {
+font-size: 3rem;
+color: #4a6491;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-weight: 600;
+color: #2c3e50;
+}
+
+.form-group input {
+width: 100%;
+padding: 12px 15px;
+border: 2px solid #e1e5eb;
+border-radius: 8px;
+font-size: 16px;
+transition: all 0.3s;
+}
+
+.form-group input:focus {
+border-color: #4a6491;
+outline: none;
+box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+}
+
+.login-btn {
+background: linear-gradient(135deg, #4a6491, #2c3e50);
+color: white;
+border: none;
+padding: 12px 25px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+font-weight: 600;
+transition: all 0.3s;
+display: block;
+width: 100%;
+}
+
+.login-btn:hover {
+background: linear-gradient(135deg, #3a547e, #1c2e40);
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.error-message {
+color: #e74c3c;
+text-align: center;
+margin-top: 15px;
+font-size: 14px;
+display: none;
+}
+
+/* Main Content Styles - Hidden by default */
+.main-content {
+display: none;
+}
+
 header {
 background: linear-gradient(135deg, #2c3e50, #4a6491);
 color: white;
@@ -66,6 +161,29 @@ opacity: 0.9;
 max-width: 800px;
 margin: 0 auto;
 position: relative;
+}
+
+.logout-btn {
+position: absolute;
+top: 20px;
+right: 20px;
+background: rgba(231, 76, 60, 0.8);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 8px 15px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 600;
+transition: all 0.3s;
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.logout-btn:hover {
+background: rgba(192, 57, 43, 0.9);
+transform: translateY(-2px);
 }
 
 .wib-clock {
@@ -936,8 +1054,35 @@ transform: translateY(-2px);
 </style>
 </head>
 <body>
+<!-- Login Page -->
+<div class="login-container" id="loginPage">
+<div class="login-form">
+<div class="login-logo">
+<i class="fas fa-shield-alt"></i>
+</div>
+<h2 class="login-title">PELURU ANTI AIR</h2>
+<form id="loginForm">
+<div class="form-group">
+<label for="username">Username</label>
+<input type="text" id="username" placeholder="Masukkan username" required>
+</div>
+<div class="form-group">
+<label for="password">Password</label>
+<input type="password" id="password" placeholder="Masukkan password" required>
+</div>
+<button type="submit" class="login-btn">Login</button>
+<div class="error-message" id="errorMessage">Username atau password salah!</div>
+</form>
+</div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
 <div class="container">
 <header>
+<button class="logout-btn" id="logoutBtn">
+<i class="fas fa-sign-out-alt"></i> Logout
+</button>
 <h1><i class="fas fa-shield-alt"></i> PELURU ANTI AIR</h1>
 <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
 <div class="wib-clock" id="wibClock">WIB: Loading...</div>
@@ -1152,6 +1297,8 @@ Pilih Kategori:
 <footer>
 <p>FYI. Untuk ITOTO rencana akan ada penggunaan PASSKEY untuk seluruh agen, pada tanggal 11 September 2025. Akan kami infokan lebih lanjut bila ada info terbaru. Terima kasih.</p>
 </footer>
+</div>
+</div>
 
 <script>
 // Data FAQ dalam bentuk array of objects dengan format yang lebih rapi
@@ -2025,8 +2172,63 @@ if (activeCategory && activeCategory.dataset.category === 'custom') {
 }
 }
 
-// Inisialisasi event listeners
-document.addEventListener('DOMContentLoaded', () => {
+// Fungsi untuk login
+function login() {
+const username = document.getElementById('username').value;
+const password = document.getElementById('password').value;
+const errorMessage = document.getElementById('errorMessage');
+
+// Validasi username dan password
+if (username === 'noval' && password === 'noval191102') {
+// Simpan status login di localStorage
+localStorage.setItem('isLoggedIn', 'true');
+  
+// Sembunyikan halaman login dan tampilkan halaman utama
+document.getElementById('loginPage').style.display = 'none';
+document.getElementById('mainContent').style.display = 'block';
+  
+// Reset form login
+document.getElementById('loginForm').reset();
+errorMessage.style.display = 'none';
+  
+// Inisialisasi aplikasi setelah login
+initializeApp();
+} else {
+// Tampilkan pesan error
+errorMessage.style.display = 'block';
+}
+}
+
+// Fungsi untuk logout
+function logout() {
+// Hapus status login dari localStorage
+localStorage.removeItem('isLoggedIn');
+  
+// Tampilkan halaman login dan sembunyikan halaman utama
+document.getElementById('loginPage').style.display = 'flex';
+document.getElementById('mainContent').style.display = 'none';
+}
+
+// Fungsi untuk mengecek status login
+function checkLoginStatus() {
+const isLoggedIn = localStorage.getItem('isLoggedIn');
+  
+if (isLoggedIn === 'true') {
+// Pengguna sudah login, tampilkan halaman utama
+document.getElementById('loginPage').style.display = 'none';
+document.getElementById('mainContent').style.display = 'block';
+  
+// Inisialisasi aplikasi
+initializeApp();
+} else {
+// Pengguna belum login, tampilkan halaman login
+document.getElementById('loginPage').style.display = 'flex';
+document.getElementById('mainContent').style.display = 'none';
+}
+}
+
+// Fungsi untuk menginisialisasi aplikasi setelah login
+function initializeApp() {
 // Update jam WIB setiap detik
 updateWIBClock();
 setInterval(updateWIBClock, 1000);
@@ -2161,6 +2363,21 @@ if (e.target === document.getElementById('confirmDialog')) {
 document.getElementById('confirmDialog').classList.remove('show');
 }
 });
+}
+
+// Inisialisasi event listeners
+document.addEventListener('DOMContentLoaded', () => {
+// Cek status login saat halaman dimuat
+checkLoginStatus();
+
+// Login form event listener
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+e.preventDefault();
+login();
+});
+
+// Logout button event listener
+document.getElementById('logoutBtn').addEventListener('click', logout);
 });
 </script>
 </body>
