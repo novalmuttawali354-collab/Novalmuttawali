@@ -1020,7 +1020,7 @@ Pilih Kategori:
 <div class="category-card" data-category="custom">
 <span class="category-icon"><i class="fas fa-user-edit"></i></span>
 <span class="category-name">Data Saya</span>
-<span class="category-count">1 FAQ</span>
+<span class="category-count">4 FAQ</span>
 <button class="delete-category-btn" title="Hapus Kategori">
 <i class="fas fa-times"></i>
 </button>
@@ -1957,27 +1957,71 @@ function addCustomData() {
 const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
   
 // Cek apakah data dengan judul "wecaanovalmutta" sudah ada
-const existingData = savedData.find(item => item.question === "wecaanovalmutta");
-if (!existingData) {
+const existingData1 = savedData.find(item => item.question === "wecaanovalmutta");
+if (!existingData1) {
   // Tambahkan data baru
-  const newData = {
+  const newData1 = {
     category: "custom",
     question: "wecaanovalmutta",
     answer: `<a href="https://agwl2.admitoto.com/index.php" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
     id: Date.now(),
     createdAt: new Date().toISOString()
   };
-  savedData.push(newData);
-  localStorage.setItem('faqCustomData', JSON.stringify(savedData));
+  savedData.push(newData1);
+}
+
+// Cek apakah data dengan judul "BK SMB" sudah ada
+const existingData2 = savedData.find(item => item.question === "BK SMB");
+if (!existingData2) {
+  // Tambahkan data baru
+  const newData2 = {
+    category: "custom",
+    question: "BK SMB",
+    answer: `<a href="https://bk.augipt.com/linetogelacc" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
+    id: Date.now() + 1,
+    createdAt: new Date().toISOString()
+  };
+  savedData.push(newData2);
+}
+
+// Cek apakah data dengan judul "PWR WD" sudah ada
+const existingData3 = savedData.find(item => item.question === "PWR WD");
+if (!existingData3) {
+  // Tambahkan data baru
+  const newData3 = {
+    category: "custom",
+    question: "PWR WD",
+    answer: `<a href="https://adminline.garudapaymentsmb.com/account/login" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
+    id: Date.now() + 2,
+    createdAt: new Date().toISOString()
+  };
+  savedData.push(newData3);
+}
+
+// Cek apakah data dengan judul "CHAT MESSENGER" sudah ada
+const existingData4 = savedData.find(item => item.question === "CHAT MESSENGER");
+if (!existingData4) {
+  // Tambahkan data baru
+  const newData4 = {
+    category: "custom",
+    question: "CHAT MESSENGER",
+    answer: `<a href="https://linetogel.hokibgs.com/modules/visitor/dashboard" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
+    id: Date.now() + 3,
+    createdAt: new Date().toISOString()
+  };
+  savedData.push(newData4);
+}
   
-  // Perbarui tampilan kategori
-  updateCategoriesDisplay();
+// Simpan kembali ke localStorage
+localStorage.setItem('faqCustomData', JSON.stringify(savedData));
   
-  // Jika saat ini sedang di tab FAQ dan kategori "custom" aktif, maka perbarui tampilan FAQ
-  const activeCategory = document.querySelector('.category-card.active');
-  if (activeCategory && activeCategory.dataset.category === 'custom') {
-    renderCustomDataTable();
-  }
+// Perbarui tampilan kategori
+updateCategoriesDisplay();
+  
+// Jika saat ini sedang di tab FAQ dan kategori "custom" aktif, maka perbarui tampilan FAQ
+const activeCategory = document.querySelector('.category-card.active');
+if (activeCategory && activeCategory.dataset.category === 'custom') {
+  renderCustomDataTable();
 }
 }
 
