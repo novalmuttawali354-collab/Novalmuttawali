@@ -163,10 +163,16 @@ margin: 0 auto;
 position: relative;
 }
 
-.logout-btn {
+.header-actions {
 position: absolute;
 top: 20px;
 right: 20px;
+display: flex;
+gap: 10px;
+z-index: 10;
+}
+
+.logout-btn, .change-password-btn {
 background: rgba(231, 76, 60, 0.8);
 color: white;
 border: none;
@@ -179,10 +185,9 @@ transition: all 0.3s;
 display: flex;
 align-items: center;
 gap: 5px;
-z-index: 10;
 }
 
-.logout-btn:hover {
+.logout-btn:hover, .change-password-btn:hover {
 background: rgba(192, 57, 43, 0.9);
 transform: translateY(-2px);
 }
@@ -1052,6 +1057,67 @@ color: white;
 background-color: #7f8c8d;
 transform: translateY(-2px);
 }
+
+/* Change Password Modal */
+#changePasswordModal {
+display: none;
+}
+
+#changePasswordModal .modal-content {
+max-width: 500px;
+}
+
+.password-strength {
+margin-top: 10px;
+height: 5px;
+background-color: #e1e5eb;
+border-radius: 3px;
+overflow: hidden;
+}
+
+.password-strength-bar {
+height: 100%;
+width: 0;
+transition: width 0.3s, background-color 0.3s;
+}
+
+.password-strength-weak {
+width: 33.33%;
+background-color: #e74c3c;
+}
+
+.password-strength-medium {
+width: 66.66%;
+background-color: #f39c12;
+}
+
+.password-strength-strong {
+width: 100%;
+background-color: #27ae60;
+}
+
+.password-requirements {
+font-size: 12px;
+color: #6c757d;
+margin-top: 5px;
+}
+
+.password-requirements ul {
+list-style-type: none;
+padding-left: 0;
+}
+
+.password-requirements li {
+margin-bottom: 3px;
+}
+
+.password-requirements li.valid {
+color: #27ae60;
+}
+
+.password-requirements li.invalid {
+color: #e74c3c;
+}
 </style>
 </head>
 <body>
@@ -1072,7 +1138,7 @@ transform: translateY(-2px);
 <input type="password" id="password" placeholder="Masukkan password" required>
 </div>
 <button type="submit" class="login-btn">Login</button>
-<div class="error-message" id="errorMessage">ADUH BECEK KALI TANGANMU!</div>
+<div class="error-message" id="errorMessage">Username atau password salah!</div>
 </form>
 </div>
 </div>
@@ -1081,9 +1147,14 @@ transform: translateY(-2px);
 <div class="main-content" id="mainContent">
 <div class="container">
 <header>
+<div class="header-actions">
+<button class="change-password-btn" id="changePasswordBtn">
+<i class="fas fa-key"></i> Ganti Password
+</button>
 <button class="logout-btn" id="logoutBtn">
 <i class="fas fa-sign-out-alt"></i> Logout
 </button>
+</div>
 <h1><i class="fas fa-shield-alt"></i> PELURU ANTI AIR</h1>
 <p class="description">Temukan solusi untuk pertanyaan dan kendala yang sering dialami</p>
 <div class="wib-clock" id="wibClock">WIB: Loading...</div>
@@ -1279,6 +1350,42 @@ Pilih Kategori:
 <h2 class="modal-title" id="modalTitle">Detail Data</h2>
 <div class="modal-body" id="modalBody">
 <!-- Modal content will be inserted here -->
+</div>
+</div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="modal">
+<div class="modal-content">
+<span class="close-modal">&times;</span>
+<h2 class="modal-title">Ganti Password</h2>
+<div class="modal-body">
+<form id="changePasswordForm">
+<div class="form-group">
+<label for="currentPassword">Password Saat Ini</label>
+<input type="password" id="currentPassword" placeholder="Masukkan password saat ini" required>
+</div>
+<div class="form-group">
+<label for="newPassword">Password Baru</label>
+<input type="password" id="newPassword" placeholder="Masukkan password baru" required>
+<div class="password-strength">
+<div class="password-strength-bar" id="passwordStrengthBar"></div>
+</div>
+<div class="password-requirements">
+<ul>
+<li id="length" class="invalid">Minimal 8 karakter</li>
+<li id="uppercase" class="invalid">Minimal 1 huruf besar</li>
+<li id="lowercase" class="invalid">Minimal 1 huruf kecil</li>
+<li id="number" class="invalid">Minimal 1 angka</li>
+</ul>
+</div>
+</div>
+<div class="form-group">
+<label for="confirmPassword">Konfirmasi Password Baru</label>
+<input type="password" id="confirmPassword" placeholder="Masukkan kembali password baru" required>
+</div>
+<button type="submit" class="submit-btn">Ganti Password</button>
+</form>
 </div>
 </div>
 </div>
@@ -2179,8 +2286,11 @@ const username = document.getElementById('username').value;
 const password = document.getElementById('password').value;
 const errorMessage = document.getElementById('errorMessage');
 
+// Ambil password yang tersimpan di localStorage
+const storedPassword = localStorage.getItem('userPassword') || 'noval191102';
+
 // Validasi username dan password
-if (username === 'noval' && password === '1') {
+if (username === 'noval' && password === storedPassword) {
 // Simpan status login di localStorage
 localStorage.setItem('isLoggedIn', 'true');
   
@@ -2228,167 +2338,38 @@ document.getElementById('mainContent').style.display = 'none';
 }
 }
 
-// Fungsi untuk menginisialisasi aplikasi setelah login
-function initializeApp() {
-// Update jam WIB setiap detik
-updateWIBClock();
-setInterval(updateWIBClock, 1000);
-  
-// Tambahkan data kustom
-addCustomData();
+// Fungsi untuk mengganti password
+function changePassword() {
+const currentPassword = document.getElementById('currentPassword').value;
+const newPassword = document.getElementById('newPassword').value;
+const confirmPassword = document.getElementById('confirmPassword').value;
+const storedPassword = localStorage.getItem('userPassword') || 'noval191102';
 
-// Render semua FAQ items pada awal
-renderFAQItems(faqData);
-
-// Perbarui tampilan kategori
-updateCategoriesDisplay();
-
-// Search input event listener
-document.getElementById('searchInput').addEventListener('input', filterFAQ);
-
-// Category cards event listeners
-document.querySelectorAll('.category-card').forEach(card => {
-card.addEventListener('click', (e) => {
-// Jika yang diklik adalah tombol hapus, jangan pindah kategori
-if (e.target.closest('.delete-category-btn')) {
-  return;
+// Validasi password saat ini
+if (currentPassword !== storedPassword) {
+showSuccessNotification('Password saat ini salah!');
+return;
 }
-  
-document.querySelectorAll('.category-card').forEach(c => {
-c.classList.remove('active');
-});
 
-card.classList.add('active');
-filterFAQ();
-  
-// Tampilkan tabel Data Saya jika kategori "custom" dipilih
-if (card.dataset.category === 'custom') {
-document.getElementById('faqList').style.display = 'none';
-document.getElementById('customDataContainer').classList.add('active');
-renderCustomDataTable();
-} else {
-document.getElementById('faqList').style.display = 'grid';
-document.getElementById('customDataContainer').classList.remove('active');
+// Validasi password baru dan konfirmasi
+if (newPassword !== confirmPassword) {
+showSuccessNotification('Password baru dan konfirmasi password tidak cocok!');
+return;
 }
-});
-});
 
-// Delete category button event listeners untuk semua kategori
-document.querySelectorAll('.delete-category-btn').forEach(btn => {
-btn.addEventListener('click', (e) => {
-e.stopPropagation();
-const categoryCard = e.target.closest('.category-card');
-const category = categoryCard.dataset.category;
-deleteCategory(category);
-});
-});
+// Validasi kekuatan password
+if (!isPasswordStrong(newPassword)) {
+showSuccessNotification('Password baru tidak memenuhi syarat kekuatan password!');
+return;
+}
 
-// Tab navigation event listeners
-document.querySelectorAll('.nav-tab').forEach(tab => {
-tab.addEventListener('click', () => {
-const tabName = tab.getAttribute('data-tab');
-switchTab(tabName);
-});
-});
+// Simpan password baru
+localStorage.setItem('userPassword', newPassword);
 
-// Add Data button event listener
-document.getElementById('addDataBtn').addEventListener('click', () => {
-// Set kategori ke "Data Saya"
-document.getElementById('dataCategory').value = 'custom';
-// Beralih ke tab form input
-switchTab('data-form');
-});
+// Tutup modal
+document.getElementById('changePasswordModal').style.display = 'none';
 
-// Form submission event listener
-document.getElementById('dataForm').addEventListener('submit', (e) => {
-e.preventDefault();
-  
-const category = document.getElementById('dataCategory').value;
-const question = document.getElementById('dataQuestion').value;
-const answer = document.getElementById('dataAnswer').value;
-  
-// Simpan data
-saveDataToStorage(category, question, answer);
-  
 // Reset form
-document.getElementById('dataForm').reset();
-  
-// Tampilkan pesan sukses
-showSuccessNotification('Data berhasil disimpan!');
-  
-// Perbarui tampilan kategori
-updateCategoriesDisplay();
-  
-// Jika kategori adalah "custom", perbarui tabel Data Saya
-if (category === 'custom') {
-renderCustomDataTable();
-}
-  
-// Beralih ke tab FAQ setelah 1 detik
-setTimeout(() => {
-switchTab('faq');
-// Aktifkan kategori yang baru saja ditambahkan
-document.querySelectorAll('.category-card').forEach(card => {
-card.classList.remove('active');
-});
-const selectedCategory = document.querySelector(`.category-card[data-category="${category}"]`);
-if (selectedCategory) {
-selectedCategory.classList.add('active');
-}
-filterFAQ();
-  
-// Tampilkan tabel Data Saya jika kategori "custom" dipilih
-if (category === 'custom') {
-document.getElementById('faqList').style.display = 'none';
-document.getElementById('customDataContainer').classList.add('active');
-renderCustomDataTable();
-}
-}, 1000);
-});
+document.getElementById('changePasswordForm').reset();
 
-// Filter event listeners
-document.getElementById('filterCategory').addEventListener('change', loadSavedData);
-document.getElementById('filterSearch').addEventListener('input', loadSavedData);
-
-// Modal close event listener
-document.querySelector('.close-modal').addEventListener('click', () => {
-document.getElementById('dataModal').style.display = 'none';
-});
-
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-if (e.target === document.getElementById('dataModal')) {
-document.getElementById('dataModal').style.display = 'none';
-}
-if (e.target === document.getElementById('confirmDialog')) {
-document.getElementById('confirmDialog').classList.remove('show');
-}
-});
-}
-
-// Inisialisasi event listeners
-document.addEventListener('DOMContentLoaded', () => {
-// Cek status login saat halaman dimuat
-checkLoginStatus();
-
-// Login form event listener
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-e.preventDefault();
-login();
-});
-
-// Logout button event listener - Perbaikan di sini
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-logoutBtn.addEventListener('click', function(e) {
-e.preventDefault();
-logout();
-});
-}
-});
-</script>
-</body>
-</html>
-
-
-
+// Tampilkan notifikasi
