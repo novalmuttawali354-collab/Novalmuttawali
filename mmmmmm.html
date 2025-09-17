@@ -179,6 +179,7 @@ transition: all 0.3s;
 display: flex;
 align-items: center;
 gap: 5px;
+z-index: 10;
 }
 
 .logout-btn:hover {
@@ -2376,8 +2377,14 @@ e.preventDefault();
 login();
 });
 
-// Logout button event listener
-document.getElementById('logoutBtn').addEventListener('click', logout);
+// Logout button event listener - Perbaikan di sini
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+logoutBtn.addEventListener('click', function(e) {
+e.preventDefault();
+logout();
+});
+}
 });
 </script>
 </body>
