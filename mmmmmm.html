@@ -133,7 +133,7 @@ gap: 10px;
 color: #4a6491;
 }
 
-/* Perubahan: Grid layout untuk kategori */
+/* Grid layout untuk kategori */
 .categories-grid {
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -246,6 +246,9 @@ border-left-color: #E91E63;
 }
 .faq-card[data-category="peraturan"] {
 border-left-color: #607D8B;
+}
+.faq-card[data-category="custom"] {
+border-left-color: #00BCD4;
 }
 
 .faq-header {
@@ -690,6 +693,12 @@ margin-right: 8px;
 .category-teknis { background-color: #FF9800; }
 .category-bonus { background-color: #E91E63; }
 .category-peraturan { background-color: #607D8B; }
+.category-custom { background-color: #00BCD4; }
+
+/* Custom category styling */
+.category-card[data-category="custom"]::before {
+background: linear-gradient(90deg, #00BCD4, #0097A7);
+}
 </style>
 </head>
 <body>
@@ -719,8 +728,8 @@ margin-right: 8px;
 <i class="fas fa-tags"></i>
 Pilih Kategori:
 </div>
-<!-- Perubahan: Grid layout untuk kategori -->
-<div class="categories-grid">
+<!-- Grid layout untuk kategori -->
+<div class="categories-grid" id="categoriesGrid">
 <div class="category-card active" data-category="all">
 <span class="category-icon"><i class="fas fa-layer-group"></i></span>
 <span class="category-name">Semua Kategori</span>
@@ -756,6 +765,7 @@ Pilih Kategori:
 <span class="category-name">Peraturan</span>
 <span class="category-count">4 FAQ</span>
 </div>
+<!-- Custom category akan ditambahkan di sini secara dinamis -->
 </div>
 </div>
 </div>
@@ -778,6 +788,7 @@ Pilih Kategori:
 <option value="teknis">Teknis</option>
 <option value="bonus">Bonus & Promo</option>
 <option value="peraturan">Peraturan</option>
+<option value="custom">Data Saya</option>
 </select>
 </div>
 <div class="form-group">
@@ -805,6 +816,7 @@ Pilih Kategori:
 <option value="teknis">Teknis</option>
 <option value="bonus">Bonus & Promo</option>
 <option value="peraturan">Peraturan</option>
+<option value="custom">Data Saya</option>
 </select>
 <input type="text" id="filterSearch" placeholder="Cari data...">
 </div>
@@ -1233,7 +1245,7 @@ document.querySelectorAll('.copy-btn').forEach(button => {
 button.addEventListener('click', (e) => {
 e.stopPropagation(); // Mencegah event bubbling ke parent
 const index = button.getAttribute('data-index');
-copyToClipboard(faqData[index].answer);
+copyToClipboard(items[index].answer);
 });
 });
 }
@@ -1243,7 +1255,11 @@ function filterFAQ() {
 const searchText = document.getElementById('searchInput').value.toLowerCase();
 const activeCategory = document.querySelector('.category-card.active').dataset.category;
 
-const filteredItems = faqData.filter(item => {
+// Gabungkan data default dengan data custom
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+const allData = [...faqData, ...savedData];
+
+const filteredItems = allData.filter(item => {
 const matchesSearch = item.question.toLowerCase().includes(searchText) ||
 item.answer.toLowerCase().includes(searchText);
 const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
@@ -1252,6 +1268,59 @@ return matchesSearch && matchesCategory;
 });
 
 renderFAQItems(filteredItems);
+}
+
+// Fungsi untuk memperbarui tampilan kategori
+function updateCategoriesDisplay() {
+const categoriesGrid = document.getElementById('categoriesGrid');
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+  
+// Hitung jumlah FAQ untuk setiap kategori
+const categoryCounts = {
+  all: faqData.length + savedData.length,
+  deposit: faqData.filter(item => item.category === 'deposit').length + savedData.filter(item => item.category === 'deposit').length,
+  withdraw: faqData.filter(item => item.category === 'withdraw').length + savedData.filter(item => item.category === 'withdraw').length,
+  permainan: faqData.filter(item => item.category === 'permainan').length + savedData.filter(item => item.category === 'permainan').length,
+  teknis: faqData.filter(item => item.category === 'teknis').length + savedData.filter(item => item.category === 'teknis').length,
+  bonus: faqData.filter(item => item.category === 'bonus').length + savedData.filter(item => item.category === 'bonus').length,
+  peraturan: faqData.filter(item => item.category === 'peraturan').length + savedData.filter(item => item.category === 'peraturan').length,
+  custom: savedData.filter(item => item.category === 'custom').length
+};
+
+// Perbarui teks jumlah FAQ untuk setiap kategori
+document.querySelectorAll('.category-card').forEach(card => {
+const category = card.dataset.category;
+const countElement = card.querySelector('.category-count');
+if (countElement) {
+  countElement.textContent = `${categoryCounts[category]} FAQ`;
+}
+});
+
+// Periksa apakah kategori "Data Saya" sudah ada
+const customCategoryExists = document.querySelector('.category-card[data-category="custom"]');
+  
+// Jika ada data custom dan kategori "Data Saya" belum ada, tambahkan
+if (savedData.length > 0 && !customCategoryExists) {
+const customCard = document.createElement('div');
+customCard.className = 'category-card';
+customCard.dataset.category = 'custom';
+customCard.innerHTML = `
+  <span class="category-icon"><i class="fas fa-user-edit"></i></span>
+  <span class="category-name">Data Saya</span>
+  <span class="category-count">${categoryCounts.custom} FAQ</span>
+`;
+categoriesGrid.appendChild(customCard);
+  
+// Tambahkan event listener untuk kategori baru
+customCard.addEventListener('click', () => {
+  document.querySelectorAll('.category-card').forEach(c => {
+    c.classList.remove('active');
+  });
+  
+  customCard.classList.add('active');
+  filterFAQ();
+});
+}
 }
 
 // Fungsi untuk beralih antar tab
@@ -1382,7 +1451,8 @@ const categories = {
 'permainan': 'Permainan',
 'teknis': 'Teknis',
 'bonus': 'Bonus & Promo',
-'peraturan': 'Peraturan'
+'peraturan': 'Peraturan',
+'custom': 'Data Saya'
 };
 return categories[categoryValue] || categoryValue;
 }
@@ -1394,6 +1464,7 @@ let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
 savedData = savedData.filter(item => item.id !== id);
 localStorage.setItem('faqCustomData', JSON.stringify(savedData));
 loadSavedData(); // Muat ulang tabel
+updateCategoriesDisplay(); // Perbarui tampilan kategori
 }
 }
 
@@ -1433,6 +1504,9 @@ setInterval(updateWIBClock, 1000);
   
 // Render semua FAQ items pada awal
 renderFAQItems(faqData);
+
+// Perbarui tampilan kategori
+updateCategoriesDisplay();
 
 // Search input event listener
 document.getElementById('searchInput').addEventListener('input', filterFAQ);
@@ -1474,9 +1548,12 @@ document.getElementById('dataForm').reset();
 // Tampilkan pesan sukses
 showSuccessNotification('Data berhasil disimpan!');
   
-// Beralih ke tab data table
+// Perbarui tampilan kategori
+updateCategoriesDisplay();
+  
+// Beralih ke tab FAQ setelah 1 detik
 setTimeout(() => {
-switchTab('data-table');
+switchTab('faq');
 }, 1000);
 });
 
