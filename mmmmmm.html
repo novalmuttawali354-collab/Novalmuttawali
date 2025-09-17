@@ -699,6 +699,83 @@ margin-right: 8px;
 .category-card[data-category="custom"]::before {
 background: linear-gradient(90deg, #00BCD4, #0097A7);
 }
+
+/* Custom Data Table for Data Saya */
+.custom-data-container {
+background: white;
+border-radius: 15px;
+padding: 25px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+margin-top: 30px;
+display: none;
+}
+
+.custom-data-container.active {
+display: block;
+}
+
+.custom-data-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
+}
+
+.custom-data-table th,
+.custom-data-table td {
+padding: 15px;
+text-align: left;
+border-bottom: 1px solid #e1e5eb;
+}
+
+.custom-data-table th {
+background-color: #f8f9fa;
+font-weight: 600;
+color: #2c3e50;
+position: sticky;
+top: 0;
+}
+
+.custom-data-table tr:hover {
+background-color: #f5f7fa;
+}
+
+.custom-data-table .no-data {
+text-align: center;
+padding: 30px;
+color: #6c757d;
+font-style: italic;
+}
+
+.custom-data-actions {
+display: flex;
+gap: 10px;
+}
+
+.custom-data-actions .action-btn {
+margin: 0;
+}
+
+.add-data-btn {
+background: linear-gradient(135deg, #00BCD4, #0097A7);
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 600;
+transition: all 0.3s;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 15px;
+}
+
+.add-data-btn:hover {
+background: linear-gradient(135deg, #0097A7, #00838F);
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 </style>
 </head>
 <body>
@@ -765,6 +842,11 @@ Pilih Kategori:
 <span class="category-name">Peraturan</span>
 <span class="category-count">4 FAQ</span>
 </div>
+<div class="category-card" data-category="custom">
+<span class="category-icon"><i class="fas fa-user-edit"></i></span>
+<span class="category-name">Data Saya</span>
+<span class="category-count">0 FAQ</span>
+</div>
 <!-- Custom category akan ditambahkan di sini secara dinamis -->
 </div>
 </div>
@@ -772,6 +854,28 @@ Pilih Kategori:
 
 <div class="faq-grid" id="faqList">
 <!-- FAQ items will be generated here by JavaScript -->
+</div>
+
+<!-- Custom Data Table for Data Saya -->
+<div class="custom-data-container" id="customDataContainer">
+<h2 class="form-title">Data Saya</h2>
+<button class="add-data-btn" id="addDataBtn">
+<i class="fas fa-plus"></i> Tambah Data Baru
+</button>
+<table class="custom-data-table">
+<thead>
+<tr>
+<th>No</th>
+<th>Pertanyaan</th>
+<th>Jawaban</th>
+<th>Tanggal Dibuat</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="customDataTableBody">
+<!-- Data will be populated here -->
+</tbody>
+</table>
 </div>
 
 <!-- Data Input Form -->
@@ -1291,36 +1395,78 @@ const categoryCounts = {
 document.querySelectorAll('.category-card').forEach(card => {
 const category = card.dataset.category;
 const countElement = card.querySelector('.category-count');
-if (countElement) {
+if (countElement && categoryCounts[category] !== undefined) {
   countElement.textContent = `${categoryCounts[category]} FAQ`;
 }
 });
-
-// Periksa apakah kategori "Data Saya" sudah ada
-const customCategoryExists = document.querySelector('.category-card[data-category="custom"]');
-  
-// Jika ada data custom dan kategori "Data Saya" belum ada, tambahkan
-if (savedData.length > 0 && !customCategoryExists) {
-const customCard = document.createElement('div');
-customCard.className = 'category-card';
-customCard.dataset.category = 'custom';
-customCard.innerHTML = `
-  <span class="category-icon"><i class="fas fa-user-edit"></i></span>
-  <span class="category-name">Data Saya</span>
-  <span class="category-count">${categoryCounts.custom} FAQ</span>
-`;
-categoriesGrid.appendChild(customCard);
-  
-// Tambahkan event listener untuk kategori baru
-customCard.addEventListener('click', () => {
-  document.querySelectorAll('.category-card').forEach(c => {
-    c.classList.remove('active');
-  });
-  
-  customCard.classList.add('active');
-  filterFAQ();
-});
 }
+
+// Fungsi untuk menampilkan data dalam bentuk tabel untuk kategori "Data Saya"
+function renderCustomDataTable() {
+const customDataTableBody = document.getElementById('customDataTableBody');
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+  
+// Filter data untuk kategori "custom" saja
+const customData = savedData.filter(item => item.category === 'custom');
+  
+customDataTableBody.innerHTML = '';
+  
+if (customData.length === 0) {
+customDataTableBody.innerHTML = `
+<tr>
+<td colspan="5" class="no-data">Belum ada data yang tersimpan</td>
+</tr>
+`;
+return;
+}
+  
+// Urutkan data berdasarkan tanggal dibuat (terbaru pertama)
+customData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+customData.forEach((item, index) => {
+const row = document.createElement('tr');
+const createdDate = new Date(item.createdAt).toLocaleDateString('id-ID', {
+day: '2-digit',
+month: '2-digit',
+year: 'numeric',
+hour: '2-digit',
+minute: '2-digit'
+});
+  
+row.innerHTML = `
+<td>${index + 1}</td>
+<td>${item.question}</td>
+<td>${item.answer}</td>
+<td>${createdDate}</td>
+<td>
+<div class="custom-data-actions">
+<button class="action-btn view-btn" data-id="${item.id}" title="Lihat Detail">
+<i class="fas fa-eye"></i>
+</button>
+<button class="action-btn delete-btn" data-id="${item.id}" title="Hapus">
+<i class="fas fa-trash"></i>
+</button>
+</div>
+</td>
+`;
+customDataTableBody.appendChild(row);
+});
+  
+// Tambahkan event listener untuk tombol hapus
+document.querySelectorAll('#customDataTableBody .delete-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const id = parseInt(e.currentTarget.getAttribute('data-id'));
+deleteData(id);
+});
+});
+  
+// Tambahkan event listener untuk tombol lihat
+document.querySelectorAll('#customDataTableBody .view-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const id = parseInt(e.currentTarget.getAttribute('data-id'));
+viewData(id);
+});
+});
 }
 
 // Fungsi untuk beralih antar tab
@@ -1329,6 +1475,7 @@ function switchTab(tabName) {
 document.getElementById('faq-section').style.display = 'none';
 document.getElementById('data-form-section').style.display = 'none';
 document.getElementById('data-table-section').style.display = 'none';
+document.getElementById('customDataContainer').style.display = 'none';
   
 // Nonaktifkan semua tab
 document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -1465,6 +1612,7 @@ savedData = savedData.filter(item => item.id !== id);
 localStorage.setItem('faqCustomData', JSON.stringify(savedData));
 loadSavedData(); // Muat ulang tabel
 updateCategoriesDisplay(); // Perbarui tampilan kategori
+renderCustomDataTable(); // Perbarui tabel Data Saya
 }
 }
 
@@ -1520,6 +1668,16 @@ c.classList.remove('active');
 
 card.classList.add('active');
 filterFAQ();
+  
+// Tampilkan tabel Data Saya jika kategori "custom" dipilih
+if (card.dataset.category === 'custom') {
+document.getElementById('faqList').style.display = 'none';
+document.getElementById('customDataContainer').classList.add('active');
+renderCustomDataTable();
+} else {
+document.getElementById('faqList').style.display = 'grid';
+document.getElementById('customDataContainer').classList.remove('active');
+}
 });
 });
 
@@ -1529,6 +1687,14 @@ tab.addEventListener('click', () => {
 const tabName = tab.getAttribute('data-tab');
 switchTab(tabName);
 });
+});
+
+// Add Data button event listener
+document.getElementById('addDataBtn').addEventListener('click', () => {
+// Set kategori ke "Data Saya"
+document.getElementById('dataCategory').value = 'custom';
+// Beralih ke tab form input
+switchTab('data-form');
 });
 
 // Form submission event listener
@@ -1551,9 +1717,30 @@ showSuccessNotification('Data berhasil disimpan!');
 // Perbarui tampilan kategori
 updateCategoriesDisplay();
   
+// Jika kategori adalah "custom", perbarui tabel Data Saya
+if (category === 'custom') {
+renderCustomDataTable();
+}
+  
 // Beralih ke tab FAQ setelah 1 detik
 setTimeout(() => {
 switchTab('faq');
+// Aktifkan kategori yang baru saja ditambahkan
+document.querySelectorAll('.category-card').forEach(card => {
+card.classList.remove('active');
+});
+const selectedCategory = document.querySelector(`.category-card[data-category="${category}"]`);
+if (selectedCategory) {
+selectedCategory.classList.add('active');
+}
+filterFAQ();
+  
+// Tampilkan tabel Data Saya jika kategori "custom" dipilih
+if (category === 'custom') {
+document.getElementById('faqList').style.display = 'none';
+document.getElementById('customDataContainer').classList.add('active');
+renderCustomDataTable();
+}
 }, 1000);
 });
 
