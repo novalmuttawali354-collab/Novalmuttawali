@@ -15,13 +15,13 @@ font-family: 'Poppins', sans-serif;
 }
 
 :root {
---primary-color: #2c3e50;
---secondary-color: #4a6491;
+--primary-color: #1a2b42;
+--secondary-color: #2c3e50;
 --accent-color: #ffcc00;
 --danger-color: #e74c3c;
---success-color: #4CAF50;
---warning-color: #FF9800;
---info-color: #00BCD4;
+--success-color: #27ae60;
+--warning-color: #f39c12;
+--info-color: #3498db;
 --light-bg: #f5f7fa;
 --text-color: #333;
 --border-radius: 15px;
@@ -38,6 +38,7 @@ background-size: cover;
 background-position: center;
 background-attachment: fixed;
 overflow-x: hidden;
+min-height: 100vh;
 }
 
 /* Animasi loading */
@@ -47,7 +48,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: rgba(255, 255, 255, 0.9);
+background-color: rgba(26, 43, 66, 0.95);
 display: flex;
 justify-content: center;
 align-items: center;
@@ -63,8 +64,8 @@ pointer-events: none;
 .loader-circle {
 width: 60px;
 height: 60px;
-border: 5px solid rgba(74, 100, 145, 0.2);
-border-top-color: var(--secondary-color);
+border: 5px solid rgba(255, 255, 255, 0.2);
+border-top-color: var(--accent-color);
 border-radius: 50%;
 animation: spin 1s linear infinite;
 }
@@ -103,7 +104,7 @@ top: -50%;
 left: -50%;
 width: 200%;
 height: 200%;
-background: radial-gradient(circle, rgba(74, 100, 145, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+background: radial-gradient(circle, rgba(26, 43, 66, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
 transform: rotate(30deg);
 z-index: -1;
 }
@@ -112,8 +113,8 @@ z-index: -1;
 background: rgba(255, 255, 255, 0.95);
 backdrop-filter: blur(15px);
 border-radius: var(--border-radius);
-box-shadow: var(--box-shadow);
-padding: 40px;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+padding: 50px 40px;
 width: 100%;
 max-width: 450px;
 position: relative;
@@ -131,7 +132,7 @@ to { transform: translateY(0); opacity: 1; }
 text-align: center;
 margin-bottom: 30px;
 color: var(--primary-color);
-font-size: 2rem;
+font-size: 2.2rem;
 font-weight: 700;
 letter-spacing: 1px;
 text-transform: uppercase;
@@ -195,7 +196,7 @@ background-color: rgba(255, 255, 255, 0.8);
 .form-group input:focus {
 border-color: var(--secondary-color);
 outline: none;
-box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
 background-color: #fff;
 }
 
@@ -207,7 +208,7 @@ color: #aaa;
 }
 
 .login-btn {
-background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 color: white;
 border: none;
 padding: 15px 25px;
@@ -223,6 +224,7 @@ letter-spacing: 1px;
 position: relative;
 overflow: hidden;
 z-index: 1;
+margin-top: 10px;
 }
 
 .login-btn::before {
@@ -270,7 +272,7 @@ display: none;
 header {
 background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 color: white;
-padding: 30px 0;
+padding: 40px 0;
 border-radius: var(--border-radius);
 margin-bottom: 30px;
 box-shadow: var(--box-shadow);
@@ -371,7 +373,7 @@ background-color: rgba(255, 255, 255, 0.8);
 #searchInput:focus {
 border-color: var(--secondary-color);
 outline: none;
-box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
 background-color: #fff;
 }
 
@@ -412,7 +414,7 @@ padding: 10px 0;
 }
 
 .category-card {
-background: linear-gradient(to bottom, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9));
+background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.9));
 backdrop-filter: blur(5px);
 border: 2px solid transparent;
 border-radius: 15px;
@@ -424,6 +426,7 @@ box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 position: relative;
 overflow: hidden;
 border: 1px solid rgba(255, 255, 255, 0.3);
+transform: translateY(0);
 }
 
 .category-card::before {
@@ -449,7 +452,7 @@ border-color: var(--secondary-color);
 }
 
 .category-card.active {
-background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 color: white;
 border-color: var(--primary-color);
 transform: translateY(-5px);
@@ -516,7 +519,7 @@ transform: scale(1.2);
 
 .faq-grid {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 gap: 30px;
 margin-top: 30px;
 }
@@ -534,6 +537,7 @@ flex-direction: column;
 border-left: 5px solid transparent;
 position: relative;
 border: 1px solid rgba(255, 255, 255, 0.3);
+transform: translateY(0);
 }
 
 .faq-card:hover {
@@ -546,7 +550,7 @@ box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 border-left-color: var(--success-color);
 }
 .faq-card[data-category="withdraw"] {
-border-left-color: #2196F3;
+border-left-color: var(--info-color);
 }
 .faq-card[data-category="permainan"] {
 border-left-color: #9C27B0;
@@ -594,7 +598,7 @@ transform: scale(1.2);
 
 .faq-header {
 padding: 25px;
-background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 color: white;
 font-weight: 600;
 cursor: pointer;
@@ -717,7 +721,7 @@ box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
 position: fixed;
 top: 30px;
 right: 30px;
-background: linear-gradient(135deg, var(--success-color), #2E7D32);
+background: linear-gradient(135deg, var(--success-color), #27ae60);
 color: white;
 padding: 15px 25px;
 border-radius: 10px;
@@ -760,7 +764,7 @@ margin-top: 50px;
 padding: 30px;
 color: #6c757d;
 font-size: 15px;
-background: linear-gradient(to bottom, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9));
+background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.9));
 backdrop-filter: blur(10px);
 border-radius: var(--border-radius);
 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -799,7 +803,7 @@ margin-top: 15px;
 display: flex;
 background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.9));
 backdrop-filter: blur(10px);
-border-radius: 15px;
+border-radius: var(--border-radius);
 overflow: hidden;
 margin-bottom: 30px;
 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -827,7 +831,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background: linear-gradient(135deg, rgba(74, 100, 145, 0.1), rgba(44, 62, 80, 0.1));
+background: linear-gradient(135deg, rgba(26, 43, 66, 0.1), rgba(44, 62, 80, 0.1));
 transform: translateX(-100%);
 transition: transform 0.5s ease;
 }
@@ -915,7 +919,7 @@ background-color: rgba(255, 255, 255, 0.8);
 .form-group textarea:focus {
 border-color: var(--secondary-color);
 outline: none;
-box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
 background-color: #fff;
 }
 
@@ -941,6 +945,7 @@ letter-spacing: 1px;
 position: relative;
 overflow: hidden;
 z-index: 1;
+margin-top: 10px;
 }
 
 .submit-btn::before {
@@ -1036,7 +1041,7 @@ color: #c0392b;
 position: fixed;
 top: 30px;
 right: 30px;
-background: linear-gradient(135deg, var(--success-color), #2E7D32);
+background: linear-gradient(135deg, var(--success-color), #27ae60);
 color: white;
 padding: 15px 25px;
 border-radius: 10px;
@@ -1145,7 +1150,7 @@ transition: var(--transition);
 .data-filter input:focus {
 border-color: var(--secondary-color);
 outline: none;
-box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
+box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
 background-color: #fff;
 }
 
@@ -1159,7 +1164,7 @@ margin-right: 10px;
 }
 
 .category-deposit { background-color: var(--success-color); }
-.category-withdraw { background-color: #2196F3; }
+.category-withdraw { background-color: var(--info-color); }
 .category-permainan { background-color: #9C27B0; }
 .category-teknis { background-color: var(--warning-color); }
 .category-bonus { background-color: #E91E63; }
@@ -2252,7 +2257,6 @@ return;
 filteredData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
 filteredData.forEach(item => {
-const row = document.createElement('tr');
 const createdDate = new Date(item.createdAt).toLocaleDateString('id-ID', {
 day: '2-digit',
 month: '2-digit',
@@ -2261,8 +2265,12 @@ hour: '2-digit',
 minute: '2-digit'
 });
 
+const row = document.createElement('tr');
 row.innerHTML = `
-<td><span class="category-indicator category-${item.category}"></span> ${getCategoryName(item.category)}</td>
+<td>
+<span class="category-indicator category-${item.category}"></span>
+${getCategoryName(item.category)}
+</td>
 <td>${item.question}</td>
 <td>${createdDate}</td>
 <td>
@@ -2298,102 +2306,19 @@ viewData(id);
 });
 }
 
-// Fungsi untuk mendapatkan nama kategori dari value
-function getCategoryName(categoryValue) {
-const categories = {
-'deposit': 'Deposit',
-'withdraw': 'Withdraw',
-'permainan': 'Permainan',
-'teknis': 'Teknis',
-'bonus': 'Bonus & Promo',
-'peraturan': 'Peraturan',
-'custom': 'Data Saya'
+// Fungsi untuk mendapatkan nama kategori dari nilai kategori
+function getCategoryName(category) {
+const categoryNames = {
+deposit: 'Deposit',
+withdraw: 'Withdraw',
+permainan: 'Permainan',
+teknis: 'Teknis',
+bonus: 'Bonus & Promo',
+peraturan: 'Peraturan',
+custom: 'Data Saya'
 };
-return categories[categoryValue] || categoryValue;
-}
 
-// Fungsi untuk menghapus data individual
-function deleteData(id) {
-let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
-savedData = savedData.filter(item => item.id !== id);
-localStorage.setItem('faqCustomData', JSON.stringify(savedData));
-loadSavedData();
-updateCategoriesDisplay();
-renderCustomDataTable();
-showSuccessNotification('Data berhasil dihapus!');
-}
-
-// Fungsi untuk menghapus item FAQ individual
-function deleteFAQItem(id) {
-let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
-savedData = savedData.filter(item => item.id !== id);
-localStorage.setItem('faqCustomData', JSON.stringify(savedData));
-filterFAQ();
-updateCategoriesDisplay();
-renderCustomDataTable();
-showSuccessNotification('FAQ berhasil dihapus!');
-}
-
-// Fungsi untuk menghapus kategori
-function deleteCategory(category) {
-// Periksa apakah kategori valid
-if (category === 'all') {
-showSuccessNotification('Kategori "Semua Kategori" tidak dapat dihapus!');
-return;
-}
-
-// Dapatkan nama kategori untuk ditampilkan di dialog
-const categoryName = getCategoryName(category);
-
-showConfirmDialog(
-`Hapus Kategori "${categoryName}"`,
-`Apakah Anda yakin ingin menghapus semua data dalam kategori "${categoryName}"?`,
-() => {
-// Hapus semua data dengan kategori yang dipilih
-let savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
-const initialCount = savedData.length;
-savedData = savedData.filter(item => item.category !== category);
-const deletedCount = initialCount - savedData.length;
-
-localStorage.setItem('faqCustomData', JSON.stringify(savedData));
-
-// Perbarui tampilan
-updateCategoriesDisplay();
-renderCustomDataTable();
-
-// Jika sedang melihat kategori yang dihapus, pindah ke "Semua Kategori"
-const activeCategory = document.querySelector('.category-card.active');
-if (activeCategory && activeCategory.dataset.category === category) {
-document.querySelectorAll('.category-card').forEach(card => {
-card.classList.remove('active');
-});
-document.querySelector('.category-card[data-category="all"]').classList.add('active');
-filterFAQ();
-}
-
-if (deletedCount > 0) {
-showSuccessNotification(`${deletedCount} data dalam kategori "${categoryName}" berhasil dihapus!`);
-} else {
-showSuccessNotification(`Tidak ada data dalam kategori "${categoryName}" yang perlu dihapus.`);
-}
-}
-);
-}
-
-// Fungsi untuk melihat data
-function viewData(id) {
-const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
-const item = savedData.find(data => data.id === id);
-
-if (item) {
-document.getElementById('modalTitle').textContent = item.question;
-document.getElementById('modalBody').innerHTML = `
-<p><strong>Kategori:</strong> ${getCategoryName(item.category)}</p>
-<p><strong>Tanggal Dibuat:</strong> ${new Date(item.createdAt).toLocaleString('id-ID')}</p>
-<div class="faq-answer">${item.answer}</div>
-`;
-document.getElementById('dataModal').style.display = 'block';
-}
+return categoryNames[category] || category;
 }
 
 // Fungsi untuk menampilkan dialog konfirmasi
@@ -2402,344 +2327,180 @@ document.getElementById('confirmTitle').textContent = title;
 document.getElementById('confirmMessage').textContent = message;
 document.getElementById('confirmDialog').classList.add('show');
 
-// Hapus event listener sebelumnya
+// Set event listener untuk tombol konfirmasi
 const confirmBtn = document.getElementById('confirmBtn');
-const cancelBtn = document.getElementById('cancelBtn');
-
-// Buat fungsi baru untuk event handler
-const handleConfirm = () => {
+confirmBtn.onclick = () => {
 onConfirm();
 document.getElementById('confirmDialog').classList.remove('show');
-confirmBtn.removeEventListener('click', handleConfirm);
-cancelBtn.removeEventListener('click', handleCancel);
 };
 
-const handleCancel = () => {
+// Set event listener untuk tombol batal
+document.getElementById('cancelBtn').onclick = () => {
 document.getElementById('confirmDialog').classList.remove('show');
-confirmBtn.removeEventListener('click', handleConfirm);
-cancelBtn.removeEventListener('click', handleCancel);
 };
-
-// Tambahkan event listener
-confirmBtn.addEventListener('click', handleConfirm);
-cancelBtn.addEventListener('click', handleCancel);
 }
 
-// Fungsi untuk menampilkan notifikasi sukses
-function showSuccessNotification(message) {
-const notification = document.getElementById('successNotification');
-notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-notification.classList.add('show');
+// Fungsi untuk menghapus data
+function deleteData(id) {
+const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+const updatedData = savedData.filter(item => item.id !== id);
+localStorage.setItem('faqCustomData', JSON.stringify(updatedData));
 
-// Sembunyikan notifikasi setelah 3 detik
+// Refresh tampilan
+loadSavedData();
+updateCategoriesDisplay();
+filterFAQ();
+
+// Tampilkan notifikasi sukses
+const notification = document.getElementById('successNotification');
+notification.classList.add('show');
 setTimeout(() => {
 notification.classList.remove('show');
-}, 3000);
+}, 2000);
 }
 
-// Fungsi untuk menambahkan data kustom
-function addCustomData() {
+// Fungsi untuk menghapus item FAQ
+function deleteFAQItem(id) {
+deleteData(id);
+}
+
+// Fungsi untuk melihat detail data
+function viewData(id) {
 const savedData = JSON.parse(localStorage.getItem('faqCustomData')) || [];
+const item = savedData.find(data => data.id === id);
 
-// Cek apakah data dengan judul "wecaanovalmutta" sudah ada
-const existingData1 = savedData.find(item => item.question === "wecaanovalmutta");
-if (!existingData1) {
-// Tambahkan data baru
-const newData1 = {
-category: "custom",
-question: "wecaanovalmutta",
-answer: `<a href="https://agwl2.admitoto.com/index.php" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
-id: Date.now(),
-createdAt: new Date().toISOString()
-};
-savedData.push(newData1);
-}
-
-// Cek apakah data dengan judul "BK SMB" sudah ada
-const existingData2 = savedData.find(item => item.question === "BK SMB");
-if (!existingData2) {
-// Tambahkan data baru
-const newData2 = {
-category: "custom",
-question: "BK SMB",
-answer: `<a href="https://bk.augipt.com/linetogelacc" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
-id: Date.now() + 1,
-createdAt: new Date().toISOString()
-};
-savedData.push(newData2);
-}
-
-// Cek apakah data dengan judul "PWR WD" sudah ada
-const existingData3 = savedData.find(item => item.question === "PWR WD");
-if (!existingData3) {
-// Tambahkan data baru
-const newData3 = {
-category: "custom",
-question: "PWR WD",
-answer: `<a href="https://adminline.garudapaymentsmb.com/account/login" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
-id: Date.now() + 2,
-createdAt: new Date().toISOString()
-};
-savedData.push(newData3);
-}
-
-// Cek apakah data dengan judul "CHAT MESSENGER" sudah ada
-const existingData4 = savedData.find(item => item.question === "CHAT MESSENGER");
-if (!existingData4) {
-// Tambahkan data baru
-const newData4 = {
-category: "custom",
-question: "CHAT MESSENGER",
-answer: `<a href="https://linetogel.hokibgs.com/modules/visitor/dashboard" target="_blank" class="custom-link"><i class="fas fa-external-link-alt"></i> Klik di sini untuk membuka link</a>`,
-id: Date.now() + 3,
-createdAt: new Date().toISOString()
-};
-savedData.push(newData4);
-}
-
-// Simpan kembali ke localStorage
-localStorage.setItem('faqCustomData', JSON.stringify(savedData));
-
-// Perbarui tampilan kategori
-updateCategoriesDisplay();
-
-// Jika saat ini sedang di tab FAQ dan kategori "custom" aktif, maka perbarui tampilan FAQ
-const activeCategory = document.querySelector('.category-card.active');
-if (activeCategory && activeCategory.dataset.category === 'custom') {
-renderCustomDataTable();
+if (item) {
+document.getElementById('modalTitle').textContent = 'Detail Data';
+document.getElementById('modalBody').innerHTML = `
+<div class="form-group">
+<label>Kategori</label>
+<p>${getCategoryName(item.category)}</p>
+</div>
+<div class="form-group">
+<label>Pertanyaan</label>
+<p>${item.question}</p>
+</div>
+<div class="form-group">
+<label>Jawaban</label>
+<p>${item.answer}</p>
+</div>
+<div class="form-group">
+<label>Tanggal Dibuat</label>
+<p>${new Date(item.createdAt).toLocaleString('id-ID')}</p>
+</div>
+`;
+document.getElementById('dataModal').style.display = 'block';
 }
 }
 
-// Fungsi untuk login
-function login() {
-const username = document.getElementById('username').value;
-const password = document.getElementById('password').value;
-const errorMessage = document.getElementById('errorMessage');
-
-// Validasi username dan password
-if (username === 'noval' && password === '1') {
-// Simpan status login di localStorage
-localStorage.setItem('isLoggedIn', 'true');
-
-// Sembunyikan halaman login dan tampilkan halaman utama
-document.getElementById('loginPage').style.display = 'none';
-document.getElementById('mainContent').style.display = 'block';
-
-// Reset form login
-document.getElementById('loginForm').reset();
-errorMessage.style.display = 'none';
-
-// Sembunyikan loader
+// Inisialisasi halaman
+document.addEventListener('DOMContentLoaded', function() {
+// Sembunyikan loader setelah halaman dimuat
+setTimeout(() => {
 document.getElementById('loader').classList.add('hidden');
+}, 1000);
 
-// Inisialisasi aplikasi setelah login
-initializeApp();
-} else {
-// Tampilkan pesan error
-errorMessage.style.display = 'block';
-}
-}
-
-// Fungsi untuk logout
-function logout() {
-// Hapus status login dari localStorage
-localStorage.removeItem('isLoggedIn');
-
-// Tampilkan halaman login dan sembunyikan halaman utama
-document.getElementById('loginPage').style.display = 'flex';
-document.getElementById('mainContent').style.display = 'none';
-}
-
-// Fungsi untuk mengecek status login
-function checkLoginStatus() {
-const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-if (isLoggedIn === 'true') {
-// Pengguna sudah login, tampilkan halaman utama
-document.getElementById('loginPage').style.display = 'none';
-document.getElementById('mainContent').style.display = 'block';
-
-// Sembunyikan loader
-document.getElementById('loader').classList.add('hidden');
-
-// Inisialisasi aplikasi
-initializeApp();
-} else {
-// Pengguna belum login, tampilkan halaman login
-document.getElementById('loginPage').style.display = 'flex';
-document.getElementById('mainContent').style.display = 'none';
-    
-    // Sembunyikan loader setelah pengecekan status login
-    setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-    }, 1000);
-}
-}
-
-// Fungsi untuk menginisialisasi aplikasi setelah login
-function initializeApp() {
 // Update jam WIB setiap detik
 updateWIBClock();
 setInterval(updateWIBClock, 1000);
 
-// Tambahkan data kustom
-addCustomData();
-
-// Render semua FAQ items pada awal
-renderFAQItems(faqData);
-
-// Perbarui tampilan kategori
+// Inisialisasi tampilan FAQ
+filterFAQ();
 updateCategoriesDisplay();
 
-// Search input event listener
-document.getElementById('searchInput').addEventListener('input', filterFAQ);
+// Event listener untuk form login
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+e.preventDefault();
+const username = document.getElementById('username').value;
+const password = document.getElementById('password').value;
 
-// Category cards event listeners
-document.querySelectorAll('.category-card').forEach(card => {
-card.addEventListener('click', (e) => {
-// Jika yang diklik adalah tombol hapus, jangan pindah kategori
-if (e.target.closest('.delete-category-btn')) {
-return;
-}
-
-document.querySelectorAll('.category-card').forEach(c => {
-c.classList.remove('active');
-});
-
-card.classList.add('active');
-filterFAQ();
-
-// Tampilkan tabel Data Saya jika kategori "custom" dipilih
-if (card.dataset.category === 'custom') {
-document.getElementById('faqList').style.display = 'none';
-document.getElementById('customDataContainer').classList.add('active');
-renderCustomDataTable();
+// Validasi login sederhana (ganti dengan validasi yang sesuai)
+if (username === 'admin' && password === 'admin') {
+document.getElementById('loginPage').style.display = 'none';
+document.getElementById('mainContent').style.display = 'block';
 } else {
-document.getElementById('faqList').style.display = 'grid';
-document.getElementById('customDataContainer').classList.remove('active');
+document.getElementById('errorMessage').style.display = 'block';
+setTimeout(() => {
+document.getElementById('errorMessage').style.display = 'none';
+}, 3000);
 }
 });
+
+// Event listener untuk tombol logout
+document.getElementById('logoutBtn').addEventListener('click', function() {
+document.getElementById('mainContent').style.display = 'none';
+document.getElementById('loginPage').style.display = 'flex';
+document.getElementById('username').value = '';
+document.getElementById('password').value = '';
 });
 
-// Delete category button event listeners untuk semua kategori
-document.querySelectorAll('.delete-category-btn').forEach(btn => {
-btn.addEventListener('click', (e) => {
-e.stopPropagation();
-const categoryCard = e.target.closest('.category-card');
-const category = categoryCard.dataset.category;
-deleteCategory(category);
-});
-});
-
-// Tab navigation event listeners
+// Event listener untuk navigasi tab
 document.querySelectorAll('.nav-tab').forEach(tab => {
-tab.addEventListener('click', () => {
-const tabName = tab.getAttribute('data-tab');
+tab.addEventListener('click', function() {
+const tabName = this.getAttribute('data-tab');
 switchTab(tabName);
 });
 });
 
-// Add Data button event listener
-document.getElementById('addDataBtn').addEventListener('click', () => {
-// Set kategori ke "Data Saya"
-document.getElementById('dataCategory').value = 'custom';
-// Beralih ke tab form input
-switchTab('data-form');
+// Event listener untuk kategori
+document.querySelectorAll('.category-card').forEach(card => {
+card.addEventListener('click', function() {
+document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+this.classList.add('active');
+filterFAQ();
+});
 });
 
-// Form submission event listener
-document.getElementById('dataForm').addEventListener('submit', (e) => {
-e.preventDefault();
+// Event listener untuk pencarian
+document.getElementById('searchInput').addEventListener('input', filterFAQ);
 
+// Event listener untuk form data
+document.getElementById('dataForm').addEventListener('submit', function(e) {
+e.preventDefault();
 const category = document.getElementById('dataCategory').value;
 const question = document.getElementById('dataQuestion').value;
 const answer = document.getElementById('dataAnswer').value;
 
-// Simpan data
+// Simpan data ke localStorage
 saveDataToStorage(category, question, answer);
 
 // Reset form
-document.getElementById('dataForm').reset();
+this.reset();
 
-// Tampilkan pesan sukses
-showSuccessNotification('Data berhasil disimpan!');
-
-// Perbarui tampilan kategori
-updateCategoriesDisplay();
-
-// Jika kategori adalah "custom", perbarui tabel Data Saya
-if (category === 'custom') {
-renderCustomDataTable();
-}
-
-// Beralih ke tab FAQ setelah 1 detik
+// Tampilkan notifikasi sukses
+const notification = document.getElementById('successNotification');
+notification.classList.add('show');
 setTimeout(() => {
-switchTab('faq');
-// Aktifkan kategori yang baru saja ditambahkan
-document.querySelectorAll('.category-card').forEach(card => {
-card.classList.remove('active');
-});
-const selectedCategory = document.querySelector(`.category-card[data-category="${category}"]`);
-if (selectedCategory) {
-selectedCategory.classList.add('active');
-}
+notification.classList.remove('show');
+}, 2000);
+
+// Update tampilan
+updateCategoriesDisplay();
 filterFAQ();
-
-// Tampilkan tabel Data Saya jika kategori "custom" dipilih
-if (category === 'custom') {
-document.getElementById('faqList').style.display = 'none';
-document.getElementById('customDataContainer').classList.add('active');
-renderCustomDataTable();
-}
-}, 1000);
 });
 
-// Filter event listeners
+// Event listener untuk filter data table
 document.getElementById('filterCategory').addEventListener('change', loadSavedData);
 document.getElementById('filterSearch').addEventListener('input', loadSavedData);
 
-// Modal close event listener
-document.querySelector('.close-modal').addEventListener('click', () => {
+// Event listener untuk tombol tambah data
+document.getElementById('addDataBtn').addEventListener('click', function() {
+switchTab('data-form');
+document.getElementById('dataCategory').value = 'custom';
+});
+
+// Event listener untuk modal close
+document.querySelector('.close-modal').addEventListener('click', function() {
 document.getElementById('dataModal').style.display = 'none';
 });
 
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
+// Event listener untuk klik di luar modal
+window.addEventListener('click', function(e) {
 if (e.target === document.getElementById('dataModal')) {
 document.getElementById('dataModal').style.display = 'none';
 }
-if (e.target === document.getElementById('confirmDialog')) {
-document.getElementById('confirmDialog').classList.remove('show');
-}
 });
-}
-
-// Inisialisasi event listeners
-document.addEventListener('DOMContentLoaded', () => {
-// Cek status login saat halaman dimuat
-checkLoginStatus();
-
-// Login form event listener
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-e.preventDefault();
-login();
-});
-
-// Logout button event listener
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-logoutBtn.addEventListener('click', function(e) {
-e.preventDefault();
-logout();
-});
-}
 });
 </script>
 </body>
 </html>
-
-
-
-
-
-
