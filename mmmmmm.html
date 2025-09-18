@@ -2528,6 +2528,9 @@ document.getElementById('mainContent').style.display = 'block';
 document.getElementById('loginForm').reset();
 errorMessage.style.display = 'none';
 
+// Sembunyikan loader
+document.getElementById('loader').classList.add('hidden');
+
 // Inisialisasi aplikasi setelah login
 initializeApp();
 } else {
@@ -2555,22 +2558,25 @@ if (isLoggedIn === 'true') {
 document.getElementById('loginPage').style.display = 'none';
 document.getElementById('mainContent').style.display = 'block';
 
+// Sembunyikan loader
+document.getElementById('loader').classList.add('hidden');
+
 // Inisialisasi aplikasi
 initializeApp();
 } else {
 // Pengguna belum login, tampilkan halaman login
 document.getElementById('loginPage').style.display = 'flex';
 document.getElementById('mainContent').style.display = 'none';
+    
+    // Sembunyikan loader setelah pengecekan status login
+    setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+    }, 1000);
 }
 }
 
 // Fungsi untuk menginisialisasi aplikasi setelah login
 function initializeApp() {
-// Sembunyikan loader setelah halaman dimuat
-setTimeout(() => {
-document.getElementById('loader').classList.add('hidden');
-}, 1000);
-
 // Update jam WIB setiap detik
 updateWIBClock();
 setInterval(updateWIBClock, 1000);
