@@ -1054,6 +1054,14 @@
             .search-btn {
                 justify-content: center;
             }
+            
+            .data-table {
+                font-size: 0.85rem;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 10px 8px;
+            }
         }
     </style>
 </head>
@@ -1183,7 +1191,7 @@
 
         <div class="data-container" id="dataRekeningContainer" style="display: none;">
             <h2><i class="fas fa-piggy-bank"></i> Data Rekening</h2>
-            <p>Cari data rekening berdasarkan Bank, Nomor Rekening, atau Nama</p>
+            <p>Cari data rekening berdasarkan Bank, Username, Nomor Rekening, Nama Rekening, Password, atau No HP</p>
             <div class="search-container">
                 <input type="text" id="searchRekening" class="search-input" placeholder="Cari rekening...">
                 <button id="searchBtn" class="search-btn">
@@ -1195,8 +1203,11 @@
                     <thead>
                         <tr>
                             <th>Bank</th>
+                            <th>Username</th>
                             <th>Nomor Rekening</th>
-                            <th>Nama</th>
+                            <th>Nama Rekening</th>
+                            <th>Password</th>
+                            <th>No HP</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -1232,6 +1243,24 @@
     </div>
 
     <script>
+        // Data Rekening
+        const rekeningDataList = [
+            { bank: 'BCA MOBILE', username: 'AYIKDENY0213', nomorRekening: '0941928144', namaRekening: 'Ayik Deny Prasetyo', password: 'Aa66778899 / 778899', noHp: '087776178230' },
+            { bank: 'BCA MOBILE', username: 'MEGAARTA0989', nomorRekening: '6900759566', namaRekening: 'MEGA ARTA PRATIWI', password: 'Aa66778899 / 778899', noHp: '081953352838' },
+            { bank: 'BCA MOBILE', username: 'ADAMBALD0418', nomorRekening: '7295889896', namaRekening: 'Adam Baldand', password: 'Cc66778899 / 778899', noHp: '087853400563' },
+            { bank: 'BCA MOBILE', username: 'ANDREASL0180', nomorRekening: '5798054133', namaRekening: 'ANDREAS LUKITO', password: 'Aa66778899 / 778899', noHp: '081910463031' },
+            { bank: 'BCA MOBILE', username: 'URYADI5566', nomorRekening: '7580694084', namaRekening: 'Suryadi', password: 'Aa66778899 / 778899', noHp: '081910463011' },
+            { bank: 'BCA MOBILE', username: 'DENIHEND0024', nomorRekening: '6331699257', namaRekening: 'DENI HENDRIAN', password: 'Aa66778899 / 778899', noHp: '087774850751' },
+            { bank: 'BCA MOBILE', username: 'ARMAWAN2023', nomorRekening: '0670931803', namaRekening: 'Darmawan', password: 'Aa66778899 / 778899', noHp: '087711999255' },
+            { bank: 'BCA MOBILE', username: 'KEREN789', nomorRekening: '7350332752', namaRekening: 'Yunila Biduri', password: 'Aa66778899/778899', noHp: '085954537633' },
+            { bank: 'BCA MOBILE', username: 'RIVALDI777', nomorRekening: '4080292762', namaRekening: 'Rivaldi Anggreano', password: 'Aa66778899 / 778899', noHp: '087860764362' },
+            { bank: 'BCA MOBILE', username: 'FEBRIHEN8102', nomorRekening: '6430336981', namaRekening: 'Febri Hendrawan', password: 'Aa66778899 / 778899', noHp: '087874921307' },
+            { bank: 'BCA MOBILE', username: 'ASEPSUPR7452', nomorRekening: '6430336680', namaRekening: 'ASEP SUPRIATIN', password: 'Aa66778899 / 788888', noHp: '087860764336' },
+            { bank: 'BCA MOBILE', username: 'SANDYAN0407', nomorRekening: '6430336507', namaRekening: 'Sandyan Perdiansyah', password: 'Aa66778899 / 778899', noHp: '087860764348' },
+            { bank: 'BCA MOBILE', username: 'TENDIKUR0821', nomorRekening: '7391956727', namaRekening: 'TENDI KURNIAWAN', password: 'Aa66778899 / 778899', noHp: '085950645662' },
+            { bank: 'BCA MOBILE', username: 'ADIV7843', nomorRekening: '2320742555', namaRekening: 'ADIV ARYA ATMAJA', password: 'Bb66778899 / 788888', noHp: '085925283274' }
+        ];
+
         // Initialize on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             // Load font and display content
@@ -1451,14 +1480,12 @@
 
             showLoading();
 
-            google.script.run
-                .withSuccessHandler(data => {
-                    rekeningCache.data = data;
-                    rekeningCache.timestamp = Date.now();
-                    displayRekeningData(data);
-                })
-                .withFailureHandler(showError)
-                .getRekeningData();
+            // Use local data instead of Google Script
+            setTimeout(() => {
+                rekeningCache.data = rekeningDataList;
+                rekeningCache.timestamp = Date.now();
+                displayRekeningData(rekeningDataList);
+            }, 500);
         }
 
         function displayRekeningData(data) {
@@ -1480,11 +1507,14 @@
                 const row = document.createElement('tr');
                 row.style.animation = `fadeInUp 0.4s both ${index * 0.05}s`;
 
-                const rekeningText = `${item.nama || 'N/A'} - ${item.rekening || 'N/A'} (${item.bank || 'N/A'})`;
+                const rekeningText = `${item.namaRekening} - ${item.nomorRekening} (${item.bank})`;
                 row.innerHTML = `
-                    <td>${item.bank || 'N/A'}</td>
-                    <td>${item.rekening || 'N/A'}</td>
-                    <td>${item.nama || 'N/A'}</td>
+                    <td>${item.bank}</td>
+                    <td>${item.username}</td>
+                    <td>${item.nomorRekening}</td>
+                    <td>${item.namaRekening}</td>
+                    <td>${item.password}</td>
+                    <td>${item.noHp}</td>
                     <td>
                         <button class="copy-rekening-btn" onclick="copyToClipboard('${rekeningText.replace(/'/g, "\\'")}')">
                             <i class="fas fa-copy"></i> Salin
@@ -1497,7 +1527,7 @@
         }
 
         function searchRekening() {
-            const searchTerm = document.getElementById('searchRekening').value.trim();
+            const searchTerm = document.getElementById('searchRekening').value.trim().toLowerCase();
             const loading = document.getElementById('loading');
             const rekeningData = document.getElementById('rekeningData');
             const noResults = document.getElementById('noResults');
@@ -1515,16 +1545,20 @@
             document.getElementById('searchBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
 
             setTimeout(() => {
-                google.script.run.withSuccessHandler(function(data) {
-                    document.getElementById('searchBtn').innerHTML = '<i class="fas fa-search"></i> Cari';
-                    loading.style.display = 'none';
-                    displayRekeningData(data);
-                }).withFailureHandler(function(error) {
-                    document.getElementById('searchBtn').innerHTML = '<i class="fas fa-search"></i> Cari';
-                    loading.innerHTML = `<i class="fas fa-exclamation-triangle"></i><br>Gagal mencari data: ${error.message}`;
-                    noResults.style.display = 'flex';
-                }).searchRekening(searchTerm);
-            }, 800);
+                // Filter local data
+                const filteredData = rekeningDataList.filter(item => 
+                    item.bank.toLowerCase().includes(searchTerm) ||
+                    item.username.toLowerCase().includes(searchTerm) ||
+                    item.nomorRekening.includes(searchTerm) ||
+                    item.namaRekening.toLowerCase().includes(searchTerm) ||
+                    item.password.toLowerCase().includes(searchTerm) ||
+                    item.noHp.includes(searchTerm)
+                );
+
+                document.getElementById('searchBtn').innerHTML = '<i class="fas fa-search"></i> Cari';
+                loading.style.display = 'none';
+                displayRekeningData(filteredData);
+            }, 500);
         }
 
         // Report functionality
