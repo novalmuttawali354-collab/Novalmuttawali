@@ -332,6 +332,33 @@
             to { opacity: 1; }
         }
 
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Notification */
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .filter-container {
@@ -734,7 +761,7 @@
             
             // Copy to clipboard
             navigator.clipboard.writeText(copyText).then(() => {
-                alert(`Semua hadiah ${getJenisName(jenis)} berhasil disalin!`);
+                showNotification(`Semua hadiah ${getJenisName(jenis)} berhasil disalin!`);
             }).catch(err => {
                 console.error('Gagal menyalin teks: ', err);
                 alert('Gagal menyalin hadiah');
@@ -830,11 +857,14 @@
                 resultHTML += `
                     <div class="step">
                         <div class="step-number">6</div>
-                        <div class="step-content">
+                        <div class="step-content" id="calculation-explanation">
                             <strong>Cara Perhitungan:</strong> 
                             <p>Untuk hadiah full, perhitungannya sangat sederhana:</p>
                             <p>${formattedBet} × ${multiplier.toLocaleString('id-ID')} = ${formattedAmount}</p>
                             <p>Artinya, jika Anda memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)} dan menang, Anda akan menerima hadiah penuh sebesar ${formattedAmount} tanpa potongan apapun.</p>
+                            <button class="copy-btn" onclick="copyCalculationExplanation()">
+                                <i class="fas fa-copy"></i> Salin Penjelasan
+                            </button>
                         </div>
                     </div>
                 `;
@@ -864,7 +894,7 @@
                     
                     <div class="step">
                         <div class="step-number">7</div>
-                        <div class="step-content">
+                        <div class="step-content" id="calculation-explanation">
                             <strong>Cara Perhitungan:</strong> 
                             <p>Untuk hadiah discount, perhitungannya sedikit berbeda:</p>
                             <p>1. Taruhan awal: ${formattedBet}</p>
@@ -872,6 +902,9 @@
                             <p>3. Taruhan setelah discount: ${formattedActualBet}</p>
                             <p>4. Perhitungan hadiah: ${formattedActualBet} × ${multiplier.toLocaleString('id-ID')} = ${formattedAmount}</p>
                             <p>Artinya, dengan memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)}, Anda hanya perlu membayar ${formattedActualBet} karena mendapatkan discount sebesar ${formattedDiscount}. Jika menang, Anda akan menerima hadiah sebesar ${formattedAmount}.</p>
+                            <button class="copy-btn" onclick="copyCalculationExplanation()">
+                                <i class="fas fa-copy"></i> Salin Penjelasan
+                            </button>
                         </div>
                     </div>
                 `;
@@ -895,7 +928,7 @@
                     
                     <div class="step">
                         <div class="step-number">7</div>
-                        <div class="step-content">
+                        <div class="step-content" id="calculation-explanation">
                             <strong>Cara Perhitungan:</strong> 
                             <p>Untuk hadiah bolak-balik (BB), ada dua jenis hadiah yang bisa Anda dapatkan:</p>
                             <p>1. Hadiah utama jika angka Anda tepat:</p>
@@ -903,6 +936,9 @@
                             <p>2. Hadiah terbalik jika angka Anda terbalik:</p>
                             <p>   ${formattedBet} × ${terbalikMultiplier.toLocaleString('id-ID')} = ${formattedTerbalikAmount}</p>
                             <p>Artinya, dengan memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)}, jika angka Anda tepat, Anda akan menerima hadiah utama sebesar ${formattedAmount}. Namun, jika angka Anda terbalik, Anda masih akan menerima hadiah sebesar ${formattedTerbalikAmount}.</p>
+                            <button class="copy-btn" onclick="copyCalculationExplanation()">
+                                <i class="fas fa-copy"></i> Salin Penjelasan
+                            </button>
                         </div>
                     </div>
                 `;
@@ -923,6 +959,42 @@
             resultHTML += '</div>';
             
             document.getElementById('calcResult').innerHTML = resultHTML;
+        }
+
+        // Function to copy calculation explanation
+        function copyCalculationExplanation() {
+            const explanationElement = document.getElementById('calculation-explanation');
+            if (explanationElement) {
+                // Ambil teks dari elemen penjelasan
+                const textToCopy = explanationElement.innerText;
+                
+                // Salin ke clipboard
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showNotification('Penjelasan perhitungan berhasil disalin!');
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                    alert('Gagal menyalin penjelasan perhitungan');
+                });
+            }
+        }
+
+        // Function to show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'copy-notification';
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Hapus notifikasi setelah 3 detik
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
         }
 
         // Helper functions to get display names
