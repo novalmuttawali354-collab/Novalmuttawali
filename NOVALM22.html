@@ -119,10 +119,11 @@
 
         /* Filter Styles */
         .filter-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            display: flex;
             gap: 15px;
             margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .filter-select {
@@ -133,6 +134,7 @@
             color: var(--text);
             font-family: 'Poppins', sans-serif;
             outline: none;
+            min-width: 200px;
         }
 
         .search-btn {
@@ -144,6 +146,48 @@
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
             transition: var(--transition);
+        }
+
+        /* Jenis Hadiah Cards */
+        .jenis-hadiah-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .jenis-hadiah-card {
+            background: rgba(5, 13, 26, 0.4);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .jenis-hadiah-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .jenis-hadiah-card.active {
+            background: rgba(0, 168, 255, 0.15);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .jenis-hadiah-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .jenis-hadiah-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
 
         /* Hadiah Items */
@@ -195,6 +239,22 @@
             margin-top: 10px;
         }
 
+        .copy-all-btn {
+            background: linear-gradient(to right, var(--warning), var(--danger));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+
         /* Calculator Styles */
         .calculator-grid {
             display: grid;
@@ -228,11 +288,15 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .filter-container {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
             
             .tabs {
                 flex-direction: column;
+            }
+            
+            .jenis-hadiah-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -241,7 +305,7 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-gift"></i> Hadiah Bonus Togel</h1>
-            <p>Generator pencarian hadiah bonus togel berdasarkan jenis hadiah, taruhan, dan pasaran</p>
+            <p>Generator pencarian hadiah bonus togel berdasarkan jenis hadiah</p>
         </header>
 
         <div class="card">
@@ -259,33 +323,19 @@
                         <option value="BB">Hadiah Bolak Balik (BB)</option>
                     </select>
                     
-                    <select id="filterTaruhan" class="filter-select">
-                        <option value="">Pilih Jenis Taruhan</option>
-                        <option value="4D">4D</option>
-                        <option value="3D">3D</option>
-                        <option value="2D">2D</option>
-                        <option value="2D_DEPAN">2D Depan</option>
-                        <option value="2D_TENGAH">2D Tengah</option>
-                    </select>
-                    
-                    <select id="filterPasaran" class="filter-select">
-                        <option value="">Pilih Pasaran</option>
-                        <option value="ALL">All Pasaran</option>
-                        <option value="SYDNEY_HONGKONG">Sydney & Hongkong</option>
-                        <option value="TOTO_MACAU_4D">Toto Macau 4D</option>
-                        <option value="KINGKONG_4D">Kingkong 4D</option>
-                        <option value="TOTO_MACAU_5D">Toto Macau 5D</option>
-                    </select>
-                    
                     <button id="searchHadiahBtn" class="search-btn">
-                        <i class="fas fa-search"></i> Cari Hadiah
+                        <i class="fas fa-search"></i> Tampilkan Hadiah
                     </button>
+                </div>
+                
+                <div id="jenisHadiahCards" class="jenis-hadiah-container">
+                    <!-- Cards untuk jenis hadiah akan di-generate di sini -->
                 </div>
                 
                 <div id="hadiahResults">
                     <div class="no-hadiah" id="noHadiah">
                         <i class="fas fa-info-circle"></i><br>
-                        Pilih filter untuk melihat hadiah bonus togel
+                        Pilih jenis hadiah untuk melihat detail bonus togel
                     </div>
                     <div id="hadiahList"></div>
                 </div>
@@ -303,15 +353,6 @@
                             <option value="BB">Hadiah Bolak Balik (BB)</option>
                         </select>
                         
-                        <select id="calcPasaran" class="calculator-input">
-                            <option value="">Pilih Pasaran</option>
-                            <option value="ALL">All Pasaran</option>
-                            <option value="SYDNEY_HONGKONG">Sydney & Hongkong</option>
-                            <option value="TOTO_MACAU_4D">Toto Macau 4D</option>
-                            <option value="KINGKONG_4D">Kingkong 4D</option>
-                            <option value="TOTO_MACAU_5D">Toto Macau 5D</option>
-                        </select>
-                        
                         <select id="calcTaruhan" class="calculator-input">
                             <option value="">Pilih Jenis Taruhan</option>
                             <option value="4D">4D</option>
@@ -319,6 +360,16 @@
                             <option value="2D">2D</option>
                             <option value="2D_DEPAN">2D Depan</option>
                             <option value="2D_TENGAH">2D Tengah</option>
+                            <option value="5D">5D</option>
+                        </select>
+                        
+                        <select id="calcPasaran" class="calculator-input">
+                            <option value="">Pilih Pasaran</option>
+                            <option value="ALL">All Pasaran</option>
+                            <option value="SYDNEY_HONGKONG">Sydney & Hongkong</option>
+                            <option value="TOTO_MACAU_4D">Toto Macau 4D</option>
+                            <option value="KINGKONG_4D">Kingkong 4D</option>
+                            <option value="TOTO_MACAU_5D">Toto Macau 5D</option>
                         </select>
                     </div>
                     
@@ -371,6 +422,25 @@
             { jenis: "BB", taruhan: "2D", pasaran: "ALL", hadiah: "x70", hadiah_terbalik: "x20", keterangan: "All pasaran kecuali Hokidraw dan Totomacau 5d" },
         ];
 
+        // Jenis Hadiah Info
+        const jenisHadiahInfo = {
+            "FULL": {
+                title: "Hadiah Full",
+                description: "Hadiah penuh tanpa potongan untuk semua jenis taruhan",
+                icon: "fa-trophy"
+            },
+            "DISCOUNT": {
+                title: "Hadiah Discount",
+                description: "Hadiah dengan diskon taruhan yang lebih rendah",
+                icon: "fa-percentage"
+            },
+            "BB": {
+                title: "Hadiah Bolak Balik (BB)",
+                description: "Hadiah untuk angka yang bisa dibolak-balik",
+                icon: "fa-sync-alt"
+            }
+        };
+
         // Initialize on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             // Tab functionality
@@ -391,38 +461,78 @@
                 });
             });
             
+            // Generate jenis hadiah cards
+            generateJenisHadiahCards();
+            
             // Search hadiah functionality
             document.getElementById('searchHadiahBtn').addEventListener('click', searchHadiah);
             
             // Calculate functionality
             document.getElementById('calculateBtn').addEventListener('click', calculatePrize);
+            
+            // Initialize with no hadiah message
+            document.getElementById('noHadiah').style.display = 'block';
         });
 
-        // Function to search hadiah based on filters
+        // Function to generate jenis hadiah cards
+        function generateJenisHadiahCards() {
+            const container = document.getElementById('jenisHadiahCards');
+            container.innerHTML = '';
+            
+            Object.keys(jenisHadiahInfo).forEach(jenis => {
+                const info = jenisHadiahInfo[jenis];
+                const card = document.createElement('div');
+                card.className = 'jenis-hadiah-card';
+                card.setAttribute('data-jenis', jenis);
+                
+                card.innerHTML = `
+                    <div class="jenis-hadiah-title">
+                        <i class="fas ${info.icon}"></i> ${info.title}
+                    </div>
+                    <div class="jenis-hadiah-desc">${info.description}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Set active class
+                    document.querySelectorAll('.jenis-hadiah-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    
+                    // Set filter value and trigger search
+                    document.getElementById('filterJenis').value = jenis;
+                    searchHadiah();
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Function to search hadiah based on jenis
         function searchHadiah() {
             const jenis = document.getElementById('filterJenis').value;
-            const taruhan = document.getElementById('filterTaruhan').value;
-            const pasaran = document.getElementById('filterPasaran').value;
             
-            let filteredData = hadiahBonusData;
-            
-            if (jenis) {
-                filteredData = filteredData.filter(item => item.jenis === jenis);
+            if (!jenis) {
+                document.getElementById('noHadiah').style.display = 'block';
+                document.getElementById('hadiahList').innerHTML = '';
+                return;
             }
             
-            if (taruhan) {
-                filteredData = filteredData.filter(item => item.taruhan === taruhan);
-            }
+            // Filter data by jenis
+            const filteredData = hadiahBonusData.filter(item => item.jenis === jenis);
             
-            if (pasaran) {
-                filteredData = filteredData.filter(item => item.pasaran === pasaran);
-            }
+            // Update active card
+            document.querySelectorAll('.jenis-hadiah-card').forEach(card => {
+                if (card.getAttribute('data-jenis') === jenis) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
             
-            displayHadiahResults(filteredData);
+            displayHadiahResults(filteredData, jenis);
         }
 
         // Function to display hadiah results
-        function displayHadiahResults(data) {
+        function displayHadiahResults(data, jenis) {
             const hadiahList = document.getElementById('hadiahList');
             const noHadiah = document.getElementById('noHadiah');
             
@@ -430,83 +540,166 @@
             
             if (data.length === 0) {
                 noHadiah.style.display = 'block';
-                noHadiah.innerHTML = '<i class="fas fa-info-circle"></i><br>Tidak ditemukan hadiah yang sesuai dengan filter';
+                noHadiah.innerHTML = '<i class="fas fa-info-circle"></i><br>Tidak ditemukan hadiah untuk jenis ini';
                 return;
             }
             
             noHadiah.style.display = 'none';
             
+            // Create header for the jenis
+            const groupHeader = document.createElement('h3');
+            groupHeader.className = 'card-title';
+            groupHeader.innerHTML = `<i class="fas ${jenisHadiahInfo[jenis].icon}"></i> ${jenisHadiahInfo[jenis].title}`;
+            hadiahList.appendChild(groupHeader);
+            
+            // Add copy all button
+            const copyAllBtn = document.createElement('button');
+            copyAllBtn.className = 'copy-all-btn';
+            copyAllBtn.innerHTML = `<i class="fas fa-copy"></i> Salin Semua Hadiah ${jenisHadiahInfo[jenis].title}`;
+            copyAllBtn.onclick = () => copyAllHadiahByJenis(jenis);
+            hadiahList.appendChild(copyAllBtn);
+            
+            // Group by taruhan
+            const groupedData = {};
             data.forEach(item => {
-                const hadiahItem = document.createElement('div');
-                hadiahItem.className = 'hadiah-item';
+                if (!groupedData[item.taruhan]) {
+                    groupedData[item.taruhan] = [];
+                }
+                groupedData[item.taruhan].push(item);
+            });
+            
+            // Display each group
+            Object.keys(groupedData).forEach(taruhan => {
+                const taruhanHeader = document.createElement('div');
+                taruhanHeader.className = 'hadiah-title';
+                taruhanHeader.textContent = getTaruhanName(taruhan);
+                hadiahList.appendChild(taruhanHeader);
                 
-                let content = `
-                    <div class="hadiah-title">${getJenisName(item.jenis)} - ${getTaruhanName(item.taruhan)}</div>
-                    <div class="hadiah-detail">
-                        <span>Pasaran:</span>
-                        <span class="hadiah-value">${getPasaranName(item.pasaran)}</span>
-                    </div>
-                    <div class="hadiah-detail">
-                        <span>Hadiah:</span>
-                        <span class="hadiah-value">${item.hadiah}</span>
-                    </div>
-                `;
-                
-                if (item.discount) {
-                    content += `
+                groupedData[taruhan].forEach(item => {
+                    const hadiahItem = document.createElement('div');
+                    hadiahItem.className = 'hadiah-item';
+                    
+                    let content = `
                         <div class="hadiah-detail">
-                            <span>Discount:</span>
-                            <span class="hadiah-value">${item.discount}</span>
+                            <span>Pasaran:</span>
+                            <span class="hadiah-value">${getPasaranName(item.pasaran)}</span>
+                        </div>
+                        <div class="hadiah-detail">
+                            <span>Hadiah:</span>
+                            <span class="hadiah-value">${item.hadiah}</span>
                         </div>
                     `;
-                }
-                
-                if (item.hadiah_terbalik) {
+                    
+                    if (item.discount) {
+                        content += `
+                            <div class="hadiah-detail">
+                                <span>Discount:</span>
+                                <span class="hadiah-value">${item.discount}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    if (item.hadiah_terbalik) {
+                        content += `
+                            <div class="hadiah-detail">
+                                <span>Hadiah Terbalik:</span>
+                                <span class="hadiah-value">${item.hadiah_terbalik}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    if (item.keterangan) {
+                        content += `
+                            <div class="hadiah-detail">
+                                <span>Keterangan:</span>
+                                <span>${item.keterangan}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // Add copy button
                     content += `
-                        <div class="hadiah-detail">
-                            <span>Hadiah Terbalik:</span>
-                            <span class="hadiah-value">${item.hadiah_terbalik}</span>
-                        </div>
+                        <button class="copy-btn" onclick="copyAllHadiahByJenis('${jenis}')">
+                            <i class="fas fa-copy"></i> Salin Semua ${jenisHadiahInfo[jenis].title}
+                        </button>
                     `;
+                    
+                    hadiahItem.innerHTML = content;
+                    hadiahList.appendChild(hadiahItem);
+                });
+            });
+        }
+
+        // Function to copy all hadiah by jenis
+        function copyAllHadiahByJenis(jenis) {
+            // Filter data by jenis
+            const filteredData = hadiahBonusData.filter(item => item.jenis === jenis);
+            
+            if (filteredData.length === 0) {
+                alert('Tidak ada data hadiah untuk jenis ini');
+                return;
+            }
+            
+            // Format the text to be copied
+            let copyText = `=== ${getJenisName(jenis)} ===\n\n`;
+            
+            // Group by taruhan
+            const groupedData = {};
+            filteredData.forEach(item => {
+                if (!groupedData[item.taruhan]) {
+                    groupedData[item.taruhan] = [];
                 }
+                groupedData[item.taruhan].push(item);
+            });
+            
+            // Build the formatted text
+            Object.keys(groupedData).forEach(taruhan => {
+                copyText += `${getTaruhanName(taruhan)}:\n`;
                 
-                if (item.keterangan) {
-                    content += `
-                        <div class="hadiah-detail">
-                            <span>Keterangan:</span>
-                            <span>${item.keterangan}</span>
-                        </div>
-                    `;
-                }
-                
-                // Add copy button
-                const copyText = `${getJenisName(item.jenis)} - ${getTaruhanName(item.taruhan)}: ${item.hadiah} (${getPasaranName(item.pasaran)})`;
-                content += `
-                    <button class="copy-btn" onclick="copyToClipboard('${copyText.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-copy"></i> Salin Hadiah
-                    </button>
-                `;
-                
-                hadiahItem.innerHTML = content;
-                hadiahList.appendChild(hadiahItem);
+                groupedData[taruhan].forEach(item => {
+                    copyText += `  Pasaran: ${getPasaranName(item.pasaran)}\n`;
+                    copyText += `  Hadiah: ${item.hadiah}\n`;
+                    
+                    if (item.discount) {
+                        copyText += `  Discount: ${item.discount}\n`;
+                    }
+                    
+                    if (item.hadiah_terbalik) {
+                        copyText += `  Hadiah Terbalik: ${item.hadiah_terbalik}\n`;
+                    }
+                    
+                    if (item.keterangan) {
+                        copyText += `  Keterangan: ${item.keterangan}\n`;
+                    }
+                    
+                    copyText += `\n`;
+                });
+            });
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert(`Semua hadiah ${getJenisName(jenis)} berhasil disalin!`);
+            }).catch(err => {
+                console.error('Gagal menyalin teks: ', err);
+                alert('Gagal menyalin hadiah');
             });
         }
 
         // Function to calculate prize
         function calculatePrize() {
             const jenis = document.getElementById('calcJenis').value;
-            const pasaran = document.getElementById('calcPasaran').value;
             const taruhan = document.getElementById('calcTaruhan').value;
+            const pasaran = document.getElementById('calcPasaran').value;
             const betAmount = parseFloat(document.getElementById('calcBetAmount').value);
             
-            if (!jenis || !pasaran || !taruhan || isNaN(betAmount) || betAmount <= 0) {
+            if (!jenis || !taruhan || !pasaran || isNaN(betAmount) || betAmount <= 0) {
                 document.getElementById('calcResult').innerHTML = '<p class="hadiah-value">Harap isi semua field dengan benar</p>';
                 return;
             }
             
             // Find the matching prize data
             const prizeData = hadiahBonusData.find(item => 
-                item.jenis === jenis && item.pasaran === pasaran && item.taruhan === taruhan
+                item.jenis === jenis && item.taruhan === taruhan && item.pasaran === pasaran
             );
             
             if (!prizeData) {
@@ -618,16 +811,6 @@
             };
             
             return names[pasaran] || pasaran;
-        }
-
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Hadiah berhasil disalin: ' + text);
-            }).catch(err => {
-                console.error('Gagal menyalin teks: ', err);
-                alert('Gagal menyalin hadiah');
-            });
         }
     </script>
 </body>
