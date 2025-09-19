@@ -277,9 +277,53 @@
 
         .calculator-result {
             background: rgba(0, 168, 255, 0.1);
-            padding: 15px;
+            padding: 20px;
             border-radius: var(--border-radius);
             margin-top: 15px;
+        }
+
+        .calculation-steps {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(5, 13, 26, 0.4);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+
+        .step {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .result-highlight {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: var(--border-radius);
         }
 
         /* Animations */
@@ -738,50 +782,145 @@
                 minimumFractionDigits: 0
             }).format(betAmount);
             
+            // Create detailed explanation
             let resultHTML = `
-                <div class="hadiah-detail">
-                    <span>Jenis Hadiah:</span>
-                    <span class="hadiah-value">${getJenisName(jenis)}</span>
+                <div class="result-highlight">
+                    <i class="fas fa-trophy"></i> Total Hadiah: ${formattedAmount}
                 </div>
-                <div class="hadiah-detail">
-                    <span>Pasaran:</span>
-                    <span class="hadiah-value">${getPasaranName(pasaran)}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Taruhan:</span>
-                    <span class="hadiah-value">${getTaruhanName(taruhan)}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Jumlah Taruhan:</span>
-                    <span class="hadiah-value">${formattedBet}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Multiplier:</span>
-                    <span class="hadiah-value">${prizeData.hadiah}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Hadiah yang didapat:</span>
-                    <span class="hadiah-value">${formattedAmount}</span>
-                </div>
+                
+                <div class="calculation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong>Jenis Hadiah:</strong> ${getJenisName(jenis)}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <strong>Pasaran:</strong> ${getPasaranName(pasaran)}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong>Jenis Taruhan:</strong> ${getTaruhanName(taruhan)}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <strong>Jumlah Taruhan:</strong> ${formattedBet}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <strong>Multiplier Hadiah:</strong> ${prizeData.hadiah}
+                        </div>
+                    </div>
             `;
             
-            if (prizeData.discount) {
+            // Add specific explanation based on jenis hadiah
+            if (jenis === 'FULL') {
                 resultHTML += `
-                    <div class="hadiah-detail">
-                        <span>Discount:</span>
-                        <span class="hadiah-value">${prizeData.discount}</span>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <strong>Cara Perhitungan:</strong> 
+                            <p>Untuk hadiah full, perhitungannya sangat sederhana:</p>
+                            <p>${formattedBet} × ${multiplier.toLocaleString('id-ID')} = ${formattedAmount}</p>
+                            <p>Artinya, jika Anda memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)} dan menang, Anda akan menerima hadiah penuh sebesar ${formattedAmount} tanpa potongan apapun.</p>
+                        </div>
+                    </div>
+                `;
+            } else if (jenis === 'DISCOUNT') {
+                // Calculate discount amount
+                const discountPercent = parseFloat(prizeData.discount.replace('%', ''));
+                const discountAmount = betAmount * (discountPercent / 100);
+                const actualBet = betAmount - discountAmount;
+                const formattedActualBet = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(actualBet);
+                const formattedDiscount = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(discountAmount);
+                
+                resultHTML += `
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <strong>Discount:</strong> ${prizeData.discount}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <strong>Cara Perhitungan:</strong> 
+                            <p>Untuk hadiah discount, perhitungannya sedikit berbeda:</p>
+                            <p>1. Taruhan awal: ${formattedBet}</p>
+                            <p>2. Discount (${prizeData.discount}): -${formattedDiscount}</p>
+                            <p>3. Taruhan setelah discount: ${formattedActualBet}</p>
+                            <p>4. Perhitungan hadiah: ${formattedActualBet} × ${multiplier.toLocaleString('id-ID')} = ${formattedAmount}</p>
+                            <p>Artinya, dengan memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)}, Anda hanya perlu membayar ${formattedActualBet} karena mendapatkan discount sebesar ${formattedDiscount}. Jika menang, Anda akan menerima hadiah sebesar ${formattedAmount}.</p>
+                        </div>
+                    </div>
+                `;
+            } else if (jenis === 'BB') {
+                // Calculate terbalik prize
+                const terbalikMultiplier = parseFloat(prizeData.hadiah_terbalik.replace('x', '').replace(',', '').trim());
+                const terbalikPrizeAmount = betAmount * terbalikMultiplier;
+                const formattedTerbalikAmount = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(terbalikPrizeAmount);
+                
+                resultHTML += `
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <strong>Hadiah Terbalik:</strong> ${prizeData.hadiah_terbalik}
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <strong>Cara Perhitungan:</strong> 
+                            <p>Untuk hadiah bolak-balik (BB), ada dua jenis hadiah yang bisa Anda dapatkan:</p>
+                            <p>1. Hadiah utama jika angka Anda tepat:</p>
+                            <p>   ${formattedBet} × ${multiplier.toLocaleString('id-ID')} = ${formattedAmount}</p>
+                            <p>2. Hadiah terbalik jika angka Anda terbalik:</p>
+                            <p>   ${formattedBet} × ${terbalikMultiplier.toLocaleString('id-ID')} = ${formattedTerbalikAmount}</p>
+                            <p>Artinya, dengan memasang taruhan ${getTaruhanName(taruhan)} sebesar ${formattedBet} pada pasaran ${getPasaranName(pasaran)}, jika angka Anda tepat, Anda akan menerima hadiah utama sebesar ${formattedAmount}. Namun, jika angka Anda terbalik, Anda masih akan menerima hadiah sebesar ${formattedTerbalikAmount}.</p>
+                        </div>
                     </div>
                 `;
             }
             
+            // Add keterangan if exists
             if (prizeData.keterangan) {
                 resultHTML += `
-                    <div class="hadiah-detail">
-                        <span>Keterangan:</span>
-                        <span>${prizeData.keterangan}</span>
+                    <div class="step">
+                        <div class="step-number">${jenis === 'FULL' ? '7' : jenis === 'DISCOUNT' ? '8' : '8'}</div>
+                        <div class="step-content">
+                            <strong>Keterangan:</strong> ${prizeData.keterangan}
+                        </div>
                     </div>
                 `;
             }
+            
+            resultHTML += '</div>';
             
             document.getElementById('calcResult').innerHTML = resultHTML;
         }
