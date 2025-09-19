@@ -876,6 +876,145 @@
             box-shadow: 0 4px 12px rgba(255, 60, 65, 0.3);
         }
 
+        /* Report Form Styles */
+        .report-form {
+            background: rgba(15, 27, 44, 0.7);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            background: rgba(15, 27, 44, 0.7);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.2);
+            background: rgba(15, 27, 44, 0.9);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-btn {
+            padding: 12px 25px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+        }
+
+        .form-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 60, 65, 0.4);
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+
+        /* Report List Styles */
+        .report-list {
+            margin-top: 30px;
+        }
+
+        .report-item {
+            background: rgba(15, 27, 44, 0.7);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .report-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 168, 255, 0.15);
+            border-color: rgba(0, 168, 255, 0.4);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.1);
+        }
+
+        .report-name {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .report-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .report-error {
+            margin: 10px 0;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .report-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .report-delete-btn {
+            padding: 6px 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .report-delete-btn:hover {
+            background: #d63031;
+            transform: translateY(-2px);
+        }
+
         /* Mobile Toggle Button - Floating Action Button */
         .menu-toggle {
             position: fixed;
@@ -1214,6 +1353,16 @@
             .hadiah-content {
                 grid-template-columns: 1fr;
             }
+
+            .report-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .report-actions {
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
@@ -1460,9 +1609,43 @@
 
         <div class="data-container" id="reportContainer" style="display: none;">
             <h2><i class="fas fa-file-alt"></i> Report</h2>
-            <p>Pilih laporan untuk melihat informasi terbaru</p>
-            <div id="reportMenuList" style="margin-top: 20px;"></div>
-            <div id="reportContent">
+            <p>Buat dan kelola laporan kesalahan</p>
+            
+            <!-- Report Form -->
+            <div class="report-form">
+                <h3 style="color: var(--primary); margin-bottom: 20px;">Buat Laporan Kesalahan</h3>
+                <form id="errorReportForm">
+                    <div class="form-group">
+                        <label class="form-label" for="reportName">Nama Pelapor</label>
+                        <input type="text" id="reportName" class="form-input" placeholder="Masukkan nama pelapor" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reportDate">Tanggal</label>
+                        <input type="date" id="reportDate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reportError">Deskripsi Kesalahan</label>
+                        <textarea id="reportError" class="form-textarea" placeholder="Jelaskan kesalahan yang terjadi" required></textarea>
+                    </div>
+                    <button type="submit" class="form-btn">
+                        <i class="fas fa-save"></i> Simpan Laporan
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Report List -->
+            <div class="report-list">
+                <h3 style="color: var(--primary); margin-bottom: 20px;">Daftar Laporan Kesalahan</h3>
+                <div id="reportsList">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i><br>
+                        Memuat daftar laporan...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Report Content (Hidden by default) -->
+            <div id="reportContent" style="display: none;">
                 <h3 id="reportTitle"></h3>
                 <div id="reportInfo"></div>
             </div>
@@ -2213,6 +2396,7 @@
             initClock();
             initMenu();
             initDarkMode();
+            initReportForm();
 
             // Delay non-critical initialization
             requestIdleCallback(() => {
@@ -2418,7 +2602,7 @@
             document.getElementById('hadiahBonusContainer').style.display = 'none';
             document.getElementById('reportContainer').style.display = 'block';
 
-            loadReportMenu();
+            loadReports();
             document.getElementById('reportContainer').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
@@ -2663,102 +2847,129 @@
         }
 
         // Report functionality
-        function loadReportMenu() {
-            const reportMenuList = document.getElementById('reportMenuList');
-            const reportContent = document.getElementById('reportContent');
-
-            reportContent.style.display = 'none';
-            reportMenuList.innerHTML = `
-                <div class="loading" style="height: 100px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-spinner fa-spin"></i> Memuat daftar laporan...
-                </div>
-            `;
-
-            google.script.run.withSuccessHandler(function(data) {
-                reportMenuList.innerHTML = '';
-
-                if (!data || data.length === 0) {
-                    reportMenuList.innerHTML = `
-                        <div class="no-results" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px;">
-                            <i class="fas fa-info-circle"></i> Tidak ada laporan tersedia
-                        </div>
-                    `;
-                    return;
-                }
-
-                data.forEach((item, index) => {
-                    const button = document.createElement('button');
-                    button.className = 'report-menu-btn';
-                    button.innerHTML = `
-                        <i class="fas fa-file-alt"></i>
-                        <span>${item.menu || 'Untitled Report'}</span>
-                    `;
-                    button.style.animation = `fadeInUp 0.4s both ${index * 0.1}s`;
-
-                    button.addEventListener('click', function() {
-                        // Add active state to button
-                        document.querySelectorAll('.report-menu-btn').forEach(btn => {
-                            btn.style.background = 'linear-gradient(135deg, rgba(0, 168, 255, 0.1), rgba(255, 60, 65, 0.05))';
-                        });
-                        this.style.background = 'linear-gradient(135deg, rgba(0, 168, 255, 0.3), rgba(255, 60, 65, 0.1))';
-
-                        showReportInfo(item.menu);
-                    });
-
-                    reportMenuList.appendChild(button);
-                });
-            }).withFailureHandler(function(error) {
-                reportMenuList.innerHTML = `
-                    <div class="no-results" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px;">
-                        <i class="fas fa-exclamation-triangle"></i> Gagal memuat laporan: ${error.message}
-                    </div>
-                `;
-                console.error('Error loading report menu:', error);
-            }).getReportMenu();
+        function initReportForm() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reportDate').value = today;
+            
+            // Add form submit event listener
+            document.getElementById('errorReportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveReport();
+            });
         }
 
-        function showReportInfo(menuName) {
-            const reportContent = document.getElementById('reportContent');
-            const reportTitle = document.getElementById('reportTitle');
-            const reportInfo = document.getElementById('reportInfo');
+        function saveReport() {
+            const name = document.getElementById('reportName').value.trim();
+            const date = document.getElementById('reportDate').value;
+            const error = document.getElementById('reportError').value.trim();
+            
+            if (!name || !date || !error) {
+                showToast('Semua field harus diisi', 'error');
+                return;
+            }
+            
+            // Create report object
+            const report = {
+                id: Date.now(), // Simple ID using timestamp
+                name: name,
+                date: date,
+                error: error
+            };
+            
+            // Get existing reports from localStorage
+            let reports = JSON.parse(localStorage.getItem('errorReports')) || [];
+            
+            // Add new report
+            reports.push(report);
+            
+            // Save to localStorage
+            localStorage.setItem('errorReports', JSON.stringify(reports));
+            
+            // Reset form
+            document.getElementById('errorReportForm').reset();
+            
+            // Set today's date again
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reportDate').value = today;
+            
+            // Refresh reports list
+            loadReports();
+            
+            // Show success message
+            showToast('Laporan berhasil disimpan', 'success');
+        }
 
-            reportContent.style.display = 'none';
-            reportInfo.innerHTML = `
-                <div class="loading" style="display: flex; justify-content: center; padding: 20px;">
-                    <i class="fas fa-spinner fa-spin"></i> Memuat informasi...
-                </div>
-            `;
-
-            google.script.run.withSuccessHandler(function(info) {
-                reportTitle.textContent = menuName || 'Report';
-                reportInfo.innerHTML = `
-                    <button class="copy-btn" onclick="copyToClipboard(document.getElementById('reportInfo').textContent)">
-                        <i class="fas fa-copy"></i> Salin Semua
-                    </button>
-                    ${info || '<p style="text-align: center; color: var(--text-light);">Informasi tidak tersedia untuk laporan ini</p>'}
-                `;
-
-                reportContent.style.display = 'block';
-                reportContent.style.animation = 'fadeInUp 0.4s both';
-
-                // Highlight important information
-                const infoElement = document.getElementById('reportInfo');
-                const importantTexts = infoElement.querySelectorAll('strong, b');
-
-                importantTexts.forEach(text => {
-                    text.style.color = 'var(--primary)';
-                    text.style.fontWeight = '600';
-                });
-
-            }).withFailureHandler(function(error) {
-                reportInfo.innerHTML = `
-                    <div style="text-align: center; color: var(--danger); padding: 20px;">
-                        <i class="fas fa-exclamation-triangle"></i> Gagal memuat informasi: ${error.message}
+        function loadReports() {
+            const reportsList = document.getElementById('reportsList');
+            
+            // Get reports from localStorage
+            const reports = JSON.parse(localStorage.getItem('errorReports')) || [];
+            
+            // Clear current list
+            reportsList.innerHTML = '';
+            
+            if (reports.length === 0) {
+                reportsList.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Belum ada laporan kesalahan</p>
                     </div>
                 `;
-                reportContent.style.display = 'block';
-                console.error('Error loading report info:', error);
-            }).getReportInfo(menuName);
+                return;
+            }
+            
+            // Sort reports by date (newest first)
+            reports.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Display reports
+            reports.forEach((report, index) => {
+                const reportItem = document.createElement('div');
+                reportItem.className = 'report-item';
+                reportItem.style.animation = `fadeInUp 0.4s both ${index * 0.1}s`;
+                
+                // Format date for display
+                const formattedDate = new Date(report.date).toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                reportItem.innerHTML = `
+                    <div class="report-header">
+                        <div class="report-name">${report.name}</div>
+                        <div class="report-date">${formattedDate}</div>
+                    </div>
+                    <div class="report-error">${report.error}</div>
+                    <div class="report-actions">
+                        <button class="report-delete-btn" onclick="deleteReport(${report.id})">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+                
+                reportsList.appendChild(reportItem);
+            });
+        }
+
+        function deleteReport(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus laporan ini?')) {
+                // Get reports from localStorage
+                let reports = JSON.parse(localStorage.getItem('errorReports')) || [];
+                
+                // Filter out the report with the given id
+                reports = reports.filter(report => report.id !== id);
+                
+                // Save back to localStorage
+                localStorage.setItem('errorReports', JSON.stringify(reports));
+                
+                // Refresh reports list
+                loadReports();
+                
+                // Show success message
+                showToast('Laporan berhasil dihapus', 'success');
+            }
         }
 
         // Utility functions
