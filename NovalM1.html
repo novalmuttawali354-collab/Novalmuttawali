@@ -609,6 +609,29 @@
             color: var(--secondary);
         }
 
+        .rekening-title {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .rekening-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+        }
+
         .search-container {
             display: flex;
             margin-bottom: 20px;
@@ -1062,6 +1085,10 @@
             .data-table th, .data-table td {
                 padding: 10px 8px;
             }
+            
+            .rekening-title {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -1199,6 +1226,7 @@
                 </button>
             </div>
             <div id="rekeningResults">
+                <h3 class="rekening-title">Rekening Deposit</h3>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -1245,6 +1273,7 @@
     <script>
         // Data Rekening
         const rekeningDataList = [
+            // Data sebelumnya
             { bank: 'BCA MOBILE', username: 'AYIKDENY0213', nomorRekening: '0941928144', namaRekening: 'Ayik Deny Prasetyo', password: 'Aa66778899 / 778899', noHp: '087776178230' },
             { bank: 'BCA MOBILE', username: 'MEGAARTA0989', nomorRekening: '6900759566', namaRekening: 'MEGA ARTA PRATIWI', password: 'Aa66778899 / 778899', noHp: '081953352838' },
             { bank: 'BCA MOBILE', username: 'ADAMBALD0418', nomorRekening: '7295889896', namaRekening: 'Adam Baldand', password: 'Cc66778899 / 778899', noHp: '087853400563' },
@@ -1258,7 +1287,63 @@
             { bank: 'BCA MOBILE', username: 'ASEPSUPR7452', nomorRekening: '6430336680', namaRekening: 'ASEP SUPRIATIN', password: 'Aa66778899 / 788888', noHp: '087860764336' },
             { bank: 'BCA MOBILE', username: 'SANDYAN0407', nomorRekening: '6430336507', namaRekening: 'Sandyan Perdiansyah', password: 'Aa66778899 / 778899', noHp: '087860764348' },
             { bank: 'BCA MOBILE', username: 'TENDIKUR0821', nomorRekening: '7391956727', namaRekening: 'TENDI KURNIAWAN', password: 'Aa66778899 / 778899', noHp: '085950645662' },
-            { bank: 'BCA MOBILE', username: 'ADIV7843', nomorRekening: '2320742555', namaRekening: 'ADIV ARYA ATMAJA', password: 'Bb66778899 / 788888', noHp: '085925283274' }
+            { bank: 'BCA MOBILE', username: 'ADIV7843', nomorRekening: '2320742555', namaRekening: 'ADIV ARYA ATMAJA', password: 'Bb66778899 / 788888', noHp: '085925283274' },
+            // Data baru
+            { bank: 'BCA MOBILE', username: 'WIDYAKOMANG19999', nomorRekening: '5800648833', namaRekening: 'NI PUTU WIDYA BUDIATMINI', password: 'Aa66778899 / 998877', noHp: '085952613754' },
+            { bank: 'BCA MOBILE', username: 'MARIAH2005', nomorRekening: '0690657929', namaRekening: 'Mariah', password: 'Aa66778899 / 778899', noHp: '087755997581' },
+            { bank: 'BCA MOBILE', username: 'MIA0031', nomorRekening: '8660485903', namaRekening: 'Mia', password: 'Aa66778899 / 778899', noHp: '085950645920' },
+            { bank: 'BCA MOBILE', username: 'BABAYDAM0768', nomorRekening: '6920300446', namaRekening: 'Babay Damayani', password: 'Aa66778899 / 778899', noHp: '087822038114' },
+            { bank: 'MANDIRI', username: 'Dwi Puspita Sari', nomorRekening: '1680003458526', namaRekening: 'Dwi Puspita Sari', password: 'Aa778899 / 778899', noHp: '083870157754' },
+            { bank: 'MANDIRI', username: 'Muhammad Nur Ardiansyah', nomorRekening: '1180013931588', namaRekening: 'Muhammad Nur Ardiansyah', password: 'Aa778899 / 778899', noHp: '087884724527' },
+            { bank: 'MANDIRI', username: 'Megawati', nomorRekening: '1180013936892', namaRekening: 'Megawati', password: 'Aa778899 / 778899', noHp: '081774865307' },
+            { bank: 'MANDIRI', username: 'Dwi Puspita Sari', nomorRekening: '1180013933923', namaRekening: 'Janatin', password: 'Aa778899 / 778899', noHp: '087717029206' },
+            { bank: 'MANDIRI', username: 'Agus Setiawan', nomorRekening: '1560023309315', namaRekening: 'Agus Setiawan', password: 'Aa778899 / 778899', noHp: '087858865252' },
+            { bank: 'MANDIRI', username: 'Muchri', nomorRekening: '1170011729829', namaRekening: 'Muchri', password: 'Aa778899 / 778899', noHp: '087717182751' },
+            { bank: 'BNI - MOBILE', username: 'YOSU1604449', nomorRekening: '1785681432', namaRekening: 'Yosep Suhandar', password: 'Cc778899', noHp: '087715544070' },
+            { bank: '707920222100', username: 'SAAB1624420', nomorRekening: '1811072079', namaRekening: 'Saepul Abdulrahman', password: 'Bb778899', noHp: '081770788967' },
+            { bank: 'BNI - MOBILE', username: 'Vino3636', nomorRekening: '1328275489', namaRekening: 'SAGI BINAL', password: 'Aa778989', noHp: '081283317964' },
+            { bank: 'WONDR', username: '', nomorRekening: '1890419177', namaRekening: 'Ricky Dwi Praditya', password: 'Aa778899# / 778899', noHp: '087823034617' },
+            { bank: 'WONDR', username: 'IRWANS5242', nomorRekening: '1916841506', namaRekening: 'ANDIKA IRWANSYAH', password: 'Bb778899#/788888', noHp: '087828854695' },
+            { bank: 'WONDR', username: '', nomorRekening: '1889581575', namaRekening: 'Agus Yoga Pratama Saputra', password: 'Aa778899# / 778899', noHp: '087722864704' },
+            { bank: 'WONDR', username: '', nomorRekening: '1929158954', namaRekening: 'Rendy Pranata', password: '778899/ Aa778899%', noHp: '087822039591' },
+            { bank: 'WONDR', username: '', nomorRekening: '1928252765', namaRekening: 'Sarnati', password: 'Aa778899# / 778899', noHp: '087742660781' },
+            { bank: 'WONDR', username: '', nomorRekening: '1953099236', namaRekening: 'Achmad Taufiq Ramadhan', password: 'Aa778899# / 778899', noHp: '087748346362' },
+            { bank: 'BRIMO / BRI', username: 'lilisumarli1986', nomorRekening: '795601001891507', namaRekening: 'LILI SUMARLI', password: 'Cc112233', noHp: '081998190690' },
+            { bank: 'BRIMO / BRI', username: 'jakarta170589', nomorRekening: '121201009227502', namaRekening: 'SITI HASANAH', password: 'Ee112233', noHp: '081952067813' },
+            { bank: 'BRIMO / BRI', username: 'rustiyadi1987', nomorRekening: '332201004072509', namaRekening: 'RUSTIYADI', password: 'Ee778899', noHp: '087846868824' },
+            { bank: 'BRIMO / BRI', username: 'arjuna310706', nomorRekening: '117901013129508', namaRekening: 'ARJUNA WISESA', password: 'Aa112233', noHp: '087846868822' },
+            { bank: 'BRIMO / BRI', username: 'indracahya220100', nomorRekening: '079001005225507', namaRekening: 'ADAM JANUAR INDRACAHYA', password: 'Aa778899', noHp: '087844638417' },
+            { bank: 'BRIMO / BRI', username: 'ariprahman1020', nomorRekening: '076801036169531', namaRekening: 'ARIP RAHMAN', password: 'Ff778899', noHp: '081998445896' },
+            { bank: 'BRIMO / BRI', username: 'alfarizqi121212', nomorRekening: '795601001889500', namaRekening: 'ALFARIZQI', password: 'Ff778899', noHp: '081998471082' },
+            { bank: 'BRIMO / BRI', username: 'nanasupriatna1984', nomorRekening: '060001015113509', namaRekening: 'NANA SUPRIATNA', password: 'Aa112233', noHp: '083861162804' },
+            { bank: 'BRIMO / CADANGAN', username: 'romiblack3210', nomorRekening: '213601005828535', namaRekening: 'ROMI', password: 'Bb778899', noHp: '083861162358' },
+            { bank: 'BRIMO / CADANGAN', username: 'hasanblacek123', nomorRekening: '217201001721533', namaRekening: 'HASANUDIN', password: 'Xx112233', noHp: '081998425531' },
+            { bank: 'BRIMO / CADANGAN', username: 'mursali123456', nomorRekening: '086301024833532', namaRekening: 'Mursali', password: 'Bb112233', noHp: '087745642874' },
+            { bank: 'BRIMO / CADANGAN', username: 'rohmanganteng1980', nomorRekening: '332001003077508', namaRekening: 'ROHMAN', password: 'Aa778899', noHp: '081944117128' },
+            { bank: 'BRIMO / CADANGAN', username: 'ferryirwandi10', nomorRekening: '091601011411508', namaRekening: 'Ferry Irwandi', password: 'Gg112233', noHp: '085940888406' },
+            { bank: 'BRIMO / CADANGAN', username: 'ipulkemiri69', nomorRekening: '099801009223505', namaRekening: 'SAIFUL RAMDANI', password: 'Bb778899', noHp: '087711213992' },
+            { bank: 'BRIMO / CADANGAN', username: 'mahmudincepak15', nomorRekening: '044001025009500', namaRekening: 'MAHMUDIN', password: 'Aa778899 / 778899', noHp: '081998426860' },
+            { bank: 'BRIMO / CADANGAN', username: 'renalagam574', nomorRekening: '719901022339538', namaRekening: 'RENAL AGAM', password: 'Aa778899 / 778899', noHp: '085963958778' },
+            { bank: 'BRIMO / CADANGAN', username: 'fakhrani12345', nomorRekening: '086701016884503', namaRekening: 'Azfi putri fakhrani', password: 'Aa778899 / 778899', noHp: '087711729813' },
+            { bank: 'BRIMO / CADANGAN', username: 'inaseptember30', nomorRekening: '117901013133507', namaRekening: 'SITI AMINAH', password: 'Bb778899', noHp: '087740148866' },
+            { bank: 'BRIMO / CADANGAN', username: 'inibosobiet12', nomorRekening: '093601014835503', namaRekening: 'Muhammad Obiet Syaiful Anwar', password: 'Cc788888 / 788888', noHp: '085926104110' },
+            { bank: 'BRIMO / CADANGAN', username: 'mohamedakmal2003', nomorRekening: '082601005767500', namaRekening: 'MOHAMED AKMAL RAMADANI', password: 'Aa778899/778899', noHp: '087780787604' },
+            { bank: 'BRIMO / CADANGAN', username: 'mhmdihsan0610', nomorRekening: '332201004607508', namaRekening: 'MUHAMMAD IHSAN RAMADHAN', password: 'Aa778899/778899', noHp: '087723643739' },
+            { bank: 'BRIMO / CADANGAN', username: 'Superpanda888888', nomorRekening: '138701002910501', namaRekening: 'Siti Komariah', password: 'Aa778899/778899', noHp: '087822037832' },
+            { bank: 'BRIMO / CADANGAN', username: 'opikkamil1234', nomorRekening: '082601005761504', namaRekening: 'AHMAD TAOFIK KAMIL', password: 'Aa778899/778899', noHp: '087780787595' },
+            { bank: 'BSI', username: '', nomorRekening: '7299498357', namaRekening: 'Dafa Firmansyah', password: '', noHp: '087821502372' },
+            { bank: 'BSI', username: '', nomorRekening: '7299535748', namaRekening: 'Anisah Rosiana Dewi', password: '', noHp: '087764447987' },
+            { bank: 'BSI', username: '', nomorRekening: '7299629982', namaRekening: 'Emi Handayani', password: 'Aa778899@ / 788888', noHp: '087750212595' },
+            { bank: 'BSI', username: '', nomorRekening: '7299745753', namaRekening: 'Djuana Nugraha', password: '', noHp: '087821470951' },
+            { bank: 'DANAMON', username: 'Banyu basudewo putra', nomorRekening: '003683382083', namaRekening: 'Banyu basudewo putra', password: 'Aa778899/ 778899', noHp: '081916520821' },
+            { bank: 'MAY BANK', username: 'Ririnoktaviani123', nomorRekening: '8774932545', namaRekening: 'Ririn Oktaviani', password: 'Aa778899 / 778899', noHp: '085921214621' },
+            { bank: 'CIMB NIAGA', username: 'Nur8400', nomorRekening: '707988117900', namaRekening: 'SANDRA', password: '@Aa778899/788888', noHp: '081910143918' },
+            { bank: 'CIMB NIAGA', username: 'amel2517', nomorRekening: '708002716300', namaRekening: 'Yulianah', password: '@Aa778899/788888', noHp: '087823033988' },
+            { bank: 'DANAMON', username: 'ranggasasap78@gmail.com', nomorRekening: '3693037289', namaRekening: 'Ranggasaputra', password: 'Aa778899 / 778899', noHp: '087780787517' },
+            { bank: 'DANAMON', username: 'nasir115599@hotmail.com', nomorRekening: '3674027994', namaRekening: 'Nasir', password: 'Aa778899 / 778899', noHp: '087892795343' },
+            { bank: 'CIMB NIAGA', username: 'partisu123', nomorRekening: '708003225400', namaRekening: 'Suparti', password: '@Aa778899/788888', noHp: '087882842066' },
+            { bank: 'CIMB NIAGA', username: 'anan112233', nomorRekening: '708001417100', namaRekening: 'ANITA', password: '@Aa778899/788888', noHp: '087882842034' },
+            { bank: 'MAYBANK', username: 'gemoyy34', nomorRekening: '8755980271', namaRekening: 'Berta Natalia', password: 'Aa778899/778899', noHp: '087862526962' }
         ];
 
         // Initialize on DOMContentLoaded
