@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Line Togel - Noval Muttawali</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preload resources for better performance -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for browsers without JavaScript -->
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    
     <style>
-        /* Gaya dasar yang sudah ada */
         :root {
             --primary: #00a8ff;
             --primary-dark: #0084cc;
@@ -31,6 +40,21 @@
             --border-radius: 12px;
             --border-radius-lg: 20px;
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            --transformer-blue: #00a8ff;
+            --transformer-red: #ff3c41;
+            --transformer-yellow: #ffdd00;
+        }
+
+        /* Dark Mode Variables */
+        .dark-mode {
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --card-bg: rgba(15, 27, 44, 0.9);
+            --lighter: #0a1929;
+            --light: #0f1b2c;
+            --glass: rgba(0, 20, 40, 0.3);
+            --glass-dark: rgba(0, 10, 20, 0.5);
+            background: linear-gradient(135deg, #050d1a 0%, #0f1b2c 100%);
         }
 
         * {
@@ -40,147 +64,798 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #050d1a 0%, #0f1b2c 50%, #1a2f4a 100%);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
             line-height: 1.6;
-            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            position: relative;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 168, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 60, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 221, 0, 0.05) 0%, transparent 50%);
+            z-index: -2;
         }
 
-        header {
+        .fonts-loaded body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Transformers Animation Background */
+        .transformers-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .transformer {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, var(--transformer-blue), var(--transformer-red));
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            opacity: 0.05;
+            animation: transform 20s infinite linear;
+        }
+
+        .transformer:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+
+        .transformer:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-duration: 30s;
+            animation-delay: 2s;
+        }
+
+        .transformer:nth-child(3) {
+            top: 30%;
+            left: 70%;
+            animation-duration: 35s;
+            animation-delay: 5s;
+        }
+
+        .transformer:nth-child(4) {
+            top: 70%;
+            left: 20%;
+            animation-duration: 28s;
+            animation-delay: 7s;
+        }
+
+        @keyframes transform {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 0.05;
+            }
+            25% {
+                transform: rotate(90deg) scale(1.2);
+                opacity: 0.08;
+            }
+            50% {
+                transform: rotate(180deg) scale(0.8);
+                opacity: 0.05;
+            }
+            75% {
+                transform: rotate(270deg) scale(1.1);
+                opacity: 0.07;
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 0.05;
+            }
+        }
+
+        /* Neon Glass Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--glass-dark), var(--glass));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            height: 100vh;
+            position: fixed;
+            box-shadow: var(--shadow);
+            border-right: var(--border);
+            z-index: 100;
+            transform: translateX(0);
+            transition: var(--transition);
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, rgba(0,0,0,0) 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+            animation: scan 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .sidebar-header {
+            padding: 25px;
             text-align: center;
+            border-bottom: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 168, 255, 0.7);
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .sidebar-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 25px;
+            color: var(--light);
+            text-decoration: none;
+            margin: 8px 15px;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            background: rgba(0, 30, 60, 0.2);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.2), transparent);
+            transition: 0.6s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 30, 60, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.2);
+            border-left: 3px solid var(--accent);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.2), rgba(255, 60, 65, 0.1));
+            box-shadow: 0 5px 20px rgba(0, 168, 255, 0.3);
+            border-left: 3px solid var(--accent);
+        }
+
+        .menu-icon {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--accent);
+            transition: var(--transition);
+            text-shadow: 0 0 8px rgba(255, 221, 0, 0.5);
+        }
+
+        .menu-item:hover .menu-icon {
+            transform: scale(1.2);
+            color: white;
+        }
+
+        .menu-text {
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .menu-item:hover .menu-text {
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
-            padding: 20px;
+            animation: fadeInDown 0.8s both 0.2s;
             background: var(--card-bg);
+            padding: 20px 25px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
+            border: var(--border);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
 
-        header h1 {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+            animation: scan 8s linear infinite;
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2.5rem;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        #clock {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+            border: none;
+            font-weight: 500;
+            animation: pulse 2s infinite;
+            transition: var(--transition);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+        }
+
+        #clock:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        /* Card Grid - Modern Glass Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(15, 27, 44, 0.9), rgba(26, 47, 74, 0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            padding: 25px;
             box-shadow: var(--shadow);
+            border: var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            animation: fadeInUp 0.6s both;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(0, 168, 255, 0.3);
+            border-left: 1px solid rgba(0, 168, 255, 0.3);
+            will-change: transform, box-shadow;
+            transform: translateZ(0);
         }
 
-        .card-title {
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.2);
+            border-top: 1px solid rgba(0, 168, 255, 0.5);
+            border-left: 1px solid rgba(0, 168, 255, 0.5);
+        }
+
+        .card:hover::before {
+            height: 8px;
+        }
+
+        .card h3 {
             color: var(--primary);
             margin-bottom: 15px;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
         }
 
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            gap: 10px;
+        .card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .card h3 i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .card p {
+            color: var(--text-light);
             margin-bottom: 20px;
-            flex-wrap: wrap;
+            font-size: 0.95rem;
         }
 
-        .tab-btn {
-            padding: 12px 20px;
-            background: rgba(15, 27, 44, 0.7);
-            border: none;
-            border-radius: var(--border-radius);
-            color: var(--text);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .tab-btn.active {
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .tab-content {
-            display: none;
+        .card-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transition: var(--transition);
+            z-index: -1;
         }
 
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
+        .card-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 60, 65, 0.4);
         }
 
-        /* Filter Styles */
-        .filter-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
+        .card-btn:hover::before {
+            left: 0;
+        }
+
+        /* Floating Particles Background - Modern Design */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: float linear infinite;
+            opacity: 0.7;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.3);
+        }
+
+        /* Data Containers - Glass Panel Design */
+        .data-container {
+            background: linear-gradient(135deg, rgba(15, 27, 44, 0.9), rgba(26, 47, 74, 0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            margin-top: 30px;
+            animation: fadeInUp 0.6s both;
+            transition: var(--transition);
+            border-top: 1px solid rgba(0, 168, 255, 0.3);
+            border-left: 1px solid rgba(0, 168, 255, 0.3);
+        }
+
+        .data-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.15);
+        }
+
+        .data-container h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .data-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .data-container h2 i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .rekening-title {
+            color: var(--accent);
             margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 10px;
         }
 
-        .filter-select {
-            padding: 12px 15px;
+        .rekening-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+        }
+
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 20px;
             border-radius: 8px;
             border: 1px solid rgba(0, 168, 255, 0.3);
-            background: rgba(15, 27, 44, 0.7);
-            color: var(--text);
             font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
             outline: none;
+            transition: var(--transition);
+            background: rgba(15, 27, 44, 0.7);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+            color: var(--text);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.2);
+            background: rgba(15, 27, 44, 0.9);
         }
 
         .search-btn {
-            padding: 12px 25px;
+            padding: 14px 25px;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
-            transition: var(--transition);
-        }
-
-        /* Hadiah Items */
-        .hadiah-item {
-            padding: 15px;
-            margin-bottom: 15px;
-            background: rgba(5, 13, 26, 0.4);
-            border-radius: var(--border-radius);
-            border-left: 4px solid var(--primary);
-            transition: var(--transition);
-        }
-
-        .hadiah-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.2);
-        }
-
-        .hadiah-title {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .hadiah-detail {
-            color: var(--text-light);
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .hadiah-value {
-            color: var(--accent);
             font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 60, 65, 0.4);
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.1);
+            background: rgba(15, 27, 44, 0.7);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(0, 168, 255, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-style: italic;
+            background: rgba(15, 27, 44, 0.7);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .no-results i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        /* Report Section - Modern Design */
+        .report-menu-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 16px 25px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1), rgba(255, 60, 65, 0.05));
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            border-radius: var(--border-radius);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: var(--transition);
+            gap: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .report-menu-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.2), rgba(255, 60, 65, 0.1));
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.1);
+            border-color: rgba(0, 168, 255, 0.3);
+        }
+
+        .report-menu-btn i {
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .report-menu-btn:hover i {
+            transform: scale(1.2);
+            color: var(--accent);
+        }
+
+        #reportContent {
+            margin-top: 20px;
+            padding: 25px;
+            background: rgba(15, 27, 44, 0.8);
+            border-radius: var(--border-radius-lg);
+            display: none;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            position: relative;
+            transition: var(--transition);
+            border-top: 1px solid rgba(0, 168, 255, 0.3);
+            border-left: 1px solid rgba(0, 168, 255, 0.3);
+        }
+
+        #reportContent:hover {
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.1);
+        }
+
+        #reportTitle {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        #reportTitle::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        #reportInfo {
+            white-space: pre-line;
+            line-height: 1.8;
+            position: relative;
+            padding-top: 10px;
         }
 
         .copy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 10px rgba(0, 168, 255, 0.2);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(255, 60, 65, 0.3);
+        }
+
+        .copy-rekening-btn {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
@@ -192,442 +867,2052 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0, 168, 255, 0.2);
         }
 
-        /* Calculator Styles */
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        .copy-rekening-btn:hover {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 60, 65, 0.3);
         }
 
-        .calculator-input {
+        /* Mobile Toggle Button - Floating Action Button */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 168, 255, 0.4);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 60, 65, 0.5);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: rgba(15, 27, 44, 0.3);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.2), transparent);
+            margin: 10px 0;
+            animation: shimmer 1.5s infinite;
+            background-size: 200% 100%;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            color: white;
+            z-index: 1000;
+            animation: fadeInUp 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.success {
+            background: var(--success);
+            box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);
+        }
+
+        .toast.error {
+            background: var(--danger);
+            box-shadow: 0 4px 15px rgba(239, 35, 60, 0.3);
+        }
+
+        /* Error Banner */
+        #errorBanner {
+            display: none;
+            background: var(--danger);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Hadiah Bonus Togel Styles */
+        .hadiah-container {
+            margin-top: 20px;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .filter-select {
             width: 100%;
             padding: 12px 15px;
             border-radius: 8px;
             border: 1px solid rgba(0, 168, 255, 0.3);
             background: rgba(15, 27, 44, 0.7);
             color: var(--text);
-            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
-        .calculator-result {
-            background: rgba(0, 168, 255, 0.1);
-            padding: 15px;
+        .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.2);
+            background: rgba(15, 27, 44, 0.9);
+        }
+
+        .hadiah-card {
+            background: rgba(15, 27, 44, 0.7);
             border-radius: var(--border-radius);
-            margin-top: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .hadiah-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.15);
+            border-color: rgba(0, 168, 255, 0.4);
+        }
+
+        .hadiah-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.2);
+        }
+
+        .hadiah-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hadiah-pasaran {
+            background: rgba(0, 168, 255, 0.2);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hadiah-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .hadiah-item {
+            background: rgba(15, 27, 44, 0.5);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .hadiah-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .hadiah-item-value {
+            color: var(--accent);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .hadiah-item-discount {
+            color: var(--success);
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 168, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 255, 0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateZ(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateZ(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            #clock {
+                align-self: flex-start;
+            }
+        }
+
         @media (max-width: 768px) {
-            .filter-container {
+            .card-container {
                 grid-template-columns: 1fr;
             }
-            
-            .tabs {
+
+            .search-container {
                 flex-direction: column;
+            }
+
+            .search-btn {
+                justify-content: center;
+            }
+            
+            .data-table {
+                font-size: 0.85rem;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 10px 8px;
+            }
+            
+            .rekening-title {
+                font-size: 1.2rem;
+            }
+
+            .filter-container {
+                flex-direction: column;
+            }
+
+            .hadiah-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-gift"></i> Hadiah Bonus Togel</h1>
-            <p>Generator pencarian hadiah bonus togel berdasarkan jenis hadiah, taruhan, dan pasaran</p>
-        </header>
+    <!-- Transformers Animation Background -->
+    <div class="transformers-bg">
+        <div class="transformer"></div>
+        <div class="transformer"></div>
+        <div class="transformer"></div>
+        <div class="transformer"></div>
+    </div>
 
-        <div class="card">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="hadiah">Daftar Hadiah</button>
-                <button class="tab-btn" data-tab="calculator">Kalkulator Hadiah</button>
+    <div class="particles" id="particles"></div>
+
+    <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Line Togel</h2>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" id="dashboardMenu">
+                <span class="menu-icon"><i class="fas fa-chart-line"></i></span>
+                <span class="menu-text">LINETOGEL.COM</span>
+            </a>
+            <a href="https://novalmuttawali.vercel.app/mmmmmm.html" class="menu-item" target="_blank">
+                <span class="menu-icon"><i class="fas fa-bolt"></i></span>
+                <span class="menu-text">PELURU ANTI AIR</span>
+            </a>
+            <a href="#" class="menu-item" id="dataRekeningMenu">
+                <span class="menu-icon"><i class="fas fa-piggy-bank"></i></span>
+                <span class="menu-text">Data Rekening</span>
+            </a>
+            <a href="#" class="menu-item" id="hadiahBonusMenu">
+                <span class="menu-icon"><i class="fas fa-gift"></i></span>
+                <span class="menu-text">Hadiah Bonus Togel</span>
+            </a>
+            <a href="#" class="menu-item" id="reportMenu">
+                <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
+                <span class="menu-text">Report</span>
+            </a>
+            <a href="http://agwl2.suksesbogil.com/?passkey=WH9eRDBqtriK4pL" class="menu-item" target="_blank">
+                <span class="menu-icon"><i class="fas fa-headset"></i></span>
+                <span class="menu-text">Admin Line</span>
+            </a>
+            <a href="https://bk.bksmb.com/linetogel/dashboard/dashboard/about" class="menu-item" target="_blank">
+                <span class="menu-icon"><i class="fas fa-book"></i></span>
+                <span class="menu-text">BK Line</span>
+            </a>
+            <a href="https://linetogel.hokibgs.com/modules/kapten/dashboard.php" class="menu-item" target="_blank">
+                <span class="menu-icon"><i class="fas fa-desktop"></i></span>
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="https://script.google.com/macros/s/AKfycbx6fPKPx2mJ6qRT7iLqPJa4KPmeZu16GmAFvfszJ4a7zWloGhPIMBa_qn1d7nE7KVhBuA/exec" class="menu-item" target="_blank">
+                <span class="menu-icon"><i class="fas fa-door-open"></i></span>
+                <span class="menu-text">Izin Keluar</span>
+            </a>
+            <div class="menu-item" id="darkModeToggle">
+                <span class="menu-icon"><i class="fas fa-moon"></i></span>
+                <span class="menu-text">Dark Mode</span>
             </div>
+        </div>
+    </div>
 
-            <div class="tab-content active" id="hadiah">
-                <div class="filter-container">
-                    <select id="filterJenis" class="filter-select">
-                        <option value="">Pilih Jenis Hadiah</option>
-                        <option value="FULL">Hadiah Full</option>
-                        <option value="DISCOUNT">Hadiah Discount</option>
-                        <option value="BB">Hadiah Bolak Balik (BB)</option>
-                    </select>
-                    
-                    <select id="filterTaruhan" class="filter-select">
-                        <option value="">Pilih Jenis Taruhan</option>
-                        <option value="4D">4D</option>
-                        <option value="3D">3D</option>
-                        <option value="2D">2D</option>
-                        <option value="2D_DEPAN">2D Depan</option>
-                        <option value="2D_TENGAH">2D Tengah</option>
-                    </select>
-                    
-                    <select id="filterPasaran" class="filter-select">
-                        <option value="">Pilih Pasaran</option>
-                        <option value="ALL">All Pasaran</option>
-                        <option value="SYDNEY_HONGKONG">Sydney & Hongkong</option>
-                        <option value="TOTO_MACAU_4D">Toto Macau 4D</option>
-                        <option value="KINGKONG_4D">Kingkong 4D</option>
-                        <option value="TOTO_MACAU_5D">Toto Macau 5D</option>
-                    </select>
-                    
-                    <button id="searchHadiahBtn" class="search-btn">
-                        <i class="fas fa-search"></i> Cari Hadiah
-                    </button>
+    <div class="main-content">
+        <div id="errorBanner">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage"></span>
+        </div>
+
+        <div class="header">
+            <h1>Noval Muttawali</h1>
+            <div id="clock"></div>
+        </div>
+
+        <div id="dashboardSection">
+            <div class="card-container">
+                <div class="card" onclick="window.open('https://novalmuttawali.vercel.app/mmmmmm.html', '_blank')">
+                    <h3><i class="fas fa-bolt"></i> PELURU ANTI AIR</h3>
+                    <p>persiapkan senjata anda kita akan beperang disini</p>
+                    <a href="https://novalmuttawali.vercel.app/mmmmmm.html" class="card-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Buka
+                    </a>
                 </div>
-                
-                <div id="hadiahResults">
-                    <div class="no-hadiah" id="noHadiah">
-                        <i class="fas fa-info-circle"></i><br>
-                        Pilih filter untuk melihat hadiah bonus togel
-                    </div>
-                    <div id="hadiahList"></div>
+                <div class="card" onclick="showDataRekening()">
+                    <h3><i class="fas fa-piggy-bank"></i> Data Rekening</h3>
+                    <p>Informasi lengkap rekening bank yang terdaftar</p>
+                    <a href="#" class="card-btn" onclick="showDataRekening(); return false;">
+                        <i class="fas fa-search"></i> Lihat Data
+                    </a>
+                </div>
+                <div class="card" onclick="showHadiahBonus()">
+                    <h3><i class="fas fa-gift"></i> Hadiah Bonus Togel</h3>
+                    <p>Informasi lengkap hadiah dan bonus togel</p>
+                    <a href="#" class="card-btn" onclick="showHadiahBonus(); return false;">
+                        <i class="fas fa-search"></i> Lihat Hadiah
+                    </a>
+                </div>
+                <div class="card" onclick="showReport()">
+                    <h3><i class="fas fa-file-alt"></i> Report</h3>
+                    <p>Laporan dan informasi penting terbaru</p>
+                    <a href="#" class="card-btn" onclick="showReport(); return false;">
+                        <i class="fas fa-book-open"></i> Buka Laporan
+                    </a>
+                </div>
+                <div class="card" onclick="window.open('http://agwl2.suksesbogil.com/?passkey=WH9eRDBqtriK4pL', '_blank')">
+                    <h3><i class="fas fa-headset"></i> Admin Line</h3>
+                    <p>Hubungi admin untuk bantuan dan informasi</p>
+                    <a href="http://agwl2.suksesbogil.com/?passkey=WH9eRDBqtriK4pL" class="card-btn" target="_blank">
+                        <i class="fas fa-comment-dots"></i> Chat Admin
+                    </a>
+                </div>
+                <div class="card" onclick="window.open('https://bk.bksmb.com/linetogel/dashboard/dashboard/about', '_blank')">
+                    <h3><i class="fas fa-book"></i> BK Line</h3>
+                    <p>Buku panduan dan informasi lengkap</p>
+                    <a href="https://bk.bksmb.com/linetogel/dashboard/dashboard/about" class="card-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Buka BK
+                    </a>
+                </div>
+                <div class="card" onclick="window.open('https://linetogel.hokibgs.com/modules/kapten/dashboard.php', '_blank')">
+                    <h3><i class="fas fa-desktop"></i> Dashboard</h3>
+                    <p>Delta tempat paling nikmat</p>
+                    <a href="https://linetogel.hokibgs.com/modules/kapten/dashboard.php" class="card-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Buka Dashboard
+                    </a>
+                </div>
+                <div class="card" onclick="window.open('https://script.google.com/macros/s/AKfycbx6fPKPx2mJ6qRT7iLqPJa4KPmeZu16GmAFvfszJ4a7zWloGhPIMBa_qn1d7nE7KVhBuA/exec', '_blank')">
+                    <h3><i class="fas fa-door-open"></i> Izin Keluar</h3>
+                    <p>Pintu Ngular</p>
+                    <a href="https://script.google.com/macros/s/AKfycbx6fPKPx2mJ6qRT7iLqPJa4KPmeZu16GmAFvfszJ4a7zWloGhPIMBa_qn1d7nE7KVhBuA/exec" class="card-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Buka Izin
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="tab-content" id="calculator">
-                <h3 class="card-title"><i class="fas fa-calculator"></i> Kalkulator Hadiah Togel</h3>
-                
-                <div class="calculator-grid">
-                    <div>
-                        <select id="calcJenis" class="calculator-input">
-                            <option value="">Pilih Jenis Hadiah</option>
-                            <option value="FULL">Hadiah Full</option>
-                            <option value="DISCOUNT">Hadiah Discount</option>
-                            <option value="BB">Hadiah Bolak Balik (BB)</option>
-                        </select>
-                        
-                        <select id="calcPasaran" class="calculator-input">
-                            <option value="">Pilih Pasaran</option>
-                            <option value="ALL">All Pasaran</option>
-                            <option value="SYDNEY_HONGKONG">Sydney & Hongkong</option>
-                            <option value="TOTO_MACAU_4D">Toto Macau 4D</option>
-                            <option value="KINGKONG_4D">Kingkong 4D</option>
-                            <option value="TOTO_MACAU_5D">Toto Macau 5D</option>
-                        </select>
-                        
-                        <select id="calcTaruhan" class="calculator-input">
-                            <option value="">Pilih Jenis Taruhan</option>
-                            <option value="4D">4D</option>
-                            <option value="3D">3D</option>
-                            <option value="2D">2D</option>
-                            <option value="2D_DEPAN">2D Depan</option>
-                            <option value="2D_TENGAH">2D Tengah</option>
-                        </select>
+        <div class="data-container" id="dataRekeningContainer" style="display: none;">
+            <h2><i class="fas fa-piggy-bank"></i> Data Rekening</h2>
+            <p>Cari data rekening berdasarkan Bank, Username, Nomor Rekening, Nama Rekening, Password, atau No HP</p>
+            <div class="search-container">
+                <input type="text" id="searchRekening" class="search-input" placeholder="Cari rekening...">
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-search"></i> Cari
+                </button>
+            </div>
+            <div id="rekeningResults">
+                <h3 class="rekening-title">Rekening Deposit</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Bank</th>
+                            <th>Username</th>
+                            <th>Nomor Rekening</th>
+                            <th>Nama Rekening</th>
+                            <th>Password</th>
+                            <th>No HP</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rekeningData"></tbody>
+                </table>
+                <div id="loading" class="loading">
+                    <i class="fas fa-spinner"></i><br>
+                    Memuat data rekening...
+                </div>
+                <div id="noResults" class="no-results" style="display:none;">
+                    <i class="fas fa-info-circle"></i><br>
+                    Tidak ditemukan data yang sesuai
+                </div>
+                <div id="skeletonLoader" style="display:none;">
+                    <div class="skeleton-card">
+                        <div class="skeleton-line" style="width:70%"></div>
+                        <div class="skeleton-line" style="width:90%"></div>
+                        <div class="skeleton-line" style="width:40%"></div>
                     </div>
-                    
-                    <div>
-                        <input type="number" id="calcBetAmount" class="calculator-input" placeholder="Jumlah Taruhan (Rp)">
-                        <button id="calculateBtn" class="search-btn">
-                            <i class="fas fa-calculator"></i> Hitung Hadiah
+                </div>
+            </div>
+        </div>
+
+        <div class="data-container" id="hadiahBonusContainer" style="display: none;">
+            <h2><i class="fas fa-gift"></i> Hadiah Bonus Togel</h2>
+            <p>Cari informasi hadiah berdasarkan kategori dan pasaran</p>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label class="filter-label" for="kategoriFilter">Kategori Hadiah</label>
+                    <select id="kategoriFilter" class="filter-select">
+                        <option value="">Semua Kategori</option>
+                        <option value="hadiah-full">Hadiah Full</option>
+                        <option value="hadiah-discount">Hadiah Discount</option>
+                        <option value="hadiah-bb">Hadiah Bolak Balik</option>
+                        <option value="hadiah-4d">Hadiah All 4D</option>
+                        <option value="hadiah-3d">Hadiah All 3D</option>
+                        <option value="hadiah-2d">Hadiah All 2D</option>
+                        <option value="colok-bebas">Colok Bebas</option>
+                        <option value="colok-bebas-2d">Colok Bebas 2D</option>
+                        <option value="colok-naga">Colok Naga</option>
+                        <option value="colok-jitu">Colok Jitu</option>
+                        <option value="colok-shio">Colok Shio</option>
+                        <option value="colok-kombinasi">Colok Kombinasi</option>
+                        <option value="colok-tengah-tepi">Colok Tengah Tepi</option>
+                        <option value="colok-macau-shio">Colok Macau Shio</option>
+                        <option value="colok-50-50">Colok 50:50</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="pasaranFilter">Pasaran</label>
+                    <select id="pasaranFilter" class="filter-select">
+                        <option value="">Semua Pasaran</option>
+                        <option value="all">All Pasaran</option>
+                        <option value="sydney-hongkong">Sydney & Hongkong</option>
+                        <option value="kingkong-totomacau-4d">Kingkong & Toto Macau 4D</option>
+                        <option value="totomacau-5d">Toto Macau 5D</option>
+                        <option value="jakarta-pools">Jakarta Pools</option>
+                        <option value="hokidraw">Hokidraw</option>
+                        <option value="toto-mali">Toto Mali</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="searchHadiah">Cari Hadiah</label>
+                    <div class="search-container">
+                        <input type="text" id="searchHadiah" class="search-input" placeholder="Cari hadiah...">
+                        <button id="searchHadiahBtn" class="search-btn">
+                            <i class="fas fa-search"></i> Cari
                         </button>
-                        
-                        <div class="calculator-result" id="calcResult">
-                            <p>Hasil perhitungan akan muncul di sini</p>
-                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <div id="hadiahResults" class="hadiah-container">
+                <div id="hadiahLoading" class="loading">
+                    <i class="fas fa-spinner"></i><br>
+                    Memuat data hadiah...
+                </div>
+                <div id="hadiahNoResults" class="no-results" style="display:none;">
+                    <i class="fas fa-info-circle"></i><br>
+                    Tidak ditemukan hadiah yang sesuai
+                </div>
+                <div id="hadiahData"></div>
+            </div>
+        </div>
+
+        <div class="data-container" id="reportContainer" style="display: none;">
+            <h2><i class="fas fa-file-alt"></i> Report</h2>
+            <p>Pilih laporan untuk melihat informasi terbaru</p>
+            <div id="reportMenuList" style="margin-top: 20px;"></div>
+            <div id="reportContent">
+                <h3 id="reportTitle"></h3>
+                <div id="reportInfo"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data Hadiah Bonus Togel
-        const hadiahBonusData = [
-            // HADIAH FULL
-            { jenis: "FULL", taruhan: "4D", pasaran: "ALL", hadiah: "x10,000", keterangan: "All Pasaran (TERKECUALI PASARAN SYDNEY & HONGKONG)" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "ALL", hadiah: "x1,000", keterangan: "All Pasaran (TERKECUALI PASARAN SYDNEY & HONGKONG)" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "ALL", hadiah: "x100", keterangan: "All Pasaran (TERKECUALI PASARAN SYDNEY & HONGKONG)" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "SYDNEY_HONGKONG", hadiah: "x9,800", keterangan: "Khusus PASARAN SYDNEY & HONGKONG" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "SYDNEY_HONGKONG", hadiah: "x980", keterangan: "Khusus PASARAN SYDNEY & HONGKONG" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "SYDNEY_HONGKONG", hadiah: "x98", keterangan: "Khusus PASARAN SYDNEY & HONGKONG" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x9,000", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x950", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x95", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x88,000", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x9,000", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x950", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x95", keterangan: "Toto macau 5d" },
-            
-            // HADIAH DISCOUNT
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "ALL", hadiah: "x3,000", discount: "66.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "ALL", hadiah: "x400", discount: "59.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "ALL", hadiah: "x70", discount: "29.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "2D_DEPAN", pasaran: "ALL", hadiah: "x65", discount: "29.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "2D_TENGAH", pasaran: "ALL", hadiah: "x65", discount: "29.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x6,000", discount: "33%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x700", discount: "24%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x80", discount: "15%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            
-            // HADIAH BOLAK BALIK / BB
-            { jenis: "BB", taruhan: "4D", pasaran: "ALL", hadiah: "x4,000", hadiah_terbalik: "x200", keterangan: "All pasaran kecuali Hokidraw dan Totomacau 5d" },
-            { jenis: "BB", taruhan: "3D", pasaran: "ALL", hadiah: "x400", hadiah_terbalik: "x100", keterangan: "All pasaran kecuali Hokidraw dan Totomacau 5d" },
-            { jenis: "BB", taruhan: "2D", pasaran: "ALL", hadiah: "x70", hadiah_terbalik: "x20", keterangan: "All pasaran kecuali Hokidraw dan Totomacau 5d" },
+        // Data Rekening
+        const rekeningDataList = [
+            // Data sebelumnya
+            { bank: 'BCA MOBILE', username: 'AYIKDENY0213', nomorRekening: '0941928144', namaRekening: 'Ayik Deny Prasetyo', password: 'Aa66778899 / 778899', noHp: '087776178230' },
+            { bank: 'BCA MOBILE', username: 'MEGAARTA0989', nomorRekening: '6900759566', namaRekening: 'MEGA ARTA PRATIWI', password: 'Aa66778899 / 778899', noHp: '081953352838' },
+            { bank: 'BCA MOBILE', username: 'ADAMBALD0418', nomorRekening: '7295889896', namaRekening: 'Adam Baldand', password: 'Cc66778899 / 778899', noHp: '087853400563' },
+            { bank: 'BCA MOBILE', username: 'ANDREASL0180', nomorRekening: '5798054133', namaRekening: 'ANDREAS LUKITO', password: 'Aa66778899 / 778899', noHp: '081910463031' },
+            { bank: 'BCA MOBILE', username: 'URYADI5566', nomorRekening: '7580694084', namaRekening: 'Suryadi', password: 'Aa66778899 / 778899', noHp: '081910463011' },
+            { bank: 'BCA MOBILE', username: 'DENIHEND0024', nomorRekening: '6331699257', namaRekening: 'DENI HENDRIAN', password: 'Aa66778899 / 778899', noHp: '087774850751' },
+            { bank: 'BCA MOBILE', username: 'ARMAWAN2023', nomorRekening: '0670931803', namaRekening: 'Darmawan', password: 'Aa66778899 / 778899', noHp: '087711999255' },
+            { bank: 'BCA MOBILE', username: 'KEREN789', nomorRekening: '7350332752', namaRekening: 'Yunila Biduri', password: 'Aa66778899/778899', noHp: '085954537633' },
+            { bank: 'BCA MOBILE', username: 'RIVALDI777', nomorRekening: '4080292762', namaRekening: 'Rivaldi Anggreano', password: 'Aa66778899 / 778899', noHp: '087860764362' },
+            { bank: 'BCA MOBILE', username: 'FEBRIHEN8102', nomorRekening: '6430336981', namaRekening: 'Febri Hendrawan', password: 'Aa66778899 / 778899', noHp: '087874921307' },
+            { bank: 'BCA MOBILE', username: 'ASEPSUPR7452', nomorRekening: '6430336680', namaRekening: 'ASEP SUPRIATIN', password: 'Aa66778899 / 788888', noHp: '087860764336' },
+            { bank: 'BCA MOBILE', username: 'SANDYAN0407', nomorRekening: '6430336507', namaRekening: 'Sandyan Perdiansyah', password: 'Aa66778899 / 778899', noHp: '087860764348' },
+            { bank: 'BCA MOBILE', username: 'TENDIKUR0821', nomorRekening: '7391956727', namaRekening: 'TENDI KURNIAWAN', password: 'Aa66778899 / 778899', noHp: '085950645662' },
+            { bank: 'BCA MOBILE', username: 'ADIV7843', nomorRekening: '2320742555', namaRekening: 'ADIV ARYA ATMAJA', password: 'Bb66778899 / 788888', noHp: '085925283274' },
+            // Data baru
+            { bank: 'BCA MOBILE', username: 'WIDYAKOMANG19999', nomorRekening: '5800648833', namaRekening: 'NI PUTU WIDYA BUDIATMINI', password: 'Aa66778899 / 998877', noHp: '085952613754' },
+            { bank: 'BCA MOBILE', username: 'MARIAH2005', nomorRekening: '0690657929', namaRekening: 'Mariah', password: 'Aa66778899 / 778899', noHp: '087755997581' },
+            { bank: 'BCA MOBILE', username: 'MIA0031', nomorRekening: '8660485903', namaRekening: 'Mia', password: 'Aa66778899 / 778899', noHp: '085950645920' },
+            { bank: 'BCA MOBILE', username: 'BABAYDAM0768', nomorRekening: '6920300446', namaRekening: 'Babay Damayani', password: 'Aa66778899 / 778899', noHp: '087822038114' },
+            { bank: 'MANDIRI', username: 'Dwi Puspita Sari', nomorRekening: '1680003458526', namaRekening: 'Dwi Puspita Sari', password: 'Aa778899 / 778899', noHp: '083870157754' },
+            { bank: 'MANDIRI', username: 'Muhammad Nur Ardiansyah', nomorRekening: '1180013931588', namaRekening: 'Muhammad Nur Ardiansyah', password: 'Aa778899 / 778899', noHp: '087884724527' },
+            { bank: 'MANDIRI', username: 'Megawati', nomorRekening: '1180013936892', namaRekening: 'Megawati', password: 'Aa778899 / 778899', noHp: '081774865307' },
+            { bank: 'MANDIRI', username: 'Dwi Puspita Sari', nomorRekening: '1180013933923', namaRekening: 'Janatin', password: 'Aa778899 / 778899', noHp: '087717029206' },
+            { bank: 'MANDIRI', username: 'Agus Setiawan', nomorRekening: '1560023309315', namaRekening: 'Agus Setiawan', password: 'Aa778899 / 778899', noHp: '087858865252' },
+            { bank: 'MANDIRI', username: 'Muchri', nomorRekening: '1170011729829', namaRekening: 'Muchri', password: 'Aa778899 / 778899', noHp: '087717182751' },
+            { bank: 'BNI - MOBILE', username: 'YOSU1604449', nomorRekening: '1785681432', namaRekening: 'Yosep Suhandar', password: 'Cc778899', noHp: '087715544070' },
+            { bank: '707920222100', username: 'SAAB1624420', nomorRekening: '1811072079', namaRekening: 'Saepul Abdulrahman', password: 'Bb778899', noHp: '081770788967' },
+            { bank: 'BNI - MOBILE', username: 'Vino3636', nomorRekening: '1328275489', namaRekening: 'SAGI BINAL', password: 'Aa778989', noHp: '081283317964' },
+            { bank: 'WONDR', username: '', nomorRekening: '1890419177', namaRekening: 'Ricky Dwi Praditya', password: 'Aa778899# / 778899', noHp: '087823034617' },
+            { bank: 'WONDR', username: 'IRWANS5242', nomorRekening: '1916841506', namaRekening: 'ANDIKA IRWANSYAH', password: 'Bb778899#/788888', noHp: '087828854695' },
+            { bank: 'WONDR', username: '', nomorRekening: '1889581575', namaRekening: 'Agus Yoga Pratama Saputra', password: 'Aa778899# / 778899', noHp: '087722864704' },
+            { bank: 'WONDR', username: '', nomorRekening: '1929158954', namaRekening: 'Rendy Pranata', password: '778899/ Aa778899%', noHp: '087822039591' },
+            { bank: 'WONDR', username: '', nomorRekening: '1928252765', namaRekening: 'Sarnati', password: 'Aa778899# / 778899', noHp: '087742660781' },
+            { bank: 'WONDR', username: '', nomorRekening: '1953099236', namaRekening: 'Achmad Taufiq Ramadhan', password: 'Aa778899# / 778899', noHp: '087748346362' },
+            { bank: 'BRIMO / BRI', username: 'lilisumarli1986', nomorRekening: '795601001891507', namaRekening: 'LILI SUMARLI', password: 'Cc112233', noHp: '081998190690' },
+            { bank: 'BRIMO / BRI', username: 'jakarta170589', nomorRekening: '121201009227502', namaRekening: 'SITI HASANAH', password: 'Ee112233', noHp: '081952067813' },
+            { bank: 'BRIMO / BRI', username: 'rustiyadi1987', nomorRekening: '332201004072509', namaRekening: 'RUSTIYADI', password: 'Ee778899', noHp: '087846868824' },
+            { bank: 'BRIMO / BRI', username: 'arjuna310706', nomorRekening: '117901013129508', namaRekening: 'ARJUNA WISESA', password: 'Aa112233', noHp: '087846868822' },
+            { bank: 'BRIMO / BRI', username: 'indracahya220100', nomorRekening: '079001005225507', namaRekening: 'ADAM JANUAR INDRACAHYA', password: 'Aa778899', noHp: '087844638417' },
+            { bank: 'BRIMO / BRI', username: 'ariprahman1020', nomorRekening: '076801036169531', namaRekening: 'ARIP RAHMAN', password: 'Ff778899', noHp: '081998445896' },
+            { bank: 'BRIMO / BRI', username: 'alfarizqi121212', nomorRekening: '795601001889500', namaRekening: 'ALFARIZQI', password: 'Ff778899', noHp: '081998471082' },
+            { bank: 'BRIMO / BRI', username: 'nanasupriatna1984', nomorRekening: '060001015113509', namaRekening: 'NANA SUPRIATNA', password: 'Aa112233', noHp: '083861162804' },
+            { bank: 'BRIMO / CADANGAN', username: 'romiblack3210', nomorRekening: '213601005828535', namaRekening: 'ROMI', password: 'Bb778899', noHp: '083861162358' },
+            { bank: 'BRIMO / CADANGAN', username: 'hasanblacek123', nomorRekening: '217201001721533', namaRekening: 'HASANUDIN', password: 'Xx112233', noHp: '081998425531' },
+            { bank: 'BRIMO / CADANGAN', username: 'mursali123456', nomorRekening: '086301024833532', namaRekening: 'Mursali', password: 'Bb112233', noHp: '087745642874' },
+            { bank: 'BRIMO / CADANGAN', username: 'rohmanganteng1980', nomorRekening: '332001003077508', namaRekening: 'ROHMAN', password: 'Aa778899', noHp: '081944117128' },
+            { bank: 'BRIMO / CADANGAN', username: 'ferryirwandi10', nomorRekening: '091601011411508', namaRekening: 'Ferry Irwandi', password: 'Gg112233', noHp: '085940888406' },
+            { bank: 'BRIMO / CADANGAN', username: 'ipulkemiri69', nomorRekening: '099801009223505', namaRekening: 'SAIFUL RAMDANI', password: 'Bb778899', noHp: '087711213992' },
+            { bank: 'BRIMO / CADANGAN', username: 'mahmudincepak15', nomorRekening: '044001025009500', namaRekening: 'MAHMUDIN', password: 'Aa778899 / 778899', noHp: '081998426860' },
+            { bank: 'BRIMO / CADANGAN', username: 'renalagam574', nomorRekening: '719901022339538', namaRekening: 'RENAL AGAM', password: 'Aa778899 / 778899', noHp: '085963958778' },
+            { bank: 'BRIMO / CADANGAN', username: 'fakhrani12345', nomorRekening: '086701016884503', namaRekening: 'Azfi putri fakhrani', password: 'Aa778899 / 778899', noHp: '087711729813' },
+            { bank: 'BRIMO / CADANGAN', username: 'inaseptember30', nomorRekening: '117901013133507', namaRekening: 'SITI AMINAH', password: 'Bb778899', noHp: '087740148866' },
+            { bank: 'BRIMO / CADANGAN', username: 'inibosobiet12', nomorRekening: '093601014835503', namaRekening: 'Muhammad Obiet Syaiful Anwar', password: 'Cc788888 / 788888', noHp: '085926104110' },
+            { bank: 'BRIMO / CADANGAN', username: 'mohamedakmal2003', nomorRekening: '082601005767500', namaRekening: 'MOHAMED AKMAL RAMADANI', password: 'Aa778899/778899', noHp: '087780787604' },
+            { bank: 'BRIMO / CADANGAN', username: 'mhmdihsan0610', nomorRekening: '332201004607508', namaRekening: 'MUHAMMAD IHSAN RAMADHAN', password: 'Aa778899/778899', noHp: '087723643739' },
+            { bank: 'BRIMO / CADANGAN', username: 'Superpanda888888', nomorRekening: '138701002910501', namaRekening: 'Siti Komariah', password: 'Aa778899/778899', noHp: '087822037832' },
+            { bank: 'BRIMO / CADANGAN', username: 'opikkamil1234', nomorRekening: '082601005761504', namaRekening: 'AHMAD TAOFIK KAMIL', password: 'Aa778899/778899', noHp: '087780787595' },
+            { bank: 'BSI', username: '', nomorRekening: '7299498357', namaRekening: 'Dafa Firmansyah', password: '', noHp: '087821502372' },
+            { bank: 'BSI', username: '', nomorRekening: '7299535748', namaRekening: 'Anisah Rosiana Dewi', password: '', noHp: '087764447987' },
+            { bank: 'BSI', username: '', nomorRekening: '7299629982', namaRekening: 'Emi Handayani', password: 'Aa778899@ / 788888', noHp: '087750212595' },
+            { bank: 'BSI', username: '', nomorRekening: '7299745753', namaRekening: 'Djuana Nugraha', password: '', noHp: '087821470951' },
+            { bank: 'DANAMON', username: 'Banyu basudewo putra', nomorRekening: '003683382083', namaRekening: 'Banyu basudewo putra', password: 'Aa778899/ 778899', noHp: '081916520821' },
+            { bank: 'MAY BANK', username: 'Ririnoktaviani123', nomorRekening: '8774932545', namaRekening: 'Ririn Oktaviani', password: 'Aa778899 / 778899', noHp: '085921214621' },
+            { bank: 'CIMB NIAGA', username: 'Nur8400', nomorRekening: '707988117900', namaRekening: 'SANDRA', password: '@Aa778899/788888', noHp: '081910143918' },
+            { bank: 'CIMB NIAGA', username: 'amel2517', nomorRekening: '708002716300', namaRekening: 'Yulianah', password: '@Aa778899/788888', noHp: '087823033988' },
+            { bank: 'DANAMON', username: 'ranggasasap78@gmail.com', nomorRekening: '3693037289', namaRekening: 'Ranggasaputra', password: 'Aa778899 / 778899', noHp: '087780787517' },
+            { bank: 'DANAMON', username: 'nasir115599@hotmail.com', nomorRekening: '3674027994', namaRekening: 'Nasir', password: 'Aa778899 / 778899', noHp: '087892795343' },
+            { bank: 'CIMB NIAGA', username: 'partisu123', nomorRekening: '708003225400', namaRekening: 'Suparti', password: '@Aa778899/788888', noHp: '087882842066' },
+            { bank: 'CIMB NIAGA', username: 'anan112233', nomorRekening: '708001417100', namaRekening: 'ANITA', password: '@Aa778899/788888', noHp: '087882842034' },
+            { bank: 'MAYBANK', username: 'gemoyy34', nomorRekening: '8755980271', namaRekening: 'Berta Natalia', password: 'Aa778899/778899', noHp: '087862526962' }
         ];
+
+        // Data Hadiah Bonus Togel
+        const hadiahData = {
+            "hadiah-full": [
+                {
+                    title: "Hadiah Bet Full – All Pasaran (TERKECUALI PASARAN SYDNEY & HONGKONG)",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x10,000" },
+                        { name: "3D", value: "x1,000" },
+                        { name: "2D", value: "x100" }
+                    ]
+                },
+                {
+                    title: "Hadiah Bet Full (Khusus PASARAN SYDNEY & HONGKONG)",
+                    pasaran: "sydney-hongkong",
+                    items: [
+                        { name: "4D", value: "x9,800" },
+                        { name: "3D", value: "x980" },
+                        { name: "2D", value: "x98" }
+                    ]
+                },
+                {
+                    title: "Hadiah Bet full Kingkong & Toto macau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x9,000" },
+                        { name: "3D", value: "x950" },
+                        { name: "2D", value: "x95" }
+                    ]
+                },
+                {
+                    title: "Hadiah Bet full Toto macau 5d",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "5D", value: "x88,000" },
+                        { name: "4D", value: "x9,000" },
+                        { name: "3D", value: "x950" },
+                        { name: "2D", value: "x95" }
+                    ]
+                }
+            ],
+            "hadiah-discount": [
+                {
+                    title: "Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66.50%" },
+                        { name: "3D", value: "x400", discount: "59.50%" },
+                        { name: "2D", value: "x70", discount: "29.50%" },
+                        { name: "2D DEPAN", value: "x65", discount: "29.50%" },
+                        { name: "2D TENGAH", value: "x65", discount: "29.50%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Toto macau 4D & Kingkong 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x6,000", discount: "33%" },
+                        { name: "3D", value: "x700", discount: "24%" },
+                        { name: "2D", value: "x80", discount: "15%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Jakarta pools",
+                    pasaran: "jakarta-pools",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66%" },
+                        { name: "3D", value: "x400", discount: "59%" },
+                        { name: "2D", value: "x70", discount: "29%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Toto Mali",
+                    pasaran: "toto-mali",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "67%" },
+                        { name: "3D", value: "x400", discount: "57%" },
+                        { name: "2D", value: "x70", discount: "27%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "4D", value: "x7,000", discount: "20%" },
+                        { name: "3D", value: "x750", discount: "20%" },
+                        { name: "2D", value: "x75", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Super Discount Totomacau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66%" },
+                        { name: "3D", value: "x400", discount: "59%" },
+                        { name: "2D", value: "x70", discount: "29%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Toto macau 5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "5D", value: "x50,000", discount: "38%" },
+                        { name: "4D", value: "x7,000", discount: "20%" },
+                        { name: "3D", value: "x750", discount: "20%" },
+                        { name: "2D", value: "x75", discount: "20%" }
+                    ]
+                }
+            ],
+            "hadiah-bb": [
+                {
+                    title: "Hadiah bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x4,000" },
+                        { name: "Hadiah terbalik", value: "x200" },
+                        { name: "3D", value: "x400" },
+                        { name: "Hadiah terbalik", value: "x100" },
+                        { name: "2D", value: "x70" },
+                        { name: "Hadiah terbalik", value: "x20" }
+                    ]
+                },
+                {
+                    title: "Hadiah bet BB / BOLAKBALIK Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "4D", value: "x5,000" },
+                        { name: "Hadiah terbalik", value: "x180" },
+                        { name: "3D", value: "x500" },
+                        { name: "Hadiah terbalik", value: "x75" },
+                        { name: "2D", value: "x80" },
+                        { name: "Hadiah terbalik", value: "x15" }
+                    ]
+                },
+                {
+                    title: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "5D", value: "x50,000" },
+                        { name: "Hadiah terbalik", value: "x350" },
+                        { name: "4D", value: "x5,000" },
+                        { name: "Hadiah terbalik", value: "x180" },
+                        { name: "3D", value: "x500" },
+                        { name: "Hadiah terbalik", value: "x75" },
+                        { name: "2D", value: "x80" },
+                        { name: "Hadiah terbalik", value: "x15" }
+                    ]
+                }
+            ],
+            "hadiah-4d": [
+                {
+                    title: "Hadiah 4D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x10,000" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Bet full pasaran Sydney & Hongkong",
+                    pasaran: "sydney-hongkong",
+                    items: [
+                        { name: "4D", value: "x9,800" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Bet full Kingkong & Toto macau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x9,000" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Bet full Toto macau 5d",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "4D", value: "x9,000" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66.50%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount Toto macau 4D & Kingkong 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x6,000", discount: "33%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount Jakarta pools",
+                    pasaran: "jakarta-pools",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount Toto Mali",
+                    pasaran: "toto-mali",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "67%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "4D", value: "x7,000", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Super Discount Totomacau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "4D", value: "x3,000", discount: "66%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Discount Toto macau 5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "4D", value: "x7,000", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D bet BB / BOLAKBALIK All pasaran",
+                    pasaran: "all",
+                    items: [
+                        { name: "4D", value: "x4,000" },
+                        { name: "Hadiah terbalik", value: "x200" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D BB / BOLAKBALIK hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "4D", value: "x5,000" },
+                        { name: "Hadiah terbalik", value: "x500" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D bet BB / BOLAKBALIK TOTOMACAU5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "4D", value: "x5,000" },
+                        { name: "Hadiah terbalik", value: "x180" }
+                    ]
+                }
+            ],
+            "hadiah-3d": [
+                {
+                    title: "Hadiah 3D Bet full All pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong",
+                    pasaran: "all",
+                    items: [
+                        { name: "3D", value: "x1,000" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Bet full pasaran Sydney & Hongkong",
+                    pasaran: "sydney-hongkong",
+                    items: [
+                        { name: "3D", value: "x980" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Bet full Kingkong & Toto macau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "3D", value: "x950" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )",
+                    pasaran: "all",
+                    items: [
+                        { name: "3D", value: "x400", discount: "59.50%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Discount Toto macau 4D & Kingkong 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "3D", value: "x700", discount: "24%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Discount Jakarta pools",
+                    pasaran: "jakarta-pools",
+                    items: [
+                        { name: "3D", value: "x400", discount: "59%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Discount Toto Mali",
+                    pasaran: "toto-mali",
+                    items: [
+                        { name: "3D", value: "x400", discount: "57%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D Discount Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "3D", value: "x750", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 4D Super Discount Totomacau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "3D", value: "x400", discount: "59%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 3D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d",
+                    pasaran: "all",
+                    items: [
+                        { name: "3D", value: "x400" },
+                        { name: "Hadiah terbalik", value: "x100" }
+                    ]
+                },
+                {
+                    title: "Hadiah Bet full Toto macau 5d",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "3D", value: "x950" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Toto macau 5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "3D", value: "x750", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "3D", value: "x500" },
+                        { name: "Hadiah terbalik", value: "x75" }
+                    ]
+                }
+            ],
+            "hadiah-2d": [
+                {
+                    title: "Hadiah 2D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong",
+                    pasaran: "all",
+                    items: [
+                        { name: "2D", value: "x100" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Bet full pasaran Sydney & Hongkong",
+                    pasaran: "sydney-hongkong",
+                    items: [
+                        { name: "2D", value: "x98" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Bet full Kingkong & Toto macau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "2D", value: "x95" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Bet full Toto macau 5d",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "2D", value: "x95" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )",
+                    pasaran: "all",
+                    items: [
+                        { name: "2D", value: "x70", discount: "29.50%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Discount Toto macau 4D & Kingkong 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "2D", value: "x80", discount: "15%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Discount Jakarta pools",
+                    pasaran: "jakarta-pools",
+                    items: [
+                        { name: "2D", value: "x70", discount: "29%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Discount Toto Mali",
+                    pasaran: "toto-mali",
+                    items: [
+                        { name: "2D", value: "x70", discount: "27%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Discount Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "2D", value: "x75", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D Super Discount Totomacau 4D",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "2D", value: "x70", discount: "29%" }
+                    ]
+                },
+                {
+                    title: "Hadiah Discount Toto macau 5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "2D", value: "x75", discount: "20%" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d",
+                    pasaran: "all",
+                    items: [
+                        { name: "2D", value: "x70" },
+                        { name: "Hadiah terbalik", value: "x20" }
+                    ]
+                },
+                {
+                    title: "Hadiah bet BB / BOLAKBALIK Hokidraw",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "2D", value: "x80" },
+                        { name: "Hadiah terbalik", value: "x15" }
+                    ]
+                },
+                {
+                    title: "Hadiah 2D bet BB / BOLAKBALIK TOTOMACAU5D",
+                    pasaran: "totomacau-5d",
+                    items: [
+                        { name: "2D", value: "x80" },
+                        { name: "Hadiah terbalik", value: "x15" }
+                    ]
+                }
+            ],
+            "colok-bebas": [
+                {
+                    title: "HADIAH COLOK BEBAS - ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "1 Digit", value: "x1.5" },
+                        { name: "2 Digit", value: "x3" },
+                        { name: "3 Digit", value: "x4.5" },
+                        { name: "4 Digit", value: "x6" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK BEBAS PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "1 Digit", value: "x0.9" },
+                        { name: "2 Digit", value: "x1.8" },
+                        { name: "3 Digit", value: "x2.7" },
+                        { name: "4 Digit", value: "x3.6" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK BEBAS PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "1 Digit", value: "x1.6" },
+                        { name: "2 Digit", value: "x3.2" },
+                        { name: "3 Digit", value: "x4.8" },
+                        { name: "4 Digit", value: "x6.4" }
+                    ]
+                }
+            ],
+            "colok-bebas-2d": [
+                {
+                    title: "HADIAH COLOK BEBAS 2D - ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "2 Digit", value: "x7" },
+                        { name: "3 Digit", value: "x11" },
+                        { name: "4 Digit", value: "x18" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK BEBAS 2D PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "2 Digit", value: "x4" },
+                        { name: "3 Digit", value: "x6" },
+                        { name: "4 Digit", value: "x20" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK BEBAS 2D PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "2 Digit", value: "x7" },
+                        { name: "3 Digit", value: "x13" },
+                        { name: "4 Digit", value: "x21" }
+                    ]
+                }
+            ],
+            "colok-naga": [
+                {
+                    title: "HADIAH COLOK NAGA - ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Co. Naga (3 Digit)", value: "x23" },
+                        { name: "Co. Naga (4 Digit)", value: "x35" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK NAGA PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "Co. Naga (3 Digit)", value: "x12" },
+                        { name: "Co. Naga (4 Digit)", value: "x30" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK NAGA PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Co. Naga (3 Digit)", value: "x27" },
+                        { name: "Co. Naga (4 Digit)", value: "x41" }
+                    ]
+                }
+            ],
+            "colok-jitu": [
+                {
+                    title: "HADIAH COLOK JITU ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Colok Jitu", value: "x8" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK JITU PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "Colok Jitu", value: "x8" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK JITU PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Colok Jitu", value: "x8.3" }
+                    ]
+                }
+            ],
+            "colok-shio": [
+                {
+                    title: "HADIAH COLOK SHIO ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Shio", value: "x9.5" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK SHIO PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Shio", value: "x10" }
+                    ]
+                }
+            ],
+            "colok-kombinasi": [
+                {
+                    title: "HADIAH COLOK KOMBINASI ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Kombinasi", value: "x2.6" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK KOMBINASI PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "Kombinasi", value: "x2.7" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK KOMBINASI PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Kombinasi", value: "x2.8" }
+                    ]
+                }
+            ],
+            "colok-tengah-tepi": [
+                {
+                    title: "HADIAH COLOK Tepi Tengah ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 x KEI -3%" }
+                    ]
+                },
+                {
+                    title: "HADIAH TEPI TENGAH PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 KEI -2.2%" }
+                    ]
+                },
+                {
+                    title: "HADIAH TEPI TENGAH PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 KEI -2.2%" }
+                    ]
+                }
+            ],
+            "colok-macau-shio": [
+                {
+                    title: "HADIAH COLOK MACAU SHIO ALL PASARAN",
+                    pasaran: "all",
+                    items: [
+                        { name: "MACAU SHIO", value: "x110" }
+                    ]
+                }
+            ],
+            "colok-50-50": [
+                {
+                    title: "HADIAH COLOK 50:50 ALL PASARAN KECUALI TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI",
+                    pasaran: "all",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 x KEI -3%" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK 50:50 PASARAN HOKIDRAW",
+                    pasaran: "hokidraw",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 KEI -2.2%" }
+                    ]
+                },
+                {
+                    title: "HADIAH COLOK 50:50 PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI",
+                    pasaran: "kingkong-totomacau-4d",
+                    items: [
+                        { name: "Tepi Tengah", value: "1:1 KEI -2.2%" }
+                    ]
+                }
+            ]
+        };
 
         // Initialize on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab functionality
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tabId = btn.getAttribute('data-tab');
-                    
-                    // Remove active class from all buttons and contents
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked button and corresponding content
-                    btn.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
+            // Load font and display content
+            document.fonts.load('1em Poppins').then(() => {
+                document.documentElement.classList.add('fonts-loaded');
+                document.body.style.opacity = '1';
             });
-            
-            // Search hadiah functionality
-            document.getElementById('searchHadiahBtn').addEventListener('click', searchHadiah);
-            
-            // Calculate functionality
-            document.getElementById('calculateBtn').addEventListener('click', calculatePrize);
+
+            // Initialize components
+            initClock();
+            initMenu();
+            initDarkMode();
+
+            // Delay non-critical initialization
+            requestIdleCallback(() => {
+                initParticles();
+                registerServiceWorker();
+            }, { timeout: 2000 });
         });
 
-        // Function to search hadiah based on filters
-        function searchHadiah() {
-            const jenis = document.getElementById('filterJenis').value;
-            const taruhan = document.getElementById('filterTaruhan').value;
-            const pasaran = document.getElementById('filterPasaran').value;
-            
-            let filteredData = hadiahBonusData;
-            
-            if (jenis) {
-                filteredData = filteredData.filter(item => item.jenis === jenis);
-            }
-            
-            if (taruhan) {
-                filteredData = filteredData.filter(item => item.taruhan === taruhan);
-            }
-            
-            if (pasaran) {
-                filteredData = filteredData.filter(item => item.pasaran === pasaran);
-            }
-            
-            displayHadiahResults(filteredData);
+        // Clock functionality
+        function initClock() {
+            updateClock();
+            setInterval(updateClock, 1000);
         }
 
-        // Function to display hadiah results
-        function displayHadiahResults(data) {
-            const hadiahList = document.getElementById('hadiahList');
-            const noHadiah = document.getElementById('noHadiah');
-            
-            hadiahList.innerHTML = '';
-            
-            if (data.length === 0) {
-                noHadiah.style.display = 'block';
-                noHadiah.innerHTML = '<i class="fas fa-info-circle"></i><br>Tidak ditemukan hadiah yang sesuai dengan filter';
-                return;
-            }
-            
-            noHadiah.style.display = 'none';
-            
-            data.forEach(item => {
-                const hadiahItem = document.createElement('div');
-                hadiahItem.className = 'hadiah-item';
-                
-                let content = `
-                    <div class="hadiah-title">${getJenisName(item.jenis)} - ${getTaruhanName(item.taruhan)}</div>
-                    <div class="hadiah-detail">
-                        <span>Pasaran:</span>
-                        <span class="hadiah-value">${getPasaranName(item.pasaran)}</span>
-                    </div>
-                    <div class="hadiah-detail">
-                        <span>Hadiah:</span>
-                        <span class="hadiah-value">${item.hadiah}</span>
-                    </div>
-                `;
-                
-                if (item.discount) {
-                    content += `
-                        <div class="hadiah-detail">
-                            <span>Discount:</span>
-                            <span class="hadiah-value">${item.discount}</span>
-                        </div>
-                    `;
-                }
-                
-                if (item.hadiah_terbalik) {
-                    content += `
-                        <div class="hadiah-detail">
-                            <span>Hadiah Terbalik:</span>
-                            <span class="hadiah-value">${item.hadiah_terbalik}</span>
-                        </div>
-                    `;
-                }
-                
-                if (item.keterangan) {
-                    content += `
-                        <div class="hadiah-detail">
-                            <span>Keterangan:</span>
-                            <span>${item.keterangan}</span>
-                        </div>
-                    `;
-                }
-                
-                // Add copy button
-                const copyText = `${getJenisName(item.jenis)} - ${getTaruhanName(item.taruhan)}: ${item.hadiah} (${getPasaranName(item.pasaran)})`;
-                content += `
-                    <button class="copy-btn" onclick="copyToClipboard('${copyText.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-copy"></i> Salin Hadiah
-                    </button>
-                `;
-                
-                hadiahItem.innerHTML = content;
-                hadiahList.appendChild(hadiahItem);
+        function updateClock() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            const clockElement = document.getElementById("clock");
+            clockElement.textContent = now.toLocaleDateString("id-ID", options);
+
+            // Add smooth transition effect
+            clockElement.style.opacity = 0;
+            setTimeout(() => {
+                clockElement.style.opacity = 1;
+            }, 100);
+        }
+
+        // Menu functionality
+        function initMenu() {
+            // Toggle sidebar on mobile
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('active');
+                this.style.transform = sidebar.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0)';
+            });
+
+            // Set active menu item
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if(this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+
+                    document.querySelectorAll('.menu-item').forEach(i => {
+                        i.classList.remove('active');
+                        i.style.transform = '';
+                    });
+
+                    this.classList.add('active');
+                    this.style.transform = 'translateX(8px)';
+
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(0)';
+                    }, 300);
+                });
+            });
+
+            // Menu click handlers
+            document.getElementById('dashboardMenu').addEventListener('click', function(e) {
+                e.preventDefault();
+                createRippleEffect(e);
+                showDashboard();
+            });
+
+            document.getElementById('dataRekeningMenu').addEventListener('click', function(e) {
+                e.preventDefault();
+                createRippleEffect(e);
+                showDataRekening();
+            });
+
+            document.getElementById('hadiahBonusMenu').addEventListener('click', function(e) {
+                e.preventDefault();
+                createRippleEffect(e);
+                showHadiahBonus();
+            });
+
+            document.getElementById('reportMenu').addEventListener('click', function(e) {
+                e.preventDefault();
+                createRippleEffect(e);
+                showReport();
             });
         }
 
-        // Function to calculate prize
-        function calculatePrize() {
-            const jenis = document.getElementById('calcJenis').value;
-            const pasaran = document.getElementById('calcPasaran').value;
-            const taruhan = document.getElementById('calcTaruhan').value;
-            const betAmount = parseFloat(document.getElementById('calcBetAmount').value);
-            
-            if (!jenis || !pasaran || !taruhan || isNaN(betAmount) || betAmount <= 0) {
-                document.getElementById('calcResult').innerHTML = '<p class="hadiah-value">Harap isi semua field dengan benar</p>';
+        // Dark mode functionality
+        function initDarkMode() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const isDark = localStorage.getItem('darkMode') === 'true';
+
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.querySelector('.menu-icon').innerHTML = '<i class="fas fa-sun"></i>';
+                darkModeToggle.querySelector('.menu-text').textContent = 'Light Mode';
+            }
+
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const isDarkNow = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkNow);
+
+                this.querySelector('.menu-icon').innerHTML = isDarkNow ?
+                    '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                this.querySelector('.menu-text').textContent = isDarkNow ? 'Light Mode' : 'Dark Mode';
+
+                showToast(`Mode ${isDarkNow ? 'Gelap' : 'Terang'} Diaktifkan`);
+            });
+        }
+
+        // Particles animation with object pooling
+        const particlePool = [];
+        const maxParticles = window.innerWidth < 768 ? 15 : 30;
+
+        function initParticles() {
+            const container = document.getElementById('particles');
+
+            for (let i = 0; i < maxParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                container.appendChild(particle);
+                particlePool.push({
+                    element: particle,
+                    y: Math.random() * window.innerHeight * 1.5,
+                    speed: Math.random() * 2 + 1
+                });
+            }
+
+            animateParticles();
+        }
+
+        function animateParticles() {
+            particlePool.forEach(p => {
+                p.y -= p.speed;
+                if (p.y < -50) p.y = window.innerHeight + 50;
+                p.element.style.transform = `translateY(${p.y}px) translateZ(0)`;
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Service Worker registration
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered');
+                    })
+                    .catch(err => {
+                        console.error('SW registration failed:', err);
+                    });
+            }
+        }
+
+        // Section display functions
+        function showDashboard() {
+            document.getElementById('dashboardSection').style.display = 'grid';
+            document.getElementById('dataRekeningContainer').style.display = 'none';
+            document.getElementById('hadiahBonusContainer').style.display = 'none';
+            document.getElementById('reportContainer').style.display = 'none';
+
+            // Animate cards when returning to dashboard
+            document.querySelectorAll('.card').forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s both ${index * 0.1}s`;
+            });
+        }
+
+        function showDataRekening() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('dataRekeningContainer').style.display = 'block';
+            document.getElementById('hadiahBonusContainer').style.display = 'none';
+            document.getElementById('reportContainer').style.display = 'none';
+
+            loadRekeningData();
+            document.getElementById('dataRekeningContainer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showHadiahBonus() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('dataRekeningContainer').style.display = 'none';
+            document.getElementById('hadiahBonusContainer').style.display = 'block';
+            document.getElementById('reportContainer').style.display = 'none';
+
+            loadHadiahData();
+            document.getElementById('hadiahBonusContainer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showReport() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('dataRekeningContainer').style.display = 'none';
+            document.getElementById('hadiahBonusContainer').style.display = 'none';
+            document.getElementById('reportContainer').style.display = 'block';
+
+            loadReportMenu();
+            document.getElementById('reportContainer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Rekening data functionality with caching
+        const rekeningCache = {
+            data: null,
+            timestamp: 0,
+            ttl: 300000 // 5 minutes cache
+        };
+
+        function loadRekeningData() {
+            const now = Date.now();
+
+            if (rekeningCache.data && now - rekeningCache.timestamp < rekeningCache.ttl) {
+                displayRekeningData(rekeningCache.data);
                 return;
             }
-            
-            // Find the matching prize data
-            const prizeData = hadiahBonusData.find(item => 
-                item.jenis === jenis && item.pasaran === pasaran && item.taruhan === taruhan
-            );
-            
-            if (!prizeData) {
-                document.getElementById('calcResult').innerHTML = '<p class="hadiah-value">Data hadiah tidak ditemukan</p>';
+
+            showLoading();
+
+            // Use local data instead of Google Script
+            setTimeout(() => {
+                rekeningCache.data = rekeningDataList;
+                rekeningCache.timestamp = Date.now();
+                displayRekeningData(rekeningDataList);
+            }, 500);
+        }
+
+        function displayRekeningData(data) {
+            const loading = document.getElementById('loading');
+            const rekeningData = document.getElementById('rekeningData');
+            const noResults = document.getElementById('noResults');
+
+            loading.style.display = 'none';
+            rekeningData.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                noResults.style.display = 'flex';
                 return;
             }
+
+            noResults.style.display = 'none';
+
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.style.animation = `fadeInUp 0.4s both ${index * 0.05}s`;
+
+                const rekeningText = `${item.namaRekening} - ${item.nomorRekening} (${item.bank})`;
+                row.innerHTML = `
+                    <td>${item.bank}</td>
+                    <td>${item.username}</td>
+                    <td>${item.nomorRekening}</td>
+                    <td>${item.namaRekening}</td>
+                    <td>${item.password}</td>
+                    <td>${item.noHp}</td>
+                    <td>
+                        <button class="copy-rekening-btn" onclick="copyToClipboard('${rekeningText.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </td>
+                `;
+
+                rekeningData.appendChild(row);
+            });
+        }
+
+        function searchRekening() {
+            const searchTerm = document.getElementById('searchRekening').value.trim().toLowerCase();
+            const loading = document.getElementById('loading');
+            const rekeningData = document.getElementById('rekeningData');
+            const noResults = document.getElementById('noResults');
+
+            if (searchTerm === '') {
+                loadRekeningData();
+                return;
+            }
+
+            loading.style.display = 'flex';
+            rekeningData.innerHTML = '';
+            noResults.style.display = 'none';
+
+            // Add search animation
+            document.getElementById('searchBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
+
+            setTimeout(() => {
+                // Filter local data
+                const filteredData = rekeningDataList.filter(item => 
+                    item.bank.toLowerCase().includes(searchTerm) ||
+                    item.username.toLowerCase().includes(searchTerm) ||
+                    item.nomorRekening.includes(searchTerm) ||
+                    item.namaRekening.toLowerCase().includes(searchTerm) ||
+                    item.password.toLowerCase().includes(searchTerm) ||
+                    item.noHp.includes(searchTerm)
+                );
+
+                document.getElementById('searchBtn').innerHTML = '<i class="fas fa-search"></i> Cari';
+                loading.style.display = 'none';
+                displayRekeningData(filteredData);
+            }, 500);
+        }
+
+        // Hadiah Bonus functionality
+        function loadHadiahData() {
+            const hadiahLoading = document.getElementById('hadiahLoading');
+            const hadiahData = document.getElementById('hadiahData');
+            const hadiahNoResults = document.getElementById('hadiahNoResults');
+
+            hadiahLoading.style.display = 'flex';
+            hadiahData.innerHTML = '';
+            hadiahNoResults.style.display = 'none';
+
+            // Initialize filter event listeners
+            document.getElementById('kategoriFilter').addEventListener('change', filterHadiah);
+            document.getElementById('pasaranFilter').addEventListener('change', filterHadiah);
+            document.getElementById('searchHadiahBtn').addEventListener('click', filterHadiah);
             
-            // Extract multiplier from prize string (e.g., "x10,000" -> 10000)
-            const multiplier = parseFloat(prizeData.hadiah.replace('x', '').replace(',', ''));
+            // Add enter key support for search
+            document.getElementById('searchHadiah').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    filterHadiah();
+                }
+            });
+
+            // Load all hadiah data
+            setTimeout(() => {
+                hadiahLoading.style.display = 'none';
+                displayAllHadiah();
+            }, 500);
+        }
+
+        function displayAllHadiah() {
+            const hadiahData = document.getElementById('hadiahData');
+            hadiahData.innerHTML = '';
             
-            // Calculate prize amount
-            const prizeAmount = betAmount * multiplier;
+            // Display all hadiah categories
+            for (const [kategori, items] of Object.entries(hadiahData)) {
+                items.forEach((item, index) => {
+                    const hadiahCard = createHadiahCard(item, kategori, index);
+                    hadiahData.appendChild(hadiahCard);
+                });
+            }
+        }
+
+        function filterHadiah() {
+            const kategoriFilter = document.getElementById('kategoriFilter').value;
+            const pasaranFilter = document.getElementById('pasaranFilter').value;
+            const searchTerm = document.getElementById('searchHadiah').value.trim().toLowerCase();
             
-            // Format the result
-            const formattedAmount = new Intl.NumberFormat('id-ID', { 
-                style: 'currency', 
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(prizeAmount);
+            const hadiahLoading = document.getElementById('hadiahLoading');
+            const hadiahData = document.getElementById('hadiahData');
+            const hadiahNoResults = document.getElementById('hadiahNoResults');
             
-            const formattedBet = new Intl.NumberFormat('id-ID', { 
-                style: 'currency', 
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(betAmount);
+            hadiahLoading.style.display = 'flex';
+            hadiahData.innerHTML = '';
+            hadiahNoResults.style.display = 'none';
             
-            let resultHTML = `
-                <div class="hadiah-detail">
-                    <span>Jenis Hadiah:</span>
-                    <span class="hadiah-value">${getJenisName(jenis)}</span>
+            // Add search animation
+            document.getElementById('searchHadiahBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
+            
+            setTimeout(() => {
+                document.getElementById('searchHadiahBtn').innerHTML = '<i class="fas fa-search"></i> Cari';
+                hadiahLoading.style.display = 'none';
+                
+                let results = [];
+                
+                // Filter data based on criteria
+                for (const [kategori, items] of Object.entries(hadiahData)) {
+                    if (kategoriFilter && kategori !== kategoriFilter) continue;
+                    
+                    const filteredItems = items.filter(item => {
+                        // Filter by pasaran
+                        if (pasaranFilter && item.pasaran !== pasaranFilter) return false;
+                        
+                        // Filter by search term
+                        if (searchTerm) {
+                            const searchIn = `${item.title} ${item.items.map(i => `${i.name} ${i.value}`).join(' ')}`.toLowerCase();
+                            if (!searchIn.includes(searchTerm)) return false;
+                        }
+                        
+                        return true;
+                    });
+                    
+                    results = results.concat(filteredItems.map(item => ({ ...item, kategori })));
+                }
+                
+                if (results.length === 0) {
+                    hadiahNoResults.style.display = 'flex';
+                    return;
+                }
+                
+                // Display filtered results
+                results.forEach((item, index) => {
+                    const hadiahCard = createHadiahCard(item, item.kategori, index);
+                    hadiahData.appendChild(hadiahCard);
+                });
+            }, 500);
+        }
+
+        function createHadiahCard(item, kategori, index) {
+            const card = document.createElement('div');
+            card.className = 'hadiah-card';
+            card.style.animation = `fadeInUp 0.4s both ${index * 0.05}s`;
+            
+            const pasaranText = getPasaranText(item.pasaran);
+            
+            card.innerHTML = `
+                <div class="hadiah-header">
+                    <div class="hadiah-title">
+                        <i class="fas fa-trophy"></i>
+                        ${item.title}
+                    </div>
+                    <div class="hadiah-pasaran">${pasaranText}</div>
                 </div>
-                <div class="hadiah-detail">
-                    <span>Pasaran:</span>
-                    <span class="hadiah-value">${getPasaranName(pasaran)}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Taruhan:</span>
-                    <span class="hadiah-value">${getTaruhanName(taruhan)}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Jumlah Taruhan:</span>
-                    <span class="hadiah-value">${formattedBet}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Multiplier:</span>
-                    <span class="hadiah-value">${prizeData.hadiah}</span>
-                </div>
-                <div class="hadiah-detail">
-                    <span>Hadiah yang didapat:</span>
-                    <span class="hadiah-value">${formattedAmount}</span>
+                <div class="hadiah-content">
+                    ${item.items.map(hadiah => `
+                        <div class="hadiah-item">
+                            <div class="hadiah-item-title">${hadiah.name}</div>
+                            <div class="hadiah-item-value">${hadiah.value}</div>
+                            ${hadiah.discount ? `<div class="hadiah-item-discount">Discount: ${hadiah.discount}</div>` : ''}
+                        </div>
+                    `).join('')}
                 </div>
             `;
             
-            if (prizeData.discount) {
-                resultHTML += `
-                    <div class="hadiah-detail">
-                        <span>Discount:</span>
-                        <span class="hadiah-value">${prizeData.discount}</span>
-                    </div>
-                `;
-            }
-            
-            if (prizeData.keterangan) {
-                resultHTML += `
-                    <div class="hadiah-detail">
-                        <span>Keterangan:</span>
-                        <span>${prizeData.keterangan}</span>
-                    </div>
-                `;
-            }
-            
-            document.getElementById('calcResult').innerHTML = resultHTML;
+            return card;
         }
 
-        // Helper functions to get display names
-        function getJenisName(jenis) {
-            const names = {
-                "FULL": "Hadiah Full",
-                "DISCOUNT": "Hadiah Discount",
-                "BB": "Hadiah Bolak Balik (BB)"
-            };
-            
-            return names[jenis] || jenis;
-        }
-        
-        function getTaruhanName(taruhan) {
-            const names = {
-                "4D": "4D",
-                "3D": "3D",
-                "2D": "2D",
-                "2D_DEPAN": "2D Depan",
-                "2D_TENGAH": "2D Tengah",
-                "5D": "5D"
-            };
-            
-            return names[taruhan] || taruhan;
-        }
-        
-        function getPasaranName(pasaran) {
-            const names = {
-                "ALL": "All Pasaran",
-                "SYDNEY_HONGKONG": "Sydney & Hongkong",
-                "TOTO_MACAU_4D": "Toto Macau 4D",
-                "KINGKONG_4D": "Kingkong 4D",
-                "TOTO_MACAU_5D": "Toto Macau 5D",
-                "JAKARTA_POOLS": "Jakarta Pools",
-                "HOKIDRAW": "Hokidraw",
-                "TOTOMALI": "Toto Mali"
-            };
-            
-            return names[pasaran] || pasaran;
+        function getPasaranText(pasaran) {
+            switch(pasaran) {
+                case 'all': return 'All Pasaran';
+                case 'sydney-hongkong': return 'Sydney & Hongkong';
+                case 'kingkong-totomacau-4d': return 'Kingkong & Toto Macau 4D';
+                case 'totomacau-5d': return 'Toto Macau 5D';
+                case 'jakarta-pools': return 'Jakarta Pools';
+                case 'hokidraw': return 'Hokidraw';
+                case 'toto-mali': return 'Toto Mali';
+                default: return pasaran;
+            }
         }
 
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Hadiah berhasil disalin: ' + text);
-            }).catch(err => {
-                console.error('Gagal menyalin teks: ', err);
-                alert('Gagal menyalin hadiah');
+        // Report functionality
+        function loadReportMenu() {
+            const reportMenuList = document.getElementById('reportMenuList');
+            const reportContent = document.getElementById('reportContent');
+
+            reportContent.style.display = 'none';
+            reportMenuList.innerHTML = `
+                <div class="loading" style="height: 100px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-spinner fa-spin"></i> Memuat daftar laporan...
+                </div>
+            `;
+
+            google.script.run.withSuccessHandler(function(data) {
+                reportMenuList.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    reportMenuList.innerHTML = `
+                        <div class="no-results" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px;">
+                            <i class="fas fa-info-circle"></i> Tidak ada laporan tersedia
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.forEach((item, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'report-menu-btn';
+                    button.innerHTML = `
+                        <i class="fas fa-file-alt"></i>
+                        <span>${item.menu || 'Untitled Report'}</span>
+                    `;
+                    button.style.animation = `fadeInUp 0.4s both ${index * 0.1}s`;
+
+                    button.addEventListener('click', function() {
+                        // Add active state to button
+                        document.querySelectorAll('.report-menu-btn').forEach(btn => {
+                            btn.style.background = 'linear-gradient(135deg, rgba(0, 168, 255, 0.1), rgba(255, 60, 65, 0.05))';
+                        });
+                        this.style.background = 'linear-gradient(135deg, rgba(0, 168, 255, 0.3), rgba(255, 60, 65, 0.1))';
+
+                        showReportInfo(item.menu);
+                    });
+
+                    reportMenuList.appendChild(button);
+                });
+            }).withFailureHandler(function(error) {
+                reportMenuList.innerHTML = `
+                    <div class="no-results" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100px;">
+                        <i class="fas fa-exclamation-triangle"></i> Gagal memuat laporan: ${error.message}
+                    </div>
+                `;
+                console.error('Error loading report menu:', error);
+            }).getReportMenu();
+        }
+
+        function showReportInfo(menuName) {
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            const reportInfo = document.getElementById('reportInfo');
+
+            reportContent.style.display = 'none';
+            reportInfo.innerHTML = `
+                <div class="loading" style="display: flex; justify-content: center; padding: 20px;">
+                    <i class="fas fa-spinner fa-spin"></i> Memuat informasi...
+                </div>
+            `;
+
+            google.script.run.withSuccessHandler(function(info) {
+                reportTitle.textContent = menuName || 'Report';
+                reportInfo.innerHTML = `
+                    <button class="copy-btn" onclick="copyToClipboard(document.getElementById('reportInfo').textContent)">
+                        <i class="fas fa-copy"></i> Salin Semua
+                    </button>
+                    ${info || '<p style="text-align: center; color: var(--text-light);">Informasi tidak tersedia untuk laporan ini</p>'}
+                `;
+
+                reportContent.style.display = 'block';
+                reportContent.style.animation = 'fadeInUp 0.4s both';
+
+                // Highlight important information
+                const infoElement = document.getElementById('reportInfo');
+                const importantTexts = infoElement.querySelectorAll('strong, b');
+
+                importantTexts.forEach(text => {
+                    text.style.color = 'var(--primary)';
+                    text.style.fontWeight = '600';
+                });
+
+            }).withFailureHandler(function(error) {
+                reportInfo.innerHTML = `
+                    <div style="text-align: center; color: var(--danger); padding: 20px;">
+                        <i class="fas fa-exclamation-triangle"></i> Gagal memuat informasi: ${error.message}
+                    </div>
+                `;
+                reportContent.style.display = 'block';
+                console.error('Error loading report info:', error);
+            }).getReportInfo(menuName);
+        }
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('rekeningData').innerHTML = '';
+            document.getElementById('noResults').style.display = 'none';
+        }
+
+        function showError(message) {
+            const banner = document.getElementById('errorBanner');
+            document.getElementById('errorMessage').textContent = message;
+            banner.style.display = 'flex';
+
+            setTimeout(() => {
+                banner.style.opacity = '0';
+                setTimeout(() => banner.style.display = 'none', 300);
+            }, 5000);
+        }
+
+        function showSkeleton(containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="skeleton-card">
+                    <div class="skeleton-line" style="width:70%"></div>
+                    <div class="skeleton-line" style="width:90%"></div>
+                    <div class="skeleton-line" style="width:40%"></div>
+                </div>
+            `;
+        }
+
+        // Modern Clipboard API with fallback
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast("Tersalin ke clipboard!", "success");
+            } catch (err) {
+                console.error("Gagal menyalin:", err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast("Tersalin (fallback)!", "success");
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = "success") {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === "success" ? "check" : "times"}"></i>
+                ${message}
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Ripple effect
+        function createRippleEffect(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size/2;
+            const y = event.clientY - rect.top - size/2;
+
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.style.background = 'rgba(255,255,255,0.4)';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.pointerEvents = 'none';
+
+            button.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Event listeners
+        document.getElementById('searchBtn').addEventListener('click', searchRekening);
+
+        let searchTimeout;
+        document.getElementById('searchRekening').addEventListener('keyup', function(e) {
+            clearTimeout(searchTimeout);
+
+            if (e.key === 'Enter') {
+                searchRekening();
+            } else if (this.value.trim().length > 2) {
+                searchTimeout = setTimeout(() => {
+                    searchRekening();
+                }, 500);
+            }
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('button, .card-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                createRippleEffect(e);
             });
+        });
+
+        // Add animation for page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.6s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Lazy load for non-critical components
+        window.addEventListener('load', function() {
+            // Lazy load for components not immediately visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.id === 'dataRekeningContainer') {
+                            loadRekeningData();
+                        } else if (entry.target.id === 'hadiahBonusContainer') {
+                            loadHadiahData();
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            observer.observe(document.getElementById('dataRekeningContainer'));
+            observer.observe(document.getElementById('hadiahBonusContainer'));
+            observer.observe(document.getElementById('reportContainer'));
+        });
+
+        // Detect low-end devices
+        const isLowEndDevice = navigator.hardwareConcurrency < 4 ||
+            navigator.deviceMemory < 4;
+
+        if (isLowEndDevice) {
+            // Reduce animations for low-end devices
+            document.documentElement.style.setProperty('--transition', 'none');
+            maxParticles = 10;
         }
     </script>
 </body>
