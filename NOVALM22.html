@@ -190,38 +190,41 @@
             font-size: 0.9rem;
         }
 
-        /* Hadiah Items */
-        .hadiah-item {
-            padding: 15px;
-            margin-bottom: 15px;
+        /* Hadiah Section */
+        .hadiah-section {
+            margin-bottom: 25px;
             background: rgba(5, 13, 26, 0.4);
             border-radius: var(--border-radius);
+            padding: 20px;
             border-left: 4px solid var(--primary);
-            transition: var(--transition);
         }
 
-        .hadiah-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.2);
-        }
-
-        .hadiah-title {
+        .hadiah-section-title {
             color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 8px;
             font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.2);
         }
 
-        .hadiah-detail {
-            color: var(--text-light);
-            margin-bottom: 5px;
+        /* Hadiah Items */
+        .hadiah-item {
+            margin-bottom: 8px;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hadiah-taruhan {
+            color: var(--text-light);
+            font-weight: 500;
+            min-width: 40px;
         }
 
         .hadiah-value {
             color: var(--accent);
             font-weight: 500;
+            margin-left: 10px;
         }
 
         .copy-btn {
@@ -236,7 +239,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .copy-all-btn {
@@ -396,52 +399,52 @@
         // Data Hadiah Bonus Togel
         const hadiahBonusData = [
             // HADIAH FULL
-            { jenis: "FULL", taruhan: "4D", pasaran: "ALL", hadiah: "x10,000", keterangan: "All Pasaran kecuali Toto macau, Kingkong, Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "ALL", hadiah: "x1,000", keterangan: "All Pasaran kecuali Toto macau, Kingkong, Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "ALL", hadiah: "x100", keterangan: "All Pasaran kecuali Toto macau, Kingkong, Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "SYDNEY_HONGKONG", hadiah: "x9,800", keterangan: "Pasaran Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "SYDNEY_HONGKONG", hadiah: "x980", keterangan: "Pasaran Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "SYDNEY_HONGKONG", hadiah: "x98", keterangan: "Pasaran Sydney & Hongkong" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x9,000", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x950", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x95", keterangan: "Kingkong & Toto macau 4D" },
-            { jenis: "FULL", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x88,000", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x9,000", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x950", keterangan: "Toto macau 5d" },
-            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x95", keterangan: "Toto macau 5d" },
+            { jenis: "FULL", taruhan: "4D", pasaran: "ALL", hadiah: "x 10000", keterangan: "Hadiah Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "3D", pasaran: "ALL", hadiah: "x 1000", keterangan: "Hadiah Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "2D", pasaran: "ALL", hadiah: "x 100", keterangan: "Hadiah Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "4D", pasaran: "SYDNEY_HONGKONG", hadiah: "x 9800", keterangan: "Hadiah Bet full pasaran Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "3D", pasaran: "SYDNEY_HONGKONG", hadiah: "x 980", keterangan: "Hadiah Bet full pasaran Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "2D", pasaran: "SYDNEY_HONGKONG", hadiah: "x 98", keterangan: "Hadiah Bet full pasaran Sydney & Hongkong" },
+            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x 9000", keterangan: "Hadiah Bet full Kingkong & Toto macau 4D" },
+            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x 950", keterangan: "Hadiah Bet full Kingkong & Toto macau 4D" },
+            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x 95", keterangan: "Hadiah Bet full Kingkong & Toto macau 4D" },
+            { jenis: "FULL", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x 88000", keterangan: "Hadiah Bet full Toto macau 5d" },
+            { jenis: "FULL", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x 9000", keterangan: "Hadiah Bet full Toto macau 5d" },
+            { jenis: "FULL", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x 950", keterangan: "Hadiah Bet full Toto macau 5d" },
+            { jenis: "FULL", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x 95", keterangan: "Hadiah Bet full Toto macau 5d" },
             
             // HADIAH DISCOUNT
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "ALL", hadiah: "x3,000", discount: "66.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "ALL", hadiah: "x400", discount: "59.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "ALL", hadiah: "x70", discount: "29.50%", keterangan: "All pasaran kecuali (Toto macau 4D, Kingkong 4D, Jakarta pools, Hokidraw & Toto mali)" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x6,000", discount: "33%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x700", discount: "24%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x80", discount: "15%", keterangan: "Toto macau 4D & Kingkong 4D" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "JAKARTA_POOLS", hadiah: "x3,000", discount: "66%", keterangan: "Jakarta pools" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "JAKARTA_POOLS", hadiah: "x400", discount: "59%", keterangan: "Jakarta pools" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "JAKARTA_POOLS", hadiah: "x70", discount: "29%", keterangan: "Jakarta pools" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTOMALI", hadiah: "x3,000", discount: "67%", keterangan: "Toto Mali" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTOMALI", hadiah: "x400", discount: "57%", keterangan: "Toto Mali" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTOMALI", hadiah: "x70", discount: "27%", keterangan: "Toto Mali" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "HOKIDRAW", hadiah: "x7,000", discount: "20%", keterangan: "Hokidraw" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "HOKIDRAW", hadiah: "x750", discount: "20%", keterangan: "Hokidraw" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "HOKIDRAW", hadiah: "x75", discount: "20%", keterangan: "Hokidraw" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "SUPER_DISCOUNT", hadiah: "x3,000", discount: "66%", keterangan: "Super Discount Totomacau 4D" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "SUPER_DISCOUNT", hadiah: "x400", discount: "59%", keterangan: "Super Discount Totomacau 4D" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "SUPER_DISCOUNT", hadiah: "x70", discount: "29%", keterangan: "Super Discount Totomacau 4D" },
-            { jenis: "DISCOUNT", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x50,000", discount: "38%", keterangan: "Toto macau 5D" },
-            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x7,000", discount: "20%", keterangan: "Toto macau 5D" },
-            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x750", discount: "20%", keterangan: "Toto macau 5D" },
-            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x75", discount: "20%", keterangan: "Toto macau 5D" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "ALL", hadiah: "x 3000", discount: "66.50%", keterangan: "Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "ALL", hadiah: "x 400", discount: "59.50%", keterangan: "Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "ALL", hadiah: "x 70", discount: "29.50%", keterangan: "Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTO_MACAU_4D", hadiah: "x 6000", discount: "33%", keterangan: "Hadiah Discount Toto macau 4D & Kingkong 4D" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTO_MACAU_4D", hadiah: "x 700", discount: "24%", keterangan: "Hadiah Discount Toto macau 4D & Kingkong 4D" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTO_MACAU_4D", hadiah: "x 80", discount: "15%", keterangan: "Hadiah Discount Toto macau 4D & Kingkong 4D" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "JAKARTA_POOLS", hadiah: "x 3000", discount: "66%", keterangan: "Hadiah Discount Jakarta pools" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "JAKARTA_POOLS", hadiah: "x 400", discount: "59%", keterangan: "Hadiah Discount Jakarta pools" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "JAKARTA_POOLS", hadiah: "x 70", discount: "29%", keterangan: "Hadiah Discount Jakarta pools" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTOMALI", hadiah: "x 3000", discount: "67%", keterangan: "Hadiah Discount Toto Mali" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTOMALI", hadiah: "x 400", discount: "57%", keterangan: "Hadiah Discount Toto Mali" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTOMALI", hadiah: "x 70", discount: "27%", keterangan: "Hadiah Discount Toto Mali" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "HOKIDRAW", hadiah: "x 7000", discount: "20%", keterangan: "Hadiah Discount Hokidraw" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "HOKIDRAW", hadiah: "x 750", discount: "20%", keterangan: "Hadiah Discount Hokidraw" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "HOKIDRAW", hadiah: "x 75", discount: "20%", keterangan: "Hadiah Discount Hokidraw" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "SUPER_DISCOUNT", hadiah: "x 3000", discount: "66%", keterangan: "Hadiah Super Discount Totomacau 4D" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "SUPER_DISCOUNT", hadiah: "x 400", discount: "59%", keterangan: "Hadiah Super Discount Totomacau 4D" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "SUPER_DISCOUNT", hadiah: "x 70", discount: "29%", keterangan: "Hadiah Super Discount Totomacau 4D" },
+            { jenis: "DISCOUNT", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x 50000", discount: "38%", keterangan: "Hadiah Discount Toto macau 5D" },
+            { jenis: "DISCOUNT", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x 7000", discount: "20%", keterangan: "Hadiah Discount Toto macau 5D" },
+            { jenis: "DISCOUNT", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x 750", discount: "20%", keterangan: "Hadiah Discount Toto macau 5D" },
+            { jenis: "DISCOUNT", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x 75", discount: "20%", keterangan: "Hadiah Discount Toto macau 5D" },
             
             // HADIAH BOLAK BALIK / BB
-            { jenis: "BB", taruhan: "4D", pasaran: "ALL", hadiah: "x4,000", hadiah_terbalik: "x200", keterangan: "All pasaran kecuali Totomacau 5d" },
-            { jenis: "BB", taruhan: "3D", pasaran: "ALL", hadiah: "x400", hadiah_terbalik: "x100", keterangan: "All pasaran kecuali Totomacau 5d" },
-            { jenis: "BB", taruhan: "2D", pasaran: "ALL", hadiah: "x70", hadiah_terbalik: "x20", keterangan: "All pasaran kecuali Totomacau 5d" },
-            { jenis: "BB", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x50,000", hadiah_terbalik: "x350", keterangan: "TOTOMACAU5D" },
-            { jenis: "BB", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x5,000", hadiah_terbalik: "x180", keterangan: "TOTOMACAU5D" },
-            { jenis: "BB", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x500", hadiah_terbalik: "x75", keterangan: "TOTOMACAU5D" },
-            { jenis: "BB", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x80", hadiah_terbalik: "x15", keterangan: "TOTOMACAU5D" },
+            { jenis: "BB", taruhan: "4D", pasaran: "ALL", hadiah: "x 4000", hadiah_terbalik: "x 200", keterangan: "Hadiah bet BB / BOLAKBALIK All pasaran kecuali Totomacau 5d" },
+            { jenis: "BB", taruhan: "3D", pasaran: "ALL", hadiah: "x 400", hadiah_terbalik: "x 100", keterangan: "Hadiah bet BB / BOLAKBALIK All pasaran kecuali Totomacau 5d" },
+            { jenis: "BB", taruhan: "2D", pasaran: "ALL", hadiah: "x 70", hadiah_terbalik: "x 20", keterangan: "Hadiah bet BB / BOLAKBALIK All pasaran kecuali Totomacau 5d" },
+            { jenis: "BB", taruhan: "5D", pasaran: "TOTO_MACAU_5D", hadiah: "x 50000", hadiah_terbalik: "x 350", keterangan: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D" },
+            { jenis: "BB", taruhan: "4D", pasaran: "TOTO_MACAU_5D", hadiah: "x 5000", hadiah_terbalik: "x 180", keterangan: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D" },
+            { jenis: "BB", taruhan: "3D", pasaran: "TOTO_MACAU_5D", hadiah: "x 500", hadiah_terbalik: "x 75", keterangan: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D" },
+            { jenis: "BB", taruhan: "2D", pasaran: "TOTO_MACAU_5D", hadiah: "x 80", hadiah_terbalik: "x 15", keterangan: "Hadiah bet BB / BOLAKBALIK TOTOMACAU5D" },
         ];
 
         // Jenis Hadiah Info
@@ -581,74 +584,58 @@
             copyAllBtn.onclick = () => copyAllHadiahByJenis(jenis);
             hadiahList.appendChild(copyAllBtn);
             
-            // Group by pasaran
+            // Group by keterangan (since keterangan now contains the title)
             const groupedData = {};
             data.forEach(item => {
-                if (!groupedData[item.pasaran]) {
-                    groupedData[item.pasaran] = [];
+                if (!groupedData[item.keterangan]) {
+                    groupedData[item.keterangan] = [];
                 }
-                groupedData[item.pasaran].push(item);
+                groupedData[item.keterangan].push(item);
             });
             
             // Display each group
-            Object.keys(groupedData).forEach(pasaran => {
-                const pasaranHeader = document.createElement('div');
-                pasaranHeader.className = 'hadiah-title';
-                pasaranHeader.textContent = getPasaranName(pasaran);
-                hadiahList.appendChild(pasaranHeader);
+            Object.keys(groupedData).forEach(keterangan => {
+                const section = document.createElement('div');
+                section.className = 'hadiah-section';
                 
-                groupedData[pasaran].forEach(item => {
+                const keteranganHeader = document.createElement('div');
+                keteranganHeader.className = 'hadiah-section-title';
+                keteranganHeader.textContent = keterangan;
+                section.appendChild(keteranganHeader);
+                
+                // Sort items by taruhan (5D, 4D, 3D, 2D)
+                const sortedItems = [...groupedData[keterangan]].sort((a, b) => {
+                    const taruhanOrder = { "5D": 1, "4D": 2, "3D": 3, "2D": 4 };
+                    return (taruhanOrder[a.taruhan] || 5) - (taruhanOrder[b.taruhan] || 5);
+                });
+                
+                // Display each hadiah item
+                sortedItems.forEach(item => {
                     const hadiahItem = document.createElement('div');
                     hadiahItem.className = 'hadiah-item';
                     
                     let content = `
-                        <div class="hadiah-detail">
-                            <span>Taruhan:</span>
-                            <span class="hadiah-value">${getTaruhanName(item.taruhan)}</span>
-                        </div>
-                        <div class="hadiah-detail">
-                            <span>Hadiah:</span>
-                            <span class="hadiah-value">${item.hadiah}</span>
-                        </div>
+                        <div class="hadiah-taruhan">${item.taruhan} :</div>
+                        <div class="hadiah-value">${item.hadiah}</div>
                     `;
                     
-                    if (item.discount) {
+                    if (jenis === 'DISCOUNT' && item.discount) {
                         content += `
-                            <div class="hadiah-detail">
-                                <span>Discount:</span>
-                                <span class="hadiah-value">${item.discount}</span>
-                            </div>
+                            <div class="hadiah-value" style="margin-left: 15px;">( DISCOUNT : ${item.discount} )</div>
                         `;
                     }
                     
-                    if (item.hadiah_terbalik) {
+                    if (jenis === 'BB' && item.hadiah_terbalik) {
                         content += `
-                            <div class="hadiah-detail">
-                                <span>Hadiah Terbalik:</span>
-                                <span class="hadiah-value">${item.hadiah_terbalik}</span>
-                            </div>
+                            <div class="hadiah-value" style="margin-left: 15px;">Hadiah terbalik = ${item.hadiah_terbalik}</div>
                         `;
                     }
-                    
-                    if (item.keterangan) {
-                        content += `
-                            <div class="hadiah-detail">
-                                <span>Keterangan:</span>
-                                <span>${item.keterangan}</span>
-                            </div>
-                        `;
-                    }
-                    
-                    // Add copy button
-                    content += `
-                        <button class="copy-btn" onclick="copyAllHadiahByJenis('${jenis}')">
-                            <i class="fas fa-copy"></i> Salin Semua ${jenisHadiahInfo[jenis].title}
-                        </button>
-                    `;
                     
                     hadiahItem.innerHTML = content;
-                    hadiahList.appendChild(hadiahItem);
+                    section.appendChild(hadiahItem);
                 });
+                
+                hadiahList.appendChild(section);
             });
         }
 
@@ -662,31 +649,37 @@
                 return;
             }
             
-            // Format the text to be copied
-            let copyText = `=== ${getJenisName(jenis)} ===\n\n`;
-            
-            // Group by pasaran
+            // Group by keterangan (since keterangan now contains the title)
             const groupedData = {};
             filteredData.forEach(item => {
-                if (!groupedData[item.pasaran]) {
-                    groupedData[item.pasaran] = [];
+                if (!groupedData[item.keterangan]) {
+                    groupedData[item.keterangan] = [];
                 }
-                groupedData[item.pasaran].push(item);
+                groupedData[item.keterangan].push(item);
             });
             
-            // Build the formatted text
-            Object.keys(groupedData).forEach(pasaran => {
-                copyText += `${getPasaranName(pasaran)}:\n`;
+            // Build the formatted text - same as displayed
+            let copyText = '';
+            
+            Object.keys(groupedData).forEach(keterangan => {
+                copyText += `${keterangan}\n`;
                 
-                groupedData[pasaran].forEach(item => {
-                    copyText += `  ${getTaruhanName(item.taruhan)}: ${item.hadiah}`;
+                // Sort items by taruhan (5D, 4D, 3D, 2D)
+                const sortedItems = [...groupedData[keterangan]].sort((a, b) => {
+                    const taruhanOrder = { "5D": 1, "4D": 2, "3D": 3, "2D": 4 };
+                    return (taruhanOrder[a.taruhan] || 5) - (taruhanOrder[b.taruhan] || 5);
+                });
+                
+                // Add each hadiah item
+                sortedItems.forEach(item => {
+                    copyText += `${item.taruhan} : ${item.hadiah}`;
                     
-                    if (item.discount) {
-                        copyText += ` (Discount: ${item.discount})`;
+                    if (jenis === 'DISCOUNT' && item.discount) {
+                        copyText += ` ( DISCOUNT : ${item.discount} )`;
                     }
                     
-                    if (item.hadiah_terbalik) {
-                        copyText += ` (Hadiah terbalik: ${item.hadiah_terbalik})`;
+                    if (jenis === 'BB' && item.hadiah_terbalik) {
+                        copyText += ` Hadiah terbalik = ${item.hadiah_terbalik}`;
                     }
                     
                     copyText += `\n`;
@@ -726,8 +719,8 @@
                 return;
             }
             
-            // Extract multiplier from prize string (e.g., "x10,000" -> 10000)
-            const multiplier = parseFloat(prizeData.hadiah.replace('x', '').replace(',', ''));
+            // Extract multiplier from prize string (e.g., "x 10000" -> 10000)
+            const multiplier = parseFloat(prizeData.hadiah.replace('x', '').replace(',', '').trim());
             
             // Calculate prize amount
             const prizeAmount = betAmount * multiplier;
