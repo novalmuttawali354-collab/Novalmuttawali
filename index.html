@@ -6,12 +6,12 @@
     <title>Line Togel - Noval Muttawali</title>
     
     <!-- Preload resources for better performance -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- Fallback for browsers without JavaScript -->
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </noscript>
     
@@ -388,26 +388,143 @@
             border-radius: 3px;
         }
 
+        /* Advanced Clock Design */
         #clock {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(15, 27, 44, 0.9), rgba(26, 47, 74, 0.7));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: white;
-            padding: 12px 20px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
-            border: none;
-            font-weight: 500;
-            animation: pulse 2s infinite;
-            transition: var(--transition);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            padding: 20px 30px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 10px 30px rgba(0, 168, 255, 0.3), 
+                        inset 0 1px 10px rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(0, 168, 255, 0.3);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+            min-width: 320px;
+        }
+
+        #clock::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, rgba(0,0,0,0) 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        #clock::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
         }
 
         #clock:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.4), 
+                        inset 0 1px 15px rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 168, 255, 0.5);
+        }
+
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .digital-clock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 5px;
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .time-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 168, 255, 0.7);
+            line-height: 1;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .time-value.changed {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .time-separator {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(255, 221, 0, 0.7);
+            animation: blink 1s infinite;
+            align-self: flex-start;
+            margin-top: 5px;
+        }
+
+        .date-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .day-name {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .date-value {
+            font-size: 0.9rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         /* Card Grid - Modern Glass Cards */
@@ -1015,86 +1132,6 @@
             transform: translateY(-2px);
         }
 
-        /* Mobile Toggle Button - Floating Action Button */
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 168, 255, 0.4);
-            transition: var(--transition);
-            border: none;
-        }
-
-        .menu-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(255, 60, 65, 0.5);
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-        }
-
-        /* Skeleton Loading */
-        .skeleton-card {
-            background: rgba(15, 27, 44, 0.3);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin: 10px 0;
-        }
-
-        .skeleton-line {
-            height: 12px;
-            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.2), transparent);
-            margin: 10px 0;
-            animation: shimmer 1.5s infinite;
-            background-size: 200% 100%;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            border-radius: var(--border-radius);
-            color: white;
-            z-index: 1000;
-            animation: fadeInUp 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toast.success {
-            background: var(--success);
-            box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);
-        }
-
-        .toast.error {
-            background: var(--danger);
-            box-shadow: 0 4px 15px rgba(239, 35, 60, 0.3);
-        }
-
-        /* Error Banner */
-        #errorBanner {
-            display: none;
-            background: var(--danger);
-            color: white;
-            padding: 12px 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 20px;
-            align-items: center;
-            gap: 10px;
-        }
-
         /* Hadiah Bonus Togel Styles */
         .hadiah-container {
             margin-top: 20px;
@@ -1212,6 +1249,33 @@
             margin-top: 5px;
         }
 
+        /* Mobile Toggle Button - Floating Action Button */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 168, 255, 0.4);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 60, 65, 0.5);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+
         /* Animations */
         @keyframes fadeInDown {
             from {
@@ -1318,6 +1382,20 @@
 
             #clock {
                 align-self: flex-start;
+                min-width: 100%;
+            }
+            
+            .digital-clock {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .time-value {
+                font-size: 1.8rem;
+            }
+            
+            .time-separator {
+                font-size: 1.8rem;
             }
         }
 
@@ -1362,6 +1440,19 @@
 
             .report-actions {
                 justify-content: flex-start;
+            }
+            
+            #clock {
+                min-width: 100%;
+                padding: 15px 20px;
+            }
+            
+            .time-value {
+                font-size: 1.5rem;
+            }
+            
+            .time-separator {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -1437,7 +1528,30 @@
 
         <div class="header">
             <h1>Noval Muttawali</h1>
-            <div id="clock"></div>
+            <div id="clock">
+                <div class="clock-container">
+                    <div class="digital-clock">
+                        <div class="time-unit">
+                            <div class="time-value" id="hours">00</div>
+                            <div class="time-label">Jam</div>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <div class="time-value" id="minutes">00</div>
+                            <div class="time-label">Menit</div>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <div class="time-value" id="seconds">00</div>
+                            <div class="time-label">Detik</div>
+                        </div>
+                    </div>
+                    <div class="date-container">
+                        <div class="day-name" id="dayName">Senin</div>
+                        <div class="date-value" id="dateValue">1 Januari 2023</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="dashboardSection">
@@ -2388,8 +2502,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Load font and display content
             document.fonts.load('1em Poppins').then(() => {
-                document.documentElement.classList.add('fonts-loaded');
-                document.body.style.opacity = '1';
+                document.fonts.load('1em Orbitron').then(() => {
+                    document.documentElement.classList.add('fonts-loaded');
+                    document.body.style.opacity = '1';
+                });
             });
 
             // Initialize components
@@ -2405,7 +2521,7 @@
             }, { timeout: 2000 });
         });
 
-        // Clock functionality
+        // Clock functionality with advanced design
         function initClock() {
             updateClock();
             setInterval(updateClock, 1000);
@@ -2413,24 +2529,40 @@
 
         function updateClock() {
             const now = new Date();
-            const options = {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            const clockElement = document.getElementById("clock");
-            clockElement.textContent = now.toLocaleDateString("id-ID", options);
+            
+            // Update time components
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            // Update day and date
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const dayName = days[now.getDay()];
+            const dateValue = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            // Update DOM elements with animation
+            updateTimeElement('hours', hours);
+            updateTimeElement('minutes', minutes);
+            updateTimeElement('seconds', seconds);
+            
+            // Update day and date without animation
+            document.getElementById('dayName').textContent = dayName;
+            document.getElementById('dateValue').textContent = dateValue;
+        }
 
-            // Add smooth transition effect
-            clockElement.style.opacity = 0;
-            setTimeout(() => {
-                clockElement.style.opacity = 1;
-            }, 100);
+        function updateTimeElement(id, value) {
+            const element = document.getElementById(id);
+            if (element.textContent !== value) {
+                element.textContent = value;
+                element.classList.add('changed');
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    element.classList.remove('changed');
+                }, 500);
+            }
         }
 
         // Menu functionality
