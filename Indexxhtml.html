@@ -407,6 +407,14 @@
       border-color: var(--primary);
     }
 
+    .already-absent {
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .already-absent td {
+      opacity: 0.7;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 15px;
@@ -469,6 +477,22 @@
       text-align: right;
       margin-top: 10px;
     }
+
+    .reset-info {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--warning);
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reset-info i {
+      color: var(--warning);
+    }
   </style>
 </head>
 <body>
@@ -511,6 +535,10 @@
       <button class="btn" id="submitBtn">
         <i class="fas fa-paper-plane"></i> KIRIM ABSENSI
       </button>
+      <div class="reset-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Absen hanya dapat dilakukan sekali per hari. Sistem akan reset setiap hari pukul 00:00.</span>
+      </div>
     </div>
 
     <div class="card">
@@ -558,6 +586,83 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    // Data staff sesuai dengan yang diberikan
+    const staffDataRaw = [
+      { nama: "SAMUEL KRISTANTO", jabatan: "LEADER" },
+      { nama: "WIDJAYA", jabatan: "CS" },
+      { nama: "DAVID", jabatan: "CS" },
+      { nama: "FALLEN HARDINANSAH TAJU", jabatan: "CS" },
+      { nama: "CHARLIE", jabatan: "CS" },
+      { nama: "HARIANTO", jabatan: "CS" },
+      { nama: "RINAL ABDILLAH NASUTION", jabatan: "CS" },
+      { nama: "ERI HARIANTO", jabatan: "CS" },
+      { nama: "MAHENDRAN", jabatan: "CS" },
+      { nama: "ANDHIKA DWI PUTRA", jabatan: "CS" },
+      { nama: "TOMMY HASIM", jabatan: "CS" },
+      { nama: "EGI SETIAWAN", jabatan: "CS" },
+      { nama: "RANJIT", jabatan: "CS" },
+      { nama: "WILLY PERAYUDA", jabatan: "CS" },
+      { nama: "ANDI", jabatan: "CS" },
+      { nama: "ALFINO MUKTI", jabatan: "CS" },
+      { nama: "AKAS FARMA", jabatan: "CS" },
+      { nama: "ARI ROMANDUS FERNAND", jabatan: "CS" },
+      { nama: "PARIS AMRULLOH", jabatan: "CS" },
+      { nama: "SAMSUL MAARIF", jabatan: "CS" },
+      { nama: "SUHAN RAZ", jabatan: "CS" },
+      { nama: "RAHMADI SORMIN", jabatan: "CS" },
+      { nama: "NOVAL MUTTAWALI HAKIM", jabatan: "CS" },
+      { nama: "JONROMAN PURBA", jabatan: "TR CS" },
+      { nama: "PUTRA ANUGRAH RIZKI", jabatan: "TR CS" },
+      { nama: "WILIAM", jabatan: "KAPTEN" },
+      { nama: "FIQAL KANA", jabatan: "KAPTEN" },
+      { nama: "MARJOKI SANG", jabatan: "KAPTEN" },
+      { nama: "DANIEL", jabatan: "KAPTEN" },
+      { nama: "RAAZ JESEN STEPANUS", jabatan: "KAPTEN" },
+      { nama: "MAHAT SANJAYA HARAHAP", jabatan: "KAPTEN" },
+      { nama: "ANNEN", jabatan: "KASIR" },
+      { nama: "M FAJAR SIDDIK", jabatan: "KASIR" },
+      { nama: "PUTRA RAMADHANI", jabatan: "KASIR" },
+      { nama: "AMRUL", jabatan: "KASIR" },
+      { nama: "RAM KIRAN", jabatan: "KASIR" },
+      { nama: "BOBY KASANDRA BANCIN", jabatan: "KASIR" },
+      { nama: "KIKI YUNITA", jabatan: "KASIR" },
+      { nama: "CHARLOIPO MANULLANG", jabatan: "KASIR" },
+      { nama: "FAHRI FIRMANSYAH", jabatan: "KASIR" },
+      { nama: "GALI PRATAMA", jabatan: "KASIR" },
+      { nama: "PRIMA NUGRAHA", jabatan: "KASIR" },
+      { nama: "ROY DILEN", jabatan: "KASIR" },
+      { nama: "RIDZKY RAMADHAN", jabatan: "KASIR" },
+      { nama: "AGUNG DEDI IRAWAN", jabatan: "KASIR" },
+      { nama: "MAICEL TAMPUBOLON", jabatan: "KASIR" },
+      { nama: "ADE CHAIRUNNISA", jabatan: "KASIR" },
+      { nama: "M REZI SYAPUTRA", jabatan: "KASIR" },
+      { nama: "KHOIRUDDIN", jabatan: "KASIR" },
+      { nama: "BAMBANG AGUNG SUTRISNO", jabatan: "KASIR" },
+      { nama: "PUTRA INSANY", jabatan: "KASIR" },
+      { nama: "FERA SALMA", jabatan: "KASIR" },
+      { nama: "RIVLAN RIZKY", jabatan: "KASIR" },
+      { nama: "MAULANA ALI SAID", jabatan: "KASIR" },
+      { nama: "AHMAD ANDIKA", jabatan: "KASIR" },
+      { nama: "ANGGARA K S", jabatan: "KASIR" },
+      { nama: "DIMAS ADHITYA", jabatan: "KASIR" },
+      { nama: "GABRIEL RONI ARGANTA HUTABALIAN", jabatan: "KASIR" },
+      { nama: "EGA PRAYUDA", jabatan: "KASIR" },
+      { nama: "ARJUN PRAISYA", jabatan: "KASIR" },
+      { nama: "ADITYA PANCA", jabatan: "KASIR" },
+      { nama: "AUDIS OYONG DUANSYAH", jabatan: "KASIR" },
+      { nama: "ADE OJI SHAPUTRA", jabatan: "KASIR" },
+      { nama: "ALFIANSYAH", jabatan: "KASIR" },
+      { nama: "ANDY PUTRA", jabatan: "KASIR" },
+      { nama: "JUNITA MARSHA", jabatan: "KASIR" },
+      { nama: "MELAN PUTRI TRINITA", jabatan: "KASIR" },
+      { nama: "LAELA ANASILDA", jabatan: "KASIR" },
+      { nama: "ISMI AZRILIA LUBIS", jabatan: "KASIR" },
+      { nama: "SYARIFAH RUMIATI ASTARI", jabatan: "KASIR" },
+      { nama: "VISEY", jabatan: "KASIR" },
+      { nama: "REN CHHENGLY", jabatan: "KASIR" },
+      { nama: "RET CHANTHORN", jabatan: "KASIR" }
+    ];
+
     // Fungsi utama aplikasi
     function initApp() {
       // Variabel global
@@ -566,6 +671,7 @@
       let dataVersion = null;
       let lastUpdated = null;
       let currentFilter = 'all';
+      let currentDate = new Date().toDateString();
 
       // Cache elemen DOM
       const elements = {
@@ -605,6 +711,9 @@
         
         // Tambahkan interval untuk mengecek update data setiap 30 detik
         setInterval(checkForUpdates, 30000);
+        
+        // Cek apakah sudah lewat tengah malam untuk reset data
+        setInterval(checkDateChange, 60000);
       }
 
       // Fungsi untuk update jam dan tanggal
@@ -622,6 +731,16 @@
         const seconds = String(now.getSeconds()).padStart(2, '0');
         elements.currentTime.innerHTML =
           `<i class="far fa-clock"></i> ${hours}:${minutes}:${seconds} WIB`;
+      }
+
+      // Fungsi untuk mengecek pergantian hari
+      function checkDateChange() {
+        const today = new Date().toDateString();
+        if (today !== currentDate) {
+          currentDate = today;
+          showToast('📅 Hari baru, absensi telah direset!', 'info');
+          loadInitialData();
+        }
       }
 
       // Fungsi untuk mengecek update data
@@ -642,27 +761,30 @@
       // Fungsi utama untuk memuat data
       function loadInitialData() {
         showLoading(true);
-        if (typeof google !== 'undefined' && google.script && google.script.run) {
-          google.script.run
-            .withSuccessHandler(handleDataLoadSuccess)
-            .withFailureHandler(handleDataLoadError)
-            .getStaffData(dataVersion);
-        } else {
-          // Simulasi data untuk demo (jika tidak di Google Apps Script)
-          setTimeout(() => {
-            handleDataLoadSuccess({
-              data: [
-                { id: "EMP001", nama: "Ahmad Sutisna", jabatan: "Developer", status: "Sudah Absen", waktu: "08:15:23" },
-                { id: "EMP002", nama: "Budi Santoso", jabatan: "Designer", status: "Sudah Absen", waktu: "08:45:12" },
-                { id: "EMP003", nama: "Citra Dewi", jabatan: "Manager", status: "Belum Absen", waktu: "" },
-                { id: "EMP004", nama: "Dian Pratama", jabatan: "Marketing", status: "Belum Absen", waktu: "" },
-                { id: "EMP005", nama: "Eko Wijaya", jabatan: "HRD", status: "Sudah Absen", waktu: "09:02:45" }
-              ],
-              version: "1.0",
-              lastUpdated: new Date().toISOString()
-            });
-          }, 1000);
-        }
+        
+        // Simulasi data untuk demo
+        setTimeout(() => {
+          // Format data untuk sistem
+          const formattedData = staffDataRaw.map((staff, index) => {
+            // Untuk demo, acak status absensi
+            const hasAbsent = Math.random() > 0.5;
+            
+            return {
+              id: `EMP${(index + 1).toString().padStart(3, '0')}`,
+              nama: staff.nama,
+              jabatan: staff.jabatan,
+              status: hasAbsent ? 'Sudah Absen' : 'Belum Absen',
+              waktu: hasAbsent ? formatTimeFromDate(new Date()) : '',
+              lastAbsenDate: hasAbsent ? currentDate : ''
+            };
+          });
+
+          handleDataLoadSuccess({
+            data: formattedData,
+            version: "1.0",
+            lastUpdated: new Date().toISOString()
+          });
+        }, 1000);
       }
 
       function handleDataLoadSuccess(response) {
@@ -741,10 +863,18 @@
           const option = document.createElement('option');
           option.value = staff.id;
           option.textContent = `${staff.nama} (${staff.jabatan || 'Tanpa Jabatan'})`;
-          if (staff.status === 'Belum Absen') {
+          
+          // Nonaktifkan opsi untuk staff yang sudah absen hari ini
+          if (staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+            option.disabled = true;
+            option.textContent += ' - Sudah Absen Hari Ini';
+            option.style.color = '#ef4444';
+            option.style.fontStyle = 'italic';
+          } else if (staff.status === 'Belum Absen') {
             option.style.color = '#10b981';
             option.style.fontWeight = '500';
           }
+          
           select.appendChild(option);
         });
       }
@@ -767,6 +897,12 @@
         data.forEach((staff, index) => {
           const row = document.createElement('tr');
           row.style.animationDelay = `${index * 0.05}s`;
+          
+          // Tambahkan class khusus untuk yang sudah absen
+          if (staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+            row.classList.add('already-absent');
+          }
+          
           let waktuDisplay = staff.waktu || '-';
           if (waktuDisplay.includes('T')) {
             try {
@@ -778,6 +914,7 @@
               console.error('Error formatting waktu:', e);
             }
           }
+          
           row.innerHTML = `
             <td class="mobile-hidden">${staff.id}</td>
             <td>${staff.nama}</td>
@@ -817,7 +954,10 @@
 
       // Update dashboard statistik
       function updateDashboard() {
-        const presentCount = staffData.filter(staff => staff.status === 'Sudah Absen').length;
+        const presentCount = staffData.filter(staff => 
+          staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate
+        ).length;
+        
         const absentCount = staffData.length - presentCount;
 
         elements.totalStaff.textContent = staffData.length;
@@ -845,12 +985,21 @@
       // Fungsi untuk mencatat absensi
       async function markAttendance() {
         if (isProcessing) return;
+        
         const selectedOption = elements.staffSelect.options[elements.staffSelect.selectedIndex];
         const staffId = selectedOption.value?.trim();
         const staffName = selectedOption.text.split(' (')[0];
+        
         if (!staffId) {
           showToast('⚠️ Silakan pilih nama Anda terlebih dahulu!', 'warning');
           elements.staffSelect.focus();
+          return;
+        }
+
+        // Cek apakah staff sudah absen hari ini
+        const staff = staffData.find(s => s.id === staffId);
+        if (staff && staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+          showToast('❌ Anda sudah absen hari ini!', 'error');
           return;
         }
 
@@ -859,33 +1008,27 @@
         elements.submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MENGIRIM...';
 
         try {
-          let response;
-          if (typeof google !== 'undefined' && google.script && google.script.run) {
-            response = await new Promise((resolve, reject) => {
-              google.script.run
-                .withSuccessHandler(resolve)
-                .withFailureHandler(reject)
-                .markAttendance(staffId);
-            });
-          } else {
-            // Simulasi response untuk demo
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            response = {
-              success: true,
-              waktu: new Date().toLocaleTimeString('id-ID'),
-              alreadyMarked: false
-            };
-          }
+          // Simulasi response untuk demo
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          const response = {
+            success: true,
+            waktu: new Date().toLocaleTimeString('id-ID'),
+            alreadyMarked: false
+          };
 
           if (response.success) {
-            showToast(`Absen berhasil! ${staffName} - ${response.waktu}`, 'success');
+            showToast(`✅ Absen berhasil! ${staffName} - ${response.waktu}`, 'success');
+            
             // Update data secara lokal untuk demo
             const updatedIndex = staffData.findIndex(staff => staff.id === staffId);
             if (updatedIndex !== -1) {
               staffData[updatedIndex].status = 'Sudah Absen';
               staffData[updatedIndex].waktu = response.waktu;
+              staffData[updatedIndex].lastAbsenDate = currentDate;
+              
               updateStaffRow(staffData[updatedIndex]);
               updateDashboardStats();
+              renderStaffSelect(); // Refresh dropdown
             }
           } else {
             showToast(`⚠️ ${response.message}`, response.alreadyMarked ? 'warning' : 'error');
@@ -916,6 +1059,12 @@
                 console.error('Error formatting waktu:', e);
               }
             }
+            
+            // Update class untuk menandai sudah absen
+            if (updatedStaff.status === 'Sudah Absen' && updatedStaff.lastAbsenDate === currentDate) {
+              row.classList.add('already-absent');
+            }
+            
             row.innerHTML = `
               <td class="mobile-hidden">${updatedStaff.id}</td>
               <td>${updatedStaff.nama}</td>
@@ -933,7 +1082,10 @@
       }
 
       function updateDashboardStats() {
-        const presentCount = staffData.filter(staff => staff.status === 'Sudah Absen').length;
+        const presentCount = staffData.filter(staff => 
+          staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate
+        ).length;
+        
         const absentCount = staffData.length - presentCount;
 
         animateCounter(elements.presentCount, presentCount);
