@@ -316,6 +316,7 @@
             overflow: hidden;
             margin-bottom: 30px;
             box-shadow: var(--shadow);
+            flex-wrap: wrap;
         }
         
         .tab {
@@ -331,6 +332,7 @@
             justify-content: center;
             gap: 10px;
             color: var(--gray);
+            min-width: 150px;
         }
         
         .tab.active {
@@ -463,15 +465,6 @@
             display: flex;
             align-items: center;
             gap: 5px;
-        }
-        
-        .staff-shift {
-            font-size: 13px;
-            color: var(--info);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 3px;
         }
         
         .absen-btn, .checkin-btn {
@@ -729,6 +722,10 @@
             .tabs {
                 flex-direction: column;
             }
+            
+            .tab {
+                min-width: 100%;
+            }
         }
         
         .stats-bar {
@@ -934,6 +931,31 @@
             background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
             color: white;
         }
+        
+        .shift-info {
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .shift-info i {
+            font-size: 40px;
+            color: var(--primary);
+        }
+        
+        .shift-info-content h3 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .shift-info-content p {
+            color: var(--gray);
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -1040,6 +1062,15 @@
             <div class="tab" data-tab="checkin" id="checkin-tab">
                 <i class="fas fa-map-marker-alt"></i> Check-in
             </div>
+            <div class="tab" data-tab="shift-pagi" id="shift-pagi-tab">
+                <i class="fas fa-sun"></i> Shift Pagi
+            </div>
+            <div class="tab" data-tab="shift-siang" id="shift-siang-tab">
+                <i class="fas fa-cloud-sun"></i> Shift Siang
+            </div>
+            <div class="tab" data-tab="shift-malam" id="shift-malam-tab">
+                <i class="fas fa-moon"></i> Shift Malam
+            </div>
             <div class="tab" data-tab="summary">
                 <i class="fas fa-chart-pie"></i> Rekap
             </div>
@@ -1116,6 +1147,171 @@
             </div>
             <div id="checkin-content">
                 <!-- Check-in content will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Tab Shift Pagi -->
+        <div class="tab-content" id="shift-pagi">
+            <h2 class="section-title">
+                <i class="fas fa-sun"></i> Shift Pagi
+            </h2>
+            
+            <div class="shift-info">
+                <i class="fas fa-clock"></i>
+                <div class="shift-info-content">
+                    <h3>Shift Pagi - Batas Absen: 07:45 WIB</h3>
+                    <p>Staff shift pagi diharapkan melakukan absensi sebelum pukul 07:45 WIB</p>
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-headset"></i> Customer Service (CS)</span>
+                    <span class="position-count" id="cs-pagi-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="cs-pagi">
+                    <!-- CS shift pagi will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-user-shield"></i> Kapten</span>
+                    <span class="position-count" id="kapten-pagi-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kapten-pagi">
+                    <!-- Kapten shift pagi will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cogs"></i> Operator</span>
+                    <span class="position-count" id="operator-pagi-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="operator-pagi">
+                    <!-- Operator shift pagi will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cash-register"></i> Kasir</span>
+                    <span class="position-count" id="kasir-pagi-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kasir-pagi">
+                    <!-- Kasir shift pagi will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Shift Siang -->
+        <div class="tab-content" id="shift-siang">
+            <h2 class="section-title">
+                <i class="fas fa-cloud-sun"></i> Shift Siang
+            </h2>
+            
+            <div class="shift-info">
+                <i class="fas fa-clock"></i>
+                <div class="shift-info-content">
+                    <h3>Shift Siang - Batas Absen: 15:45 WIB</h3>
+                    <p>Staff shift siang diharapkan melakukan absensi sebelum pukul 15:45 WIB</p>
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-headset"></i> Customer Service (CS)</span>
+                    <span class="position-count" id="cs-siang-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="cs-siang">
+                    <!-- CS shift siang will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-user-shield"></i> Kapten</span>
+                    <span class="position-count" id="kapten-siang-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kapten-siang">
+                    <!-- Kapten shift siang will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cogs"></i> Operator</span>
+                    <span class="position-count" id="operator-siang-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="operator-siang">
+                    <!-- Operator shift siang will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cash-register"></i> Kasir</span>
+                    <span class="position-count" id="kasir-siang-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kasir-siang">
+                    <!-- Kasir shift siang will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Shift Malam -->
+        <div class="tab-content" id="shift-malam">
+            <h2 class="section-title">
+                <i class="fas fa-moon"></i> Shift Malam
+            </h2>
+            
+            <div class="shift-info">
+                <i class="fas fa-clock"></i>
+                <div class="shift-info-content">
+                    <h3>Shift Malam - Batas Absen: 21:45 WIB</h3>
+                    <p>Staff shift malam diharapkan melakukan absensi sebelum pukul 21:45 WIB</p>
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-headset"></i> Customer Service (CS)</span>
+                    <span class="position-count" id="cs-malam-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="cs-malam">
+                    <!-- CS shift malam will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-user-shield"></i> Kapten</span>
+                    <span class="position-count" id="kapten-malam-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kapten-malam">
+                    <!-- Kapten shift malam will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cogs"></i> Operator</span>
+                    <span class="position-count" id="operator-malam-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="operator-malam">
+                    <!-- Operator shift malam will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="position-section">
+                <div class="position-header">
+                    <span><i class="fas fa-cash-register"></i> Kasir</span>
+                    <span class="position-count" id="kasir-malam-count">0 Staff</span>
+                </div>
+                <div class="staff-list" id="kasir-malam">
+                    <!-- Kasir shift malam will be populated by JavaScript -->
+                </div>
             </div>
         </div>
         
@@ -1324,82 +1520,98 @@
     <script>
         // Data staff
         let staffData = JSON.parse(localStorage.getItem('staffData')) || [
-            // CS
+            // CS - Pagi
             { id: 1, name: "WIDJAYA", position: "CS", shift: "pagi" },
             { id: 2, name: "DAVID", position: "CS", shift: "pagi" },
-            { id: 3, name: "FALLEN HARDINANSAH TAJU", position: "CS", shift: "siang" },
             { id: 4, name: "CHARLIE", position: "CS", shift: "pagi" },
-            { id: 5, name: "HARIANTO", position: "CS", shift: "malam" },
             { id: 6, name: "RINAL ABDILLAH NASUTION", position: "CS", shift: "pagi" },
-            { id: 7, name: "ERI HARIANTO", position: "CS", shift: "siang" },
             { id: 8, name: "MAHENDRAN", position: "CS", shift: "pagi" },
-            { id: 9, name: "ANDHIKA DWI PUTRA", position: "CS", shift: "malam" },
             { id: 10, name: "TOMMY HASIM", position: "CS", shift: "pagi" },
-            { id: 11, name: "EGI SETIAWAN", position: "CS", shift: "siang" },
             { id: 12, name: "RANJIT", position: "CS", shift: "pagi" },
-            { id: 13, name: "WILLY PERAYUDA", position: "CS", shift: "malam" },
             { id: 14, name: "ANDI", position: "CS", shift: "pagi" },
-            { id: 15, name: "ARI ROMANDUS FERNAND", position: "CS", shift: "siang" },
             { id: 16, name: "ALFINO MUKTI", position: "CS", shift: "pagi" },
-            { id: 17, name: "AKAS FARMA", position: "CS", shift: "malam" },
             { id: 18, name: "SAMSUL MAARIF", position: "CS", shift: "pagi" },
-            { id: 19, name: "PARIS AMRULLOH", position: "CS", shift: "siang" },
             { id: 20, name: "SUHAN RAZ", position: "CS", shift: "pagi" },
-            { id: 21, name: "RAHMADI SORMIN", position: "CS", shift: "malam" },
             { id: 22, name: "NOVAL MUTTAWALI HAKIM", position: "CS", shift: "pagi" },
             
-            // Kapten
+            // CS - Siang
+            { id: 3, name: "FALLEN HARDINANSAH TAJU", position: "CS", shift: "siang" },
+            { id: 7, name: "ERI HARIANTO", position: "CS", shift: "siang" },
+            { id: 11, name: "EGI SETIAWAN", position: "CS", shift: "siang" },
+            { id: 15, name: "ARI ROMANDUS FERNAND", position: "CS", shift: "siang" },
+            { id: 19, name: "PARIS AMRULLOH", position: "CS", shift: "siang" },
+            
+            // CS - Malam
+            { id: 5, name: "HARIANTO", position: "CS", shift: "malam" },
+            { id: 9, name: "ANDHIKA DWI PUTRA", position: "CS", shift: "malam" },
+            { id: 13, name: "WILLY PERAYUDA", position: "CS", shift: "malam" },
+            { id: 17, name: "AKAS FARMA", position: "CS", shift: "malam" },
+            { id: 21, name: "RAHMADI SORMIN", position: "CS", shift: "malam" },
+            
+            // Kapten - Pagi
             { id: 23, name: "WILIAM", position: "Kapten", shift: "pagi" },
-            { id: 24, name: "FIQAL KANA", position: "Kapten", shift: "siang" },
-            { id: 25, name: "MARJOKI SANG", position: "Kapten", shift: "malam" },
             { id: 26, name: "DANIEL", position: "Kapten", shift: "pagi" },
+            
+            // Kapten - Siang
+            { id: 24, name: "FIQAL KANA", position: "Kapten", shift: "siang" },
             { id: 27, name: "RAAZ JESEN STEPANUS", position: "Kapten", shift: "siang" },
+            
+            // Kapten - Malam
+            { id: 25, name: "MARJOKI SANG", position: "Kapten", shift: "malam" },
             { id: 28, name: "MAHAT SANJAYA HARAHAP", position: "Kapten", shift: "malam" },
             
-            // Operator
+            // Operator - Pagi
             { id: 29, name: "PUTRA ANUGRAH RIZKI", position: "Operator", shift: "pagi" },
+            
+            // Operator - Siang
             { id: 30, name: "PUTRA RAMADHANI", position: "Operator", shift: "siang" },
+            
+            // Operator - Malam
             { id: 31, name: "BOBY KASANDRA BANCIN", position: "Operator", shift: "malam" },
             
-            // Kasir
+            // Kasir - Pagi
             { id: 32, name: "ANNEN", position: "Kasir", shift: "pagi" },
-            { id: 33, name: "JONROMAN PURBA", position: "Kasir", shift: "siang" },
-            { id: 34, name: "M FAJAR SIDDIK", position: "Kasir", shift: "malam" },
             { id: 35, name: "AMRUL", position: "Kasir", shift: "pagi" },
-            { id: 36, name: "RAM KIRAN", position: "Kasir", shift: "siang" },
-            { id: 37, name: "KIKI YUNITA", position: "Kasir", shift: "malam" },
             { id: 38, name: "CHARLOIPO MANULLANG", position: "Kasir", shift: "pagi" },
-            { id: 39, name: "FAHRI FIRMANSYAH", position: "Kasir", shift: "siang" },
-            { id: 40, name: "PRIMA NUGRAHA", position: "Kasir", shift: "malam" },
             { id: 41, name: "ROY DILEN", position: "Kasir", shift: "pagi" },
-            { id: 42, name: "GALI PRATAMA", position: "Kasir", shift: "siang" },
-            { id: 43, name: "RIDZKY RAMADHAN", position: "Kasir", shift: "malam" },
             { id: 44, name: "AGUNG DEDI IRAWAN", position: "Kasir", shift: "pagi" },
-            { id: 45, name: "MAICEL TAMPUBOLON", position: "Kasir", shift: "siang" },
-            { id: 46, name: "ADE CHAIRUNNISA", position: "Kasir", shift: "malam" },
             { id: 47, name: "M REZI SYAPUTRA", position: "Kasir", shift: "pagi" },
-            { id: 48, name: "KHOIRUDDIN", position: "Kasir", shift: "siang" },
-            { id: 49, name: "BAMBANG AGUNG SUTRISNO", position: "Kasir", shift: "malam" },
             { id: 50, name: "PUTRA INSANY", position: "Kasir", shift: "pagi" },
-            { id: 51, name: "FERA SALMA", position: "Kasir", shift: "siang" },
-            { id: 52, name: "RIVLAN RIZKY", position: "Kasir", shift: "malam" },
             { id: 53, name: "MAULANA ALI SAID", position: "Kasir", shift: "pagi" },
-            { id: 54, name: "AHMAD ANDIKA", position: "Kasir", shift: "siang" },
-            { id: 55, name: "ANGGARA K S", position: "Kasir", shift: "malam" },
             { id: 56, name: "DIMAS ADHITYA", position: "Kasir", shift: "pagi" },
-            { id: 57, name: "GABRIEL RONI ARGANTA HUTABALIAN", position: "Kasir", shift: "siang" },
-            { id: 58, name: "EGA PRAYUDA", position: "Kasir", shift: "malam" },
             { id: 59, name: "ARJUN PRAISYA", position: "Kasir", shift: "pagi" },
-            { id: 60, name: "ADITYA PANCA", position: "Kasir", shift: "siang" },
-            { id: 61, name: "AUDIS OYONG DUANSYAH", position: "Kasir", shift: "malam" },
             { id: 62, name: "ADE OJI SHAPUTRA", position: "Kasir", shift: "pagi" },
-            { id: 63, name: "ALFIANSYAH", position: "Kasir", shift: "siang" },
-            { id: 64, name: "ANDY PUTRA", position: "Kasir", shift: "malam" },
             { id: 65, name: "JUNITA MARSHA", position: "Kasir", shift: "pagi" },
-            { id: 66, name: "MELAN PUTRI TRINITA", position: "Kasir", shift: "siang" },
-            { id: 67, name: "LAELA ANASILDA", position: "Kasir", shift: "malam" },
             { id: 68, name: "ISMI AZRILIA LUBIS", position: "Kasir", shift: "pagi" },
-            { id: 69, name: "SYARIFAH RUMIATI ASTARI", position: "Kasir", shift: "siang" }
+            
+            // Kasir - Siang
+            { id: 33, name: "JONROMAN PURBA", position: "Kasir", shift: "siang" },
+            { id: 36, name: "RAM KIRAN", position: "Kasir", shift: "siang" },
+            { id: 39, name: "FAHRI FIRMANSYAH", position: "Kasir", shift: "siang" },
+            { id: 42, name: "GALI PRATAMA", position: "Kasir", shift: "siang" },
+            { id: 45, name: "MAICEL TAMPUBOLON", position: "Kasir", shift: "siang" },
+            { id: 48, name: "KHOIRUDDIN", position: "Kasir", shift: "siang" },
+            { id: 51, name: "FERA SALMA", position: "Kasir", shift: "siang" },
+            { id: 54, name: "AHMAD ANDIKA", position: "Kasir", shift: "siang" },
+            { id: 57, name: "GABRIEL RONI ARGANTA HUTABALIAN", position: "Kasir", shift: "siang" },
+            { id: 60, name: "ADITYA PANCA", position: "Kasir", shift: "siang" },
+            { id: 63, name: "ALFIANSYAH", position: "Kasir", shift: "siang" },
+            { id: 66, name: "MELAN PUTRI TRINITA", position: "Kasir", shift: "siang" },
+            { id: 69, name: "SYARIFAH RUMIATI ASTARI", position: "Kasir", shift: "siang" },
+            
+            // Kasir - Malam
+            { id: 34, name: "M FAJAR SIDDIK", position: "Kasir", shift: "malam" },
+            { id: 37, name: "KIKI YUNITA", position: "Kasir", shift: "malam" },
+            { id: 40, name: "PRIMA NUGRAHA", position: "Kasir", shift: "malam" },
+            { id: 43, name: "RIDZKY RAMADHAN", position: "Kasir", shift: "malam" },
+            { id: 46, name: "ADE CHAIRUNNISA", position: "Kasir", shift: "malam" },
+            { id: 49, name: "BAMBANG AGUNG SUTRISNO", position: "Kasir", shift: "malam" },
+            { id: 52, name: "RIVLAN RIZKY", position: "Kasir", shift: "malam" },
+            { id: 55, name: "ANGGARA K S", position: "Kasir", shift: "malam" },
+            { id: 58, name: "EGA PRAYUDA", position: "Kasir", shift: "malam" },
+            { id: 61, name: "AUDIS OYONG DUANSYAH", position: "Kasir", shift: "malam" },
+            { id: 64, name: "ANDY PUTRA", position: "Kasir", shift: "malam" },
+            { id: 67, name: "LAELA ANASILDA", position: "Kasir", shift: "malam" }
         ];
 
         // Initialize attendance data
@@ -1529,15 +1741,24 @@
                 document.getElementById('welcome-message').textContent = 'Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.';
             }
             
-            // Check if user is Kapten or Admin to enable check-in tab
+            // Check user role to enable/disable tabs
             const checkinTab = document.getElementById('checkin-tab');
+            const pagiTab = document.getElementById('shift-pagi-tab');
+            const siangTab = document.getElementById('shift-siang-tab');
+            const malamTab = document.getElementById('shift-malam-tab');
             const adminTab = document.getElementById('admin-tab');
             const historyTab = document.getElementById('history-tab');
             
             if (currentUser.position === 'Kapten' || currentUser.position === 'Admin') {
                 checkinTab.classList.remove('disabled');
+                pagiTab.classList.remove('disabled');
+                siangTab.classList.remove('disabled');
+                malamTab.classList.remove('disabled');
             } else {
                 checkinTab.classList.add('disabled');
+                pagiTab.classList.add('disabled');
+                siangTab.classList.add('disabled');
+                malamTab.classList.add('disabled');
             }
             
             if (currentUser.position === 'Admin') {
@@ -1551,6 +1772,9 @@
             // Initialize the app
             renderAttendanceStaff();
             renderCheckinStaff();
+            renderShiftStaff('pagi');
+            renderShiftStaff('siang');
+            renderShiftStaff('malam');
             updateSummary();
             updateStatsBar();
             renderAllStaff();
@@ -1586,6 +1810,11 @@
                 // Render late history if history tab is clicked
                 if (tab.dataset.tab === 'history') {
                     renderLateHistory();
+                }
+                // Render shift staff if shift tab is clicked
+                if (tab.dataset.tab.startsWith('shift-')) {
+                    const shift = tab.dataset.tab.split('-')[1];
+                    renderShiftStaff(shift);
                 }
             });
         });
@@ -1630,10 +1859,22 @@
         // Get shift display name
         function getShiftDisplayName(shift) {
             switch(shift) {
-                case 'pagi': return 'Pagi (07:45)';
-                case 'siang': return 'Siang (15:45)';
-                case 'malam': return 'Malam (21:45)';
+                case 'pagi': return 'Pagi';
+                case 'siang': return 'Siang';
+                case 'malam': return 'Malam';
                 default: return shift;
+            }
+        }
+
+        // Get icon for position
+        function getPositionIcon(position) {
+            switch(position) {
+                case 'CS': return 'headset';
+                case 'Kapten': return 'user-shield';
+                case 'Operator': return 'cogs';
+                case 'Kasir': return 'cash-register';
+                case 'Admin': return 'user-shield';
+                default: return 'user';
             }
         }
 
@@ -1669,9 +1910,6 @@
                             <div class="staff-name">${staff.name}</div>
                             <div class="staff-position">
                                 <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                            </div>
-                            <div class="staff-shift">
-                                <i class="fas fa-clock"></i> Shift: 
                                 <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
                             </div>
                             ${hasAbsened ? `
@@ -1742,6 +1980,9 @@
                     // Update summary counts
                     updateSummary();
                     updateStatsBar();
+                    renderShiftStaff('pagi');
+                    renderShiftStaff('siang');
+                    renderShiftStaff('malam');
                 });
             });
         }
@@ -1803,9 +2044,6 @@
                                 <div class="staff-name">${staff.name}</div>
                                 <div class="staff-position">
                                     <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                </div>
-                                <div class="staff-shift">
-                                    <i class="fas fa-clock"></i> Shift: 
                                     <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
                                 </div>
                                 ${hasCheckedIn ? `
@@ -1877,6 +2115,77 @@
                     // Update summary counts
                     updateSummary();
                     updateStatsBar();
+                    renderShiftStaff('pagi');
+                    renderShiftStaff('siang');
+                    renderShiftStaff('malam');
+                });
+            });
+        }
+
+        // Render staff by shift
+        function renderShiftStaff(shift) {
+            const positions = ['CS', 'Kapten', 'Operator', 'Kasir'];
+            
+            positions.forEach(position => {
+                const container = document.getElementById(`${position.toLowerCase()}-${shift}`);
+                const countElement = document.getElementById(`${position.toLowerCase()}-${shift}-count`);
+                
+                if (!container) return;
+                
+                // Clear existing content
+                container.innerHTML = '';
+                
+                // Get staff for this position and shift
+                const shiftStaff = staffData.filter(staff => staff.position === position && staff.shift === shift);
+                
+                // Update count
+                if (countElement) {
+                    countElement.textContent = `${shiftStaff.length} Staff`;
+                }
+                
+                // Render each staff member
+                shiftStaff.forEach(staff => {
+                    const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
+                    const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                    const isLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
+                    
+                    const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
+                    const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                    
+                    const staffItem = document.createElement('div');
+                    staffItem.className = 'staff-item';
+                    staffItem.innerHTML = `
+                        <div class="staff-info">
+                            <div class="staff-avatar">${staff.name.charAt(0)}</div>
+                            <div class="staff-details">
+                                <div class="staff-name">${staff.name}</div>
+                                <div class="staff-position">
+                                    <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
+                                </div>
+                                ${hasAbsened ? `
+                                    <div class="absen-time">
+                                        <i class="far fa-clock"></i> Absen: ${absenTime}
+                                        ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
+                                    </div>
+                                ` : ''}
+                                ${hasCheckedIn ? `
+                                    <div class="checkin-time">
+                                        <i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            ${hasAbsened ? 
+                                `<span class="absen-btn ${isLate ? 'late' : 'absened'}">
+                                    <i class="fas fa-${isLate ? 'exclamation-triangle' : 'check'}"></i> 
+                                    ${isLate ? 'Terlambat' : 'Sudah Absen'}
+                                </span>` : 
+                                '<span class="absen-btn" style="background: #95a5a6; cursor: default;"><i class="fas fa-clock"></i> Belum Absen</span>'
+                            }
+                        </div>
+                    `;
+                    container.appendChild(staffItem);
                 });
             });
         }
@@ -1939,9 +2248,6 @@
                             <div class="staff-name">${staff.name}</div>
                             <div class="staff-position">
                                 <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                            </div>
-                            <div class="staff-shift">
-                                <i class="fas fa-clock"></i> Shift: 
                                 <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
                             </div>
                         </div>
@@ -2010,9 +2316,6 @@
                             <div class="staff-name">${staff.name}</div>
                             <div class="staff-position">
                                 <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                            </div>
-                            <div class="staff-shift">
-                                <i class="fas fa-clock"></i> Shift: 
                                 <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
                             </div>
                         </div>
@@ -2041,6 +2344,10 @@
                     if (staffIndex !== -1) {
                         staffData[staffIndex].shift = newShift;
                         localStorage.setItem('staffData', JSON.stringify(staffData));
+                        renderAttendanceStaff();
+                        renderShiftStaff('pagi');
+                        renderShiftStaff('siang');
+                        renderShiftStaff('malam');
                         showToast('Shift staff berhasil diubah');
                     }
                 });
@@ -2055,6 +2362,9 @@
                         localStorage.setItem('staffData', JSON.stringify(staffData));
                         renderAllStaff();
                         renderAttendanceStaff();
+                        renderShiftStaff('pagi');
+                        renderShiftStaff('siang');
+                        renderShiftStaff('malam');
                         updateStatsBar();
                         showToast('Staff berhasil dihapus');
                     }
@@ -2098,18 +2408,6 @@
             });
         }
 
-        // Get icon for position
-        function getPositionIcon(position) {
-            switch(position) {
-                case 'CS': return 'headset';
-                case 'Kapten': return 'user-shield';
-                case 'Operator': return 'cogs';
-                case 'Kasir': return 'cash-register';
-                case 'Admin': return 'user-shield';
-                default: return 'user';
-            }
-        }
-
         // Admin functionality
         document.getElementById('reset-today').addEventListener('click', function() {
             if (confirm('Apakah Anda yakin ingin mereset data hari ini?')) {
@@ -2120,6 +2418,9 @@
                 
                 renderAttendanceStaff();
                 renderCheckinStaff();
+                renderShiftStaff('pagi');
+                renderShiftStaff('siang');
+                renderShiftStaff('malam');
                 updateSummary();
                 updateStatsBar();
                 showToast('Data hari ini berhasil direset');
@@ -2135,6 +2436,9 @@
                 
                 renderAttendanceStaff();
                 renderCheckinStaff();
+                renderShiftStaff('pagi');
+                renderShiftStaff('siang');
+                renderShiftStaff('malam');
                 updateSummary();
                 updateStatsBar();
                 showToast('Semua data berhasil dihapus');
@@ -2192,6 +2496,9 @@
             
             renderAllStaff();
             renderAttendanceStaff();
+            renderShiftStaff('pagi');
+            renderShiftStaff('siang');
+            renderShiftStaff('malam');
             updateStatsBar();
             showToast('Staff baru berhasil ditambahkan');
         });
