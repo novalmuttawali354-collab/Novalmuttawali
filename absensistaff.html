@@ -196,71 +196,45 @@
             color: #666;
         }
         
-        .attendance-options {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .radio-group {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .radio-group input[type="radio"] {
-            display: none;
-        }
-        
-        .radio-group label {
-            padding: 8px 15px;
+        .absen-btn, .checkin-btn {
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
             font-weight: 500;
+            transition: all 0.3s;
         }
         
-        .radio-group input[type="radio"]:checked + label {
-            color: white;
+        .absen-btn {
+            background-color: var(--secondary);
         }
         
-        .radio-group input[type="radio"][value="hadir"]:checked + label {
+        .absen-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .absen-btn.absened {
             background-color: var(--success);
-        }
-        
-        .radio-group input[type="radio"][value="izin"]:checked + label {
-            background-color: var(--warning);
-        }
-        
-        .radio-group input[type="radio"][value="sakit"]:checked + label {
-            background-color: var(--danger);
-        }
-        
-        .radio-group input[type="radio"][value="alfa"]:checked + label {
-            background-color: var(--dark);
-            color: white;
+            cursor: not-allowed;
         }
         
         .checkin-btn {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s;
+            background-color: var(--warning);
         }
         
         .checkin-btn:hover {
-            background-color: #2980b9;
+            background-color: #e67e22;
+            transform: translateY(-2px);
         }
         
         .checkin-btn.checked {
             background-color: var(--success);
+            cursor: not-allowed;
         }
         
-        .checkin-time {
+        .absen-time, .checkin-time {
             font-size: 14px;
             color: #666;
             margin-top: 5px;
@@ -327,20 +301,16 @@
             color: var(--success);
         }
         
-        .summary-card.izin .value {
-            color: var(--warning);
-        }
-        
-        .summary-card.sakit .value {
+        .summary-card.belum .value {
             color: var(--danger);
         }
         
-        .summary-card.alfa .value {
-            color: var(--dark);
+        .summary-card.total .value {
+            color: var(--secondary);
         }
         
-        .summary-card.checked-in .value {
-            color: var(--secondary);
+        .summary-card.checkin .value {
+            color: var(--warning);
         }
         
         .toast {
@@ -376,14 +346,8 @@
                 gap: 15px;
             }
             
-            .attendance-options {
+            .absen-btn, .checkin-btn {
                 width: 100%;
-                justify-content: space-between;
-            }
-            
-            .radio-group label {
-                padding: 6px 10px;
-                font-size: 12px;
             }
         }
     </style>
@@ -408,6 +372,7 @@
         <!-- Tab Absensi -->
         <div class="tab-content active" id="attendance">
             <h2 class="section-title">Form Absensi Staff</h2>
+            <p>Klik tombol "Absen" untuk mencatat kehadiran. Setiap staff hanya bisa absen sekali per hari.</p>
             
             <!-- CS Section -->
             <div class="position-section">
@@ -452,67 +417,86 @@
                     <!-- Kasir staff will be populated by JavaScript -->
                 </div>
             </div>
-            
-            <div class="action-buttons">
-                <button class="btn btn-secondary" id="reset-btn">Reset</button>
-                <button class="btn btn-primary" id="save-attendance">Simpan Absensi</button>
-            </div>
         </div>
         
         <!-- Tab Check-in -->
         <div class="tab-content" id="checkin">
-            <h2 class="section-title">Check-in Staff</h2>
-            <p>Klik tombol check-in untuk menandai kedatangan staff di kantor.</p>
+            <h2 class="section-title">Check-in Staff di Kantor</h2>
+            <p>Klik tombol "Check-in" untuk mencatat kedatangan staff di kantor. Semua staff dapat melakukan check-in.</p>
             
+            <!-- CS Section -->
             <div class="position-section">
                 <div class="position-header">
-                    <span>Semua Staff</span>
-                    <span class="position-count">69 Staff</span>
+                    <span>Customer Service (CS)</span>
+                    <span class="position-count">22 Staff</span>
                 </div>
-                <div class="staff-list" id="all-staff-checkin">
-                    <!-- All staff for check-in will be populated by JavaScript -->
+                <div class="staff-list" id="cs-checkin">
+                    <!-- CS staff for check-in will be populated by JavaScript -->
                 </div>
             </div>
             
-            <div class="action-buttons">
-                <button class="btn btn-secondary" id="reset-checkin">Reset Check-in</button>
-                <button class="btn btn-primary" id="save-checkin">Simpan Check-in</button>
+            <!-- Kapten Section -->
+            <div class="position-section">
+                <div class="position-header">
+                    <span>Kapten</span>
+                    <span class="position-count">6 Staff</span>
+                </div>
+                <div class="staff-list" id="kapten-checkin">
+                    <!-- Kapten staff for check-in will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Operator Section -->
+            <div class="position-section">
+                <div class="position-header">
+                    <span>Operator</span>
+                    <span class="position-count">3 Staff</span>
+                </div>
+                <div class="staff-list" id="operator-checkin">
+                    <!-- Operator staff for check-in will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Kasir Section -->
+            <div class="position-section">
+                <div class="position-header">
+                    <span>Kasir</span>
+                    <span class="position-count">38 Staff</span>
+                </div>
+                <div class="staff-list" id="kasir-checkin">
+                    <!-- Kasir staff for check-in will be populated by JavaScript -->
+                </div>
             </div>
         </div>
         
         <!-- Tab Rekap -->
         <div class="tab-content" id="summary">
-            <h2 class="section-title">Rekap Absensi Hari Ini</h2>
+            <h2 class="section-title">Rekap Absensi & Check-in Hari Ini</h2>
             
             <div class="summary-cards">
+                <div class="summary-card total">
+                    <div class="label">Total Staff</div>
+                    <div class="value" id="total-count">69</div>
+                    <div class="description">Orang</div>
+                </div>
                 <div class="summary-card hadir">
-                    <div class="label">Hadir</div>
+                    <div class="label">Sudah Absen</div>
                     <div class="value" id="hadir-count">0</div>
                     <div class="description">Staff</div>
                 </div>
-                <div class="summary-card izin">
-                    <div class="label">Izin</div>
-                    <div class="value" id="izin-count">0</div>
+                <div class="summary-card belum">
+                    <div class="label">Belum Absen</div>
+                    <div class="value" id="belum-count">69</div>
                     <div class="description">Staff</div>
                 </div>
-                <div class="summary-card sakit">
-                    <div class="label">Sakit</div>
-                    <div class="value" id="sakit-count">0</div>
-                    <div class="description">Staff</div>
-                </div>
-                <div class="summary-card alfa">
-                    <div class="label">Alfa</div>
-                    <div class="value" id="alfa-count">0</div>
-                    <div class="description">Staff</div>
-                </div>
-                <div class="summary-card checked-in">
+                <div class="summary-card checkin">
                     <div class="label">Sudah Check-in</div>
-                    <div class="value" id="checkedin-count">0</div>
+                    <div class="value" id="checkin-count">0</div>
                     <div class="description">Staff</div>
                 </div>
             </div>
             
-            <h3 class="section-title">Detail Absensi</h3>
+            <h3 class="section-title">Detail Absensi & Check-in</h3>
             <div class="position-section">
                 <div class="position-header">
                     <span>Status Staff</span>
@@ -524,7 +508,7 @@
         </div>
     </div>
     
-    <div class="toast" id="toast">Data berhasil disimpan!</div>
+    <div class="toast" id="toast">Absensi berhasil dicatat!</div>
 
     <script>
         // Data staff
@@ -617,19 +601,23 @@
         document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', options);
         const today = now.toISOString().split('T')[0];
 
+        // Check if we need to reset data (new day)
+        const lastAttendanceDate = localStorage.getItem('lastAttendanceDate');
+        if (lastAttendanceDate !== today) {
+            // New day, reset attendance data
+            attendanceData = {};
+            checkinData = {};
+            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+            localStorage.setItem('checkinData', JSON.stringify(checkinData));
+            localStorage.setItem('lastAttendanceDate', today);
+        }
+
         // Initialize today's data if not exists
         if (!attendanceData[today]) {
             attendanceData[today] = {};
-            staffData.forEach(staff => {
-                attendanceData[today][staff.id] = { status: '', checkin: null };
-            });
         }
-
         if (!checkinData[today]) {
             checkinData[today] = {};
-            staffData.forEach(staff => {
-                checkinData[today][staff.id] = null;
-            });
         }
 
         // Tab functionality
@@ -646,6 +634,10 @@
                 // Update summary if summary tab is clicked
                 if (tab.dataset.tab === 'summary') {
                     updateSummary();
+                }
+                // Render check-in if check-in tab is clicked
+                if (tab.dataset.tab === 'checkin') {
+                    renderCheckinStaff();
                 }
             });
         });
@@ -669,47 +661,8 @@
                 const container = positions[staff.position];
                 if (!container) return;
 
-                const staffItem = document.createElement('div');
-                staffItem.className = 'staff-item';
-                staffItem.innerHTML = `
-                    <div class="staff-info">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="staff-details">
-                            <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">${staff.position}</div>
-                        </div>
-                    </div>
-                    <div class="attendance-options">
-                        <div class="radio-group">
-                            <input type="radio" id="attendance-${staff.id}-hadir" name="attendance-${staff.id}" value="hadir" ${attendanceData[today][staff.id].status === 'hadir' ? 'checked' : ''}>
-                            <label for="attendance-${staff.id}-hadir">Hadir</label>
-                        </div>
-                        <div class="radio-group">
-                            <input type="radio" id="attendance-${staff.id}-izin" name="attendance-${staff.id}" value="izin" ${attendanceData[today][staff.id].status === 'izin' ? 'checked' : ''}>
-                            <label for="attendance-${staff.id}-izin">Izin</label>
-                        </div>
-                        <div class="radio-group">
-                            <input type="radio" id="attendance-${staff.id}-sakit" name="attendance-${staff.id}" value="sakit" ${attendanceData[today][staff.id].status === 'sakit' ? 'checked' : ''}>
-                            <label for="attendance-${staff.id}-sakit">Sakit</label>
-                        </div>
-                        <div class="radio-group">
-                            <input type="radio" id="attendance-${staff.id}-alfa" name="attendance-${staff.id}" value="alfa" ${attendanceData[today][staff.id].status === 'alfa' ? 'checked' : ''}>
-                            <label for="attendance-${staff.id}-alfa">Alfa</label>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(staffItem);
-            });
-        }
-
-        // Render staff for check-in
-        function renderCheckinStaff() {
-            const container = document.getElementById('all-staff-checkin');
-            container.innerHTML = '';
-
-            staffData.forEach(staff => {
-                const isCheckedIn = checkinData[today][staff.id] !== null;
-                const checkinTime = isCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
+                const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
                 
                 const staffItem = document.createElement('div');
                 staffItem.className = 'staff-item';
@@ -719,34 +672,120 @@
                         <div class="staff-details">
                             <div class="staff-name">${staff.name}</div>
                             <div class="staff-position">${staff.position}</div>
-                            ${isCheckedIn ? `<div class="checkin-time">Check-in: ${checkinTime}</div>` : ''}
+                            ${hasAbsened ? `<div class="absen-time">Absen: ${absenTime}</div>` : ''}
                         </div>
                     </div>
-                    <button class="checkin-btn ${isCheckedIn ? 'checked' : ''}" data-staff-id="${staff.id}">
-                        ${isCheckedIn ? '✓ Sudah Check-in' : 'Check-in'}
+                    <button class="absen-btn ${hasAbsened ? 'absened' : ''}" data-staff-id="${staff.id}" ${hasAbsened ? 'disabled' : ''}>
+                        ${hasAbsened ? '✓ Sudah Absen' : 'Absen'}
+                    </button>
+                `;
+                container.appendChild(staffItem);
+            });
+
+            // Add event listeners to absen buttons
+            document.querySelectorAll('.absen-btn:not(.absened)').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const staffId = parseInt(this.dataset.staffId);
+                    
+                    // Record attendance
+                    if (!attendanceData[today]) {
+                        attendanceData[today] = {};
+                    }
+                    attendanceData[today][staffId] = new Date().toISOString();
+                    
+                    // Save to localStorage
+                    localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+                    
+                    // Update UI
+                    this.classList.add('absened');
+                    this.textContent = '✓ Sudah Absen';
+                    this.disabled = true;
+                    
+                    // Add absen time
+                    const staffItem = this.closest('.staff-item');
+                    const absenTime = document.createElement('div');
+                    absenTime.className = 'absen-time';
+                    absenTime.textContent = `Absen: ${new Date().toLocaleTimeString('id-ID')}`;
+                    staffItem.querySelector('.staff-details').appendChild(absenTime);
+                    
+                    showToast('Absensi berhasil dicatat');
+                    
+                    // Update summary counts
+                    updateSummary();
+                });
+            });
+        }
+
+        // Render staff for check-in
+        function renderCheckinStaff() {
+            const positions = {
+                'CS': document.getElementById('cs-checkin'),
+                'Kapten': document.getElementById('kapten-checkin'),
+                'Operator': document.getElementById('operator-checkin'),
+                'Kasir': document.getElementById('kasir-checkin')
+            };
+
+            // Clear existing content
+            Object.values(positions).forEach(container => {
+                container.innerHTML = '';
+            });
+
+            // Render each staff member for check-in (all positions)
+            staffData.forEach(staff => {
+                const container = positions[staff.position];
+                if (!container) return;
+
+                const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
+                const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                
+                const staffItem = document.createElement('div');
+                staffItem.className = 'staff-item';
+                staffItem.innerHTML = `
+                    <div class="staff-info">
+                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
+                        <div class="staff-details">
+                            <div class="staff-name">${staff.name}</div>
+                            <div class="staff-position">${staff.position}</div>
+                            ${hasCheckedIn ? `<div class="checkin-time">Check-in: ${checkinTime}</div>` : ''}
+                        </div>
+                    </div>
+                    <button class="checkin-btn ${hasCheckedIn ? 'checked' : ''}" data-staff-id="${staff.id}" ${hasCheckedIn ? 'disabled' : ''}>
+                        ${hasCheckedIn ? '✓ Sudah Check-in' : 'Check-in'}
                     </button>
                 `;
                 container.appendChild(staffItem);
             });
 
             // Add event listeners to check-in buttons
-            document.querySelectorAll('.checkin-btn').forEach(btn => {
+            document.querySelectorAll('.checkin-btn:not(.checked)').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const staffId = parseInt(this.dataset.staffId);
-                    if (!checkinData[today][staffId]) {
-                        checkinData[today][staffId] = new Date().toISOString();
-                        this.classList.add('checked');
-                        this.textContent = '✓ Sudah Check-in';
-                        
-                        // Add check-in time
-                        const staffItem = this.closest('.staff-item');
-                        const checkinTime = document.createElement('div');
-                        checkinTime.className = 'checkin-time';
-                        checkinTime.textContent = `Check-in: ${new Date().toLocaleTimeString('id-ID')}`;
-                        staffItem.querySelector('.staff-details').appendChild(checkinTime);
-                        
-                        showToast('Check-in berhasil dicatat');
+                    
+                    // Record check-in
+                    if (!checkinData[today]) {
+                        checkinData[today] = {};
                     }
+                    checkinData[today][staffId] = new Date().toISOString();
+                    
+                    // Save to localStorage
+                    localStorage.setItem('checkinData', JSON.stringify(checkinData));
+                    
+                    // Update UI
+                    this.classList.add('checked');
+                    this.textContent = '✓ Sudah Check-in';
+                    this.disabled = true;
+                    
+                    // Add check-in time
+                    const staffItem = this.closest('.staff-item');
+                    const checkinTime = document.createElement('div');
+                    checkinTime.className = 'checkin-time';
+                    checkinTime.textContent = `Check-in: ${new Date().toLocaleTimeString('id-ID')}`;
+                    staffItem.querySelector('.staff-details').appendChild(checkinTime);
+                    
+                    showToast('Check-in berhasil dicatat');
+                    
+                    // Update summary counts
+                    updateSummary();
                 });
             });
         }
@@ -755,36 +794,37 @@
         function updateSummary() {
             // Count attendance statuses
             let hadirCount = 0;
-            let izinCount = 0;
-            let sakitCount = 0;
-            let alfaCount = 0;
-            let checkedinCount = 0;
+            let belumCount = 0;
+            let checkinCount = 0;
 
             staffData.forEach(staff => {
-                const status = attendanceData[today][staff.id].status;
-                if (status === 'hadir') hadirCount++;
-                else if (status === 'izin') izinCount++;
-                else if (status === 'sakit') sakitCount++;
-                else if (status === 'alfa') alfaCount++;
+                if (attendanceData[today] && attendanceData[today][staff.id]) {
+                    hadirCount++;
+                } else {
+                    belumCount++;
+                }
                 
-                if (checkinData[today][staff.id]) checkedinCount++;
+                if (checkinData[today] && checkinData[today][staff.id]) {
+                    checkinCount++;
+                }
             });
 
             // Update summary cards
             document.getElementById('hadir-count').textContent = hadirCount;
-            document.getElementById('izin-count').textContent = izinCount;
-            document.getElementById('sakit-count').textContent = sakitCount;
-            document.getElementById('alfa-count').textContent = alfaCount;
-            document.getElementById('checkedin-count').textContent = checkedinCount;
+            document.getElementById('belum-count').textContent = belumCount;
+            document.getElementById('checkin-count').textContent = checkinCount;
 
             // Update summary list
             const container = document.getElementById('summary-staff');
             container.innerHTML = '';
 
             staffData.forEach(staff => {
-                const status = attendanceData[today][staff.id].status || 'Belum diisi';
-                const isCheckedIn = checkinData[today][staff.id] !== null;
-                const checkinTime = isCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : 'Belum check-in';
+                const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
+                const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : 'Belum absen';
+                const statusClass = hasAbsened ? 'hadir' : 'belum';
+                
+                const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
+                const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : 'Belum check-in';
                 
                 const staffItem = document.createElement('div');
                 staffItem.className = 'staff-item';
@@ -796,60 +836,15 @@
                             <div class="staff-position">${staff.position}</div>
                         </div>
                     </div>
-                    <div>
-                        <div>Status: <strong>${status.toUpperCase()}</strong></div>
+                    <div class="status ${statusClass}">
+                        ${hasAbsened ? '✓ Sudah Absen' : 'Belum Absen'}
+                        <div class="absen-time">${absenTime}</div>
                         <div class="checkin-time">Check-in: ${checkinTime}</div>
                     </div>
                 `;
                 container.appendChild(staffItem);
             });
         }
-
-        // Save attendance data
-        document.getElementById('save-attendance').addEventListener('click', () => {
-            // Collect all attendance data
-            staffData.forEach(staff => {
-                const selectedStatus = document.querySelector(`input[name="attendance-${staff.id}"]:checked`);
-                if (selectedStatus) {
-                    attendanceData[today][staff.id].status = selectedStatus.value;
-                }
-            });
-
-            // Save to localStorage
-            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-            
-            showToast('Data absensi berhasil disimpan');
-            updateSummary();
-        });
-
-        // Save check-in data
-        document.getElementById('save-checkin').addEventListener('click', () => {
-            localStorage.setItem('checkinData', JSON.stringify(checkinData));
-            showToast('Data check-in berhasil disimpan');
-            updateSummary();
-        });
-
-        // Reset attendance
-        document.getElementById('reset-btn').addEventListener('click', () => {
-            if (confirm('Apakah Anda yakin ingin mereset semua data absensi?')) {
-                staffData.forEach(staff => {
-                    attendanceData[today][staff.id].status = '';
-                });
-                renderAttendanceStaff();
-                showToast('Data absensi telah direset');
-            }
-        });
-
-        // Reset check-in
-        document.getElementById('reset-checkin').addEventListener('click', () => {
-            if (confirm('Apakah Anda yakin ingin mereset semua data check-in?')) {
-                staffData.forEach(staff => {
-                    checkinData[today][staff.id] = null;
-                });
-                renderCheckinStaff();
-                showToast('Data check-in telah direset');
-            }
-        });
 
         // Toast notification
         function showToast(message) {
