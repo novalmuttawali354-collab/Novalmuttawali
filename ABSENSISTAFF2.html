@@ -967,6 +967,81 @@
             color: var(--gray);
             font-size: 14px;
         }
+        
+        /* Style untuk textarea shift schedule */
+        .shift-schedule-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        
+        .shift-schedule-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        .schedule-preview {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .preview-item:last-child {
+            border-bottom: none;
+        }
+        
+        .preview-name {
+            font-weight: 500;
+        }
+        
+        .preview-shift {
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .preview-pagi {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #856404;
+        }
+        
+        .preview-siang {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+        }
+        
+        .preview-malam {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: white;
+        }
+        
+        .schedule-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .schedule-actions .admin-btn {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -1450,8 +1525,18 @@
                             <i class="fas fa-trash"></i> Hapus Riwayat
                         </button>
                     </div>
+                    
+                    <!-- Card Atur Jadwal Shift -->
+                    <div class="admin-card">
+                        <h4><i class="fas fa-calendar-alt"></i> Atur Jadwal Shift</h4>
+                        <p>Atur jadwal shift staff secara otomatis dengan menempelkan data.</p>
+                        <button class="admin-btn" id="schedule-shift-btn">
+                            <i class="fas fa-calendar-alt"></i> Atur Jadwal Shift
+                        </button>
+                    </div>
                 </div>
                 
+                <!-- Form Tambah Staff -->
                 <div id="add-staff-form" style="display: none; margin-top: 30px;">
                     <h3 class="section-title">
                         <i class="fas fa-user-plus"></i> Form Tambah Staff
@@ -1482,6 +1567,43 @@
                         <button class="admin-btn warning" id="cancel-staff">
                             <i class="fas fa-times"></i> Batal
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Form Atur Jadwal Shift -->
+                <div id="schedule-shift-form" style="display: none; margin-top: 30px;">
+                    <h3 class="section-title">
+                        <i class="fas fa-calendar-alt"></i> Atur Jadwal Shift Otomatis
+                    </h3>
+                    
+                    <div class="admin-note">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Petunjuk:</strong> Tempel data jadwal shift dalam format berikut:
+                            <br>Nama [Tab/Spasi] Shift (PAGI/SIANG/MALAM)
+                            <br>Contoh: RAAZ JESEN STEPANUS PAGI
+                        </div>
+                    </div>
+                    
+                    <textarea class="shift-schedule-input" id="shift-schedule-data" placeholder="Tempel data jadwal shift di sini..."></textarea>
+                    
+                    <div class="schedule-actions">
+                        <button class="admin-btn" id="preview-schedule">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                        <button class="admin-btn warning" id="apply-schedule">
+                            <i class="fas fa-check"></i> Terapkan
+                        </button>
+                        <button class="admin-btn danger" id="cancel-schedule">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                    </div>
+                    
+                    <div class="schedule-preview" id="schedule-preview" style="display: none;">
+                        <h4>Preview Perubahan:</h4>
+                        <div id="preview-content">
+                            <!-- Preview will be populated by JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1767,6 +1889,9 @@
             updateStatsBar();
             renderAllStaff();
             renderLateHistory();
+            
+            // Setup shift schedule functionality
+            setupShiftSchedule();
         }
 
         // Tab functionality
@@ -2423,6 +2548,138 @@
             updateStatsBar();
             showToast('Staff baru berhasil ditambahkan');
         });
+
+        // Fungsi untuk mengatur jadwal shift
+        function setupShiftSchedule() {
+            const scheduleBtn = document.getElementById('schedule-shift-btn');
+            const scheduleForm = document.getElementById('schedule-shift-form');
+            const cancelScheduleBtn = document.getElementById('cancel-schedule');
+            const previewScheduleBtn = document.getElementById('preview-schedule');
+            const applyScheduleBtn = document.getElementById('apply-schedule');
+            const scheduleDataInput = document.getElementById('shift-schedule-data');
+            const schedulePreview = document.getElementById('schedule-preview');
+            const previewContent = document.getElementById('preview-content');
+            
+            // Tampilkan form atur jadwal shift
+            scheduleBtn.addEventListener('click', function() {
+                scheduleForm.style.display = 'block';
+                scheduleDataInput.value = '';
+                schedulePreview.style.display = 'none';
+            });
+            
+            // Sembunyikan form atur jadwal shift
+            cancelScheduleBtn.addEventListener('click', function() {
+                scheduleForm.style.display = 'none';
+                scheduleDataInput.value = '';
+                schedulePreview.style.display = 'none';
+            });
+            
+            // Preview jadwal shift
+            previewScheduleBtn.addEventListener('click', function() {
+                const dataText = scheduleDataInput.value.trim();
+                if (!dataText) {
+                    alert('Silakan tempel data jadwal shift terlebih dahulu');
+                    return;
+                }
+                
+                const parsedData = parseShiftSchedule(dataText);
+                if (parsedData.length === 0) {
+                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
+                    return;
+                }
+                
+                // Tampilkan preview
+                previewContent.innerHTML = '';
+                parsedData.forEach(item => {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <div class="preview-name">${item.name}</div>
+                        <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
+                    `;
+                    previewContent.appendChild(previewItem);
+                });
+                
+                schedulePreview.style.display = 'block';
+            });
+            
+            // Terapkan jadwal shift
+            applyScheduleBtn.addEventListener('click', function() {
+                const dataText = scheduleDataInput.value.trim();
+                if (!dataText) {
+                    alert('Silakan tempel data jadwal shift terlebih dahulu');
+                    return;
+                }
+                
+                const parsedData = parseShiftSchedule(dataText);
+                if (parsedData.length === 0) {
+                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
+                    return;
+                }
+                
+                // Terapkan perubahan shift
+                let updatedCount = 0;
+                parsedData.forEach(item => {
+                    const staffIndex = staffData.findIndex(staff => 
+                        staff.name.toLowerCase() === item.name.toLowerCase()
+                    );
+                    
+                    if (staffIndex !== -1) {
+                        staffData[staffIndex].shift = item.shift.toLowerCase();
+                        updatedCount++;
+                    }
+                });
+                
+                // Simpan ke localStorage
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+                
+                // Refresh tampilan
+                renderAllStaff();
+                renderAttendanceStaff();
+                renderShiftStaff('pagi');
+                renderShiftStaff('siang');
+                renderShiftStaff('malam');
+                
+                // Tampilkan pesan sukses
+                showToast(`Jadwal shift berhasil diubah untuk ${updatedCount} staff`);
+                
+                // Sembunyikan form
+                scheduleForm.style.display = 'none';
+                scheduleDataInput.value = '';
+                schedulePreview.style.display = 'none';
+            });
+        }
+        
+        // Fungsi untuk parsing data jadwal shift
+        function parseShiftSchedule(dataText) {
+            const lines = dataText.split('\n');
+            const result = [];
+            
+            lines.forEach(line => {
+                // Bersihkan line dari spasi berlebih
+                line = line.trim();
+                if (!line) return;
+                
+                // Pisahkan berdasarkan tab atau spasi ganda
+                const parts = line.split(/\t|\s{2,}/);
+                
+                // Cari shift (PAGI, SIANG, MALAM) dalam line
+                const shiftMatch = line.match(/\b(PAGI|SIANG|MALAM)\b/i);
+                if (!shiftMatch) return;
+                
+                const shift = shiftMatch[0].toUpperCase();
+                const name = line.replace(shiftMatch[0], '').trim();
+                
+                if (name) {
+                    result.push({
+                        name: name.toUpperCase(),
+                        shift: shift
+                    });
+                }
+            });
+            
+            return result;
+        }
 
         // Toast notification
         function showToast(message) {
