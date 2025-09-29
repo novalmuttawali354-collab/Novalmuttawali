@@ -26,12 +26,92 @@
             background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        .login-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            text-align: center;
+            margin-top: 10px;
+            display: none;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            width: 100%;
+            display: none;
         }
         
         header {
@@ -41,6 +121,7 @@
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         
         .header-content {
@@ -59,6 +140,38 @@
         .logo h1 {
             font-size: 24px;
             font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
         
         .date-display {
@@ -91,6 +204,11 @@
             background-color: var(--secondary);
             color: white;
             border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .tab-content {
@@ -240,38 +358,13 @@
             margin-top: 5px;
         }
         
-        .action-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
+        .access-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
             border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-secondary {
-            background-color: var(--light);
-            color: var(--dark);
-        }
-        
-        .btn-secondary:hover {
-            background-color: #d5dbdb;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            color: #856404;
         }
         
         .summary-cards {
@@ -353,19 +446,48 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Form -->
+    <div class="login-container" id="login-container">
+        <div class="login-logo">
+            <h1>Sistem Absensi Staff Linetogel</h1>
+            <p>Silakan login untuk melanjutkan</p>
+        </div>
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <div class="error-message" id="error-message">Username atau password salah</div>
+        </form>
+    </div>
+
+    <!-- Main App -->
+    <div class="container" id="app-container">
         <header>
             <div class="header-content">
                 <div class="logo">
                     <h1>Sistem Absensi Staff Linetogel</h1>
                 </div>
-                <div class="date-display" id="current-date">Senin, 1 Januari 2023</div>
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div>
+                        <div id="user-name">User</div>
+                        <div id="user-position" style="font-size: 14px;">Position</div>
+                    </div>
+                    <button class="logout-btn" id="logout-btn">Logout</button>
+                </div>
             </div>
+            <div class="date-display" id="current-date">Senin, 1 Januari 2023</div>
         </header>
         
         <div class="tabs">
             <div class="tab active" data-tab="attendance">Absensi</div>
-            <div class="tab" data-tab="checkin">Check-in</div>
+            <div class="tab" data-tab="checkin" id="checkin-tab">Check-in</div>
             <div class="tab" data-tab="summary">Rekap</div>
         </div>
         
@@ -422,50 +544,11 @@
         <!-- Tab Check-in -->
         <div class="tab-content" id="checkin">
             <h2 class="section-title">Check-in Staff di Kantor</h2>
-            <p>Klik tombol "Check-in" untuk mencatat kedatangan staff di kantor. Semua staff dapat melakukan check-in.</p>
-            
-            <!-- CS Section -->
-            <div class="position-section">
-                <div class="position-header">
-                    <span>Customer Service (CS)</span>
-                    <span class="position-count">22 Staff</span>
-                </div>
-                <div class="staff-list" id="cs-checkin">
-                    <!-- CS staff for check-in will be populated by JavaScript -->
-                </div>
+            <div class="access-note">
+                <strong>Catatan:</strong> Fitur check-in hanya tersedia untuk staff dengan jabatan Kapten.
             </div>
-            
-            <!-- Kapten Section -->
-            <div class="position-section">
-                <div class="position-header">
-                    <span>Kapten</span>
-                    <span class="position-count">6 Staff</span>
-                </div>
-                <div class="staff-list" id="kapten-checkin">
-                    <!-- Kapten staff for check-in will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Operator Section -->
-            <div class="position-section">
-                <div class="position-header">
-                    <span>Operator</span>
-                    <span class="position-count">3 Staff</span>
-                </div>
-                <div class="staff-list" id="operator-checkin">
-                    <!-- Operator staff for check-in will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Kasir Section -->
-            <div class="position-section">
-                <div class="position-header">
-                    <span>Kasir</span>
-                    <span class="position-count">38 Staff</span>
-                </div>
-                <div class="staff-list" id="kasir-checkin">
-                    <!-- Kasir staff for check-in will be populated by JavaScript -->
-                </div>
+            <div id="checkin-content">
+                <!-- Check-in content will be populated by JavaScript -->
             </div>
         </div>
         
@@ -594,6 +677,7 @@
         // Initialize attendance data
         let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || {};
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
         // Set current date
         const now = new Date();
@@ -620,9 +704,77 @@
             checkinData[today] = {};
         }
 
+        // Check if user is already logged in
+        if (currentUser) {
+            showApp();
+        }
+
+        // Login functionality
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim().toUpperCase();
+            const password = document.getElementById('password').value;
+            
+            // Find staff by name
+            const user = staffData.find(staff => staff.name === username);
+            
+            // Check if user exists and password is correct
+            if (user && password === 'a1') {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showApp();
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLogin();
+        });
+
+        // Show login form
+        function showLogin() {
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        // Show main app
+        function showApp() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('app-container').style.display = 'block';
+            
+            // Update user info
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-position').textContent = currentUser.position;
+            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
+            
+            // Check if user is Kapten to enable check-in tab
+            const checkinTab = document.getElementById('checkin-tab');
+            if (currentUser.position === 'Kapten') {
+                checkinTab.classList.remove('disabled');
+            } else {
+                checkinTab.classList.add('disabled');
+            }
+            
+            // Initialize the app
+            renderAttendanceStaff();
+            renderCheckinStaff();
+            updateSummary();
+        }
+
         // Tab functionality
-        document.querySelectorAll('.tab').forEach(tab => {
+        document.querySelectorAll('.tab:not(.disabled)').forEach(tab => {
             tab.addEventListener('click', () => {
+                // Skip if tab is disabled
+                if (tab.classList.contains('disabled')) return;
+                
                 // Remove active class from all tabs and contents
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -718,42 +870,67 @@
 
         // Render staff for check-in
         function renderCheckinStaff() {
-            const positions = {
-                'CS': document.getElementById('cs-checkin'),
-                'Kapten': document.getElementById('kapten-checkin'),
-                'Operator': document.getElementById('operator-checkin'),
-                'Kasir': document.getElementById('kasir-checkin')
-            };
-
+            const checkinContent = document.getElementById('checkin-content');
+            
             // Clear existing content
-            Object.values(positions).forEach(container => {
-                container.innerHTML = '';
-            });
-
-            // Render each staff member for check-in (all positions)
-            staffData.forEach(staff => {
-                const container = positions[staff.position];
-                if (!container) return;
-
-                const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
-                const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                
-                const staffItem = document.createElement('div');
-                staffItem.className = 'staff-item';
-                staffItem.innerHTML = `
-                    <div class="staff-info">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="staff-details">
-                            <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">${staff.position}</div>
-                            ${hasCheckedIn ? `<div class="checkin-time">Check-in: ${checkinTime}</div>` : ''}
-                        </div>
+            checkinContent.innerHTML = '';
+            
+            // Only show check-in content if user is Kapten
+            if (currentUser.position !== 'Kapten') {
+                checkinContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666;">
+                        <h3>Akses Ditolak</h3>
+                        <p>Hanya staff dengan jabatan Kapten yang dapat mengakses fitur check-in.</p>
                     </div>
-                    <button class="checkin-btn ${hasCheckedIn ? 'checked' : ''}" data-staff-id="${staff.id}" ${hasCheckedIn ? 'disabled' : ''}>
-                        ${hasCheckedIn ? '✓ Sudah Check-in' : 'Check-in'}
-                    </button>
                 `;
-                container.appendChild(staffItem);
+                return;
+            }
+            
+            // Create sections for each position
+            const positions = ['CS', 'Kapten', 'Operator', 'Kasir'];
+            
+            positions.forEach(position => {
+                const positionSection = document.createElement('div');
+                positionSection.className = 'position-section';
+                
+                const positionStaff = staffData.filter(staff => staff.position === position);
+                
+                positionSection.innerHTML = `
+                    <div class="position-header">
+                        <span>${position}</span>
+                        <span class="position-count">${positionStaff.length} Staff</span>
+                    </div>
+                    <div class="staff-list" id="${position.toLowerCase()}-checkin">
+                        <!-- Staff for check-in will be populated by JavaScript -->
+                    </div>
+                `;
+                
+                checkinContent.appendChild(positionSection);
+                
+                // Render staff for this position
+                const container = document.getElementById(`${position.toLowerCase()}-checkin`);
+                
+                positionStaff.forEach(staff => {
+                    const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
+                    const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                    
+                    const staffItem = document.createElement('div');
+                    staffItem.className = 'staff-item';
+                    staffItem.innerHTML = `
+                        <div class="staff-info">
+                            <div class="staff-avatar">${staff.name.charAt(0)}</div>
+                            <div class="staff-details">
+                                <div class="staff-name">${staff.name}</div>
+                                <div class="staff-position">${staff.position}</div>
+                                ${hasCheckedIn ? `<div class="checkin-time">Check-in: ${checkinTime}</div>` : ''}
+                            </div>
+                        </div>
+                        <button class="checkin-btn ${hasCheckedIn ? 'checked' : ''}" data-staff-id="${staff.id}" ${hasCheckedIn ? 'disabled' : ''}>
+                            ${hasCheckedIn ? '✓ Sudah Check-in' : 'Check-in'}
+                        </button>
+                    `;
+                    container.appendChild(staffItem);
+                });
             });
 
             // Add event listeners to check-in buttons
@@ -856,11 +1033,6 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        // Initialize the app
-        renderAttendanceStaff();
-        renderCheckinStaff();
-        updateSummary();
     </script>
 </body>
 </html>
