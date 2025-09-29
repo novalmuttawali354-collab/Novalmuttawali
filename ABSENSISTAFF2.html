@@ -1042,6 +1042,10 @@
         .schedule-actions .admin-btn {
             flex: 1;
         }
+        
+        .kapten-only {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1162,6 +1166,9 @@
             </div>
             <div class="tab" data-tab="admin" id="admin-tab">
                 <i class="fas fa-cogs"></i> Admin
+            </div>
+            <div class="tab kapten-only" data-tab="kapten" id="kapten-tab">
+                <i class="fas fa-user-shield"></i> Kapten
             </div>
         </div>
         
@@ -1624,6 +1631,53 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Tab Kapten -->
+        <div class="tab-content kapten-only" id="kapten">
+            <h2 class="section-title">
+                <i class="fas fa-user-shield"></i> Panel Kapten
+            </h2>
+            
+            <div class="admin-note">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Akses Kapten:</strong> Anda dapat mengatur jadwal shift staff.
+                </div>
+            </div>
+            
+            <div class="admin-panel">
+                <h3 class="section-title">
+                    <i class="fas fa-calendar-alt"></i> Atur Jadwal Shift
+                </h3>
+                
+                <div class="admin-note">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Petunjuk:</strong> Tempel data jadwal shift dalam format berikut:
+                        <br>Nama [Tab/Spasi] Shift (PAGI/SIANG/MALAM)
+                        <br>Contoh: RAAZ JESEN STEPANUS PAGI
+                    </div>
+                </div>
+                
+                <textarea class="shift-schedule-input" id="kapten-shift-schedule-data" placeholder="Tempel data jadwal shift di sini..."></textarea>
+                
+                <div class="schedule-actions">
+                    <button class="admin-btn" id="kapten-preview-schedule">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="admin-btn warning" id="kapten-apply-schedule">
+                        <i class="fas fa-check"></i> Terapkan
+                    </button>
+                </div>
+                
+                <div class="schedule-preview" id="kapten-schedule-preview" style="display: none;">
+                    <h4>Preview Perubahan:</h4>
+                    <div id="kapten-preview-content">
+                        <!-- Preview will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="toast" id="toast">
@@ -1850,6 +1904,9 @@
             if (currentUser.position === 'Admin') {
                 document.getElementById('welcome-title').textContent = 'Selamat Datang, Administrator';
                 document.getElementById('welcome-message').textContent = 'Anda memiliki akses penuh untuk mengelola sistem absensi staff.';
+            } else if (currentUser.position === 'Kapten') {
+                document.getElementById('welcome-title').textContent = `Selamat Datang, Kapten ${currentUser.name}`;
+                document.getElementById('welcome-message').textContent = 'Anda dapat mengatur jadwal shift dan memantau kehadiran staff.';
             } else {
                 document.getElementById('welcome-title').textContent = `Selamat Datang, ${currentUser.name}`;
                 document.getElementById('welcome-message').textContent = 'Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.';
@@ -1861,23 +1918,42 @@
             const malamTab = document.getElementById('shift-malam-tab');
             const adminTab = document.getElementById('admin-tab');
             const historyTab = document.getElementById('history-tab');
+            const kaptenTab = document.getElementById('kapten-tab');
             
+            // Show/hide tabs based on user role
             if (currentUser.position === 'Kapten' || currentUser.position === 'Admin') {
                 pagiTab.classList.remove('disabled');
                 siangTab.classList.remove('disabled');
                 malamTab.classList.remove('disabled');
+                
+                // Show Kapten tab for Kapten users
+                if (currentUser.position === 'Kapten') {
+                    kaptenTab.classList.remove('disabled');
+                    adminTab.classList.add('disabled');
+                    historyTab.classList.add('disabled');
+                } else {
+                    adminTab.classList.remove('disabled');
+                    historyTab.classList.remove('disabled');
+                    kaptenTab.classList.add('disabled');
+                }
             } else {
                 pagiTab.classList.add('disabled');
                 siangTab.classList.add('disabled');
                 malamTab.classList.add('disabled');
-            }
-            
-            if (currentUser.position === 'Admin') {
-                adminTab.classList.remove('disabled');
-                historyTab.classList.remove('disabled');
-            } else {
                 adminTab.classList.add('disabled');
                 historyTab.classList.add('disabled');
+                kaptenTab.classList.add('disabled');
+            }
+            
+            // Show/hide Kapten-only elements
+            if (currentUser.position === 'Kapten') {
+                document.querySelectorAll('.kapten-only').forEach(el => {
+                    el.style.display = 'block';
+                });
+            } else {
+                document.querySelectorAll('.kapten-only').forEach(el => {
+                    el.style.display = 'none';
+                });
             }
             
             // Initialize the app
@@ -1892,6 +1968,7 @@
             
             // Setup shift schedule functionality
             setupShiftSchedule();
+            setupKaptenShiftSchedule();
         }
 
         // Tab functionality
@@ -2549,7 +2626,7 @@
             showToast('Staff baru berhasil ditambahkan');
         });
 
-        // Fungsi untuk mengatur jadwal shift
+        // Fungsi untuk mengatur jadwal shift (Admin)
         function setupShiftSchedule() {
             const scheduleBtn = document.getElementById('schedule-shift-btn');
             const scheduleForm = document.getElementById('schedule-shift-form');
@@ -2645,6 +2722,89 @@
                 
                 // Sembunyikan form
                 scheduleForm.style.display = 'none';
+                scheduleDataInput.value = '';
+                schedulePreview.style.display = 'none';
+            });
+        }
+        
+        // Fungsi untuk mengatur jadwal shift (Kapten)
+        function setupKaptenShiftSchedule() {
+            const previewScheduleBtn = document.getElementById('kapten-preview-schedule');
+            const applyScheduleBtn = document.getElementById('kapten-apply-schedule');
+            const scheduleDataInput = document.getElementById('kapten-shift-schedule-data');
+            const schedulePreview = document.getElementById('kapten-schedule-preview');
+            const previewContent = document.getElementById('kapten-preview-content');
+            
+            // Preview jadwal shift
+            previewScheduleBtn.addEventListener('click', function() {
+                const dataText = scheduleDataInput.value.trim();
+                if (!dataText) {
+                    alert('Silakan tempel data jadwal shift terlebih dahulu');
+                    return;
+                }
+                
+                const parsedData = parseShiftSchedule(dataText);
+                if (parsedData.length === 0) {
+                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
+                    return;
+                }
+                
+                // Tampilkan preview
+                previewContent.innerHTML = '';
+                parsedData.forEach(item => {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <div class="preview-name">${item.name}</div>
+                        <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
+                    `;
+                    previewContent.appendChild(previewItem);
+                });
+                
+                schedulePreview.style.display = 'block';
+            });
+            
+            // Terapkan jadwal shift
+            applyScheduleBtn.addEventListener('click', function() {
+                const dataText = scheduleDataInput.value.trim();
+                if (!dataText) {
+                    alert('Silakan tempel data jadwal shift terlebih dahulu');
+                    return;
+                }
+                
+                const parsedData = parseShiftSchedule(dataText);
+                if (parsedData.length === 0) {
+                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
+                    return;
+                }
+                
+                // Terapkan perubahan shift
+                let updatedCount = 0;
+                parsedData.forEach(item => {
+                    const staffIndex = staffData.findIndex(staff => 
+                        staff.name.toLowerCase() === item.name.toLowerCase()
+                    );
+                    
+                    if (staffIndex !== -1) {
+                        staffData[staffIndex].shift = item.shift.toLowerCase();
+                        updatedCount++;
+                    }
+                });
+                
+                // Simpan ke localStorage
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+                
+                // Refresh tampilan
+                renderAllStaff();
+                renderAttendanceStaff();
+                renderShiftStaff('pagi');
+                renderShiftStaff('siang');
+                renderShiftStaff('malam');
+                
+                // Tampilkan pesan sukses
+                showToast(`Jadwal shift berhasil diubah untuk ${updatedCount} staff`);
+                
+                // Reset form
                 scheduleDataInput.value = '';
                 schedulePreview.style.display = 'none';
             });
