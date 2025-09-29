@@ -277,16 +277,36 @@
             transform: translateY(-2px);
         }
         
-        .date-display {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-weight: 500;
+        .clock-container {
+            display: flex;
+            justify-content: center;
             margin-top: 15px;
-            text-align: center;
+        }
+        
+        .clock {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
             backdrop-filter: blur(10px);
-            display: inline-block;
-            margin-left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .clock i {
+            font-size: 20px;
+        }
+        
+        .time {
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        
+        .date {
+            font-size: 16px;
+            opacity: 0.9;
         }
         
         .tabs {
@@ -508,6 +528,18 @@
             gap: 12px;
         }
         
+        .admin-note {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-left: 4px solid var(--info);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            color: #0c5460;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -639,9 +671,10 @@
                 width: 100%;
             }
             
-            .date-display {
-                margin-left: 0;
-                margin-top: 20px;
+            .clock {
+                flex-direction: column;
+                gap: 5px;
+                padding: 12px 20px;
             }
             
             .staff-item {
@@ -728,6 +761,86 @@
             color: var(--dark);
             margin-bottom: 15px;
         }
+        
+        .admin-panel {
+            background: var(--card-gradient);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .admin-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-btn {
+            background: var(--bg-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .admin-btn.danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+        }
+        
+        .admin-btn.warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #e6b04a 100%);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row input, .form-row select {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-row input:focus, .form-row select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -745,7 +858,7 @@
                 <label for="username"><i class="fas fa-user"></i> Username</label>
                 <div class="input-with-icon">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Masukkan nama staff" required>
+                    <input type="text" id="username" placeholder="Masukkan nama depan atau admin" required>
                 </div>
             </div>
             <div class="form-group">
@@ -763,7 +876,8 @@
             </div>
         </form>
         <div class="password-note">
-            <i class="fas fa-info-circle"></i> Password untuk semua staff: <strong>a1</strong>
+            <i class="fas fa-info-circle"></i> Password untuk semua staff dan admin: <strong>a1</strong><br>
+            <small>Gunakan nama depan untuk login staff (contoh: WIDJAYA, DAVID, dll)</small>
         </div>
     </div>
 
@@ -788,7 +902,13 @@
                     </button>
                 </div>
             </div>
-            <div class="date-display" id="current-date">Senin, 1 Januari 2023</div>
+            <div class="clock-container">
+                <div class="clock">
+                    <i class="far fa-clock"></i>
+                    <div class="time" id="current-time">00:00:00</div>
+                    <div class="date" id="current-date">Senin, 1 Januari 2023</div>
+                </div>
+            </div>
         </header>
         
         <div class="welcome-message">
@@ -796,8 +916,8 @@
                 <i class="fas fa-calendar-check"></i>
             </div>
             <div class="welcome-text">
-                <h3>Selamat Datang di Sistem Absensi</h3>
-                <p>Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.</p>
+                <h3 id="welcome-title">Selamat Datang di Sistem Absensi</h3>
+                <p id="welcome-message">Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.</p>
             </div>
         </div>
         
@@ -829,6 +949,9 @@
             </div>
             <div class="tab" data-tab="summary">
                 <i class="fas fa-chart-pie"></i> Rekap
+            </div>
+            <div class="tab" data-tab="admin" id="admin-tab">
+                <i class="fas fa-cogs"></i> Admin
             </div>
         </div>
         
@@ -949,6 +1072,93 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Tab Admin -->
+        <div class="tab-content" id="admin">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i> Panel Administrasi
+            </h2>
+            
+            <div class="admin-note">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Akses Administrator:</strong> Hanya user dengan hak akses admin yang dapat mengelola data sistem.
+                </div>
+            </div>
+            
+            <div class="admin-panel">
+                <h3 class="section-title">
+                    <i class="fas fa-database"></i> Manajemen Data
+                </h3>
+                
+                <div class="admin-actions">
+                    <div class="admin-card">
+                        <h4><i class="fas fa-sync"></i> Reset Data</h4>
+                        <p>Reset data absensi dan check-in untuk hari ini.</p>
+                        <button class="admin-btn warning" id="reset-today">
+                            <i class="fas fa-sync"></i> Reset Data Hari Ini
+                        </button>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <h4><i class="fas fa-trash-alt"></i> Hapus Semua Data</h4>
+                        <p>Hapus semua data absensi dan check-in (permanen).</p>
+                        <button class="admin-btn danger" id="reset-all">
+                            <i class="fas fa-trash-alt"></i> Hapus Semua Data
+                        </button>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <h4><i class="fas fa-user-plus"></i> Tambah Staff</h4>
+                        <p>Tambah staff baru ke dalam sistem.</p>
+                        <button class="admin-btn" id="add-staff-btn">
+                            <i class="fas fa-user-plus"></i> Tambah Staff Baru
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="add-staff-form" style="display: none; margin-top: 30px;">
+                    <h3 class="section-title">
+                        <i class="fas fa-user-plus"></i> Form Tambah Staff
+                    </h3>
+                    
+                    <div class="form-row">
+                        <input type="text" id="new-staff-name" placeholder="Nama Lengkap Staff">
+                        <select id="new-staff-position">
+                            <option value="CS">Customer Service</option>
+                            <option value="Kapten">Kapten</option>
+                            <option value="Operator">Operator</option>
+                            <option value="Kasir">Kasir</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <button class="admin-btn" id="save-staff">
+                            <i class="fas fa-save"></i> Simpan Staff Baru
+                        </button>
+                        <button class="admin-btn warning" id="cancel-staff">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-panel">
+                <h3 class="section-title">
+                    <i class="fas fa-users"></i> Daftar Staff
+                </h3>
+                
+                <div class="position-section">
+                    <div class="position-header">
+                        <span><i class="fas fa-list"></i> Semua Staff</span>
+                        <span class="position-count" id="all-staff-count">69 Staff</span>
+                    </div>
+                    <div class="staff-list" id="all-staff-list">
+                        <!-- All staff will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="toast" id="toast">
@@ -958,7 +1168,7 @@
 
     <script>
         // Data staff
-        const staffData = [
+        let staffData = JSON.parse(localStorage.getItem('staffData')) || [
             // CS
             { id: 1, name: "WIDJAYA", position: "CS" },
             { id: 2, name: "DAVID", position: "CS" },
@@ -1042,10 +1252,18 @@
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
+        // Update clock function
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('id-ID', timeOptions);
+            document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', dateOptions);
+        }
+
         // Set current date
         const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', options);
         const today = now.toISOString().split('T')[0];
 
         // Check if we need to reset data (new day)
@@ -1072,6 +1290,10 @@
             showApp();
         }
 
+        // Start clock
+        updateClock();
+        setInterval(updateClock, 1000);
+
         // Login functionality
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1079,8 +1301,19 @@
             const username = document.getElementById('username').value.trim().toUpperCase();
             const password = document.getElementById('password').value;
             
-            // Find staff by name
-            const user = staffData.find(staff => staff.name === username);
+            // Check if admin
+            if (username === 'ADMIN' && password === 'a1') {
+                currentUser = { id: 0, name: 'ADMIN', position: 'Admin' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showApp();
+                return;
+            }
+            
+            // Find staff by first name
+            const user = staffData.find(staff => {
+                const firstName = staff.name.split(' ')[0];
+                return staff.name === username || firstName === username;
+            });
             
             // Check if user exists and password is correct
             if (user && password === 'a1') {
@@ -1118,12 +1351,29 @@
             document.getElementById('user-position').textContent = currentUser.position;
             document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
             
-            // Check if user is Kapten to enable check-in tab
+            // Update welcome message
+            if (currentUser.position === 'Admin') {
+                document.getElementById('welcome-title').textContent = 'Selamat Datang, Administrator';
+                document.getElementById('welcome-message').textContent = 'Anda memiliki akses penuh untuk mengelola sistem absensi staff.';
+            } else {
+                document.getElementById('welcome-title').textContent = `Selamat Datang, ${currentUser.name}`;
+                document.getElementById('welcome-message').textContent = 'Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.';
+            }
+            
+            // Check if user is Kapten or Admin to enable check-in tab
             const checkinTab = document.getElementById('checkin-tab');
-            if (currentUser.position === 'Kapten') {
+            const adminTab = document.getElementById('admin-tab');
+            
+            if (currentUser.position === 'Kapten' || currentUser.position === 'Admin') {
                 checkinTab.classList.remove('disabled');
             } else {
                 checkinTab.classList.add('disabled');
+            }
+            
+            if (currentUser.position === 'Admin') {
+                adminTab.classList.remove('disabled');
+            } else {
+                adminTab.classList.add('disabled');
             }
             
             // Initialize the app
@@ -1131,6 +1381,7 @@
             renderCheckinStaff();
             updateSummary();
             updateStatsBar();
+            renderAllStaff();
         }
 
         // Tab functionality
@@ -1154,6 +1405,10 @@
                 // Render check-in if check-in tab is clicked
                 if (tab.dataset.tab === 'checkin') {
                     renderCheckinStaff();
+                }
+                // Render all staff if admin tab is clicked
+                if (tab.dataset.tab === 'admin') {
+                    renderAllStaff();
                 }
             });
         });
@@ -1242,13 +1497,13 @@
             // Clear existing content
             checkinContent.innerHTML = '';
             
-            // Only show check-in content if user is Kapten
-            if (currentUser.position !== 'Kapten') {
+            // Only show check-in content if user is Kapten or Admin
+            if (currentUser.position !== 'Kapten' && currentUser.position !== 'Admin') {
                 checkinContent.innerHTML = `
                     <div class="access-denied">
                         <i class="fas fa-ban"></i>
                         <h3>Akses Ditolak</h3>
-                        <p>Hanya staff dengan jabatan Kapten yang dapat mengakses fitur check-in.</p>
+                        <p>Hanya staff dengan jabatan Kapten atau Admin yang dapat mengakses fitur check-in.</p>
                     </div>
                 `;
                 return;
@@ -1411,12 +1666,59 @@
                 }
             });
 
+            document.getElementById('stat-total').textContent = staffData.length;
             document.getElementById('stat-hadir').textContent = hadirCount;
             document.getElementById('stat-checkin').textContent = checkinCount;
             
             // Calculate efficiency percentage
             const efficiency = staffData.length > 0 ? Math.round((hadirCount / staffData.length) * 100) : 0;
             document.getElementById('stat-bebas').textContent = `${efficiency}%`;
+        }
+
+        // Render all staff for admin panel
+        function renderAllStaff() {
+            const container = document.getElementById('all-staff-list');
+            const countElement = document.getElementById('all-staff-count');
+            
+            container.innerHTML = '';
+            countElement.textContent = `${staffData.length} Staff`;
+            
+            staffData.forEach(staff => {
+                const staffItem = document.createElement('div');
+                staffItem.className = 'staff-item';
+                staffItem.innerHTML = `
+                    <div class="staff-info">
+                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
+                        <div class="staff-details">
+                            <div class="staff-name">${staff.name}</div>
+                            <div class="staff-position">
+                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="admin-btn danger delete-staff" data-staff-id="${staff.id}">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+                container.appendChild(staffItem);
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-staff').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const staffId = parseInt(this.dataset.staffId);
+                    if (confirm('Apakah Anda yakin ingin menghapus staff ini?')) {
+                        staffData = staffData.filter(staff => staff.id !== staffId);
+                        localStorage.setItem('staffData', JSON.stringify(staffData));
+                        renderAllStaff();
+                        renderAttendanceStaff();
+                        updateStatsBar();
+                        showToast('Staff berhasil dihapus');
+                    }
+                });
+            });
         }
 
         // Get icon for position
@@ -1426,9 +1728,84 @@
                 case 'Kapten': return 'user-shield';
                 case 'Operator': return 'cogs';
                 case 'Kasir': return 'cash-register';
+                case 'Admin': return 'user-shield';
                 default: return 'user';
             }
         }
+
+        // Admin functionality
+        document.getElementById('reset-today').addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin mereset data hari ini?')) {
+                attendanceData[today] = {};
+                checkinData[today] = {};
+                localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+                localStorage.setItem('checkinData', JSON.stringify(checkinData));
+                
+                renderAttendanceStaff();
+                renderCheckinStaff();
+                updateSummary();
+                updateStatsBar();
+                showToast('Data hari ini berhasil direset');
+            }
+        });
+
+        document.getElementById('reset-all').addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA data? Tindakan ini tidak dapat dibatalkan!')) {
+                attendanceData = {};
+                checkinData = {};
+                localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+                localStorage.setItem('checkinData', JSON.stringify(checkinData));
+                
+                renderAttendanceStaff();
+                renderCheckinStaff();
+                updateSummary();
+                updateStatsBar();
+                showToast('Semua data berhasil dihapus');
+            }
+        });
+
+        document.getElementById('add-staff-btn').addEventListener('click', function() {
+            document.getElementById('add-staff-form').style.display = 'block';
+        });
+
+        document.getElementById('cancel-staff').addEventListener('click', function() {
+            document.getElementById('add-staff-form').style.display = 'none';
+            document.getElementById('new-staff-name').value = '';
+            document.getElementById('new-staff-position').value = 'CS';
+        });
+
+        document.getElementById('save-staff').addEventListener('click', function() {
+            const name = document.getElementById('new-staff-name').value.trim().toUpperCase();
+            const position = document.getElementById('new-staff-position').value;
+            
+            if (name === '') {
+                alert('Nama staff tidak boleh kosong');
+                return;
+            }
+            
+            // Check if staff already exists
+            if (staffData.some(staff => staff.name === name)) {
+                alert('Staff dengan nama tersebut sudah ada');
+                return;
+            }
+            
+            // Generate new ID
+            const newId = staffData.length > 0 ? Math.max(...staffData.map(s => s.id)) + 1 : 1;
+            
+            // Add new staff
+            staffData.push({ id: newId, name, position });
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+            
+            // Reset form and update UI
+            document.getElementById('add-staff-form').style.display = 'none';
+            document.getElementById('new-staff-name').value = '';
+            document.getElementById('new-staff-position').value = 'CS';
+            
+            renderAllStaff();
+            renderAttendanceStaff();
+            updateStatsBar();
+            showToast('Staff baru berhasil ditambahkan');
+        });
 
         // Toast notification
         function showToast(message) {
