@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Absensi Staff Linetogel</title>
+    <title>Linetogel - Sistem Absensi Staff</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #2ecc71;
-            --warning: #f39c12;
+            --primary: #6a11cb;
+            --primary-light: #7d3cff;
+            --secondary: #2575fc;
+            --success: #00b894;
+            --warning: #fdcb6e;
             --danger: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #34495e;
+            --info: #0984e3;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #636e72;
+            --bg-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --card-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
         }
         
         * {
@@ -23,8 +31,8 @@
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
@@ -34,12 +42,24 @@
         }
         
         .login-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            background: var(--card-gradient);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--bg-gradient);
         }
         
         .login-logo {
@@ -47,16 +67,28 @@
             margin-bottom: 30px;
         }
         
+        .logo-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
         .login-logo h1 {
             color: var(--primary);
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .login-logo p {
+            color: var(--gray);
+            font-size: 16px;
         }
         
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
         }
         
         .form-group {
@@ -68,35 +100,64 @@
         .form-group label {
             font-weight: 600;
             color: var(--dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group label i {
+            color: var(--primary);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
         }
         
         .form-group input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            width: 100%;
+            background-color: #fff;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: var(--secondary);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
         }
         
         .login-btn {
-            background-color: var(--secondary);
+            background: var(--bg-gradient);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 16px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .login-btn:hover {
-            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(106, 17, 203, 0.3);
         }
         
         .error-message {
@@ -104,6 +165,20 @@
             text-align: center;
             margin-top: 10px;
             display: none;
+            padding: 12px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .password-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--gray);
+            background-color: rgba(106, 17, 203, 0.05);
+            padding: 10px;
+            border-radius: 8px;
         }
         
         .container {
@@ -115,20 +190,33 @@
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--bg-gradient);
             color: white;
-            padding: 20px 0;
-            border-radius: 10px;
+            padding: 25px 0;
+            border-radius: var(--radius);
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
         
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
         }
         
         .logo {
@@ -137,73 +225,98 @@
             gap: 15px;
         }
         
+        .logo-icon-main {
+            font-size: 32px;
+        }
+        
         .logo h1 {
             font-size: 24px;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
         }
         
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
         .logout-btn {
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
         }
         
         .logout-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
         
         .date-display {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 10px 15px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 50px;
             font-weight: 500;
+            margin-top: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+            margin-left: 30px;
         }
         
         .tabs {
             display: flex;
             background-color: white;
-            border-radius: 10px;
+            border-radius: var(--radius);
             overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
         }
         
         .tab {
             flex: 1;
-            padding: 15px 0;
+            padding: 18px 0;
             text-align: center;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--gray);
         }
         
         .tab.active {
-            background-color: var(--secondary);
+            background-color: var(--primary);
             color: white;
-            border-bottom: 3px solid var(--primary);
+            border-bottom: 3px solid var(--secondary);
         }
         
         .tab.disabled {
@@ -214,9 +327,10 @@
         .tab-content {
             display: none;
             background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
         }
         
         .tab-content.active {
@@ -230,24 +344,32 @@
         }
         
         .section-title {
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin-bottom: 25px;
             color: var(--primary);
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title i {
+            font-size: 24px;
         }
         
         .position-section {
             margin-bottom: 30px;
             border: 1px solid var(--light);
-            border-radius: 8px;
+            border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .position-header {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 12px 15px;
+            padding: 16px 20px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
@@ -255,10 +377,11 @@
         }
         
         .position-count {
-            background-color: var(--secondary);
-            padding: 3px 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 14px;
+            backdrop-filter: blur(5px);
         }
         
         .staff-list {
@@ -269,13 +392,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 18px 20px;
             border-bottom: 1px solid var(--light);
-            transition: background-color 0.2s;
+            transition: all 0.3s;
         }
         
         .staff-item:hover {
-            background-color: #f9f9f9;
+            background-color: rgba(106, 17, 203, 0.03);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .staff-item:last-child {
@@ -289,15 +414,17 @@
         }
         
         .staff-avatar {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background-color: var(--secondary);
+            background: var(--bg-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 5px 10px rgba(106, 17, 203, 0.2);
         }
         
         .staff-details {
@@ -307,87 +434,150 @@
         
         .staff-name {
             font-weight: 600;
+            font-size: 16px;
         }
         
         .staff-position {
             font-size: 14px;
-            color: #666;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .absen-btn, .checkin-btn {
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .absen-btn {
-            background-color: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--info) 100%);
         }
         
         .absen-btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(37, 117, 252, 0.3);
         }
         
         .absen-btn.absened {
-            background-color: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, #00a085 100%);
             cursor: not-allowed;
         }
         
         .checkin-btn {
-            background-color: var(--warning);
+            background: linear-gradient(135deg, var(--warning) 0%, #e6b04a 100%);
         }
         
         .checkin-btn:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(253, 203, 110, 0.3);
         }
         
         .checkin-btn.checked {
-            background-color: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, #00a085 100%);
             cursor: not-allowed;
         }
         
         .absen-time, .checkin-time {
-            font-size: 14px;
-            color: #666;
+            font-size: 13px;
+            color: var(--gray);
             margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .access-note {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 5px;
-            padding: 10px 15px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
             color: #856404;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 25px;
+            margin-bottom: 35px;
         }
         
         .summary-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: var(--card-gradient);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: all 0.3s;
+            border-top: 4px solid transparent;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-card.total {
+            border-top-color: var(--primary);
+        }
+        
+        .summary-card.hadir {
+            border-top-color: var(--success);
+        }
+        
+        .summary-card.belum {
+            border-top-color: var(--danger);
+        }
+        
+        .summary-card.checkin {
+            border-top-color: var(--warning);
+        }
+        
+        .summary-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        
+        .summary-card.total .icon {
+            color: var(--primary);
+        }
+        
+        .summary-card.hadir .icon {
+            color: var(--success);
+        }
+        
+        .summary-card.belum .icon {
+            color: var(--danger);
+        }
+        
+        .summary-card.checkin .icon {
+            color: var(--warning);
         }
         
         .summary-card .value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             margin: 10px 0;
+        }
+        
+        .summary-card.total .value {
+            color: var(--primary);
         }
         
         .summary-card.hadir .value {
@@ -398,27 +588,33 @@
             color: var(--danger);
         }
         
-        .summary-card.total .value {
-            color: var(--secondary);
-        }
-        
         .summary-card.checkin .value {
             color: var(--warning);
         }
         
+        .summary-card .label {
+            font-size: 16px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+        
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background-color: var(--success);
+            bottom: 30px;
+            right: 30px;
+            padding: 18px 25px;
+            background: var(--success);
             color: white;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 350px;
         }
         
         .toast.show {
@@ -426,11 +622,26 @@
             opacity: 1;
         }
         
+        .toast i {
+            font-size: 20px;
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
                 text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+            
+            .date-display {
+                margin-left: 0;
+                margin-top: 20px;
             }
             
             .staff-item {
@@ -441,7 +652,81 @@
             
             .absen-btn, .checkin-btn {
                 width: 100%;
+                justify-content: center;
             }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: var(--card-gradient);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .welcome-message {
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .welcome-icon {
+            font-size: 50px;
+            color: var(--primary);
+        }
+        
+        .welcome-text h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .welcome-text p {
+            color: var(--gray);
+        }
+        
+        .access-denied {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray);
+        }
+        
+        .access-denied i {
+            font-size: 70px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        
+        .access-denied h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -449,21 +734,37 @@
     <!-- Login Form -->
     <div class="login-container" id="login-container">
         <div class="login-logo">
-            <h1>Sistem Absensi Staff Linetogel</h1>
-            <p>Silakan login untuk melanjutkan</p>
+            <div class="logo-icon">
+                <i class="fas fa-id-card-alt"></i>
+            </div>
+            <h1>Linetogel</h1>
+            <p>Sistem Absensi Staff</p>
         </div>
         <form class="login-form" id="login-form">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Masukkan username" required>
+                <label for="username"><i class="fas fa-user"></i> Username</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Masukkan nama staff" required>
+                </div>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Masukkan password" required>
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
             </div>
-            <button type="submit" class="login-btn">Login</button>
-            <div class="error-message" id="error-message">Username atau password salah</div>
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <div class="error-message" id="error-message">
+                <i class="fas fa-exclamation-circle"></i> Username atau password salah
+            </div>
         </form>
+        <div class="password-note">
+            <i class="fas fa-info-circle"></i> Password untuk semua staff: <strong>a1</strong>
+        </div>
     </div>
 
     <!-- Main App -->
@@ -471,35 +772,77 @@
         <header>
             <div class="header-content">
                 <div class="logo">
-                    <h1>Sistem Absensi Staff Linetogel</h1>
+                    <div class="logo-icon-main">
+                        <i class="fas fa-id-card-alt"></i>
+                    </div>
+                    <h1>Linetogel - Sistem Absensi</h1>
                 </div>
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar">U</div>
                     <div>
                         <div id="user-name">User</div>
-                        <div id="user-position" style="font-size: 14px;">Position</div>
+                        <div id="user-position" style="font-size: 14px; opacity: 0.9;">Position</div>
                     </div>
-                    <button class="logout-btn" id="logout-btn">Logout</button>
+                    <button class="logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
                 </div>
             </div>
             <div class="date-display" id="current-date">Senin, 1 Januari 2023</div>
         </header>
         
+        <div class="welcome-message">
+            <div class="welcome-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="welcome-text">
+                <h3>Selamat Datang di Sistem Absensi</h3>
+                <p>Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.</p>
+            </div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total">69</div>
+                <div class="stat-label">Total Staff</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-hadir">0</div>
+                <div class="stat-label">Sudah Absen</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-checkin">0</div>
+                <div class="stat-label">Sudah Check-in</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-bebas">100%</div>
+                <div class="stat-label">Efisiensi</div>
+            </div>
+        </div>
+        
         <div class="tabs">
-            <div class="tab active" data-tab="attendance">Absensi</div>
-            <div class="tab" data-tab="checkin" id="checkin-tab">Check-in</div>
-            <div class="tab" data-tab="summary">Rekap</div>
+            <div class="tab active" data-tab="attendance">
+                <i class="fas fa-clipboard-list"></i> Absensi
+            </div>
+            <div class="tab" data-tab="checkin" id="checkin-tab">
+                <i class="fas fa-map-marker-alt"></i> Check-in
+            </div>
+            <div class="tab" data-tab="summary">
+                <i class="fas fa-chart-pie"></i> Rekap
+            </div>
         </div>
         
         <!-- Tab Absensi -->
         <div class="tab-content active" id="attendance">
-            <h2 class="section-title">Form Absensi Staff</h2>
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-list"></i> Form Absensi Staff
+            </h2>
             <p>Klik tombol "Absen" untuk mencatat kehadiran. Setiap staff hanya bisa absen sekali per hari.</p>
             
             <!-- CS Section -->
             <div class="position-section">
                 <div class="position-header">
-                    <span>Customer Service (CS)</span>
+                    <span><i class="fas fa-headset"></i> Customer Service (CS)</span>
                     <span class="position-count">22 Staff</span>
                 </div>
                 <div class="staff-list" id="cs-staff">
@@ -510,7 +853,7 @@
             <!-- Kapten Section -->
             <div class="position-section">
                 <div class="position-header">
-                    <span>Kapten</span>
+                    <span><i class="fas fa-user-shield"></i> Kapten</span>
                     <span class="position-count">6 Staff</span>
                 </div>
                 <div class="staff-list" id="kapten-staff">
@@ -521,7 +864,7 @@
             <!-- Operator Section -->
             <div class="position-section">
                 <div class="position-header">
-                    <span>Operator</span>
+                    <span><i class="fas fa-cogs"></i> Operator</span>
                     <span class="position-count">3 Staff</span>
                 </div>
                 <div class="staff-list" id="operator-staff">
@@ -532,7 +875,7 @@
             <!-- Kasir Section -->
             <div class="position-section">
                 <div class="position-header">
-                    <span>Kasir</span>
+                    <span><i class="fas fa-cash-register"></i> Kasir</span>
                     <span class="position-count">38 Staff</span>
                 </div>
                 <div class="staff-list" id="kasir-staff">
@@ -543,9 +886,14 @@
         
         <!-- Tab Check-in -->
         <div class="tab-content" id="checkin">
-            <h2 class="section-title">Check-in Staff di Kantor</h2>
+            <h2 class="section-title">
+                <i class="fas fa-map-marker-alt"></i> Check-in Staff di Kantor
+            </h2>
             <div class="access-note">
-                <strong>Catatan:</strong> Fitur check-in hanya tersedia untuk staff dengan jabatan Kapten.
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Catatan:</strong> Fitur check-in hanya tersedia untuk staff dengan jabatan Kapten.
+                </div>
             </div>
             <div id="checkin-content">
                 <!-- Check-in content will be populated by JavaScript -->
@@ -554,35 +902,47 @@
         
         <!-- Tab Rekap -->
         <div class="tab-content" id="summary">
-            <h2 class="section-title">Rekap Absensi & Check-in Hari Ini</h2>
+            <h2 class="section-title">
+                <i class="fas fa-chart-pie"></i> Rekap Absensi & Check-in Hari Ini
+            </h2>
             
             <div class="summary-cards">
                 <div class="summary-card total">
-                    <div class="label">Total Staff</div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
                     <div class="value" id="total-count">69</div>
-                    <div class="description">Orang</div>
+                    <div class="label">Total Staff</div>
                 </div>
                 <div class="summary-card hadir">
-                    <div class="label">Sudah Absen</div>
+                    <div class="icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
                     <div class="value" id="hadir-count">0</div>
-                    <div class="description">Staff</div>
+                    <div class="label">Sudah Absen</div>
                 </div>
                 <div class="summary-card belum">
-                    <div class="label">Belum Absen</div>
+                    <div class="icon">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
                     <div class="value" id="belum-count">69</div>
-                    <div class="description">Staff</div>
+                    <div class="label">Belum Absen</div>
                 </div>
                 <div class="summary-card checkin">
-                    <div class="label">Sudah Check-in</div>
+                    <div class="icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
                     <div class="value" id="checkin-count">0</div>
-                    <div class="description">Staff</div>
+                    <div class="label">Sudah Check-in</div>
                 </div>
             </div>
             
-            <h3 class="section-title">Detail Absensi & Check-in</h3>
+            <h3 class="section-title">
+                <i class="fas fa-list-alt"></i> Detail Absensi & Check-in
+            </h3>
             <div class="position-section">
                 <div class="position-header">
-                    <span>Status Staff</span>
+                    <span><i class="fas fa-table"></i> Status Staff</span>
                 </div>
                 <div class="staff-list" id="summary-staff">
                     <!-- Summary will be populated by JavaScript -->
@@ -591,7 +951,10 @@
         </div>
     </div>
     
-    <div class="toast" id="toast">Absensi berhasil dicatat!</div>
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <div>Absensi berhasil dicatat!</div>
+    </div>
 
     <script>
         // Data staff
@@ -767,6 +1130,7 @@
             renderAttendanceStaff();
             renderCheckinStaff();
             updateSummary();
+            updateStatsBar();
         }
 
         // Tab functionality
@@ -823,12 +1187,14 @@
                         <div class="staff-avatar">${staff.name.charAt(0)}</div>
                         <div class="staff-details">
                             <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">${staff.position}</div>
-                            ${hasAbsened ? `<div class="absen-time">Absen: ${absenTime}</div>` : ''}
+                            <div class="staff-position">
+                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
+                            </div>
+                            ${hasAbsened ? `<div class="absen-time"><i class="far fa-clock"></i> Absen: ${absenTime}</div>` : ''}
                         </div>
                     </div>
                     <button class="absen-btn ${hasAbsened ? 'absened' : ''}" data-staff-id="${staff.id}" ${hasAbsened ? 'disabled' : ''}>
-                        ${hasAbsened ? '✓ Sudah Absen' : 'Absen'}
+                        <i class="fas fa-${hasAbsened ? 'check' : 'clipboard-check'}"></i> ${hasAbsened ? 'Sudah Absen' : 'Absen'}
                     </button>
                 `;
                 container.appendChild(staffItem);
@@ -850,20 +1216,21 @@
                     
                     // Update UI
                     this.classList.add('absened');
-                    this.textContent = '✓ Sudah Absen';
+                    this.innerHTML = '<i class="fas fa-check"></i> Sudah Absen';
                     this.disabled = true;
                     
                     // Add absen time
                     const staffItem = this.closest('.staff-item');
                     const absenTime = document.createElement('div');
                     absenTime.className = 'absen-time';
-                    absenTime.textContent = `Absen: ${new Date().toLocaleTimeString('id-ID')}`;
+                    absenTime.innerHTML = `<i class="far fa-clock"></i> Absen: ${new Date().toLocaleTimeString('id-ID')}`;
                     staffItem.querySelector('.staff-details').appendChild(absenTime);
                     
                     showToast('Absensi berhasil dicatat');
                     
                     // Update summary counts
                     updateSummary();
+                    updateStatsBar();
                 });
             });
         }
@@ -878,7 +1245,8 @@
             // Only show check-in content if user is Kapten
             if (currentUser.position !== 'Kapten') {
                 checkinContent.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: #666;">
+                    <div class="access-denied">
+                        <i class="fas fa-ban"></i>
                         <h3>Akses Ditolak</h3>
                         <p>Hanya staff dengan jabatan Kapten yang dapat mengakses fitur check-in.</p>
                     </div>
@@ -897,7 +1265,7 @@
                 
                 positionSection.innerHTML = `
                     <div class="position-header">
-                        <span>${position}</span>
+                        <span><i class="fas fa-${getPositionIcon(position)}"></i> ${position}</span>
                         <span class="position-count">${positionStaff.length} Staff</span>
                     </div>
                     <div class="staff-list" id="${position.toLowerCase()}-checkin">
@@ -921,12 +1289,14 @@
                             <div class="staff-avatar">${staff.name.charAt(0)}</div>
                             <div class="staff-details">
                                 <div class="staff-name">${staff.name}</div>
-                                <div class="staff-position">${staff.position}</div>
-                                ${hasCheckedIn ? `<div class="checkin-time">Check-in: ${checkinTime}</div>` : ''}
+                                <div class="staff-position">
+                                    <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
+                                </div>
+                                ${hasCheckedIn ? `<div class="checkin-time"><i class="far fa-clock"></i> Check-in: ${checkinTime}</div>` : ''}
                             </div>
                         </div>
                         <button class="checkin-btn ${hasCheckedIn ? 'checked' : ''}" data-staff-id="${staff.id}" ${hasCheckedIn ? 'disabled' : ''}>
-                            ${hasCheckedIn ? '✓ Sudah Check-in' : 'Check-in'}
+                            <i class="fas fa-${hasCheckedIn ? 'check' : 'map-marker-alt'}"></i> ${hasCheckedIn ? 'Sudah Check-in' : 'Check-in'}
                         </button>
                     `;
                     container.appendChild(staffItem);
@@ -949,20 +1319,21 @@
                     
                     // Update UI
                     this.classList.add('checked');
-                    this.textContent = '✓ Sudah Check-in';
+                    this.innerHTML = '<i class="fas fa-check"></i> Sudah Check-in';
                     this.disabled = true;
                     
                     // Add check-in time
                     const staffItem = this.closest('.staff-item');
                     const checkinTime = document.createElement('div');
                     checkinTime.className = 'checkin-time';
-                    checkinTime.textContent = `Check-in: ${new Date().toLocaleTimeString('id-ID')}`;
+                    checkinTime.innerHTML = `<i class="far fa-clock"></i> Check-in: ${new Date().toLocaleTimeString('id-ID')}`;
                     staffItem.querySelector('.staff-details').appendChild(checkinTime);
                     
                     showToast('Check-in berhasil dicatat');
                     
                     // Update summary counts
                     updateSummary();
+                    updateStatsBar();
                 });
             });
         }
@@ -1010,23 +1381,59 @@
                         <div class="staff-avatar">${staff.name.charAt(0)}</div>
                         <div class="staff-details">
                             <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">${staff.position}</div>
+                            <div class="staff-position">
+                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
+                            </div>
                         </div>
                     </div>
                     <div class="status ${statusClass}">
-                        ${hasAbsened ? '✓ Sudah Absen' : 'Belum Absen'}
+                        ${hasAbsened ? '<i class="fas fa-check-circle"></i> Sudah Absen' : '<i class="fas fa-clock"></i> Belum Absen'}
                         <div class="absen-time">${absenTime}</div>
-                        <div class="checkin-time">Check-in: ${checkinTime}</div>
+                        <div class="checkin-time"><i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}</div>
                     </div>
                 `;
                 container.appendChild(staffItem);
             });
         }
 
+        // Update stats bar
+        function updateStatsBar() {
+            let hadirCount = 0;
+            let checkinCount = 0;
+
+            staffData.forEach(staff => {
+                if (attendanceData[today] && attendanceData[today][staff.id]) {
+                    hadirCount++;
+                }
+                
+                if (checkinData[today] && checkinData[today][staff.id]) {
+                    checkinCount++;
+                }
+            });
+
+            document.getElementById('stat-hadir').textContent = hadirCount;
+            document.getElementById('stat-checkin').textContent = checkinCount;
+            
+            // Calculate efficiency percentage
+            const efficiency = staffData.length > 0 ? Math.round((hadirCount / staffData.length) * 100) : 0;
+            document.getElementById('stat-bebas').textContent = `${efficiency}%`;
+        }
+
+        // Get icon for position
+        function getPositionIcon(position) {
+            switch(position) {
+                case 'CS': return 'headset';
+                case 'Kapten': return 'user-shield';
+                case 'Operator': return 'cogs';
+                case 'Kasir': return 'cash-register';
+                default: return 'user';
+            }
+        }
+
         // Toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i><div>${message}</div>`;
             toast.classList.add('show');
             
             setTimeout(() => {
