@@ -467,6 +467,12 @@
             gap: 5px;
         }
         
+        .staff-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
         .absen-btn, .checkin-btn {
             color: white;
             border: none;
@@ -712,6 +718,11 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
+            }
+            
+            .staff-actions {
+                width: 100%;
+                justify-content: center;
             }
             
             .absen-btn, .checkin-btn {
@@ -1059,9 +1070,6 @@
             <div class="tab active" data-tab="attendance">
                 <i class="fas fa-clipboard-list"></i> Absensi
             </div>
-            <div class="tab" data-tab="checkin" id="checkin-tab">
-                <i class="fas fa-map-marker-alt"></i> Check-in
-            </div>
             <div class="tab" data-tab="shift-pagi" id="shift-pagi-tab">
                 <i class="fas fa-sun"></i> Shift Pagi
             </div>
@@ -1134,26 +1142,10 @@
             </div>
         </div>
         
-        <!-- Tab Check-in -->
-        <div class="tab-content" id="checkin">
-            <h2 class="section-title">
-                <i class="fas fa-map-marker-alt"></i> Check-in Staff di Kantor
-            </h2>
-            <div class="access-note">
-                <i class="fas fa-info-circle"></i>
-                <div>
-                    <strong>Catatan:</strong> Fitur check-in hanya tersedia untuk staff dengan jabatan Kapten.
-                </div>
-            </div>
-            <div id="checkin-content">
-                <!-- Check-in content will be populated by JavaScript -->
-            </div>
-        </div>
-        
         <!-- Tab Shift Pagi -->
         <div class="tab-content" id="shift-pagi">
             <h2 class="section-title">
-                <i class="fas fa-sun"></i> Shift Pagi
+                <i class="fas fa-sun"></i> Shift Pagi - Batas Absen: 07:45 WIB
             </h2>
             
             <div class="shift-info">
@@ -1208,7 +1200,7 @@
         <!-- Tab Shift Siang -->
         <div class="tab-content" id="shift-siang">
             <h2 class="section-title">
-                <i class="fas fa-cloud-sun"></i> Shift Siang
+                <i class="fas fa-cloud-sun"></i> Shift Siang - Batas Absen: 15:45 WIB
             </h2>
             
             <div class="shift-info">
@@ -1263,7 +1255,7 @@
         <!-- Tab Shift Malam -->
         <div class="tab-content" id="shift-malam">
             <h2 class="section-title">
-                <i class="fas fa-moon"></i> Shift Malam
+                <i class="fas fa-moon"></i> Shift Malam - Batas Absen: 21:45 WIB
             </h2>
             
             <div class="shift-info">
@@ -1742,7 +1734,6 @@
             }
             
             // Check user role to enable/disable tabs
-            const checkinTab = document.getElementById('checkin-tab');
             const pagiTab = document.getElementById('shift-pagi-tab');
             const siangTab = document.getElementById('shift-siang-tab');
             const malamTab = document.getElementById('shift-malam-tab');
@@ -1750,12 +1741,10 @@
             const historyTab = document.getElementById('history-tab');
             
             if (currentUser.position === 'Kapten' || currentUser.position === 'Admin') {
-                checkinTab.classList.remove('disabled');
                 pagiTab.classList.remove('disabled');
                 siangTab.classList.remove('disabled');
                 malamTab.classList.remove('disabled');
             } else {
-                checkinTab.classList.add('disabled');
                 pagiTab.classList.add('disabled');
                 siangTab.classList.add('disabled');
                 malamTab.classList.add('disabled');
@@ -1771,7 +1760,6 @@
             
             // Initialize the app
             renderAttendanceStaff();
-            renderCheckinStaff();
             renderShiftStaff('pagi');
             renderShiftStaff('siang');
             renderShiftStaff('malam');
@@ -1798,10 +1786,6 @@
                 // Update summary if summary tab is clicked
                 if (tab.dataset.tab === 'summary') {
                     updateSummary();
-                }
-                // Render check-in if check-in tab is clicked
-                if (tab.dataset.tab === 'checkin') {
-                    renderCheckinStaff();
                 }
                 // Render all staff if admin tab is clicked
                 if (tab.dataset.tab === 'admin') {
@@ -1987,56 +1971,43 @@
             });
         }
 
-        // Render staff for check-in
-        function renderCheckinStaff() {
-            const checkinContent = document.getElementById('checkin-content');
-            
-            // Clear existing content
-            checkinContent.innerHTML = '';
-            
-            // Only show check-in content if user is Kapten or Admin
-            if (currentUser.position !== 'Kapten' && currentUser.position !== 'Admin') {
-                checkinContent.innerHTML = `
-                    <div class="access-denied">
-                        <i class="fas fa-ban"></i>
-                        <h3>Akses Ditolak</h3>
-                        <p>Hanya staff dengan jabatan Kapten atau Admin yang dapat mengakses fitur check-in.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Create sections for each position
+        // Render staff by shift
+        function renderShiftStaff(shift) {
             const positions = ['CS', 'Kapten', 'Operator', 'Kasir'];
             
             positions.forEach(position => {
-                const positionSection = document.createElement('div');
-                positionSection.className = 'position-section';
+                const container = document.getElementById(`${position.toLowerCase()}-${shift}`);
+                const countElement = document.getElementById(`${position.toLowerCase()}-${shift}-count`);
                 
-                const positionStaff = staffData.filter(staff => staff.position === position);
+                if (!container) return;
                 
-                positionSection.innerHTML = `
-                    <div class="position-header">
-                        <span><i class="fas fa-${getPositionIcon(position)}"></i> ${position}</span>
-                        <span class="position-count">${positionStaff.length} Staff</span>
-                    </div>
-                    <div class="staff-list" id="${position.toLowerCase()}-checkin">
-                        <!-- Staff for check-in will be populated by JavaScript -->
-                    </div>
-                `;
+                // Clear existing content
+                container.innerHTML = '';
                 
-                checkinContent.appendChild(positionSection);
+                // Get staff for this position and shift
+                const shiftStaff = staffData.filter(staff => staff.position === position && staff.shift === shift);
                 
-                // Render staff for this position
-                const container = document.getElementById(`${position.toLowerCase()}-checkin`);
+                // Update count
+                if (countElement) {
+                    countElement.textContent = `${shiftStaff.length} Staff`;
+                }
                 
-                positionStaff.forEach(staff => {
+                // Render each staff member
+                shiftStaff.forEach(staff => {
+                    const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
+                    const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
+                    const isAbsenLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
+                    
                     const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
                     const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                    const isLate = hasCheckedIn ? checkIfLate(staff.id, checkinData[today][staff.id]) : false;
+                    const isCheckinLate = hasCheckedIn ? checkIfLate(staff.id, checkinData[today][staff.id]) : false;
                     
                     const staffItem = document.createElement('div');
                     staffItem.className = 'staff-item';
+                    
+                    // Only show check-in button for Kapten or Admin
+                    const showCheckinBtn = (currentUser.position === 'Kapten' || currentUser.position === 'Admin');
+                    
                     staffItem.innerHTML = `
                         <div class="staff-info">
                             <div class="staff-avatar">${staff.name.charAt(0)}</div>
@@ -2044,21 +2015,41 @@
                                 <div class="staff-name">${staff.name}</div>
                                 <div class="staff-position">
                                     <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                    <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
                                 </div>
+                                ${hasAbsened ? `
+                                    <div class="absen-time">
+                                        <i class="far fa-clock"></i> Absen: ${absenTime}
+                                        ${isAbsenLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
+                                    </div>
+                                ` : ''}
                                 ${hasCheckedIn ? `
                                     <div class="checkin-time">
-                                        <i class="far fa-clock"></i> Check-in: ${checkinTime}
-                                        ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
+                                        <i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}
+                                        ${isCheckinLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
                                     </div>
                                 ` : ''}
                             </div>
                         </div>
-                        <button class="checkin-btn ${hasCheckedIn ? (isLate ? 'late' : 'checked') : ''}" 
-                                data-staff-id="${staff.id}" ${hasCheckedIn ? 'disabled' : ''}>
-                            <i class="fas fa-${hasCheckedIn ? (isLate ? 'exclamation-triangle' : 'check') : 'map-marker-alt'}"></i> 
-                            ${hasCheckedIn ? (isLate ? 'Terlambat' : 'Sudah Check-in') : 'Check-in'}
-                        </button>
+                        <div class="staff-actions">
+                            ${hasAbsened ? 
+                                `<span class="absen-btn ${isAbsenLate ? 'late' : 'absened'}">
+                                    <i class="fas fa-${isAbsenLate ? 'exclamation-triangle' : 'check'}"></i> 
+                                    ${isAbsenLate ? 'Terlambat' : 'Sudah Absen'}
+                                </span>` : 
+                                '<span class="absen-btn" style="background: #95a5a6; cursor: default;"><i class="fas fa-clock"></i> Belum Absen</span>'
+                            }
+                            ${showCheckinBtn ? 
+                                (hasCheckedIn ? 
+                                    `<span class="checkin-btn ${isCheckinLate ? 'late' : 'checked'}">
+                                        <i class="fas fa-${isCheckinLate ? 'exclamation-triangle' : 'check'}"></i> 
+                                        ${isCheckinLate ? 'Terlambat' : 'Sudah Check-in'}
+                                    </span>` : 
+                                    `<button class="checkin-btn" data-staff-id="${staff.id}">
+                                        <i class="fas fa-map-marker-alt"></i> Check-in
+                                    </button>`
+                                ) : ''
+                            }
+                        </div>
                     `;
                     container.appendChild(staffItem);
                 });
@@ -2107,7 +2098,7 @@
                     const staffItem = this.closest('.staff-item');
                     const checkinTimeElement = document.createElement('div');
                     checkinTimeElement.className = 'checkin-time';
-                    checkinTimeElement.innerHTML = `<i class="far fa-clock"></i> Check-in: ${new Date().toLocaleTimeString('id-ID')} ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}`;
+                    checkinTimeElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> Check-in: ${new Date().toLocaleTimeString('id-ID')} ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}`;
                     staffItem.querySelector('.staff-details').appendChild(checkinTimeElement);
                     
                     showToast(isLate ? 'Check-in tercatat (TERLAMBAT)' : 'Check-in berhasil dicatat');
@@ -2118,74 +2109,6 @@
                     renderShiftStaff('pagi');
                     renderShiftStaff('siang');
                     renderShiftStaff('malam');
-                });
-            });
-        }
-
-        // Render staff by shift
-        function renderShiftStaff(shift) {
-            const positions = ['CS', 'Kapten', 'Operator', 'Kasir'];
-            
-            positions.forEach(position => {
-                const container = document.getElementById(`${position.toLowerCase()}-${shift}`);
-                const countElement = document.getElementById(`${position.toLowerCase()}-${shift}-count`);
-                
-                if (!container) return;
-                
-                // Clear existing content
-                container.innerHTML = '';
-                
-                // Get staff for this position and shift
-                const shiftStaff = staffData.filter(staff => staff.position === position && staff.shift === shift);
-                
-                // Update count
-                if (countElement) {
-                    countElement.textContent = `${shiftStaff.length} Staff`;
-                }
-                
-                // Render each staff member
-                shiftStaff.forEach(staff => {
-                    const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
-                    const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                    const isLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
-                    
-                    const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
-                    const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                    
-                    const staffItem = document.createElement('div');
-                    staffItem.className = 'staff-item';
-                    staffItem.innerHTML = `
-                        <div class="staff-info">
-                            <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                            <div class="staff-details">
-                                <div class="staff-name">${staff.name}</div>
-                                <div class="staff-position">
-                                    <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                </div>
-                                ${hasAbsened ? `
-                                    <div class="absen-time">
-                                        <i class="far fa-clock"></i> Absen: ${absenTime}
-                                        ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
-                                    </div>
-                                ` : ''}
-                                ${hasCheckedIn ? `
-                                    <div class="checkin-time">
-                                        <i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                        <div>
-                            ${hasAbsened ? 
-                                `<span class="absen-btn ${isLate ? 'late' : 'absened'}">
-                                    <i class="fas fa-${isLate ? 'exclamation-triangle' : 'check'}"></i> 
-                                    ${isLate ? 'Terlambat' : 'Sudah Absen'}
-                                </span>` : 
-                                '<span class="absen-btn" style="background: #95a5a6; cursor: default;"><i class="fas fa-clock"></i> Belum Absen</span>'
-                            }
-                        </div>
-                    `;
-                    container.appendChild(staffItem);
                 });
             });
         }
@@ -2417,7 +2340,6 @@
                 localStorage.setItem('checkinData', JSON.stringify(checkinData));
                 
                 renderAttendanceStaff();
-                renderCheckinStaff();
                 renderShiftStaff('pagi');
                 renderShiftStaff('siang');
                 renderShiftStaff('malam');
@@ -2435,7 +2357,6 @@
                 localStorage.setItem('checkinData', JSON.stringify(checkinData));
                 
                 renderAttendanceStaff();
-                renderCheckinStaff();
                 renderShiftStaff('pagi');
                 renderShiftStaff('siang');
                 renderShiftStaff('malam');
