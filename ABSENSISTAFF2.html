@@ -1069,6 +1069,23 @@
         .staff-item {
             background: rgba(255,255,255,0.7);
         }
+        
+        .match-status {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .match-found {
+            color: var(--success);
+        }
+        
+        .match-new {
+            color: var(--info);
+        }
+        
+        .match-error {
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
@@ -1619,6 +1636,7 @@
                             <strong>Petunjuk:</strong> Tempel data jadwal shift dalam format berikut:
                             <br>Nama [Tab/Spasi] Shift (PAGI/SIANG/MALAM)
                             <br>Contoh: RAAZ JESEN STEPANUS PAGI
+                            <br><br><strong>Sistem akan otomatis mengenali nama staff yang tidak lengkap atau berlebihan!</strong>
                         </div>
                     </div>
                     
@@ -1686,6 +1704,7 @@
                         <strong>Petunjuk:</strong> Tempel data jadwal shift dalam format berikut:
                         <br>Nama [Tab/Spasi] Shift (PAGI/SIANG/MALAM)
                         <br>Contoh: RAAZ JESEN STEPANUS PAGI
+                        <br><br><strong>Sistem akan otomatis mengenali nama staff yang tidak lengkap atau berlebihan!</strong>
                     </div>
                 </div>
                 
@@ -2678,6 +2697,162 @@
             showToast('Staff baru berhasil ditambahkan');
         });
 
+        // ========== SISTEM PARSING JADWAL SHIFT YANG LEBIH CERDAS ==========
+
+        // Fungsi untuk parsing data jadwal shift dengan pencocokan nama yang lebih fleksibel
+        function parseShiftSchedule(dataText) {
+            const lines = dataText.split('\n');
+            const result = [];
+            const shiftKeywords = ['PAGI', 'SIANG', 'MALAM'];
+            
+            lines.forEach(line => {
+                // Bersihkan line dari spasi berlebih
+                line = line.trim();
+                if (!line) return;
+                
+                // Cari kata kunci shift dalam line (case insensitive)
+                let shiftFound = null;
+                let shiftIndex = -1;
+                
+                for (const keyword of shiftKeywords) {
+                    const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+                    const match = line.match(regex);
+                    if (match) {
+                        shiftFound = keyword;
+                        shiftIndex = match.index;
+                        break;
+                    }
+                }
+                
+                if (!shiftFound) return; // Skip jika tidak ada shift yang ditemukan
+                
+                // Ekstrak nama (semua teks sebelum shift)
+                let name = line.substring(0, shiftIndex).trim();
+                
+                // Bersihkan nama dari karakter yang tidak diinginkan
+                name = name.replace(/[^a-zA-Z\s]/g, ' ').replace(/\s+/g, ' ').trim();
+                
+                if (name) {
+                    // Konversi nama ke format standar (huruf besar)
+                    name = name.toUpperCase();
+                    
+                    // Coba temukan staff yang cocok dengan nama yang diekstrak
+                    const matchedStaff = findBestStaffMatch(name);
+                    
+                    if (matchedStaff) {
+                        result.push({
+                            originalName: name,
+                            matchedName: matchedStaff.name,
+                            staffId: matchedStaff.id,
+                            position: matchedStaff.position,
+                            shift: shiftFound,
+                            status: 'found'
+                        });
+                    } else {
+                        // Jika tidak ditemukan kecocokan, tambahkan sebagai staff baru
+                        result.push({
+                            originalName: name,
+                            matchedName: name, // Gunakan nama asli
+                            staffId: null, // Akan dibuat ID baru
+                            position: 'Kasir', // Default position
+                            shift: shiftFound,
+                            status: 'new'
+                        });
+                    }
+                }
+            });
+            
+            return result;
+        }
+
+        // Fungsi untuk menemukan staff terbaik yang cocok dengan nama yang diberikan
+        function findBestStaffMatch(inputName) {
+            const inputWords = inputName.split(/\s+/);
+            let bestMatch = null;
+            let bestScore = 0;
+            
+            staffData.forEach(staff => {
+                const staffName = staff.name.toUpperCase();
+                const staffWords = staffName.split(/\s+/);
+                
+                // Hitung skor kecocokan
+                let score = 0;
+                
+                // Cek kecocokan nama lengkap
+                if (staffName === inputName) {
+                    score = 100;
+                }
+                // Cek kecocokan nama depan
+                else if (staffWords[0] === inputWords[0]) {
+                    score = 80;
+                    
+                    // Tambah poin jika ada kata lain yang cocok
+                    for (let i = 1; i < inputWords.length; i++) {
+                        if (staffWords.some(word => word === inputWords[i])) {
+                            score += 10;
+                        }
+                    }
+                }
+                // Cek kecocokan substring
+                else if (staffName.includes(inputName) || inputName.includes(staffName)) {
+                    score = 60;
+                }
+                // Cek kecocokan kata individual
+                else {
+                    let matchedWords = 0;
+                    inputWords.forEach(inputWord => {
+                        if (staffWords.some(staffWord => staffWord.includes(inputWord) || inputWord.includes(staffWord))) {
+                            matchedWords++;
+                        }
+                    });
+                    
+                    if (matchedWords > 0) {
+                        score = 40 + (matchedWords * 10);
+                    }
+                }
+                
+                // Update best match jika skor lebih tinggi
+                if (score > bestScore && score >= 40) {
+                    bestScore = score;
+                    bestMatch = staff;
+                }
+            });
+            
+            return bestMatch;
+        }
+
+        // Fungsi untuk menerapkan jadwal shift yang telah diparsing
+        function applyParsedSchedule(parsedData) {
+            let updatedCount = 0;
+            let addedCount = 0;
+            
+            parsedData.forEach(item => {
+                if (item.status === 'found' && item.staffId !== null) {
+                    // Update shift staff yang sudah ada
+                    const staffIndex = staffData.findIndex(staff => staff.id === item.staffId);
+                    if (staffIndex !== -1) {
+                        staffData[staffIndex].shift = item.shift.toLowerCase();
+                        updatedCount++;
+                    }
+                } else if (item.status === 'new') {
+                    // Tambah staff baru
+                    const newId = staffData.length > 0 ? Math.max(...staffData.map(s => s.id)) + 1 : 1;
+                    staffData.push({
+                        id: newId,
+                        name: item.matchedName,
+                        position: item.position,
+                        shift: item.shift.toLowerCase()
+                    });
+                    addedCount++;
+                }
+            });
+            
+            // Simpan ke localStorage
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+            
+            return { updated: updatedCount, added: addedCount };
+        }
+
         // Fungsi untuk mengatur jadwal shift (Admin)
         function setupShiftSchedule() {
             const scheduleBtn = document.getElementById('schedule-shift-btn');
@@ -2722,8 +2897,21 @@
                 parsedData.forEach(item => {
                     const previewItem = document.createElement('div');
                     previewItem.className = 'preview-item';
+                    
+                    let statusHtml = '';
+                    let statusClass = '';
+                    
+                    if (item.status === 'found') {
+                        statusHtml = `<div class="match-status match-found">✓ Cocok dengan: ${item.matchedName}</div>`;
+                    } else if (item.status === 'new') {
+                        statusHtml = `<div class="match-status match-new">+ Staff baru akan ditambahkan</div>`;
+                    }
+                    
                     previewItem.innerHTML = `
-                        <div class="preview-name">${item.name}</div>
+                        <div>
+                            <div class="preview-name">${item.originalName}</div>
+                            ${statusHtml}
+                        </div>
                         <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
                     `;
                     previewContent.appendChild(previewItem);
@@ -2747,20 +2935,7 @@
                 }
                 
                 // Terapkan perubahan shift
-                let updatedCount = 0;
-                parsedData.forEach(item => {
-                    const staffIndex = staffData.findIndex(staff => 
-                        staff.name.toLowerCase() === item.name.toLowerCase()
-                    );
-                    
-                    if (staffIndex !== -1) {
-                        staffData[staffIndex].shift = item.shift.toLowerCase();
-                        updatedCount++;
-                    }
-                });
-                
-                // Simpan ke localStorage
-                localStorage.setItem('staffData', JSON.stringify(staffData));
+                const result = applyParsedSchedule(parsedData);
                 
                 // Refresh tampilan
                 renderAllStaff();
@@ -2768,9 +2943,14 @@
                 renderShiftStaff('pagi');
                 renderShiftStaff('siang');
                 renderShiftStaff('malam');
+                updateStatsBar();
                 
                 // Tampilkan pesan sukses
-                showToast(`Jadwal shift berhasil diubah untuk ${updatedCount} staff`);
+                let message = `Jadwal shift berhasil diubah untuk ${result.updated} staff`;
+                if (result.added > 0) {
+                    message += ` dan ${result.added} staff baru ditambahkan`;
+                }
+                showToast(message);
                 
                 // Sembunyikan form
                 scheduleForm.style.display = 'none';
@@ -2806,8 +2986,20 @@
                 parsedData.forEach(item => {
                     const previewItem = document.createElement('div');
                     previewItem.className = 'preview-item';
+                    
+                    let statusHtml = '';
+                    
+                    if (item.status === 'found') {
+                        statusHtml = `<div class="match-status match-found">✓ Cocok dengan: ${item.matchedName}</div>`;
+                    } else if (item.status === 'new') {
+                        statusHtml = `<div class="match-status match-new">+ Staff baru akan ditambahkan</div>`;
+                    }
+                    
                     previewItem.innerHTML = `
-                        <div class="preview-name">${item.name}</div>
+                        <div>
+                            <div class="preview-name">${item.originalName}</div>
+                            ${statusHtml}
+                        </div>
                         <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
                     `;
                     previewContent.appendChild(previewItem);
@@ -2831,20 +3023,7 @@
                 }
                 
                 // Terapkan perubahan shift
-                let updatedCount = 0;
-                parsedData.forEach(item => {
-                    const staffIndex = staffData.findIndex(staff => 
-                        staff.name.toLowerCase() === item.name.toLowerCase()
-                    );
-                    
-                    if (staffIndex !== -1) {
-                        staffData[staffIndex].shift = item.shift.toLowerCase();
-                        updatedCount++;
-                    }
-                });
-                
-                // Simpan ke localStorage
-                localStorage.setItem('staffData', JSON.stringify(staffData));
+                const result = applyParsedSchedule(parsedData);
                 
                 // Refresh tampilan
                 renderAllStaff();
@@ -2852,45 +3031,19 @@
                 renderShiftStaff('pagi');
                 renderShiftStaff('siang');
                 renderShiftStaff('malam');
+                updateStatsBar();
                 
                 // Tampilkan pesan sukses
-                showToast(`Jadwal shift berhasil diubah untuk ${updatedCount} staff`);
+                let message = `Jadwal shift berhasil diubah untuk ${result.updated} staff`;
+                if (result.added > 0) {
+                    message += ` dan ${result.added} staff baru ditambahkan`;
+                }
+                showToast(message);
                 
                 // Reset form
                 scheduleDataInput.value = '';
                 schedulePreview.style.display = 'none';
             });
-        }
-        
-        // Fungsi untuk parsing data jadwal shift
-        function parseShiftSchedule(dataText) {
-            const lines = dataText.split('\n');
-            const result = [];
-            
-            lines.forEach(line => {
-                // Bersihkan line dari spasi berlebih
-                line = line.trim();
-                if (!line) return;
-                
-                // Pisahkan berdasarkan tab atau spasi ganda
-                const parts = line.split(/\t|\s{2,}/);
-                
-                // Cari shift (PAGI, SIANG, MALAM) dalam line
-                const shiftMatch = line.match(/\b(PAGI|SIANG|MALAM)\b/i);
-                if (!shiftMatch) return;
-                
-                const shift = shiftMatch[0].toUpperCase();
-                const name = line.replace(shiftMatch[0], '').trim();
-                
-                if (name) {
-                    result.push({
-                        name: name.toUpperCase(),
-                        shift: shift
-                    });
-                }
-            });
-            
-            return result;
         }
 
         // Toast notification
