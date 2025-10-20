@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contoh Gambar Berhasil Withdraw</title>
+    <style>
+        /* --- Google Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #22d3ee;
+            --card-background: #ffffff;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 6px 10px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.1rem;
+        }
+
+        /* --- Gallery Grid --- */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .gallery-item .icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .gallery-item .text h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .gallery-item .text p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* --- Lightbox Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            animation: fadeIn 0.3s ease-out;
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: slideIn 0.3s ease-out;
+            cursor: default;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: block;
+        }
+
+        /* --- Tombol Aksi (Muncul saat Hover) --- */
+        .image-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content:hover .image-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* --- Tooltip --- */
+        .tooltip {
+            position: absolute;
+            bottom: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        /* --- Tombol Tutup --- */
+        .close-button {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .close-button:hover {
+            opacity: 0.7;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+            .action-btn {
+                width: 40px;
+                height: 40px;
+            }
+            .close-button {
+                font-size: 2rem;
+                top: -35px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Contoh Gambar Berhasil Withdraw</h1>
+        <p>Klik pada kartu di bawah untuk melihat contoh bukti transfer</p>
+    </header>
+
+    <main class="gallery-container" id="galleryContainer">
+        <!-- Gallery items will be generated by JavaScript -->
+    </main>
+
+    <!-- Lightbox Modal Structure -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="Contoh Bukti Withdraw">
+            <div class="image-actions">
+                <button class="action-btn" id="copyButton" title="Salin Gambar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+                <button class="action-btn" id="downloadButton" title="Unduh Gambar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data Gambar
+            const withdrawData = [
+                { title: 'Withdraw BRI', url: 'https://imghostr.com/f46236_jro' },
+                { title: 'Withdraw CIMB ke DANA', url: 'https://imghostr.com/a4da53_iqx' },
+                { title: 'Withdraw BCA ke GOPAY', url: 'https://imghostr.com/db164f_cyt' },
+                { title: 'Withdraw BNI', url: 'https://imghostr.com/cc5758_jof' },
+                { title: 'Withdraw BCA', url: 'https://imghostr.com/ced402_s9i' }
+            ];
+
+            // Elemen DOM
+            const galleryContainer = document.getElementById('galleryContainer');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalBtn = document.getElementById('closeModal');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Fungsi untuk membuat item galeri
+            function createGalleryItem(data) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <div class="icon">💳</div>
+                    <div class="text">
+                        <h3>${data.title}</h3>
+                        <p>Klik untuk melihat detail</p>
+                    </div>
+                `;
+                item.addEventListener('click', () => openModal(data));
+                return item;
+            }
+
+            // Fungsi untuk membuka modal
+            function openModal(data) {
+                modalImage.src = data.url;
+                modalImage.alt = `Gambar ${data.title}`;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Fungsi untuk menutup modal
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event Listener untuk menutup modal
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Fungsi untuk menampilkan tooltip
+            function showTooltip(button, text) {
+                // Hapus tooltip yang lama jika ada
+                const oldTooltip = button.querySelector('.tooltip');
+                if (oldTooltip) {
+                    oldTooltip.remove();
+                }
+
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = text;
+                button.appendChild(tooltip);
+                
+                // Trigger reflow untuk animasi
+                requestAnimationFrame(() => {
+                    tooltip.classList.add('show');
+                });
+
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                    setTimeout(() => tooltip.remove(), 200);
+                }, 2000);
+            }
+
+            // Event Listener untuk tombol salin GAMBAR
+            copyButton.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Mencegah modal tertutup
+                const imageUrl = modalImage.src;
+                
+                try {
+                    const imgTag = `<img src="${imageUrl}" alt="${modalImage.alt}">`;
+                    await navigator.clipboard.writeText(imgTag);
+                    showTooltip(copyButton, 'Gambar Tersalin!');
+                } catch (err) {
+                    console.error('Gagal menyalin gambar: ', err);
+                    showTooltip(copyButton, 'Gagal Menyalin!');
+                }
+            });
+
+            // Event Listener untuk tombol unduh
+            downloadButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Mencegah modal tertutup
+                const imageUrl = modalImage.src;
+                const fileName = modalImage.alt.replace(/\s+/g, '_').toLowerCase() + '.jpg';
+                
+                const link = document.createElement('a');
+                link.href = imageUrl;
+                link.setAttribute('download', fileName);
+                link.setAttribute('target', '_blank');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            // Generate gallery items dari data
+            withdrawData.forEach(data => {
+                galleryContainer.appendChild(createGalleryItem(data));
+            });
+        });
+    </script>
+
+</body>
+</html>
