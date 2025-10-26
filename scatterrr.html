@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan Scatter Otomatis</title>
+    <style>
+        /* CSS untuk tampilan yang menarik dan modern */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: rgba(22, 33, 62, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 100%;
+            max-width: 950px;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+        }
+        .subtitle {
+            text-align: center;
+            color: #b0b0b0;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #a0d2ff;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border: 1px solid #3a506b;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e2936;
+            color: #e0e0e0;
+            box-sizing: border-box;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #4fbdba;
+        }
+        .results-container {
+            margin-top: 30px;
+        }
+        .result-card {
+            border: 1px solid rgba(79, 189, 186, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background-color: rgba(30, 41, 54, 0.7);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .result-card h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #4fbdba;
+            padding-bottom: 10px;
+            font-size: 1.3em;
+            color: #ffffff;
+        }
+        .info-fields-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .info-field {
+            background-color: rgba(58, 80, 107, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(79, 189, 186, 0.2);
+            transition: background-color 0.3s;
+        }
+        .info-field:hover {
+            background-color: rgba(58, 80, 107, 0.6);
+        }
+        .info-field-label {
+            font-size: 0.85em;
+            color: #a0d2ff;
+            display: block;
+        }
+        .info-field-value {
+            font-weight: bold;
+            color: #ffffff;
+            word-break: break-all;
+            padding-right: 10px;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #4fbdba;
+            transition: transform 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover {
+            transform: scale(1.2);
+            color: #ffffff;
+        }
+        .copy-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        .images-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .images-container img {
+            max-width: 30%;
+            height: auto;
+            border: 2px solid #3a506b;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .images-container img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+        .calculation-result {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ffffff;
+            text-align: center;
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            padding: 15px;
+            border-radius: 10px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 16, 242, 0.4);
+        }
+        .error-message {
+            color: #ff6b6b;
+            background-color: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* --- CSS untuk Lightbox Gambar Gabungan --- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .lightbox-content {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain; /* Memastikan gambar gabungan pas di layar */
+            border: 3px solid #fff;
+            border-radius: 8px;
+            animation: zoomIn 0.5s;
+        }
+        .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 45px;
+            color: #f1f1f1;
+            font-size: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .close-lightbox:hover {
+            color: #bbb;
+            transform: rotate(90deg);
+        }
+        
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.5); }
+            to { transform: scale(1); }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Perhitungan Scatter</h1>
+        <p class="subtitle">Tempel data di bawah ini, hasil akan muncul otomatis.</p>
+        
+        <label for="dataInput">Data Input:</label>
+        <textarea id="dataInput" placeholder="Userid	LinkGambar1	LinkGambar2	LinkGambar3	...	...	Periode	Bettingan"></textarea>
+
+        <div id="resultsContainer" class="results-container">
+            <!-- Hasil akan ditampilkan di sini -->
+        </div>
+    </div>
+
+    <!-- --- HTML untuk Lightbox --- -->
+    <div id="imageLightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <!-- Gambar gabungan akan ditampilkan di sini -->
+        <img class="lightbox-content" id="lightboxMergedImg">
+    </div>
+
+    <script>
+        // --- KONFIGURASI ---
+        const SCATTER_MULTIPLIER = 4; 
+
+        // Dapatkan elemen-elemen dari DOM
+        const dataInput = document.getElementById('dataInput');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxMergedImg = document.getElementById('lightboxMergedImg');
+
+        // Fungsi untuk menyalin teks ke clipboard
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                console.log('Teks berhasil disalin:', text);
+            } catch (err) {
+                console.error('Gagal menyalin teks: ', err);
+            }
+        }
+
+        // Fungsi untuk memproses setiap baris data
+        function processLine(line) {
+            const parts = line.split('\t');
+            if (parts.length < 8) {
+                console.error("Format data tidak valid:", line);
+                return null;
+            }
+            const userid = parts[0];
+            const periode = parts[6];
+            const bettingan = parts[7];
+            const imageUrl1 = parts[1];
+            const imageUrl2 = parts[2];
+            const imageUrl3 = parts[3];
+
+            const betNumbers = bettingan.match(/[\d,]+/g);
+            let scatterWin = 0;
+            if (betNumbers && betNumbers.length >= 2) {
+                const maxBetString = betNumbers[betNumbers.length - 1];
+                const maxBet = parseInt(maxBetString.replace(/,/g, ''), 10);
+                if (!isNaN(maxBet)) {
+                    scatterWin = maxBet * SCATTER_MULTIPLIER;
+                }
+            }
+
+            return {
+                userid, periode, bettingan, imageUrl1, imageUrl2, imageUrl3, scatterWin
+            };
+        }
+
+        // Fungsi untuk menggabungkan gambar dan menampilkannya di lightbox
+        async function mergeAndShowInLightbox(imageUrls) {
+            // Buat Promise untuk setiap gambar agar kita bisa menunggu semuanya dimuat
+            const imagePromises = imageUrls.map(url => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = "Anonymous"; // Untuk menghindari masalah CORS jika ada
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error(`Gagal memuat gambar: ${url}`));
+                    img.src = url;
+                });
+            });
+
+            try {
+                // Tunggu hingga semua gambar selesai dimuat
+                const loadedImages = await Promise.all(imagePromises);
+
+                // Hitung ukuran canvas untuk gambar gabungan
+                let totalWidth = 0;
+                let maxHeight = 0;
+                loadedImages.forEach(img => {
+                    totalWidth += img.width;
+                    if (img.height > maxHeight) {
+                        maxHeight = img.height;
+                    }
+                });
+
+                // Buat elemen canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = totalWidth;
+                canvas.height = maxHeight;
+                const ctx = canvas.getContext('2d');
+
+                // Gambar setiap gambar ke canvas
+                let currentX = 0;
+                loadedImages.forEach(img => {
+                    ctx.drawImage(img, currentX, 0);
+                    currentX += img.width;
+                });
+
+                // Ubah canvas menjadi URL gambar dan tampilkan di lightbox
+                lightboxMergedImg.src = canvas.toDataURL('image/png');
+                lightbox.style.display = 'flex';
+
+            } catch (error) {
+                console.error(error);
+                alert('Tidak dapat memuat satu atau lebih gambar. Periksa URL dan koneksi internet Anda.');
+            }
+        }
+
+        // Fungsi utama untuk memproses semua input dan menampilkan hasil
+        function handleInput() {
+            const rawText = dataInput.value;
+            const lines = rawText.trim().split('\n');
+            resultsContainer.innerHTML = '';
+
+            if (rawText.trim() === '') {
+                return;
+            }
+
+            lines.forEach(line => {
+                const result = processLine(line);
+                if (result) {
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'result-card';
+
+                    const title = document.createElement('h2');
+                    title.textContent = `Hasil untuk User: ${result.userid}`;
+                    resultCard.appendChild(title);
+
+                    const infoContainer = document.createElement('div');
+                    infoContainer.className = 'info-fields-container';
+                    const infoData = [
+                        { label: 'User ID', value: result.userid },
+                        { label: 'Periode', value: result.periode },
+                        { label: 'Bettingan', value: result.bettingan }
+                    ];
+                    infoData.forEach(item => {
+                        const fieldDiv = document.createElement('div');
+                        fieldDiv.className = 'info-field';
+                        const textSpan = document.createElement('span');
+                        textSpan.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
+                        const copyButton = document.createElement('button');
+                        copyButton.className = 'copy-btn';
+                        copyButton.title = `Salin ${item.label}`;
+                        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>`;
+                        copyButton.onclick = () => copyToClipboard(item.value);
+                        fieldDiv.appendChild(textSpan);
+                        fieldDiv.appendChild(copyButton);
+                        infoContainer.appendChild(fieldDiv);
+                    });
+                    resultCard.appendChild(infoContainer);
+
+                    const imagesContainer = document.createElement('div');
+                    imagesContainer.className = 'images-container';
+                    
+                    const imageUrlsForThisSet = [result.imageUrl1, result.imageUrl2, result.imageUrl3];
+
+                    imageUrlsForThisSet.forEach(url => {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.alt = 'Screenshot Scatter';
+                        img.style.cursor = 'pointer';
+                        // Panggil fungsi penggabungan saat gambar diklik
+                        img.onclick = () => mergeAndShowInLightbox(imageUrlsForThisSet);
+                        img.onerror = function() { this.style.display = 'none'; };
+                        imagesContainer.appendChild(img);
+                    });
+                    resultCard.appendChild(imagesContainer);
+
+                    const resultText = document.createElement('div');
+                    resultText.className = 'calculation-result';
+                    resultText.innerHTML = `Total Scatter: <strong>${result.scatterWin.toLocaleString('id-ID')}</strong>`;
+                    resultCard.appendChild(resultText);
+
+                    resultsContainer.appendChild(resultCard);
+                }
+            });
+        }
+
+        // --- Event Listener untuk Lightbox ---
+        const closeBtn = document.getElementsByClassName('close-lightbox')[0];
+
+        closeBtn.onclick = function() {
+            lightbox.style.display = 'none';
+        }
+
+        lightbox.onclick = function(event) {
+            if (event.target == lightbox) {
+                lightbox.style.display = 'none';
+            }
+        }
+
+        dataInput.addEventListener('input', handleInput);
+    </script>
+
+</body>
+</html>
