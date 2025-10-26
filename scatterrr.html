@@ -3,31 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perhitungan Scatter Otomatis</title>
+    <title>Perhitungan Scatter & Analisis Pola</title>
     <style>
-        /* CSS untuk tampilan yang menarik dan modern */
+        /* CSS Global dan Tampilan Umum */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e, #0f3460);
             color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
         .container {
             background-color: rgba(22, 33, 62, 0.85);
-            padding: 30px;
+            padding: 0;
             border-radius: 15px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.18);
             width: 100%;
             max-width: 950px;
+            margin: 0 auto;
+            overflow: hidden;
         }
+
+        /* --- Gaya untuk Tab --- */
+        .tab {
+            display: flex;
+            background-color: rgba(30, 41, 54, 0.9);
+            border-bottom: 2px solid #4fbdba;
+        }
+        .tab button {
+            background-color: inherit;
+            color: #a0d2ff;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 18px 24px;
+            transition: 0.3s;
+            font-size: 1.1em;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        .tab button:hover {
+            background-color: rgba(79, 189, 186, 0.2);
+        }
+        .tab button.active {
+            background-color: #4fbdba;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .tabcontent {
+            display: none;
+            padding: 30px;
+            animation: fadeEffect 1s;
+        }
+        .tabcontent.active {
+            display: block;
+        }
+        @keyframes fadeEffect {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Gaya Konten di Dalam Tab --- */
         h1 {
             text-align: center;
             color: #ffffff;
@@ -39,6 +79,7 @@
             text-align: center;
             color: #b0b0b0;
             margin-bottom: 25px;
+            font-size: 0.9em;
         }
         label {
             display: block;
@@ -48,7 +89,7 @@
         }
         textarea {
             width: 100%;
-            height: 100px;
+            height: 120px;
             padding: 12px;
             border: 1px solid #3a506b;
             border-radius: 8px;
@@ -125,10 +166,29 @@
             transform: scale(1.2);
             color: #ffffff;
         }
-        .copy-btn svg {
-            width: 18px;
-            height: 18px;
+        .copy-btn svg { width: 18px; height: 18px; }
+        
+        /* Gaya Khusus untuk Analisis Pola */
+        .decision {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
         }
+        .decision.cocok {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .decision.tidak-cocok {
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Gaya untuk Gambar dan Lightbox */
         .images-container {
             display: flex;
             justify-content: space-around;
@@ -160,272 +220,235 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 15px rgba(102, 16, 242, 0.4);
         }
-        .error-message {
-            color: #ff6b6b;
-            background-color: rgba(255, 107, 107, 0.1);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        /* --- CSS untuk Lightbox Gambar Gabungan --- */
         .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s;
-            padding: 20px;
-            box-sizing: border-box;
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center; align-items: center; animation: fadeIn 0.5s;
+            padding: 20px; box-sizing: border-box;
         }
         .lightbox-content {
-            max-width: 95%;
-            max-height: 95%;
-            object-fit: contain; /* Memastikan gambar gabungan pas di layar */
-            border: 3px solid #fff;
-            border-radius: 8px;
-            animation: zoomIn 0.5s;
+            max-width: 95%; max-height: 95%; object-fit: contain;
+            border: 3px solid #fff; border-radius: 8px; animation: zoomIn 0.5s;
         }
         .close-lightbox {
-            position: absolute;
-            top: 25px;
-            right: 45px;
-            color: #f1f1f1;
-            font-size: 50px;
-            font-weight: bold;
-            transition: 0.3s;
-            cursor: pointer;
+            position: absolute; top: 25px; right: 45px; color: #f1f1f1;
+            font-size: 50px; font-weight: bold; transition: 0.3s; cursor: pointer;
         }
-        .close-lightbox:hover {
-            color: #bbb;
-            transform: rotate(90deg);
-        }
-        
-        /* Animasi */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes zoomIn {
-            from { transform: scale(0.5); }
-            to { transform: scale(1); }
-        }
-
+        .close-lightbox:hover { color: #bbb; transform: rotate(90deg); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.5); } to { transform: scale(1); } }
     </style>
 </head>
-
 <body>
 
     <div class="container">
-        <h1>Perhitungan Scatter</h1>
-        <p class="subtitle">Tempel data di bawah ini, hasil akan muncul otomatis.</p>
-        
-        <label for="dataInput">Data Input:</label>
-        <textarea id="dataInput" placeholder="Userid	LinkGambar1	LinkGambar2	LinkGambar3	...	...	Periode	Bettingan"></textarea>
+        <!-- Tab Navigasi -->
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'scatter-content')">Perhitungan Scatter</button>
+            <button class="tablinks" onclick="openTab(event, 'pattern-content')">Analisis Pola</button>
+        </div>
 
-        <div id="resultsContainer" class="results-container">
-            <!-- Hasil akan ditampilkan di sini -->
+        <!-- Konten Tab Perhitungan Scatter -->
+        <div id="scatter-content" class="tabcontent active">
+            <h1>Perhitungan Scatter</h1>
+            <p class="subtitle">Tempel data (Userid, Link Gambar, Periode, Bettingan).</p>
+            
+            <label for="dataInput">Data Input Scatter:</label>
+            <textarea id="dataInput" placeholder="Ngresik03	https://.../Screenshot_1.jpg	...	1982246677397931520	BET 2,000 - 8,000"></textarea>
+
+            <div id="resultsContainer" class="results-container">
+                <!-- Hasil scatter akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <!-- Konten Tab Analisis Pola -->
+        <div id="pattern-content" class="tabcontent">
+            <h1>Analisis Pola</h1>
+            <p class="subtitle">Tempel riwayat transaksi (Credit/Debit) untuk analisis.</p>
+            
+            <label for="patternInput">Data Input Pola:</label>
+            <textarea id="patternInput" placeholder="Mahjong Ways&#10;...&#10;Credit&#10;IDR 672,000&#10;...&#10;Debit&#10;IDR 2,800"></textarea>
+
+            <div id="patternResultsContainer" class="results-container">
+                <!-- Hasil analisis pola akan ditampilkan di sini -->
+            </div>
         </div>
     </div>
 
-    <!-- --- HTML untuk Lightbox --- -->
+    <!-- Lightbox untuk gambar gabungan -->
     <div id="imageLightbox" class="lightbox">
         <span class="close-lightbox">&times;</span>
-        <!-- Gambar gabungan akan ditampilkan di sini -->
         <img class="lightbox-content" id="lightboxMergedImg">
     </div>
 
     <script>
-        // --- KONFIGURASI ---
+        // --- KONFIGURASI GLOBAL ---
         const SCATTER_MULTIPLIER = 4; 
 
-        // Dapatkan elemen-elemen dari DOM
+        // --- ELEMEN DOM SCATTER ---
         const dataInput = document.getElementById('dataInput');
         const resultsContainer = document.getElementById('resultsContainer');
         const lightbox = document.getElementById('imageLightbox');
         const lightboxMergedImg = document.getElementById('lightboxMergedImg');
 
-        // Fungsi untuk menyalin teks ke clipboard
-        async function copyToClipboard(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-                console.log('Teks berhasil disalin:', text);
-            } catch (err) {
-                console.error('Gagal menyalin teks: ', err);
+        // --- ELEMEN DOM POLA ---
+        const patternInput = document.getElementById('patternInput');
+        const patternResultsContainer = document.getElementById('patternResultsContainer');
+
+        // --- FUNGSI UNTUK TAB ---
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
             }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
 
-        // Fungsi untuk memproses setiap baris data
+        // --- FUNGSI-FUNGSI SCATTER ---
         function processLine(line) {
             const parts = line.split('\t');
-            if (parts.length < 8) {
-                console.error("Format data tidak valid:", line);
-                return null;
-            }
-            const userid = parts[0];
-            const periode = parts[6];
-            const bettingan = parts[7];
-            const imageUrl1 = parts[1];
-            const imageUrl2 = parts[2];
-            const imageUrl3 = parts[3];
-
+            if (parts.length < 8) return null;
+            const userid = parts[0], periode = parts[6], bettingan = parts[7];
+            const imageUrl1 = parts[1], imageUrl2 = parts[2], imageUrl3 = parts[3];
             const betNumbers = bettingan.match(/[\d,]+/g);
             let scatterWin = 0;
             if (betNumbers && betNumbers.length >= 2) {
-                const maxBetString = betNumbers[betNumbers.length - 1];
-                const maxBet = parseInt(maxBetString.replace(/,/g, ''), 10);
-                if (!isNaN(maxBet)) {
-                    scatterWin = maxBet * SCATTER_MULTIPLIER;
-                }
+                const maxBet = parseInt(betNumbers[betNumbers.length - 1].replace(/,/g, ''), 10);
+                if (!isNaN(maxBet)) scatterWin = maxBet * SCATTER_MULTIPLIER;
             }
-
-            return {
-                userid, periode, bettingan, imageUrl1, imageUrl2, imageUrl3, scatterWin
-            };
+            return { userid, periode, bettingan, imageUrl1, imageUrl2, imageUrl3, scatterWin };
         }
 
-        // Fungsi untuk menggabungkan gambar dan menampilkannya di lightbox
         async function mergeAndShowInLightbox(imageUrls) {
-            // Buat Promise untuk setiap gambar agar kita bisa menunggu semuanya dimuat
-            const imagePromises = imageUrls.map(url => {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.crossOrigin = "Anonymous"; // Untuk menghindari masalah CORS jika ada
-                    img.onload = () => resolve(img);
-                    img.onerror = () => reject(new Error(`Gagal memuat gambar: ${url}`));
-                    img.src = url;
-                });
-            });
-
+            const imagePromises = imageUrls.map(url => new Promise((resolve, reject) => {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => resolve(img); img.onerror = () => reject(new Error(`Gagal memuat gambar: ${url}`));
+                img.src = url;
+            }));
             try {
-                // Tunggu hingga semua gambar selesai dimuat
                 const loadedImages = await Promise.all(imagePromises);
-
-                // Hitung ukuran canvas untuk gambar gabungan
-                let totalWidth = 0;
-                let maxHeight = 0;
-                loadedImages.forEach(img => {
-                    totalWidth += img.width;
-                    if (img.height > maxHeight) {
-                        maxHeight = img.height;
-                    }
-                });
-
-                // Buat elemen canvas
-                const canvas = document.createElement('canvas');
-                canvas.width = totalWidth;
-                canvas.height = maxHeight;
+                let totalWidth = 0, maxHeight = 0;
+                loadedImages.forEach(img => { totalWidth += img.width; maxHeight = Math.max(maxHeight, img.height); });
+                const canvas = document.createElement('canvas'); canvas.width = totalWidth; canvas.height = maxHeight;
                 const ctx = canvas.getContext('2d');
-
-                // Gambar setiap gambar ke canvas
-                let currentX = 0;
-                loadedImages.forEach(img => {
-                    ctx.drawImage(img, currentX, 0);
-                    currentX += img.width;
-                });
-
-                // Ubah canvas menjadi URL gambar dan tampilkan di lightbox
-                lightboxMergedImg.src = canvas.toDataURL('image/png');
-                lightbox.style.display = 'flex';
-
-            } catch (error) {
-                console.error(error);
-                alert('Tidak dapat memuat satu atau lebih gambar. Periksa URL dan koneksi internet Anda.');
-            }
+                let currentX = 0; loadedImages.forEach(img => { ctx.drawImage(img, currentX, 0); currentX += img.width; });
+                lightboxMergedImg.src = canvas.toDataURL('image/png'); lightbox.style.display = 'flex';
+            } catch (error) { console.error(error); alert('Gagal memuat gambar.'); }
         }
 
-        // Fungsi utama untuk memproses semua input dan menampilkan hasil
         function handleInput() {
-            const rawText = dataInput.value;
-            const lines = rawText.trim().split('\n');
+            const rawText = dataInput.value; const lines = rawText.trim().split('\n');
             resultsContainer.innerHTML = '';
-
-            if (rawText.trim() === '') {
-                return;
-            }
-
+            if (rawText.trim() === '') return;
             lines.forEach(line => {
                 const result = processLine(line);
                 if (result) {
-                    const resultCard = document.createElement('div');
-                    resultCard.className = 'result-card';
-
-                    const title = document.createElement('h2');
-                    title.textContent = `Hasil untuk User: ${result.userid}`;
-                    resultCard.appendChild(title);
-
-                    const infoContainer = document.createElement('div');
-                    infoContainer.className = 'info-fields-container';
-                    const infoData = [
-                        { label: 'User ID', value: result.userid },
-                        { label: 'Periode', value: result.periode },
-                        { label: 'Bettingan', value: result.bettingan }
-                    ];
+                    const resultCard = document.createElement('div'); resultCard.className = 'result-card';
+                    resultCard.innerHTML = `<h2>Hasil untuk User: ${result.userid}</h2>`;
+                    
+                    const infoContainer = document.createElement('div'); infoContainer.className = 'info-fields-container';
+                    const infoData = [ { label: 'User ID', value: result.userid }, { label: 'Periode', value: result.periode }, { label: 'Bettingan', value: result.bettingan } ];
                     infoData.forEach(item => {
-                        const fieldDiv = document.createElement('div');
-                        fieldDiv.className = 'info-field';
-                        const textSpan = document.createElement('span');
-                        textSpan.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
-                        const copyButton = document.createElement('button');
-                        copyButton.className = 'copy-btn';
-                        copyButton.title = `Salin ${item.label}`;
+                        const fieldDiv = document.createElement('div'); fieldDiv.className = 'info-field';
+                        fieldDiv.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
+                        const copyButton = document.createElement('button'); copyButton.className = 'copy-btn'; copyButton.title = `Salin ${item.label}`;
                         copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>`;
-                        copyButton.onclick = () => copyToClipboard(item.value);
-                        fieldDiv.appendChild(textSpan);
-                        fieldDiv.appendChild(copyButton);
-                        infoContainer.appendChild(fieldDiv);
+                        copyButton.onclick = () => navigator.clipboard.writeText(item.value);
+                        fieldDiv.appendChild(copyButton); infoContainer.appendChild(fieldDiv);
                     });
                     resultCard.appendChild(infoContainer);
 
-                    const imagesContainer = document.createElement('div');
-                    imagesContainer.className = 'images-container';
-                    
+                    const imagesContainer = document.createElement('div'); imagesContainer.className = 'images-container';
                     const imageUrlsForThisSet = [result.imageUrl1, result.imageUrl2, result.imageUrl3];
-
                     imageUrlsForThisSet.forEach(url => {
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.alt = 'Screenshot Scatter';
-                        img.style.cursor = 'pointer';
-                        // Panggil fungsi penggabungan saat gambar diklik
+                        const img = document.createElement('img'); img.src = url; img.alt = 'Screenshot Scatter'; img.style.cursor = 'pointer';
                         img.onclick = () => mergeAndShowInLightbox(imageUrlsForThisSet);
                         img.onerror = function() { this.style.display = 'none'; };
                         imagesContainer.appendChild(img);
                     });
                     resultCard.appendChild(imagesContainer);
 
-                    const resultText = document.createElement('div');
-                    resultText.className = 'calculation-result';
+                    const resultText = document.createElement('div'); resultText.className = 'calculation-result';
                     resultText.innerHTML = `Total Scatter: <strong>${result.scatterWin.toLocaleString('id-ID')}</strong>`;
                     resultCard.appendChild(resultText);
-
                     resultsContainer.appendChild(resultCard);
                 }
             });
         }
 
-        // --- Event Listener untuk Lightbox ---
-        const closeBtn = document.getElementsByClassName('close-lightbox')[0];
+        // --- FUNGSI-FUNGSI POLA ---
+        function handlePatternAnalysis() {
+            const rawText = patternInput.value.trim();
+            patternResultsContainer.innerHTML = '';
+            if (!rawText) return;
 
-        closeBtn.onclick = function() {
-            lightbox.style.display = 'none';
-        }
+            const lines = rawText.split('\n');
+            let totalCredits = 0, totalDebits = 0;
+            let lastTransactionType = '';
 
-        lightbox.onclick = function(event) {
-            if (event.target == lightbox) {
-                lightbox.style.display = 'none';
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                if (trimmedLine === 'Credit' || trimmedLine === 'Debit') {
+                    lastTransactionType = trimmedLine;
+                } else if (trimmedLine.includes('IDR')) {
+                    const amountMatch = trimmedLine.match(/IDR\s*([\d,.]+)/);
+                    if (amountMatch) {
+                        const amount = parseInt(amountMatch[1].replace(/[.,]/g, ''), 10);
+                        if (!isNaN(amount)) {
+                            if (lastTransactionType === 'Credit') {
+                                totalCredits += amount;
+                            } else if (lastTransactionType === 'Debit') {
+                                totalDebits += amount;
+                            }
+                        }
+                    }
+                    lastTransactionType = ''; 
+                }
+            });
+
+            let finalBalance = 0;
+            const balanceMatch = lines[lines.length - 1].match(/Balance\s*:\s*IDR\s*([\d,.]+)/);
+            if (balanceMatch) {
+                finalBalance = parseInt(balanceMatch[1].replace(/[.,]/g, ''), 10);
             }
+
+            const resultCard = document.createElement('div'); resultCard.className = 'result-card';
+            resultCard.innerHTML = `<h2>Hasil Analisis Pola</h2>`;
+            
+            const infoData = [
+                { label: 'TOTAL KEMENANGAN SCATTER', value: `IDR ${totalCredits.toLocaleString('id-ID')}` },
+                { label: 'Bettingan', value: `IDR ${totalDebits.toLocaleString('id-ID')}` },
+                { label: 'Saldo Akhir', value: `IDR ${finalBalance.toLocaleString('id-ID')}` }
+            ];
+            infoData.forEach(item => {
+                const fieldDiv = document.createElement('div'); fieldDiv.className = 'info-field';
+                fieldDiv.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
+                resultCard.appendChild(fieldDiv);
+            });
+
+            const decisionDiv = document.createElement('div');
+            const isCocok = totalCredits > totalDebits;
+            decisionDiv.className = `decision ${isCocok ? 'cocok' : 'tidak-cocok'}`;
+            decisionDiv.textContent = isCocok ? '✅ COCOK untuk Menembak!' : '❌ TIDAK COCOK';
+            resultCard.appendChild(decisionDiv);
+
+            patternResultsContainer.appendChild(resultCard);
         }
 
+        // --- EVENT LISTENERS ---
         dataInput.addEventListener('input', handleInput);
-    </script>
+        patternInput.addEventListener('input', handlePatternAnalysis);
 
+        // Event Listener untuk Lightbox
+        const closeBtn = document.getElementsByClassName('close-lightbox')[0];
+        closeBtn.onclick = () => lightbox.style.display = 'none';
+        lightbox.onclick = (event) => { if (event.target == lightbox) lightbox.style.display = 'none'; };
+    </script>
 </body>
 </html>
