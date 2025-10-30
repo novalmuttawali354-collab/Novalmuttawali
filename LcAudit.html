@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard - LC AUDIT</title>
+    <title>Leaderboard - Kesalahan Terendah</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -603,6 +603,206 @@
             width: 60px;
         }
         
+        /* Bonus Display Styles */
+        .bonus-display {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent);
+            text-align: right;
+            padding: 8px 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .bonus-display:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .bonus-full {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .bonus-medium {
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .bonus-low {
+            color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(75, 0, 130, 0.9));
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: slideUp 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .modal-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+        
+        .modal-body {
+            text-align: center;
+        }
+        
+        .bonus-modal-display {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .bonus-label {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .bonus-value {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        .motivational-text {
+            background: rgba(138, 43, 226, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .motivational-text p {
+            color: var(--light);
+            font-size: 1.1rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .modal-footer {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .close-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            animation: confetti-fall 3s linear;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
         /* CS LINE Section Styles */
         .cs-section {
             background: linear-gradient(135deg, var(--cs-line-light), var(--cs-line-bg));
@@ -1039,6 +1239,23 @@
             .tab-button i {
                 font-size: 1rem;
             }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .bonus-value {
+                font-size: 2rem;
+            }
+            
+            .bonus-display {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -1060,13 +1277,13 @@
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-trophy"></i> Leaderboard LC AUDIT</h1>
+            <h1><i class="fas fa-trophy"></i> Leaderboard Kesalahan Terendah</h1>
             <p class="subtitle">Tampilkan data dengan peserta terbaik di posisi teratas</p>
         </header>
         
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-download"></i> SMB CS CS</h2>
+                <h2><i class="fas fa-download"></i> Ambil Data dari Google Spreadsheet</h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
@@ -1137,7 +1354,7 @@
                                 <div class="stat-value" id="totalParticipants">0</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-label"><i class="fas fa-arrow-down"></i> LC AUDIT</div>
+                                <div class="stat-label"><i class="fas fa-arrow-down"></i> Kesalahan Terendah</div>
                                 <div class="stat-value" id="lowestErrors">0</div>
                             </div>
                             <div class="stat-card">
@@ -1145,8 +1362,8 @@
                                 <div class="stat-value" id="averageErrors">0</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Data Error</div>
-                                <div class="stat-value" id="errorCount">0</div>
+                                <div class="stat-label"><i class="fas fa-coins"></i> Total Bonus</div>
+                                <div class="stat-value" id="totalBonus">0</div>
                             </div>
                         </div>
                         
@@ -1163,7 +1380,7 @@
                                     <th class="rank">Peringkat</th>
                                     <th>Nama</th>
                                     <th>Kesalahan</th>
-                                    <th>Status</th>
+                                    <th>Bonus</th>
                                 </tr>
                             </thead>
                             <tbody id="leaderboardBody">
@@ -1203,7 +1420,7 @@
                                     <th class="rank">No</th>
                                     <th>Nama</th>
                                     <th>Kesalahan</th>
-                                    <th>Status</th>
+                                    <th>Bonus</th>
                                 </tr>
                             </thead>
                             <tbody id="valueErrorBody">
@@ -1216,599 +1433,799 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="bonusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-gift"></i> Detail Bonus</h2>
+                <p class="modal-subtitle">Dari <span style="color: var(--accent); font-weight: bold;">Admin Leaderboard</span></p>
+            </div>
+            <div class="modal-body">
+                <div class="bonus-modal-display">
+                    <div class="bonus-label">Bonus Total</div>
+                    <div class="bonus-value" id="modalBonusValue">0</div>
+                </div>
+                <div class="motivational-text">
+                    <p id="motivationalMessage">Loading...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-check"></i> Terima Kasih
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="toast" class="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Pesan notifikasi</span>
     </div>
 
     <script>
-        // ID Spreadsheet sudah ditetapkan
-        const SPREADSHEET_ID = "1Vfw8Ei5wRNCmJG1lpDv_ISDMi8DZjy6_3kLRzUbMaM8";
-        
-        // Daftar nama CS LINE
-        const CS_LINE_NAMES = [
-            "CHARLIE C7377694",
-            "RINAL ABDILLAH NASUTION",
-            "ANDI"
-        ];
-        
-        // Event listeners
-        document.getElementById('fetchData').addEventListener('click', fetchDataFromSheet);
-        document.getElementById('refreshData').addEventListener('click', refreshData);
-        document.getElementById('exportData').addEventListener('click', exportData);
-        document.getElementById('exportValueError').addEventListener('click', exportValueError);
-        
-        // Data cache untuk refresh
-        let cachedData = null;
-        let currentSheetName = '';
-        let processedParticipants = [];
-        let csLineParticipants = [];
-        let regularParticipants = [];
-        let valueErrorParticipants = [];
-        let removedValueCount = 0;
-
-        // Create particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+        // Tunggu hingga DOM selesai dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // ID Spreadsheet sudah ditetapkan
+            const SPREADSHEET_ID = "1Vfw8Ei5wRNCmJG1lpDv_ISDMi8DZjy6_3kLRzUbMaM8";
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Random position
-                particle.style.left = Math.random() * 100 + '%';
-                
-                // Random color (hanya warna mewah)
-                const colors = ['#8A2BE2', '#008080', '#FFD700', '#4B0082'];
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Random size
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                
-                // Random animation delay
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        // Initialize particles on page load
-        createParticles();
-
-        // Tab switching function
-        function switchTab(tabName) {
-            // Remove active class from all tabs and buttons
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            // Daftar nama CS LINE
+            const CS_LINE_NAMES = [
+                "CHARLIE C7377694",
+                "RINAL ABDILLAH NASUTION",
+                "ANDI"
+            ];
             
-            // Add active class to selected tab and button
-            if (tabName === 'regular') {
-                document.querySelectorAll('.tab-button')[0].classList.add('active');
-                document.getElementById('regularTab').classList.add('active');
-            } else if (tabName === 'valueError') {
-                document.querySelectorAll('.tab-button')[1].classList.add('active');
-                document.getElementById('valueErrorTab').classList.add('active');
+            // Event listeners
+            const fetchDataBtn = document.getElementById('fetchData');
+            const refreshDataBtn = document.getElementById('refreshData');
+            const exportDataBtn = document.getElementById('exportData');
+            const exportValueErrorBtn = document.getElementById('exportValueError');
+            
+            if (fetchDataBtn) {
+                fetchDataBtn.addEventListener('click', fetchDataFromSheet);
             }
-        }
+            
+            if (refreshDataBtn) {
+                refreshDataBtn.addEventListener('click', refreshData);
+            }
+            
+            if (exportDataBtn) {
+                exportDataBtn.addEventListener('click', exportData);
+            }
+            
+            if (exportValueErrorBtn) {
+                exportValueErrorBtn.addEventListener('click', exportValueError);
+            }
+            
+            // Data cache untuk refresh
+            let cachedData = null;
+            let currentSheetName = '';
+            let processedParticipants = [];
+            let csLineParticipants = [];
+            let regularParticipants = [];
+            let valueErrorParticipants = [];
+            let removedValueCount = 0;
 
-        async function fetchDataFromSheet() {
-            const sheetName = document.getElementById('sheetName').value.trim() || 'Sheet1';
-            currentSheetName = sheetName;
-            const messageDiv = document.getElementById('message');
-            const loadingDiv = document.getElementById('loading');
-            const resultsDiv = document.getElementById('results');
+            // Kata-kata motivasi random
+            const motivationalMessages = [
+                "Kerja bagus! Teruslah berinovasi dan berkarya! 🌟",
+                "Hebat! Kamu inspirasi bagi kita semua! 💪",
+                "Luar biasa! Prestasimu patut diacungi jempol! 👏",
+                "Amazing! Teruslah melangkah menuju kesuksesan! 🚀",
+                "Fantastis! Dedikasimu sangat luar biasa! ⭐",
+                "Brilliant! Kamu punya masa depan yang cerah! ✨",
+                "Excellent! Jangan pernah berhenti bermimpi! 🌈",
+                "Outstanding! Kamu juara sejati! 🏆",
+                "Spectacular! Teruslah menginspirasi! 💫",
+                "Incredible! Kamu hebat dalam segala hal! 🔥",
+                "Wonderful! Dunia butuh orang seperti kamu! 🌺",
+                "Perfect! Kamu sudah di jalur yang benar! 🎯",
+                "Marvelous! Teruslah bersinar! 🌟",
+                "Superb! Kamu legenda hidup! 👑",
+                "Phenomenal! Tidak ada yang bisa menghentikanmu! ⚡"
+            ];
 
-            // Reset state
-            messageDiv.innerHTML = '';
-            resultsDiv.style.display = 'none';
-            loadingDiv.style.display = 'block';
-            removedValueCount = 0;
-
-            try {
-                // Membuat URL untuk mengambil data sebagai CSV
-                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+            // Create particles
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                if (!particlesContainer) return;
                 
-                const response = await fetch(url);
+                const particleCount = 50;
                 
-                if (!response.ok) {
-                    throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Random position
+                    particle.style.left = Math.random() * 100 + '%';
+                    
+                    // Random color (hanya warna mewah)
+                    const colors = ['#8A2BE2', '#008080', '#FFD700', '#4B0082'];
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Random size
+                    const size = Math.random() * 4 + 2;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    
+                    // Random animation delay
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Initialize particles on page load
+            createParticles();
+
+            // Tab switching function
+            window.switchTab = function(tabName) {
+                // Remove active class from all tabs and buttons
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to selected tab and button
+                if (tabName === 'regular') {
+                    const firstTabBtn = document.querySelector('.tab-button');
+                    if (firstTabBtn) firstTabBtn.classList.add('active');
+                    const regularTab = document.getElementById('regularTab');
+                    if (regularTab) regularTab.classList.add('active');
+                } else if (tabName === 'valueError') {
+                    const tabButtons = document.querySelectorAll('.tab-button');
+                    if (tabButtons[1]) tabButtons[1].classList.add('active');
+                    const valueErrorTab = document.getElementById('valueErrorTab');
+                    if (valueErrorTab) valueErrorTab.classList.add('active');
+                }
+            }
+
+            // Calculate bonus based on errors
+            function calculateBonus(errors) {
+                const baseBonus = 30000000;
+                
+                if (errors < 26) {
+                    return baseBonus;
+                } else if (errors >= 26 && errors <= 40) {
+                    return Math.round(baseBonus * 0.85); // 15% potongan
+                } else {
+                    return Math.round(baseBonus * 0.70); // 30% potongan
+                }
+            }
+
+            // Format currency
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(amount);
+            }
+
+            // Show bonus modal
+            window.showBonusModal = function(participantName, errors, bonus) {
+                const modal = document.getElementById('bonusModal');
+                const modalBonusValue = document.getElementById('modalBonusValue');
+                const motivationalMessage = document.getElementById('motivationalMessage');
+                
+                if (!modal || !modalBonusValue || !motivationalMessage) {
+                    console.error('Modal elements not found');
+                    return;
                 }
                 
-                const csvData = await response.text();
+                // Get random motivational message
+                const message = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
                 
-                if (!csvData || csvData.trim() === '') {
-                    throw new Error('Tidak ada data yang ditemukan atau sheet tidak valid');
-                }
+                // Set values
+                modalBonusValue.textContent = formatCurrency(bonus);
+                motivationalMessage.textContent = message;
                 
-                // Parse CSV menjadi array
-                const rows = parseCSV(csvData);
+                // Show modal
+                modal.classList.add('show');
                 
-                // Cache data untuk refresh
-                cachedData = rows;
-                
-                // Proses dan tampilkan data
-                processAndDisplayData(rows);
-                
-                showToast(`Berhasil mengambil data dari ${rows.length - 1} peserta`, 'success');
-                showMessage(`Berhasil mengambil data dari ${rows.length - 1} peserta`, 'success');
-            } catch (error) {
-                console.error('Error:', error);
-                showToast(`Error: ${error.message}`, 'error');
-                showMessage(`Error: ${error.message}`, 'error');
-            } finally {
-                loadingDiv.style.display = 'none';
+                // Create confetti effect
+                createConfetti();
             }
-        }
 
-        function refreshData() {
-            if (cachedData && currentSheetName) {
+            // Close modal
+            window.closeModal = function() {
+                const modal = document.getElementById('bonusModal');
+                if (modal) modal.classList.remove('show');
+            }
+
+            // Create confetti effect
+            function createConfetti() {
+                const modalContent = document.querySelector('.modal-content');
+                if (!modalContent) return;
+                
+                const colors = ['#FFD700', '#8A2BE2', '#008080', '#FF69B4', '#FFA500'];
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                        modalContent.appendChild(confetti);
+                        
+                        // Remove confetti after animation
+                        setTimeout(() => {
+                            if (confetti.parentNode) {
+                                confetti.remove();
+                            }
+                        }, 3000);
+                    }, i * 100);
+                }
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('bonusModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+
+            async function fetchDataFromSheet() {
+                const sheetNameInput = document.getElementById('sheetName');
+                const sheetName = sheetNameInput ? sheetNameInput.value.trim() : 'Sheet1';
+                currentSheetName = sheetName;
+                
                 const messageDiv = document.getElementById('message');
-                messageDiv.innerHTML = '';
-                
-                // Proses dan tampilkan data dari cache
-                processAndDisplayData(cachedData);
-                
-                showToast('Data berhasil dimuat ulang dari cache', 'success');
-                showMessage('Data berhasil dimuat ulang dari cache', 'success');
-            } else {
-                fetchDataFromSheet();
-            }
-        }
+                const loadingDiv = document.getElementById('loading');
+                const resultsDiv = document.getElementById('results');
 
-        function exportData() {
-            if (!cachedData) {
-                showToast('Tidak ada data untuk diekspor', 'error');
-                return;
-            }
+                // Reset state
+                if (messageDiv) messageDiv.innerHTML = '';
+                if (resultsDiv) resultsDiv.style.display = 'none';
+                if (loadingDiv) loadingDiv.style.display = 'block';
+                removedValueCount = 0;
 
-            // Filter data untuk regular participants saja
-            const exportData = cachedData.filter(row => {
-                const name = row[0] || '';
-                const errorValue = row[1] || '';
-                
-                // Exclude CS LINE and #VALUE! entries
-                const isCsLine = CS_LINE_NAMES.some(csName => 
-                    name.toUpperCase().includes(csName.toUpperCase())
-                );
-                
-                const hasValueError = name.includes('#VALUE!') || errorValue.includes('#VALUE!');
-                
-                return !isCsLine && !hasValueError;
-            });
-
-            // Buat CSV dari data
-            let csvContent = exportData.map(row => row.join(',')).join('\n');
-            
-            // Buat blob dan download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `leaderboard_regular_${currentSheetName}_${new Date().toISOString().slice(0, 10)}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showToast('Data regular berhasil diekspor', 'success');
-        }
-
-        function exportValueError() {
-            if (!valueErrorParticipants || valueErrorParticipants.length === 0) {
-                showToast('Tidak ada data #VALUE! untuk diekspor', 'error');
-                return;
-            }
-
-            // Buat CSV dari data #VALUE!
-            let csvContent = 'Nama,Kesalahan,Status\n';
-            valueErrorParticipants.forEach(participant => {
-                csvContent += `"${participant.name}","${participant.originalError}","${participant.hasError ? 'Error' : 'Valid'}"\n`;
-            });
-            
-            // Buat blob dan download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `leaderboard_value_error_${currentSheetName}_${new Date().toISOString().slice(0, 10)}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showToast('Data #VALUE! berhasil diekspor', 'success');
-        }
-
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const result = [];
-            
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line) {
-                    // Regex untuk memisahkan koma tapi tidak di dalam quotes
-                    const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
-                    const matches = line.match(regex) || [];
+                try {
+                    // Membuat URL untuk mengambil data sebagai CSV
+                    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
                     
-                    const row = matches.map(cell => {
-                        // Hapus quotes di awal dan akhir jika ada
-                        return cell.replace(/^"|"$/g, '').trim();
-                    });
+                    const response = await fetch(url);
                     
-                    result.push(row);
+                    if (!response.ok) {
+                        throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    const csvData = await response.text();
+                    
+                    if (!csvData || csvData.trim() === '') {
+                        throw new Error('Tidak ada data yang ditemukan atau sheet tidak valid');
+                    }
+                    
+                    // Parse CSV menjadi array
+                    const rows = parseCSV(csvData);
+                    
+                    // Cache data untuk refresh
+                    cachedData = rows;
+                    
+                    // Proses dan tampilkan data
+                    processAndDisplayData(rows);
+                    
+                    showToast(`Berhasil mengambil data dari ${rows.length - 1} peserta`, 'success');
+                    showMessage(`Berhasil mengambil data dari ${rows.length - 1} peserta`, 'success');
+                } catch (error) {
+                    console.error('Error:', error);
+                    showToast(`Error: ${error.message}`, 'error');
+                    showMessage(`Error: ${error.message}`, 'error');
+                } finally {
+                    if (loadingDiv) loadingDiv.style.display = 'none';
                 }
             }
-            
-            return result;
-        }
 
-        function processAndDisplayData(rows) {
-            if (rows.length === 0) {
-                showMessage('Tidak ada data yang ditemukan', 'error');
-                return;
+            function refreshData() {
+                if (cachedData && currentSheetName) {
+                    const messageDiv = document.getElementById('message');
+                    if (messageDiv) messageDiv.innerHTML = '';
+                    
+                    // Proses dan tampilkan data dari cache
+                    processAndDisplayData(cachedData);
+                    
+                    showToast('Data berhasil dimuat ulang dari cache', 'success');
+                    showMessage('Data berhasil dimuat ulang dari cache', 'success');
+                } else {
+                    fetchDataFromSheet();
+                }
             }
-            
-            // Ambil header
-            const headers = rows[0].map(h => h.toLowerCase());
-            
-            // Cari indeks kolom nama dan kesalahan
-            const nameIndex = headers.findIndex(h => h.includes('nama'));
-            const errorIndex = headers.findIndex(h => h.includes('kesalahan'));
-            
-            if (nameIndex === -1 || errorIndex === -1) {
-                showMessage('Kolom "Nama" atau "Kesalahan" tidak ditemukan dalam data', 'error');
-                return;
-            }
-            
-            // Buat array peserta
-            const participants = [];
-            let totalErrors = 0;
-            let errorCount = 0;
-            
-            for (let i = 1; i < rows.length; i++) {
-                const name = rows[i][nameIndex];
-                const errorValue = rows[i][errorIndex];
-                
-                if (name) {
-                    // Cek apakah nama atau nilai error mengandung #VALUE!
-                    const hasValueError = name.includes('#VALUE!') || errorValue.includes('#VALUE!');
+
+            function exportData() {
+                if (!cachedData) {
+                    showToast('Tidak ada data untuk diekspor', 'error');
+                    return;
+                }
+
+                // Filter data untuk regular participants saja
+                const exportData = cachedData.filter(row => {
+                    const name = row[0] || '';
+                    const errorValue = row[1] || '';
                     
-                    // Cek apakah nilai error mengandung error lainnya
-                    const hasOtherError = errorValue && (
-                        errorValue.includes('#REF!') || 
-                        errorValue.includes('#NAME?') || 
-                        errorValue.includes('#DIV/0!') || 
-                        errorValue.includes('#NULL!') || 
-                        errorValue.includes('#NUM!') || 
-                        errorValue.includes('#N/A')
-                    );
-                    
-                    const errors = hasValueError || hasOtherError ? null : (parseInt(errorValue) || 0);
-                    
-                    // Cek apakah ini adalah CS LINE
+                    // Exclude CS LINE and #VALUE! entries
                     const isCsLine = CS_LINE_NAMES.some(csName => 
                         name.toUpperCase().includes(csName.toUpperCase())
                     );
                     
-                    if (hasOtherError) {
-                        errorCount++;
-                    } else if (!isCsLine && !hasValueError) { // CS LINE dan #VALUE! tidak dihitung dalam statistik
-                        totalErrors += errors;
+                    const hasValueError = name.includes('#VALUE!') || errorValue.includes('#VALUE!');
+                    
+                    return !isCsLine && !hasValueError;
+                });
+
+                // Buat CSV dari data
+                let csvContent = exportData.map(row => row.join(',')).join('\n');
+                
+                // Buat blob dan download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `leaderboard_regular_${currentSheetName}_${new Date().toISOString().slice(0, 10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showToast('Data regular berhasil diekspor', 'success');
+            }
+
+            function exportValueError() {
+                if (!valueErrorParticipants || valueErrorParticipants.length === 0) {
+                    showToast('Tidak ada data #VALUE! untuk diekspor', 'error');
+                    return;
+                }
+
+                // Buat CSV dari data #VALUE!
+                let csvContent = 'Nama,Kesalahan,Bonus\n';
+                valueErrorParticipants.forEach(participant => {
+                    const bonus = calculateBonus(0); // Error data get 0 bonus
+                    csvContent += `"${participant.name}","${participant.originalError}","${formatCurrency(bonus)}"\n`;
+                });
+                
+                // Buat blob dan download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `leaderboard_value_error_${currentSheetName}_${new Date().toISOString().slice(0, 10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showToast('Data #VALUE! berhasil diekspor', 'success');
+            }
+
+            function parseCSV(csv) {
+                const lines = csv.split('\n');
+                const result = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        // Regex untuk memisahkan koma tapi tidak di dalam quotes
+                        const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                        const matches = line.match(regex) || [];
+                        
+                        const row = matches.map(cell => {
+                            // Hapus quotes di awal dan akhir jika ada
+                            return cell.replace(/^"|"$/g, '').trim();
+                        });
+                        
+                        result.push(row);
+                    }
+                }
+                
+                return result;
+            }
+
+            function processAndDisplayData(rows) {
+                if (rows.length === 0) {
+                    showMessage('Tidak ada data yang ditemukan', 'error');
+                    return;
+                }
+                
+                // Ambil header
+                const headers = rows[0].map(h => h.toLowerCase());
+                
+                // Cari indeks kolom nama dan kesalahan
+                const nameIndex = headers.findIndex(h => h.includes('nama'));
+                const errorIndex = headers.findIndex(h => h.includes('kesalahan'));
+                
+                if (nameIndex === -1 || errorIndex === -1) {
+                    showMessage('Kolom "Nama" atau "Kesalahan" tidak ditemukan dalam data', 'error');
+                    return;
+                }
+                
+                // Buat array peserta
+                const participants = [];
+                let totalErrors = 0;
+                let errorCount = 0;
+                let totalBonus = 0;
+                
+                for (let i = 1; i < rows.length; i++) {
+                    const name = rows[i][nameIndex];
+                    const errorValue = rows[i][errorIndex];
+                    
+                    if (name) {
+                        // Cek apakah nama atau nilai error mengandung #VALUE!
+                        const hasValueError = name.includes('#VALUE!') || errorValue.includes('#VALUE!');
+                        
+                        // Cek apakah nilai error mengandung error lainnya
+                        const hasOtherError = errorValue && (
+                            errorValue.includes('#REF!') || 
+                            errorValue.includes('#NAME?') || 
+                            errorValue.includes('#DIV/0!') || 
+                            errorValue.includes('#NULL!') || 
+                            errorValue.includes('#NUM!') || 
+                            errorValue.includes('#N/A')
+                        );
+                        
+                        const errors = hasValueError || hasOtherError ? null : (parseInt(errorValue) || 0);
+                        const bonus = hasValueError || hasOtherError ? 0 : calculateBonus(errors);
+                        
+                        // Cek apakah ini adalah CS LINE
+                        const isCsLine = CS_LINE_NAMES.some(csName => 
+                            name.toUpperCase().includes(csName.toUpperCase())
+                        );
+                        
+                        if (hasOtherError) {
+                            errorCount++;
+                        } else if (!isCsLine && !hasValueError) { // CS LINE dan #VALUE! tidak dihitung dalam statistik
+                            totalErrors += errors;
+                            totalBonus += bonus;
+                        }
+                        
+                        participants.push({ 
+                            name, 
+                            errors, 
+                            hasError: hasValueError || hasOtherError,
+                            isCsLine,
+                            originalError: errorValue,
+                            hasValueError: hasValueError,
+                            bonus: bonus
+                        });
+                    }
+                }
+                
+                // Pisahkan data CS LINE, regular, dan #VALUE!
+                csLineParticipants = participants.filter(p => p.isCsLine);
+                valueErrorParticipants = participants.filter(p => p.hasValueError);
+                regularParticipants = participants.filter(p => !p.isCsLine && !p.hasValueError);
+                
+                // Urutkan data regular berdasarkan kesalahan (dari terkecil ke terbesar)
+                const validRegularParticipants = regularParticipants.filter(p => !p.hasError);
+                const errorRegularParticipants = regularParticipants.filter(p => p.hasError);
+                
+                validRegularParticipants.sort((a, b) => a.errors - b.errors);
+                
+                // Gabungkan kembali: data valid dulu, lalu data error
+                processedParticipants = [...validRegularParticipants, ...errorRegularParticipants];
+                
+                // Tampilkan statistik regular participants
+                animateValue('totalParticipants', 0, regularParticipants.length, 1000);
+                animateValue('errorCount', 0, errorRegularParticipants.length, 1000);
+                animateValue('totalBonus', 0, totalBonus, 1000);
+                
+                if (validRegularParticipants.length > 0) {
+                    animateValue('lowestErrors', 0, validRegularParticipants[0].errors, 1000);
+                    animateValue('averageErrors', 0, parseFloat((totalErrors / validRegularParticipants.length).toFixed(1)), 1000);
+                } else {
+                    const lowestErrorsEl = document.getElementById('lowestErrors');
+                    const averageErrorsEl = document.getElementById('averageErrors');
+                    if (lowestErrorsEl) lowestErrorsEl.textContent = 'N/A';
+                    if (averageErrorsEl) averageErrorsEl.textContent = 'N/A';
+                }
+                
+                // Tampilkan statistik #VALUE! participants
+                animateValue('totalValueError', 0, valueErrorParticipants.length, 1000);
+                
+                // Tampilkan banner informasi jika ada data #VALUE!
+                if (valueErrorParticipants.length > 0) {
+                    const infoBanner = document.getElementById('infoBanner');
+                    const infoBannerText = document.getElementById('infoBannerText');
+                    if (infoBanner && infoBannerText) {
+                        infoBannerText.textContent = `${valueErrorParticipants.length} data dengan #VALUE! telah dipisahkan ke tab khusus`;
+                        infoBanner.style.display = 'flex';
+                    }
+                }
+                
+                // Tampilkan peringatan jika ada error lainnya
+                if (errorRegularParticipants.length > 0) {
+                    showMessage(`Ditemukan ${errorRegularParticipants.length} data dengan error. Perbaiki data di spreadsheet untuk hasil yang akurat.`, 'warning');
+                }
+                
+                // Tampilkan leaderboard dengan animasi
+                displayCsLineCards(csLineParticipants);
+                displayLeaderboard(processedParticipants);
+                displayValueErrorLeaderboard(valueErrorParticipants);
+                
+                // Tampilkan hasil dengan animasi
+                const resultsDiv = document.getElementById('results');
+                if (resultsDiv) {
+                    resultsDiv.style.display = 'block';
+                    resultsDiv.style.animation = 'fadeInUp 0.8s ease';
+                }
+            }
+
+            function displayCsLineCards(participants) {
+                const csLineSection = document.getElementById('csLineSection');
+                const csLineGrid = document.getElementById('csLineGrid');
+                
+                if (!csLineGrid) return;
+                csLineGrid.innerHTML = '';
+                
+                if (participants.length === 0) {
+                    if (csLineSection) csLineSection.style.display = 'none';
+                    return;
+                }
+                
+                if (csLineSection) csLineSection.style.display = 'block';
+                
+                participants.forEach((participant, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'cs-card';
+                    
+                    // Ambil inisial nama untuk avatar
+                    const nameParts = participant.name.split(' ');
+                    const initials = nameParts.map(part => part.charAt(0)).join('').substring(0, 2).toUpperCase();
+                    
+                    // Tentukan status
+                    const statusClass = participant.hasError ? 'error' : 'valid';
+                    const statusText = participant.hasError ? 'Error' : 'Available';
+                    const statusIcon = participant.hasError ? 'fa-exclamation-triangle' : 'fa-check-circle';
+                    
+                    card.innerHTML = `
+                        <div class="cs-badge">
+                            <i class="fas fa-headset"></i>
+                            CS LINE
+                        </div>
+                        <div class="cs-avatar">${initials}</div>
+                        <div class="cs-name">${participant.name}</div>
+                        <div class="cs-info">
+                            <span class="cs-label">Kesalahan:</span>
+                            <span class="cs-value">${participant.hasError ? participant.originalError : (participant.errors || '0')}</span>
+                        </div>
+                        <div class="cs-info">
+                            <span class="cs-label">Status:</span>
+                            <span class="cs-status ${statusClass}">
+                                <i class="fas ${statusIcon}"></i>
+                                ${statusText}
+                            </span>
+                        </div>
+                    `;
+                    
+                    // Tambahkan animasi delay untuk setiap card
+                    card.style.animation = `fadeInUp 0.5s ease ${index * 0.15}s both`;
+                    
+                    csLineGrid.appendChild(card);
+                });
+            }
+
+            function displayLeaderboard(participants) {
+                const leaderboardBody = document.getElementById('leaderboardBody');
+                if (!leaderboardBody) return;
+                leaderboardBody.innerHTML = '';
+                
+                if (participants.length === 0) {
+                    leaderboardBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Tidak ada data peserta regular yang valid</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                participants.forEach((participant, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // Tentukan kelas untuk peringkat teratas
+                    if (participant.hasError) {
+                        row.className = 'has-error';
+                    } else if (index === 0 && !participant.hasError) {
+                        row.className = 'top-1';
+                    } else if (index === 1 && !participant.hasError) {
+                        row.className = 'top-2';
+                    } else if (index === 2 && !participant.hasError) {
+                        row.className = 'top-3';
                     }
                     
-                    participants.push({ 
-                        name, 
-                        errors, 
-                        hasError: hasValueError || hasOtherError,
-                        isCsLine,
-                        originalError: errorValue,
-                        hasValueError: hasValueError
+                    // Buat sel peringkat
+                    const rankCell = document.createElement('td');
+                    rankCell.className = 'rank';
+                    
+                    // Tambahkan medali untuk 3 teratas (hanya untuk data valid)
+                    if (!participant.hasError && index === 0) {
+                        rankCell.innerHTML = '<span class="medal gold-medal">1</span>';
+                    } else if (!participant.hasError && index === 1) {
+                        rankCell.innerHTML = '<span class="medal silver-medal">2</span>';
+                    } else if (!participant.hasError && index === 2) {
+                        rankCell.innerHTML = '<span class="medal bronze-medal">3</span>';
+                    } else {
+                        rankCell.textContent = index + 1;
+                    }
+                    
+                    // Buat sel nama
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = participant.name;
+                    
+                    // Buat sel kesalahan
+                    const errorCell = document.createElement('td');
+                    if (participant.hasError) {
+                        errorCell.innerHTML = participant.originalError + '<span class="error-badge">ERROR</span>';
+                    } else {
+                        errorCell.textContent = participant.errors;
+                    }
+                    
+                    // Buat sel bonus
+                    const bonusCell = document.createElement('td');
+                    const bonusDisplay = document.createElement('div');
+                    bonusDisplay.className = 'bonus-display';
+                    
+                    // Tentukan warna berdasarkan jumlah kesalahan
+                    let bonusClass = 'bonus-full';
+                    if (participant.errors > 40) {
+                        bonusClass = 'bonus-low';
+                    } else if (participant.errors >= 26) {
+                        bonusClass = 'bonus-medium';
+                    }
+                    
+                    bonusDisplay.className += ' ' + bonusClass;
+                    bonusDisplay.textContent = formatCurrency(participant.bonus);
+                    
+                    // Tambahkan event listener untuk klik
+                    bonusDisplay.addEventListener('click', () => {
+                        showBonusModal(participant.name, participant.errors, participant.bonus);
                     });
+                    
+                    bonusCell.appendChild(bonusDisplay);
+                    
+                    // Tambahkan sel ke baris
+                    row.appendChild(rankCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(errorCell);
+                    row.appendChild(bonusCell);
+                    
+                    // Tambahkan animasi delay untuk setiap baris
+                    row.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
+                    
+                    // Tambahkan baris ke tabel
+                    leaderboardBody.appendChild(row);
+                });
+            }
+
+            function displayValueErrorLeaderboard(participants) {
+                const valueErrorBody = document.getElementById('valueErrorBody');
+                if (!valueErrorBody) return;
+                valueErrorBody.innerHTML = '';
+                
+                if (participants.length === 0) {
+                    valueErrorBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <i class="fas fa-check-circle"></i>
+                                <p>Tidak ada data dengan #VALUE!</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
                 }
-            }
-            
-            // Pisahkan data CS LINE, regular, dan #VALUE!
-            csLineParticipants = participants.filter(p => p.isCsLine);
-            valueErrorParticipants = participants.filter(p => p.hasValueError);
-            regularParticipants = participants.filter(p => !p.isCsLine && !p.hasValueError);
-            
-            // Urutkan data regular berdasarkan kesalahan (dari terkecil ke terbesar)
-            const validRegularParticipants = regularParticipants.filter(p => !p.hasError);
-            const errorRegularParticipants = regularParticipants.filter(p => p.hasError);
-            
-            validRegularParticipants.sort((a, b) => a.errors - b.errors);
-            
-            // Gabungkan kembali: data valid dulu, lalu data error
-            processedParticipants = [...validRegularParticipants, ...errorRegularParticipants];
-            
-            // Tampilkan statistik regular participants
-            animateValue('totalParticipants', 0, regularParticipants.length, 1000);
-            animateValue('errorCount', 0, errorRegularParticipants.length, 1000);
-            
-            if (validRegularParticipants.length > 0) {
-                animateValue('lowestErrors', 0, validRegularParticipants[0].errors, 1000);
-                animateValue('averageErrors', 0, parseFloat((totalErrors / validRegularParticipants.length).toFixed(1)), 1000);
-            } else {
-                document.getElementById('lowestErrors').textContent = 'N/A';
-                document.getElementById('averageErrors').textContent = 'N/A';
-            }
-            
-            // Tampilkan statistik #VALUE! participants
-            animateValue('totalValueError', 0, valueErrorParticipants.length, 1000);
-            
-            // Tampilkan banner informasi jika ada data #VALUE!
-            if (valueErrorParticipants.length > 0) {
-                const infoBanner = document.getElementById('infoBanner');
-                const infoBannerText = document.getElementById('infoBannerText');
-                infoBannerText.textContent = `${valueErrorParticipants.length} data dengan #VALUE! telah dipisahkan ke tab khusus`;
-                infoBanner.style.display = 'flex';
-            }
-            
-            // Tampilkan peringatan jika ada error lainnya
-            if (errorRegularParticipants.length > 0) {
-                showMessage(`Ditemukan ${errorRegularParticipants.length} data dengan error. Perbaiki data di spreadsheet untuk hasil yang akurat.`, 'warning');
-            }
-            
-            // Tampilkan leaderboard dengan animasi
-            displayCsLineCards(csLineParticipants);
-            displayLeaderboard(processedParticipants);
-            displayValueErrorLeaderboard(valueErrorParticipants);
-            
-            // Tampilkan hasil dengan animasi
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.style.display = 'block';
-            resultsDiv.style.animation = 'fadeInUp 0.8s ease';
-        }
-
-        function displayCsLineCards(participants) {
-            const csLineSection = document.getElementById('csLineSection');
-            const csLineGrid = document.getElementById('csLineGrid');
-            
-            csLineGrid.innerHTML = '';
-            
-            if (participants.length === 0) {
-                csLineSection.style.display = 'none';
-                return;
-            }
-            
-            csLineSection.style.display = 'block';
-            
-            participants.forEach((participant, index) => {
-                const card = document.createElement('div');
-                card.className = 'cs-card';
                 
-                // Ambil inisial nama untuk avatar
-                const nameParts = participant.name.split(' ');
-                const initials = nameParts.map(part => part.charAt(0)).join('').substring(0, 2).toUpperCase();
-                
-                // Tentukan status
-                const statusClass = participant.hasError ? 'error' : 'valid';
-                const statusText = participant.hasError ? 'Error' : 'Available';
-                const statusIcon = participant.hasError ? 'fa-exclamation-triangle' : 'fa-check-circle';
-                
-                card.innerHTML = `
-                    <div class="cs-badge">
-                        <i class="fas fa-headset"></i>
-                        CS LINE
-                    </div>
-                    <div class="cs-avatar">${initials}</div>
-                    <div class="cs-name">${participant.name}</div>
-                    <div class="cs-info">
-                        <span class="cs-label">Kesalahan:</span>
-                        <span class="cs-value">${participant.hasError ? participant.originalError : (participant.errors || '0')}</span>
-                    </div>
-                    <div class="cs-info">
-                        <span class="cs-label">Status:</span>
-                        <span class="cs-status ${statusClass}">
-                            <i class="fas ${statusIcon}"></i>
-                            ${statusText}
-                        </span>
-                    </div>
-                `;
-                
-                // Tambahkan animasi delay untuk setiap card
-                card.style.animation = `fadeInUp 0.5s ease ${index * 0.15}s both`;
-                
-                csLineGrid.appendChild(card);
-            });
-        }
-
-        function displayLeaderboard(participants) {
-            const leaderboardBody = document.getElementById('leaderboardBody');
-            leaderboardBody.innerHTML = '';
-            
-            if (participants.length === 0) {
-                leaderboardBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>Tidak ada data peserta regular yang valid</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            participants.forEach((participant, index) => {
-                const row = document.createElement('tr');
-                
-                // Tentukan kelas untuk peringkat teratas
-                if (participant.hasError) {
+                participants.forEach((participant, index) => {
+                    const row = document.createElement('tr');
                     row.className = 'has-error';
-                } else if (index === 0 && !participant.hasError) {
-                    row.className = 'top-1';
-                } else if (index === 1 && !participant.hasError) {
-                    row.className = 'top-2';
-                } else if (index === 2 && !participant.hasError) {
-                    row.className = 'top-3';
-                }
-                
-                // Buat sel peringkat
-                const rankCell = document.createElement('td');
-                rankCell.className = 'rank';
-                
-                // Tambahkan medali untuk 3 teratas (hanya untuk data valid)
-                if (!participant.hasError && index === 0) {
-                    rankCell.innerHTML = '<span class="medal gold-medal">1</span>';
-                } else if (!participant.hasError && index === 1) {
-                    rankCell.innerHTML = '<span class="medal silver-medal">2</span>';
-                } else if (!participant.hasError && index === 2) {
-                    rankCell.innerHTML = '<span class="medal bronze-medal">3</span>';
-                } else {
-                    rankCell.textContent = index + 1;
-                }
-                
-                // Buat sel nama
-                const nameCell = document.createElement('td');
-                nameCell.textContent = participant.name;
-                
-                // Buat sel kesalahan
-                const errorCell = document.createElement('td');
-                if (participant.hasError) {
-                    errorCell.innerHTML = participant.originalError + '<span class="error-badge">ERROR</span>';
-                } else {
-                    errorCell.textContent = participant.errors;
-                }
-                
-                // Buat sel status
-                const statusCell = document.createElement('td');
-                if (participant.hasError) {
-                    statusCell.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--error-color);"></i> Error';
-                } else {
-                    statusCell.innerHTML = '<i class="fas fa-check-circle" style="color: var(--secondary);"></i> Valid';
-                }
-                
-                // Tambahkan sel ke baris
-                row.appendChild(rankCell);
-                row.appendChild(nameCell);
-                row.appendChild(errorCell);
-                row.appendChild(statusCell);
-                
-                // Tambahkan animasi delay untuk setiap baris
-                row.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
-                
-                // Tambahkan baris ke tabel
-                leaderboardBody.appendChild(row);
-            });
-        }
-
-        function displayValueErrorLeaderboard(participants) {
-            const valueErrorBody = document.getElementById('valueErrorBody');
-            valueErrorBody.innerHTML = '';
-            
-            if (participants.length === 0) {
-                valueErrorBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="empty-state">
-                            <i class="fas fa-check-circle"></i>
-                            <p>Tidak ada data dengan #VALUE!</p>
-                        </td>
-                    </tr>
-                `;
-                return;
+                    
+                    // Buat sel nomor
+                    const noCell = document.createElement('td');
+                    noCell.className = 'rank';
+                    noCell.textContent = index + 1;
+                    
+                    // Buat sel nama
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = participant.name;
+                    
+                    // Buat sel kesalahan
+                    const errorCell = document.createElement('td');
+                    errorCell.innerHTML = participant.originalError + '<span class="error-badge">#VALUE!</span>';
+                    
+                    // Buat sel bonus
+                    const bonusCell = document.createElement('td');
+                    const bonusDisplay = document.createElement('div');
+                    bonusDisplay.className = 'bonus-display bonus-low';
+                    bonusDisplay.textContent = formatCurrency(0);
+                    
+                    // Tambahkan event listener untuk klik
+                    bonusDisplay.addEventListener('click', () => {
+                        showBonusModal(participant.name, 0, 0);
+                    });
+                    
+                    bonusCell.appendChild(bonusDisplay);
+                    
+                    // Tambahkan sel ke baris
+                    row.appendChild(noCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(errorCell);
+                    row.appendChild(bonusCell);
+                    
+                    // Tambahkan animasi delay untuk setiap baris
+                    row.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
+                    
+                    // Tambahkan baris ke tabel
+                    valueErrorBody.appendChild(row);
+                });
             }
-            
-            participants.forEach((participant, index) => {
-                const row = document.createElement('tr');
-                row.className = 'has-error';
-                
-                // Buat sel nomor
-                const noCell = document.createElement('td');
-                noCell.className = 'rank';
-                noCell.textContent = index + 1;
-                
-                // Buat sel nama
-                const nameCell = document.createElement('td');
-                nameCell.textContent = participant.name;
-                
-                // Buat sel kesalahan
-                const errorCell = document.createElement('td');
-                errorCell.innerHTML = participant.originalError + '<span class="error-badge">#VALUE!</span>';
-                
-                // Buat sel status
-                const statusCell = document.createElement('td');
-                statusCell.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--warning-color);"></i> <span style="color: var(--warning-color);">Perlu Diperbaiki</span>';
-                
-                // Tambahkan sel ke baris
-                row.appendChild(noCell);
-                row.appendChild(nameCell);
-                row.appendChild(errorCell);
-                row.appendChild(statusCell);
-                
-                // Tambahkan animasi delay untuk setiap baris
-                row.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
-                
-                // Tambahkan baris ke tabel
-                valueErrorBody.appendChild(row);
-            });
-        }
 
-        function animateValue(id, start, end, duration) {
-            const obj = document.getElementById(id);
-            const range = end - start;
-            const minTimer = 50;
-            let stepTime = Math.abs(Math.floor(duration / range));
-            stepTime = Math.max(stepTime, minTimer);
-            const startTime = new Date().getTime();
-            const endTime = startTime + duration;
-            let timer;
-            
-            function run() {
-                const now = new Date().getTime();
-                const remaining = Math.max((endTime - now) / duration, 0);
-                const value = Math.round(end - (remaining * range));
-                obj.innerHTML = value;
-                if (value == end) {
-                    clearInterval(timer);
+            function animateValue(id, start, end, duration) {
+                const obj = document.getElementById(id);
+                if (!obj) return;
+                
+                const range = end - start;
+                const minTimer = 50;
+                let stepTime = Math.abs(Math.floor(duration / range));
+                stepTime = Math.max(stepTime, minTimer);
+                const startTime = new Date().getTime();
+                const endTime = startTime + duration;
+                let timer;
+                
+                function run() {
+                    const now = new Date().getTime();
+                    const remaining = Math.max((endTime - now) / duration, 0);
+                    const value = Math.round(end - (remaining * range));
+                    obj.innerHTML = value;
+                    if (value == end) {
+                        clearInterval(timer);
+                    }
                 }
+                
+                timer = setInterval(run, stepTime);
+                run();
             }
-            
-            timer = setInterval(run, stepTime);
-            run();
-        }
 
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('message');
-            const icon = type === 'error' ? 'fa-exclamation-circle' : 
-                         type === 'warning' ? 'fa-exclamation-triangle' : 
-                         type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
-            messageDiv.innerHTML = `<div class="message ${type}"><i class="fas ${icon}"></i> ${message}</div>`;
-        }
-
-        function showToast(message, type) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const icon = toast.querySelector('i');
-            
-            // Set icon berdasarkan tipe
-            if (type === 'error') {
-                icon.className = 'fas fa-exclamation-circle';
-                toast.className = 'toast error';
-            } else if (type === 'warning') {
-                icon.className = 'fas fa-exclamation-triangle';
-                toast.className = 'toast warning';
-            } else {
-                icon.className = 'fas fa-check-circle';
-                toast.className = 'toast success';
+            function showMessage(message, type) {
+                const messageDiv = document.getElementById('message');
+                if (!messageDiv) return;
+                
+                const icon = type === 'error' ? 'fa-exclamation-circle' : 
+                             type === 'warning' ? 'fa-exclamation-triangle' : 
+                             type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
+                messageDiv.innerHTML = `<div class="message ${type}"><i class="fas ${icon}"></i> ${message}</div>`;
             }
-            
-            // Set pesan
-            toastMessage.textContent = message;
-            
-            // Tampilkan toast
-            toast.classList.add('show');
-            
-            // Sembunyikan toast setelah 3 detik
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+
+            function showToast(message, type) {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                if (!toast || !toastMessage) return;
+                
+                const icon = toast.querySelector('i');
+                
+                // Set icon berdasarkan tipe
+                if (type === 'error') {
+                    icon.className = 'fas fa-exclamation-circle';
+                    toast.className = 'toast error';
+                } else if (type === 'warning') {
+                    icon.className = 'fas fa-exclamation-triangle';
+                    toast.className = 'toast warning';
+                } else {
+                    icon.className = 'fas fa-check-circle';
+                    toast.className = 'toast success';
+                }
+                
+                // Set pesan
+                toastMessage.textContent = message;
+                
+                // Tampilkan toast
+                toast.classList.add('show');
+                
+                // Sembunyikan toast setelah 3 detik
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        });
     </script>
 </body>
-
 </html>
-
