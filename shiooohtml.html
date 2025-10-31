@@ -3,369 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acak Gambar Togel dan Shio</title>
+    <title>Generator Togel & Syair ( dengan Editor Gambar )</title>
     <style>
+        /* Gaya Umum */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
             padding: 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-        .content-wrapper {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .info-section {
-            flex: 1;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
-        }
-        .image-section {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
-        .shio-image-container {
+
+        .container {
+            max-width: 800px;
             width: 100%;
-            max-width: 400px;
-            height: 300px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffd700;
             margin-bottom: 20px;
-            background-color: #f8f9fa;
+        }
+
+        /* Gaya Kontainer Gambar dan Overlay */
+        .gambar-container {
+            position: relative; /* Penting untuk penempatan overlay */
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            text-align: center;
+        }
+
+        .gambar-promosi {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            border: 2px solid #444;
+        }
+
+        /* Gaya untuk Teks Overlay di Atas Gambar */
+        .overlay-text {
+            position: absolute;
+            color: #FFFFFF; /* Warna teks putih */
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000000; /* Bayangan agar teks terbaca */
+            font-size: 1.1em;
+            white-space: nowrap;
+        }
+
+        #overlayTanggal {
+            top: 8%;       /* Posisi dari atas */
+            left: 50%;     /* Posisi dari kiri */
+            transform: translateX(-50%); /* Untuk menengahkan teks */
+        }
+
+        #overlayShio {
+            top: 45%;      /* Posisi dari atas (sekitar 'Binatangnya') */
+            left: 15%;     /* Posisi dari kiri */
+        }
+
+        #overlayAngka {
+            top: 45%;      /* Posisi dari atas (sekitar 'Naga') */
+            right: 15%;    /* Posisi dari kanan */
+        }
+
+        /* Gaya Generator */
+        .generator-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-box {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .feature-box h2 {
+            color: #00bcd4;
+            margin-top: 0;
+        }
+
+        .result-area {
+            min-height: 60px;
+            background-color: #1c1c1c;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
+            word-wrap: break-word;
         }
-        .shio-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: grayscale(100%) contrast(120%);
+
+        .result-area#angkaResult {
+            font-size: 1.8em;
+            letter-spacing: 5px;
+            color: #4caf50;
         }
-        .shio-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
+        
+        .result-area#shioResult {
+            color: #ff9800;
+        }
+
+        .result-area#syairResult {
+            font-style: italic;
+            color: #e91e63;
+            font-size: 1.1em;
             text-align: center;
+        }
+
+        /* Gaya untuk Dropdown dan Button */
+        select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #ffd700;
+            color: #121212;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
             margin-top: 10px;
         }
-        .togel-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        .togel-item {
-            background-color: #2c3e50;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .result-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-        .result-item {
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 8px;
-            min-width: 150px;
-            text-align: center;
-        }
-        .result-item h3 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        .result-item p {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .control-section {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+
         button:hover {
-            background-color: #2980b9;
+            background-color: #ffed4e;
         }
-        .shio-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
+        
+        .shio-selector-container {
+            margin-bottom: 15px;
         }
-        .shio-item {
-            background-color: #f1c40f;
-            color: #333;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .shio-item.active {
-            background-color: #e74c3c;
-            color: white;
-        }
-        .shio-item:hover {
-            background-color: #f39c12;
-        }
-        .poem {
-            font-style: italic;
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f8f9fa;
+
+        /* Gaya untuk Gambar Shio yang Dipilih */
+        #shioImageDisplay {
+            max-width: 100%;
+            height: auto;
             border-radius: 8px;
-            border-left: 4px solid #e74c3c;
+            margin-top: 15px;
+            border: 1px solid #555;
+            display: none; /* Sembunyikan awalnya */
         }
-        .header-info {
+
+        /* Tombol Utama untuk Menerapkan ke Gambar */
+        #btnApplyToImage {
+            background-color: #4CAF50; /* Warna hijau untuk menonjol */
+            font-size: 1.2em;
+            max-width: 400px;
+            margin: 20px auto; /* Tengah dan beri jarak */
+            display: block;
+        }
+
+        #btnApplyToImage:hover {
+            background-color: #45a049;
+        }
+
+        footer {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #2c3e50;
-            color: white;
-            border-radius: 5px;
-        }
-        @media (max-width: 768px) {
-            .content-wrapper {
-                flex-direction: column;
-            }
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #888;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="header-info">
-            <h2>PASANG BERSAMA, WITHDRAW BERSAMA</h2>
-            <p>SYAIR LINE TOGEL - RESULT BERACUAN KODE</p>
-            <p>TIDAK NGEBAN & TIK TOK, TAYSEN MAIN</p>
-        </div>
+        <h1>Generator Togel & Syair (dengan Editor Gambar)</h1>
         
-        <h1>Acak Gambar Berdasarkan Togel & Shio</h1>
-        
-        <div class="poem">
-            <p>Hidup adalah kesempatan emas</p>
-            <p>Masa depan terbuka lebar</p>
-            <p>Harapan adalah kompas hidup</p>
-            <p>Kasih adalah pengikat hubungan</p>
-        </div>
-        
-        <div class="content-wrapper">
-            <div class="info-section">
-                <h2>Data Togel Hari Ini</h2>
-                <p><strong>Tanggal:</strong> <span id="current-date">31 OKTOBER 2025</span></p>
-                <p><strong>Binatang:</strong> <span id="animal">KOTOR</span></p>
-                <div class="togel-info">
-                    <div class="togel-item">MK: 3 / 5</div>
-                    <div class="togel-item">Naga: 1 - 2 - 5</div>
-                </div>
-                
-                <div class="result-section">
-                    <div class="result-item">
-                        <h3>Angka Togel</h3>
-                        <p id="togel-number">0</p>
-                        <button onclick="generateTogelNumber()">Acak Angka</button>
-                    </div>
-                    
-                    <div class="result-item">
-                        <h3>Shio</h3>
-                        <p id="shio-result">-</p>
-                        <button onclick="generateShio()">Acak Shio</button>
-                    </div>
-                </div>
-                
-                <div>
-                    <h2>Pilih Shio:</h2>
-                    <div class="shio-container" id="shio-container">
-                        <!-- Shio akan diisi oleh JavaScript -->
-                    </div>
-                </div>
-            </div>
+        <!-- Kontainer Gambar dengan Overlay Teks -->
+        <div class="gambar-container">
+            <img src="https://z-cdn-media.chatglm.cn/files/ce2af8ec-242a-4cda-a0d5-06d41b37cd0b_babiii.jpg?auth_key=1761889027-822a73cc25714987ab6bea192f110c1f-0-8d0dd55a0d0a5d52fe4634c06c72c897" alt="SYAIR LINE TOGEL Promosi" class="gambar-promosi">
             
-            <div class="image-section">
-                <div class="shio-image-container">
-                    <img id="shio-image" src="https://cdn.pixabay.com/photo/2018/05/20/16/05/pig-3415616_1280.jpg" alt="Gambar Shio" class="shio-image">
+            <!-- Elemen Teks yang Akan Muncul di Atas Gambar -->
+            <p id="overlayTanggal" class="overlay-text"></p>
+            <p id="overlayShio" class="overlay-text"></p>
+            <p id="overlayAngka" class="overlay-text"></p>
+        </div>
+
+        <div class="generator-container">
+            <!-- Fitur 1: Acak Angka Togel -->
+            <div class="feature-box">
+                <h2>Acak Angka Togel</h2>
+                <div id="angkaResult" class="result-area">Klik untuk hasil</div>
+                <button onclick="generateAngka()">Generate Angka</button>
+            </div>
+
+            <!-- Fitur 2: Pilih Shio Togel -->
+            <div class="feature-box">
+                <h2>Pilih Shio & Generate Nomor</h2>
+                <div class="shio-selector-container">
+                    <select id="shioSelector" onchange="updateShioImage()"></select>
                 </div>
-                <div class="shio-name" id="shio-name">Babi</div>
+                <!-- Gambar Shio Akan Muncul di Sini -->
+                <img id="shioImageDisplay" src="" alt="Gambar Shio">
+                <div id="shioResult" class="result-area">Pilih shio dan klik tombol</div>
+                <button onclick="generateNomorShio()">Generate Nomor</button>
+            </div>
+
+            <!-- Fitur 3: Acak Syair -->
+            <div class="feature-box">
+                <h2>Syair Harian</h2>
+                <div id="syairResult" class="result-area">Klik untuk hasil</div>
+                <button onclick="generateSyair()">Generate Syair</button>
             </div>
         </div>
-        
-        <div class="control-section">
-            <button onclick="generateAll()">Acak Semua</button>
-            <button onclick="resetAll()">Reset</button>
-        </div>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="https://linklist.bio/situslinetgl" target="_blank">https://linklist.bio/situslinetgl</a>
-        </div>
+
+        <!-- Tombol Baru untuk Menerapkan Hasil ke Gambar -->
+        <button id="btnApplyToImage" onclick="applyToImage()">Terapkan ke Gambar</button>
+
+        <footer>
+            <p>Ini adalah alat generator acak untuk hiburan semata. Keputusan bermain tetap ada di tangan Anda.</p>
+        </footer>
     </div>
 
     <script>
-        // Data shio
-        const shioList = [
-            "Tikus", "Kerbau", "Harimau", "Kelinci", 
-            "Naga", "Ular", "Kuda", "Kambing", 
-            "Monyet", "Ayam", "Anjing", "Babi"
+        // Data Shio Togel beserta nomornya dan URL gambarnya
+        const shioData = [
+            { nama: "Naga", nomor: [01, 13, 25, 37, 49, 61, 73, 85, 97], imageUrl: "https://z-cdn-media.chatglm.cn/files/6f74f3ea-7398-4aca-8e61-076cdc07e52d_nagaa.png?auth_key=1761890199-a02e59b394984310a193f9eabea85593-0-e3a9d1d57fb7a093838a4585bc7cd418" },
+            { nama: "Kelinci", nomor: [02, 14, 26, 38, 50, 62, 74, 86, 98], imageUrl: "" },
+            { nama: "Harimau", nomor: [03, 15, 27, 39, 51, 63, 75, 87, 99], imageUrl: "https://z-cdn-media.chatglm.cn/files/c1f7cebd-2b27-4d60-8aaf-4cf04ff4a688_harimau.png?auth_key=1761890199-7f5f634a05e5427cbe1dfc2716c449fa-0-2c826928df528a209c1102b45538d061" },
+            { nama: "Babi", nomor: [04, 16, 28, 40, 52, 64, 76, 88, 00], imageUrl: "https://z-cdn-media.chatglm.cn/files/70ee94f0-3b7f-4b37-b95b-26b88a999a8d_babii.jpg?auth_key=1761890199-6f860f67be5d4a2fa855af5c7a109dca-0-6671ece03dda3942be448be59e891367" },
+            { nama: "Anjing", nomor: [05, 17, 29, 41, 53, 65, 77, 89], imageUrl: "" },
+            { nama: "Ayam", nomor: [06, 18, 30, 42, 54, 66, 78, 90], imageUrl: "" },
+            { nama: "Monyet", nomor: [07, 19, 31, 43, 55, 67, 79, 91], imageUrl: "" },
+            { nama: "Kambing", nomor: [08, 20, 32, 44, 56, 68, 80, 92], imageUrl: "" },
+            { nama: "Kuda", nomor: [09, 21, 33, 45, 57, 69, 81, 93], imageUrl: "" },
+            { nama: "Ular", nomor: [10, 22, 34, 46, 58, 70, 82, 94], imageUrl: "" },
+            { nama: "Kerbau", nomor: [11, 23, 35, 47, 59, 71, 83, 95], imageUrl: "https://z-cdn-media.chatglm.cn/files/19656372-290c-42ed-9897-c440a2497dfb_kerbauu.jpg?auth_key=1761890199-89447f132a16432991d4d84604b46106-0-fd403e3f284df78a796f6ea1ba8b05d4" },
+            { nama: "Tikus", nomor: [12, 24, 36, 48, 60, 72, 84, 96], imageUrl: "" }
         ];
-        
-        // Data gambar untuk setiap shio (dalam format hitam putih)
-        const shioImages = {
-            "Tikus": "https://cdn.pixabay.com/photo/2017/11/06/09/53/animal-2923186_1280.jpg",
-            "Kerbau": "https://cdn.pixabay.com/photo/2018/05/20/16/05/buffalo-3415610_1280.jpg",
-            "Harimau": "https://cdn.pixabay.com/photo/2017/07/24/19/57/tiger-2535888_1280.jpg",
-            "Kelinci": "https://cdn.pixabay.com/photo/2017/04/02/22/36/easter-2197043_1280.jpg",
-            "Naga": "https://cdn.pixabay.com/photo/2017/09/12/15/31/dragon-2742419_1280.png",
-            "Ular": "https://cdn.pixabay.com/photo/2018/04/13/21/40/snake-3317474_1280.jpg",
-            "Kuda": "https://cdn.pixabay.com/photo/2017/09/25/18/44/horse-2785074_1280.jpg",
-            "Kambing": "https://cdn.pixabay.com/photo/2018/07/03/05/48/goat-3513173_1280.jpg",
-            "Monyet": "https://cdn.pixabay.com/photo/2017/09/25/21/13/monkey-2786726_1280.jpg",
-            "Ayam": "https://cdn.pixabay.com/photo/2017/10/06/12/18/rooster-2822933_1280.jpg",
-            "Anjing": "https://cdn.pixabay.com/photo/2018/05/20/16/05/dog-3415615_1280.jpg",
-            "Babi": "https://cdn.pixabay.com/photo/2018/05/20/16/05/pig-3415616_1280.jpg"
-        };
-        
-        // Data gambar untuk angka togel
-        const togelImages = [
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027493_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027494_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027495_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027496_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027497_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027498_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027499_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027500_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027501_1280.png",
-            "https://cdn.pixabay.com/photo/2017/01/31/23/42/numbers-2027502_1280.png"
+
+        // Data Syair (contoh)
+        const syairList = [
+            "Malam yang sunyi membawa bisikan gaib, di balik awan gelap bintang menunjukkan jalan.",
+            "Angin berbisik nomor yang tersembunyi, hanya hati yang tenang bisa mendengar.",
+            "Mimpi di tengah malam, kunci keberuntungan yang tak terduga.",
+            "Air mata sang bulan, membasahi angka jituan di tengah lautan.",
+            "Pohon tua di tepi jurang, akarnya kuat menyimpan rahasia.",
+            "Burung hantu bersiul di malam hari, pertanda angka akan segera tiba.",
+            "Hidup adalah kesempatan emas, jangan sia-siakan satu detik pun."
         ];
-        
-        // Inisialisasi
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tampilkan daftar shio
-            const shioContainer = document.getElementById('shio-container');
-            shioList.forEach(shio => {
-                const shioItem = document.createElement('div');
-                shioItem.className = 'shio-item';
-                if (shio === "Babi") {
-                    shioItem.classList.add('active');
-                }
-                shioItem.textContent = shio;
-                shioItem.addEventListener('click', function() {
-                    // Hapus kelas aktif dari semua shio
-                    document.querySelectorAll('.shio-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    // Tambah kelas aktif ke shio yang dipilih
-                    this.classList.add('active');
-                    // Tampilkan shio yang dipilih
-                    document.getElementById('shio-result').textContent = shio;
-                    // Tampilkan gambar berdasarkan shio
-                    displayImageByShio(shio);
-                });
-                shioContainer.appendChild(shioItem);
+
+        // Variabel global untuk menyimpan hasil
+        let selectedShioName = '';
+        let generatedAngka = '';
+
+        // --- FUNGSI UNTUK MENGISI DROPDOWN SHIO ---
+        function populateShioDropdown() {
+            const selector = document.getElementById('shioSelector');
+            shioData.forEach((shio, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = shio.nama;
+                selector.appendChild(option);
             });
-            
-            // Tampilkan gambar awal
-            displayImageByShio("Babi");
-        });
-        
-        // Fungsi untuk menghasilkan angka togel acak
-        function generateTogelNumber() {
-            const togelNumber = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-            document.getElementById('togel-number').textContent = togelNumber;
         }
-        
-        // Fungsi untuk menghasilkan shio acak
-        function generateShio() {
-            const randomIndex = Math.floor(Math.random() * shioList.length);
-            const randomShio = shioList[randomIndex];
+
+        // --- FUNGSI BARU UNTUK MEMPERBARUI GAMBAR SHIO ---
+        function updateShioImage() {
+            const selector = document.getElementById('shioSelector');
+            const selectedShioIndex = selector.value;
+            const shioImage = document.getElementById('shioImageDisplay');
             
-            // Hapus kelas aktif dari semua shio
-            document.querySelectorAll('.shio-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Tambah kelas aktif ke shio yang terpilih
-            document.querySelectorAll('.shio-item')[randomIndex].classList.add('active');
-            
-            // Tampilkan shio yang terpilih
-            document.getElementById('shio-result').textContent = randomShio;
-            
-            // Tampilkan gambar berdasarkan shio
-            displayImageByShio(randomShio);
+            const shioTerpilih = shioData[selectedShioIndex];
+
+            if (shioTerpilih.imageUrl) {
+                shioImage.src = shioTerpilih.imageUrl;
+                shioImage.style.display = 'block'; // Tampilkan gambar
+            } else {
+                shioImage.style.display = 'none'; // Sembunyikan jika tidak ada gambar
+            }
         }
-        
-        // Fungsi untuk menampilkan gambar berdasarkan shio
-        function displayImageByShio(shio) {
-            const shioImage = document.getElementById('shio-image');
-            const shioName = document.getElementById('shio-name');
-            
-            // Tampilkan gambar shio yang sesuai
-            shioImage.src = shioImages[shio] || "";
-            shioImage.alt = `Gambar ${shio}`;
-            shioName.textContent = shio;
+
+        // Fungsi untuk menghasilkan angka togel 4D acak
+        function generateAngka() {
+            let angka = "";
+            for (let i = 0; i < 4; i++) {
+                angka += Math.floor(Math.random() * 10);
+            }
+            const formattedAngka = angka.split('').join(' ');
+            generatedAngka = formattedAngka; // Simpan hasil ke variabel global
+            document.getElementById('angkaResult').innerText = formattedAngka;
         }
-        
-        // Fungsi untuk mengacak semua
-        function generateAll() {
-            generateTogelNumber();
-            generateShio();
-        }
-        
-        // Fungsi untuk mereset semua
-        function resetAll() {
-            document.getElementById('togel-number').textContent = '0';
-            document.getElementById('shio-result').textContent = '-';
+
+        // Fungsi untuk menghasilkan nomor acak dari shio yang DIPILIH
+        function generateNomorShio() {
+            const selector = document.getElementById('shioSelector');
+            const selectedShioIndex = selector.value;
             
-            // Hapus kelas aktif dari semua shio
-            document.querySelectorAll('.shio-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            if (selectedShioIndex === "") {
+                document.getElementById('shioResult').innerText = "Silakan pilih shio terlebih dahulu.";
+                return;
+            }
+
+            const shioTerpilih = shioData[selectedShioIndex];
+            selectedShioName = shioTerpilih.nama; // Simpan nama shio ke variabel global
+            const nomorAcak = shioTerpilih.nomor[Math.floor(Math.random() * shioTerpilih.nomor.length)];
             
-            // Tampilkan gambar babi sebagai default
-            document.querySelectorAll('.shio-item')[11].classList.add('active');
-            displayImageByShio("Babi");
-            document.getElementById('shio-name').textContent = 'Babi';
+            document.getElementById('shioResult').innerHTML = `
+                Shio: <strong>${shioTerpilih.nama}</strong><br>
+                Nomor: ${nomorAcak}
+            `;
         }
+
+        // Fungsi untuk menghasilkan syair acak
+        function generateSyair() {
+            const randomIndex = Math.floor(Math.random() * syairList.length);
+            const syairTerpilih = syairList[randomIndex];
+            document.getElementById('syairResult').innerText = syairTerpilih;
+        }
+
+        // --- FUNGSI BARU UNTUK MENERAPKAN TEKS KE GAMBAR ---
+        function applyToImage() {
+            // 1. Perbarui Tanggal
+            const today = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const tanggal = today.toLocaleDateString('id-ID', options);
+            document.getElementById('overlayTanggal').innerText = 'Tanggal : ' + tanggal;
+
+            // 2. Perbarui Shio
+            if (selectedShioName) {
+                document.getElementById('overlayShio').innerText = 'Binatangnya : ' + selectedShioName.toUpperCase();
+            } else {
+                alert('Silakan pilih dan generate shio terlebih dahulu!');
+                return; // Hentikan fungsi jika shio belum dipilih
+            }
+
+            // 3. Perbarui Angka
+            if (generatedAngka) {
+                document.getElementById('overlayAngka').innerText = 'Angka : ' + generatedAngka;
+            } else {
+                alert('Silakan generate angka terlebih dahulu!');
+                return; // Hentikan fungsi jika angka belum digenerate
+            }
+        }
+
+        // Panggil fungsi untuk mengisi dropdown saat halaman dimuat
+        window.onload = populateShioDropdown;
+
     </script>
+
 </body>
 </html>
