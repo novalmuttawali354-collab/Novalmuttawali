@@ -1177,6 +1177,59 @@
             font-size: 1.2rem;
         }
         
+        /* Kolom A-D Table Styles */
+        .column-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        .column-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+            color: var(--light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .column-table tr {
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .column-table tr:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: scale(1.01);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .column-table td {
+            padding: 15px;
+            color: var(--light);
+        }
+        
+        .column-table .column-a {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .column-table .column-b {
+            color: var(--light);
+        }
+        
+        .column-table .column-c {
+            color: var(--secondary);
+        }
+        
+        .column-table .column-d {
+            color: var(--primary);
+        }
+        
         @media (max-width: 768px) {
             .stats {
                 flex-direction: column;
@@ -1234,6 +1287,14 @@
             
             .bonus-value {
                 font-size: 2rem;
+            }
+            
+            .column-table {
+                font-size: 14px;
+            }
+            
+            .column-table th, .column-table td {
+                padding: 10px 8px;
             }
         }
     </style>
@@ -1312,6 +1373,10 @@
                 <button class="tab-button" onclick="switchTab('valueError')">
                     <i class="fas fa-exclamation-triangle"></i>
                     <span>Data #VALUE!</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('columnsAD')">
+                    <i class="fas fa-columns"></i>
+                    <span>Kolom A-D</span>
                 </button>
             </div>
             
@@ -1407,6 +1472,46 @@
                             </tbody>
                         </table>
                     </div>
+                    
+                    <!-- Kolom A-D Tab -->
+                    <div class="tab-content" id="columnsADTab">
+                        <div class="info-banner" style="background: rgba(138, 43, 226, 0.1); border-left: 5px solid var(--primary);">
+                            <i class="fas fa-columns" style="color: var(--primary);"></i>
+                            <span>Menampilkan data dari kolom A hingga D dari spreadsheet</span>
+                        </div>
+                        
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-label"><i class="fas fa-table"></i> Total Baris</div>
+                                <div class="stat-value" id="totalRows">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label"><i class="fas fa-columns"></i> Total Kolom</div>
+                                <div class="stat-value">4</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                            <h3><i class="fas fa-table"></i> Data Kolom A-D</h3>
+                            <button id="exportColumnsAD" class="export-btn">
+                                <i class="fas fa-file-excel"></i> Export A-D
+                            </button>
+                        </div>
+                        
+                        <table class="column-table">
+                            <thead>
+                                <tr>
+                                    <th class="column-a">Kolom A</th>
+                                    <th class="column-b">Kolom B</th>
+                                    <th class="column-c">Kolom C</th>
+                                    <th class="column-d">Kolom D</th>
+                                </tr>
+                            </thead>
+                            <tbody id="columnsADBody">
+                                <!-- Data kolom A-D akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1497,6 +1602,7 @@
         document.getElementById('refreshData').addEventListener('click', refreshData);
         document.getElementById('exportData').addEventListener('click', exportData);
         document.getElementById('exportValueError').addEventListener('click', exportValueError);
+        document.getElementById('exportColumnsAD').addEventListener('click', exportColumnsAD);
         
         // Data cache untuk refresh
         let cachedData = null;
@@ -1505,6 +1611,7 @@
         let csLineParticipants = [];
         let regularParticipants = [];
         let valueErrorParticipants = [];
+        let columnsADData = [];
         let removedValueCount = 0;
 
         // Fungsi untuk menghitung bonus berdasarkan kesalahan
@@ -1586,6 +1693,9 @@
             } else if (tabName === 'valueError') {
                 document.querySelectorAll('.tab-button')[1].classList.add('active');
                 document.getElementById('valueErrorTab').classList.add('active');
+            } else if (tabName === 'columnsAD') {
+                document.querySelectorAll('.tab-button')[2].classList.add('active');
+                document.getElementById('columnsADTab').classList.add('active');
             }
         }
 
@@ -1775,6 +1885,32 @@
             showToast('Data #VALUE! berhasil diekspor', 'success');
         }
 
+        function exportColumnsAD() {
+            if (!columnsADData || columnsADData.length === 0) {
+                showToast('Tidak ada data kolom A-D untuk diekspor', 'error');
+                return;
+            }
+
+            // Buat CSV dari data kolom A-D
+            let csvContent = 'Kolom A,Kolom B,Kolom C,Kolom D\n';
+            columnsADData.forEach(row => {
+                csvContent += `"${row[0] || ''}","${row[1] || ''}","${row[2] || ''}","${row[3] || ''}"\n`;
+            });
+            
+            // Buat blob dan download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `columns_ad_${currentSheetName}_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('Data kolom A-D berhasil diekspor', 'success');
+        }
+
         function parseCSV(csv) {
             const lines = csv.split('\n');
             const result = [];
@@ -1803,6 +1939,23 @@
                 showMessage('Tidak ada data yang ditemukan', 'error');
                 return;
             }
+            
+            // Simpan data untuk tab kolom A-D
+            columnsADData = rows.map(row => {
+                // Ambil hanya 4 kolom pertama (A-D)
+                const newRow = [];
+                for (let i = 0; i < Math.min(4, row.length); i++) {
+                    newRow.push(row[i]);
+                }
+                // Jika kurang dari 4 kolom, tambahkan string kosong
+                while (newRow.length < 4) {
+                    newRow.push('');
+                }
+                return newRow;
+            });
+            
+            // Tampilkan data kolom A-D
+            displayColumnsAD(columnsADData);
             
             // Ambil header
             const headers = rows[0].map(h => h.toLowerCase());
@@ -1898,6 +2051,9 @@
             
             // Tampilkan statistik #VALUE! participants
             animateValue('totalValueError', 0, valueErrorParticipants.length, 1000);
+            
+            // Tampilkan statistik kolom A-D
+            animateValue('totalRows', 0, columnsADData.length, 1000);
             
             // Tampilkan banner informasi jika ada data #VALUE!
             if (valueErrorParticipants.length > 0) {
@@ -2119,6 +2275,41 @@
                 
                 // Tambahkan baris ke tabel
                 valueErrorBody.appendChild(row);
+            });
+        }
+
+        function displayColumnsAD(data) {
+            const columnsADBody = document.getElementById('columnsADBody');
+            columnsADBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                columnsADBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Tidak ada data kolom A-D</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                
+                // Buat sel untuk setiap kolom (A-D)
+                for (let i = 0; i < 4; i++) {
+                    const td = document.createElement('td');
+                    td.className = `column-${String.fromCharCode(65 + i)}`; // class="column-a", "column-b", etc.
+                    td.textContent = row[i] || '';
+                    tr.appendChild(td);
+                }
+                
+                // Tambahkan animasi delay untuk setiap baris
+                tr.style.animation = `fadeInUp 0.5s ease ${index * 0.05}s both`;
+                
+                // Tambahkan baris ke tabel
+                columnsADBody.appendChild(tr);
             });
         }
 
