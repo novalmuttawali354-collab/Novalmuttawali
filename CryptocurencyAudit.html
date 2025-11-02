@@ -1177,7 +1177,7 @@
             font-size: 1.2rem;
         }
         
-        /* Kolom A-D Table Styles - Diperbarui */
+        /* Kolom A-D Table Styles - Simplified */
         .column-table {
             width: 100%;
             border-collapse: collapse;
@@ -1338,7 +1338,7 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Search Section Styles */
+        /* Search Section Styles - Simplified */
         .search-section {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
@@ -1347,11 +1347,19 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
-        .search-section input {
-            flex: 1;
+        .search-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         
-        .search-section .btn {
+        .search-controls input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .search-controls .btn {
             white-space: nowrap;
         }
         
@@ -1359,6 +1367,37 @@
             background-color: rgba(255, 215, 0, 0.3);
             padding: 2px 4px;
             border-radius: 3px;
+        }
+        
+        .search-results-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-results-info.show {
+            display: flex;
+        }
+        
+        .search-results-info i {
+            color: var(--accent);
+        }
+        
+        .search-results-text {
+            color: var(--accent);
+            font-size: 14px;
+        }
+        
+        .search-results-text.error {
+            color: var(--error-color);
+        }
+        
+        .search-results-text.success {
+            color: var(--secondary);
         }
         
         @media (max-width: 768px) {
@@ -1449,13 +1488,12 @@
                 padding: 15px;
             }
             
-            .search-section .form-group {
-                margin-bottom: 15px;
+            .search-controls {
+                flex-direction: column;
             }
             
-            .search-section .btn {
-                padding: 10px 15px;
-                font-size: 14px;
+            .search-controls input {
+                width: 100%;
             }
         }
     </style>
@@ -1641,21 +1679,23 @@
                             <span>Menampilkan data dari kolom A hingga D dari spreadsheet. Klik pada link gambar untuk melihat preview.</span>
                         </div>
                         
-                        <!-- Search Section -->
+                        <!-- Simplified Search Section -->
                         <div class="search-section">
                             <div class="form-group">
                                 <label for="searchColumnsAD">
                                     <i class="fas fa-search"></i> Cari Data (Kolom A-D)
                                 </label>
-                                <div style="display: flex; gap: 10px;">
+                                <div class="search-controls">
                                     <input type="text" id="searchColumnsAD" placeholder="Masukkan kata kunci untuk mencari di semua kolom (A-D)">
                                     <button id="clearSearch" class="btn btn-secondary" style="padding: 12px 20px;">
                                         <i class="fas fa-times"></i> Hapus
                                     </button>
                                 </div>
                             </div>
-                            <div id="searchResultsInfo" style="margin-top: 10px; color: var(--accent); display: none;">
-                                <i class="fas fa-info-circle"></i> <span id="searchResultsText"></span>
+                            
+                            <div id="searchResultsInfo" class="search-results-info">
+                                <i class="fas fa-info-circle"></i>
+                                <span id="searchResultsText"></span>
                             </div>
                         </div>
                         
@@ -1804,7 +1844,7 @@
         let regularParticipants = [];
         let valueErrorParticipants = [];
         let columnsADData = [];
-        let removedValueCount = 0;
+        let originalColumnsADData = [];
 
         // Fungsi untuk menghitung bonus berdasarkan kesalahan
         function calculateBonus(errorCount) {
@@ -1976,50 +2016,145 @@
         // Fungsi untuk mencari data di kolom A-D
         function searchColumnsAD() {
             const searchTerm = document.getElementById('searchColumnsAD').value.toLowerCase().trim();
-            const rows = document.querySelectorAll('#columnsADBody tr');
             const searchResultsInfo = document.getElementById('searchResultsInfo');
             const searchResultsText = document.getElementById('searchResultsText');
             const filteredRowsStat = document.getElementById('filteredRows');
             
             let visibleCount = 0;
+            let searchResults = [];
             
-            rows.forEach(row => {
+            // Cari data yang cocok
+            originalColumnsADData.forEach((row, index) => {
                 let found = false;
-                const cells = row.querySelectorAll('td');
                 
                 // Cari di semua sel dalam baris
-                cells.forEach(cell => {
-                    const cellText = cell.textContent.toLowerCase();
+                for (let i = 0; i < 4; i++) {
+                    const cellText = (row[i] || '').toLowerCase();
                     if (cellText.includes(searchTerm)) {
                         found = true;
+                        break;
                     }
-                });
+                }
                 
-                // Tampilkan atau sembunyikan baris berdasarkan hasil pencarian
                 if (found || searchTerm === '') {
-                    row.style.display = '';
-                    visibleCount++;
-                } else {
-                    row.style.display = 'none';
+                    searchResults.push({ ...row, originalIndex: index });
                 }
             });
             
-            // Perbarui statistik hasil filter
-            filteredRowsStat.textContent = visibleCount;
+            // Update data untuk display
+            columnsADData = searchResults;
+            
+            // Refresh display dengan highlight
+            displayColumnsADWithHighlight(columnsADData, searchTerm);
+            
+            // Update statistik
+            filteredRowsStat.textContent = searchResults.length;
             
             // Tampilkan informasi hasil pencarian
             if (searchTerm) {
-                searchResultsInfo.style.display = 'block';
-                if (visibleCount === 0) {
+                searchResultsInfo.classList.add('show');
+                if (searchResults.length === 0) {
                     searchResultsText.textContent = `Tidak ada hasil untuk "${searchTerm}"`;
-                    searchResultsText.style.color = 'var(--error-color)';
+                    searchResultsText.className = 'search-results-text error';
                 } else {
-                    searchResultsText.textContent = `Ditemukan ${visibleCount} hasil untuk "${searchTerm}"`;
-                    searchResultsText.style.color = 'var(--accent)';
+                    searchResultsText.textContent = `Ditemukan ${searchResults.length} hasil untuk "${searchTerm}"`;
+                    searchResultsText.className = 'search-results-text success';
                 }
             } else {
-                searchResultsInfo.style.display = 'none';
+                searchResultsInfo.classList.remove('show');
+                // Kembalikan ke data asli
+                columnsADData = [...originalColumnsADData];
+                displayColumnsAD(columnsADData);
             }
+        }
+
+        // Fungsi untuk menampilkan data dengan highlight
+        function displayColumnsADWithHighlight(data, searchTerm = '') {
+            const columnsADBody = document.getElementById('columnsADBody');
+            columnsADBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                columnsADBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Tidak ada data kolom A-D</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                
+                // Buat sel untuk setiap kolom (A-D)
+                for (let i = 0; i < 4; i++) {
+                    const td = document.createElement('td');
+                    td.className = `column-${String.fromCharCode(65 + i)}`; // class="column-a", "column-b", etc.
+                    
+                    const cellContent = row[i] || '';
+                    
+                    if (isImageLink(cellContent)) {
+                        // Buat container untuk gambar dan link
+                        const container = document.createElement('div');
+                        container.style.display = 'flex';
+                        container.style.alignItems = 'center';
+                        container.style.gap = '10px';
+                        
+                        // Buat preview gambar
+                        const img = document.createElement('img');
+                        img.src = cellContent;
+                        img.className = 'image-preview';
+                        img.alt = 'Image preview';
+                        img.onclick = () => showImageModal(cellContent, `Gambar dari ${String.fromCharCode(65 + i)}${index + 1}`);
+                        
+                        // Buat link text
+                        const link = document.createElement('a');
+                        link.href = cellContent;
+                        link.target = '_blank';
+                        link.className = 'image-link';
+                        link.textContent = cellContent.length > 30 ? cellContent.substring(0, 30) + '...' : cellContent;
+                        link.onclick = (e) => {
+                            e.preventDefault();
+                            showImageModal(cellContent, `Gambar dari ${String.fromCharCode(65 + i)}${index + 1}`);
+                        };
+                        
+                        container.appendChild(img);
+                        container.appendChild(link);
+                        td.appendChild(container);
+                    } else if (isUrl(cellContent)) {
+                        // Jika bukan gambar tapi link biasa
+                        const link = document.createElement('a');
+                        link.href = cellContent;
+                        link.target = '_blank';
+                        link.className = 'image-link';
+                        link.textContent = cellContent.length > 30 ? cellContent.substring(0, 30) + '...' : cellContent;
+                        td.appendChild(link);
+                    } else {
+                        // Teks biasa dengan highlight untuk search term
+                        if (searchTerm && cellContent.toLowerCase().includes(searchTerm)) {
+                            const regex = new RegExp(`(${searchTerm})`, 'gi');
+                            const highlightedText = cellContent.replace(regex, '<span class="highlight">$1</span>');
+                            td.innerHTML = highlightedText;
+                        } else {
+                            td.textContent = cellContent;
+                        }
+                    }
+                    
+                    tr.appendChild(td);
+                }
+                
+                // Tambahkan animasi delay untuk setiap baris
+                tr.style.animation = `fadeInUp 0.5s ease ${index * 0.05}s both`;
+                
+                // Tambahkan baris ke tabel
+                columnsADBody.appendChild(tr);
+            });
+            
+            // Perbarui statistik
+            document.getElementById('totalRows').textContent = originalColumnsADData.length;
+            document.getElementById('filteredRows').textContent = data.length;
         }
 
         // Fungsi untuk menghapus pencarian
@@ -2039,7 +2174,6 @@
             messageDiv.innerHTML = '';
             resultsDiv.style.display = 'none';
             loadingDiv.style.display = 'block';
-            removedValueCount = 0;
 
             try {
                 // Membuat URL untuk mengambil data sebagai CSV
@@ -2224,6 +2358,9 @@
                 }
                 return newRow;
             });
+            
+            // Simpan data asli
+            originalColumnsADData = [...columnsADData];
             
             // Tampilkan data kolom A-D
             displayColumnsAD(columnsADData);
@@ -2630,7 +2767,7 @@
             });
             
             // Perbarui statistik
-            document.getElementById('totalRows').textContent = data.length;
+            document.getElementById('totalRows').textContent = originalColumnsADData.length;
             document.getElementById('filteredRows').textContent = data.length;
         }
         
@@ -2706,6 +2843,9 @@
             } else if (type === 'warning') {
                 icon.className = 'fas fa-exclamation-triangle';
                 toast.className = 'toast warning';
+            } else if (type === 'info') {
+                icon.className = 'fas fa-info-circle';
+                toast.className = 'toast info';
             } else {
                 icon.className = 'fas fa-check-circle';
                 toast.className = 'toast success';
