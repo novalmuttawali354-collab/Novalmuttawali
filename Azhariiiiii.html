@@ -3,49 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarm Pribadi untuk Putri</title>
+    <title>Alarm Pink Christmas untuk Putri</title>
     <style>
-        /* --- GAYA VISUAL (CSS) --- */
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600&display=swap');
+        /* --- GAYA VISUAL (CSS) - TEMA PINK CHRISTMAS --- */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600&display=swap');
 
         :root {
-            --bg-color: #1a1a2e;
-            --container-bg: #16213e;
-            --primary-color: #e94560;
-            --text-color: #f5f5f5;
-            --secondary-text: #a8a8a8;
-            --accent-color: #0f3460;
+            --bg-color: #1a0033; /* Ungu tua malam */
+            --container-bg: rgba(45, 27, 105, 0.85); /* Ungu dengan transparansi */
+            --primary-color: #ff69b4; /* Pink Cerah */
+            --text-color: #f5f5f5; /* Putih */
+            --secondary-text: #ffb6c1; /* Pink Muda */
+            --accent-color: #4a148c; /* Ungu Tua */
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
+            background: linear-gradient(to bottom, #1a0033, #330867);
             color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Penting untuk animasi salju */
+            position: relative;
         }
 
+        /* --- Animasi Salju --- */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Agar salju tidak mengganggu klik */
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            user-select: none;
+            animation-name: fall, sway;
+            animation-duration: 10s, 3s;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
+        @keyframes sway {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50px);
+            }
+        }
+        
+        /* Container utama agar di atas salju */
         .container {
             background-color: var(--container-bg);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3), 0 0 20px rgba(255, 105, 180, 0.2);
             text-align: center;
             width: 90%;
             max-width: 450px;
-            border: 1px solid var(--accent-color);
+            border: 2px solid var(--primary-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
         }
 
         h1 {
-            font-family: 'Orbitron', monospace;
-            font-weight: 900;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 15px var(--primary-color);
         }
 
         #jam-digital {
@@ -54,7 +97,7 @@
             font-weight: 700;
             letter-spacing: 3px;
             margin: 20px 0;
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: 0 0 20px var(--primary-color);
         }
 
         #alarm-section {
@@ -98,13 +141,15 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             margin: 5px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
         }
 
         button:hover {
-            background-color: #c73650;
+            background-color: #ff1493; /* Pink lebih tua */
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
         }
 
         button:active {
@@ -115,18 +160,18 @@
             margin-top: 20px;
             font-style: italic;
             color: var(--secondary-text);
-            min-height: 24px; /* Agar layout tidak bergerak */
+            min-height: 24px;
         }
 
         /* Notifikasi Alarm */
         #notifikasi-alarm {
-            display: none; /* Sembunyikan secara default */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -134,12 +179,13 @@
         }
 
         .konten-notifikasi {
-            background-color: var(--container-bg);
+            background: linear-gradient(145deg, #2d1b69, #4a148c);
             padding: 40px;
             border-radius: 20px;
             text-align: center;
             border: 3px solid var(--primary-color);
             animation: pulse 1.5s infinite;
+            box-shadow: 0 0 30px var(--primary-color);
         }
 
         .konten-notifikasi h2 {
@@ -154,17 +200,33 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(233, 69, 96, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.7); }
+            70% { box-shadow: 0 0 0 25px rgba(255, 105, 180, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0); }
         }
 
     </style>
 </head>
 <body>
 
+    <!-- Animasi Salju -->
+    <div class="snowflakes" aria-hidden="true">
+        <span class="snowflake" style="font-size: 20px; left: 10%; animation-delay: 0s;">❄</span>
+        <span class="snowflake" style="font-size: 25px; left: 20%; animation-delay: 1s;">❅</span>
+        <span class="snowflake" style="font-size: 15px; left: 30%; animation-delay: 6s;">❆</span>
+        <span class="snowflake" style="font-size: 22px; left: 40%; animation-delay: 2s;">❄</span>
+        <span class="snowflake" style="font-size: 18px; left: 50%; animation-delay: 4s;">❅</span>
+        <span class="snowflake" style="font-size: 30px; left: 60%; animation-delay: 0s;">❆</span>
+        <span class="snowflake" style="font-size: 21px; left: 70%; animation-delay: 3s;">❄</span>
+        <span class="snowflake" style="font-size: 16px; left: 80%; animation-delay: 5s;">❅</span>
+        <span class="snowflake" style="font-size: 24px; left: 90%; animation-delay: 1.5s;">❆</span>
+        <span class="snowflake" style="font-size: 19px; left: 15%; animation-delay: 3.5s;">❄</span>
+        <span class="snowflake" style="font-size: 28px; left: 75%; animation-delay: 2.5s;">❅</span>
+        <span class="snowflake" style="font-size: 17px; left: 35%; animation-delay: 7s;">❆</span>
+    </div>
+
     <div class="container">
-        <h1>Alarm Pribadi</h1>
+        <h1>HAII!! PUTRI NUR AZHARI CANTIK</h1>
         <div id="jam-digital">00:00:00</div>
         
         <div id="alarm-section">
@@ -189,19 +251,18 @@
 
     <script>
         /* --- LOGIKA (JAVASCRIPT) --- */
+        // Logika JavaScript tidak berubah, hanya tampilan yang diperbarui.
 
-        // Mengambil elemen-elemen HTML yang dibutuhkan
         const jamDigital = document.getElementById('jam-digital');
         const waktuAlarmInput = document.getElementById('waktu-alarm');
         const tombolAtur = document.getElementById('tombol-atur');
         const statusAlarm = document.getElementById('status-alarm');
         const notifikasiAlarm = document.getElementById('notifikasi-alarm');
         const tombolHentikan = document.getElementById('tombol-hentikan');
-        const pesanSuara = document.getElementById('pesan-suara').innerText; // Mengambil teks yang akan diucapkan
+        const pesanSuara = document.getElementById('pesan-suara').innerText;
 
-        let alarmAktif = null; // Variabel untuk menyimpan waktu alarm
+        let alarmAktif = null;
 
-        // Fungsi untuk memperbarui jam digital setiap detik
         function updateJam() {
             const sekarang = new Date();
             const jam = String(sekarang.getHours()).padStart(2, '0');
@@ -210,70 +271,56 @@
             
             jamDigital.textContent = `${jam}:${menit}:${detik}`;
 
-            // Cek apakah alarm harus berbunyi
             if (alarmAktif && `${jam}:${menit}` === alarmAktif) {
                 bunyikanAlarm();
             }
         }
 
-        // Fungsi untuk mengatur alarm
         tombolAtur.addEventListener('click', () => {
             const waktuYangDipilih = waktuAlarmInput.value;
             if (waktuYangDipilih) {
                 alarmAktif = waktuYangDipilih;
                 statusAlarm.textContent = `Alarm diatur untuk pukul ${alarmAktif}`;
-                statusAlarm.style.color = '#4caf50'; // Warna hijau untuk status aktif
+                statusAlarm.style.color = '#4caf50';
             } else {
                 statusAlarm.textContent = 'Silakan pilih waktu terlebih dahulu!';
-                statusAlarm.style.color = '#ff9800'; // Warna oranye untuk peringatan
+                statusAlarm.style.color = '#ff9800';
             }
         });
 
-        // Fungsi yang dijalankan saat alarm berbunyi
         function bunyikanAlarm() {
-            // Tampilkan notifikasi
             notifikasiAlarm.style.display = 'flex';
 
-            // Gunakan Web Speech API untuk mengucapkan pesan
             if ('speechSynthesis' in window) {
                 const ucapan = new SpeechSynthesisUtterance(pesanSuara);
-                ucapan.lang = 'id-ID'; // Set bahasa ke Indonesia
-                ucapan.rate = 1; // Kecepatan bicara (1 = normal)
-                ucapan.pitch = 1; // Nada suara (1 = normal)
-                ucapan.volume = 1; // Volume (0-1)
+                ucapan.lang = 'id-ID';
+                ucapan.rate = 1;
+                ucapan.pitch = 1;
+                ucapan.volume = 1;
                 
                 window.speechSynthesis.speak(ucapan);
             } else {
-                // Jika browser tidak mendukung, tampilkan pesan di konsol
                 console.error("Browser Anda tidak mendukung Web Speech API.");
             }
             
-            // Reset alarm setelah berbunyi agar tidak berulang
             alarmAktif = null;
             statusAlarm.textContent = 'Alarm telah berbunyi.';
             statusAlarm.style.color = '#e94560';
         }
 
-        // Fungsi untuk menghentikan alarm
         tombolHentikan.addEventListener('click', () => {
-            // Sembunyikan notifikasi
             notifikasiAlarm.style.display = 'none';
             
-            // Hentikan ucapan jika masih berlangsung
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
             }
 
-            // Reset status alarm
             alarmAktif = null;
             statusAlarm.textContent = 'Alarm dimatikan.';
             statusAlarm.style.color = '#a8a8a8';
         });
 
-        // Jalankan fungsi updateJam setiap 1000 milidetik (1 detik)
         setInterval(updateJam, 1000);
-        
-        // Panggil sekali saat halaman dimuat agar jam muncul tanpa delay 1 detik
         updateJam();
 
     </script>
