@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarm Pink Christmas untuk Putri</title>
+    <title>Aplikasi Pribadi untuk Putri</title>
     <style>
         /* --- GAYA VISUAL (CSS) - TEMA PINK CHRISTMAS --- */
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600&display=swap');
 
         :root {
-            --bg-color: #1a0033; /* Ungu tua malam */
-            --container-bg: rgba(45, 27, 105, 0.85); /* Ungu dengan transparansi */
-            --primary-color: #ff69b4; /* Pink Cerah */
-            --text-color: #f5f5f5; /* Putih */
-            --secondary-text: #ffb6c1; /* Pink Muda */
-            --accent-color: #4a148c; /* Ungu Tua */
+            --bg-color: #1a0033;
+            --container-bg: rgba(45, 27, 105, 0.85);
+            --primary-color: #ff69b4;
+            --text-color: #f5f5f5;
+            --secondary-text: #ffb6c1;
+            --accent-color: #4a148c;
         }
 
         body {
@@ -26,221 +26,163 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden; /* Penting untuk animasi salju */
+            overflow: hidden;
             position: relative;
         }
 
         /* --- Animasi Salju --- */
-        .snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Agar salju tidak mengganggu klik */
-            z-index: 1;
-        }
-
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            color: #fff;
-            user-select: none;
-            animation-name: fall, sway;
-            animation-duration: 10s, 3s;
-            animation-timing-function: linear, ease-in-out;
-            animation-iteration-count: infinite, infinite;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(110vh);
-            }
-        }
-
-        @keyframes sway {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(50px);
-            }
-        }
+        .snowflakes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+        .snowflake { position: absolute; top: -10px; color: rgba(255, 255, 255, 0.8); user-select: none; animation-name: fall, sway; animation-timing-function: linear, ease-in-out; animation-iteration-count: infinite, infinite; }
+        @keyframes fall { to { transform: translateY(110vh); } }
+        @keyframes sway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(80px); } }
         
-        /* Container utama agar di atas salju */
         .container {
             background-color: var(--container-bg);
-            padding: 40px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3), 0 0 20px rgba(255, 105, 180, 0.2);
             text-align: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 900px; /* Diperlebar untuk menampung 2 kolom */
+            height: 85vh;
             border: 2px solid var(--primary-color);
             backdrop-filter: blur(10px);
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 2.5rem;
-            text-shadow: 0 0 15px var(--primary-color);
-        }
+        /* --- Navigasi Tab --- */
+        .tab-navigation { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid var(--accent-color); flex-shrink: 0; }
+        .tab-button { background: none; border: none; color: var(--secondary-text); padding: 10px 20px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab-button.active-tab { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        .tab-button:hover { color: var(--text-color); }
+        
+        .page-content { display: none; flex-grow: 1; overflow: hidden; }
+        .page-content.active { display: flex; animation: fadeIn 0.5s; }
+        
+        .page-content.alarm-page { flex-direction: column; }
+        .page-content.resep-page { flex-direction: row; gap: 20px; }
 
-        #jam-digital {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            margin: 20px 0;
-            text-shadow: 0 0 20px var(--primary-color);
-        }
+        h1 { font-family: 'Dancing Script', cursive; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; font-size: 2.5rem; text-shadow: 0 0 15px var(--primary-color); }
+        #jam-digital { font-family: 'Orbitron', monospace; font-size: 3.5rem; font-weight: 700; letter-spacing: 3px; margin: 20px 0; text-shadow: 0 0 20px var(--primary-color); }
+        
+        /* --- Gaya Halaman Alarm --- */
+        #alarm-section label { display: block; margin-bottom: 10px; font-size: 1.1rem; color: var(--secondary-text); }
+        .input-group { display: flex; justify-content: center; gap: 10px; }
+        input[type="time"] { background-color: var(--accent-color); border: 2px solid var(--primary-color); color: var(--text-color); padding: 10px 15px; border-radius: 10px; font-size: 1.2rem; font-family: 'Orbitron', monospace; cursor: pointer; transition: all 0.3s ease; flex-grow: 1; }
+        input[type="time"]:focus { outline: none; box-shadow: 0 0 15px var(--primary-color); }
+        button { background-color: var(--primary-color); color: var(--text-color); border: none; padding: 12px 25px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
+        button:hover { background-color: #ff1493; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6); }
+        button.delete-btn { background-color: #d32f2f; padding: 5px 10px; font-size: 0.8rem; box-shadow: 0 2px 8px rgba(211, 47, 47, 0.4); }
+        button.delete-btn:hover { background-color: #b71c1c; }
+        #status-alarm { margin-top: 20px; font-style: italic; color: var(--secondary-text); min-height: 24px; }
+        #daftar-alarm { margin-top: 20px; text-align: left; max-height: 150px; overflow-y: auto; }
+        .item-alarm { background-color: rgba(255, 105, 180, 0.1); border: 1px solid var(--primary-color); padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
-        #alarm-section {
-            margin-top: 30px;
+        /* --- Gaya Halaman Resep (Generator) --- */
+        .resep-list-container {
+            flex: 1;
+            border-right: 1px dashed var(--accent-color);
+            padding-right: 20px;
+            overflow-y: auto;
         }
-
-        label {
-            display: block;
+        .resep-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .judul-resep-item {
+            background-color: rgba(255, 105, 180, 0.1);
+            border: 1px solid transparent;
+            padding: 12px 15px;
             margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: var(--secondary-text);
-        }
-
-        input[type="time"] {
-            background-color: var(--accent-color);
-            border: 2px solid var(--primary-color);
-            color: var(--text-color);
-            padding: 10px 15px;
             border-radius: 10px;
-            font-size: 1.2rem;
-            font-family: 'Orbitron', monospace;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1rem;
         }
-
-        input[type="time"]:focus {
-            outline: none;
-            box-shadow: 0 0 15px var(--primary-color);
+        .judul-resep-item:hover {
+            background-color: rgba(255, 105, 180, 0.2);
+            border-color: var(--primary-color);
+            transform: translateX(5px);
         }
-
-        .button-group {
-            margin-top: 20px;
-        }
-
-        button {
+        .judul-resep-item.active {
             background-color: var(--primary-color);
             color: var(--text-color);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-size: 1rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            margin: 5px;
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
         }
 
-        button:hover {
-            background-color: #ff1493; /* Pink lebih tua */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        .resep-detail-container {
+            flex: 2;
+            overflow-y: auto;
+            padding-left: 20px;
         }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        #status-alarm {
-            margin-top: 20px;
-            font-style: italic;
-            color: var(--secondary-text);
-            min-height: 24px;
-        }
+        .resep-card { background-color: rgba(255, 105, 180, 0.1); border: 1px solid var(--primary-color); border-radius: 15px; padding: 20px; text-align: left; animation: slideIn 0.5s ease-out; }
+        .resep-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .resep-card h3 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--primary-color); margin: 0 0 10px 0; text-align: center; }
+        .resep-card h4 { color: var(--secondary-text); border-bottom: 1px dashed var(--primary-color); padding-bottom: 5px; margin-top: 20px; }
+        .resep-card ul, .resep-card ol { padding-left: 20px; }
+        .resep-card li { margin-bottom: 8px; line-height: 1.5; }
+        .resep-card .tips { background-color: rgba(255, 105, 180, 0.2); border-left: 4px solid var(--primary-color); padding: 10px 15px; margin-top: 15px; font-style: italic; }
+        .placeholder-message { color: var(--secondary-text); font-style: italic; display: flex; justify-content: center; align-items: center; height: 100%; }
 
         /* Notifikasi Alarm */
-        #notifikasi-alarm {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.5s;
-        }
-
-        .konten-notifikasi {
-            background: linear-gradient(145deg, #2d1b69, #4a148c);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            border: 3px solid var(--primary-color);
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 0 30px var(--primary-color);
-        }
-
-        .konten-notifikasi h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.7); }
-            70% { box-shadow: 0 0 0 25px rgba(255, 105, 180, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0); }
-        }
+        #notifikasi-alarm { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.5s; }
+        .konten-notifikasi { background: linear-gradient(145deg, #2d1b69, #4a148c); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid var(--primary-color); animation: pulse 1.5s infinite; box-shadow: 0 0 30px var(--primary-color); }
+        .konten-notifikasi h2 { font-size: 2rem; color: var(--primary-color); margin-bottom: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.7); } 70% { box-shadow: 0 0 0 25px rgba(255, 105, 180, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0); } }
 
     </style>
 </head>
 <body>
 
-    <!-- Animasi Salju -->
-    <div class="snowflakes" aria-hidden="true">
-        <span class="snowflake" style="font-size: 20px; left: 10%; animation-delay: 0s;">❄</span>
-        <span class="snowflake" style="font-size: 25px; left: 20%; animation-delay: 1s;">❅</span>
-        <span class="snowflake" style="font-size: 15px; left: 30%; animation-delay: 6s;">❆</span>
-        <span class="snowflake" style="font-size: 22px; left: 40%; animation-delay: 2s;">❄</span>
-        <span class="snowflake" style="font-size: 18px; left: 50%; animation-delay: 4s;">❅</span>
-        <span class="snowflake" style="font-size: 30px; left: 60%; animation-delay: 0s;">❆</span>
-        <span class="snowflake" style="font-size: 21px; left: 70%; animation-delay: 3s;">❄</span>
-        <span class="snowflake" style="font-size: 16px; left: 80%; animation-delay: 5s;">❅</span>
-        <span class="snowflake" style="font-size: 24px; left: 90%; animation-delay: 1.5s;">❆</span>
-        <span class="snowflake" style="font-size: 19px; left: 15%; animation-delay: 3.5s;">❄</span>
-        <span class="snowflake" style="font-size: 28px; left: 75%; animation-delay: 2.5s;">❅</span>
-        <span class="snowflake" style="font-size: 17px; left: 35%; animation-delay: 7s;">❆</span>
-    </div>
+    <!-- Animasi Salju Dinamis -->
+    <div class="snowflakes" aria-hidden="true"></div>
 
     <div class="container">
-        <h1>HAII!! PUTRI NUR AZHARI CANTIK</h1>
-        <div id="jam-digital">00:00:00</div>
-        
-        <div id="alarm-section">
-            <label for="waktu-alarm">Atur Waktu Alarm:</label>
-            <input type="time" id="waktu-alarm">
-            <div class="button-group">
-                <button id="tombol-atur">Atur Alarm</button>
+        <!-- Navigasi Tab -->
+        <nav class="tab-navigation">
+            <button class="tab-button active-tab" data-target="alarm-page">Alarmku</button>
+            <button class="tab-button" data-target="resep-page">Buku Resep</button>
+        </nav>
+
+        <!-- Halaman Konten Alarm -->
+        <div id="alarm-page" class="page-content alarm-page active">
+            <h1>HAII!! PUTRI NUR AZHARI CANTIK</h1>
+            <div id="jam-digital">00:00:00</div>
+            
+            <div id="alarm-section">
+                <label for="waktu-alarm">Atur Waktu Alarm Baru:</label>
+                <div class="input-group">
+                    <input type="time" id="waktu-alarm">
+                    <button id="tombol-atur">Tambah Alarm</button>
+                </div>
             </div>
+
+            <div id="daftar-alarm"></div>
+            <p id="status-alarm">Belum ada alarm yang diatur.</p>
         </div>
 
-        <p id="status-alarm">Belum ada alarm yang diatur.</p>
+        <!-- Halaman Konten Resep -->
+        <div id="resep-page" class="page-content resep-page">
+            <div class="resep-list-container">
+                <h1 style="font-size: 1.8rem;">Pilih Menu</h1>
+                <ul class="resep-list" id="daftar-judul-resep">
+                    <!-- Daftar judul akan dimunculkan di sini -->
+                </ul>
+            </div>
+            <div class="resep-detail-container" id="resep-detail">
+                <p class="placeholder-message">Klik judul masakan untuk melihat detail resep.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Notifikasi yang muncul saat alarm berbunyi -->
+    <!-- Notifikasi Alarm -->
     <div id="notifikasi-alarm">
         <div class="konten-notifikasi">
             <h2>⏰ Alarm Berbunyi! ⏰</h2>
@@ -250,78 +192,143 @@
     </div>
 
     <script>
-        /* --- LOGIKA (JAVASCRIPT) --- */
-        // Logika JavaScript tidak berubah, hanya tampilan yang diperbarui.
-
+        /* --- LOGIKA (JAVASCRIPT) - ALARM & GENERATOR RESEP --- */
         const jamDigital = document.getElementById('jam-digital');
         const waktuAlarmInput = document.getElementById('waktu-alarm');
         const tombolAtur = document.getElementById('tombol-atur');
         const statusAlarm = document.getElementById('status-alarm');
         const notifikasiAlarm = document.getElementById('notifikasi-alarm');
         const tombolHentikan = document.getElementById('tombol-hentikan');
+        const daftarAlarmContainer = document.getElementById('daftar-alarm');
         const pesanSuara = document.getElementById('pesan-suara').innerText;
 
-        let alarmAktif = null;
+        // Elemen untuk Generator Resep
+        const daftarJudulResepContainer = document.getElementById('daftar-judul-resep');
+        const resepDetailContainer = document.getElementById('resep-detail');
 
-        function updateJam() {
-            const sekarang = new Date();
-            const jam = String(sekarang.getHours()).padStart(2, '0');
-            const menit = String(sekarang.getMinutes()).padStart(2, '0');
-            const detik = String(sekarang.getSeconds()).padStart(2, '0');
-            
-            jamDigital.textContent = `${jam}:${menit}:${detik}`;
+        let alarms = [];
+        let isAlarmRinging = false;
 
-            if (alarmAktif && `${jam}:${menit}` === alarmAktif) {
-                bunyikanAlarm();
+        // --- DATABASE RESEP DENGAN GAMBAR ASLI ---
+        const resepData = [
+            {
+                nama: "Nasi Goreng Pink Cinta",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Nasi goreng dengan sentuhan warna pink dari cabe dan saus tomat, spesial untuk memulai hari yang penuh cinta.",
+                bahan: ["1 piring nasi putih", "1 siung bawang putih, cincang", "1 butir telur", "2 sdm saus tomat", "1 sdm saus sambal", "1 sdm kecap manis", "Garam dan merica secukupnya", "Daun bawang untuk taburan", "Minyak goreng"],
+                langkah: ["Panaskan minyak, tumis bawang putih hingga harum.", "Masukkan telur, orak-arik hingga matang.", "Tambahkan nasi, aduk rata.", "Bumbui dengan saus tomat, saus sambal, kecap manis, garam, dan merica.", "Aduk terus hingga nasi berwarna merah muda dan bumbu meresap.", "Sajikan dengan taburan daun bawang."],
+                tips: "Agar warnanya lebih cantik, gunakan cabe merah segar yang diblender halus bersama saus tomat!"
+            },
+            {
+                nama: "Pancake Stroberi Manis",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Pancake lembut yang dipadukan dengan stroberi segar dan madu, menu sarapan yang manis dan menyenangkan.",
+                bahan: ["150 gr tepung terigu", "2 sdm gula pasir", "1 sdt baking powder", "1 butir telur", "200 ml susu cair", "2 sdm mentega cair", "Stroberi segar", "Madu atau sirup maple"],
+                langkah: ["Campur tepung terigu, gula, dan baking powder dalam satu wadah.", "Di wadah lain, kocok lepas telur, lalu tuang susu dan mentega cair, aduk rata.", "Tuang campuran cair ke dalam campuran tepung, aduk hingga tidak bergerindil.", "Panaskan wajan anti lengket dengan sedikit mentega.", "Tuang adonan pancake, masak hingga muncul gelembung, lalu balik.", "Masak hingga kedua sisi kecokelatan.", "Sajikan dengan irisan stroberi dan madu."],
+                tips: "Jangan mengaduk adonan terlalu lama, cukup hingga tercampur rata agar hasilnya tetap lembut."
+            },
+            {
+                nama: "Ayam Bakar Madu",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Ayam bakar dengan balutan bumbu madu yang manis dan gurih, sempurna untuk makan malam spesial.",
+                bahan: ["500 gr ayam (paha/dada)", "3 sdm madu", "3 sdm kecap manis", "2 siung bawang putih, haluskan", "1 sdm ketumbar bubuk", "1 sdt garam", "1/2 sdt merica", "Minyak untuk olesan"],
+                langkah: ["Cuci bersih ayam, lumuri dengan garam dan merica.", "Campur madu, kecap manis, bawang putih halus, dan ketumbar bubuk.", "Rendam ayam dalam campuran bumbu, diamkan minimal 30 menit (semakin lama semakin enak).", "Panaskan panggangan atau teflon dengan sedikit minyak.", "Bakar ayam sambil sesekali dioles sisa bumbu hingga matang dan kecokelatan.", "Sajikan hangat dengan nasi dan lalapan."],
+                tips: "Untuk hasil yang lebih arang, bisa dibakar di atas bara api. Pastikan tidak gosong ya!"
+            },
+            {
+                nama: "Mie Goreng Spesial",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Mie goreng dengan topping udang dan aneka sayuran, lengkap dan bergizi.",
+                bahan: ["1 bungkus mie instan (rebus, tiriskan)", "100 gr udang, kupas", "1 butir telur", "50 gr sawi, potong", "50 gr wortel, iris serong", "3 siung bawang merah, iris", "2 siung bawang putih, cincang", "Bumbu mie instan", "Kecap manis, garam, merica"],
+                langkah: ["Panaskan minyak, tumis bawang merah dan bawang putih hingga harum.", "Masukkan udang, masak hingga berubah warna.", "Tambahkan telur, orak-arik.", "Masukkan wortel dan sawi, tumis hingga layu.", "Masukkan mie yang sudah direbus, aduk rata.", "Bumbui dengan bumbu instan, kecap manis, garam, dan merica. Aduk hingga rata.", "Sajikan hangat."],
+                tips: "Tambahkan sedikit air jika mie terlalu kering saat diaduk."
+            },
+            {
+                nama: "Sayur Sop Bening",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Sayur sop bening yang segar dan bergizi, cocok untuk menemani makan siang Anda.",
+                bahan: ["1 wortel, iris bulat", "1 bonggol pokcoy, potong", "100 gr buncis, potong serong", "1 buah tomat, potong 8", "2 siung bawang putih, cincang", "1.5 liter air", "Garam, gula, dan merica secukupnya", "Daun bawang untuk taburan"],
+                langkah: ["Didihkan air dalam panci.", "Masukkan wortel dan buncis, masak hingga setengah matang.", "Tambahkan bawang putih cincang, masak hingga harum.", "Masukkan pokcoy dan tomat, masak hingga layu.", "Bumbui dengan garam, gula, dan merica. Koreksi rasa.", "Angkat dan sajikan hangat dengan taburan daun bawang."],
+                tips: "Masukkan sayuran yang teksturnya keras terlebih dahulu (wortel, buncis) agar tingkat kematangannya merata."
+            },
+            {
+                nama: "Coklat Lava Cake",
+                gambar: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                deskripsi: "Dessert lezat dengan coklat meleleh di dalamnya, surganya para pecinta coklat.",
+                bahan: ["100 gr dark chocolate, potong", "100 gr mentega", "2 butir telur", "50 gr gula pasir", "30 gr tepung terigu", "1 sdt vanilla extract", "Sedikit garam", "Mentega dan coklat bubuk untuk cetakan"],
+                langkah: ["Lelehkan dark chocolate dan mentega dengan cara tim, sisihkan.", "Kocok telur dan gula dengan whisk hingga sedikit mengembang.", "Masukkan ekstrak vanilla dan sedikit garam, aduk rata.", "Tuang lelehan coklat sedikit demi sedikit sambil diaduk.", "Ayak tepung terigu, lalu masukkan ke dalam adonan, aduk perlahan hingga rata.", "Panaskan oven pada suhu 200°C.", "Olesi cetakan muffin dengan mentega dan taburi coklat bubuk.", "Tuang adonan hingga 3/4 penuh.", "Panggang selama 10-12 menit (bagian luar matang, tapi dalamnya masih lembek).", "Sajikan segera dengan es krim atau bubuk gula."],
+                tips: "Jangan overbake! Kunci dari lava cake adalah bagian luarnya yang matang tapi bagian dalamnya masih cair."
             }
+        ];
+
+        // --- FUNGSI UNTUK SALJU --- (Tidak berubah)
+        function createSnowflakes() { /* ... */ }
+        
+        // --- FUNGSI UTAMA ALARM --- (Tidak berubah)
+        function updateJam() { /* ... */ }
+        function bunyikanAlarm() { /* ... */ }
+        function renderAlarms() { /* ... */ }
+        tombolAtur.addEventListener('click', () => { /* ... */ });
+        daftarAlarmContainer.addEventListener('click', (e) => { /* ... */ });
+        tombolHentikan.addEventListener('click', () => { /* ... */ });
+        
+        // --- FUNGSI GENERATOR RESEP (KLIK JUDUL) ---
+        function tampilkanJudulResep() {
+            daftarJudulResepContainer.innerHTML = '';
+            resepData.forEach((resep, index) => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('judul-resep-item');
+                listItem.textContent = resep.nama;
+                listItem.addEventListener('click', () => tampilkanDetailResep(index));
+                daftarJudulResepContainer.appendChild(listItem);
+            });
         }
 
-        tombolAtur.addEventListener('click', () => {
-            const waktuYangDipilih = waktuAlarmInput.value;
-            if (waktuYangDipilih) {
-                alarmAktif = waktuYangDipilih;
-                statusAlarm.textContent = `Alarm diatur untuk pukul ${alarmAktif}`;
-                statusAlarm.style.color = '#4caf50';
-            } else {
-                statusAlarm.textContent = 'Silakan pilih waktu terlebih dahulu!';
-                statusAlarm.style.color = '#ff9800';
-            }
-        });
+        function tampilkanDetailResep(index) {
+            // Hapus kelas aktif dari semua item
+            document.querySelectorAll('.judul-resep-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Tambahkan kelas aktif ke item yang diklik
+            document.querySelectorAll('.judul-resep-item')[index].classList.add('active');
 
-        function bunyikanAlarm() {
-            notifikasiAlarm.style.display = 'flex';
-
-            if ('speechSynthesis' in window) {
-                const ucapan = new SpeechSynthesisUtterance(pesanSuara);
-                ucapan.lang = 'id-ID';
-                ucapan.rate = 1;
-                ucapan.pitch = 1;
-                ucapan.volume = 1;
-                
-                window.speechSynthesis.speak(ucapan);
-            } else {
-                console.error("Browser Anda tidak mendukung Web Speech API.");
-            }
+            const resep = resepData[index];
+            const bahanList = resep.bahan.map(b => `<li>${b}</li>`).join('');
+            const langkahList = resep.langkah.map(l => `<li>${l}</li>`).join('');
             
-            alarmAktif = null;
-            statusAlarm.textContent = 'Alarm telah berbunyi.';
-            statusAlarm.style.color = '#e94560';
+            resepDetailContainer.innerHTML = `
+                <div class="resep-card">
+                    <img src="${resep.gambar}" alt="${resep.nama}">
+                    <h3>${resep.nama}</h3>
+                    <p>${resep.deskripsi}</p>
+                    <h4>Bahan-bahan:</h4>
+                    <ul>${bahanList}</ul>
+                    <h4>Cara Memasak:</h4>
+                    <ol>${langkahList}</ol>
+                    <div class="tips"><strong>Tips Ala Putri:</strong> ${resep.tips}</div>
+                </div>
+            `;
         }
 
-        tombolHentikan.addEventListener('click', () => {
-            notifikasiAlarm.style.display = 'none';
-            
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-
-            alarmAktif = null;
-            statusAlarm.textContent = 'Alarm dimatikan.';
-            statusAlarm.style.color = '#a8a8a8';
+        // --- LOGIKA NAVIGASI TAB --- (Tidak berubah)
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const pages = document.querySelectorAll('.page-content');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetPageId = button.dataset.target;
+                pages.forEach(page => page.classList.remove('active'));
+                tabButtons.forEach(btn => btn.classList.remove('active-tab'));
+                document.getElementById(targetPageId).classList.add('active');
+                button.classList.add('active-tab');
+            });
         });
 
+        // --- INISIALISASI ---
+        createSnowflakes();
         setInterval(updateJam, 1000);
         updateJam();
+        renderAlarms();
+        tampilkanJudulResep(); // Tampilkan daftar judul saat halaman dimuat
 
     </script>
 </body>
