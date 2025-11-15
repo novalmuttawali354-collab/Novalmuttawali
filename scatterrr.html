@@ -3,452 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perhitungan Scatter & Analisis Pola</title>
+    <title>EVENT SCATTER MAHJONG WAYS 1 & MAHJONG WAYS 2 - LINETOGEL</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Global dan Tampilan Umum */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #0f3460);
-            color: #e0e0e0;
+        * {
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .container {
-            background-color: rgba(22, 33, 62, 0.85);
             padding: 0;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            width: 100%;
-            max-width: 950px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        /* --- Gaya untuk Tab --- */
-        .tab {
-            display: flex;
-            background-color: rgba(30, 41, 54, 0.9);
-            border-bottom: 2px solid #4fbdba;
-        }
-        .tab button {
-            background-color: inherit;
-            color: #a0d2ff;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 18px 24px;
-            transition: 0.3s;
-            font-size: 1.1em;
-            font-weight: bold;
-            flex-grow: 1;
-        }
-        .tab button:hover {
-            background-color: rgba(79, 189, 186, 0.2);
-        }
-        .tab button.active {
-            background-color: #4fbdba;
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-        .tabcontent {
-            display: none;
-            padding: 30px;
-            animation: fadeEffect 1s;
-        }
-        .tabcontent.active {
-            display: block;
-        }
-        @keyframes fadeEffect {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* --- Gaya Konten di Dalam Tab --- */
-        h1 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 10px;
-            font-size: 2.2em;
-            text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
-        }
-        .subtitle {
-            text-align: center;
-            color: #b0b0b0;
-            margin-bottom: 25px;
-            font-size: 0.9em;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #a0d2ff;
-        }
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 12px;
-            border: 1px solid #3a506b;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #1e2936;
-            color: #e0e0e0;
             box-sizing: border-box;
-            resize: vertical;
-            transition: border-color 0.3s;
         }
-        textarea:focus {
-            outline: none;
-            border-color: #4fbdba;
-        }
-        .results-container {
-            margin-top: 30px;
-        }
-        .result-card {
-            border: 1px solid rgba(79, 189, 186, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            background-color: rgba(30, 41, 54, 0.7);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .result-card h2 {
-            margin-top: 0;
-            border-bottom: 2px solid #4fbdba;
-            padding-bottom: 10px;
-            font-size: 1.3em;
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a0a0a, #0a0a1a);
             color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
         }
-        .info-fields-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        
+        .poster-container {
+            width: 100%;
+            max-width: 720px;
+            min-height: auto;
+            background: linear-gradient(135deg, #1a0a0a, #0a0a1a);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+        
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(220, 20, 60, 0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(220, 20, 60, 0.1) 50%, transparent 70%);
+            filter: blur(40px);
+            z-index: 1;
+        }
+        
+        .glow-1 {
+            top: -50px;
+            right: -50px;
+        }
+        
+        .glow-2 {
+            bottom: -50px;
+            left: -50px;
+            background: radial-gradient(circle, rgba(220, 20, 60, 0.2) 0%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+        }
+        
+        .header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
             margin-bottom: 20px;
         }
-        .info-field {
-            background-color: rgba(58, 80, 107, 0.4);
-            padding: 12px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(79, 189, 186, 0.2);
-            transition: background-color 0.3s;
-        }
-        .info-field:hover {
-            background-color: rgba(58, 80, 107, 0.6);
-        }
-        .info-field-label {
-            font-size: 0.85em;
-            color: #a0d2ff;
-            display: block;
-        }
-        .info-field-value {
-            font-weight: bold;
-            color: #ffffff;
-            word-break: break-all;
-            padding-right: 10px;
-        }
-        .copy-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            color: #4fbdba;
-            transition: transform 0.2s, color 0.2s;
-            flex-shrink: 0;
-        }
-        .copy-btn:hover {
-            transform: scale(1.2);
-            color: #ffffff;
-        }
-        .copy-btn svg { width: 18px; height: 18px; }
         
-        /* Gaya Khusus untuk Analisis Pola */
-        .decision {
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            padding: 15px;
-            border-radius: 10px;
+        .title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 36px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #FFD700, #DC143C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            position: relative;
+            line-height: 1.2;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFD700, #DC143C, transparent);
+        }
+        
+        .subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            color: #DC143C;
             margin-top: 15px;
         }
-        .decision.cocok {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: #fff;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        .decision.tidak-cocok {
-            background: linear-gradient(45deg, #dc3545, #fd7e14);
-            color: #fff;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Gaya untuk Gambar dan Lightbox */
-        .images-container {
+        
+        .main-image {
+            position: relative;
+            z-index: 2;
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: center;
+            margin: 10px 0 20px;
         }
-        .images-container img {
-            max-width: 30%;
-            height: auto;
-            border: 2px solid #3a506b;
-            border-radius: 8px;
-            background-color: #fff;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            cursor: pointer;
-        }
-        .images-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-        }
-        .calculation-result {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            background: linear-gradient(45deg, #007bff, #6610f2);
-            padding: 15px;
+        
+        .main-image img {
+            max-width: 90%;
             border-radius: 10px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 4px 15px rgba(102, 16, 242, 0.4);
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            display: block;
         }
-        .lightbox {
-            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center; align-items: center; animation: fadeIn 0.5s;
-            padding: 20px; box-sizing: border-box;
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1;
         }
-        .lightbox-content {
-            max-width: 95%; max-height: 95%; object-fit: contain;
-            border: 3px solid #fff; border-radius: 8px; animation: zoomIn 0.5s;
+        
+        .section {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
         }
-        .close-lightbox {
-            position: absolute; top: 25px; right: 45px; color: #f1f1f1;
-            font-size: 50px; font-weight: bold; transition: 0.3s; cursor: pointer;
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #FFD700, #DC143C);
         }
-        .close-lightbox:hover { color: #bbb; transform: rotate(90deg); }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes zoomIn { from { transform: scale(0.5); } to { transform: scale(1); } }
+        
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .important {
+            color: #DC143C;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .note {
+            font-style: italic;
+            color: #FFD700;
+            margin: 8px 0;
+            padding-left: 15px;
+            border-left: 3px solid #DC143C;
+        }
+        
+        .prize-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 14px;
+        }
+        
+        .prize-table th, .prize-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .prize-table th {
+            color: #FFD700;
+            font-weight: 700;
+        }
+        
+        .prize-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 5px;
+        }
+        
+        .requirement .material-icons {
+            color: #DC143C;
+        }
+        
+        .terms {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .terms li {
+            margin: 8px 0;
+            position: relative;
+        }
+        
+        .terms li::before {
+            content: '•';
+            color: #FFD700;
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(220, 20, 60, 0.2));
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .game-image {
+            display: flex;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        
+        .game-image img {
+            max-width: 80%;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            display: block;
+        }
+        
+        .decorative-element {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .decor-1 {
+            top: 30px;
+            right: -20px;
+        }
+        
+        .decor-2 {
+            bottom: 50px;
+            left: -20px;
+            border-color: rgba(220, 20, 60, 0.2);
+        }
+        
+        .placeholder-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, #1a0a0a, #2a0a0a);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFD700;
+            font-weight: bold;
+            border: 2px dashed #FFD700;
+        }
+        
+        @media (max-width: 480px) {
+            .poster-container {
+                padding: 15px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .section {
+                padding: 12px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .prize-table {
+                font-size: 12px;
+            }
+            
+            .prize-table th, .prize-table td {
+                padding: 6px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <!-- Tab Navigasi -->
-        <div class="tab">
-            <button class="tablinks active" onclick="openTab(event, 'scatter-content')">Perhitungan Scatter</button>
-            <button class="tablinks" onclick="openTab(event, 'pattern-content')">Analisis Pola</button>
-        </div>
-
-        <!-- Konten Tab Perhitungan Scatter -->
-        <div id="scatter-content" class="tabcontent active">
-            <h1>Perhitungan Scatter</h1>
-            <p class="subtitle">Tempel data (Userid, Link Gambar, Periode, Bettingan).</p>
-            
-            <label for="dataInput">Data Input Scatter:</label>
-            <textarea id="dataInput" placeholder="Ngresik03	https://.../Screenshot_1.jpg	...	1982246677397931520	BET 2,000 - 8,000"></textarea>
-
-            <div id="resultsContainer" class="results-container">
-                <!-- Hasil scatter akan ditampilkan di sini -->
+    <div class="poster-container">
+        <!-- Background elements -->
+        <div class="bg-pattern"></div>
+        <div class="bg-glow glow-1"></div>
+        <div class="bg-glow glow-2"></div>
+        <div class="decorative-element decor-1"></div>
+        <div class="decorative-element decor-2"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">EVENT SCATTER MAHJONG WAYS 1 & MAHJONG WAYS 2</h1>
+            <div class="subtitle">LINETOGEL</div>
+        </header>
+        
+        <!-- Main Image -->
+        <div class="main-image">
+            <div class="placeholder-image">
+                [GAMBAR UTAMA EVENT]
             </div>
         </div>
-
-        <!-- Konten Tab Analisis Pola -->
-        <div id="pattern-content" class="tabcontent">
-            <h1>Analisis Pola</h1>
-            <p class="subtitle">Tempel riwayat transaksi (Credit/Debit) untuk analisis.</p>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Important Information Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="material-icons">info</i>
+                    INFO PENTING !!!!
+                </h2>
+                <div class="important">
+                    Jam claim scatter tanggal semalam start dari jam 00:01 s/d 02:00 AM
+                </div>
+                <div class="note">
+                    Note : Untuk Scatter tanggal semalam yang bisa di klaim hanya Scatter di jam 23:00 s/d 00:00 ( Tidak perlu di infokan kepada member )
+                </div>
+                <div>
+                    Namun Scatter tetap dapat diproseskan hingga maksimal batas akhir pukul 02.00 dini hari untuk yang dapat di jam 23.00- 00.00
+                </div>
+                <div class="note">
+                    Untuk dibawah jam 23.00 jika mau klaim hari berikut nya dianggap hangus
+                </div>
+            </section>
             
-            <label for="patternInput">Data Input Pola:</label>
-            <textarea id="patternInput" placeholder="Mahjong Ways&#10;...&#10;Credit&#10;IDR 672,000&#10;...&#10;Debit&#10;IDR 2,800"></textarea>
-
-            <div id="patternResultsContainer" class="results-container">
-                <!-- Hasil analisis pola akan ditampilkan di sini -->
+            <!-- Game Images -->
+            <div class="game-image">
+                <div class="placeholder-image">
+                    [GAMBAR MAHJONG WAYS 2]
+                </div>
             </div>
+            
+            <!-- Prize Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="material-icons">emoji_events</i>
+                    SYARAT DAN KETENTUAN
+                </h2>
+                <div class="important">
+                    EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL
+                </div>
+                <div class="game-image">
+                    <div class="placeholder-image">
+                        [GAMBAR MAHJONG WAYS]
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 12px 0;">
+                    <span class="highlight">Mahjong Ways 1</span> | 
+                    <span class="highlight">Mahjong Ways 2</span>
+                </div>
+                
+                <h3 style="color: #FFD700; margin: 12px 0;">Hadiah:</h3>
+                <table class="prize-table">
+                    <tr>
+                        <th>BET</th>
+                        <th>SCATTER</th>
+                        <th>HADIAH</th>
+                    </tr>
+                    <tr>
+                        <td>1.600 - 1.800</td>
+                        <td>3 - 5</td>
+                        <td>RP. 30.000</td>
+                    </tr>
+                    <tr>
+                        <td>2.000 - 8.000</td>
+                        <td>3 - 5</td>
+                        <td>RP. 50.000</td>
+                    </tr>
+                    <tr>
+                        <td>10.000 - 18.000</td>
+                        <td>3 - 5</td>
+                        <td>RP. 80.000</td>
+                    </tr>
+                    <tr>
+                        <td>20.000 - 1.000.000</td>
+                        <td>3 - 5</td>
+                        <td>RP. 100.000</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Requirements Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="material-icons">assignment</i>
+                    PERSYARATAN KLAIM
+                </h2>
+                <div class="requirement">
+                    <i class="material-icons">screenshot</i>
+                    <div>SS DAPAT SCATTER</div>
+                </div>
+                <div class="requirement">
+                    <i class="material-icons">screenshot</i>
+                    <div>SS KEMENANGAN AKHIR</div>
+                </div>
+                <div class="requirement">
+                    <i class="material-icons">screenshot</i>
+                    <div>SS HISTORY KEMENANGAN</div>
+                </div>
+            </section>
+            
+            <!-- Terms and Conditions Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="material-icons">gavel</i>
+                    Syarat & Ketentuan
+                </h2>
+                <ul class="terms">
+                    <li>Event hanya berlaku pada permainan Slot PG SOFT : <span class="highlight">Mahjong Ways 1</span> dan <span class="highlight">Mahjong Ways 2</span></li>
+                    <li>Claim melalui <span class="highlight">LIVECHAT</span>.</li>
+                    <li>Nama Rekening dan Nomor Rekening wajib valid. Apabila tidak valid, bonus akan hangus.</li>
+                    <li>Maksimal klaim per hari adalah <span class="highlight">2 kali</span>.</li>
+                    <li>Batas klaim pada pukul <span class="highlight">23:50 WIB</span> dan akan di reset kembali pukul <span class="highlight">00:01</span> setiap harinya.</li>
+                    <li>Syarat dan ketentuan dapat berubah sewaktu-waktu.</li>
+                </ul>
+            </section>
         </div>
     </div>
-
-    <!-- Lightbox untuk gambar gabungan -->
-    <div id="imageLightbox" class="lightbox">
-        <span class="close-lightbox">&times;</span>
-        <img class="lightbox-content" id="lightboxMergedImg">
-    </div>
-
-    <script>
-        // --- KONFIGURASI GLOBAL ---
-        const SCATTER_MULTIPLIER = 4; 
-
-        // --- ELEMEN DOM SCATTER ---
-        const dataInput = document.getElementById('dataInput');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const lightbox = document.getElementById('imageLightbox');
-        const lightboxMergedImg = document.getElementById('lightboxMergedImg');
-
-        // --- ELEMEN DOM POLA ---
-        const patternInput = document.getElementById('patternInput');
-        const patternResultsContainer = document.getElementById('patternResultsContainer');
-
-        // --- FUNGSI UNTUK TAB ---
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].classList.remove("active");
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
-        // --- FUNGSI-FUNGSI SCATTER ---
-        function processLine(line) {
-            const parts = line.split('\t');
-            if (parts.length < 8) return null;
-            const userid = parts[0], periode = parts[6], bettingan = parts[7];
-            const imageUrl1 = parts[1], imageUrl2 = parts[2], imageUrl3 = parts[3];
-            const betNumbers = bettingan.match(/[\d,]+/g);
-            let scatterWin = 0;
-            if (betNumbers && betNumbers.length >= 2) {
-                const maxBet = parseInt(betNumbers[betNumbers.length - 1].replace(/,/g, ''), 10);
-                if (!isNaN(maxBet)) scatterWin = maxBet * SCATTER_MULTIPLIER;
-            }
-            return { userid, periode, bettingan, imageUrl1, imageUrl2, imageUrl3, scatterWin };
-        }
-
-        async function mergeAndShowInLightbox(imageUrls) {
-            const imagePromises = imageUrls.map(url => new Promise((resolve, reject) => {
-                const img = new Image(); img.crossOrigin = "Anonymous";
-                img.onload = () => resolve(img); img.onerror = () => reject(new Error(`Gagal memuat gambar: ${url}`));
-                img.src = url;
-            }));
-            try {
-                const loadedImages = await Promise.all(imagePromises);
-                let totalWidth = 0, maxHeight = 0;
-                loadedImages.forEach(img => { totalWidth += img.width; maxHeight = Math.max(maxHeight, img.height); });
-                const canvas = document.createElement('canvas'); canvas.width = totalWidth; canvas.height = maxHeight;
-                const ctx = canvas.getContext('2d');
-                let currentX = 0; loadedImages.forEach(img => { ctx.drawImage(img, currentX, 0); currentX += img.width; });
-                lightboxMergedImg.src = canvas.toDataURL('image/png'); lightbox.style.display = 'flex';
-            } catch (error) { console.error(error); alert('Gagal memuat gambar.'); }
-        }
-
-        function handleInput() {
-            const rawText = dataInput.value; const lines = rawText.trim().split('\n');
-            resultsContainer.innerHTML = '';
-            if (rawText.trim() === '') return;
-            lines.forEach(line => {
-                const result = processLine(line);
-                if (result) {
-                    const resultCard = document.createElement('div'); resultCard.className = 'result-card';
-                    resultCard.innerHTML = `<h2>Hasil untuk User: ${result.userid}</h2>`;
-                    
-                    const infoContainer = document.createElement('div'); infoContainer.className = 'info-fields-container';
-                    const infoData = [ { label: 'User ID', value: result.userid }, { label: 'Periode', value: result.periode }, { label: 'Bettingan', value: result.bettingan } ];
-                    infoData.forEach(item => {
-                        const fieldDiv = document.createElement('div'); fieldDiv.className = 'info-field';
-                        fieldDiv.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
-                        const copyButton = document.createElement('button'); copyButton.className = 'copy-btn'; copyButton.title = `Salin ${item.label}`;
-                        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>`;
-                        copyButton.onclick = () => navigator.clipboard.writeText(item.value);
-                        fieldDiv.appendChild(copyButton); infoContainer.appendChild(fieldDiv);
-                    });
-                    resultCard.appendChild(infoContainer);
-
-                    const imagesContainer = document.createElement('div'); imagesContainer.className = 'images-container';
-                    const imageUrlsForThisSet = [result.imageUrl1, result.imageUrl2, result.imageUrl3];
-                    imageUrlsForThisSet.forEach(url => {
-                        const img = document.createElement('img'); img.src = url; img.alt = 'Screenshot Scatter'; img.style.cursor = 'pointer';
-                        img.onclick = () => mergeAndShowInLightbox(imageUrlsForThisSet);
-                        img.onerror = function() { this.style.display = 'none'; };
-                        imagesContainer.appendChild(img);
-                    });
-                    resultCard.appendChild(imagesContainer);
-
-                    const resultText = document.createElement('div'); resultText.className = 'calculation-result';
-                    resultText.innerHTML = `Total Scatter: <strong>${result.scatterWin.toLocaleString('id-ID')}</strong>`;
-                    resultCard.appendChild(resultText);
-                    resultsContainer.appendChild(resultCard);
-                }
-            });
-        }
-
-        // --- FUNGSI-FUNGSI POLA ---
-        function handlePatternAnalysis() {
-            const rawText = patternInput.value.trim();
-            patternResultsContainer.innerHTML = '';
-            if (!rawText) return;
-
-            const lines = rawText.split('\n');
-            let totalCredits = 0, totalDebits = 0;
-            let lastTransactionType = '';
-
-            lines.forEach(line => {
-                const trimmedLine = line.trim();
-                if (trimmedLine === 'Credit' || trimmedLine === 'Debit') {
-                    lastTransactionType = trimmedLine;
-                } else if (trimmedLine.includes('IDR')) {
-                    const amountMatch = trimmedLine.match(/IDR\s*([\d,.]+)/);
-                    if (amountMatch) {
-                        const amount = parseInt(amountMatch[1].replace(/[.,]/g, ''), 10);
-                        if (!isNaN(amount)) {
-                            if (lastTransactionType === 'Credit') {
-                                totalCredits += amount;
-                            } else if (lastTransactionType === 'Debit') {
-                                totalDebits += amount;
-                            }
-                        }
-                    }
-                    lastTransactionType = ''; 
-                }
-            });
-
-            let finalBalance = 0;
-            const balanceMatch = lines[lines.length - 1].match(/Balance\s*:\s*IDR\s*([\d,.]+)/);
-            if (balanceMatch) {
-                finalBalance = parseInt(balanceMatch[1].replace(/[.,]/g, ''), 10);
-            }
-
-            const resultCard = document.createElement('div'); resultCard.className = 'result-card';
-            resultCard.innerHTML = `<h2>Hasil Analisis Pola</h2>`;
-            
-            const infoData = [
-                { label: 'TOTAL KEMENANGAN SCATTER', value: `IDR ${totalCredits.toLocaleString('id-ID')}` },
-                { label: 'Bettingan', value: `IDR ${totalDebits.toLocaleString('id-ID')}` },
-                { label: 'Saldo Akhir', value: `IDR ${finalBalance.toLocaleString('id-ID')}` }
-            ];
-            infoData.forEach(item => {
-                const fieldDiv = document.createElement('div'); fieldDiv.className = 'info-field';
-                fieldDiv.innerHTML = `<span class="info-field-label">${item.label}:</span> <span class="info-field-value">${item.value}</span>`;
-                resultCard.appendChild(fieldDiv);
-            });
-
-            const decisionDiv = document.createElement('div');
-            const isCocok = totalCredits > totalDebits;
-            decisionDiv.className = `decision ${isCocok ? 'cocok' : 'tidak-cocok'}`;
-            decisionDiv.textContent = isCocok ? '✅ COCOK untuk Menembak!' : '❌ TIDAK COCOK';
-            resultCard.appendChild(decisionDiv);
-
-            patternResultsContainer.appendChild(resultCard);
-        }
-
-        // --- EVENT LISTENERS ---
-        dataInput.addEventListener('input', handleInput);
-        patternInput.addEventListener('input', handlePatternAnalysis);
-
-        // Event Listener untuk Lightbox
-        const closeBtn = document.getElementsByClassName('close-lightbox')[0];
-        closeBtn.onclick = () => lightbox.style.display = 'none';
-        lightbox.onclick = (event) => { if (event.target == lightbox) lightbox.style.display = 'none'; };
-    </script>
 </body>
 </html>
