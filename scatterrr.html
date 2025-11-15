@@ -127,6 +127,12 @@
             border: 3px solid #FFD700;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
             display: block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-image img:hover {
+            transform: scale(1.02);
         }
         
         .content {
@@ -176,6 +182,8 @@
             font-size: 16px;
             margin-bottom: 10px;
             text-align: center;
+            position: relative;
+            padding-right: 30px;
         }
         
         .note {
@@ -184,6 +192,8 @@
             margin: 8px 0;
             padding-left: 15px;
             border-left: 3px solid #DC143C;
+            position: relative;
+            padding-right: 30px;
         }
         
         .prize-table {
@@ -259,6 +269,12 @@
             border: 2px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
             display: block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-image img:hover {
+            transform: scale(1.02);
         }
         
         .decorative-element {
@@ -281,17 +297,95 @@
             border-color: rgba(220, 20, 60, 0.2);
         }
         
-        .placeholder-image {
+        .copy-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 215, 0, 0.2);
+            border: none;
+            border-radius: 3px;
+            color: #FFD700;
+            cursor: pointer;
+            padding: 3px 6px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 215, 0, 0.4);
+        }
+        
+        .copy-btn.copied {
+            background: rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 150px;
-            background: linear-gradient(45deg, #1a0a0a, #2a0a0a);
-            border-radius: 10px;
-            display: flex;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
             color: #FFD700;
-            font-weight: bold;
-            border: 2px dashed #FFD700;
+        }
+        
+        .lightbox-caption {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid #FFD700;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
         }
         
         @media (max-width: 480px) {
@@ -322,6 +416,10 @@
             .prize-table th, .prize-table td {
                 padding: 6px;
             }
+            
+            .lightbox img {
+                max-width: 95%;
+            }
         }
     </style>
 </head>
@@ -342,9 +440,7 @@
         
         <!-- Main Image -->
         <div class="main-image">
-            <div class="placeholder-image">
-                [GAMBAR UTAMA EVENT]
-            </div>
+            <img src="https://i.postimg.cc/TYLVfYGb/Vtyp3u-V-S4WXZI6Ni-U99nw.png" alt="Event Scatter Mahjong Ways" id="mainImage">
         </div>
         
         <!-- Content -->
@@ -355,25 +451,35 @@
                     <i class="material-icons">info</i>
                     INFO PENTING !!!!
                 </h2>
-                <div class="important">
+                <div class="important" id="importantText1">
                     Jam claim scatter tanggal semalam start dari jam 00:01 s/d 02:00 AM
+                    <button class="copy-btn" onclick="copyText('importantText1')">
+                        <i class="material-icons">content_copy</i>
+                    </button>
                 </div>
-                <div class="note">
+                <div class="note" id="noteText1">
                     Note : Untuk Scatter tanggal semalam yang bisa di klaim hanya Scatter di jam 23:00 s/d 00:00 ( Tidak perlu di infokan kepada member )
+                    <button class="copy-btn" onclick="copyText('noteText1')">
+                        <i class="material-icons">content_copy</i>
+                    </button>
                 </div>
-                <div>
+                <div id="regularText1">
                     Namun Scatter tetap dapat diproseskan hingga maksimal batas akhir pukul 02.00 dini hari untuk yang dapat di jam 23.00- 00.00
+                    <button class="copy-btn" onclick="copyText('regularText1')">
+                        <i class="material-icons">content_copy</i>
+                    </button>
                 </div>
-                <div class="note">
+                <div class="note" id="noteText2">
                     Untuk dibawah jam 23.00 jika mau klaim hari berikut nya dianggap hangus
+                    <button class="copy-btn" onclick="copyText('noteText2')">
+                        <i class="material-icons">content_copy</i>
+                    </button>
                 </div>
             </section>
             
             <!-- Game Images -->
             <div class="game-image">
-                <div class="placeholder-image">
-                    [GAMBAR MAHJONG WAYS 2]
-                </div>
+                <img src="https://sfile.chatglm.cn/images-ppt/8149fb1a0639.jpg" alt="Mahjong Ways 2" id="gameImage1">
             </div>
             
             <!-- Prize Section -->
@@ -382,13 +488,14 @@
                     <i class="material-icons">emoji_events</i>
                     SYARAT DAN KETENTUAN
                 </h2>
-                <div class="important">
+                <div class="important" id="importantText2">
                     EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL
+                    <button class="copy-btn" onclick="copyText('importantText2')">
+                        <i class="material-icons">content_copy</i>
+                    </button>
                 </div>
                 <div class="game-image">
-                    <div class="placeholder-image">
-                        [GAMBAR MAHJONG WAYS]
-                    </div>
+                    <img src="https://i.postimg.cc/TYLVfYGb/Vtyp3u-V-S4WXZI6Ni-U99nw.png" alt="Mahjong Ways" id="gameImage2">
                 </div>
                 <div style="text-align: center; margin: 12px 0;">
                     <span class="highlight">Mahjong Ways 1</span> | 
@@ -462,5 +569,85 @@
             </section>
         </div>
     </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img id="lightboxImage" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Teks berhasil disalin!</div>
+
+    <script>
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+        
+        // Get all images that should open in lightbox
+        const images = document.querySelectorAll('img');
+        
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                lightboxImage.src = this.src;
+                lightboxCaption.textContent = this.alt;
+                lightbox.classList.add('active');
+            });
+        });
+        
+        // Close lightbox
+        lightboxClose.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+        });
+        
+        // Close lightbox when clicking outside the image
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+        
+        // Copy text functionality
+        function copyText(elementId) {
+            const element = document.getElementById(elementId);
+            let textToCopy = element.innerText;
+            
+            // Remove the copy button text if present
+            textToCopy = textToCopy.replace('content_copy', '').trim();
+            
+            // Create a temporary textarea element to copy text
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Show toast notification
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            // Change button appearance temporarily
+            const button = event.target.closest('.copy-btn');
+            button.classList.add('copied');
+            button.innerHTML = '<i class="material-icons">check</i>';
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                button.classList.remove('copied');
+                button.innerHTML = '<i class="material-icons">content_copy</i>';
+            }, 2000);
+        }
+        
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
