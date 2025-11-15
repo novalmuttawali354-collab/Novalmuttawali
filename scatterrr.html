@@ -23,13 +23,163 @@
             min-height: 100vh;
             overflow-x: hidden;
             padding: 20px;
+            position: relative;
+        }
+        
+        /* Dragon Background Effects */
+        .dragon-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .dragon {
+            position: absolute;
+            width: 200px;
+            height: 80px;
+            background: linear-gradient(90deg, transparent, #FF4500, #FF0000, #FF4500, transparent);
+            border-radius: 50% 20% 20% 50%;
+            filter: blur(1px);
+            animation: dragonFly 40s linear infinite;
+            opacity: 0.7;
+        }
+        
+        .dragon::before {
+            content: '🐉';
+            position: absolute;
+            left: -30px;
+            top: -25px;
+            font-size: 40px;
+            filter: hue-rotate(0deg);
+            animation: dragonColor 10s infinite;
+        }
+        
+        .dragon::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: 0;
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, #FF0000, #FF4500, transparent);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: dragonTail 2s infinite alternate;
+        }
+        
+        .fire-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #FF4500, #FF0000, transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px #FF4500;
+            animation: fireFall 8s linear infinite;
+        }
+        
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px #FFD700;
+            animation: sparkFall 5s linear infinite;
+        }
+        
+        .smoke {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: smokeRise 12s linear infinite;
+        }
+        
+        @keyframes dragonFly {
+            0% {
+                transform: translateX(-200px) translateY(100px) rotate(0deg);
+            }
+            25% {
+                transform: translateX(25vw) translateY(200px) rotate(5deg);
+            }
+            50% {
+                transform: translateX(50vw) translateY(100px) rotate(0deg);
+            }
+            75% {
+                transform: translateX(75vw) translateY(200px) rotate(-5deg);
+            }
+            100% {
+                transform: translateX(100vw) translateY(100px) rotate(0deg);
+            }
+        }
+        
+        @keyframes dragonColor {
+            0%, 100% {
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(30deg);
+            }
+        }
+        
+        @keyframes dragonTail {
+            0% {
+                transform: scaleX(1) scaleY(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scaleX(1.2) scaleY(0.8);
+                opacity: 0.3;
+            }
+        }
+        
+        @keyframes fireFall {
+            0% {
+                transform: translateY(-100px) translateX(0) scale(1);
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px) scale(0.5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes sparkFall {
+            0% {
+                transform: translateY(-50px) translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(10px) scale(0.3);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes smokeRise {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px) scale(2);
+                opacity: 0;
+            }
         }
         
         .poster-container {
             width: 100%;
             max-width: 900px;
             min-height: auto;
-            background: linear-gradient(135deg, #1a0a0a, #0a0a1a);
+            background: linear-gradient(135deg, rgba(26, 10, 10, 0.85), rgba(10, 10, 26, 0.85));
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
@@ -37,6 +187,8 @@
             display: flex;
             flex-direction: column;
             border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
         .bg-pattern {
@@ -826,6 +978,9 @@
     </style>
 </head>
 <body>
+    <!-- Dragon Background with Fire Effects -->
+    <div class="dragon-background" id="dragonBackground"></div>
+    
     <div class="poster-container">
         <!-- Background elements -->
         <div class="bg-pattern"></div>
@@ -1168,6 +1323,47 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
     <div class="toast" id="toast">Teks berhasil disalin!</div>
 
     <script>
+        // Generate dragon background elements
+        function generateDragonBackground() {
+            const bg = document.getElementById('dragonBackground');
+            
+            // Create dragons
+            for (let i = 0; i < 3; i++) {
+                const dragon = document.createElement('div');
+                dragon.className = 'dragon';
+                dragon.style.top = `${Math.random() * 80}%`;
+                dragon.style.animationDelay = `${Math.random() * 40}s`;
+                bg.appendChild(dragon);
+            }
+            
+            // Create fire particles
+            for (let i = 0; i < 50; i++) {
+                const fire = document.createElement('div');
+                fire.className = 'fire-particle';
+                fire.style.left = `${Math.random() * 100}%`;
+                fire.style.animationDelay = `${Math.random() * 8}s`;
+                bg.appendChild(fire);
+            }
+            
+            // Create sparks
+            for (let i = 0; i < 30; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                spark.style.left = `${Math.random() * 100}%`;
+                spark.style.animationDelay = `${Math.random() * 5}s`;
+                bg.appendChild(spark);
+            }
+            
+            // Create smoke
+            for (let i = 0; i < 20; i++) {
+                const smoke = document.createElement('div');
+                smoke.className = 'smoke';
+                smoke.style.left = `${Math.random() * 100}%`;
+                smoke.style.animationDelay = `${Math.random() * 12}s`;
+                bg.appendChild(smoke);
+            }
+        }
+        
         // Tab functionality
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -1374,6 +1570,9 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                 lightbox.classList.remove('active');
             }
         });
+        
+        // Generate dragon background when page loads
+        window.addEventListener('load', generateDragonBackground);
     </script>
 </body>
 </html>
