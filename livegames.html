@@ -287,13 +287,13 @@
         <span class="close-modal" id="closeModal">&times;</span>
         <img class="modal-content" id="modalImage">
         <div class="modal-controls">
-            <button class="modal-btn" id="copyImageBtn">Salin URL Gambar</button>
+            <button class="modal-btn" id="copyImageBtn">Salin Gambar</button>
             <button class="modal-btn" id="downloadImageBtn">Unduh Gambar</button>
         </div>
     </div>
     
     <!-- Notifikasi -->
-    <div class="notification" id="notification">URL gambar telah disalin!</div>
+    <div class="notification" id="notification">Gambar telah disalin ke clipboard!</div>
     
     <script>
         // Mendapatkan elemen-elemen yang diperlukan
@@ -320,29 +320,49 @@
             document.body.style.overflow = 'auto'; // Mengembalikan scroll
         }
         
-        // Fungsi untuk menyalin URL gambar ke clipboard
-        function copyImageUrl() {
-            const imageUrl = modalImage.src;
-            
-            // Menggunakan Clipboard API untuk menyalin teks
-            navigator.clipboard.writeText(imageUrl).then(() => {
-                // Menampilkan notifikasi
-                notification.textContent = 'URL gambar telah disalin!';
-                notification.style.display = 'block';
+        // Fungsi untuk menyalin gambar ke clipboard
+        async function copyImageToClipboard() {
+            try {
+                // Membuat canvas untuk menggambar gambar
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
                 
-                // Menyembunyikan notifikasi setelah beberapa detik
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-            }).catch(err => {
-                console.error('Gagal menyalin URL: ', err);
-                notification.textContent = 'Gagal menyalin URL gambar';
-                notification.style.display = 'block';
+                // Mengatur ukuran canvas sesuai dengan gambar
+                canvas.width = modalImage.naturalWidth;
+                canvas.height = modalImage.naturalHeight;
                 
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-            });
+                // Menggambar gambar ke canvas
+                ctx.drawImage(modalImage, 0, 0);
+                
+                // Mengonversi canvas ke blob
+                canvas.toBlob(async (blob) => {
+                    try {
+                        // Menyalin blob ke clipboard
+                        await navigator.clipboard.write([
+                            new ClipboardItem({
+                                [blob.type]: blob
+                            })
+                        ]);
+                        
+                        // Menampilkan notifikasi sukses
+                        showNotification('Gambar telah disalin ke clipboard!');
+                    } catch (err) {
+                        console.error('Gagal menyalin gambar: ', err);
+                        showNotification('Gagal menyalin gambar. Coba lagi.');
+                    }
+                });
+            } catch (err) {
+                console.error('Error dalam proses penyalinan gambar: ', err);
+                
+                // Fallback: Salin URL gambar jika penyalinan gambar gagal
+                try {
+                    await navigator.clipboard.writeText(modalImage.src);
+                    showNotification('URL gambar telah disalin (fallback)');
+                } catch (fallbackErr) {
+                    console.error('Gagal menyalin URL gambar: ', fallbackErr);
+                    showNotification('Gagal menyalin gambar dan URL');
+                }
+            }
         }
         
         // Fungsi untuk mengunduh gambar
@@ -358,6 +378,17 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            // Menyembunyikan notifikasi setelah beberapa detik
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
         
         // Menambahkan event listener untuk setiap gambar
@@ -377,8 +408,8 @@
             }
         });
         
-        // Menambahkan event listener untuk tombol salin
-        copyImageBtn.addEventListener('click', copyImageUrl);
+        // Menambahkan event listener untuk tombol salin gambar
+        copyImageBtn.addEventListener('click', copyImageToClipboard);
         
         // Menambahkan event listener untuk tombol unduh
         downloadImageBtn.addEventListener('click', downloadImage);
