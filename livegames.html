@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permainan Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-title {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #ffcc00;
+        }
+        
+        .game-image-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .game-description {
+            padding: 20px;
+        }
+        
+        .game-description p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .play-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #ff8a00, #ff2070);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .modal-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ffcc00;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Permainan Casino Terpopuler</h1>
+            <p class="subtitle">Nikmati pengalaman bermain yang seru dan menarik</p>
+        </header>
+        
+        <div class="games-container">
+            <!-- Permainan Domino Live -->
+            <div class="game-card">
+                <div class="game-header">
+                    <h2 class="game-title">Domino Live</h2>
+                </div>
+                <div class="game-image-container">
+                    <img src="https://i.postimg.cc/VsxGbL8s/capture-20240811090010.png" alt="Domino Live" class="game-image" data-src="https://i.postimg.cc/VsxGbL8s/capture-20240811090010.png">
+                </div>
+                <div class="game-description">
+                    <p>Domino Live merupakan permainan tradisional yang asalnya merupakan pengembangan dari permainan Pai Gow yang merupakan salah satu permainan tertua di dunia. Domino sendiri merupakan permainan yang sangat populer di Indonesia dan merupakan pengembangan Pai Gow versi Indonesia yang sangat sering dimainkan masyarakat Indonesia dahulu.</p>
+                    <p>Permainan ini juga menambahkan unsur seperti Baccarat dan Dragon Tiger. Selamat menikmati permainan unik ini.</p>
+                    <a href="#" class="play-btn">Mainkan Sekarang</a>
+                </div>
+            </div>
+            
+            <!-- Permainan 6D Color -->
+            <div class="game-card">
+                <div class="game-header">
+                    <h2 class="game-title">6D Color</h2>
+                </div>
+                <div class="game-image-container">
+                    <img src="https://i.postimg.cc/KcrLXcVy/capture-20240808085755.png" alt="6D Color" class="game-image" data-src="https://i.postimg.cc/KcrLXcVy/capture-20240808085755.png">
+                </div>
+                <div class="game-description">
+                    <p>6D Color ini merupakan game yang memadukan keseruan permainan bola dengan sicbo yang menjadikan ini kombinasi yang unik. Dalam permainan kami hadirkan berbagai macam tipe taruhan yang akan meningkatkan kesempatan anda untuk menang dalam permainan ini.</p>
+                    <p>Dalam permainan ini juga kami hadirkan taruhan warna dan angka. Segera mainkan game seru dan baru ini.</p>
+                    <a href="#" class="play-btn">Mainkan Sekarang</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Permainan Casino. Semua hak dilindungi. | Hanya untuk hiburan.</p>
+        </footer>
+    </div>
+    
+    <!-- Modal untuk gambar yang diperbesar -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-controls">
+            <button class="modal-btn" id="copyImageBtn">Salin URL Gambar</button>
+            <button class="modal-btn" id="downloadImageBtn">Unduh Gambar</button>
+        </div>
+    </div>
+    
+    <!-- Notifikasi -->
+    <div class="notification" id="notification">URL gambar telah disalin!</div>
+    
+    <script>
+        // Mendapatkan elemen-elemen yang diperlukan
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+        const copyImageBtn = document.getElementById('copyImageBtn');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const notification = document.getElementById('notification');
+        
+        // Mendapatkan semua gambar permainan
+        const gameImages = document.querySelectorAll('.game-image');
+        
+        // Fungsi untuk membuka modal dengan gambar yang diklik
+        function openModal(imageSrc) {
+            modal.style.display = 'flex';
+            modalImage.src = imageSrc;
+            document.body.style.overflow = 'hidden'; // Mencegah scroll di background
+        }
+        
+        // Fungsi untuk menutup modal
+        function closeImageModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+        }
+        
+        // Fungsi untuk menyalin URL gambar ke clipboard
+        function copyImageUrl() {
+            const imageUrl = modalImage.src;
+            
+            // Menggunakan Clipboard API untuk menyalin teks
+            navigator.clipboard.writeText(imageUrl).then(() => {
+                // Menampilkan notifikasi
+                notification.textContent = 'URL gambar telah disalin!';
+                notification.style.display = 'block';
+                
+                // Menyembunyikan notifikasi setelah beberapa detik
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                console.error('Gagal menyalin URL: ', err);
+                notification.textContent = 'Gagal menyalin URL gambar';
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            });
+        }
+        
+        // Fungsi untuk mengunduh gambar
+        function downloadImage() {
+            const imageUrl = modalImage.src;
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            
+            // Mendapatkan nama file dari URL
+            const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+            link.download = fileName;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Menambahkan event listener untuk setiap gambar
+        gameImages.forEach(image => {
+            image.addEventListener('click', () => {
+                openModal(image.getAttribute('data-src'));
+            });
+        });
+        
+        // Menambahkan event listener untuk tombol tutup
+        closeModal.addEventListener('click', closeImageModal);
+        
+        // Menutup modal ketika mengklik di luar gambar
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+        
+        // Menambahkan event listener untuk tombol salin
+        copyImageBtn.addEventListener('click', copyImageUrl);
+        
+        // Menambahkan event listener untuk tombol unduh
+        downloadImageBtn.addEventListener('click', downloadImage);
+        
+        // Menutup modal dengan tombol Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
