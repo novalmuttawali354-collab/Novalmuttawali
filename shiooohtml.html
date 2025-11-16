@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Macau Shio - Panduan Permainan</title>
+    <title>Kalkulator Shio - Macau Shio & Shio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -26,6 +26,20 @@
             padding-bottom: 20px;
             border-bottom: 2px solid #e9ecef;
         }
+        .calculator-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            display: none;
+        }
         .shio-table {
             margin-bottom: 30px;
         }
@@ -44,26 +58,6 @@
         .shio-row:hover {
             background-color: #e9ecef;
             transition: background-color 0.3s;
-        }
-        .rules-section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
-        .calculator-section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: #e9ecef;
-            border-radius: 8px;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-            display: none;
         }
         .shio-badge {
             display: inline-block;
@@ -94,277 +88,422 @@
             font-weight: bold;
             color: #dc3545;
         }
+        .tab-content {
+            padding-top: 20px;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #4a6fdc;
+            color: white;
+            border-color: #4a6fdc;
+        }
+        .nav-tabs .nav-link {
+            color: #4a6fdc;
+            font-weight: bold;
+        }
+        .formula-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .digit-box {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 2px solid #4a6fdc;
+            border-radius: 5px;
+            margin: 0 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .operator {
+            display: inline-block;
+            margin: 0 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-dice"></i> Macau Shio - Panduan Permainan</h1>
-            <p class="lead">Struktur: ABCD | Menebak SHIO dari posisi 2D</p>
+            <h1><i class="fas fa-calculator"></i> Kalkulator Shio</h1>
+            <p class="lead">Panduan Lengkap Perhitungan Macau Shio & Shio</p>
         </div>
 
-        <div class="shio-table">
-            <h2><i class="fas fa-table"></i> Tabel Shio</h2>
-            <p>SHIO merupakan 12 lambang kelahiran dalam penanggalan China. Dalam permainan ini, setiap lambang diwakili dengan nomor-nomor berikut:</p>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Shio</th>
-                        <th>Nomor Terkait</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="shio-row">
-                        <td>1</td>
-                        <td class="shio-name">Tikus</td>
-                        <td>
-                            <span class="shio-badge">06</span>
-                            <span class="shio-badge">18</span>
-                            <span class="shio-badge">30</span>
-                            <span class="shio-badge">42</span>
-                            <span class="shio-badge">54</span>
-                            <span class="shio-badge">66</span>
-                            <span class="shio-badge">78</span>
-                            <span class="shio-badge">90</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>2</td>
-                        <td class="shio-name">Kerbau</td>
-                        <td>
-                            <span class="shio-badge">05</span>
-                            <span class="shio-badge">17</span>
-                            <span class="shio-badge">29</span>
-                            <span class="shio-badge">41</span>
-                            <span class="shio-badge">53</span>
-                            <span class="shio-badge">65</span>
-                            <span class="shio-badge">77</span>
-                            <span class="shio-badge">89</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>3</td>
-                        <td class="shio-name">Harimau</td>
-                        <td>
-                            <span class="shio-badge">04</span>
-                            <span class="shio-badge">16</span>
-                            <span class="shio-badge">28</span>
-                            <span class="shio-badge">40</span>
-                            <span class="shio-badge">52</span>
-                            <span class="shio-badge">64</span>
-                            <span class="shio-badge">76</span>
-                            <span class="shio-badge">88</span>
-                            <span class="shio-badge">00</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>4</td>
-                        <td class="shio-name">Kelinci</td>
-                        <td>
-                            <span class="shio-badge">03</span>
-                            <span class="shio-badge">15</span>
-                            <span class="shio-badge">27</span>
-                            <span class="shio-badge">39</span>
-                            <span class="shio-badge">51</span>
-                            <span class="shio-badge">63</span>
-                            <span class="shio-badge">75</span>
-                            <span class="shio-badge">87</span>
-                            <span class="shio-badge">99</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>5</td>
-                        <td class="shio-name">Naga</td>
-                        <td>
-                            <span class="shio-badge">02</span>
-                            <span class="shio-badge">14</span>
-                            <span class="shio-badge">26</span>
-                            <span class="shio-badge">38</span>
-                            <span class="shio-badge">50</span>
-                            <span class="shio-badge">62</span>
-                            <span class="shio-badge">74</span>
-                            <span class="shio-badge">86</span>
-                            <span class="shio-badge">98</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>6</td>
-                        <td class="shio-name">Ular</td>
-                        <td>
-                            <span class="shio-badge">01</span>
-                            <span class="shio-badge">13</span>
-                            <span class="shio-badge">25</span>
-                            <span class="shio-badge">37</span>
-                            <span class="shio-badge">49</span>
-                            <span class="shio-badge">61</span>
-                            <span class="shio-badge">73</span>
-                            <span class="shio-badge">85</span>
-                            <span class="shio-badge">97</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>7</td>
-                        <td class="shio-name">Kuda</td>
-                        <td>
-                            <span class="shio-badge">12</span>
-                            <span class="shio-badge">24</span>
-                            <span class="shio-badge">36</span>
-                            <span class="shio-badge">48</span>
-                            <span class="shio-badge">60</span>
-                            <span class="shio-badge">72</span>
-                            <span class="shio-badge">84</span>
-                            <span class="shio-badge">96</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>8</td>
-                        <td class="shio-name">Kambing</td>
-                        <td>
-                            <span class="shio-badge">11</span>
-                            <span class="shio-badge">23</span>
-                            <span class="shio-badge">35</span>
-                            <span class="shio-badge">47</span>
-                            <span class="shio-badge">59</span>
-                            <span class="shio-badge">71</span>
-                            <span class="shio-badge">83</span>
-                            <span class="shio-badge">95</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>9</td>
-                        <td class="shio-name">Monyet</td>
-                        <td>
-                            <span class="shio-badge">10</span>
-                            <span class="shio-badge">22</span>
-                            <span class="shio-badge">34</span>
-                            <span class="shio-badge">46</span>
-                            <span class="shio-badge">58</span>
-                            <span class="shio-badge">70</span>
-                            <span class="shio-badge">82</span>
-                            <span class="shio-badge">94</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>10</td>
-                        <td class="shio-name">Ayam</td>
-                        <td>
-                            <span class="shio-badge">09</span>
-                            <span class="shio-badge">21</span>
-                            <span class="shio-badge">33</span>
-                            <span class="shio-badge">45</span>
-                            <span class="shio-badge">57</span>
-                            <span class="shio-badge">69</span>
-                            <span class="shio-badge">81</span>
-                            <span class="shio-badge">93</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>11</td>
-                        <td class="shio-name">Anjing</td>
-                        <td>
-                            <span class="shio-badge">08</span>
-                            <span class="shio-badge">20</span>
-                            <span class="shio-badge">32</span>
-                            <span class="shio-badge">44</span>
-                            <span class="shio-badge">56</span>
-                            <span class="shio-badge">68</span>
-                            <span class="shio-badge">80</span>
-                            <span class="shio-badge">92</span>
-                        </td>
-                    </tr>
-                    <tr class="shio-row">
-                        <td>12</td>
-                        <td class="shio-name">Babi</td>
-                        <td>
-                            <span class="shio-badge">07</span>
-                            <span class="shio-badge">19</span>
-                            <span class="shio-badge">31</span>
-                            <span class="shio-badge">43</span>
-                            <span class="shio-badge">55</span>
-                            <span class="shio-badge">67</span>
-                            <span class="shio-badge">79</span>
-                            <span class="shio-badge">91</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <ul class="nav nav-tabs" id="calculatorTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="macau-shio-tab" data-bs-toggle="tab" data-bs-target="#macau-shio" type="button" role="tab" aria-controls="macau-shio" aria-selected="true">
+                    <i class="fas fa-dice"></i> Macau Shio (4 Angka)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="shio-tab" data-bs-toggle="tab" data-bs-target="#shio" type="button" role="tab" aria-controls="shio" aria-selected="false">
+                    <i class="fas fa-dice-one"></i> Shio (2 Angka)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabel-shio-tab" data-bs-toggle="tab" data-bs-target="#tabel-shio" type="button" role="tab" aria-controls="tabel-shio" aria-selected="false">
+                    <i class="fas fa-table"></i> Tabel Shio
+                </button>
+            </li>
+        </ul>
 
-        <div class="rules-section">
-            <h2><i class="fas fa-book"></i> Cara Perhitungan Macau Shio</h2>
-            <ol>
-                <li><strong>Macau Shio</strong> adalah bettingan dimana membeli kombinasi 2 shio dalam sekali betting (Anda dapat membeli shio yang sama untuk shio pertama dan shio kedua)</li>
-                <li>Hasil dari shio pertama berdasarkan hasil dari As (angka pertama) + Kop (angka kedua) sedangkan Hasil dari shio kedua bersadarkan dari hasil dari Kepala (angka ketiga) + Ekor (angka keempat)</li>
-                <li><strong>Note:</strong> Dalam "Macau Shio" hasil dari keluaran harus tepat berurutan seperti yang beli. JIka anda membeli "HARIMAU & KUDA" dan hasil keluaran adalah "KUDA - HARIMAU" maka anda di nyatakan kalah.</li>
-                <li>Hasil dari keluaran macau shio juga sudah dapat di lihat di menu history nomor dan klik nomor keluaran di periode yang anda ingin lihat untuk memudahkan anda.</li>
-                <li>Perkalian pembayaran adalah 110x dari nilai bettingan anda. Dengan discount pembelian 10% dan referral untuk atasan adalah 1% dari bettingan.</li>
-            </ol>
-        </div>
+        <div class="tab-content" id="calculatorTabsContent">
+            <!-- Macau Shio Tab -->
+            <div class="tab-pane fade show active" id="macau-shio" role="tabpanel" aria-labelledby="macau-shio-tab">
+                <div class="calculator-section">
+                    <h2><i class="fas fa-calculator"></i> Kalkulator Macau Shio</h2>
+                    <p>Macau Shio menggunakan 4 angka (As, Kop, Kepala, Ekor) untuk menentukan 2 shio:</p>
+                    
+                    <div class="formula-box">
+                        <h5>Struktur Angka:</h5>
+                        <div class="text-center">
+                            <span class="digit-box">A</span>
+                            <span class="digit-box">B</span>
+                            <span class="digit-box">C</span>
+                            <span class="digit-box">D</span>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span>As</span>
+                            <span class="ms-4">Kop</span>
+                            <span class="ms-4">Kepala</span>
+                            <span class="ms-4">Ekor</span>
+                        </div>
+                        
+                        <h5 class="mt-4">Rumus Perhitungan:</h5>
+                        <div class="text-center">
+                            <p><strong>Shio Pertama:</strong> (As × 10) + Kop = AB</p>
+                            <p><strong>Shio Kedua:</strong> (Kepala × 10) + Ekor = CD</p>
+                            <p><strong>Hasil Shio:</strong> AB - (kelipatan 12 terdekat) = X</p>
+                            <p><strong>Hasil Shio:</strong> CD - (kelipatan 12 terdekat) = Y</p>
+                        </div>
+                    </div>
 
-        <div class="calculator-section">
-            <h2><i class="fas fa-calculator"></i> Kalkulator Shio</h2>
-            <p>Masukkan 4 digit angka untuk menghitung shio:</p>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">ABCD</span>
-                        <input type="text" class="form-control" id="abcd-input" placeholder="Contoh: 4321" maxlength="4">
-                        <button class="btn btn-primary" id="calculate-btn">Hitung Shio</button>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">ABCD</span>
+                                <input type="text" class="form-control" id="macau-abcd-input" placeholder="Contoh: 4321" maxlength="4">
+                                <button class="btn btn-primary" id="macau-calculate-btn">Hitung Shio</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-box" id="macau-result-box">
+                        <h4>Hasil Perhitungan Macau Shio:</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Shio Pertama (AS + KOP)</h5>
+                                <p>AS: <span id="macau-as-value" class="shio-number"></span></p>
+                                <p>KOP: <span id="macau-kop-value" class="shio-number"></span></p>
+                                <p>Perhitungan: <span id="macau-shio1-calc" class="shio-number"></span></p>
+                                <p>Hasil: <span id="macau-shio1-result" class="shio-number"></span></p>
+                                <p>Shio: <span id="macau-shio1-name" class="shio-name"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Shio Kedua (KEPALA + EKOR)</h5>
+                                <p>KEPALA: <span id="macau-kepala-value" class="shio-number"></span></p>
+                                <p>EKOR: <span id="macau-ekor-value" class="shio-number"></span></p>
+                                <p>Perhitungan: <span id="macau-shio2-calc" class="shio-number"></span></p>
+                                <p>Hasil: <span id="macau-shio2-result" class="shio-number"></span></p>
+                                <p>Shio: <span id="macau-shio2-name" class="shio-name"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <h4><i class="fas fa-info-circle"></i> Contoh Perhitungan Macau Shio</h4>
+                        <p><strong>Keluar: 4321</strong></p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Shio Pertama:</strong></p>
+                                <ul>
+                                    <li>As = 4, Kop = 3</li>
+                                    <li>AB = 43</li>
+                                    <li>43 - 36 (kelipatan 12 terdekat) = 7</li>
+                                    <li>Hasil: Shio Babi</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Shio Kedua:</strong></p>
+                                <ul>
+                                    <li>Kepala = 2, Ekor = 1</li>
+                                    <li>CD = 21</li>
+                                    <li>21 - 12 (kelipatan 12 terdekat) = 9</li>
+                                    <li>Hasil: Shio Ayam</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="result-box" id="result-box">
-                <h4>Hasil Perhitungan:</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Shio Pertama (AS + KOP)</h5>
-                        <p>AS: <span id="as-value" class="shio-number"></span></p>
-                        <p>KOP: <span id="kop-value" class="shio-number"></span></p>
-                        <p>Hasil: <span id="shio1-result" class="shio-number"></span></p>
-                        <p>Shio: <span id="shio1-name" class="shio-name"></span></p>
+
+            <!-- Shio Tab -->
+            <div class="tab-pane fade" id="shio" role="tabpanel" aria-labelledby="shio-tab">
+                <div class="calculator-section">
+                    <h2><i class="fas fa-calculator"></i> Kalkulator Shio</h2>
+                    <p>Shio menggunakan 2 angka (Kepala, Ekor) untuk menentukan 1 shio:</p>
+                    
+                    <div class="formula-box">
+                        <h5>Struktur Angka:</h5>
+                        <div class="text-center">
+                            <span class="digit-box">C</span>
+                            <span class="digit-box">D</span>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span>Kepala</span>
+                            <span class="ms-4">Ekor</span>
+                        </div>
+                        
+                        <h5 class="mt-4">Rumus Perhitungan:</h5>
+                        <div class="text-center">
+                            <p><strong>Hasil Angka:</strong> (Kepala × 10) + Ekor = CD</p>
+                            <p><strong>Hasil Shio:</strong> CD - (kelipatan 12 terdekat) = X</p>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h5>Shio Kedua (KEPALA + EKOR)</h5>
-                        <p>KEPALA: <span id="kepala-value" class="shio-number"></span></p>
-                        <p>EKOR: <span id="ekor-value" class="shio-number"></span></p>
-                        <p>Hasil: <span id="shio2-result" class="shio-number"></span></p>
-                        <p>Shio: <span id="shio2-name" class="shio-name"></span></p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">CD</span>
+                                <input type="text" class="form-control" id="shio-cd-input" placeholder="Contoh: 21" maxlength="2">
+                                <button class="btn btn-primary" id="shio-calculate-btn">Hitung Shio</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-box" id="shio-result-box">
+                        <h4>Hasil Perhitungan Shio:</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Shio (KEPALA + EKOR)</h5>
+                                <p>KEPALA: <span id="shio-kepala-value" class="shio-number"></span></p>
+                                <p>EKOR: <span id="shio-ekor-value" class="shio-number"></span></p>
+                                <p>Perhitungan: <span id="shio-calc" class="shio-number"></span></p>
+                                <p>Hasil: <span id="shio-result" class="shio-number"></span></p>
+                                <p>Shio: <span id="shio-name" class="shio-name"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <h4><i class="fas fa-info-circle"></i> Contoh Perhitungan Shio</h4>
+                        <p><strong>Keluar: 21</strong></p>
+                        <ul>
+                            <li>Kepala = 2, Ekor = 1</li>
+                            <li>CD = 21</li>
+                            <li>21 - 12 (kelipatan 12 terdekat) = 9</li>
+                            <li>Hasil: Shio Ayam</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="example-box">
-            <h4><i class="fas fa-info-circle"></i> Contoh Perhitungan</h4>
-            <p><strong>Keluar: 4321</strong></p>
-            <p>Permainan ini membeli 2 Kombinasi Shio yang tepat: AS, KOP & KEPALA, EKOR</p>
-            <ul>
-                <li><strong>Shio Pertama</strong>
-                    <ul>
-                        <li>As = 4</li>
-                        <li>Kop = 3</li>
-                        <li>Hasil shio Pertama = 43-36 = 7 (shio disesuaikan dengan tabel shio)</li>
-                    </ul>
-                </li>
-                <li><strong>Shio Kedua</strong>
-                    <ul>
-                        <li>Kepala = 2</li>
-                        <li>Ekor = 1</li>
-                        <li>Hasil shio kedua = 21-12 = 9 (shio disesuaikan dengan tabel shio)</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+            <!-- Tabel Shio Tab -->
+            <div class="tab-pane fade" id="tabel-shio" role="tabpanel" aria-labelledby="tabel-shio-tab">
+                <div class="shio-table">
+                    <h2><i class="fas fa-table"></i> Tabel Shio</h2>
+                    <p>SHIO merupakan 12 lambang kelahiran dalam penanggalan China. Dalam permainan ini, setiap lambang diwakili dengan nomor-nomor berikut:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Shio</th>
+                                <th>Nomor Terkait</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="shio-row">
+                                <td>1</td>
+                                <td class="shio-name">Tikus</td>
+                                <td>
+                                    <span class="shio-badge">06</span>
+                                    <span class="shio-badge">18</span>
+                                    <span class="shio-badge">30</span>
+                                    <span class="shio-badge">42</span>
+                                    <span class="shio-badge">54</span>
+                                    <span class="shio-badge">66</span>
+                                    <span class="shio-badge">78</span>
+                                    <span class="shio-badge">90</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>2</td>
+                                <td class="shio-name">Kerbau</td>
+                                <td>
+                                    <span class="shio-badge">05</span>
+                                    <span class="shio-badge">17</span>
+                                    <span class="shio-badge">29</span>
+                                    <span class="shio-badge">41</span>
+                                    <span class="shio-badge">53</span>
+                                    <span class="shio-badge">65</span>
+                                    <span class="shio-badge">77</span>
+                                    <span class="shio-badge">89</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>3</td>
+                                <td class="shio-name">Harimau</td>
+                                <td>
+                                    <span class="shio-badge">04</span>
+                                    <span class="shio-badge">16</span>
+                                    <span class="shio-badge">28</span>
+                                    <span class="shio-badge">40</span>
+                                    <span class="shio-badge">52</span>
+                                    <span class="shio-badge">64</span>
+                                    <span class="shio-badge">76</span>
+                                    <span class="shio-badge">88</span>
+                                    <span class="shio-badge">00</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>4</td>
+                                <td class="shio-name">Kelinci</td>
+                                <td>
+                                    <span class="shio-badge">03</span>
+                                    <span class="shio-badge">15</span>
+                                    <span class="shio-badge">27</span>
+                                    <span class="shio-badge">39</span>
+                                    <span class="shio-badge">51</span>
+                                    <span class="shio-badge">63</span>
+                                    <span class="shio-badge">75</span>
+                                    <span class="shio-badge">87</span>
+                                    <span class="shio-badge">99</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>5</td>
+                                <td class="shio-name">Naga</td>
+                                <td>
+                                    <span class="shio-badge">02</span>
+                                    <span class="shio-badge">14</span>
+                                    <span class="shio-badge">26</span>
+                                    <span class="shio-badge">38</span>
+                                    <span class="shio-badge">50</span>
+                                    <span class="shio-badge">62</span>
+                                    <span class="shio-badge">74</span>
+                                    <span class="shio-badge">86</span>
+                                    <span class="shio-badge">98</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>6</td>
+                                <td class="shio-name">Ular</td>
+                                <td>
+                                    <span class="shio-badge">01</span>
+                                    <span class="shio-badge">13</span>
+                                    <span class="shio-badge">25</span>
+                                    <span class="shio-badge">37</span>
+                                    <span class="shio-badge">49</span>
+                                    <span class="shio-badge">61</span>
+                                    <span class="shio-badge">73</span>
+                                    <span class="shio-badge">85</span>
+                                    <span class="shio-badge">97</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>7</td>
+                                <td class="shio-name">Kuda</td>
+                                <td>
+                                    <span class="shio-badge">12</span>
+                                    <span class="shio-badge">24</span>
+                                    <span class="shio-badge">36</span>
+                                    <span class="shio-badge">48</span>
+                                    <span class="shio-badge">60</span>
+                                    <span class="shio-badge">72</span>
+                                    <span class="shio-badge">84</span>
+                                    <span class="shio-badge">96</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>8</td>
+                                <td class="shio-name">Kambing</td>
+                                <td>
+                                    <span class="shio-badge">11</span>
+                                    <span class="shio-badge">23</span>
+                                    <span class="shio-badge">35</span>
+                                    <span class="shio-badge">47</span>
+                                    <span class="shio-badge">59</span>
+                                    <span class="shio-badge">71</span>
+                                    <span class="shio-badge">83</span>
+                                    <span class="shio-badge">95</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>9</td>
+                                <td class="shio-name">Monyet</td>
+                                <td>
+                                    <span class="shio-badge">10</span>
+                                    <span class="shio-badge">22</span>
+                                    <span class="shio-badge">34</span>
+                                    <span class="shio-badge">46</span>
+                                    <span class="shio-badge">58</span>
+                                    <span class="shio-badge">70</span>
+                                    <span class="shio-badge">82</span>
+                                    <span class="shio-badge">94</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>10</td>
+                                <td class="shio-name">Ayam</td>
+                                <td>
+                                    <span class="shio-badge">09</span>
+                                    <span class="shio-badge">21</span>
+                                    <span class="shio-badge">33</span>
+                                    <span class="shio-badge">45</span>
+                                    <span class="shio-badge">57</span>
+                                    <span class="shio-badge">69</span>
+                                    <span class="shio-badge">81</span>
+                                    <span class="shio-badge">93</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>11</td>
+                                <td class="shio-name">Anjing</td>
+                                <td>
+                                    <span class="shio-badge">08</span>
+                                    <span class="shio-badge">20</span>
+                                    <span class="shio-badge">32</span>
+                                    <span class="shio-badge">44</span>
+                                    <span class="shio-badge">56</span>
+                                    <span class="shio-badge">68</span>
+                                    <span class="shio-badge">80</span>
+                                    <span class="shio-badge">92</span>
+                                </td>
+                            </tr>
+                            <tr class="shio-row">
+                                <td>12</td>
+                                <td class="shio-name">Babi</td>
+                                <td>
+                                    <span class="shio-badge">07</span>
+                                    <span class="shio-badge">19</span>
+                                    <span class="shio-badge">31</span>
+                                    <span class="shio-badge">43</span>
+                                    <span class="shio-badge">55</span>
+                                    <span class="shio-badge">67</span>
+                                    <span class="shio-badge">79</span>
+                                    <span class="shio-badge">91</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <div class="note-box">
-            <h4><i class="fas fa-exclamation-triangle"></i> Catatan Penting</h4>
-            <p>Nilai yang dikurangi merupakan kelipatan 12. Misalnya:</p>
-            <ul>
-                <li>Jika hasil perhitungan adalah 43, maka kita kurangi dengan kelipatan 12 terdekat (36), sehingga 43-36 = 7</li>
-                <li>Jika hasil perhitungan adalah 21, maka kita kurangi dengan kelipatan 12 terdekat (12), sehingga 21-12 = 9</li>
-            </ul>
+                <div class="note-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Catatan Penting</h4>
+                    <p>Nilai yang dikurangi merupakan kelipatan 12 terdekat yang lebih kecil dari hasil perhitungan:</p>
+                    <ul>
+                        <li>Jika hasil perhitungan adalah 43, maka kita kurangi dengan kelipatan 12 terdekat (36), sehingga 43-36 = 7</li>
+                        <li>Jika hasil perhitungan adalah 21, maka kita kurangi dengan kelipatan 12 terdekat (12), sehingga 21-12 = 9</li>
+                        <li>Jika hasil perhitungan adalah 8, maka tidak perlu dikurangi karena sudah kurang dari 12</li>
+                    </ul>
+                    <p>Hasil akhir (0-11) kemudian dicocokkan dengan tabel shio untuk menentukan shio yang sesuai.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -396,9 +535,14 @@
             return 'Tidak Ditemukan';
         }
 
-        // Fungsi untuk menghitung shio
-        function calculateShio() {
-            const input = document.getElementById('abcd-input').value;
+        // Fungsi untuk menghitung kelipatan 12 terdekat
+        function findNearestMultipleOf12(number) {
+            return Math.floor(number / 12) * 12;
+        }
+
+        // Fungsi untuk menghitung Macau Shio
+        function calculateMacauShio() {
+            const input = document.getElementById('macau-abcd-input').value;
             
             // Validasi input
             if (input.length !== 4 || isNaN(input)) {
@@ -414,35 +558,81 @@
             
             // Hitung shio pertama (AS + KOP)
             const shio1Value = as * 10 + kop;
-            const shio1Result = shio1Value % 12;
+            const nearestMultiple1 = findNearestMultipleOf12(shio1Value);
+            const shio1Result = shio1Value - nearestMultiple1;
             const shio1Name = findShioByNumber(shio1Result);
             
             // Hitung shio kedua (KEPALA + EKOR)
             const shio2Value = kepala * 10 + ekor;
-            const shio2Result = shio2Value % 12;
+            const nearestMultiple2 = findNearestMultipleOf12(shio2Value);
+            const shio2Result = shio2Value - nearestMultiple2;
             const shio2Name = findShioByNumber(shio2Result);
             
             // Tampilkan hasil
-            document.getElementById('as-value').textContent = as;
-            document.getElementById('kop-value').textContent = kop;
-            document.getElementById('kepala-value').textContent = kepala;
-            document.getElementById('ekor-value').textContent = ekor;
+            document.getElementById('macau-as-value').textContent = as;
+            document.getElementById('macau-kop-value').textContent = kop;
+            document.getElementById('macau-kepala-value').textContent = kepala;
+            document.getElementById('macau-ekor-value').textContent = ekor;
             
-            document.getElementById('shio1-result').textContent = shio1Value + ' - ' + (shio1Value - shio1Result) + ' = ' + shio1Result;
-            document.getElementById('shio1-name').textContent = shio1Name;
+            document.getElementById('macau-shio1-calc').textContent = shio1Value + ' - ' + nearestMultiple1 + ' = ' + shio1Result;
+            document.getElementById('macau-shio1-result').textContent = shio1Result;
+            document.getElementById('macau-shio1-name').textContent = shio1Name;
             
-            document.getElementById('shio2-result').textContent = shio2Value + ' - ' + (shio2Value - shio2Result) + ' = ' + shio2Result;
-            document.getElementById('shio2-name').textContent = shio2Name;
+            document.getElementById('macau-shio2-calc').textContent = shio2Value + ' - ' + nearestMultiple2 + ' = ' + shio2Result;
+            document.getElementById('macau-shio2-result').textContent = shio2Result;
+            document.getElementById('macau-shio2-name').textContent = shio2Name;
             
             // Tampilkan kotak hasil
-            document.getElementById('result-box').style.display = 'block';
+            document.getElementById('macau-result-box').style.display = 'block';
         }
 
-        // Event listener untuk tombol hitung
-        document.getElementById('calculate-btn').addEventListener('click', calculateShio);
+        // Fungsi untuk menghitung Shio
+        function calculateShio() {
+            const input = document.getElementById('shio-cd-input').value;
+            
+            // Validasi input
+            if (input.length !== 2 || isNaN(input)) {
+                alert('Masukkan 2 digit angka yang valid!');
+                return;
+            }
+            
+            // Ambil nilai KEPALA, EKOR
+            const kepala = parseInt(input[0]);
+            const ekor = parseInt(input[1]);
+            
+            // Hitung shio (KEPALA + EKOR)
+            const shioValue = kepala * 10 + ekor;
+            const nearestMultiple = findNearestMultipleOf12(shioValue);
+            const shioResult = shioValue - nearestMultiple;
+            const shioName = findShioByNumber(shioResult);
+            
+            // Tampilkan hasil
+            document.getElementById('shio-kepala-value').textContent = kepala;
+            document.getElementById('shio-ekor-value').textContent = ekor;
+            
+            document.getElementById('shio-calc').textContent = shioValue + ' - ' + nearestMultiple + ' = ' + shioResult;
+            document.getElementById('shio-result').textContent = shioResult;
+            document.getElementById('shio-name').textContent = shioName;
+            
+            // Tampilkan kotak hasil
+            document.getElementById('shio-result-box').style.display = 'block';
+        }
+
+        // Event listener untuk tombol hitung Macau Shio
+        document.getElementById('macau-calculate-btn').addEventListener('click', calculateMacauShio);
         
-        // Event listener untuk input Enter
-        document.getElementById('abcd-input').addEventListener('keypress', function(event) {
+        // Event listener untuk input Enter Macau Shio
+        document.getElementById('macau-abcd-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateMacauShio();
+            }
+        });
+
+        // Event listener untuk tombol hitung Shio
+        document.getElementById('shio-calculate-btn').addEventListener('click', calculateShio);
+        
+        // Event listener untuk input Enter Shio
+        document.getElementById('shio-cd-input').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 calculateShio();
             }
