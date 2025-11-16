@@ -1,0 +1,2144 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TOGEL LINE - Klik & Hitung</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --card: #121a2a;
+      --text: #e0f7ff;
+      --accent: #00bfff;
+      --accent-hover: #0099cc;
+      --success: #00cc66;
+      --border: #2a3b5a;
+      --text-light: #8ea0b3;
+      --shadow: 0 10px 30px rgba(0, 40, 80, 0.3);
+      --glow: 0 0 15px rgba(0, 191, 255, 0.4);
+      --transition: all 0.3s ease;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(0, 191, 255, 0.08), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(0, 191, 255, 0.06), transparent 30%);
+      padding: 20px;
+      background-image: url('https://i.postimg.cc/15TPDGwD/unnamed.png');
+      background-size: 700px; 
+    }
+    .container {
+      max-width: 540px;
+      width: 100%;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      letter-spacing: -1px;
+      text-shadow: var(--glow);
+    }
+    .subtitle {
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 14px 18px;
+      background: #0f1728;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: var(--transition);
+      font-family: 'Roboto Mono', monospace;
+    }
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.2);
+    }
+
+    /* Daftar Klik */
+    .click-list {
+      margin: 20px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      background: rgba(10, 20, 40, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .click-item {
+      padding: 8px 12px;
+      margin: 4px 0;
+      background: #0f1728;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: #a0d8ff;
+    }
+    .click-item:hover {
+      background: var(--accent);
+      color: white;
+    }
+    .click-item span {
+      font-size: 12px;
+      color: #8ea0b3;
+    }
+
+    button {
+      background: linear-gradient(45deg, var(--accent), var(--accent-hover));
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 10px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: var(--glow);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3), var(--glow);
+    }
+    .result {
+      margin-top: 30px;
+      padding: 22px;
+      background: rgba(10, 20, 40, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Roboto Mono', monospace;
+      white-space: pre-line;
+      font-size: 14px;
+      color: #a0d8ff;
+      text-align: left;
+      min-height: 80px;
+      opacity: 0;
+      height: auto;
+      transition: opacity 0.6s ease, transform 0.4s ease;
+      transform: translateY(10px);
+      border-left: 4px solid var(--accent);
+    }
+    .result.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .typing {
+      border-right: 1px solid var(--accent);
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink {
+      from, to { border-color: transparent; }
+      50% { border-color: var(--accent); }
+    }
+    .copy-btn {
+      display: none;
+      margin-top: 15px;
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: var(--transition);
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 204, 102, 0.3);
+    }
+    .copy-btn:hover {
+      background: #00b359;
+      transform: translateY(-2px);
+    }
+    .copy-btn.show {
+      display: inline-flex;
+    }
+    .note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 25px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-microchip"></i> TOGEL LINE</h1>
+    <p class="subtitle">Klik & Hitung - Semua Pasaran</p>
+
+    <!-- Pencarian -->
+<div class="form-group">
+<label for="search">🔍 Cari Pasaran/Tipe Taruhan</label>
+<input type="text" id="search" placeholder="Contoh: totomacau, hokidraw, hongkong, sydney/colok bebas,colok jitu" />
+</div>
+
+<!-- Dropdown Tipe Taruhan -->
+<div class="form-group">
+<label for="tipe">Tipe Taruhan</label>
+<select id="tipe"></select>
+</div>
+
+<!-- Daftar Klik -->
+<div class="form-group">
+<label>🎯 Klik Langsung</label>
+<div class="click-list" id="clickList"></div>
+</div>
+
+<div class="form-group">
+<label for="bet">Nominal Bet (Rp)</label>
+<input type="number" id="bet" placeholder="Contoh: 1000" value="1000" />
+</div>
+
+<button id="hitung"><i class="fas fa-cube"></i> Hitung</button>
+<div class="result" id="result"></div>
+<button id="copyBtn" class="copy-btn"><i class="fas fa-copy"></i> Salin</button>
+<p class="note">🔒 Klik salah satu tipe taruhan untuk memilih cepat!</p>
+</div>
+
+<script>
+function format(angka) {
+return angka.toLocaleString('id-ID');
+    }
+
+    // Semua opsi dari data kamu
+    const options = [
+      { value: "prize1_4d", text: "PRIZE 1 4D", group: "Hadiah Utama" },
+      { value: "prize1_3d", text: "PRIZE 1 3D", group: "Hadiah Utama" },
+      { value: "prize1_2d", text: "PRIZE 1 2D", group: "Hadiah Utama" },
+      { value: "prize2_4d", text: "PRIZE 2 4D", group: "Hadiah Utama" },
+      { value: "prize2_3d", text: "PRIZE 2 3D", group: "Hadiah Utama" },
+      { value: "prize2_2d", text: "PRIZE 2 2D", group: "Hadiah Utama" },
+      { value: "prize3_4d", text: "PRIZE 3 4D", group: "Hadiah Utama" },
+      { value: "prize3_3d", text: "PRIZE 3 3D", group: "Hadiah Utama" },
+      { value: "prize3_2d", text: "PRIZE 3 2D", group: "Hadiah Utama" },      
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL KENTUCKY", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL  KENTUCKY", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL KENTUCKY", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL  FLORIDA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL  FLORIDA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL  FLORIDA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL  HUAHIN", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL  HUAHIN", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL  HUAHIN", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL  NEW YORK", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL  NEW YORK", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL  NEW YORK", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL  BANGKOK", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL BANGKOK", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL  BANGKOK", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL CAROLINA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL CAROLINA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL CAROLINA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL BRUNEI", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL BRUNEI", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL BRUNEI", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL OREGON", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL OREGON", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL OREGON", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL CALIFORNIA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL CALIFORNIA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL CALIFORNIA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL CHELSEA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL CHELSEA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL CHELSEA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL BULLSEYE", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL BULLSEYE", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL BULLSEYE", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL POIPET", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL POIPET", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL POIPET", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL SINGAPORE", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL SINGAPORE", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL SINGAPORE", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL MAGNUM4D", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL MAGNUM4D", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL MAGNUM4D", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL PCSO", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL PCSO", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL PCSO", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL NEVADA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL NEVADA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL NEVADA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL TOTO CAMBODIA", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL TOTO CAMBODIA", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL TOTO CAMBODIA", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL JAKARTA POOLS", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL JAKARTA POOLS", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL JAKARTA POOLS", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL TOTOMALI", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL TOTOMALI", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL TOTOMALI", group: "Full Bet" },
+      { value: "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "4D FULL HOKIDRAW", group: "Full Bet" },
+      { value: "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "3D FULL HOKIDRAW", group: "Full Bet" },
+      { value: "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D", text: "2D FULL HOKIDRAW", group: "Full Bet" },
+      { value: "5d_full_TOTOMACAU5D", text: "5d_full_TOTOMACAU5D ", group: "Full Bet" },
+      { value: "4d_full_TOTOMACAU5D", text: "4d_full_TOTOMACAU5D", group: "Full Bet" },
+      { value: "3d_full_TOTOMACAU5D", text: "3d_full_TOTOMACAU5D", group: "Full Bet" },
+      { value: "2d_full_TOTOMACAU5D", text: "2d_full_TOTOMACAU5D ", group: "Full Bet" },
+      { value: "4d_full_HONGKONG & SYDNEY", text: "4d_full_HONGKONG", group: "Full Bet" },
+      { value: "3d_full_HONGKONG & SYDNEY", text: "3d_full_HONGKONG", group: "Full Bet" },
+      { value: "2d_full_HONGKONG & SYDNEY", text: "2d_full_HONGKONG", group: "Full Bet" },
+      { value: "4d_full_HONGKONG & SYDNEY", text: "4d_full_SYDNEY", group: "Full Bet" },
+      { value: "3d_full_HONGKONG & SYDNEY", text: "3d_full_SYDNEY", group: "Full Bet" },
+      { value: "2d_full_HONGKONG & SYDNEY", text: "2d_full_SYDNEY ", group: "Full Bet" },
+      { value: "4d_full_TOTO MACAU 4D, KING KONG 4D", text: "4d_full_TOTO MACAU 4D", group: "Full Bet" },
+      { value: "3d_full_TOTO MACAU 4D, KING KONG 4D", text: "3d_full_TOTO MACAU 4D", group: "Full Bet" },      
+      { value: "2d_full_TOTO MACAU 4D, KING KONG 4D", text: "2d_full_TOTO MACAU 4D", group: "Full Bet" },
+      { value: "4d_full_TOTO MACAU 4D, KING KONG 4D", text: "4d_full_KING KONG 4D", group: "Full Bet" },
+      { value: "3d_full_TOTO MACAU 4D, KING KONG 4D", text: "3d_full_KING KONG 4D", group: "Full Bet" },      
+      { value: "2d_full_TOTO MACAU 4D, KING KONG 4D", text: "2d_full_KING KONG 4D", group: "Full Bet" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 4D TIDAK TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 3D TIDAK TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - KENTUCKY", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - FLORIDA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - HUAHIN", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - NEW YORK", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - BANGKOK", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - CAROLINA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - BRUNEI", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - OREGON", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - CALIFORNIA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - CHELSEA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - BULLSEYE", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - POIPET", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - SYDNEY", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - SINGAPORE", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - MAGNUM4D", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - PCSO", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - NEVADA", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - HONGKONG", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "BB 2D TIDAK TEPAT - TOTO CAMBODIA", group: "Bet bb" },
+      { value: "bb5d_tepat_TOTOMACAU5D", text: "BB 5D TEPAT-TOTOMACAU5D ", group: "Bet bb" },
+      { value: "bb4d_tepat_TOTOMACAU5D", text: "BB 4D TEPAT-TOTOMACAU5D", group: "Bet bb" },
+      { value: "bb3d_tepat_TOTOMACAU5D", text: "BB 3D TEPAT-TOTOMACAU5D", group: "Bet bb" },
+      { value: "bb2d_tepat_TOTOMACAU5D", text: "BB 2D TEPAT-TOTOMACAU5D ", group: "Bet bb" },
+      { value: "bb5d_tidak_tepat_TOTOMACAU5D", text: "BB 5D TIDAK TEPAT-TOTOMACAU5D", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_TOTOMACAU5D", text: "BB 4D TIDAK TEPAT-TOTOMACAU5D", group: "Bet bb" },      
+      { value: "bb3d_tidak_tepat_TOTOMACAU5D", text: "BB 3D TIDAK TEPAT-TOTOMACAU5D", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_TOTOMACAU5D", text: "BB 2D TIDAK TEPAT-TOTOMACAU5D", group: "Bet bb" },
+      { value: "bb4d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb4d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb4d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb3d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb3d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb3d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb2d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb2d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb2d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TIDAK TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TIDAK TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 4D TIDAK TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TIDAK TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TIDAK TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 3D TIDAK TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TIDAK TEPAT - TOTO MACAU 4D", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TIDAK TEPAT - KINGKONG 4D", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS", text: "BB 2D TIDAK TEPAT - JAKARTA POOLS", group: "Bet bb" },
+      { value: "bb4d_tepat_TOTOMALI", text: "BB 4D TEPAT-TOTOMALI", group: "Bet bb" },
+      { value: "bb3d_tepat_TOTOMALI", text: "BB 3D TEPAT-TOTOMALI", group: "Bet bb" },      
+      { value: "bb2d_tepat_TOTOMALI", text: "BB 2D TEPAT-TOTOMALI", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_TOTOMALI", text: "BB 4D TIDAK TEPAT-TOTOMALI", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_TOTOMALI", text: "BB 3D TIDAK TEPAT-TOTOMALI", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_TOTOMALI", text: "BB 2D TIDAK TEPAT-TOTOMALI", group: "Bet bb" },
+      { value: "bb4d_tepat_HOKIDRAW", text: "BB 4D TEPAT-HOKIDRAW", group: "Bet bb" },
+      { value: "bb3d_tepat_HOKIDRAW", text: "BB 3D TEPAT-HOKIDRAW", group: "Bet bb" },      
+      { value: "bb2d_tepat_HOKIDRAW", text: "BB 2D TEPAT-HOKIDRAW", group: "Bet bb" },
+      { value: "bb4d_tidak_tepat_HOKIDRAW", text: "BB 4D TIDAK TEPAT-HOKIDRAW", group: "Bet bb" },
+      { value: "bb3d_tidak_tepat_HOKIDRAW", text: "BB 3D TIDAK TEPAT-HOKIDRAW", group: "Bet bb" },
+      { value: "bb2d_tidak_tepat_HOKIDRAW", text: "BB 2D TIDAK TEPAT-HOKIDRAW", group: "Bet bb" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - KENTUCKY", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - FLORIDA", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - HUAHIN", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - NEW YORK", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - BANGKOK", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - CAROLINA", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - BRUNEI", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - OREGON", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - CALIFORNIA", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - CHELSEA", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - BULLSEYE", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - POIPET", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - SYDNEY", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - SINGAPORE", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - MAGNUM4D", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - PCSO", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - NEVADA", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - HONGKONG", group: "Discount" },
+      { value: "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 4D - TOTO CAMBODIA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - KENTUCKY", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - FLORIDA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - HUAHIN", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - NEW YORK", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - BANGKOK", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - CAROLINA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - BRUNEI", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - OREGON", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - CALIFORNIA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - CHELSEA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - BULLSEYE", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - POIPET", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - SYDNEY", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - SINGAPORE", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - MAGNUM4D", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - PCSO", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - NEVADA", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - HONGKONG", group: "Discount" },
+      { value: "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 3D - TOTO CAMBODIA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - KENTUCKY", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - FLORIDA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - HUAHIN", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - NEW YORK", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - BANGKOK", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - CAROLINA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - BRUNEI", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - OREGON", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - CALIFORNIA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - CHELSEA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - BULLSEYE", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - POIPET", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - SYDNEY", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - SINGAPORE", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - MAGNUM4D", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - PCSO", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - NEVADA", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - HONGKONG", group: "Discount" },
+      { value: "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D - TOTO CAMBODIA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - KENTUCKY", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - FLORIDA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - HUAHIN", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - NEW YORK", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - BANGKOK", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - CAROLINA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - BRUNEI", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - OREGON", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - CALIFORNIA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - CHELSEA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - BULLSEYE", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - POIPET", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - SYDNEY", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - SINGAPORE", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - MAGNUM4D", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - PCSO", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - NEVADA", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - HONGKONG", group: "Discount" },
+      { value: "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI", text: "DISC 2D D/T - TOTO CAMBODIA", group: "Discount" },
+      { value: "disc5d_TOTO MACAU 5D ( BET DISCOUNT )", text: "DISC 5D-TOTO MACAU 5D ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc4d_TOTO MACAU 5D ( BET DISCOUNT )", text: "DISC 4D-TOTO MACAU 5D ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc3d-TOTO MACAU 5D ( BET DISCOUNT )", text: "DISC 3D-TOTO MACAU 5D ( BET DISCOUNT )", group: "Discount" },      
+      { value: "disc2d-TOTO MACAU 5D ( BET DISCOUNT )", text: "DISC 2D-TOTO MACAU 5D ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc4d_TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 4D - TOTO MACAU 4D", group: "Discount" },
+      { value: "disc4d_TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 4D - KINGKONG 4D", group: "Discount" },
+      { value: "disc3d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 3D - TOTO MACAU 4D", group: "Discount" },
+      { value: "disc3d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 3D - KINGKONG 4D", group: "Discount" },
+      { value: "disc2d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 2D - TOTO MACAU 4D", group: "Discount" },
+      { value: "disc2d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 2D - KINGKONG 4D", group: "Discount" },
+      { value: "disc2dd/t-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 2D D/T - TOTO MACAU 4D", group: "Discount" },
+      { value: "disc2dd/t-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )", text: "DISC 2D D/T - KINGKONG 4D", group: "Discount" },
+      { value: "disc4d_JAKARTA POOLS( BET DISCOUNT )", text: "DISC 4D-JAKARTA POOLS( BET DISCOUNT )", group: "Discount" },      
+      { value: "disc3d-JAKARTA POOLS( BET DISCOUNT )", text: "DISC 3D-JAKARTA POOLS( BET DISCOUNT )", group: "Discount" },
+      { value: "disc2d-JAKARTA POOLS( BET DISCOUNT )", text: "DISC 2D-JAKARTA POOLS( BET DISCOUNT )", group: "Discount" },
+      { value: "disc4d_TOTOMALI ( BET DISCOUNT )", text: "DISC 4D-TOTOMALI ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc3d-TOTOMALI ( BET DISCOUNT )", text: "DISC 3D-TOTOMALI ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc2d-TOTOMALI ( BET DISCOUNT )", text: "DISC 2D-TOTOMALI ( BET DISCOUNT )", group: "Discount" },
+      { value: "disc4d_HOKIDRAW( BET DISCOUNT )", text: "DISC 4D-HOKIDRAW( BET DISCOUNT )", group: "Discount" },
+      { value: "disc3d-HOKIDRAW( BET DISCOUNT )", text: "DISC 3D-HOKIDRAW( BET DISCOUNT )", group: "Discount" },
+      { value: "disc2d-HOKIDRAW( BET DISCOUNT )", text: "DISC 2D-HOKIDRAW( BET DISCOUNT )", group: "Discount" },
+      { value: "superdisc4d_TOTO MACAU 4D( BET SUPER DISCOUNT )", text: "SUPER DISC 4D-TOTO MACAU 4D ", group: "super Discount" },
+      { value: "superdisc3d-TOTO MACAU 4D( BET SUPER DISCOUNT )", text: "SUPER DISC 3D-TOTO MACAU 4D ", group: "super Discount" },
+      { value: "superdisc2d-TOTO MACAU 4D( BET SUPER DISCOUNT )", text: "SUPER DISC 2D-TOTO MACAU 4D ", group: "super Discount" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - KENTUCKY", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - FLORIDA", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - HUAHIN", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - NEW YORK", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - BANGKOK", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - CAROLINA", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - BRUNEI", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - OREGON", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - CALIFORNIA", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - CHELSEA", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - BULLSEYE", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - POIPET", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - SYDNEY", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - SINGAPORE", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - MAGNUM4D", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - PCSO", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - NEVADA", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - HONGKONG", group: "Colok Bebas" },
+      { value: "colok_bebas_1", text: "COLOK BEBAS 1 DIGIT - TOTO CAMBODIA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - KENTUCKY", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - FLORIDA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - HUAHIN", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - NEW YORK", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - BANGKOK", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - CAROLINA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - BRUNEI", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - OREGON", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - CALIFORNIA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - CHELSEA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - BULLSEYE", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - POIPET", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - SYDNEY", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - SINGAPORE", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - MAGNUM4D", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - PCSO", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - NEVADA", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - HONGKONG", group: "Colok Bebas" },
+      { value: "colok_bebas_2", text: "COLOK BEBAS 2 DIGIT - TOTO CAMBODIA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - KENTUCKY", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - FLORIDA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - HUAHIN", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - NEW YORK", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - BANGKOK", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - CAROLINA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - BRUNEI", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - OREGON", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - CALIFORNIA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - CHELSEA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - BULLSEYE", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - POIPET", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - SYDNEY", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - SINGAPORE", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - MAGNUM4D", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - PCSO", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - NEVADA", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - HONGKONG", group: "Colok Bebas" },
+      { value: "colok_bebas_3", text: "COLOK BEBAS 3 DIGIT - TOTO CAMBODIA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - KENTUCKY", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - FLORIDA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - HUAHIN", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - NEW YORK", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - BANGKOK", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - CAROLINA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - BRUNEI", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - OREGON", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - CALIFORNIA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - CHELSEA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - BULLSEYE", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - POIPET", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - SYDNEY", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - SINGAPORE", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - MAGNUM4D", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - PCSO", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - NEVADA", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - HONGKONG", group: "Colok Bebas" },
+      { value: "colok_bebas_4", text: "COLOK BEBAS 4 DIGIT - TOTO CAMBODIA", group: "Colok Bebas" },
+      { value: "colok_bebas_1_TOTOMACAU5D", text: "COLOK BEBAS 1 DIGIT-TOTOMACAU5D", group: "Colok Bebas" },
+      { value: "colok_bebas_2_TOTOMACAU5D", text: "COLOK BEBAS 2 DIGIT-TOTOMACAU5D", group: "Colok Bebas" },
+      { value: "colok_bebas_3_TOTOMACAU5D", text: "COLOK BEBAS 3 DIGIT-TOTOMACAU5D", group: "Colok Bebas" },
+      { value: "colok_bebas_4_TOTOMACAU5D", text: "COLOK BEBAS 4 DIGIT-TOTOMACAU5D", group: "Colok Bebas" },
+      { value: "colok_bebas_5_TOTOMACAU5D", text: "COLOK BEBAS 5 DIGIT-TOTOMACAU5D", group: "Colok Bebas" },
+      { value: "colok_bebas_1_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 1 DIGIT - TOTO MACAU 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_1_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 1 DIGIT - KINGKONG 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_2_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2 DIGIT - TOTO MACAU 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_2_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2 DIGIT - KINGKONG 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 3 DIGIT - TOTO MACAU 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 3 DIGIT - KINGKONG 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 4 DIGIT - TOTO MACAU 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 4 DIGIT - KINGKONG 4D", group: "Colok Bebas" },
+      { value: "colok_bebas_1_HOKI DRAW", text: "COLOK BEBAS 1 DIGIT-HOKI DRAW", group: "Colok Bebas" },
+      { value: "colok_bebas_2_HOKI DRAW", text: "COLOK BEBAS 2 DIGIT-HOKI DRAW", group: "Colok Bebas" },
+      { value: "colok_bebas_3_HOKI DRAW", text: "COLOK BEBAS 3 DIGIT-HOKI DRAW", group: "Colok Bebas" },
+      { value: "colok_bebas_4_HOKI DRAW", text: "COLOK BEBAS 4 DIGIT-HOKI DRAW", group: "Colok Bebas" },
+      { value: "colok_bebas_1_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 1 DIGIT - JAKARTA POOLS", group: "Colok Bebas" },
+      { value: "colok_bebas_1_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 1 DIGIT - TOTOMALI", group: "Colok Bebas" },
+      { value: "colok_bebas_2_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2 DIGIT - JAKARTA POOLS", group: "Colok Bebas" },
+      { value: "colok_bebas_2_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2 DIGIT - TOTOMALI", group: "Colok Bebas" },
+      { value: "colok_bebas_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 3 DIGIT - JAKARTA POOLS", group: "Colok Bebas" },
+      { value: "colok_bebas_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 3 DIGIT - TOTOMALI", group: "Colok Bebas" },
+      { value: "colok_bebas_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 4 DIGIT - JAKARTA POOLS", group: "Colok Bebas" },
+      { value: "colok_bebas_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 4 DIGIT - TOTOMALI", group: "Colok Bebas" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - KENTUCKY", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - FLORIDA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - HUAHIN", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - NEW YORK", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - BANGKOK", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - CAROLINA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - BRUNEI", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - OREGON", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - CALIFORNIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - CHELSEA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - BULLSEYE", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - POIPET", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - SYDNEY", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - SINGAPORE", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - MAGNUM4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - PCSO", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - NEVADA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - HONGKONG", group: "Colok macau" },
+      { value: "colok_bebas_2d_2", text: "COLOK BEBAS 2D 2 DIGIT - TOTO CAMBODIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - KENTUCKY", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - FLORIDA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - HUAHIN", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - NEW YORK", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - BANGKOK", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - CAROLINA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - BRUNEI", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - OREGON", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - CALIFORNIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - CHELSEA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - BULLSEYE", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - POIPET", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - SYDNEY", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - SINGAPORE", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - MAGNUM4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - PCSO", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - NEVADA", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - HONGKONG", group: "Colok macau" },
+      { value: "colok_bebas_2d_3", text: "COLOK BEBAS 2D 3 DIGIT - TOTO CAMBODIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - KENTUCKY", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - FLORIDA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - HUAHIN", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - NEW YORK", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - BANGKOK", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - CAROLINA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - BRUNEI", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - OREGON", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - CALIFORNIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - CHELSEA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - BULLSEYE", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - POIPET", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - SYDNEY", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - SINGAPORE", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - MAGNUM4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - PCSO", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - NEVADA", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - HONGKONG", group: "Colok macau" },
+      { value: "colok_bebas_2d_4", text: "COLOK BEBAS 2D 4 DIGIT - TOTO CAMBODIA", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_TOTOMACAU5D", text: "COLOK BEBAS 2D 2 DIGIT-TOTOMACAU5D", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_TOTOMACAU5D", text: "COLOK BEBAS 2D 3 DIGIT-TOTOMACAU5D", group: "Colok macau" },      
+      { value: "colok_bebas_2d_4_TOTOMACAU5D", text: "COLOK BEBAS 2D 4 DIGIT-TOTOMACAU5D", group: "Colok macau" },
+      { value: "colok_bebas_2d_5_TOTOMACAU5D", text: "COLOK BEBAS 2D 5 DIGIT-TOTOMACAU5D", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 2 DIGIT - TOTO MACAU 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 2 DIGIT - KINGKONG 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 3 DIGIT - TOTO MACAU 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 3 DIGIT - KINGKONG 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 4 DIGIT - TOTO MACAU 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK BEBAS 2D 4 DIGIT - KINGKONG 4D", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_HOKI DRAW", text: "COLOK BEBAS 2D 2 DIGIT-HOKI DRAW", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_HOKI DRAW", text: "COLOK BEBAS 2D 3 DIGIT-HOKI DRAW", group: "Colok macau" },
+      { value: "colok_bebas_2d_4_HOKI DRAW", text: "COLOK BEBAS 2D 4 DIGIT-HOKI DRAW", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 2 DIGIT - JAKARTA POOLS", group: "Colok macau" },
+      { value: "colok_bebas_2d_2_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 2 DIGIT - TOTOMALI", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 3 DIGIT - JAKARTA POOLS", group: "Colok macau" },
+      { value: "colok_bebas_2d_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 3 DIGIT - TOTOMALI", group: "Colok macau" },
+      { value: "colok_bebas_2d_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 4 DIGIT - JAKARTA POOLS", group: "Colok macau" },
+      { value: "colok_bebas_2d_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK BEBAS 2D 4 DIGIT - TOTOMALI", group: "Colok macau" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - KENTUCKY", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - FLORIDA", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - HUAHIN", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - NEW YORK", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - BANGKOK", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - CAROLINA", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - BRUNEI", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - OREGON", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - CALIFORNIA", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - CHELSEA", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - BULLSEYE", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - POIPET", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - SYDNEY", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - SINGAPORE", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - MAGNUM4D", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - PCSO", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - NEVADA", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - HONGKONG", group: "Colok Naga" },
+      { value: "colok_naga_3", text: "COLOK NAGA 3 DIGIT - TOTO CAMBODIA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - KENTUCKY", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - FLORIDA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - HUAHIN", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - NEW YORK", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - BANGKOK", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - CAROLINA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - BRUNEI", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - OREGON", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - CALIFORNIA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - CHELSEA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - BULLSEYE", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - POIPET", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - SYDNEY", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - SINGAPORE", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - MAGNUM4D", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - PCSO", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - NEVADA", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - HONGKONG", group: "Colok Naga" },
+      { value: "colok_naga_4", text: "COLOK NAGA 4 DIGIT - TOTO CAMBODIA", group: "Colok Naga" },
+      { value: "colok_naga_3_TOTOMACAU5D", text: "COLOK NAGA 3 DIGIT-TOTOMACAU5D", group: "Colok Naga" },
+      { value: "colok_naga_4_TOTOMACAU5D", text: "COLOK NAGA 4 DIGIT-TOTOMACAU5D", group: "Colok Naga" },
+      { value: "colok_naga_5_TOTOMACAU5D", text: "COLOK NAGA 5 DIGIT-TOTOMACAU5D", group: "Colok Naga" },
+      { value: "colok_naga_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK NAGA 3 DIGIT - TOTO MACAU 4D", group: "Colok Naga" },
+      { value: "colok_naga_3_TOTO MACAU 4D, KING KONG 4D", text: "COLOK NAGA 3 DIGIT - KINGKONG 4D", group: "Colok Naga" },
+      { value: "colok_naga_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK NAGA 4 DIGIT - TOTO MACAU 4D", group: "Colok Naga" },
+      { value: "colok_naga_4_TOTO MACAU 4D, KING KONG 4D", text: "COLOK NAGA 4 DIGIT - KINGKONG 4D", group: "Colok Naga" },
+      { value: "colok_naga_3_HOKI DRAW", text: "COLOK NAGA 3 DIGIT - HOKI DRAW", group: "Colok Naga" },
+      { value: "colok_naga_4_HOKI DRAW", text: "COLOK NAGA 4 DIGIT - HOKI DRAW", group: "Colok Naga" },
+      { value: "colok_naga_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK NAGA 3 DIGIT - JAKARTA POOLS", group: "Colok Naga" },
+      { value: "colok_naga_3_JAKARTA POOLS DAN TOTOMALI", text: "COLOK NAGA 3 DIGIT - TOTOMALI", group: "Colok Naga" },
+      { value: "colok_naga_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK NAGA 4 DIGIT - JAKARTA POOLS", group: "Colok Naga" },
+      { value: "colok_naga_4_JAKARTA POOLS DAN TOTOMALI", text: "COLOK NAGA 4 DIGIT - TOTOMALI", group: "Colok Naga" },
+      { value: "colok_bebas_4d_4_TOTOMACAU5D", text: "COLOK BEBAS 4D 4 DIGIT-TOTOMACAU5D", group: "Colok bebas4d" },
+      { value: "colok_bebas_4d_5_TOTOMACAU5D", text: "COLOK BEBAS 4D 5 DIGIT-TOTOMACAU5D", group: "Colok bebas4d" },
+      { value: "colok_jitu", text: "COLOK JITU - KENTUCKY", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - FLORIDA", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - HUAHIN", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - NEW YORK", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - BANGKOK", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - CAROLINA", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - BRUNEI", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - OREGON", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - CALIFORNIA", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - CHELSEA", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - BULLSEYE", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - POIPET", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - SYDNEY", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - SINGAPORE", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - MAGNUM4D", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - PCSO", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - NEVADA", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - HONGKONG", group: "COLOK JITU" },
+      { value: "colok_jitu", text: "COLOK JITU - TOTO CAMBODIA", group: "COLOK JITU" },
+      { value: "colok_jitu_TOTOMACAU5D", text: "COLOK JITU-TOTOMACAU5D", group: "COLOK JITU" },
+      { value: "colok_jitu_TOTO MACAU 4D, KING KONG 4D", text: "COLOK JITU - TOTO MACAU 4D", group: "COLOK JITU" },
+      { value: "colok_jitu_TOTO MACAU 4D, KING KONG 4D", text: "COLOK JITU - KINGKONG 4D", group: "COLOK JITU" },
+      { value: "colok_jitu_HOKI DRAW", text: "COLOK JITU - HOKI DRAW", group: "COLOK JITU" },
+      { value: "colok_jitu_JAKARTA POOLS DAN TOTOMALI", text: "COLOK JITU - JAKARTA POOLS", group: "COLOK JITU" },
+      { value: "colok_jitu_JAKARTA POOLS DAN TOTOMALI", text: "COLOK JITU - TOTOMALI", group: "COLOK JITU" },
+    { value: "shio", text: "SHIO - KENTUCKY", group: "Shio" },
+    { value: "shio", text: "SHIO - FLORIDA", group: "Shio" },
+    { value: "shio", text: "SHIO - HUAHIN", group: "Shio" },
+    { value: "shio", text: "SHIO - NEW YORK", group: "Shio" },
+    { value: "shio", text: "SHIO - BANGKOK", group: "Shio" },
+    { value: "shio", text: "SHIO - CAROLINA", group: "Shio" },
+    { value: "shio", text: "SHIO - BRUNEI", group: "Shio" },
+    { value: "shio", text: "SHIO - OREGON", group: "Shio" },
+    { value: "shio", text: "SHIO - CALIFORNIA", group: "Shio" },
+    { value: "shio", text: "SHIO - CHELSEA", group: "Shio" },
+    { value: "shio", text: "SHIO - BULLSEYE", group: "Shio" },
+    { value: "shio", text: "SHIO - POIPET", group: "Shio" },
+    { value: "shio", text: "SHIO - SYDNEY", group: "Shio" },
+    { value: "shio", text: "SHIO - SINGAPORE", group: "Shio" },
+    { value: "shio", text: "SHIO - MAGNUM4D", group: "Shio" },
+    { value: "shio", text: "SHIO - PCSO", group: "Shio" },
+    { value: "shio", text: "SHIO - NEVADA", group: "Shio" },
+    { value: "shio", text: "SHIO - HONGKONG", group: "Shio" },
+    { value: "shio", text: "SHIO - TOTO CAMBODIA", group: "Shio" },
+    { value: "SHIO_TOTOMACAU5D", text: "SHIO-TOTOMACAU5D", group: "Shio" },
+    { value: "shio_HOKI DRAW", text: "SHIO - HOKI DRAW", group: "Shio" },
+    { value: "shio_TOTO MACAU 4D, KING KONG 4D", text: "SHIO - TOTO MACAU 4D", group: "Shio" },
+    { value: "shio_TOTO MACAU 4D, KING KONG 4D", text: "SHIO - KINGKONG 4D", group: "Shio" },
+    { value: "shio_JAKARTA POOLS DAN TOTOMALI", text: "SHIO - JAKARTA POOLS", group: "Shio" },
+    { value: "shio_JAKARTA POOLS DAN TOTOMALI", text: "SHIO - TOTOMALI", group: "Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - KENTUCKY", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - FLORIDA", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - HUAHIN", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - NEW YORK", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - BANGKOK", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - CAROLINA", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - BRUNEI", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - OREGON", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - CALIFORNIA", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - CHELSEA", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - BULLSEYE", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - POIPET", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - SYDNEY", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - SINGAPORE", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - MAGNUM4D", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - PCSO", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - NEVADA", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - HONGKONG", group: "Macau Shio" },
+    { value: "macau_shio", text: "MACAU SHIO - TOTO CAMBODIA", group: "Macau Shio" },
+    { value: "macau_shio_TOTO MACAU 4D, KING KONG 4D", text: "MACAU SHIO - TOTO MACAU 4D", group: "Macau Shio" },
+    { value: "macau_shio_TOTO MACAU 4D, KING KONG 4D", text: "MACAU SHIO - KINGKONG 4D", group: "Macau Shio" },
+    { value: "macau_shio_HOKI DRAW", text: "MACAU SHIO - HOKI DRAW", group: "Macau Shio" },
+    { value: "macau_shio_JAKARTA POOLS", text: "MACAU SHIO - JAKARTA POOLS", group: "Macau Shio" },
+    { value: "macau_shio_JAKARTA POOLS", text: "MACAU SHIO - TOTOMALI", group: "Macau Shio" },
+    { value: "kombinasi_TOTOMACAU5D", text: "KOMBINASI-TOTOMACAU5D", group: "Kombinasi" },
+    { value: "kombinasi_HOKI DRAW", text: "KOMBINASI - HOKI DRAW", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - KENTUCKY", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - FLORIDA", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - HUAHIN", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - NEW YORK", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - BANGKOK", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - CAROLINA", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - BRUNEI", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - OREGON", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - CALIFORNIA", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - CHELSEA", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - BULLSEYE", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - POIPET", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - SYDNEY", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - SINGAPORE", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - MAGNUM4D", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - PCSO", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - NEVADA", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - HONGKONG", group: "Kombinasi" },
+    { value: "kombinasi", text: "KOMBINASI - TOTO CAMBODIA", group: "Kombinasi" },
+    { value: "kombinasi_TOTO MACAU 4D, KING KONG 4D", text: "KOMBINASI - TOTO MACAU 4D", group: "Kombinasi" },
+    { value: "kombinasi_TOTO MACAU 4D, KING KONG 4D", text: "KOMBINASI - KINGKONG 4D", group: "Kombinasi" },
+    { value: "kombinasi_JAKARTA POOLS DAN TOTOMALI", text: "KOMBINASI - JAKARTA POOLS", group: "Kombinasi" },
+    { value: "kombinasi_JAKARTA POOLS DAN TOTOMALI", text: "KOMBINASI - TOTOMALI", group: "Kombinasi" },
+    { value: "tepi_tengah_TOTOMACAU5D", text: "TEPI TENGAH - TOTOMACAU5D", group: "tepi tengah" },    
+    { value: "tepi_tengah_HOKIDRAW", text: "TEPI TENGAH - HOKI DRAW", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - KENTUCKY", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - FLORIDA", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - HUAHIN", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - NEW YORK", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - BANGKOK", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - CAROLINA", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - BRUNEI", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - OREGON", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - CALIFORNIA", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - CHELSEA", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - BULLSEYE", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - POIPET", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - SYDNEY", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - SINGAPORE", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - MAGNUM4D", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - PCSO", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - NEVADA", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - HONGKONG", group: "tepi tengah" },
+    { value: "tepi_tengah", text: "TEPI TENGAH - TOTO CAMBODIA", group: "tepi tengah" },
+    { value: "tepi_tengah_TOTO MACAU 4D, KING KONG 4D", text: "TEPI TENGAH - TOTO MACAU 4D", group: "tepi tengah" },
+    { value: "tepi_tengah_TOTO MACAU 4D, KING KONG 4D", text: "TEPI TENGAH - KINGKONG 4D", group: "tepi tengah" },
+    { value: "tepi_tengah_JAKARTA POOLS DAN TOTOMALI", text: "TEPI TENGAH - JAKARTA POOLS", group: "tepi tengah" },
+    { value: "tepi_tengah_JAKARTA POOLS DAN TOTOMALI", text: "TEPI TENGAH - TOTOMALI", group: "tepi tengah" },
+    { value: "silang_homo_HOKI DRAW", text: "SILANG HOMO - HOKI DRAW", group: "silang homo" },   
+    { value: "silang_homo", text: "SILANG HOMO - KENTUCKY", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - FLORIDA", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - HUAHIN", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - NEW YORK", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - BANGKOK", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - CAROLINA", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - BRUNEI", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - OREGON", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - CALIFORNIA", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - CHELSEA", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - BULLSEYE", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - POIPET", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - SYDNEY", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - SINGAPORE", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - MAGNUM4D", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - PCSO", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - NEVADA", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - HONGKONG", group: "silang homo" },
+    { value: "silang_homo", text: "SILANG HOMO - TOTO CAMBODIA", group: "silang homo" },
+    { value: "silang_homo_TOTO MACAU 4D, KING KONG 4D", text: "SILANG HOMO - TOTO MACAU 4D", group: "silang homo" },
+    { value: "silang_homo_TOTO MACAU 4D, KING KONG 4D", text: "SILANG HOMO - KINGKONG 4D", group: "silang homo" },
+    { value: "silang_homo_JAKARTA POOLS DAN TOTOMALI", text: "SILANG HOMO - JAKARTA POOLS", group: "silang homo" },
+    { value: "silang_homo_JAKARTA POOLS DAN TOTOMALI", text: "SILANG HOMO - TOTOMALI", group: "silang homo" },
+    { value: "50_50_TOTOMACAU5D", text: "50-50-TOTOMACAU5D", group: "50-50" },
+    { value: "50_50_HOKIDRAW", text: "50_50 - HOKI DRAW", group: "50-50" },
+    { value: "50_50", text: "50-50 - KENTUCKY", group: "50-50" },
+    { value: "50_50", text: "50-50 - FLORIDA", group: "50-50" },
+    { value: "50_50", text: "50-50 - HUAHIN", group: "50-50" },
+    { value: "50_50", text: "50-50 - NEW YORK", group: "50-50" },
+    { value: "50_50", text: "50-50 - BANGKOK", group: "50-50" },
+    { value: "50_50", text: "50-50 - CAROLINA", group: "50-50" },
+    { value: "50_50", text: "50-50 - BRUNEI", group: "50-50" },
+    { value: "50_50", text: "50-50 - OREGON", group: "50-50" },
+    { value: "50_50", text: "50-50 - CALIFORNIA", group: "50-50" },
+    { value: "50_50", text: "50-50 - CHELSEA", group: "50-50" },
+    { value: "50_50", text: "50-50 - BULLSEYE", group: "50-50" },
+    { value: "50_50", text: "50-50 - POIPET", group: "50-50" },
+    { value: "50_50", text: "50-50 - SYDNEY", group: "50-50" },
+    { value: "50_50", text: "50-50 - SINGAPORE", group: "50-50" },
+    { value: "50_50", text: "50-50 - MAGNUM4D", group: "50-50" },
+    { value: "50_50", text: "50-50 - PCSO", group: "50-50" },
+    { value: "50_50", text: "50-50 - NEVADA", group: "50-50" },
+    { value: "50_50", text: "50-50 - HONGKONG", group: "50-50" },
+    { value: "50_50", text: "50-50 - TOTO CAMBODIA", group: "50-50" },
+    { value: "50_50_TOTO MACAU 4D, KING KONG 4D", text: "50-50 - TOTO MACAU 4D", group: "50-50" },
+    { value: "50_50_TOTO MACAU 4D, KING KONG 4D", text: "50-50 - KINGKONG 4D", group: "50-50" },
+    { value: "50_50_JAKARTA POOLS DAN TOTOMALI", text: "50-50 - JAKARTA POOLS", group: "50-50" },
+    { value: "50_50_JAKARTA POOLS DAN TOTOMALI", text: "50-50 - TOTOMALI", group: "50-50" },
+    { value: "kembang_kempis_HOKI DRAW", text: "KEMBANG KEMPIS-HOKI DRAW", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - KENTUCKY", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - FLORIDA", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - HUAHIN", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - NEW YORK", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - BANGKOK", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - CAROLINA", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - BRUNEI", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - OREGON", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - CALIFORNIA", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - CHELSEA", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - BULLSEYE", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - POIPET", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - SYDNEY", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - SINGAPORE", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - MAGNUM4D", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - PCSO", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - NEVADA", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - HONGKONG", group: "Kembang Kempis" },
+    { value: "kembang_kempis", text: "KEMBANG KEMPIS - TOTO CAMBODIA", group: "Kembang Kempis" },
+    { value: "kembang_kempis_TOTO MACAU 4D, KING KONG 4D", text: "KEMBANG KEMPIS - TOTO MACAU 4D", group: "Kembang Kempis" },
+    { value: "kembang_kempis_TOTO MACAU 4D, KING KONG 4D", text: "KEMBANG KEMPIS - KINGKONG 4D", group: "Kembang Kempis" },
+    { value: "kembang_kempis_JAKARTA POOLS DAN TOTOMALI", text: "KEMBANG KEMPIS - JAKARTA POOLS", group: "Kembang Kempis" },
+    { value: "kembang_kempis_JAKARTA POOLS DAN TOTOMALI", text: "KEMBANG KEMPIS - TOTOMALI", group: "Kembang Kempis" },
+    { value: "dasar_ganjil_besar_TOTOMACAU5D", text: "DASAR GANJIL-BESAR-TOTOMACAU5D", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar_HOKI DRAW", text: "DASAR GANJIL-BESAR-HOKI DRAW", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - KENTUCKY", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - FLORIDA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - HUAHIN", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - NEW YORK", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - BANGKOK", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - CAROLINA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - BRUNEI", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - OREGON", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - CALIFORNIA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - CHELSEA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - BULLSEYE", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - POIPET", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - SYDNEY", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - SINGAPORE", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - MAGNUM4D", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - PCSO", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - NEVADA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - HONGKONG", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar", text: "DASAR GANJIL-BESAR - TOTO CAMBODIA", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar_TOTO MACAU 4D, KING KONG 4D", text: "DASAR GANJIL-BESAR - TOTO MACAU 4D", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar_TOTO MACAU 4D, KING KONG 4D", text: "DASAR GANJIL-BESAR - KINGKONG 4D", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar_JAKARTA POOLS DAN TOTOMALI", text: "DASAR GANJIL-BESAR - JAKARTA POOLS", group: "DASAR_GANJIL" },
+    { value: "dasar_ganjil_besar_JAKARTA POOLS DAN TOTOMALI", text: "DASAR GANJIL-BESAR - TOTOMALI", group: "DASAR_GANJIL" },
+    { value: "dasar_genap_kecil_TOTOMACAU5D", text: "DASAR GENAP-KECIL-TOTOMACAU5D", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil_HOKI DRAW", text: "DASAR GENAP-KECIL-HOKI DRAW", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - KENTUCKY", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - FLORIDA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - HUAHIN", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - NEW YORK", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - BANGKOK", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - CAROLINA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - BRUNEI", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - OREGON", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - CALIFORNIA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - CHELSEA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - BULLSEYE", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - POIPET", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - SYDNEY", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - SINGAPORE", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - MAGNUM4D", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - PCSO", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - NEVADA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - HONGKONG", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil", text: "DASAR GENAP-KECIL - TOTO CAMBODIA", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil_TOTO MACAU 4D, KING KONG 4D", text: "DASAR GENAP-KECIL - TOTO MACAU 4D", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil_TOTO MACAU 4D, KING KONG 4D", text: "DASAR GENAP-KECIL - KINGKONG 4D", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil_JAKARTA POOLS DAN TOTOMALI", text: "DASAR GENAP-KECIL - JAKARTA POOLS", group: "DASAR_GENAP" },
+    { value: "dasar_genap_kecil_JAKARTA POOLS DAN TOTOMALI", text: "DASAR GENAP-KECIL - TOTOMALI", group: "DASAR_GENAP" },    
+     ];
+    const select = document.getElementById("tipe");
+    const search = document.getElementById("search");
+    const clickList = document.getElementById("clickList");
+    const copyBtn = document.getElementById("copyBtn");
+    const resultDiv = document.getElementById("result");
+
+    // Isi dropdown
+    function populateOptions(filteredOptions = options) {
+      select.innerHTML = "";
+      filteredOptions.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.text;
+        select.appendChild(option);
+      });
+    }
+
+    // Isi daftar klik
+    function populateClickList(filteredOptions = options) {
+      clickList.innerHTML = "";
+      filteredOptions.forEach(opt => {
+        const div = document.createElement("div");
+        div.className = "click-item";
+        div.innerHTML = `<strong>${opt.text}</strong><br><span>${opt.group}</span>`;
+        div.onclick = () => {
+          select.value = opt.value;
+          // Opsional: fokus ke bet
+          document.getElementById("bet").focus();
+        };
+        clickList.appendChild(div);
+      });
+    }
+
+    // Inisialisasi
+    populateOptions();
+    populateClickList();
+
+    // Pencarian
+    search.addEventListener("input", () => {
+      const query = search.value.toLowerCase();
+      const filtered = options.filter(opt => 
+        opt.text.toLowerCase().includes(query) || 
+        opt.group.toLowerCase().includes(query)
+      );
+      populateOptions(filtered);
+      populateClickList(filtered);
+    });
+
+    // Hitung
+    document.getElementById("hitung").onclick = function() {
+      const bet = parseFloat(document.getElementById("bet").value);
+      const tipe = select.value;
+      let bayar = bet;
+      let key = 0;
+      let hasil = "";
+
+      if (isNaN(bet) || bet <= 0) {
+        resultDiv.textContent = "❌ Nominal bet tidak valid.";
+        resultDiv.classList.add("show");
+        copyBtn.classList.remove("show");
+        return;
+      }
+
+      resultDiv.classList.remove("show");
+      resultDiv.innerHTML = '<span class="typing"></span>';
+      copyBtn.classList.remove("show");
+      const typingSpan = resultDiv.querySelector('.typing');
+
+      setTimeout(() => {
+        switch(tipe) {
+case "prize1_4d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 1 4D ya bosku\nNominal bet ${format(bet)} x 6500 ( hadiah ) = ${format(bet * 6500)} kemenangan anda ya bosku`;
+break;
+
+case "prize1_3d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 1 3D ya bosku\nNominal bet ${format(bet)} x 650 ( hadiah ) = ${format(bet * 650)} kemenangan anda ya bosku`;
+break;
+
+case "prize1_2d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 1 2D ya bosku\nNominal bet ${format(bet)} x 70 ( hadiah ) = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+case "prize2_4d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 2 4D ya bosku\nNominal bet ${format(bet)} x 2100 ( hadiah ) = ${format(bet * 2100)} kemenangan anda ya bosku`;
+break;
+
+case "prize2_3d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 2 3D ya bosku\nNominal bet ${format(bet)} x 210 ( hadiah ) = ${format(bet * 210)} kemenangan anda ya bosku`;
+break;
+
+case "prize2_2d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 2 2D ya bosku\nNominal bet ${format(bet)} x 20 ( hadiah ) = ${format(bet * 20)} kemenangan anda ya bosku`;
+break;
+
+case "prize3_4d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 3 4D ya bosku\nNominal bet ${format(bet)} x 1100 ( hadiah ) = ${format(bet * 1100)} kemenangan anda ya bosku`;
+break;
+
+case "prize3_3d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 3 3D ya bosku\nNominal bet ${format(bet)} x 110 ( hadiah ) = ${format(bet * 110)} kemenangan anda ya bosku`;
+break;
+
+case "prize3_2d":
+hasil = `Berikut contoh perhitungan tipe PRIZE 3 2D ya bosku\nNominal bet ${format(bet)} x 8 ( hadiah ) = ${format(bet * 8)} kemenangan anda ya bosku`;
+break;
+
+case "4d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D":
+hasil = `Berikut contoh perhitungan tipe 4D FULL  ya bosku\nNominal bet ${format(bet)} x 10000 ( hadiah ) = ${format(bet * 10000)} kemenangan anda ya bosku`;
+break;
+
+case "3d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D":
+hasil = `Berikut contoh perhitungan tipe 3D FULL ya bosku\nNominal bet ${format(bet)} x 1000 ( hadiah ) = ${format(bet * 1000)} kemenangan anda ya bosku`;
+break;
+
+case "2d_full_ALL PASARAN Kecuali TOTOMACAU4D, TOTOMACAU5D , SYDNEY, HONGKONG, KINGKONG4D":
+hasil = `Berikut contoh perhitungan tipe 2D FULL  ya bosku\nNominal bet ${format(bet)} x 100 ( hadiah ) = ${format(bet * 100)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 4000 ( hadiah ) = ${format(bet * 4000)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 3D TEPAT ya bosku\nNominal bet ${format(bet)} x 400 ( hadiah ) = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 2D TEPAT ya bosku\nNominal bet ${format(bet)} x 70 ( hadiah ) = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 4D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 200 ( hadiah ) = ${format(bet * 200)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 3D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 100 ( hadiah ) = ${format(bet * 100)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tidak_tepat_ALL PASARAN KECUALI TOTOMACAU ,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 2D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 20 ( hadiah ) = ${format(bet * 20)} kemenangan anda ya bosku`;
+break;
+
+case "disc4d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+bayar = bet * (1 - 0.665);
+hasil = `Berikut contoh perhitungan tipe DISC 4D ya bosku\nNominal bet ${format(bet)} - 66.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 3000 x ${format(bet)} = ${format(bet * 3000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+bayar = bet * (1 - 0.595);
+hasil = `Berikut contoh perhitungan tipe DISC 3D ya bosku\nNominal bet ${format(bet)} - 59.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 400 x ${format(bet)} = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+bayar = bet * (1 - 0.295);
+hasil = `Berikut contoh perhitungan tipe DISC 2D ya bosku\nNominal bet ${format(bet)} - 29.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 70 x ${format(bet)} = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d_dt_ALL PASARAN KECUALI TOTOMACAU,KING KONG 4D, JAKARTA POOLS, HOKI DRAW DAN TOTOMALI":
+bayar = bet * (1 - 0.295);
+hasil = `Berikut contoh perhitungan tipe DISC 2D D/T ya bosku\nNominal bet ${format(bet)} - 29.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 65 x ${format(bet)} = ${format(bet * 65)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_1":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 1 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 1.5 x ${format(bet)} = ${format(bet * 1.5)} + ${format(bayar)} ( modal ) = ${format(bet * 1.5 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 3 x ${format(bet)} = ${format(bet * 3)} + ${format(bayar)} ( modal ) = ${format(bet * 3 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_3":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 4.5 x ${format(bet)} = ${format(bet * 4.5)} + ${format(bayar)} ( modal ) = ${format(bet * 4.5 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 6 x ${format(bet)} = ${format(bet * 6)} + ${format(bayar)} ( modal ) = ${format(bet * 6 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_2":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 7 x ${format(bet)} = ${format(bet * 7)} + ${format(bayar)} ( modal ) = ${format(bet * 7 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_3":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 11 x ${format(bet)} = ${format(bet * 11)} + ${format(bayar)} ( modal ) = ${format(bet * 11 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_4":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 18 x ${format(bet)} = ${format(bet * 18)} + ${format(bayar)} ( modal ) = ${format(bet * 18 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_3":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 23 x ${format(bet)} = ${format(bet * 23)} + ${format(bayar)} ( modal ) = ${format(bet * 23 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_4":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 35 x ${format(bet)} = ${format(bet * 35)} + ${format(bayar)} ( modal ) = ${format(bet * 35 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_jitu":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK JITU ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 8 x ${format(bet)} = ${format(bet * 8)} + ${format(bayar)} ( modal ) = ${format(bet * 8 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "shio":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 5% = ${format(bayar)} yang harus anda bayar\nHadiah 9.5 x ${format(bet)} = ${format(bet * 9.5)} + ${format(bayar)} ( modal ) = ${format(bet * 9.5 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "macau_shio":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe MACAU SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 110 x ${format(bet)} = ${format(bet * 110)} + ${format(bayar)} ( modal ) = ${format(bet * 110 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "kombinasi":
+bayar = bet * 0.92;
+hasil = `Berikut contoh perhitungan tipe KOMBINASI ya bosku\nNominal bet ${format(bet)} - diskon sebesar 8% = ${format(bayar)} yang harus anda bayar\nHadiah 2.6 x ${format(bet)} = ${format(bet * 2.6)} + ${format(bayar)} ( modal ) = ${format(bet * 2.6 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "tepi_tengah":
+case "silang_homo":
+case "50_50":
+case "kembang_kempis": {
+  const tipeName = {
+    "tepi_tengah": "TEPI TENGAH",
+    "silang_homo": "SILANG HOMO", 
+    "50_50": "50-50",
+    "kembang_kempis": "KEMBANG KEMPIS"
+  }[tipe];
+
+  const diskon = 0.02; // 2%
+  const key = 0.03;    // 3%
+  
+  // Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+  const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+  const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+  const totalBayar = bayarSetelahDiskon + keyAmount;
+  
+  hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) ${key*100}% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+case "dasar_ganjil_besar":
+bayar = bet * 0.98;
+key = bet * 0.245;
+hasil = `Berikut contoh perhitungan tipe DASAR GANJIL-BESAR ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} + ( key - ) 25% = ${format(bayar + key)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bayar + key)} ( modal ) = ${format(bet + bayar + key)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_genap_kecil":
+bayar = bet * 0.98;
+key = bet * 0.10;
+hasil = `Berikut contoh perhitungan tipe DASAR GENAP-KECIL ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} yang harus anda bayar\nPerhitungan ( key +) 10% x ${format(bet)} = ${format(key)} key yang anda dapat jika mengalamin kemenangan\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} +${format(key)} + ${format(bayar)} ( modal ) = ${format(bet + key + bayar)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH KHUSUS TOTO MACAU 5D -->
+case "5d_full_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe bet 5D full ya bosku\nNominal bet ${format(bet)} x 88000 ( hadiah ) = ${format(bet * 88000)} kemenangan anda ya bosku`;
+break;
+
+case "4d_full_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe 4D full ya bosku\nNominal bet ${format(bet)} x 9000 ( hadiah ) = ${format(bet * 9000)} kemenangan anda ya bosku`;
+break
+
+case "3d_full_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe 3D full ya bosku\nNominal bet ${format(bet)} x 950 ( hadiah ) = ${format(bet * 950)} kemenangan anda ya bosku`;
+break
+
+case "2d_full_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe 2D full ya bosku\nNominal bet ${format(bet)} x 95 ( hadiah ) = ${format(bet * 95)} kemenangan anda ya bosku`;
+break
+
+case "bb5d_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 5D TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 50000 ( hadiah ) = ${format(bet * 50000)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 5000 ( hadiah ) = ${format(bet * 5000)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 3D TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 500 ( hadiah ) = ${format(bet * 500)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 2D TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 80 ( hadiah ) = ${format(bet * 80)} kemenangan anda ya bosku`;
+break;
+
+case "bb5d_tidak_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 5D TIDAK TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 350 ( hadiah ) = ${format(bet * 350)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tidak_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 4D TIDAK TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 180 ( hadiah ) = ${format(bet * 180)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tidak_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 3D TIDAK TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 75 ( hadiah ) = ${format(bet * 75)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tidak_tepat_TOTOMACAU5D":
+hasil = `Berikut contoh perhitungan tipe BB 2D TIDAK TEPAT-TOTOMACAU5D ya bosku\nNominal bet ${format(bet)} x 15 ( hadiah ) = ${format(bet * 15)} kemenangan anda ya bosku`;
+break;
+
+case "disc5d_TOTO MACAU 5D ( BET DISCOUNT )":
+bayar = bet * (1 - 0.38);
+hasil = `Berikut contoh perhitungan tipe DISC 5D-TOTO MACAU 5D ya bosku\nNominal bet ${format(bet)} - 38% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 50000 x ${format(bet)} = ${format(bet * 50000)} kemenangan anda ya bosku`;
+break;
+
+case "disc4d_TOTO MACAU 5D ( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 4D-TOTO MACAU 5D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 7000 x ${format(bet)} = ${format(bet * 7000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d-TOTO MACAU 5D ( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 3D-TOTO MACAU 5D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 750 x ${format(bet)} = ${format(bet * 750)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d-TOTO MACAU 5D ( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 2D- TOTO MACAU 5D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 75 x ${format(bet)} = ${format(bet * 75)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_1_TOTOMACAU5D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 1 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 0.9 x ${format(bet)} = ${format(bet * 0.9)} + ${format(bet)} ( modal ) = ${format(bet * 0.9 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 1.8 x ${format(bet)} = ${format(bet * 1.8)} + ${format(bet)} ( modal ) = ${format(bet * 1.8 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_3_TOTOMACAU5D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 3 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 2.7 x ${format(bet)} = ${format(bet * 2.7)} + ${format(bet)} ( modal ) = ${format(bet * 2.7 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4_TOTOMACAU5D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 3.6 x ${format(bet)} = ${format(bet * 3.6)} + ${format(bet)} ( modal ) = ${format(bet * 3.6 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_5_TOTOMACAU5D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 5 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 4.5 x ${format(bet)} = ${format(bet * 4.5)} + ${format(bet)} ( modal ) = ${format(bet * 4.5 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_2_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 2 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 4x ${format(bet)} = ${format(bet * 4)} + ${format(bet)} ( modal ) = ${format(bet * 4 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_3_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 3 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 6x ${format(bet)} = ${format(bet * 6)} + ${format(bet)} ( modal ) = ${format(bet * 6 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_4_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 4 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 20x ${format(bet)} = ${format(bet * 20)} + ${format(bet)} ( modal ) = ${format(bet * 20 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_5_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 5 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 200x ${format(bet)} = ${format(bet * 200)} + ${format(bet)} ( modal ) = ${format(bet * 200 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4d_4_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4D - 4 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 50x ${format(bet)} = ${format(bet * 50)} + ${format(bet)} ( modal ) = ${format(bet * 50 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4d_5_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4D - 5 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 200x ${format(bet)} = ${format(bet * 200)} + ${format(bet)} ( modal ) = ${format(bet * 200 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_3_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA - 3 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 12x ${format(bet)} = ${format(bet * 12)} + ${format(bet)} ( modal ) = ${format(bet * 12 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_4_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA - 4 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 30x ${format(bet)} = ${format(bet * 30)} + ${format(bet)} ( modal ) = ${format(bet * 30 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_5_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA - 5 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 125x ${format(bet)} = ${format(bet * 125)} + ${format(bet)} ( modal ) = ${format(bet * 125 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_jitu_TOTOMACAU5D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK JITU bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 8x ${format(bet)} = ${format(bet * 8)} + ${format(bet)} ( modal ) = ${format(bet * 8 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "kombinasi_TOTOMACAU5D":
+bayar = bet * 0.92;
+hasil = `Berikut contoh perhitungan tipe kombinasi -TOTOMACAU5D bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 2.7x ${format(bet)} = ${format(bet * 2.7)} + ${format(bet)} ( modal ) = ${format(bet * 2.7 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "SHIO_TOTOMACAU5D":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe SHIO -TOTOMACAU5D bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 10x ${format(bet)} = ${format(bet * 10)} + ${format(bet)} ( modal ) = ${format(bet * 10 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_genap_kecil_TOTOMACAU5D":
+bayar = bet * 0.98;
+key = bet * 0.10;
+hasil = `Berikut contoh perhitungan tipe DASAR GENAP-KECIL ya bosku ( key +) 10% x ${format(bet)} = ${format(key)} key yang anda dapat jika mengalamin kemenangan\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} +${format(key)} + ${format(bet)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_ganjil_besar_TOTOMACAU5D":
+bayar = bet * 0.98;
+key = bet * 0.25;
+hasil = `Berikut contoh perhitungan tipe DASAR GANJIL-BESAR ya bosku\nNominal bet ${format(bet)} + ( key - ) 25 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "tepi_tengah_TOTOMACAU5D":
+bayar = bet * 0.98;
+key = bet * 0.022
+hasil = `Berikut contoh perhitungan tipe TEPI TENGAH ya bosku\nNominal bet ${format(bet)} + ( key -) 2.2 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "50_50_TOTOMACAU5D":
+bayar = bet * 0.98;
+key = bet * 0.022
+hasil = `Berikut contoh perhitungan tipe 50_50 ya bosku\nNominal bet ${format(bet)} + ( key -) 2.2 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH FULL HONGKONG & SYDNEY -->
+case "4d_full_HONGKONG & SYDNEY":
+hasil = `Berikut contoh perhitungan tipe 4d full  ya bosku\nNominal bet ${format(bet)} x 9800 ( hadiah ) = ${format(bet * 9800)} kemenangan anda ya bosku`;
+break;
+
+case "3d_full_HONGKONG & SYDNEY":
+hasil = `Berikut contoh perhitungan tipe 3d full  ya bosku\nNominal bet ${format(bet)} x 980 ( hadiah ) = ${format(bet * 980)} kemenangan anda ya bosku`;
+break
+
+case "2d_full_HONGKONG & SYDNEY":
+hasil = `Berikut contoh perhitungan tipe 2d full ya bosku\nNominal bet ${format(bet)} x 98 ( hadiah ) = ${format(bet * 98)} kemenangan anda ya bosku`;
+break
+
+<!-- HADIAH FULL TOTO MACAU 4D, KING KONG 4D  -->
+case "4d_full_TOTO MACAU 4D, KING KONG 4D":
+hasil = `Berikut contoh perhitungan tipe 4d full ya bosku\nNominal bet ${format(bet)} x 9000 ( hadiah ) = ${format(bet * 9000)} kemenangan anda ya bosku`;
+break;
+
+case "3d_full_TOTO MACAU 4D, KING KONG 4D":
+hasil = `Berikut contoh perhitungan tipe 3d full ya bosku\nNominal bet ${format(bet)} x 950 ( hadiah ) = ${format(bet * 950)} kemenangan anda ya bosku`;
+break
+
+case "2d_full_TOTO MACAU 4D, KING KONG 4D":
+hasil = `Berikut contoh perhitungan tipe 2d full  ya bosku\nNominal bet ${format(bet)} x 95 ( hadiah ) = ${format(bet * 95)} kemenangan anda ya bosku`;
+break
+
+<!-- HADIAH BET BB – TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS  -->
+case "bb4d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 4000 ( hadiah ) = ${format(bet * 4000)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 3D TEPAT ya bosku\nNominal bet ${format(bet)} x 400 ( hadiah ) = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 70 ( hadiah ) = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 4D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 200 ( hadiah ) = ${format(bet * 200)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 3D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 100 ( hadiah ) = ${format(bet * 100)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tidak_tepat_TOTO MACAU 4D, KING KONG 4D, JAKARTA POOLS":
+hasil = `Berikut contoh perhitungan tipe BB 2D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 20 ( hadiah ) = ${format(bet * 20)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 4000 ( hadiah ) = ${format(bet * 4000)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 3D TEPAT ya bosku\nNominal bet ${format(bet)} x 400 ( hadiah ) = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 70 ( hadiah ) = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tidak_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 4D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 200 ( hadiah ) = ${format(bet * 200)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tidak_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 3D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 100 ( hadiah ) = ${format(bet * 100)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tidak_tepat_TOTOMALI":
+hasil = `Berikut contoh perhitungan tipe BB 2D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 20 ( hadiah ) = ${format(bet * 20)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 5000 ( hadiah ) = ${format(bet * 5000)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 3D TEPAT ya bosku\nNominal bet ${format(bet)} x 500 ( hadiah ) = ${format(bet * 500)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 4D TEPAT ya bosku\nNominal bet ${format(bet)} x 80 ( hadiah ) = ${format(bet * 80)} kemenangan anda ya bosku`;
+break;
+
+case "bb4d_tidak_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 4D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 180 ( hadiah ) = ${format(bet * 180)} kemenangan anda ya bosku`;
+break;
+
+case "bb3d_tidak_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 3D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 75 ( hadiah ) = ${format(bet * 75)} kemenangan anda ya bosku`;
+break;
+
+case "bb2d_tidak_tepat_HOKIDRAW":
+hasil = `Berikut contoh perhitungan tipe BB 2D TIDAK TEPAT ya bosku\nNominal bet ${format(bet)} x 15 ( hadiah ) = ${format(bet * 15)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH DISCOUNT TOTO MACAU 4D, KING KONG 4D  -->
+case "disc4d_TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )":
+bayar = bet * (1 - 0.33);
+hasil = `Berikut contoh perhitungan tipe DISC 4D ya bosku\nNominal bet ${format(bet)} - 33% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 6000 x ${format(bet)} = ${format(bet * 6000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )":
+bayar = bet * (1 - 0.24);
+hasil = `Berikut contoh perhitungan tipe DISC 3D ya bosku\nNominal bet ${format(bet)} - 24% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 700 x ${format(bet)} = ${format(bet * 700)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )":
+bayar = bet * (1 - 0.15);
+hasil = `Berikut contoh perhitungan tipe DISC 2D ya bosku\nNominal bet ${format(bet)} - 15% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 80 x ${format(bet)} = ${format(bet * 80)} kemenangan anda ya bosku`;
+break;
+
+case "disc2dd/t-TOTO MACAU 4D, KING KONG 4D( BET DISCOUNT )":
+bayar = bet * (1 - 0.15);
+hasil = `Berikut contoh perhitungan tipe DISC 2D D/T ya bosku\nNominal bet ${format(bet)} - 15% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 80 x ${format(bet)} = ${format(bet * 80)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH BET DISCOUNT – JAKARTA POOLS     -->
+case "disc4d_JAKARTA POOLS( BET DISCOUNT )":
+bayar = bet * (1 - 0.665);
+hasil = `Berikut contoh perhitungan tipe DISC 4D ya bosku\nNominal bet ${format(bet)} - 66.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 3000 x ${format(bet)} = ${format(bet * 3000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d-JAKARTA POOLS( BET DISCOUNT )":
+bayar = bet * (1 - 0.595);
+hasil = `Berikut contoh perhitungan tipe DISC 3D ya bosku\nNominal bet ${format(bet)} - 59.50% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 400 x ${format(bet)} = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d-JAKARTA POOLS( BET DISCOUNT )":
+bayar = bet * (1 - 0.29);
+hasil = `Berikut contoh perhitungan tipe DISC 2D ya bosku\nNominal bet ${format(bet)} - 29% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 70 x ${format(bet)} = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH BET DISCOUNT – TOTOMALI         -->
+case "disc4d_TOTOMALI ( BET DISCOUNT )":
+bayar = bet * (1 - 0.67);
+hasil = `Berikut contoh perhitungan tipe DISC 4D ya bosku\nNominal bet ${format(bet)} - 67% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 3000 x ${format(bet)} = ${format(bet * 3000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d-TOTOMALI ( BET DISCOUNT )":
+bayar = bet * (1 - 0.57);
+hasil = `Berikut contoh perhitungan tipe DISC 3D ya bosku\nNominal bet ${format(bet)} - 57% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 400 x ${format(bet)} = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d-TOTOMALI ( BET DISCOUNT )":
+bayar = bet * (1 - 0.27);
+hasil = `Berikut contoh perhitungan tipe DISC 2D ya bosku\nNominal bet ${format(bet)} - 27% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 70 x ${format(bet)} = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH BET DISCOUNT – HOKIDRAW          -->
+case "disc4d_HOKIDRAW( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 4D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 7000 x ${format(bet)} = ${format(bet * 7000)} kemenangan anda ya bosku`;
+break;
+
+case "disc3d-HOKIDRAW( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 3D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 750 x ${format(bet)} = ${format(bet * 750)} kemenangan anda ya bosku`;
+break;
+
+case "disc2d-HOKIDRAW( BET DISCOUNT )":
+bayar = bet * (1 - 0.20);
+hasil = `Berikut contoh perhitungan tipe DISC 2D ya bosku\nNominal bet ${format(bet)} - 20% ( diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 75 x ${format(bet)} = ${format(bet * 75)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH BET SUPER DISCOUNT – TOTO MACAU 4D          -->
+case "superdisc4d_TOTO MACAU 4D( BET SUPER DISCOUNT )":
+bayar = bet * (1 - 0.66);
+hasil = `Berikut contoh perhitungan tipe SUPER DISCOUNT 4D-TOTO MACAU 4D  ya bosku\nNominal bet ${format(bet)} - 66.00% ( S.diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 3000 x ${format(bet)} = ${format(bet * 3000)} kemenangan anda ya bosku`;
+break;
+
+case "superdisc3d-TOTO MACAU 4D( BET SUPER DISCOUNT )":
+bayar = bet * (1 - 0.59);
+hasil = `Berikut contoh perhitungan tipe SUPER DISCOUNT 3D-TOTO MACAU 4D  ya bosku\nNominal bet ${format(bet)} - 59.00% ( S.diskon  ) = ${format(bayar)} yang harus anda bayar\nHadiah 400 x ${format(bet)} = ${format(bet * 400)} kemenangan anda ya bosku`;
+break;
+
+case "superdisc2d-TOTO MACAU 4D( BET SUPER DISCOUNT )":
+bayar = bet * (1 - 0.29);
+hasil = `Berikut contoh perhitungan tipe SUPER DISCOUNT 2D-TOTO MACAU 4D  ya bosku\nNominal bet ${format(bet)} - 29.00% ( S.diskon ) = ${format(bayar)} yang harus anda bayar\nHadiah 70 x ${format(bet)} = ${format(bet * 70)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH SEGALA JENIS BET COLOK & DLL – TOTO MACAU 4D, KING KONG 4D ( -->
+case "colok_bebas_1_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 1 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 1.6 x ${format(bet)} = ${format(bet * 1.6)} + ${format(bet)} ( modal ) = ${format(bet * 1.6 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 3.2 x ${format(bet)} = ${format(bet * 3.2)} + ${format(bet)} ( modal ) = ${format(bet * 3.2 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_3_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 3 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 4.8 x ${format(bet)} = ${format(bet * 4.8)} + ${format(bet)} ( modal ) = ${format(bet * 4.8 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4 DIGIT ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 6.4 x ${format(bet)} = ${format(bet * 6.4)} + ${format(bet)} ( modal ) = ${format(bet * 6.4 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_2_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 2 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 7 x ${format(bet)} = ${format(bet * 7)} + ${format(bet)} ( modal ) = ${format(bet * 7 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_3_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 3 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 13 x ${format(bet)} = ${format(bet * 13)} + ${format(bet)} ( modal ) = ${format(bet * 13 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_4_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D - 4 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 21 x ${format(bet)} = ${format(bet * 21)} + ${format(bet)} ( modal ) = ${format(bet * 21 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_3_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA - 3 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 27 x ${format(bet)} = ${format(bet * 27)} + ${format(bet)} ( modal ) = ${format(bet * 27 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_4_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA - 4 DIGIT bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 41 x ${format(bet)} = ${format(bet * 41)} + ${format(bet)} ( modal ) = ${format(bet * 41 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "colok_jitu_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK JITU bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 8.3 x ${format(bet)} = ${format(bet * 8.3)} + ${format(bet)} ( modal ) = ${format(bet * 8.3 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "kombinasi_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.92;
+hasil = `Berikut contoh perhitungan tipe kombinasi ya bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 2.8x ${format(bet)} = ${format(bet * 2.8)} + ${format(bet)} ( modal ) = ${format(bet * 2.8 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "shio_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe SHIO  bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 10 x ${format(bet)} = ${format(bet * 10)} + ${format(bet)} ( modal ) = ${format(bet * 10 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "macau_shio_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe MACAU SHIO bosku\nNominal bet ${format(bet)} yang harus anda bayar\nHadiah 110 x ${format(bet)} = ${format(bet * 110)} + ${format(bet)} ( modal ) = ${format(bet * 110 + bet)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_genap_kecil_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.10;
+hasil = `Berikut contoh perhitungan tipe DASAR GENAP-KECIL ya bosku ( key +) 10 % x ${format(bet)} = ${format(key)} key yang anda dapat jika mengalamin kemenangan\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} +${format(key)} + ${format(bet)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_ganjil_besar_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.25;
+hasil = `Berikut contoh perhitungan tipe DASAR GANJIL-BESAR ya bosku\nNominal bet ${format(bet)} + ( key - ) 25 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "tepi_tengah_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.022
+hasil = `Berikut contoh perhitungan tipe TEPI TENGAH ya bosku\nNominal bet ${format(bet)} + ( key -) 2.2 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "silang_homo_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.022
+hasil = `Berikut contoh perhitungan tipe silang homo ya bosku\nNominal bet ${format(bet)} + ( key -) 2.2 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "50_50_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.05
+hasil = `Berikut contoh perhitungan tipe 50_50 ya bosku\nNominal bet ${format(bet)} + ( key -) 5 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+case "kembang_kempis_TOTO MACAU 4D, KING KONG 4D":
+bayar = bet * 0.98;
+key = bet * 0.022
+hasil = `Berikut contoh perhitungan kembang kempis ya bosku\nNominal bet ${format(bet)} + ( key -) 2.2 % = ${format(key + bet)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bet + key)} ( modal ) = ${format(bet + key + bet)} kemenangan anda ya bosku`;
+break;
+
+<!-- HADIAH SEGALA JENIS BET COLOK & DLL – HOKI DRAW  ( -->
+case "colok_bebas_1_HOKI DRAW":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 1 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 0.9 x ${format(bet)} = ${format(bet * 0.9)} + ${format(bayar)} ( modal ) = ${format(bet * 0.9 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2_HOKI DRAW":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 1.8 x ${format(bet)} = ${format(bet * 1.8)} + ${format(bayar)} ( modal ) = ${format(bet * 1.8 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_3_HOKI DRAW":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 2.7 x ${format(bet)} = ${format(bet * 2.7)} + ${format(bayar)} ( modal ) = ${format(bet * 2.7 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4_HOKI DRAW":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 3.6 x ${format(bet)} = ${format(bet * 3.6)} + ${format(bayar)} ( modal ) = ${format(bet * 3.6 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_2_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 4 x ${format(bet)} = ${format(bet * 4)} + ${format(bayar)} ( modal ) = ${format(bet * 4 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_3_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 6 x ${format(bet)} = ${format(bet * 6)} + ${format(bayar)} ( modal ) = ${format(bet * 6 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_4_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 20 x ${format(bet)} = ${format(bet * 20)} + ${format(bayar)} ( modal ) = ${format(bet * 20 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_3_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 12 x ${format(bet)} = ${format(bet * 12)} + ${format(bayar)} ( modal ) = ${format(bet * 12 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_4_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 30 x ${format(bet)} = ${format(bet * 30)} + ${format(bayar)} ( modal ) = ${format(bet * 30 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_jitu_HOKI DRAW":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK JITU ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 8 x ${format(bet)} = ${format(bet * 8)} + ${format(bayar)} ( modal ) = ${format(bet * 8 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "kombinasi_HOKI DRAW":
+bayar = bet * 0.92;
+hasil = `Berikut contoh perhitungan tipe KOMBINASI ya bosku\nNominal bet ${format(bet)} - diskon sebesar 8% = ${format(bayar)} yang harus anda bayar\nHadiah 2.7 x ${format(bet)} = ${format(bet * 2.7)} + ${format(bayar)} ( modal ) = ${format(bet * 2.7 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "kembang_kempis_HOKI DRAW":{
+const tipeName = {
+"kembang_kempis_HOKI DRAW": "kembang kempis"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.03;    // 3%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) 3% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+case "shio_HOKI DRAW":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 5 % = ${format(bayar)} yang harus anda bayar\nHadiah 9.5 x ${format(bet)} = ${format(bet * 9.5)} + ${format(bayar)} ( modal ) = ${format(bet * 9.5 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "macau_shio_HOKI DRAW":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe MACAU SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 110 x ${format(bet)} = ${format(bet * 110)} + ${format(bayar)} ( modal ) = ${format(bet * 110 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "tepi_tengah_HOKIDRAW":
+case "50_50_HOKIDRAW":{
+const tipeName = {
+"tepi_tengah_HOKIDRAW": "tepi_tengah_HOKIDRAW",
+"50_50_HOKIDRAW": "50_50_HOKIDRAW"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.022;    // 3%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-)2.2% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+         
+case "dasar_ganjil_besar_HOKI DRAW":
+bayar = bet * 0.98;
+key = bet * 0.245;
+hasil = `Berikut contoh perhitungan tipe DASAR GANJIL-BESAR HOKI DRAW ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} + ( key - ) 25% = ${format(bayar + key)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bayar + key)} ( modal ) = ${format(bet + bayar + key)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_genap_kecil_HOKI DRAW":
+bayar = bet * 0.98;
+key = bet * 0.10;
+hasil = `Berikut contoh perhitungan tipe DASAR GENAP-KECIL HOKI DRAW ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} yang harus anda bayar\nPerhitungan ( key +) 10% x ${format(bet)} = ${format(key)} key yang anda dapat jika mengalamin kemenangan\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} +${format(key)} + ${format(bayar)} ( modal ) = ${format(bet + key + bayar)} kemenangan anda ya bosku`;
+break;
+
+
+case "silang_homo_HOKI DRAW":{
+const tipeName = {
+"silang_homo_HOKI DRAW": "silang_homo_HOKI DRAW"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.03;    // 3%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) 3% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+<!-- HADIAH SEGALA JENIS BET COLOK & DLL – JAKARTA POOLS DAN TOTOMALI ( -->
+case "colok_bebas_1_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 1 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 1.6 x ${format(bet)} = ${format(bet * 1.6)} + ${format(bayar)} ( modal ) = ${format(bet * 1.6 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 3.2 x ${format(bet)} = ${format(bet * 3.2)} + ${format(bayar)} ( modal ) = ${format(bet * 3.2 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_3_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 4.8 x ${format(bet)} = ${format(bet * 4.8)} + ${format(bayar)} ( modal ) = ${format(bet * 4.8 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_4_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 6.4 x ${format(bet)} = ${format(bet * 6.4)} + ${format(bayar)} ( modal ) = ${format(bet * 6.4 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_2_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 2 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 7 x ${format(bet)} = ${format(bet * 7)} + ${format(bayar)} ( modal ) = ${format(bet * 7 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_3_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 13 x ${format(bet)} = ${format(bet * 13)} + ${format(bayar)} ( modal ) = ${format(bet * 13 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_bebas_2d_4_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK BEBAS 2D 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 21 x ${format(bet)} = ${format(bet * 21)} + ${format(bayar)} ( modal ) = ${format(bet * 21 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_3_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 3 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 27 x ${format(bet)} = ${format(bet * 27)} + ${format(bayar)} ( modal ) = ${format(bet * 27 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_naga_4_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe COLOK NAGA 4 DIGIT ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 41 x ${format(bet)} = ${format(bet * 41)} + ${format(bayar)} ( modal ) = ${format(bet * 41 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "colok_jitu_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.94;
+hasil = `Berikut contoh perhitungan tipe COLOK JITU ya bosku\nNominal bet ${format(bet)} - diskon sebesar 6% = ${format(bayar)} yang harus anda bayar\nHadiah 8.3 x ${format(bet)} = ${format(bet * 8.3)} + ${format(bayar)} ( modal ) = ${format(bet * 8.3 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "shio_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.95;
+hasil = `Berikut contoh perhitungan tipe SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 5% = ${format(bayar)} yang harus anda bayar\nHadiah 9.5 x ${format(bet)} = ${format(bet * 9.5)} + ${format(bayar)} ( modal ) = ${format(bet * 9.5 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "macau_shio_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.90;
+hasil = `Berikut contoh perhitungan tipe MACAU SHIO ya bosku\nNominal bet ${format(bet)} - diskon sebesar 10% = ${format(bayar)} yang harus anda bayar\nHadiah 110 x ${format(bet)} = ${format(bet * 110)} + ${format(bayar)} ( modal ) = ${format(bet * 110 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "kombinasi_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.92;
+hasil = `Berikut contoh perhitungan tipe KOMBINASI ya bosku\nNominal bet ${format(bet)} - diskon sebesar 8% = ${format(bayar)} yang harus anda bayar\nHadiah 2.8 x ${format(bet)} = ${format(bet * 2.8)} + ${format(bayar)} ( modal ) = ${format(bet * 2.8 + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "silang_homo_JAKARTA POOLS DAN TOTOMALI":{
+const tipeName = {
+"silang_homo_JAKARTA POOLS DAN TOTOMALI": "Silang HOMO"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.022;    // 3%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-)2.2% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+case "tepi_tengah_JAKARTA POOLS DAN TOTOMALI":{
+const tipeName = {
+"tepi_tengah_JAKARTA POOLS DAN TOTOMALI": "tepi tengah"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.022;    // 3%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) 2.2% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+case "dasar_ganjil_besar_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.98;
+key = bet * 0.245;
+hasil = `Berikut contoh perhitungan tipe DASAR GANJIL-BESAR ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} + ( key - ) 25% = ${format(bayar + key)} yang harus anda bayar\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} + ${format(bayar + key)} ( modal ) = ${format(bet + bayar + key)} kemenangan anda ya bosku`;
+break;
+
+case "dasar_genap_kecil_JAKARTA POOLS DAN TOTOMALI":
+bayar = bet * 0.98;
+key = bet * 0.10;
+hasil = `Berikut contoh perhitungan tipe DASAR GENAP-KECIL ya bosku\nNominal bet ${format(bet)} - diskon sebesar 2% = ${format(bayar)} yang harus anda bayar\nPerhitungan ( key +) 10% x ${format(bet)} = ${format(key)} key yang anda dapat jika mengalamin kemenangan\nJika anda menang ( Hadiah 1:1 ) ${format(bet)} +${format(key)} + ${format(bayar)} ( modal ) = ${format(bet + key + bayar)} kemenangan anda ya bosku`;
+break;
+
+case "50_50_JAKARTA POOLS DAN TOTOMALI":{
+const tipeName = {
+"50_50_JAKARTA POOLS DAN TOTOMALI": "50-50"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.05;    // 5%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) 5% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+case "kembang_kempis_JAKARTA POOLS DAN TOTOMALI":{
+const tipeName = {
+"kembang_kempis_JAKARTA POOLS DAN TOTOMALI": "kembang_kempis"
+}[tipe];
+
+const diskon = 0.02; // 2%
+const key = 0.022;    // 2.2%
+
+// Pembulatan ke atas (ceil) untuk memastikan tidak ada angka desimal
+const bayarSetelahDiskon = Math.ceil(bet * (1 - diskon));
+const keyAmount = Math.ceil(bayarSetelahDiskon * key);
+const totalBayar = bayarSetelahDiskon + keyAmount;
+
+hasil = `Berikut contoh perhitungan tipe ${tipeName} ya bosku\n` +
+`Nominal bet ${format(bet)} - diskon ${diskon*100}% = ${format(bayarSetelahDiskon)} + (key-) 2.2% = ${format(totalBayar)} yang harus anda bayar\n` +
+`Jika anda menang (Hadiah 1:1): ${format(bet)} + ${format(totalBayar)} = ${format(bet + totalBayar)} kemenangan anda ya bosku`;
+break;
+}
+
+          default:
+            hasil = `Tipe taruhan "${tipe}" belum diatur. Hubungi admin.`;
+        }
+
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < hasil.length) {
+            typingSpan.textContent += hasil.charAt(i);
+            i++;
+            resultDiv.scrollTop = resultDiv.scrollHeight;
+          } else {
+            clearInterval(timer);
+            copyBtn.dataset.hasil = hasil;
+            copyBtn.classList.add("show");
+          }
+        }, 20);
+      }, 200);
+
+      resultDiv.classList.add("show");
+    };
+
+    // Salin
+    copyBtn.onclick = function() {
+      const hasil = this.dataset.hasil;
+      navigator.clipboard.writeText(hasil).then(() => {
+        this.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+        setTimeout(() => {
+          this.innerHTML = '<i class="fas fa-copy"></i> Salin';
+        }, 2000);
+      });
+    };
+  </script>
+</body>
+
+</html>
+
+
