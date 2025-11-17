@@ -15,15 +15,53 @@
 
         body {
             font-family: 'Exo 2', sans-serif;
-            background: 
-                linear-gradient(rgba(10, 15, 40, 0.85), rgba(5, 10, 30, 0.9)),
-                url('https://lh3.googleusercontent.com/gg-dl/ABS2GSmq2YWiE_TuqLAhMPKqOHRsuwtHk8dHdKmLU4dbdUgS49d21mw8c6gJQB-ZnU2LMW5vTZcYD1w9uPpRGpTaRDo7TR5zDCZfKSjiOU8BzNFKKTzqEb_ZvC-sdC0ij1QOx0EHntwUXySZh8fGSDqTs85UND5XqHsIevF4TMRQQgW8rQsw9Q=s1024-rj');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             color: #e0e0ff;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                linear-gradient(rgba(10, 15, 40, 0.9), rgba(5, 10, 30, 0.95)),
+                url('https://lh3.googleusercontent.com/gg-dl/ABS2GSmq2YWiE_TuqLAhMPKqOHRsuwtHk8dHdKmLU4dbdUgS49d21mw8c6gJQB-ZnU2LMW5vTZcYD1w9uPpRGpTaRDo7TR5zDCZfKSjiOU8BzNFKKTzqEb_ZvC-sdC0ij1QOx0EHntwUXySZh8fGSDqTs85UND5XqHsIevF4TMRQQgW8rQsw9Q=s1024-rj');
+            background-size: cover;
+            background-position: center;
+            animation: bgMove 60s infinite linear;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 200, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .pulse-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%);
+            animation: pulse 8s infinite ease-in-out;
+            z-index: -1;
         }
 
         .container {
@@ -31,6 +69,8 @@
             width: 90%;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         header {
@@ -40,7 +80,7 @@
             position: relative;
             overflow: hidden;
             border-radius: 20px;
-            background: rgba(15, 20, 50, 0.7);
+            background: rgba(15, 20, 50, 0.6);
             backdrop-filter: blur(15px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(0, 200, 255, 0.4);
@@ -55,6 +95,7 @@
             background: 
                 radial-gradient(circle at 30% 20%, rgba(0, 150, 255, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 70% 80%, rgba(0, 255, 200, 0.2) 0%, transparent 50%);
+            animation: headerGlow 6s infinite alternate;
             z-index: -1;
         }
 
@@ -93,7 +134,7 @@
         }
 
         .menu-card {
-            background: rgba(20, 25, 60, 0.8);
+            background: rgba(20, 25, 60, 0.6);
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 35px 30px;
@@ -265,6 +306,7 @@
             height: 5px;
             background: linear-gradient(to right, #00aaff, #00ffcc, #00aaff);
             border-radius: 0 0 15px 15px;
+            animation: glowMove 3s infinite linear;
         }
 
         .floating-elements {
@@ -274,7 +316,7 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
         }
 
         .floating-element {
@@ -284,39 +326,55 @@
             background: rgba(0, 200, 255, 0.1);
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
-            animation: float 15s infinite linear;
+            animation: floatElement 15s infinite linear;
         }
 
-        .floating-element:nth-child(1) {
-            top: 10%;
-            left: 5%;
-            width: 60px;
-            height: 60px;
-            animation-duration: 25s;
+        /* Animations */
+        @keyframes bgMove {
+            0% {
+                background-position: 0% 0%;
+            }
+            25% {
+                background-position: 50% 25%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            75% {
+                background-position: 50% 75%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
         }
 
-        .floating-element:nth-child(2) {
-            top: 70%;
-            left: 10%;
-            width: 30px;
-            height: 30px;
-            animation-duration: 20s;
+        @keyframes floatElement {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+            }
+            25% {
+                transform: translateY(-50px) rotate(90deg) translateX(50px);
+            }
+            50% {
+                transform: translateY(0) rotate(180deg) translateX(0);
+            }
+            75% {
+                transform: translateY(50px) rotate(270deg) translateX(-50px);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg) translateX(0);
+            }
         }
 
-        .floating-element:nth-child(3) {
-            top: 20%;
-            right: 5%;
-            width: 50px;
-            height: 50px;
-            animation-duration: 30s;
-        }
-
-        .floating-element:nth-child(4) {
-            top: 60%;
-            right: 15%;
-            width: 35px;
-            height: 35px;
-            animation-duration: 18s;
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.6;
+            }
         }
 
         @keyframes titleGlow {
@@ -328,21 +386,40 @@
             }
         }
 
-        @keyframes float {
+        @keyframes headerGlow {
             0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            25% {
-                transform: translateY(-20px) rotate(90deg);
-            }
-            50% {
-                transform: translateY(0) rotate(180deg);
-            }
-            75% {
-                transform: translateY(20px) rotate(270deg);
+                opacity: 0.5;
+                filter: hue-rotate(0deg);
             }
             100% {
-                transform: translateY(0) rotate(360deg);
+                opacity: 0.8;
+                filter: hue-rotate(180deg);
+            }
+        }
+
+        @keyframes glowMove {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(100px, -1000px) rotate(720deg);
+                opacity: 0;
             }
         }
 
@@ -368,13 +445,13 @@
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="pulse-layer"></div>
+    <div class="particles" id="particles"></div>
+
     <!-- Floating Elements -->
-    <div class="floating-elements">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
+    <div class="floating-elements" id="floatingElements"></div>
 
     <div class="container">
         <header>
@@ -425,8 +502,67 @@
     </footer>
 
     <script>
-        // Enhanced interactive effects
+        // Create particles for background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const animationDelay = Math.random() * 5;
+                const hue = Math.random() * 60 + 180; // Blue to cyan colors
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                particle.style.background = `rgba(${hue}, 200, 255, ${Math.random() * 0.3 + 0.1})`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Create floating elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const elementCount = 8;
+            
+            for (let i = 0; i < elementCount; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // Random properties
+                const size = Math.random() * 40 + 20;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 15;
+                const animationDelay = Math.random() * 5;
+                
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.left = `${posX}%`;
+                element.style.top = `${posY}%`;
+                element.style.animationDuration = `${animationDuration}s`;
+                element.style.animationDelay = `${animationDelay}s`;
+                
+                container.appendChild(element);
+            }
+        }
+
+        // Interactive effects
         document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            createFloatingElements();
+            
             const cards = document.querySelectorAll('.menu-card');
             
             cards.forEach(card => {
@@ -439,32 +575,19 @@
                 });
             });
             
-            // Create additional floating elements dynamically
-            const floatingContainer = document.querySelector('.floating-elements');
-            for (let i = 0; i < 6; i++) {
-                const element = document.createElement('div');
-                element.classList.add('floating-element');
+            // Add mouse move effect to background
+            document.addEventListener('mousemove', function(e) {
+                const particles = document.querySelectorAll('.particle');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
                 
-                // Random position and size
-                const size = Math.random() * 40 + 20;
-                element.style.width = `${size}px`;
-                element.style.height = `${size}px`;
-                element.style.top = `${Math.random() * 100}%`;
-                element.style.left = `${Math.random() * 100}%`;
-                element.style.animationDuration = `${Math.random() * 20 + 15}s`;
-                element.style.animationDelay = `${Math.random() * 5}s`;
-                
-                floatingContainer.appendChild(element);
-            }
-            
-            // Add a subtle pulse animation to the header
-            const header = document.querySelector('header');
-            setInterval(() => {
-                header.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.5)';
-                setTimeout(() => {
-                    header.style.boxShadow = '0 15px 35px rgba(0, 150, 255, 0.3)';
-                }, 1000);
-            }, 3000);
+                particles.forEach(particle => {
+                    const speedX = (x - 0.5) * 2;
+                    const speedY = (y - 0.5) * 2;
+                    
+                    particle.style.transform = `translate(${speedX * 10}px, ${speedY * 10}px)`;
+                });
+            });
         });
     </script>
 </body>
