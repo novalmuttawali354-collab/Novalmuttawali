@@ -1,2 +1,0 @@
-# Novalmuttawali
-Novalmuttawali
