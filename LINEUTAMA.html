@@ -13,12 +13,35 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-bg: linear-gradient(rgba(10, 15, 40, 0.9), rgba(5, 10, 30, 0.95));
+            --card-bg: rgba(20, 25, 60, 0.6);
+            --header-bg: rgba(15, 20, 50, 0.6);
+            --text-color: #e0e0ff;
+            --accent-color: #00aaff;
+            --accent-secondary: #00ffcc;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --border-color: rgba(0, 200, 255, 0.3);
+        }
+
+        .light-mode {
+            --primary-bg: linear-gradient(rgba(200, 220, 255, 0.9), rgba(170, 200, 255, 0.95));
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --header-bg: rgba(240, 245, 255, 0.8);
+            --text-color: #1a1a2e;
+            --accent-color: #0066cc;
+            --accent-secondary: #009999;
+            --shadow-color: rgba(0, 0, 100, 0.2);
+            --border-color: rgba(0, 100, 200, 0.4);
+        }
+
         body {
             font-family: 'Exo 2', sans-serif;
-            color: #e0e0ff;
+            color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            transition: all 0.5s ease;
         }
 
         /* Animated Background */
@@ -30,11 +53,12 @@
             height: 100%;
             z-index: -2;
             background: 
-                linear-gradient(rgba(10, 15, 40, 0.9), rgba(5, 10, 30, 0.95)),
+                var(--primary-bg),
                 url('https://lh3.googleusercontent.com/gg-dl/ABS2GSmq2YWiE_TuqLAhMPKqOHRsuwtHk8dHdKmLU4dbdUgS49d21mw8c6gJQB-ZnU2LMW5vTZcYD1w9uPpRGpTaRDo7TR5zDCZfKSjiOU8BzNFKKTzqEb_ZvC-sdC0ij1QOx0EHntwUXySZh8fGSDqTs85UND5XqHsIevF4TMRQQgW8rQsw9Q=s1024-rj');
             background-size: cover;
             background-position: center;
             animation: bgMove 60s infinite linear;
+            transition: all 0.5s ease;
         }
 
         .particles {
@@ -51,6 +75,11 @@
             background: rgba(0, 200, 255, 0.3);
             border-radius: 50%;
             animation: float 15s infinite linear;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .particle {
+            background: rgba(0, 100, 200, 0.2);
         }
 
         .pulse-layer {
@@ -62,6 +91,11 @@
             background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%);
             animation: pulse 8s infinite ease-in-out;
             z-index: -1;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .pulse-layer {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.05) 0%, transparent 50%);
         }
 
         .container {
@@ -73,17 +107,27 @@
             z-index: 1;
         }
 
+        /* Header Styles */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
         header {
             text-align: center;
-            margin: 40px 0 60px;
-            padding: 40px 20px;
+            padding: 30px 20px;
             position: relative;
             overflow: hidden;
             border-radius: 20px;
-            background: rgba(15, 20, 50, 0.6);
+            background: var(--header-bg);
             backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 200, 255, 0.4);
+            box-shadow: 0 15px 35px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            flex: 1;
+            transition: all 0.5s ease;
         }
 
         .header-glow {
@@ -99,49 +143,136 @@
             z-index: -1;
         }
 
+        .light-mode .header-glow {
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(0, 100, 200, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 150, 150, 0.1) 0%, transparent 50%);
+        }
+
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 15px;
+            font-size: 3.2rem;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 4px;
-            text-shadow: 0 0 15px #00aaff, 0 0 25px #00aaff, 0 0 35px #00aaff;
-            background: linear-gradient(to right, #00aaff, #00ffcc, #00aaff);
+            text-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color), 0 0 35px var(--accent-color);
+            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: titleGlow 3s ease-in-out infinite alternate;
         }
 
         .subtitle {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             opacity: 0.9;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             letter-spacing: 2px;
             font-weight: 300;
         }
 
         .tagline {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.8;
             font-style: italic;
         }
 
+        /* Digital Clock Styles */
+        .digital-clock {
+            background: var(--header-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 15px 35px var(--shadow-color);
+            min-width: 280px;
+            transition: all 0.5s ease;
+        }
+
+        .clock-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+        }
+
+        .time-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+            animation: clockPulse 2s infinite;
+            margin-bottom: 10px;
+        }
+
+        .date-display {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toggle-btn {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.5s ease;
+        }
+
+        .toggle-btn:hover .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Menu Grid Styles */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
         .menu-card {
-            background: rgba(20, 25, 60, 0.6);
+            background: var(--card-bg);
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 25px 20px;
             text-align: center;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 200, 255, 0.3);
+            box-shadow: 0 12px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -160,6 +291,10 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.7s ease;
+        }
+
+        .light-mode .menu-card::before {
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
         }
 
         .menu-card:hover::before {
@@ -205,10 +340,20 @@
             z-index: 1;
         }
 
+        .light-mode .menu-icon {
+            background: rgba(200, 230, 255, 0.6);
+            border: 2px solid rgba(0, 100, 200, 0.6);
+            box-shadow: 0 0 20px rgba(0, 100, 200, 0.3);
+        }
+
         .menu-card:hover .menu-icon {
             transform: scale(1.12) rotateY(180deg);
             background: rgba(0, 100, 200, 0.7);
             box-shadow: 0 0 30px rgba(0, 255, 200, 0.8);
+        }
+
+        .light-mode .menu-card:hover .menu-icon {
+            background: rgba(100, 180, 255, 0.8);
         }
 
         .menu-title {
@@ -218,7 +363,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            color: #00ccff;
+            color: var(--accent-color);
             position: relative;
             z-index: 1;
         }
@@ -228,7 +373,7 @@
             display: block;
             width: 45px;
             height: 2px;
-            background: linear-gradient(to right, #00aaff, #00ffcc);
+            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary));
             margin: 8px auto;
             border-radius: 2px;
         }
@@ -246,7 +391,7 @@
         .menu-button {
             display: inline-block;
             padding: 12px 25px;
-            background: linear-gradient(135deg, #00aaff, #00ffcc);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
             color: #001122;
             text-decoration: none;
             border-radius: 50px;
@@ -271,7 +416,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #00ffcc, #00aaff);
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-color));
             transition: all 0.5s ease;
             z-index: -1;
         }
@@ -284,50 +429,6 @@
 
         .menu-button:hover::before {
             left: 0;
-        }
-
-        footer {
-            margin-top: 80px;
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 1.1rem;
-            opacity: 0.8;
-            border-top: 1px solid rgba(0, 150, 255, 0.3);
-            position: relative;
-            background: rgba(10, 15, 40, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 15px 15px 0 0;
-        }
-
-        .footer-glow {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, #00aaff, #00ffcc, #00aaff);
-            border-radius: 0 0 15px 15px;
-            animation: glowMove 3s infinite linear;
-        }
-
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .floating-element {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 200, 255, 0.1);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
-            animation: floatElement 15s infinite linear;
         }
 
         /* Special styling for different card types */
@@ -457,6 +558,57 @@
             box-shadow: 0 10px 25px rgba(138, 43, 226, 0.7);
         }
 
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px 15px 0 0;
+            transition: all 0.5s ease;
+        }
+
+        .footer-glow {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary), var(--accent-color));
+            border-radius: 0 0 15px 15px;
+            animation: glowMove 3s infinite linear;
+        }
+
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 200, 255, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+            animation: floatElement 15s infinite linear;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .floating-element {
+            background: rgba(0, 100, 200, 0.1);
+            box-shadow: 0 0 20px rgba(0, 100, 200, 0.2);
+        }
+
         /* Animations */
         @keyframes bgMove {
             0% {
@@ -507,10 +659,10 @@
 
         @keyframes titleGlow {
             0% {
-                text-shadow: 0 0 15px #00aaff, 0 0 25px #00aaff, 0 0 35px #00aaff;
+                text-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color), 0 0 35px var(--accent-color);
             }
             100% {
-                text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+                text-shadow: 0 0 20px var(--accent-secondary), 0 0 30px var(--accent-secondary), 0 0 40px var(--accent-secondary);
             }
         }
 
@@ -551,9 +703,53 @@
             }
         }
 
+        @keyframes clockPulse {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+            }
+            50% {
+                transform: scale(1.02);
+                text-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
+            }
+        }
+
+        @keyframes transformClock {
+            0% {
+                transform: perspective(1000px) rotateX(0) rotateY(0);
+            }
+            25% {
+                transform: perspective(1000px) rotateX(10deg) rotateY(5deg);
+            }
+            50% {
+                transform: perspective(1000px) rotateX(0) rotateY(0);
+            }
+            75% {
+                transform: perspective(1000px) rotateX(-10deg) rotateY(-5deg);
+            }
+            100% {
+                transform: perspective(1000px) rotateX(0) rotateY(0);
+            }
+        }
+
+        .clock-transform {
+            animation: transformClock 4s infinite ease-in-out;
+        }
+
+        @media (max-width: 1024px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .digital-clock {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
             
             .menu-grid {
@@ -569,6 +765,10 @@
                 height: 80px;
                 font-size: 3rem;
             }
+            
+            .time-display {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -581,13 +781,30 @@
     <!-- Floating Elements -->
     <div class="floating-elements" id="floatingElements"></div>
 
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle">
+        <button class="toggle-btn" id="themeToggle">
+            <span class="toggle-icon">🌙</span>
+            <span>Mode Gelap</span>
+        </button>
+    </div>
+
     <div class="container">
-        <header>
-            <div class="header-glow"></div>
-            <h1>Seputar LINETOGEL</h1>
-            <p class="subtitle">Portal Informasi Lengkap Seputar Permainan LINETOGEL</p>
-            <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
-        </header>
+        <div class="header-container">
+            <header>
+                <div class="header-glow"></div>
+                <h1>Seputar LINETOGEL</h1>
+                <p class="subtitle">Portal Informasi Lengkap Seputar Permainan LINETOGEL</p>
+                <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
+            </header>
+
+            <!-- Digital Clock -->
+            <div class="digital-clock">
+                <div class="clock-title">Waktu Server</div>
+                <div class="time-display" id="timeDisplay">00:00:00</div>
+                <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
+            </div>
+        </div>
 
         <div class="menu-grid">
             <div class="menu-card">
@@ -630,7 +847,6 @@
                 <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="menu-button">Mulai Bermain</a>
             </div>
 
-            <!-- New Data All Card -->
             <div class="menu-card data-card">
                 <div class="card-glow"></div>
                 <div class="menu-icon"><i class="fas fa-database"></i></div>
@@ -639,7 +855,6 @@
                 <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="menu-button">Lihat Data</a>
             </div>
 
-            <!-- New LC Audit Card -->
             <div class="menu-card audit-card">
                 <div class="card-glow"></div>
                 <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
@@ -712,10 +927,87 @@
             }
         }
 
+        // Digital Clock Function
+        function updateClock() {
+            const now = new Date();
+            const timeDisplay = document.getElementById('timeDisplay');
+            const dateDisplay = document.getElementById('dateDisplay');
+            
+            // Format time
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            // Format date
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+            dateDisplay.textContent = `${dayName}, ${date} ${monthName} ${year}`;
+            
+            // Add transformer effect to clock every 10 seconds
+            if (now.getSeconds() % 10 === 0) {
+                timeDisplay.classList.add('clock-transform');
+                setTimeout(() => {
+                    timeDisplay.classList.remove('clock-transform');
+                }, 4000);
+            }
+        }
+
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const toggleIcon = themeToggle.querySelector('.toggle-icon');
+            const toggleText = themeToggle.querySelector('span:last-child');
+            
+            if (body.classList.contains('light-mode')) {
+                // Switch to dark mode
+                body.classList.remove('light-mode');
+                toggleIcon.textContent = '🌙';
+                toggleText.textContent = 'Mode Gelap';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                // Switch to light mode
+                body.classList.add('light-mode');
+                toggleIcon.textContent = '☀️';
+                toggleText.textContent = 'Mode Terang';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Initialize theme from localStorage
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const toggleIcon = themeToggle.querySelector('.toggle-icon');
+            const toggleText = themeToggle.querySelector('span:last-child');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                toggleIcon.textContent = '☀️';
+                toggleText.textContent = 'Mode Terang';
+            } else {
+                document.body.classList.remove('light-mode');
+                toggleIcon.textContent = '🌙';
+                toggleText.textContent = 'Mode Gelap';
+            }
+        }
+
         // Interactive effects
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             createFloatingElements();
+            initializeTheme();
+            
+            // Update clock immediately and then every second
+            updateClock();
+            setInterval(updateClock, 1000);
             
             const cards = document.querySelectorAll('.menu-card');
             
@@ -750,6 +1042,9 @@
                     this.style.transform = 'translateY(-12px) scale(1.05)';
                 });
             });
+
+            // Add theme toggle event listener
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
         });
     </script>
 </body>
