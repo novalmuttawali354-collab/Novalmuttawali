@@ -98,13 +98,135 @@
             background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.05) 0%, transparent 50%);
         }
 
-        .container {
+        /* Main Layout */
+        .main-wrapper {
+            display: flex;
             max-width: 1500px;
-            width: 95%;
             margin: 0 auto;
             padding: 20px;
+            gap: 20px;
             position: relative;
             z-index: 1;
+        }
+
+        /* Domain Checker Sidebar */
+        .domain-checker-sidebar {
+            width: 180px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .domain-checker-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            animation: rotateCircle 20s infinite linear;
+        }
+
+        .domain-checker-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--accent-color),
+                transparent,
+                var(--accent-secondary),
+                transparent
+            );
+            animation: rotateGradient 3s infinite linear;
+            z-index: -1;
+        }
+
+        .domain-checker-circle::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            z-index: -1;
+        }
+
+        .domain-checker-circle:hover {
+            transform: scale(1.05);
+            animation-play-state: paused;
+        }
+
+        .domain-checker-circle:hover::before {
+            animation-play-state: paused;
+        }
+
+        .domain-checker-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            animation: pulseIcon 2s infinite alternate;
+        }
+
+        .domain-checker-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .domain-checker-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: #001122;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+
+        .domain-checker-link:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.5);
+        }
+
+        .domain-status {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 200, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.7rem;
+            animation: statusPulse 2s infinite alternate;
+        }
+
+        .content-container {
+            flex: 1;
         }
 
         /* Header Styles */
@@ -323,37 +445,121 @@
             opacity: 1;
         }
 
+        /* Enhanced Menu Icon Styles */
         .menu-icon {
             font-size: 3.5rem;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: rgba(0, 50, 100, 0.4);
-            border: 2px solid rgba(0, 200, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+            border: 3px solid rgba(0, 200, 255, 0.5);
+            box-shadow: 
+                0 0 20px rgba(0, 150, 255, 0.5),
+                inset 0 0 20px rgba(0, 200, 255, 0.2);
             transition: all 0.5s ease;
             position: relative;
             z-index: 1;
+            animation: iconFloat 4s infinite ease-in-out;
+        }
+
+        .menu-icon::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--accent-color),
+                transparent,
+                var(--accent-secondary),
+                transparent
+            );
+            animation: iconRotate 4s infinite linear;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 50%;
+            background: rgba(0, 50, 100, 0.4);
+            z-index: -1;
+        }
+
+        .menu-card:hover .menu-icon::before {
+            opacity: 1;
         }
 
         .light-mode .menu-icon {
             background: rgba(200, 230, 255, 0.6);
-            border: 2px solid rgba(0, 100, 200, 0.6);
-            box-shadow: 0 0 20px rgba(0, 100, 200, 0.3);
+            border: 3px solid rgba(0, 100, 200, 0.6);
+            box-shadow: 
+                0 0 20px rgba(0, 100, 200, 0.3),
+                inset 0 0 20px rgba(0, 100, 200, 0.1);
+        }
+
+        .light-mode .menu-icon::after {
+            background: rgba(200, 230, 255, 0.6);
         }
 
         .menu-card:hover .menu-icon {
-            transform: scale(1.12) rotateY(180deg);
+            transform: scale(1.15) rotateY(360deg);
             background: rgba(0, 100, 200, 0.7);
-            box-shadow: 0 0 30px rgba(0, 255, 200, 0.8);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 200, 0.8),
+                inset 0 0 30px rgba(0, 255, 200, 0.3);
+            animation-play-state: paused;
         }
 
         .light-mode .menu-card:hover .menu-icon {
             background: rgba(100, 180, 255, 0.8);
+        }
+
+        /* Icon specific animations */
+        .menu-card:nth-child(1) .menu-icon {
+            animation-delay: 0s;
+        }
+
+        .menu-card:nth-child(2) .menu-icon {
+            animation-delay: 0.5s;
+        }
+
+        .menu-card:nth-child(3) .menu-icon {
+            animation-delay: 1s;
+        }
+
+        .menu-card:nth-child(4) .menu-icon {
+            animation-delay: 1.5s;
+        }
+
+        .menu-card:nth-child(5) .menu-icon {
+            animation-delay: 2s;
+        }
+
+        .menu-card:nth-child(6) .menu-icon {
+            animation-delay: 2.5s;
+        }
+
+        .menu-card:nth-child(7) .menu-icon {
+            animation-delay: 3s;
+        }
+
+        .menu-card:nth-child(8) .menu-icon {
+            animation-delay: 3.5s;
         }
 
         .menu-title {
@@ -438,7 +644,24 @@
 
         .gameplay-card .menu-icon {
             border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.5),
+                inset 0 0 20px rgba(255, 215, 0, 0.2);
+            background: rgba(100, 80, 0, 0.4);
+        }
+
+        .gameplay-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #ffd700,
+                transparent,
+                #ffed4e,
+                transparent
+            );
+        }
+
+        .gameplay-card .menu-icon::after {
             background: rgba(100, 80, 0, 0.4);
         }
 
@@ -449,7 +672,9 @@
 
         .gameplay-card:hover .menu-icon {
             background: rgba(150, 120, 0, 0.6);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            box-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.8),
+                inset 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
         .gameplay-card .menu-title {
@@ -480,7 +705,24 @@
 
         .data-card .menu-icon {
             border-color: rgba(0, 255, 127, 0.6);
-            box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 127, 0.5),
+                inset 0 0 20px rgba(0, 255, 127, 0.2);
+            background: rgba(0, 80, 40, 0.4);
+        }
+
+        .data-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #00ff7f,
+                transparent,
+                #7fff00,
+                transparent
+            );
+        }
+
+        .data-card .menu-icon::after {
             background: rgba(0, 80, 40, 0.4);
         }
 
@@ -491,7 +733,9 @@
 
         .data-card:hover .menu-icon {
             background: rgba(0, 120, 60, 0.6);
-            box-shadow: 0 0 30px rgba(0, 255, 127, 0.8);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 127, 0.8),
+                inset 0 0 30px rgba(0, 255, 127, 0.3);
         }
 
         .data-card .menu-title {
@@ -522,7 +766,24 @@
 
         .audit-card .menu-icon {
             border-color: rgba(138, 43, 226, 0.6);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+            box-shadow: 
+                0 0 20px rgba(138, 43, 226, 0.5),
+                inset 0 0 20px rgba(138, 43, 226, 0.2);
+            background: rgba(70, 20, 110, 0.4);
+        }
+
+        .audit-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #8a2be2,
+                transparent,
+                #da70d6,
+                transparent
+            );
+        }
+
+        .audit-card .menu-icon::after {
             background: rgba(70, 20, 110, 0.4);
         }
 
@@ -533,7 +794,9 @@
 
         .audit-card:hover .menu-icon {
             background: rgba(100, 30, 150, 0.6);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            box-shadow: 
+                0 0 30px rgba(138, 43, 226, 0.8),
+                inset 0 0 30px rgba(138, 43, 226, 0.3);
         }
 
         .audit-card .menu-title {
@@ -565,7 +828,24 @@
 
         .profile-card .menu-icon {
             border-color: rgba(30, 144, 255, 0.6);
-            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+            box-shadow: 
+                0 0 20px rgba(30, 144, 255, 0.5),
+                inset 0 0 20px rgba(30, 144, 255, 0.2);
+            background: rgba(10, 60, 120, 0.4);
+        }
+
+        .profile-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #1e90ff,
+                transparent,
+                #87ceeb,
+                transparent
+            );
+        }
+
+        .profile-card .menu-icon::after {
             background: rgba(10, 60, 120, 0.4);
         }
 
@@ -576,7 +856,9 @@
 
         .profile-card:hover .menu-icon {
             background: rgba(20, 90, 160, 0.6);
-            box-shadow: 0 0 30px rgba(30, 144, 255, 0.8);
+            box-shadow: 
+                0 0 30px rgba(30, 144, 255, 0.8),
+                inset 0 0 30px rgba(30, 144, 255, 0.3);
         }
 
         .profile-card .menu-title {
@@ -775,11 +1057,104 @@
             }
         }
 
+        @keyframes rotateCircle {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateGradient {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulseIcon {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes statusPulse {
+            0% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* New Icon Animations */
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+            75% {
+                transform: translateY(5px) rotate(-5deg);
+            }
+        }
+
+        @keyframes iconRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes iconGlow {
+            0%, 100% {
+                filter: brightness(1) drop-shadow(0 0 10px rgba(0, 200, 255, 0.5));
+            }
+            50% {
+                filter: brightness(1.2) drop-shadow(0 0 20px rgba(0, 200, 255, 0.8));
+            }
+        }
+
         .clock-transform {
             animation: transformClock 4s infinite ease-in-out;
         }
 
         @media (max-width: 1024px) {
+            .main-wrapper {
+                flex-direction: column;
+            }
+            
+            .domain-checker-sidebar {
+                width: 100%;
+                position: relative;
+                flex-direction: row;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .domain-checker-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
             .header-container {
                 flex-direction: column;
             }
@@ -812,6 +1187,15 @@
             .time-display {
                 font-size: 1.8rem;
             }
+            
+            .domain-checker-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .domain-checker-title {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -832,87 +1216,101 @@
         </button>
     </div>
 
-    <div class="container">
-        <div class="header-container">
-            <header>
-                <div class="header-glow"></div>
-                <h1>Seputar LINETOGEL</h1>
-                <p class="subtitle">Portal Informasi Lengkap Seputar Permainan LINETOGEL</p>
-                <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
-            </header>
-
-            <!-- Digital Clock -->
-            <div class="digital-clock">
-                <div class="clock-title">Waktu Server</div>
-                <div class="time-display" id="timeDisplay">00:00:00</div>
-                <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
+    <div class="main-wrapper">
+        <!-- Domain Checker Sidebar -->
+        <div class="domain-checker-sidebar">
+            <div class="domain-checker-circle">
+                <i class="fas fa-shield-alt domain-checker-icon"></i>
+                <h3 class="domain-checker-title">Domain Checker</h3>
+                <a href="https://trustpositif.smbgroup.io/" target="_blank" class="domain-checker-link">Cek Domain</a>
+                <div class="domain-status">
+                    Status: <span id="domainStatus">Aman</span>
+                </div>
             </div>
         </div>
 
-        <div class="menu-grid">
-            <div class="menu-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-gamepad"></i></div>
-                <h3 class="menu-title">Livegames</h3>
-                <p class="menu-description">Nikmati pengalaman bermain game langsung dengan berbagai pilihan permainan menarik dan interaktif.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="menu-button">Akses Sekarang</a>
+        <div class="content-container">
+            <div class="header-container">
+                <header>
+                    <div class="header-glow"></div>
+                    <h1>Seputar LINETOGEL</h1>
+                    <p class="subtitle">Portal Informasi Lengkap Seputar Permainan LINETOGEL</p>
+                    <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
+                </header>
+
+                <!-- Digital Clock -->
+                <div class="digital-clock">
+                    <div class="clock-title">Waktu Server</div>
+                    <div class="time-display" id="timeDisplay">00:00:00</div>
+                    <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
+                </div>
             </div>
 
-            <div class="menu-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-gift"></i></div>
-                <h3 class="menu-title">Event Scatter</h3>
-                <p class="menu-description">Ikuti event scatter menarik dengan hadiah-hadiah spesial yang bisa Anda dapatkan.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="menu-button">Ikuti Event</a>
-            </div>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3 class="menu-title">Livegames</h3>
+                    <p class="menu-description">Nikmati pengalaman bermain game langsung dengan berbagai pilihan permainan menarik dan interaktif.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="menu-button">Akses Sekarang</a>
+                </div>
 
-            <div class="menu-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-chart-bar"></i></div>
-                <h3 class="menu-title">Akumulasi Togel</h3>
-                <p class="menu-description">Lihat data akumulasi togel terbaru dan analisis canggih untuk membantu prediksi Anda.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="menu-button">Lihat Data</a>
-            </div>
+                <div class="menu-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-gift"></i></div>
+                    <h3 class="menu-title">Event Scatter</h3>
+                    <p class="menu-description">Ikuti event scatter menarik dengan hadiah-hadiah spesial yang bisa Anda dapatkan.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="menu-button">Ikuti Event</a>
+                </div>
 
-            <div class="menu-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-qrcode"></i></div>
-                <h3 class="menu-title">Gambar QRIS</h3>
-                <p class="menu-description">Akses gambar QRIS untuk kemudahan dalam melakukan transaksi pembayaran yang aman.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="menu-button">Scan QRIS</a>
-            </div>
+                <div class="menu-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3 class="menu-title">Akumulasi Togel</h3>
+                    <p class="menu-description">Lihat data akumulasi togel terbaru dan analisis canggih untuk membantu prediksi Anda.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="menu-button">Lihat Data</a>
+                </div>
 
-            <div class="menu-card gameplay-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-dice"></i></div>
-                <h3 class="menu-title">Gameplay Togel</h3>
-                <p class="menu-description">Jelajahi gameplay togel yang menarik dengan sistem betting yang lengkap.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="menu-button">Mulai Bermain</a>
-            </div>
+                <div class="menu-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-qrcode"></i></div>
+                    <h3 class="menu-title">Gambar QRIS</h3>
+                    <p class="menu-description">Akses gambar QRIS untuk kemudahan dalam melakukan transaksi pembayaran yang aman.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="menu-button">Scan QRIS</a>
+                </div>
 
-            <div class="menu-card data-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-database"></i></div>
-                <h3 class="menu-title">Data All</h3>
-                <p class="menu-description">Akses semua data lengkap dan informasi terkini seputar permainan togel dalam satu tempat.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="menu-button">Lihat Data</a>
-            </div>
+                <div class="menu-card gameplay-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-dice"></i></div>
+                    <h3 class="menu-title">Gameplay Togel</h3>
+                    <p class="menu-description">Jelajahi gameplay togel yang menarik dengan sistem betting yang lengkap.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="menu-button">Mulai Bermain</a>
+                </div>
 
-            <div class="menu-card audit-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
-                <h3 class="menu-title">LC Audit</h3>
-                <p class="menu-description">Verifikasi keamanan sistem dengan audit cryptocurrency yang komprehensif dan transparan.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="menu-button">Audit System</a>
-            </div>
+                <div class="menu-card data-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-database"></i></div>
+                    <h3 class="menu-title">Data All</h3>
+                    <p class="menu-description">Akses semua data lengkap dan informasi terkini seputar permainan togel dalam satu tempat.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="menu-button">Lihat Data</a>
+                </div>
 
-            <!-- New Profile Card -->
-            <div class="menu-card profile-card">
-                <div class="card-glow"></div>
-                <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
-                <h3 class="menu-title">Profil Bank/Ewallet</h3>
-                <p class="menu-description">Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
-                <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="menu-button">Lihat Profil</a>
+                <div class="menu-card audit-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="menu-title">LC Audit</h3>
+                    <p class="menu-description">Verifikasi keamanan sistem dengan audit cryptocurrency yang komprehensif dan transparan.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="menu-button">Audit System</a>
+                </div>
+
+                <!-- New Profile Card -->
+                <div class="menu-card profile-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
+                    <h3 class="menu-title">Profil Bank/Ewallet</h3>
+                    <p class="menu-description">Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="menu-button">Lihat Profil</a>
+                </div>
             </div>
         </div>
     </div>
@@ -1011,6 +1409,51 @@
             }
         }
 
+        // Domain Status Checker
+        function updateDomainStatus() {
+            const domainStatus = document.getElementById('domainStatus');
+            const statuses = ['Aman', 'Terverifikasi', 'Dipantau'];
+            const colors = ['#00ff7f', '#00aaff', '#ffcc00'];
+            
+            setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * statuses.length);
+                domainStatus.textContent = statuses[randomIndex];
+                domainStatus.style.color = colors[randomIndex];
+            }, 5000);
+        }
+
+        // Enhanced Icon Animations
+        function animateIcons() {
+            const menuIcons = document.querySelectorAll('.menu-icon');
+            
+            menuIcons.forEach((icon, index) => {
+                // Add continuous rotation animation
+                icon.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
+                icon.style.animationDelay = `${index * 0.5}s`;
+                
+                // Add hover effect with enhanced rotation
+                icon.addEventListener('mouseenter', function() {
+                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
+                    this.style.transform = 'scale(1.2) rotate(180deg)';
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    this.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
+                    this.style.animationDelay = `${index * 0.5}s`;
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+                
+                // Add click effect
+                icon.addEventListener('click', function() {
+                    this.style.animation = 'iconRotate 0.3s linear';
+                    setTimeout(() => {
+                        this.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
+                        this.style.animationDelay = `${index * 0.5}s`;
+                    }, 300);
+                });
+            });
+        }
+
         // Theme Toggle Function
         function toggleTheme() {
             const body = document.body;
@@ -1056,6 +1499,8 @@
             createParticles();
             createFloatingElements();
             initializeTheme();
+            updateDomainStatus();
+            animateIcons();
             
             // Update clock immediately and then every second
             updateClock();
@@ -1097,6 +1542,16 @@
 
             // Add theme toggle event listener
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Add hover effect to domain checker circle
+            const domainCheckerCircle = document.querySelector('.domain-checker-circle');
+            domainCheckerCircle.addEventListener('mouseenter', function() {
+                this.style.animationPlayState = 'paused';
+            });
+            
+            domainCheckerCircle.addEventListener('mouseleave', function() {
+                this.style.animationPlayState = 'running';
+            });
         });
     </script>
 </body>
