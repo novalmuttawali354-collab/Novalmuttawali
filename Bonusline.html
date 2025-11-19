@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Bonus Linetogel Nexus</title>
+    
+    <!-- Import Font Poppins & Orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS untuk tampilan */
+        :root {
+            --bg-gradient-start: #0f0c29;
+            --bg-gradient-mid: #302b63;
+            --bg-gradient-end: #24243e;
+            --primary-color: #00bcd4; /* Cyan */
+            --secondary-color: #3f51b5; /* Indigo */
+            --accent-color: #ff4081; /* Pink */
+            --container-bg: rgba(20, 20, 40, 0.9);
+            --text-color: #e0e0e0;
+            --font-main: 'Poppins', sans-serif;
+            --font-title: 'Orbitron', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
+            color: var(--text-color);
+            line-height: 1.7;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .main-container {
+            background: var(--container-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #b0b0b0;
+            margin: 0 0 20px 0;
+        }
+        
+        /* --- Gaya Dropdown Kustom --- */
+        .custom-search-dropdown {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-trigger {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-family: var(--font-main);
+            font-weight: 600;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .search-trigger:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .search-trigger .arrow {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-search-dropdown.open .search-trigger .arrow {
+            transform: rotate(180deg);
+        }
+
+        .search-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            background-color: var(--container-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+
+        .custom-search-dropdown.open .search-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-menu-item {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-menu-item:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* --- Gaya Konten --- */
+        .content-area {
+            margin-top: 30px;
+        }
+
+        .bonus-section {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        .bonus-section:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin: 0;
+            flex-grow: 1;
+            letter-spacing: 1px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 5px solid var(--primary-color);
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        li:hover {
+            transform: translateX(8px);
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.2);
+        }
+
+        strong {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 18px;
+            background-color: rgba(255, 235, 59, 0.1); /* Yellow with opacity */
+            border-left: 5px solid #ffeb3b;
+            border-radius: 10px;
+            font-style: italic;
+            font-weight: 300;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            font-weight: 400;
+        }
+
+        /* --- Gaya Tombol Copy --- */
+        .copy-section-button {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3);
+        }
+        
+        .copy-section-button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background-color: var(--primary-color);
+        }
+
+        .copy-section-button:active {
+            transform: scale(0.98);
+        }
+
+        .copied {
+            background-color: #4caf50 !important;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4) !important;
+        }
+        
+        p {
+            font-weight: 300;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Header dan Generator Pencarian -->
+        <div class="header">
+            <h1>Generator Bonus</h1>
+            <p>Linetogel Nexus</p>
+            
+            <!-- Dropdown Kustom untuk Pencarian -->
+            <div class="custom-search-dropdown" id="searchDropdown">
+                <div class="search-trigger" id="searchTrigger">
+                    <span id="selectedValue">Pilih Kategori Bonus</span>
+                    <span class="arrow"></span>
+                </div>
+                <div class="search-menu" id="searchMenu">
+                    <!-- Item menu akan dibuat secara dinamis oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Area Konten Bonus -->
+        <div class="content-area" id="textContent">
+
+            <!-- SECTION BONUS ALL (DAFTAR MASTER) -->
+            <section class="bonus-section hidden" data-title="BONUS ALL">
+                <div class="section-header">
+                    <h2>BONUS ALL</h2>
+                    <button class="copy-section-button" data-target="bonus-all-content">Salin</button>
+                </div>
+                <div id="bonus-all-content">
+                    <p>Berikut adalah daftar master lengkap promo bonus yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Referral Togel</strong> = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran).</li>
+                        <li><strong>Bonus Referral Slot</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral Live Games</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral Live Games PRAGMATIC</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral ARCADE</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral E-lottery</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Rollingan Turnover LIVE GAMES</strong> = Sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan Turnover PRAGMATIC PLAY</strong> = Sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan Turnover SLOT</strong> = Sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan Turnover ARCADE</strong> = Sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan Turnover E-LOTTERY</strong> = Sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Rollingan Turnover SLOT GAMES</strong> = Sebesar 0,3% (Khusus Member VIP).</li>
+                        <li><strong>Rollingan Turnover LIVEGAMES</strong> = Sebesar 0,1% (Khusus Member VIP).</li>
+                        <li><strong>Bonus Cashback up to 5% (Live Games)</strong> = Bonus Kekalahan. Minimal kekalahan Rp.100.000. Bonus 2,5% (nominal 100rb-249,9jt). Bonus 5% (nominal 250jt ke atas). Dibagikan otomatis hari Senin.</li>
+                        <li><strong>Bonus Cashback 5% (Slot Games)</strong> = Bonus Kekalahan. Minimal kekalahan Rp.100.000. Dibagikan otomatis setiap Hari Selasa.</li>
+                        <li><strong>Bonus Cashback 5% (Live Games PRAGMATIC)</strong> = Bonus Kekalahan. Minimal kekalahan Rp.100.000. Dibagikan otomatis setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% (E-lottery)</strong> = Bonus Kekalahan. Minimal kekalahan Rp.100.000. Dibagikan otomatis setiap Hari Selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% (Arcade)</strong> = Bonus Kekalahan. Minimal kekalahan Rp.100.000. Dibagikan otomatis setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback LIVEGAMES 8%</strong> (Up Bonus 5% dari biasanya) - Khusus Member VIP.</li>
+                        <li><strong>Bonus Cashback SLOT GAMES 12%</strong> (Up Bonus 3% dari biasanya) - Khusus Member VIP.</li>
+                        <li><strong>Bonus Extra Slot</strong> = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level (berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari) tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Ulang Tahun</strong> - Khusus Member VIP.</li>
+                    </ul>
+                    <p><strong>Catatan Penting:</strong></p>
+                    <ul>
+                        <li>Semua bonus rollingan (kecuali VIP) dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</li>
+                        <li>Untuk syarat dan ketentuan lengkap, dapat dilihat di menu promosi pada situs.</li>
+                    </ul>
+                    <p class="note"><strong>NB :</strong> tidak ada bonus deposit harian / bonus new member.</p>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS ARCADE -->
+            <section class="bonus-section hidden" data-title="BONUS ARCADE">
+                <div class="section-header">
+                    <h2>BONUS ARCADE</h2>
+                    <button class="copy-section-button" data-target="bonus-arcade-content">Salin</button>
+                </div>
+                <div id="bonus-arcade-content">
+                    <p>Untuk bonus Arcade yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Cashback 5% ( Arcade )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Rollingan turnover</strong> sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE. dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS CASHBACK -->
+            <section class="bonus-section hidden" data-title="BONUS CASHBACK">
+                <div class="section-header">
+                    <h2>BONUS CASHBACK</h2>
+                    <button class="copy-section-button" data-target="bonus-cashback-content">Salin</button>
+                </div>
+                <div id="bonus-cashback-content">
+                    <p>Untuk bonus cashback kekalahan yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Cashback up to 5% ( Live Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games. Minimal kekalahan Rp.100.000, Untuk nominal 100,000- 249,999,999 = Bonus yang didapat 2,5% dari total kekalahan. Untuk nominal 250,000,000 - 999,999,999,999 = Bonus yang didapat 5% dari total kekalahan, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Slot Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Live Games PRAGMATIC )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( E-lottery )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Arcade )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS E - LOTTERY -->
+            <section class="bonus-section hidden" data-title="BONUS E - LOTTERY">
+                <div class="section-header">
+                    <h2>BONUS E - LOTTERY</h2>
+                    <button class="copy-section-button" data-target="bonus-e-lottery-content">Salin</button>
+                </div>
+                <div id="bonus-e-lottery-content">
+                    <p>Untuk bonus E-lottery yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Cashback 5% ( E-lottery )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Rollingan turnover</strong> sebesar 0,5% dari total bettingan => khusus untuk permainan E-lottery. dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS LIVE GAMES -->
+            <section class="bonus-section hidden" data-title="BONUS LIVE GAMES">
+                <div class="section-header">
+                    <h2>BONUS LIVE GAMES</h2>
+                    <button class="copy-section-button" data-target="bonus-live-games-content">Salin</button>
+                </div>
+                <div id="bonus-live-games-content">
+                    <p>Untuk bonus live games yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Cashback up to 5% ( Live Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games. Minimal kekalahan Rp.100.000, Untuk nominal 100,000- 249,999,999 = Bonus yang didapat 2,5% dari total kekalahan. Untuk nominal 250,000,000 - 999,999,999,999 = Bonus yang didapat 5% dari total kekalahan, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Live Games PRAGMATIC )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Rollingan turnover</strong> sebesar 0,5% dari total bettingan => khusus untuk permainan LIVE GAMES, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</li>
+                        <li><strong>Bonus Rollingan turnover LIVE GAMES PRAGMATIC</strong> 0,5 dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS MINGGUAN -->
+            <section class="bonus-section hidden" data-title="BONUS MINGGUAN">
+                <div class="section-header">
+                    <h2>BONUS MINGGUAN</h2>
+                    <button class="copy-section-button" data-target="bonus-mingguan-content">Salin</button>
+                </div>
+                <div id="bonus-mingguan-content">
+                    <p>Untuk promo bonus Mingguan saat ini kami memiliki :</p>
+                    <ul>
+                        <li><strong>Bonus Rollingan turnover LIVE GAMES</strong> sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai).</li>
+                        <li><strong>Bonus Rollingan turnover SLOT</strong> sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai).</li>
+                        <li><strong>Bonus Rollingan turnover PRAGMATIC PLAY</strong> sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai).</li>
+                        <li><strong>Bonus Rollingan turnover ARCADE</strong> sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai).</li>
+                        <li><strong>Bonus Rollingan turnover E- lottery</strong> sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah maintenance selesai).</li>
+                        <li><strong>Bonus Cashback up to 5% ( Live Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games. Minimal kekalahan Rp.100.000, Untuk nominal 100,000- 249,999,999 = Bonus yang didapat 2,5% dari total kekalahan. Untuk nominal 250,000,000 - 999,999,999,999 = Bonus yang didapat 5% dari total kekalahan, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( PRAGMATIC PLAY)</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Slot Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.</li>
+                        <li><strong>Bonus Cashback 5% ( E-lottery )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Cashback 5% ( Arcade )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.</li>
+                    </ul>
+                    <p>untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs</p>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS REFERRAL -->
+            <section class="bonus-section hidden" data-title="BONUS REFERRAL">
+                <div class="section-header">
+                    <h2>BONUS REFERRAL</h2>
+                    <button class="copy-section-button" data-target="bonus-referral-content">Salin</button>
+                </div>
+                <div id="bonus-referral-content">
+                    <p>Untuk bonus referral yang kami memiliki :</p>
+                    <ul>
+                        <li><strong>Bonus Referral Togel</strong> = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran).</li>
+                        <li><strong>Bonus Referral Slot</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral Live Games</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral Live Games PRAGMATIC</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral ARCADE</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                        <li><strong>Bonus Referral E-lottery</strong> = Bonus Referral sebesar 0.1% (dibagikan setiap hari).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS ROLLINGAN -->
+            <section class="bonus-section hidden" data-title="BONUS ROLLINGAN">
+                <div class="section-header">
+                    <h2>BONUS ROLLINGAN</h2>
+                    <button class="copy-section-button" data-target="bonus-rollingan-content">Salin</button>
+                </div>
+                <div id="bonus-rollingan-content">
+                    <p>Untuk bonus rollingan saat ini kami memiliki :</p>
+                    <ul>
+                        <li><strong>Bonus Rollingan turnover LIVE GAMES</strong> sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan turnover PRAGMATIC PLAY</strong> sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan turnover SLOT</strong> sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan turnover ARCADE</strong> sebesar 0,5% dari total bettingan.</li>
+                        <li><strong>Bonus Rollingan turnover E- lottery</strong> sebesar 0,5% dari total bettingan.</li>
+                    </ul>
+                    <p>bonus rollingan dibagikan setiap hari KAMIS setelah jadwal maintenance selesai ya bosku</p>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS SLOT -->
+            <section class="bonus-section hidden" data-title="BONUS SLOT">
+                <div class="section-header">
+                    <h2>BONUS SLOT</h2>
+                    <button class="copy-section-button" data-target="bonus-slot-content">Salin</button>
+                </div>
+                <div id="bonus-slot-content">
+                    <p>Untuk bonus slot yang kami miliki saat ini :</p>
+                    <ul>
+                        <li><strong>Bonus Cashback 5% ( Slot Games )</strong> = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games. Minimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.</li>
+                        <li><strong>Bonus Rollingan turnover</strong> sebesar 0,5% dari total bettingan => khusus untuk permainan SLOT, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.</li>
+                        <li><strong>Bonus Extra Slot</strong> = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level (berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari) tanpa perlu diklaim.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION BONUS VIP -->
+            <section class="bonus-section hidden" data-title="BONUS VIP">
+                <div class="section-header">
+                    <h2>BONUS VIP</h2>
+                    <button class="copy-section-button" data-target="bonus-vip-content">Salin</button>
+                </div>
+                <div id="bonus-vip-content">
+                    <p>Untuk promo bonus Khusus Member VIP saat ini kami memiliki :</p>
+                    <ul>
+                        <li><strong>BONUS CASHBACK LIVEGAMES 8 %</strong> ( Up Bonus 5% dari biasanya )</li>
+                        <li><strong>BONUS CASHBACK SLOT GAMES 12 %</strong> ( Up Bonus 3% dari biasanya )</li>
+                        <li><strong>ROLLINGAN TURNOVER SLOT GAMES 0,3%</strong></li>
+                        <li><strong>BONUS ULANG TAHUN</strong></li>
+                        <li><strong>ROLLINGAN TURNOVER LIVEGAMES 0,1%</strong></li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Pesan tidak ada hasil -->
+            <div id="noResults" class="no-results hidden">
+                Tidak ada bonus yang sesuai dengan pencarian Anda. Coba kata kunci lain seperti "BONUS SLOT" atau "BONUS REFERRAL".
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchDropdown = document.getElementById('searchDropdown');
+            const searchTrigger = document.getElementById('searchTrigger');
+            const searchMenu = document.getElementById('searchMenu');
+            const selectedValueSpan = document.getElementById('selectedValue');
+            const bonusSections = document.querySelectorAll('.bonus-section');
+            const noResults = document.getElementById('noResults');
+
+            // 1. Populate custom dropdown menu
+            bonusSections.forEach(section => {
+                const title = section.getAttribute('data-title');
+                if (title) {
+                    const item = document.createElement('div');
+                    item.className = 'search-menu-item';
+                    item.innerText = title;
+                    item.addEventListener('click', () => selectBonus(title));
+                    searchMenu.appendChild(item);
+                }
+            });
+
+            // 2. Handle dropdown toggle
+            searchTrigger.addEventListener('click', () => {
+                searchDropdown.classList.toggle('open');
+            });
+
+            // Close dropdown if clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchDropdown.contains(e.target)) {
+                    searchDropdown.classList.remove('open');
+                }
+            });
+
+            // 3. Handle bonus selection
+            function selectBonus(title) {
+                // Update trigger text
+                selectedValueSpan.innerText = title;
+                
+                // Close dropdown
+                searchDropdown.classList.remove('open');
+
+                // Hide all sections and the "no results" message
+                bonusSections.forEach(section => section.classList.add('hidden'));
+                noResults.classList.add('hidden');
+
+                // Show the selected section
+                const targetSection = document.querySelector(`[data-title="${title}"]`);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                }
+            }
+
+            // Fungsi umum untuk menyalin konten
+            function copyContent(element, button) {
+                const linesToCopy = [];
+                
+                Array.from(element.children).forEach(child => {
+                    const tagName = child.tagName.toLowerCase();
+                    if (tagName === 'ul') {
+                        child.querySelectorAll('li').forEach(li => {
+                            linesToCopy.push(`- ${li.innerText}`);
+                        });
+                    } else {
+                        linesToCopy.push(child.innerText);
+                    }
+                });
+
+                const textToCopy = linesToCopy.join('\n\n');
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = button.innerText;
+                    button.innerText = '✅ Tersalin!';
+                    button.classList.add('copied');
+
+                    setTimeout(() => {
+                        button.innerText = originalText;
+                        button.classList.remove('copied');
+                    }, 3000);
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                    alert('Gagal menyalin teks, silakan salin secara manual.');
+                });
+            }
+
+            // Event Listener untuk tombol "Salin" per bagian
+            document.querySelectorAll('.copy-section-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        copyContent(targetElement, this);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
