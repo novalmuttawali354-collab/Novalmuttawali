@@ -22,6 +22,9 @@
             --accent-secondary: #00ffcc;
             --shadow-color: rgba(0, 0, 0, 0.5);
             --border-color: rgba(0, 200, 255, 0.3);
+            --optimus-primary: #0051ba;
+            --optimus-secondary: #c0162d;
+            --optimus-accent: #f0f0f0;
         }
 
         .light-mode {
@@ -33,6 +36,9 @@
             --accent-secondary: #009999;
             --shadow-color: rgba(0, 0, 100, 0.2);
             --border-color: rgba(0, 100, 200, 0.4);
+            --optimus-primary: #0051ba;
+            --optimus-secondary: #c0162d;
+            --optimus-accent: #f0f0f0;
         }
 
         body {
@@ -298,6 +304,13 @@
             font-style: italic;
         }
 
+        /* Header Right Section */
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
         /* Digital Clock Styles */
         .digital-clock {
             background: var(--header-bg);
@@ -337,6 +350,132 @@
             font-size: 1rem;
             opacity: 0.8;
             letter-spacing: 1px;
+        }
+
+        /* Optimus Prime Circle */
+        .optimus-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--optimus-primary), var(--optimus-secondary));
+            backdrop-filter: blur(15px);
+            border: 3px solid var(--optimus-accent);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            animation: rotateCircle 20s infinite linear reverse;
+        }
+
+        .optimus-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                var(--optimus-primary),
+                var(--optimus-accent),
+                var(--optimus-secondary),
+                var(--optimus-accent),
+                var(--optimus-primary)
+            );
+            animation: rotateGradient 3s infinite linear;
+            z-index: -1;
+        }
+
+        .optimus-circle::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--optimus-primary), var(--optimus-secondary));
+            z-index: -1;
+        }
+
+        .optimus-circle:hover {
+            transform: scale(1.05);
+            animation-play-state: paused;
+            box-shadow: 
+                0 15px 40px rgba(0, 81, 186, 0.7),
+                inset 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .optimus-circle:hover::before {
+            animation-play-state: paused;
+        }
+
+        .optimus-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--optimus-accent);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            animation: pulseIcon 2s infinite alternate;
+        }
+
+        .optimus-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: var(--optimus-accent);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .optimus-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, var(--optimus-accent), #d0d0d0);
+            color: var(--optimus-primary);
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .optimus-link:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .optimus-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                transparent 40%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 60%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: 1;
+        }
+
+        .optimus-circle:hover .optimus-mask {
+            transform: translateX(100%);
         }
 
         /* Theme Toggle Button */
@@ -1159,9 +1298,20 @@
                 flex-direction: column;
             }
             
+            .header-right {
+                flex-direction: column;
+                width: 100%;
+                align-items: center;
+            }
+            
             .digital-clock {
                 width: 100%;
                 max-width: 400px;
+            }
+            
+            .optimus-circle {
+                width: 150px;
+                height: 150px;
             }
         }
 
@@ -1194,6 +1344,15 @@
             }
             
             .domain-checker-title {
+                font-size: 0.8rem;
+            }
+            
+            .optimus-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .optimus-title {
                 font-size: 0.8rem;
             }
         }
@@ -1238,11 +1397,22 @@
                     <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
                 </header>
 
-                <!-- Digital Clock -->
-                <div class="digital-clock">
-                    <div class="clock-title">Waktu Server</div>
-                    <div class="time-display" id="timeDisplay">00:00:00</div>
-                    <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
+                <!-- Header Right Section -->
+                <div class="header-right">
+                    <!-- Digital Clock -->
+                    <div class="digital-clock">
+                        <div class="clock-title">Waktu Server</div>
+                        <div class="time-display" id="timeDisplay">00:00:00</div>
+                        <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
+                    </div>
+
+                    <!-- Optimus Prime Circle -->
+                    <div class="optimus-circle">
+                        <div class="optimus-mask"></div>
+                        <i class="fas fa-robot optimus-icon"></i>
+                        <h3 class="optimus-title">Optimus Prime</h3>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/OptimuPrime.html" class="optimus-link">Akses Sekarang</a>
+                    </div>
                 </div>
             </div>
 
@@ -1454,6 +1624,33 @@
             });
         }
 
+        // Optimus Prime Circle Animation
+        function animateOptimusCircle() {
+            const optimusCircle = document.querySelector('.optimus-circle');
+            const optimusIcon = document.querySelector('.optimus-icon');
+            
+            // Add special hover effect
+            optimusCircle.addEventListener('mouseenter', function() {
+                optimusIcon.style.transform = 'scale(1.2) rotate(180deg)';
+                optimusIcon.style.color = '#ffffff';
+                optimusIcon.style.textShadow = '0 0 20px rgba(255, 255, 255, 1)';
+            });
+            
+            optimusCircle.addEventListener('mouseleave', function() {
+                optimusIcon.style.transform = 'scale(1) rotate(0deg)';
+                optimusIcon.style.color = 'var(--optimus-accent)';
+                optimusIcon.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.7)';
+            });
+            
+            // Add click effect
+            optimusCircle.addEventListener('click', function() {
+                optimusIcon.style.animation = 'iconRotate 0.5s linear';
+                setTimeout(() => {
+                    optimusIcon.style.animation = 'pulseIcon 2s infinite alternate';
+                }, 500);
+            });
+        }
+
         // Theme Toggle Function
         function toggleTheme() {
             const body = document.body;
@@ -1501,6 +1698,7 @@
             initializeTheme();
             updateDomainStatus();
             animateIcons();
+            animateOptimusCircle();
             
             // Update clock immediately and then every second
             updateClock();
@@ -1550,6 +1748,16 @@
             });
             
             domainCheckerCircle.addEventListener('mouseleave', function() {
+                this.style.animationPlayState = 'running';
+            });
+            
+            // Add hover effect to optimus circle
+            const optimusCircle = document.querySelector('.optimus-circle');
+            optimusCircle.addEventListener('mouseenter', function() {
+                this.style.animationPlayState = 'paused';
+            });
+            
+            optimusCircle.addEventListener('mouseleave', function() {
                 this.style.animationPlayState = 'running';
             });
         });
