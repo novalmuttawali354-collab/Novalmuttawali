@@ -702,6 +702,10 @@
             animation-delay: 3.5s;
         }
 
+        .menu-card:nth-child(9) .menu-icon {
+            animation-delay: 4s;
+        }
+
         .menu-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.6rem;
@@ -1022,6 +1026,68 @@
 
         .profile-card .menu-button:hover {
             box-shadow: 0 10px 25px rgba(30, 144, 255, 0.7);
+        }
+
+        /* New Poker Card Styling */
+        .poker-card {
+            border-color: rgba(220, 20, 60, 0.5);
+        }
+
+        .poker-card .menu-icon {
+            border-color: rgba(220, 20, 60, 0.6);
+            box-shadow: 
+                0 0 20px rgba(220, 20, 60, 0.5),
+                inset 0 0 20px rgba(220, 20, 60, 0.2);
+            background: rgba(120, 20, 40, 0.4);
+        }
+
+        .poker-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #dc143c,
+                transparent,
+                #ff6347,
+                transparent
+            );
+        }
+
+        .poker-card .menu-icon::after {
+            background: rgba(120, 20, 40, 0.4);
+        }
+
+        .poker-card:hover {
+            border-color: rgba(220, 20, 60, 0.8);
+            box-shadow: 0 20px 40px rgba(220, 20, 60, 0.3);
+        }
+
+        .poker-card:hover .menu-icon {
+            background: rgba(160, 30, 60, 0.6);
+            box-shadow: 
+                0 0 30px rgba(220, 20, 60, 0.8),
+                inset 0 0 30px rgba(220, 20, 60, 0.3);
+        }
+
+        .poker-card .menu-title {
+            color: #dc143c;
+        }
+
+        .poker-card .menu-title::after {
+            background: linear-gradient(to right, #dc143c, #ff6347);
+        }
+
+        .poker-card .menu-button {
+            background: linear-gradient(135deg, #dc143c, #ff6347);
+            color: #330011;
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.5);
+        }
+
+        .poker-card .menu-button::before {
+            background: linear-gradient(135deg, #ff6347, #dc143c);
+        }
+
+        .poker-card .menu-button:hover {
+            box-shadow: 0 10px 25px rgba(220, 20, 60, 0.7);
         }
 
         footer {
@@ -1483,6 +1549,15 @@
                     <p class="menu-description">Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
                     <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html">Lihat Profil</a>
                 </div>
+
+                <!-- New IDN POKER Card -->
+                <div class="menu-card poker-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-club"></i></div>
+                    <h3 class="menu-title">IDN POKER</h3>
+                    <p class="menu-description">Nikmati pengalaman bermain poker online terbaik dengan berbagai pilihan meja dan turnamen menarik.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html">Mainkan Sekarang</a>
+                </div>
             </div>
         </div>
     </div>
@@ -1624,6 +1699,34 @@
                     }, 300);
                 });
             });
+
+            // Add special handling for poker card
+            const pokerCard = document.querySelector('.poker-card .menu-icon');
+            if (pokerCard) {
+                // Add poker card specific animation delay
+                pokerCard.style.animationDelay = '4s';
+                
+                // Add special hover effect
+                pokerCard.addEventListener('mouseenter', function() {
+                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
+                    this.style.transform = 'scale(1.2) rotate(180deg)';
+                });
+                
+                pokerCard.addEventListener('mouseleave', function() {
+                    this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
+                    this.style.animationDelay = '4s';
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+                
+                // Add click effect
+                pokerCard.addEventListener('click', function() {
+                    this.style.animation = 'iconRotate 0.3s linear';
+                    setTimeout(() => {
+                        this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
+                        this.style.animationDelay = '4s';
+                    }, 300);
+                });
+            }
         }
 
         // Optimus Prime Circle Animation
@@ -1733,7 +1836,7 @@
             });
 
             // Special effects for different card types
-            const specialCards = document.querySelectorAll('.gameplay-card, .data-card, .audit-card, .profile-card');
+            const specialCards = document.querySelectorAll('.gameplay-card, .data-card, .audit-card, .profile-card, .poker-card');
             specialCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-12px) scale(1.05)';
