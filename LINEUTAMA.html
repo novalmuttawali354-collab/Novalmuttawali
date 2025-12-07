@@ -706,6 +706,10 @@
             animation-delay: 4s;
         }
 
+        .menu-card:nth-child(10) .menu-icon {
+            animation-delay: 4.5s;
+        }
+
         .menu-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.6rem;
@@ -1088,6 +1092,68 @@
 
         .poker-card .menu-button:hover {
             box-shadow: 0 10px 25px rgba(220, 20, 60, 0.7);
+        }
+
+        /* New Gameplay LiveGames Card Styling */
+        .gameplay-live-card {
+            border-color: rgba(255, 69, 0, 0.5);
+        }
+
+        .gameplay-live-card .menu-icon {
+            border-color: rgba(255, 69, 0, 0.6);
+            box-shadow: 
+                0 0 20px rgba(255, 69, 0, 0.5),
+                inset 0 0 20px rgba(255, 69, 0, 0.2);
+            background: rgba(120, 30, 0, 0.4);
+        }
+
+        .gameplay-live-card .menu-icon::before {
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                #ff4500,
+                transparent,
+                #ff6347,
+                transparent
+            );
+        }
+
+        .gameplay-live-card .menu-icon::after {
+            background: rgba(120, 30, 0, 0.4);
+        }
+
+        .gameplay-live-card:hover {
+            border-color: rgba(255, 69, 0, 0.8);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.3);
+        }
+
+        .gameplay-live-card:hover .menu-icon {
+            background: rgba(160, 40, 0, 0.6);
+            box-shadow: 
+                0 0 30px rgba(255, 69, 0, 0.8),
+                inset 0 0 30px rgba(255, 69, 0, 0.3);
+        }
+
+        .gameplay-live-card .menu-title {
+            color: #ff4500;
+        }
+
+        .gameplay-live-card .menu-title::after {
+            background: linear-gradient(to right, #ff4500, #ff6347);
+        }
+
+        .gameplay-live-card .menu-button {
+            background: linear-gradient(135deg, #ff4500, #ff6347);
+            color: #330011;
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .gameplay-live-card .menu-button::before {
+            background: linear-gradient(135deg, #ff6347, #ff4500);
+        }
+
+        .gameplay-live-card .menu-button:hover {
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.7);
         }
 
         footer {
@@ -1558,6 +1624,15 @@
                     <p class="menu-description">Nikmati pengalaman bermain poker online terbaik dengan berbagai pilihan meja dan turnamen menarik.</p>
                     <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html">Mainkan Sekarang</a>
                 </div>
+
+                <!-- New Gameplay LiveGames Card -->
+                <div class="menu-card gameplay-live-card">
+                    <div class="card-glow"></div>
+                    <div class="menu-icon"><i class="fas fa-tv"></i></div>
+                    <h3 class="menu-title">GamePlayLiveGames</h3>
+                    <p class="menu-description">Rasakan sensasi bermain game langsung dengan tampilan interaktif dan pengalaman gaming premium.</p>
+                    <a href="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html">Mainkan Sekarang</a>
+                </div>
             </div>
         </div>
     </div>
@@ -1727,6 +1802,34 @@
                     }, 300);
                 });
             }
+
+            // Add special handling for gameplay live card
+            const gameplayLiveCard = document.querySelector('.gameplay-live-card .menu-icon');
+            if (gameplayLiveCard) {
+                // Add gameplay live card specific animation delay
+                gameplayLiveCard.style.animationDelay = '4.5s';
+                
+                // Add special hover effect
+                gameplayLiveCard.addEventListener('mouseenter', function() {
+                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
+                    this.style.transform = 'scale(1.2) rotate(180deg)';
+                });
+                
+                gameplayLiveCard.addEventListener('mouseleave', function() {
+                    this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
+                    this.style.animationDelay = '4.5s';
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+                
+                // Add click effect
+                gameplayLiveCard.addEventListener('click', function() {
+                    this.style.animation = 'iconRotate 0.3s linear';
+                    setTimeout(() => {
+                        this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
+                        this.style.animationDelay = '4.5s';
+                    }, 300);
+                });
+            }
         }
 
         // Optimus Prime Circle Animation
@@ -1836,7 +1939,7 @@
             });
 
             // Special effects for different card types
-            const specialCards = document.querySelectorAll('.gameplay-card, .data-card, .audit-card, .profile-card, .poker-card');
+            const specialCards = document.querySelectorAll('.gameplay-card, .data-card, .audit-card, .profile-card, .poker-card, .gameplay-live-card');
             specialCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-12px) scale(1.05)';
