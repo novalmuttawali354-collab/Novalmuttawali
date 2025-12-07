@@ -176,6 +176,18 @@
             box-shadow: 0 8px 20px rgba(255, 64, 129, 0.3);
         }
         
+        .test-btn {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            flex: 1;
+        }
+        
+        .test-btn:hover {
+            background: linear-gradient(to right, #5a67d8, #667eea);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
         .btn:active {
             transform: translateY(1px);
         }
@@ -205,6 +217,7 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            position: relative;
         }
         
         .sound-btn:hover {
@@ -218,6 +231,22 @@
             color: white;
             border-color: #ff4081;
             transform: scale(1.05);
+        }
+        
+        .sound-btn.active::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: white;
+            color: #ff4081;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
         
         .sound-btn i {
@@ -256,6 +285,40 @@
             background: linear-gradient(to right, #ff8fab, #ff6b9d);
             color: white;
             font-size: 1rem;
+        }
+        
+        .volume-control {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: #ffb6c1;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff4081;
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff4081;
+            cursor: pointer;
         }
         
         /* Animations */
@@ -333,22 +396,20 @@
             background: #ff4081;
         }
         
-        /* Test button styling */
-        .test-sound-btn {
-            background: linear-gradient(to right, #ff8fab, #ff6b9d);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            margin-top: 15px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
+        /* Sound indicator */
+        .sound-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-left: 10px;
+            animation: pulse 1s infinite;
         }
         
-        .test-sound-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(255, 107, 157, 0.3);
+        .sound-indicator.inactive {
+            background: #ccc;
+            animation: none;
         }
     </style>
 </head>
@@ -364,7 +425,11 @@
         
         <div class="main-content">
             <div class="time-section">
-                <h2 class="section-title"><i class="far fa-clock"></i> Waktu Saat Ini</h2>
+                <h2 class="section-title">
+                    <i class="far fa-clock"></i> 
+                    Waktu Saat Ini
+                    <span id="soundIndicator" class="sound-indicator inactive"></span>
+                </h2>
                 <div class="current-time" id="currentTime">00:00:00</div>
                 <div class="alarm-controls">
                     <div class="alarm-input">
@@ -376,9 +441,14 @@
                     <button id="stopAlarm" class="btn stop-btn">
                         <i class="fas fa-stop-circle"></i> Matikan Alarm
                     </button>
-                    <button id="testAlarm" class="btn stop-btn">
+                    <button id="testAlarm" class="btn test-btn">
                         <i class="fas fa-play"></i> Test Suara
                     </button>
+                </div>
+                <div class="volume-control">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="70">
+                    <i class="fas fa-volume-up"></i>
                 </div>
             </div>
             
@@ -390,7 +460,7 @@
                         <span>Bell Ring</span>
                     </div>
                     <div class="sound-btn" data-sound="sound2">
-                        <i class="fas fa-birds"></i>
+                        <i class="fas fa-dove"></i>
                         <span>Birds Chirping</span>
                     </div>
                     <div class="sound-btn" data-sound="sound3">
@@ -402,13 +472,13 @@
                         <span>Ocean Waves</span>
                     </div>
                     <div class="sound-btn" data-sound="sound5">
-                        <i class="fas fa-robot"></i>
+                        <i class="fas fa-laptop-code"></i>
                         <span>Digital Beep</span>
                     </div>
                 </div>
                 
                 <div class="alarm-status" id="alarmStatus">
-                    Alarm belum disetel
+                    <i class="fas fa-info-circle"></i> Klik "Test Suara" untuk mengaktifkan audio
                 </div>
             </div>
         </div>
@@ -420,10 +490,10 @@
     
     <!-- Audio elements for alarm sounds -->
     <audio id="sound1" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
-    <audio id="sound2" src="https://assets.mixkit.co/sfx/preview/mixkit-birds-chirping-33.mp3" preload="auto"></audio>
-    <audio id="sound3" src="https://assets.mixkit.co/sfx/preview/mixkit-guitar-notification-alert-2320.mp3" preload="auto"></audio>
-    <audio id="sound4" src="https://assets.mixkit.co/sfx/preview/mixkit-ocean-waves-loop-1240.mp3" preload="auto"></audio>
-    <audio id="sound5" src="https://assets.mixkit.co/sfx/preview/mixkit-digital-alarm-buzzer-992.mp3" preload="auto"></audio>
+    <audio id="sound2" src="https://assets.mixkit.co/sfx/preview/mixkit-birds-chirping-in-the-morning-455.mp3" preload="auto"></audio>
+    <audio id="sound3" src="https://assets.mixkit.co/sfx/preview/mixkit-guitar-melody-loop-1194.mp3" preload="auto"></audio>
+    <audio id="sound4" src="https://assets.mixkit.co/sfx/preview/mixkit-sea-waves-loop-1191.mp3" preload="auto"></audio>
+    <audio id="sound5" src="https://assets.mixkit.co/sfx/preview/mixkit-digital-clock-digital-alarm-beep-998.mp3" preload="auto"></audio>
     
     <script>
         // DOM Elements
@@ -434,15 +504,32 @@
         const testAlarmButton = document.getElementById('testAlarm');
         const alarmStatusElement = document.getElementById('alarmStatus');
         const soundButtons = document.querySelectorAll('.sound-btn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const soundIndicator = document.getElementById('soundIndicator');
         
         // Alarm variables
         let alarmTime = null;
         let alarmActive = false;
-        let alarmInterval = null;
-        let selectedSound = 'sound1';
-        let alarmAudio = document.getElementById(selectedSound);
         let alarmRinging = false;
+        let selectedSound = 'sound1';
+        let alarmAudio = null;
+        let audioContext = null;
         let alarmTimeout = null;
+        let audioEnabled = false;
+        
+        // Initialize audio context on first user interaction
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioEnabled = true;
+                soundIndicator.classList.remove('inactive');
+                
+                // Load all audio elements
+                document.querySelectorAll('audio').forEach(audio => {
+                    audio.load();
+                });
+            }
+        }
         
         // Update current time
         function updateTime() {
@@ -465,6 +552,11 @@
         
         // Set alarm function
         function setAlarm() {
+            if (!audioEnabled) {
+                showNotification('Silakan klik "Test Suara" terlebih dahulu untuk mengaktifkan audio!');
+                return;
+            }
+            
             const timeValue = alarmTimeInput.value;
             if (!timeValue) {
                 alert('Silakan pilih waktu untuk alarm!');
@@ -477,14 +569,13 @@
             const [hours, minutes] = timeValue.split(':').map(Number);
             const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
             
-            alarmStatusElement.textContent = `Alarm disetel untuk ${timeString} dengan suara ${getSoundName(selectedSound)}`;
+            alarmStatusElement.innerHTML = `<i class="fas fa-bell"></i> Alarm disetel untuk ${timeString} dengan suara ${getSoundName(selectedSound)}`;
             alarmStatusElement.classList.add('alarm-active');
             alarmStatusElement.classList.remove('alarm-ringing');
             
             // Update UI
             setAlarmButton.innerHTML = '<i class="fas fa-edit"></i> Ubah Alarm';
             
-            // Show notification
             showNotification(`Alarm disetel untuk ${timeString}`);
         }
         
@@ -503,83 +594,84 @@
                 alarmTimeout = null;
             }
             
-            alarmStatusElement.textContent = 'Alarm dimatikan';
+            alarmStatusElement.innerHTML = '<i class="fas fa-stop-circle"></i> Alarm dimatikan';
             alarmStatusElement.classList.remove('alarm-active', 'alarm-ringing');
             
             // Reset UI
             setAlarmButton.innerHTML = '<i class="fas fa-bell"></i> Setel Alarm';
             
-            // Show notification
             showNotification('Alarm dimatikan');
         }
         
         // Test alarm sound function
         function testAlarm() {
-            if (alarmAudio) {
-                alarmAudio.currentTime = 0;
-                alarmAudio.play();
+            initAudioContext();
+            
+            const audio = document.getElementById(selectedSound);
+            audio.volume = volumeSlider.value / 100;
+            audio.currentTime = 0;
+            
+            audio.play().then(() => {
+                showNotification(`Testing ${getSoundName(selectedSound)}`);
                 
                 // Stop after 3 seconds
                 setTimeout(() => {
-                    alarmAudio.pause();
-                    alarmAudio.currentTime = 0;
+                    audio.pause();
+                    audio.currentTime = 0;
                 }, 3000);
-                
-                showNotification(`Testing ${getSoundName(selectedSound)}`);
+            }).catch(error => {
+                console.error('Error playing audio:', error);
+                // Fallback to Web Audio API
+                playFallbackBeep();
+            });
+        }
+        
+        // Play fallback beep using Web Audio API
+        function playFallbackBeep() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(volumeSlider.value / 100 * 0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            
+            showNotification('Testing fallback beep sound');
         }
         
         // Trigger alarm function
         function triggerAlarm() {
-            if (!alarmActive) return;
+            if (!alarmActive || !audioEnabled) return;
             
             alarmRinging = true;
-            alarmStatusElement.textContent = 'ALARM BERBUNYI! Bangun, Putri B3llew!';
+            alarmStatusElement.innerHTML = '<i class="fas fa-bell"></i> ALARM BERBUNYI! Bangun, Putri B3llew!';
             alarmStatusElement.classList.remove('alarm-active');
             alarmStatusElement.classList.add('alarm-ringing');
             
             // Play the selected alarm sound
-            if (alarmAudio) {
-                alarmAudio.currentTime = 0;
-                alarmAudio.loop = true;
-                alarmAudio.play().catch(e => {
-                    console.error("Error playing alarm sound:", e);
-                    // Fallback: try to create a simple beep sound
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.value = 800;
-                    oscillator.type = 'sine';
-                    
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.5);
-                    
-                    // Repeat the beep
-                    alarmInterval = setInterval(() => {
-                        const osc = audioContext.createOscillator();
-                        const gain = audioContext.createGain();
-                        
-                        osc.connect(gain);
-                        gain.connect(audioContext.destination);
-                        
-                        osc.frequency.value = 800;
-                        osc.type = 'sine';
-                        
-                        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                        
-                        osc.start(audioContext.currentTime);
-                        osc.stop(audioContext.currentTime + 0.5);
-                    }, 1000);
-                });
-            }
+            alarmAudio = document.getElementById(selectedSound);
+            alarmAudio.volume = volumeSlider.value / 100;
+            alarmAudio.currentTime = 0;
+            alarmAudio.loop = true;
+            
+            alarmAudio.play().then(() => {
+                console.log('Alarm sound playing');
+            }).catch(error => {
+                console.error('Error playing alarm sound:', error);
+                // Fallback to Web Audio API beep
+                playAlarmFallback();
+            });
             
             // Show notification
             showNotification('Waktunya bangun! Alarm berbunyi!');
@@ -590,6 +682,40 @@
                     stopAlarm();
                 }
             }, 60000);
+        }
+        
+        // Play alarm fallback using Web Audio API
+        function playAlarmFallback() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const playBeep = () => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(volumeSlider.value / 100 * 0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            };
+            
+            // Play beep every second
+            playBeep();
+            const beepInterval = setInterval(() => {
+                if (alarmRinging) {
+                    playBeep();
+                } else {
+                    clearInterval(beepInterval);
+                }
+            }, 1000);
         }
         
         // Select alarm sound
@@ -605,28 +731,30 @@
                 }
             });
             
-            // Update audio element reference
-            alarmAudio = document.getElementById(soundId);
-            
             // Update status if alarm is set
             if (alarmActive && alarmTime) {
                 const [hours, minutes] = alarmTime.split(':').map(Number);
                 const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-                alarmStatusElement.textContent = `Alarm disetel untuk ${timeString} dengan suara ${getSoundName(soundId)}`;
+                alarmStatusElement.innerHTML = `<i class="fas fa-bell"></i> Alarm disetel untuk ${timeString} dengan suara ${getSoundName(soundId)}`;
             }
             
-            // Play a preview of the sound (short)
-            try {
-                const previewAudio = document.getElementById(soundId).cloneNode();
-                previewAudio.volume = 0.3;
-                previewAudio.play().catch(e => {
+            // Play a preview if audio is enabled
+            if (audioEnabled) {
+                try {
+                    const previewAudio = document.getElementById(soundId);
+                    previewAudio.volume = volumeSlider.value / 100 * 0.3;
+                    previewAudio.currentTime = 0;
+                    previewAudio.play().then(() => {
+                        setTimeout(() => {
+                            previewAudio.pause();
+                            previewAudio.currentTime = 0;
+                        }, 1000);
+                    }).catch(e => {
+                        console.log("Preview error:", e);
+                    });
+                } catch (e) {
                     console.log("Preview error:", e);
-                });
-                setTimeout(() => {
-                    previewAudio.pause();
-                }, 1000);
-            } catch (e) {
-                console.log("Preview error:", e);
+                }
             }
         }
         
@@ -646,7 +774,7 @@
         function showNotification(message) {
             // Create notification element
             const notification = document.createElement('div');
-            notification.textContent = message;
+            notification.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
             notification.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -668,7 +796,9 @@
             setTimeout(() => {
                 notification.style.animation = 'fadeIn 0.5s ease-out reverse';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
                 }, 500);
             }, 3000);
         }
@@ -684,29 +814,40 @@
             });
         });
         
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = e.target.value / 100;
+            if (alarmAudio) {
+                alarmAudio.volume = volume;
+            }
+        });
+        
         // Initialize the clock
         updateTime();
         setInterval(updateTime, 1000);
         
         // Set default alarm time to 7:00 AM
         window.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
             const defaultTime = "07:00";
             alarmTimeInput.value = defaultTime;
             
             // Select first sound by default
             selectSound('sound1');
-            
-            // Preload all sounds
-            document.querySelectorAll('audio').forEach(audio => {
-                audio.load();
-            });
         });
         
         // Handle page visibility change to ensure alarm works even when tab is not active
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 updateTime();
+            }
+        });
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' && alarmRinging) {
+                e.preventDefault();
+                stopAlarm();
+            } else if (e.key === 't' || e.key === 'T') {
+                testAlarm();
             }
         });
     </script>
