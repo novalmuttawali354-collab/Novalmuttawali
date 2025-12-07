@@ -332,6 +332,24 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #ff4081;
         }
+        
+        /* Test button styling */
+        .test-sound-btn {
+            background: linear-gradient(to right, #ff8fab, #ff6b9d);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .test-sound-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(255, 107, 157, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -357,6 +375,9 @@
                     </div>
                     <button id="stopAlarm" class="btn stop-btn">
                         <i class="fas fa-stop-circle"></i> Matikan Alarm
+                    </button>
+                    <button id="testAlarm" class="btn stop-btn">
+                        <i class="fas fa-play"></i> Test Suara
                     </button>
                 </div>
             </div>
@@ -410,6 +431,7 @@
         const alarmTimeInput = document.getElementById('alarmTime');
         const setAlarmButton = document.getElementById('setAlarm');
         const stopAlarmButton = document.getElementById('stopAlarm');
+        const testAlarmButton = document.getElementById('testAlarm');
         const alarmStatusElement = document.getElementById('alarmStatus');
         const soundButtons = document.querySelectorAll('.sound-btn');
         
@@ -419,6 +441,8 @@
         let alarmInterval = null;
         let selectedSound = 'sound1';
         let alarmAudio = document.getElementById(selectedSound);
+        let alarmRinging = false;
+        let alarmTimeout = null;
         
         // Update current time
         function updateTime() {
@@ -427,7 +451,7 @@
             currentTimeElement.textContent = timeString;
             
             // Check if alarm should go off
-            if (alarmActive && alarmTime) {
+            if (alarmActive && alarmTime && !alarmRinging) {
                 const currentTime = now.getHours() * 60 + now.getMinutes();
                 const [alarmHours, alarmMinutes] = alarmTime.split(':').map(Number);
                 const alarmTotalMinutes = alarmHours * 60 + alarmMinutes;
@@ -459,8 +483,6 @@
             
             // Update UI
             setAlarmButton.innerHTML = '<i class="fas fa-edit"></i> Ubah Alarm';
-            setAlarmButton.classList.add('set-btn');
-            setAlarmButton.classList.remove('stop-btn');
             
             // Show notification
             showNotification(`Alarm disetel untuk ${timeString}`);
@@ -474,6 +496,13 @@
             }
             
             alarmActive = false;
+            alarmRinging = false;
+            
+            if (alarmTimeout) {
+                clearTimeout(alarmTimeout);
+                alarmTimeout = null;
+            }
+            
             alarmStatusElement.textContent = 'Alarm dimatikan';
             alarmStatusElement.classList.remove('alarm-active', 'alarm-ringing');
             
@@ -484,10 +513,27 @@
             showNotification('Alarm dimatikan');
         }
         
+        // Test alarm sound function
+        function testAlarm() {
+            if (alarmAudio) {
+                alarmAudio.currentTime = 0;
+                alarmAudio.play();
+                
+                // Stop after 3 seconds
+                setTimeout(() => {
+                    alarmAudio.pause();
+                    alarmAudio.currentTime = 0;
+                }, 3000);
+                
+                showNotification(`Testing ${getSoundName(selectedSound)}`);
+            }
+        }
+        
         // Trigger alarm function
         function triggerAlarm() {
             if (!alarmActive) return;
             
+            alarmRinging = true;
             alarmStatusElement.textContent = 'ALARM BERBUNYI! Bangun, Putri B3llew!';
             alarmStatusElement.classList.remove('alarm-active');
             alarmStatusElement.classList.add('alarm-ringing');
@@ -495,15 +541,52 @@
             // Play the selected alarm sound
             if (alarmAudio) {
                 alarmAudio.currentTime = 0;
-                alarmAudio.play();
+                alarmAudio.loop = true;
+                alarmAudio.play().catch(e => {
+                    console.error("Error playing alarm sound:", e);
+                    // Fallback: try to create a simple beep sound
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                    
+                    // Repeat the beep
+                    alarmInterval = setInterval(() => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        
+                        osc.frequency.value = 800;
+                        osc.type = 'sine';
+                        
+                        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                        
+                        osc.start(audioContext.currentTime);
+                        osc.stop(audioContext.currentTime + 0.5);
+                    }, 1000);
+                });
             }
             
             // Show notification
             showNotification('Waktunya bangun! Alarm berbunyi!');
             
             // Stop alarm after 1 minute automatically
-            setTimeout(() => {
-                if (alarmActive) {
+            alarmTimeout = setTimeout(() => {
+                if (alarmRinging) {
                     stopAlarm();
                 }
             }, 60000);
@@ -536,8 +619,12 @@
             try {
                 const previewAudio = document.getElementById(soundId).cloneNode();
                 previewAudio.volume = 0.3;
-                previewAudio.play();
-                setTimeout(() => previewAudio.pause(), 1000);
+                previewAudio.play().catch(e => {
+                    console.log("Preview error:", e);
+                });
+                setTimeout(() => {
+                    previewAudio.pause();
+                }, 1000);
             } catch (e) {
                 console.log("Preview error:", e);
             }
@@ -589,6 +676,7 @@
         // Event Listeners
         setAlarmButton.addEventListener('click', setAlarm);
         stopAlarmButton.addEventListener('click', stopAlarm);
+        testAlarmButton.addEventListener('click', testAlarm);
         
         soundButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -608,6 +696,18 @@
             
             // Select first sound by default
             selectSound('sound1');
+            
+            // Preload all sounds
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.load();
+            });
+        });
+        
+        // Handle page visibility change to ensure alarm works even when tab is not active
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                updateTime();
+            }
         });
     </script>
 </body>
