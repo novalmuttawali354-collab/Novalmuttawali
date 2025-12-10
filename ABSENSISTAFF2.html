@@ -21,6 +21,10 @@
             --card-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             --radius: 16px;
+            --cyber-blue: #00f2fe;
+            --cyber-purple: #8a2be2;
+            --cyber-pink: #ff006e;
+            --cyber-green: #00ff88;
         }
         
         * {
@@ -31,10 +35,8 @@
         }
         
         body {
-            background: linear-gradient(-45deg, #6c5ce7, #0984e3, #00b894, #00cec9);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: var(--dark);
+            background: #0a0a0a;
+            color: var(--light);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
@@ -45,7 +47,35 @@
             overflow-x: hidden;
         }
         
-        @keyframes gradient {
+        /* Digital Grid Background */
+        .digital-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.8) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.8) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
             }
@@ -57,65 +87,208 @@
             }
         }
         
-        body::before {
-            content: '';
-            position: absolute;
+        /* Digital Particles */
+        .particles {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(108, 92, 231, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(9, 132, 227, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0, 184, 148, 0.15) 0%, transparent 50%);
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            overflow: hidden;
         }
         
+        .particle {
+            position: absolute;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+            filter: blur(1px);
+            animation: floatParticle 20s infinite linear;
+        }
+        
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        /* Digital Lines */
+        .digital-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .digital-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
+            animation: scanLine 8s infinite linear;
+            opacity: 0.3;
+        }
+        
+        @keyframes scanLine {
+            0% {
+                transform: translateY(-100vh) scaleX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(100vh) scaleX(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Login Container with Transformer Effect */
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(10, 10, 20, 0.85);
             backdrop-filter: blur(10px);
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3), 
+                        0 0 60px rgba(0, 242, 254, 0.1),
+                        inset 0 0 30px rgba(138, 43, 226, 0.1);
             padding: 40px;
             width: 100%;
             max-width: 450px;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             transform: translateY(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .login-container:hover {
             transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.5), 
+                        0 0 80px rgba(0, 242, 254, 0.2),
+                        inset 0 0 30px rgba(138, 43, 226, 0.2);
         }
         
+        /* Digital Border Effect */
         .login-container::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            background: var(--bg-gradient);
+            bottom: 0;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple), var(--cyber-pink));
+            border-radius: var(--radius);
+            opacity: 0.3;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes borderGlow {
+            0% {
+                opacity: 0.3;
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 0.5;
+                filter: blur(10px);
+            }
+        }
+        
+        /* Digital Corner Decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--cyber-blue);
+            z-index: 1;
+        }
+        
+        .corner-decoration.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner-decoration.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
         }
         
         .login-logo {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
         }
         
         .logo-icon {
             font-size: 48px;
-            color: var(--primary);
+            color: var(--cyber-blue);
             margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px var(--cyber-blue);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--cyber-blue), 0 0 30px var(--cyber-purple);
+            }
+            100% {
+                text-shadow: 0 0 10px var(--cyber-blue);
+            }
         }
         
         .login-logo h1 {
-            color: var(--primary);
+            color: var(--cyber-blue);
             font-size: 28px;
             margin-bottom: 8px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .login-logo h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
         }
         
         .login-logo p {
@@ -133,19 +306,22 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            position: relative;
         }
         
         .form-group label {
             font-weight: 600;
-            color: var(--dark);
+            color: var(--cyber-blue);
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .form-group label i {
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .input-with-icon {
@@ -162,22 +338,24 @@
         
         .form-group input {
             padding: 14px 15px 14px 45px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid rgba(138, 43, 226, 0.3);
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
             width: 100%;
-            background-color: #fff;
+            background-color: rgba(10, 10, 20, 0.7);
+            color: var(--light);
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2);
+            background-color: rgba(10, 10, 20, 0.9);
         }
         
         .login-btn {
-            background: var(--bg-gradient);
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
             color: white;
             border: none;
             padding: 16px;
@@ -191,11 +369,30 @@
             justify-content: center;
             gap: 10px;
             margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .login-btn:hover::before {
+            left: 100%;
         }
         
         .login-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 7px 15px rgba(0, 242, 254, 0.4);
         }
         
         .error-message {
@@ -214,9 +411,10 @@
             margin-top: 20px;
             font-size: 14px;
             color: var(--gray);
-            background-color: rgba(108, 92, 231, 0.05);
+            background-color: rgba(138, 43, 226, 0.1);
             padding: 10px;
             border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
         }
         
         .container {
@@ -228,14 +426,16 @@
         }
         
         header {
-            background: var(--bg-gradient);
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(10px);
             color: white;
             padding: 25px 0;
             border-radius: var(--radius);
             margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         header::before {
@@ -245,7 +445,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background: linear-gradient(45deg, rgba(138, 43, 226, 0.2), rgba(0, 242, 254, 0.1));
+            z-index: -1;
         }
         
         .header-content {
@@ -265,41 +466,49 @@
         
         .logo-icon-main {
             font-size: 32px;
+            color: var(--cyber-blue);
+            animation: pulse 2s infinite;
         }
         
         .logo h1 {
             font-size: 24px;
             font-weight: 700;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(138, 43, 226, 0.2);
             padding: 10px 20px;
             border-radius: 50px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .user-avatar {
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 242, 254, 0.5);
         }
         
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(138, 43, 226, 0.3);
             color: white;
-            border: none;
+            border: 1px solid rgba(138, 43, 226, 0.5);
             padding: 10px 20px;
             border-radius: 50px;
             cursor: pointer;
@@ -311,8 +520,9 @@
         }
         
         .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(138, 43, 226, 0.5);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
         }
         
         .clock-container {
@@ -322,7 +532,7 @@
         }
         
         .clock {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(138, 43, 226, 0.2);
             padding: 15px 30px;
             border-radius: 50px;
             font-weight: 600;
@@ -330,30 +540,36 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .clock i {
             font-size: 20px;
+            color: var(--cyber-blue);
         }
         
         .time {
             font-size: 22px;
             letter-spacing: 1px;
+            color: var(--cyber-blue);
+            font-family: 'Courier New', monospace;
         }
         
         .date {
             font-size: 16px;
             opacity: 0.9;
+            color: var(--gray);
         }
         
         .tabs {
             display: flex;
-            background-color: white;
+            background-color: rgba(10, 10, 20, 0.85);
             border-radius: var(--radius);
             overflow: hidden;
             margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             flex-wrap: wrap;
         }
         
@@ -374,10 +590,25 @@
             position: relative;
         }
         
+        .tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-purple));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .tab.active::before {
+            transform: scaleX(1);
+        }
+        
         .tab.active {
-            background-color: var(--primary);
+            background-color: rgba(138, 43, 226, 0.3);
             color: white;
-            border-bottom: 3px solid var(--secondary);
         }
         
         .tab.disabled {
@@ -403,11 +634,13 @@
         
         .tab-content {
             display: none;
-            background-color: white;
+            background-color: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius);
             padding: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
             margin-bottom: 30px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .tab-content.active {
@@ -423,28 +656,41 @@
         .section-title {
             font-size: 22px;
             margin-bottom: 25px;
-            color: var(--primary);
+            color: var(--cyber-blue);
             padding-bottom: 15px;
-            border-bottom: 2px solid var(--light);
+            border-bottom: 2px solid rgba(138, 43, 226, 0.3);
             display: flex;
             align-items: center;
             gap: 12px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyber-blue), transparent);
         }
         
         .section-title i {
             font-size: 24px;
+            color: var(--cyber-blue);
         }
         
         .position-section {
             margin-bottom: 30px;
-            border: 1px solid var(--light);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: rgba(10, 10, 20, 0.5);
         }
         
         .position-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.5) 0%, rgba(0, 242, 254, 0.3) 100%);
             color: white;
             padding: 16px 20px;
             font-weight: 600;
@@ -454,11 +700,12 @@
         }
         
         .position-count {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(138, 43, 226, 0.3);
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 14px;
             backdrop-filter: blur(5px);
+            border: 1px solid rgba(138, 43, 226, 0.5);
         }
         
         .staff-list {
@@ -470,14 +717,30 @@
             justify-content: space-between;
             align-items: center;
             padding: 18px 20px;
-            border-bottom: 1px solid var(--light);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
             transition: all 0.3s;
+            position: relative;
+        }
+        
+        .staff-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+        
+        .staff-item:hover::before {
+            transform: scaleY(1);
         }
         
         .staff-item:hover {
-            background-color: rgba(108, 92, 231, 0.03);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            background-color: rgba(138, 43, 226, 0.1);
+            transform: translateX(5px);
         }
         
         .staff-item:last-child {
@@ -494,14 +757,15 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--bg-gradient);
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 18px;
-            box-shadow: 0 5px 10px rgba(108, 92, 231, 0.2);
+            box-shadow: 0 5px 10px rgba(138, 43, 226, 0.3);
+            border: 2px solid rgba(0, 242, 254, 0.5);
         }
         
         .staff-details {
@@ -512,6 +776,7 @@
         .staff-name {
             font-weight: 600;
             font-size: 16px;
+            color: var(--light);
         }
         
         .staff-position {
@@ -539,7 +804,24 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .absen-btn::before, .checkin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .absen-btn:hover::before, .checkin-btn:hover::before {
+            left: 100%;
         }
         
         .absen-btn {
@@ -548,7 +830,7 @@
         
         .absen-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(9, 132, 227, 0.3);
+            box-shadow: 0 7px 15px rgba(9, 132, 227, 0.4);
         }
         
         .absen-btn.absened {
@@ -566,7 +848,7 @@
         
         .checkin-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(253, 203, 110, 0.3);
+            box-shadow: 0 7px 15px rgba(253, 203, 110, 0.4);
         }
         
         .checkin-btn.checked {
@@ -597,27 +879,29 @@
         }
         
         .access-note {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            background: linear-gradient(135deg, rgba(253, 203, 110, 0.1) 0%, rgba(253, 203, 110, 0.05) 100%);
             border-left: 4px solid var(--warning);
             border-radius: 8px;
             padding: 16px 20px;
             margin-bottom: 25px;
-            color: #856404;
+            color: #e6b04a;
             display: flex;
             align-items: center;
             gap: 12px;
+            border: 1px solid rgba(253, 203, 110, 0.2);
         }
         
         .admin-note {
-            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            background: linear-gradient(135deg, rgba(0, 206, 201, 0.1) 0%, rgba(0, 206, 201, 0.05) 100%);
             border-left: 4px solid var(--info);
             border-radius: 8px;
             padding: 16px 20px;
             margin-bottom: 25px;
-            color: #0c5460;
+            color: #00cec9;
             display: flex;
             align-items: center;
             gap: 12px;
+            border: 1px solid rgba(0, 206, 201, 0.2);
         }
         
         .summary-cards {
@@ -628,24 +912,39 @@
         }
         
         .summary-card {
-            background: var(--card-gradient);
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius);
             padding: 25px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: all 0.3s;
             border-top: 4px solid transparent;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(138, 43, 226, 0.1), rgba(0, 242, 254, 0.05));
+            z-index: -1;
         }
         
         .summary-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
         }
         
         .summary-card.total {
-            border-top-color: var(--primary);
+            border-top-color: var(--cyber-blue);
         }
         
         .summary-card.hadir {
@@ -671,7 +970,7 @@
         }
         
         .summary-card.total .icon {
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .summary-card.hadir .icon {
@@ -697,7 +996,7 @@
         }
         
         .summary-card.total .value {
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .summary-card.hadir .value {
@@ -727,10 +1026,11 @@
             bottom: 30px;
             right: 30px;
             padding: 18px 25px;
-            background: var(--success);
+            background: rgba(10, 10, 20, 0.9);
+            backdrop-filter: blur(10px);
             color: white;
             border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             transform: translateY(100px);
             opacity: 0;
             transition: all 0.4s ease;
@@ -739,6 +1039,7 @@
             align-items: center;
             gap: 12px;
             max-width: 350px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .toast.show {
@@ -748,6 +1049,7 @@
         
         .toast i {
             font-size: 20px;
+            color: var(--cyber-blue);
         }
         
         @media (max-width: 768px) {
@@ -797,11 +1099,13 @@
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            background: var(--card-gradient);
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: var(--radius);
             margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .stat-item {
@@ -812,7 +1116,7 @@
         .stat-value {
             font-size: 28px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .stat-label {
@@ -822,23 +1126,24 @@
         }
         
         .welcome-message {
-            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%);
             border-radius: var(--radius);
             padding: 25px;
             margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 20px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .welcome-icon {
             font-size: 50px;
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .welcome-text h3 {
-            color: var(--primary);
+            color: var(--cyber-blue);
             margin-bottom: 8px;
         }
         
@@ -859,16 +1164,18 @@
         }
         
         .access-denied h3 {
-            color: var(--dark);
+            color: var(--light);
             margin-bottom: 15px;
         }
         
         .admin-panel {
-            background: var(--card-gradient);
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius);
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .admin-actions {
@@ -879,15 +1186,22 @@
         }
         
         .admin-card {
-            background: white;
+            background: rgba(10, 10, 20, 0.5);
             border-radius: var(--radius);
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--cyber-blue);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
         }
         
         .admin-card h4 {
-            color: var(--primary);
+            color: var(--cyber-blue);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -895,7 +1209,7 @@
         }
         
         .admin-btn {
-            background: var(--bg-gradient);
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
             color: white;
             border: none;
             padding: 12px 20px;
@@ -909,19 +1223,36 @@
             width: 100%;
             justify-content: center;
             margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .admin-btn:hover::before {
+            left: 100%;
         }
         
         .admin-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 7px 15px rgba(138, 43, 226, 0.4);
         }
         
         .admin-btn.danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #e74c3c 100%);
+            background: linear-gradient(45deg, var(--danger), #e74c3c);
         }
         
         .admin-btn.warning {
-            background: linear-gradient(135deg, var(--warning) 0%, #e6b04a 100%);
+            background: linear-gradient(45deg, var(--warning), #e6b04a);
         }
         
         .form-row {
@@ -933,14 +1264,17 @@
         .form-row input, .form-row select {
             flex: 1;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid rgba(138, 43, 226, 0.3);
             border-radius: 8px;
             font-size: 16px;
+            background-color: rgba(10, 10, 20, 0.7);
+            color: var(--light);
         }
         
         .form-row input:focus, .form-row select:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2);
         }
         
         .late-history-table {
@@ -952,17 +1286,17 @@
         .late-history-table th, .late-history-table td {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid var(--light);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
         }
         
         .late-history-table th {
-            background-color: var(--primary);
+            background-color: rgba(138, 43, 226, 0.3);
             color: white;
             font-weight: 600;
         }
         
         .late-history-table tr:hover {
-            background-color: rgba(108, 92, 231, 0.03);
+            background-color: rgba(138, 43, 226, 0.1);
         }
         
         .late-history-table .late-badge {
@@ -999,22 +1333,23 @@
         }
         
         .shift-info {
-            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             gap: 15px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .shift-info i {
             font-size: 40px;
-            color: var(--primary);
+            color: var(--cyber-blue);
         }
         
         .shift-info-content h3 {
-            color: var(--primary);
+            color: var(--cyber-blue);
             margin-bottom: 5px;
         }
         
@@ -1027,34 +1362,37 @@
             width: 100%;
             min-height: 200px;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid rgba(138, 43, 226, 0.3);
             border-radius: 10px;
             font-family: monospace;
             font-size: 14px;
             margin-bottom: 15px;
             resize: vertical;
+            background-color: rgba(10, 10, 20, 0.7);
+            color: var(--light);
         }
         
         .shift-schedule-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2);
         }
         
         .schedule-preview {
-            background: var(--light);
+            background: rgba(138, 43, 226, 0.1);
             border-radius: 10px;
             padding: 15px;
             margin-top: 15px;
             max-height: 300px;
             overflow-y: auto;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .preview-item {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
         }
         
         .preview-item:last-child {
@@ -1063,6 +1401,7 @@
         
         .preview-name {
             font-weight: 500;
+            color: var(--light);
         }
         
         .preview-shift {
@@ -1131,91 +1470,23 @@
         }
         
         .empty-state h3 {
-            color: var(--dark);
+            color: var(--light);
             margin-bottom: 10px;
         }
         
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            animation: float 15s infinite linear;
-        }
-        
-        .shape:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-        
-        .shape:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            top: 60%;
-            left: 80%;
-            animation-delay: 2s;
-        }
-        
-        .shape:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            top: 80%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-        
-        .shape:nth-child(4) {
-            width: 100px;
-            height: 100px;
-            top: 40%;
-            left: 70%;
-            animation-delay: 6s;
-        }
-        
-        .shape:nth-child(5) {
-            width: 70px;
-            height: 70px;
-            top: 10%;
-            left: 50%;
-            animation-delay: 8s;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
-            100% {
-                transform: translateY(0) rotate(360deg);
-            }
-        }
-        
         .notification-panel {
-            background: white;
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 25px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
         
         .notification-title {
             font-size: 18px;
-            color: var(--primary);
+            color: var(--cyber-blue);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -1229,17 +1500,18 @@
         }
         
         .notification-card {
-            background: var(--card-gradient);
+            background: rgba(10, 10, 20, 0.5);
             border-radius: var(--radius);
             padding: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-left: 4px solid var(--warning);
             transition: all 0.3s;
+            border: 1px solid rgba(138, 43, 226, 0.2);
         }
         
         .notification-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 7px 15px rgba(138, 43, 226, 0.3);
         }
         
         .notification-card.danger {
@@ -1260,7 +1532,7 @@
         .notification-shift {
             font-weight: 600;
             font-size: 16px;
-            color: var(--dark);
+            color: var(--light);
         }
         
         .notification-count {
@@ -1284,25 +1556,161 @@
             font-size: 14px;
             color: var(--gray);
         }
+        
+        /* Digital Rain Effect */
+        .digital-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .rain-column {
+            position: absolute;
+            top: -100px;
+            font-family: monospace;
+            font-size: 14px;
+            color: var(--cyber-green);
+            opacity: 0.7;
+            animation: rainFall linear infinite;
+        }
+        
+        @keyframes rainFall {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px));
+                opacity: 0;
+            }
+        }
+        
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            color: var(--cyber-blue);
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: var(--cyber-pink);
+            z-index: -1;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: var(--cyber-green);
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+            20% {
+                clip-path: inset(20% 0 30% 0);
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                clip-path: inset(50% 0 20% 0);
+                transform: translate(2px, -2px);
+            }
+            60% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translate(0, 2px);
+            }
+            80% {
+                clip-path: inset(70% 0 10% 0);
+                transform: translate(-2px, 0);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+        }
+        
+        @keyframes glitch-2 {
+            0% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+            20% {
+                clip-path: inset(60% 0 10% 0);
+                transform: translate(2px, -1px);
+            }
+            40% {
+                clip-path: inset(20% 0 50% 0);
+                transform: translate(-2px, 1px);
+            }
+            60% {
+                clip-path: inset(30% 0 40% 0);
+                transform: translate(1px, 0);
+            }
+            80% {
+                clip-path: inset(10% 0 70% 0);
+                transform: translate(0, -1px);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Floating Background Shapes -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
+    <!-- Digital Grid Background -->
+    <div class="digital-grid"></div>
+    
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Digital Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Digital Lines -->
+    <div class="digital-lines" id="digital-lines"></div>
+    
+    <!-- Digital Rain Effect -->
+    <div class="digital-rain" id="digital-rain"></div>
 
     <!-- Login Form -->
     <div class="login-container" id="login-container">
+        <!-- Digital Corner Decorations -->
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration top-right"></div>
+        <div class="corner-decoration bottom-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        
         <div class="login-logo">
             <div class="logo-icon">
                 <i class="fas fa-id-card-alt"></i>
             </div>
-            <h1>Linetogel</h1>
+            <h1 class="glitch" data-text="LINETOGEL">LINETOGEL</h1>
             <p>Sistem Absensi Staff</p>
         </div>
         <form class="login-form" id="login-form">
@@ -1341,7 +1749,7 @@
                     <div class="logo-icon-main">
                         <i class="fas fa-id-card-alt"></i>
                     </div>
-                    <h1>Linetogel - Sistem Absensi</h1>
+                    <h1 class="glitch" data-text="LINETOGEL">LINETOGEL</h1>
                 </div>
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar">U</div>
@@ -1973,1423 +2381,45 @@
     </div>
 
     <script>
-        // Data staff
-        let staffData = JSON.parse(localStorage.getItem('staffData')) || [
-            // CS - Pagi
-            { id: 1, name: "WIDJAYA", position: "CS", shift: "pagi" },
-            { id: 2, name: "DAVID", position: "CS", shift: "pagi" },
-            { id: 4, name: "CHARLIE", position: "CS", shift: "pagi" },
-            { id: 6, name: "RINAL ABDILLAH NASUTION", position: "CS", shift: "pagi" },
-            { id: 8, name: "MAHENDRAN", position: "CS", shift: "pagi" },
-            { id: 10, name: "TOMMY HASIM", position: "CS", shift: "pagi" },
-            { id: 12, name: "RANJIT", position: "CS", shift: "pagi" },
-            { id: 14, name: "ANDI", position: "CS", shift: "pagi" },
-            { id: 16, name: "ALFINO MUKTI", position: "CS", shift: "pagi" },
-            { id: 18, name: "SAMSUL MAARIF", position: "CS", shift: "pagi" },
-            { id: 20, name: "SUHAN RAZ", position: "CS", shift: "pagi" },
-            { id: 22, name: "NOVAL MUTTAWALI HAKIM", position: "CS", shift: "pagi" },
+        // Create digital particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
             
-            // CS - Siang
-            { id: 3, name: "FALLEN HARDINANSAH TAJU", position: "CS", shift: "siang" },
-            { id: 7, name: "ERI HARIANTO", position: "CS", shift: "siang" },
-            { id: 11, name: "EGI SETIAWAN", position: "CS", shift: "siang" },
-            { id: 15, name: "ARI ROMANDUS FERNAND", position: "CS", shift: "siang" },
-            { id: 19, name: "PARIS AMRULLOH", position: "CS", shift: "siang" },
-            
-            // CS - Malam
-            { id: 5, name: "HARIANTO", position: "CS", shift: "malam" },
-            { id: 9, name: "ANDHIKA DWI PUTRA", position: "CS", shift: "malam" },
-            { id: 13, name: "WILLY PERAYUDA", position: "CS", shift: "malam" },
-            { id: 17, name: "AKAS FARMA", position: "CS", shift: "malam" },
-            { id: 21, name: "RAHMADI SORMIN", position: "CS", shift: "malam" },
-            
-            // Kapten - Pagi
-            { id: 23, name: "WILIAM", position: "Kapten", shift: "pagi" },
-            { id: 26, name: "DANIEL", position: "Kapten", shift: "pagi" },
-            
-            // Kapten - Siang
-            { id: 24, name: "FIQAL KANA", position: "Kapten", shift: "siang" },
-            { id: 27, name: "RAAZ JESEN STEPANUS", position: "Kapten", shift: "siang" },
-            
-            // Kapten - Malam
-            { id: 25, name: "MARJOKI SANG", position: "Kapten", shift: "malam" },
-            { id: 28, name: "MAHAT SANJAYA HARAHAP", position: "Kapten", shift: "malam" },
-            
-            // Operator - Pagi
-            { id: 29, name: "PUTRA ANUGRAH RIZKI", position: "Operator", shift: "pagi" },
-            
-            // Operator - Siang
-            { id: 30, name: "PUTRA RAMADHANI", position: "Operator", shift: "siang" },
-            
-            // Operator - Malam
-            { id: 31, name: "BOBY KASANDRA BANCIN", position: "Operator", shift: "malam" },
-            
-            // Kasir - Pagi
-            { id: 32, name: "ANNEN", position: "Kasir", shift: "pagi" },
-            { id: 35, name: "AMRUL", position: "Kasir", shift: "pagi" },
-            { id: 38, name: "CHARLOIPO MANULLANG", position: "Kasir", shift: "pagi" },
-            { id: 41, name: "ROY DILEN", position: "Kasir", shift: "pagi" },
-            { id: 44, name: "AGUNG DEDI IRAWAN", position: "Kasir", shift: "pagi" },
-            { id: 47, name: "M REZI SYAPUTRA", position: "Kasir", shift: "pagi" },
-            { id: 50, name: "PUTRA INSANY", position: "Kasir", shift: "pagi" },
-            { id: 53, name: "MAULANA ALI SAID", position: "Kasir", shift: "pagi" },
-            { id: 56, name: "DIMAS ADHITYA", position: "Kasir", shift: "pagi" },
-            { id: 59, name: "ARJUN PRAISYA", position: "Kasir", shift: "pagi" },
-            { id: 62, name: "ADE OJI SHAPUTRA", position: "Kasir", shift: "pagi" },
-            { id: 65, name: "JUNITA MARSHA", position: "Kasir", shift: "pagi" },
-            { id: 68, name: "ISMI AZRILIA LUBIS", position: "Kasir", shift: "pagi" },
-            
-            // Kasir - Siang
-            { id: 33, name: "JONROMAN PURBA", position: "Kasir", shift: "siang" },
-            { id: 36, name: "RAM KIRAN", position: "Kasir", shift: "siang" },
-            { id: 39, name: "FAHRI FIRMANSYAH", position: "Kasir", shift: "siang" },
-            { id: 42, name: "GALI PRATAMA", position: "Kasir", shift: "siang" },
-            { id: 45, name: "MAICEL TAMPUBOLON", position: "Kasir", shift: "siang" },
-            { id: 48, name: "KHOIRUDDIN", position: "Kasir", shift: "siang" },
-            { id: 51, name: "FERA SALMA", position: "Kasir", shift: "siang" },
-            { id: 54, name: "AHMAD ANDIKA", position: "Kasir", shift: "siang" },
-            { id: 57, name: "GABRIEL RONI ARGANTA HUTABALIAN", position: "Kasir", shift: "siang" },
-            { id: 60, name: "ADITYA PANCA", position: "Kasir", shift: "siang" },
-            { id: 63, name: "ALFIANSYAH", position: "Kasir", shift: "siang" },
-            { id: 66, name: "MELAN PUTRI TRINITA", position: "Kasir", shift: "siang" },
-            { id: 69, name: "SYARIFAH RUMIATI ASTARI", position: "Kasir", shift: "siang" },
-            
-            // Kasir - Malam
-            { id: 34, name: "M FAJAR SIDDIK", position: "Kasir", shift: "malam" },
-            { id: 37, name: "KIKI YUNITA", position: "Kasir", shift: "malam" },
-            { id: 40, name: "PRIMA NUGRAHA", position: "Kasir", shift: "malam" },
-            { id: 43, name: "RIDZKY RAMADHAN", position: "Kasir", shift: "malam" },
-            { id: 46, name: "ADE CHAIRUNNISA", position: "Kasir", shift: "malam" },
-            { id: 49, name: "BAMBANG AGUNG SUTRISNO", position: "Kasir", shift: "malam" },
-            { id: 52, name: "RIVLAN RIZKY", position: "Kasir", shift: "malam" },
-            { id: 55, name: "ANGGARA K S", position: "Kasir", shift: "malam" },
-            { id: 58, name: "EGA PRAYUDA", position: "Kasir", shift: "malam" },
-            { id: 61, name: "AUDIS OYONG DUANSYAH", position: "Kasir", shift: "malam" },
-            { id: 64, name: "ANDY PUTRA", position: "Kasir", shift: "malam" },
-            { id: 67, name: "LAELA ANASILDA", position: "Kasir", shift: "malam" }
-        ];
-
-        // Initialize attendance data
-        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || {};
-        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
-        let lateHistory = JSON.parse(localStorage.getItem('lateHistory')) || [];
-        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-
-        // Update clock function
-        function updateClock() {
-            const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('id-ID', timeOptions);
-            document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', dateOptions);
-        }
-
-        // Set current date
-        const now = new Date();
-        const today = now.toISOString().split('T')[0];
-
-        // Check if we need to reset data (new day)
-        const lastAttendanceDate = localStorage.getItem('lastAttendanceDate');
-        if (lastAttendanceDate !== today) {
-            // New day, reset attendance data
-            attendanceData = {};
-            checkinData = {};
-            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-            localStorage.setItem('checkinData', JSON.stringify(checkinData));
-            localStorage.setItem('lastAttendanceDate', today);
-        }
-
-        // Initialize today's data if not exists
-        if (!attendanceData[today]) {
-            attendanceData[today] = {};
-        }
-        if (!checkinData[today]) {
-            checkinData[today] = {};
-        }
-
-        // Clean old late history (older than 7 days)
-        function cleanOldLateHistory() {
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-            const oneWeekAgoString = oneWeekAgo.toISOString().split('T')[0];
-            
-            lateHistory = lateHistory.filter(record => record.date >= oneWeekAgoString);
-            localStorage.setItem('lateHistory', JSON.stringify(lateHistory));
-        }
-
-        // Check if user is already logged in
-        if (currentUser) {
-            showApp();
-        }
-
-        // Start clock
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        // Clean old late history on load
-        cleanOldLateHistory();
-
-        // Login functionality
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value.trim().toUpperCase();
-            const password = document.getElementById('password').value;
-            
-            // Check if admin
-            if (username === 'ADMIN' && password === 'a1') {
-                currentUser = { id: 0, name: 'ADMIN', position: 'Admin' };
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                showApp();
-                return;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation duration
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random animation delay
+                const delay = Math.random() * 20;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // Random color
+                const colors = ['var(--cyber-blue)', 'var(--cyber-purple)', 'var(--cyber-pink)', 'var(--cyber-green)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                
+                particlesContainer.appendChild(particle);
             }
-            
-            // Find staff by first name
-            const user = staffData.find(staff => {
-                const firstName = staff.name.split(' ')[0];
-                return staff.name === username || firstName === username;
-            });
-            
-            // Check if user exists and password is correct
-            if (user && password === 'a1') {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                showApp();
-            } else {
-                document.getElementById('error-message').style.display = 'block';
-            }
-        });
-
-        // Logout functionality
-        document.getElementById('logout-btn').addEventListener('click', function() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            showLogin();
-        });
-
-        // Show login form
-        function showLogin() {
-            document.getElementById('login-container').style.display = 'block';
-            document.getElementById('app-container').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('error-message').style.display = 'none';
-        }
-
-        // Show main app
-        function showApp() {
-            document.getElementById('login-container').style.display = 'none';
-            document.getElementById('app-container').style.display = 'block';
-            
-            // Update user info
-            document.getElementById('user-name').textContent = currentUser.name;
-            document.getElementById('user-position').textContent = currentUser.position;
-            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
-            
-            // Update welcome message
-            if (currentUser.position === 'Admin') {
-                document.getElementById('welcome-title').textContent = 'Selamat Datang, Administrator';
-                document.getElementById('welcome-message').textContent = 'Anda memiliki akses penuh untuk mengelola sistem absensi staff.';
-            } else if (currentUser.position === 'Kapten') {
-                document.getElementById('welcome-title').textContent = `Selamat Datang, Kapten ${currentUser.name}`;
-                document.getElementById('welcome-message').textContent = 'Anda dapat mengatur jadwal shift dan memantau kehadiran staff.';
-            } else {
-                document.getElementById('welcome-title').textContent = `Selamat Datang, ${currentUser.name}`;
-                document.getElementById('welcome-message').textContent = 'Pantau kehadiran staff dengan mudah dan efisien. Sistem akan reset otomatis setiap hari.';
-            }
-            
-            // Check user role to enable/disable tabs
-            const pagiTab = document.getElementById('shift-pagi-tab');
-            const siangTab = document.getElementById('shift-siang-tab');
-            const malamTab = document.getElementById('shift-malam-tab');
-            const adminTab = document.getElementById('admin-tab');
-            const historyTab = document.getElementById('history-tab');
-            const kaptenTab = document.getElementById('kapten-tab');
-            
-            // Show/hide tabs based on user role
-            if (currentUser.position === 'Kapten' || currentUser.position === 'Admin') {
-                pagiTab.classList.remove('disabled');
-                siangTab.classList.remove('disabled');
-                malamTab.classList.remove('disabled');
-                
-                // Show Kapten tab for Kapten users
-                if (currentUser.position === 'Kapten') {
-                    kaptenTab.classList.remove('disabled');
-                    adminTab.classList.add('disabled');
-                    historyTab.classList.add('disabled');
-                } else {
-                    adminTab.classList.remove('disabled');
-                    historyTab.classList.remove('disabled');
-                    kaptenTab.classList.add('disabled');
-                }
-            } else {
-                pagiTab.classList.add('disabled');
-                siangTab.classList.add('disabled');
-                malamTab.classList.add('disabled');
-                adminTab.classList.add('disabled');
-                historyTab.classList.add('disabled');
-                kaptenTab.classList.add('disabled');
-            }
-            
-            // Show/hide Kapten-only elements
-            if (currentUser.position === 'Kapten') {
-                document.querySelectorAll('.kapten-only').forEach(el => {
-                    el.style.display = 'block';
-                });
-            } else {
-                document.querySelectorAll('.kapten-only').forEach(el => {
-                    el.style.display = 'none';
-                });
-            }
-            
-            // Initialize the app
-            renderAttendanceStaff();
-            renderShiftStaff('pagi');
-            renderShiftStaff('siang');
-            renderShiftStaff('malam');
-            updateSummary();
-            updateStatsBar();
-            renderAllStaff();
-            renderLateHistory();
-            updateNotifications();
-            
-            // Setup shift schedule functionality
-            setupShiftSchedule();
-            setupKaptenShiftSchedule();
-        }
-
-        // Tab functionality
-        document.querySelectorAll('.tab:not(.disabled)').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Skip if tab is disabled
-                if (tab.classList.contains('disabled')) return;
-                
-                // Remove active class from all tabs and contents
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab and corresponding content
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-                
-                // Update summary if summary tab is clicked
-                if (tab.dataset.tab === 'summary') {
-                    updateSummary();
-                }
-                // Render all staff if admin tab is clicked
-                if (tab.dataset.tab === 'admin') {
-                    renderAllStaff();
-                }
-                // Render late history if history tab is clicked
-                if (tab.dataset.tab === 'history') {
-                    renderLateHistory();
-                }
-                // Render shift staff if shift tab is clicked
-                if (tab.dataset.tab.startsWith('shift-')) {
-                    const shift = tab.dataset.tab.split('-')[1];
-                    renderShiftStaff(shift);
-                }
-            });
-        });
-
-        // Check if staff is late based on their shift
-        function checkIfLate(staffId, time) {
-            const staff = staffData.find(s => s.id === staffId);
-            if (!staff) return false;
-            
-            const absenTime = new Date(time);
-            const hours = absenTime.getHours();
-            const minutes = absenTime.getMinutes();
-            
-            // Convert to minutes since midnight for easier comparison
-            const totalMinutes = hours * 60 + minutes;
-            
-            switch(staff.shift) {
-                case 'pagi':
-                    // Shift pagi: batas 07:45
-                    return totalMinutes > (7 * 60 + 45);
-                case 'siang':
-                    // Shift siang: batas 15:45
-                    return totalMinutes > (15 * 60 + 45);
-                case 'malam':
-                    // Shift malam: batas 21:45
-                    return totalMinutes > (21 * 60 + 45);
-                default:
-                    return false;
-            }
-        }
-
-        // Get shift badge class
-        function getShiftBadgeClass(shift) {
-            switch(shift) {
-                case 'pagi': return 'shift-pagi';
-                case 'siang': return 'shift-siang';
-                case 'malam': return 'shift-malam';
-                default: return '';
-            }
-        }
-
-        // Get shift display name
-        function getShiftDisplayName(shift) {
-            switch(shift) {
-                case 'pagi': return 'Pagi';
-                case 'siang': return 'Siang';
-                case 'malam': return 'Malam';
-                default: return shift;
-            }
-        }
-
-        // Get icon for position
-        function getPositionIcon(position) {
-            switch(position) {
-                case 'CS': return 'headset';
-                case 'Kapten': return 'user-shield';
-                case 'Operator': return 'cogs';
-                case 'Kasir': return 'cash-register';
-                case 'Admin': return 'user-shield';
-                default: return 'user';
-            }
-        }
-
-        // Update notifications for each shift
-        function updateNotifications() {
-            const shifts = ['pagi', 'siang', 'malam'];
-            const notificationGrid = document.getElementById('notification-grid');
-            
-            // Clear existing notifications
-            notificationGrid.innerHTML = '';
-            
-            shifts.forEach(shift => {
-                // Count staff who haven't absented for this shift
-                const shiftStaff = staffData.filter(staff => staff.shift === shift);
-                const belumAbsen = shiftStaff.filter(staff => !attendanceData[today] || !attendanceData[today][staff.id]);
-                
-                // Create notification card
-                const notificationCard = document.createElement('div');
-                notificationCard.className = `notification-card ${belumAbsen.length > 0 ? 'danger' : 'success'}`;
-                
-                notificationCard.innerHTML = `
-                    <div class="notification-header">
-                        <div class="notification-shift">Shift ${getShiftDisplayName(shift)}</div>
-                        <div class="notification-count">${belumAbsen.length}</div>
-                    </div>
-                    <div class="notification-details">
-                        ${belumAbsen.length > 0 
-                            ? `${belumAbsen.length} staff belum absen` 
-                            : 'Semua staff sudah absen'}
-                    </div>
-                `;
-                
-                notificationGrid.appendChild(notificationCard);
-                
-                // Update tab notification badge
-                const tabBadge = document.getElementById(`${shift}-notification`);
-                if (belumAbsen.length > 0) {
-                    tabBadge.textContent = belumAbsen.length;
-                    tabBadge.style.display = 'flex';
-                } else {
-                    tabBadge.style.display = 'none';
-                }
-            });
-        }
-
-        // Render staff for attendance
-        function renderAttendanceStaff() {
-            const positions = {
-                'CS': document.getElementById('cs-staff'),
-                'Kapten': document.getElementById('kapten-staff'),
-                'Operator': document.getElementById('operator-staff'),
-                'Kasir': document.getElementById('kasir-staff')
-            };
-
-            // Clear existing content
-            Object.values(positions).forEach(container => {
-                container.innerHTML = '';
-            });
-
-            // Update access note
-            const accessNote = document.getElementById('access-note-text');
-            if (currentUser.position === 'Admin' || currentUser.position === 'Kapten') {
-                accessNote.innerHTML = '<strong>Anda dapat melakukan absensi untuk semua staff.</strong> Klik tombol "Absen" untuk mencatat kehadiran staff. Setiap staff hanya bisa absen sekali per hari.';
-            } else {
-                accessNote.innerHTML = '<strong>Anda hanya dapat melakukan absensi untuk diri sendiri.</strong> Klik tombol "Absen" untuk mencatat kehadiran Anda.';
-            }
-
-            // Render each staff member
-            staffData.forEach(staff => {
-                const container = positions[staff.position];
-                if (!container) return;
-
-                const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
-                const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                const isLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
-                
-                // Determine if the current user can absen this staff
-                let canAbsen = false;
-                if (currentUser.position === 'Admin' || currentUser.position === 'Kapten') {
-                    canAbsen = true; // Admin and Kapten can absen all staff
-                } else {
-                    canAbsen = (staff.id === currentUser.id); // Regular staff can only absen themselves
-                }
-                
-                const staffItem = document.createElement('div');
-                staffItem.className = 'staff-item';
-                staffItem.innerHTML = `
-                    <div class="staff-info">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="staff-details">
-                            <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">
-                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
-                            </div>
-                            ${hasAbsened ? `
-                                <div class="absen-time">
-                                    <i class="far fa-clock"></i> Absen: ${absenTime}
-                                    ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                    ${canAbsen ? `
-                        <button class="absen-btn ${hasAbsened ? (isLate ? 'late' : 'absened') : ''}" 
-                                data-staff-id="${staff.id}" ${hasAbsened ? 'disabled' : ''}>
-                            <i class="fas fa-${hasAbsened ? (isLate ? 'exclamation-triangle' : 'check') : 'clipboard-check'}"></i> 
-                            ${hasAbsened ? (isLate ? 'Terlambat' : 'Sudah Absen') : 'Absen'}
-                        </button>
-                    ` : `
-                        <span class="absen-btn" style="background: #95a5a6; cursor: default;">
-                            <i class="fas fa-lock"></i> Tidak Dapat Absen
-                        </span>
-                    `}
-                `;
-                container.appendChild(staffItem);
-            });
-
-            // Add event listeners to absen buttons
-            document.querySelectorAll('.absen-btn:not(.absened):not(.late)').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const staffId = parseInt(this.dataset.staffId);
-                    const absenTime = new Date().toISOString();
-                    
-                    // Record attendance
-                    if (!attendanceData[today]) {
-                        attendanceData[today] = {};
-                    }
-                    attendanceData[today][staffId] = absenTime;
-                    
-                    // Check if late
-                    const isLate = checkIfLate(staffId, absenTime);
-                    
-                    // If late, add to late history
-                    if (isLate) {
-                        const staff = staffData.find(s => s.id === staffId);
-                        const lateRecord = {
-                            staffId: staffId,
-                            staffName: staff.name,
-                            position: staff.position,
-                            shift: staff.shift,
-                            date: today,
-                            time: new Date(absenTime).toLocaleTimeString('id-ID'),
-                            absenTime: absenTime
-                        };
-                        lateHistory.push(lateRecord);
-                        localStorage.setItem('lateHistory', JSON.stringify(lateHistory));
-                    }
-                    
-                    // Save to localStorage
-                    localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-                    
-                    // Update UI
-                    this.classList.add(isLate ? 'late' : 'absened');
-                    this.innerHTML = `<i class="fas fa-${isLate ? 'exclamation-triangle' : 'check'}"></i> ${isLate ? 'Terlambat' : 'Sudah Absen'}`;
-                    this.disabled = true;
-                    
-                    // Add absen time
-                    const staffItem = this.closest('.staff-item');
-                    const absenTimeElement = document.createElement('div');
-                    absenTimeElement.className = 'absen-time';
-                    absenTimeElement.innerHTML = `<i class="far fa-clock"></i> Absen: ${new Date().toLocaleTimeString('id-ID')} ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}`;
-                    staffItem.querySelector('.staff-details').appendChild(absenTimeElement);
-                    
-                    showToast(isLate ? 'Absensi tercatat (TERLAMBAT)' : 'Absensi berhasil dicatat');
-                    
-                    // Update summary counts
-                    updateSummary();
-                    updateStatsBar();
-                    renderShiftStaff('pagi');
-                    renderShiftStaff('siang');
-                    renderShiftStaff('malam');
-                    updateNotifications();
-                });
-            });
-        }
-
-        // Render staff by shift
-        function renderShiftStaff(shift) {
-            const positions = ['CS', 'Kapten', 'Operator', 'Kasir'];
-            
-            positions.forEach(position => {
-                const container = document.getElementById(`${position.toLowerCase()}-${shift}`);
-                const countElement = document.getElementById(`${position.toLowerCase()}-${shift}-count`);
-                
-                if (!container) return;
-                
-                // Clear existing content
-                container.innerHTML = '';
-                
-                // Get staff for this position and shift
-                const shiftStaff = staffData.filter(staff => staff.position === position && staff.shift === shift);
-                
-                // Update count
-                if (countElement) {
-                    countElement.textContent = `${shiftStaff.length} Staff`;
-                }
-                
-                // If no staff for this shift, show empty state
-                if (shiftStaff.length === 0) {
-                    const emptyState = document.createElement('div');
-                    emptyState.className = 'empty-state';
-                    emptyState.innerHTML = `
-                        <i class="fas fa-users-slash"></i>
-                        <h3>Tidak ada staff di shift ${getShiftDisplayName(shift)}</h3>
-                        <p>Staff akan muncul di sini setelah diatur ke shift ${getShiftDisplayName(shift)}</p>
-                    `;
-                    container.appendChild(emptyState);
-                    return;
-                }
-                
-                // Render each staff member
-                shiftStaff.forEach(staff => {
-                    const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
-                    const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                    const isAbsenLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
-                    
-                    const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
-                    const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : '';
-                    const isCheckinLate = hasCheckedIn ? checkIfLate(staff.id, checkinData[today][staff.id]) : false;
-                    
-                    const staffItem = document.createElement('div');
-                    staffItem.className = 'staff-item';
-                    
-                    // Only show check-in button for Kapten or Admin
-                    const showCheckinBtn = (currentUser.position === 'Kapten' || currentUser.position === 'Admin');
-                    
-                    staffItem.innerHTML = `
-                        <div class="staff-info">
-                            <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                            <div class="staff-details">
-                                <div class="staff-name">${staff.name}</div>
-                                <div class="staff-position">
-                                    <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                </div>
-                                ${hasAbsened ? `
-                                    <div class="absen-time">
-                                        <i class="far fa-clock"></i> Absen: ${absenTime}
-                                        ${isAbsenLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
-                                    </div>
-                                ` : ''}
-                                ${hasCheckedIn ? `
-                                    <div class="checkin-time">
-                                        <i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}
-                                        ${isCheckinLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                        <div class="staff-actions">
-                            ${hasAbsened ? 
-                                `<span class="absen-btn ${isAbsenLate ? 'late' : 'absened'}">
-                                    <i class="fas fa-${isAbsenLate ? 'exclamation-triangle' : 'check'}"></i> 
-                                    ${isAbsenLate ? 'Terlambat' : 'Sudah Absen'}
-                                </span>` : 
-                                '<span class="absen-btn" style="background: #95a5a6; cursor: default;"><i class="fas fa-clock"></i> Belum Absen</span>'
-                            }
-                            ${showCheckinBtn ? 
-                                (hasCheckedIn ? 
-                                    `<span class="checkin-btn ${isCheckinLate ? 'late' : 'checked'}">
-                                        <i class="fas fa-${isCheckinLate ? 'exclamation-triangle' : 'check'}"></i> 
-                                        ${isCheckinLate ? 'Terlambat' : 'Sudah Check-in'}
-                                    </span>` : 
-                                    `<button class="checkin-btn" data-staff-id="${staff.id}">
-                                        <i class="fas fa-map-marker-alt"></i> Check-in
-                                    </button>`
-                                ) : ''
-                            }
-                        </div>
-                    `;
-                    container.appendChild(staffItem);
-                });
-            });
-
-            // Add event listeners to check-in buttons
-            document.querySelectorAll('.checkin-btn:not(.checked):not(.late)').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const staffId = parseInt(this.dataset.staffId);
-                    const checkinTime = new Date().toISOString();
-                    
-                    // Record check-in
-                    if (!checkinData[today]) {
-                        checkinData[today] = {};
-                    }
-                    checkinData[today][staffId] = checkinTime;
-                    
-                    // Check if late
-                    const isLate = checkIfLate(staffId, checkinTime);
-                    
-                    // If late, add to late history
-                    if (isLate) {
-                        const staff = staffData.find(s => s.id === staffId);
-                        const lateRecord = {
-                            staffId: staffId,
-                            staffName: staff.name,
-                            position: staff.position,
-                            shift: staff.shift,
-                            date: today,
-                            time: new Date(checkinTime).toLocaleTimeString('id-ID'),
-                            absenTime: checkinTime
-                        };
-                        lateHistory.push(lateRecord);
-                        localStorage.setItem('lateHistory', JSON.stringify(lateHistory));
-                    }
-                    
-                    // Save to localStorage
-                    localStorage.setItem('checkinData', JSON.stringify(checkinData));
-                    
-                    // Update UI
-                    this.classList.add(isLate ? 'late' : 'checked');
-                    this.innerHTML = `<i class="fas fa-${isLate ? 'exclamation-triangle' : 'check'}"></i> ${isLate ? 'Terlambat' : 'Sudah Check-in'}`;
-                    this.disabled = true;
-                    
-                    // Add check-in time
-                    const staffItem = this.closest('.staff-item');
-                    const checkinTimeElement = document.createElement('div');
-                    checkinTimeElement.className = 'checkin-time';
-                    checkinTimeElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> Check-in: ${new Date().toLocaleTimeString('id-ID')} ${isLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}`;
-                    staffItem.querySelector('.staff-details').appendChild(checkinTimeElement);
-                    
-                    showToast(isLate ? 'Check-in tercatat (TERLAMBAT)' : 'Check-in berhasil dicatat');
-                    
-                    // Update summary counts
-                    updateSummary();
-                    updateStatsBar();
-                    renderShiftStaff('pagi');
-                    renderShiftStaff('siang');
-                    renderShiftStaff('malam');
-                    updateNotifications();
-                });
-            });
-        }
-
-        // Update summary
-        function updateSummary() {
-            // Count attendance statuses
-            let hadirCount = 0;
-            let belumCount = 0;
-            let checkinCount = 0;
-            let lateCount = 0;
-
-            staffData.forEach(staff => {
-                if (attendanceData[today] && attendanceData[today][staff.id]) {
-                    hadirCount++;
-                    if (checkIfLate(staff.id, attendanceData[today][staff.id])) {
-                        lateCount++;
-                    }
-                } else {
-                    belumCount++;
-                }
-                
-                if (checkinData[today] && checkinData[today][staff.id]) {
-                    checkinCount++;
-                    // Check if late for check-in (if not already counted from attendance)
-                    if (!attendanceData[today] || !attendanceData[today][staff.id]) {
-                        if (checkIfLate(staff.id, checkinData[today][staff.id])) {
-                            lateCount++;
-                        }
-                    }
-                }
-            });
-
-            // Update summary cards
-            document.getElementById('hadir-count').textContent = hadirCount;
-            document.getElementById('belum-count').textContent = belumCount;
-            document.getElementById('checkin-count').textContent = checkinCount;
-            document.getElementById('late-count').textContent = lateCount;
-
-            // Update summary list
-            const container = document.getElementById('summary-staff');
-            container.innerHTML = '';
-
-            staffData.forEach(staff => {
-                const hasAbsened = attendanceData[today] && attendanceData[today][staff.id];
-                const absenTime = hasAbsened ? new Date(attendanceData[today][staff.id]).toLocaleTimeString('id-ID') : 'Belum absen';
-                const statusClass = hasAbsened ? 'hadir' : 'belum';
-                const isAbsenLate = hasAbsened ? checkIfLate(staff.id, attendanceData[today][staff.id]) : false;
-                
-                const hasCheckedIn = checkinData[today] && checkinData[today][staff.id];
-                const checkinTime = hasCheckedIn ? new Date(checkinData[today][staff.id]).toLocaleTimeString('id-ID') : 'Belum check-in';
-                const isCheckinLate = hasCheckedIn ? checkIfLate(staff.id, checkinData[today][staff.id]) : false;
-                
-                const staffItem = document.createElement('div');
-                staffItem.className = 'staff-item';
-                staffItem.innerHTML = `
-                    <div class="staff-info">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="staff-details">
-                            <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">
-                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="status ${statusClass}">
-                        ${hasAbsened ? 
-                            (isAbsenLate ? '<i class="fas fa-exclamation-triangle"></i> Terlambat' : '<i class="fas fa-check-circle"></i> Sudah Absen') : 
-                            '<i class="fas fa-clock"></i> Belum Absen'}
-                        <div class="absen-time">${absenTime}</div>
-                        <div class="checkin-time">
-                            <i class="fas fa-map-marker-alt"></i> Check-in: ${checkinTime}
-                            ${isCheckinLate ? '<span class="late-badge">TERLAMBAT</span>' : ''}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(staffItem);
-            });
-        }
-
-        // Update stats bar
-        function updateStatsBar() {
-            let hadirCount = 0;
-            let checkinCount = 0;
-            let lateCount = 0;
-
-            staffData.forEach(staff => {
-                if (attendanceData[today] && attendanceData[today][staff.id]) {
-                    hadirCount++;
-                    if (checkIfLate(staff.id, attendanceData[today][staff.id])) {
-                        lateCount++;
-                    }
-                }
-                
-                if (checkinData[today] && checkinData[today][staff.id]) {
-                    checkinCount++;
-                    // Check if late for check-in (if not already counted from attendance)
-                    if (!attendanceData[today] || !attendanceData[today][staff.id]) {
-                        if (checkIfLate(staff.id, checkinData[today][staff.id])) {
-                            lateCount++;
-                        }
-                    }
-                }
-            });
-
-            document.getElementById('stat-total').textContent = staffData.length;
-            document.getElementById('stat-hadir').textContent = hadirCount;
-            document.getElementById('stat-checkin').textContent = checkinCount;
-            document.getElementById('stat-late').textContent = lateCount;
-        }
-
-        // Render all staff for admin panel
-        function renderAllStaff() {
-            const container = document.getElementById('all-staff-list');
-            const countElement = document.getElementById('all-staff-count');
-            
-            container.innerHTML = '';
-            countElement.textContent = `${staffData.length} Staff`;
-            
-            staffData.forEach(staff => {
-                const staffItem = document.createElement('div');
-                staffItem.className = 'staff-item';
-                staffItem.innerHTML = `
-                    <div class="staff-info">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="staff-details">
-                            <div class="staff-name">${staff.name}</div>
-                            <div class="staff-position">
-                                <i class="fas fa-${getPositionIcon(staff.position)}"></i> ${staff.position}
-                                <span class="shift-badge ${getShiftBadgeClass(staff.shift)}">${getShiftDisplayName(staff.shift)}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <select class="shift-select" data-staff-id="${staff.id}">
-                            <option value="pagi" ${staff.shift === 'pagi' ? 'selected' : ''}>Pagi</option>
-                            <option value="siang" ${staff.shift === 'siang' ? 'selected' : ''}>Siang</option>
-                            <option value="malam" ${staff.shift === 'malam' ? 'selected' : ''}>Malam</option>
-                        </select>
-                        <button class="admin-btn danger delete-staff" data-staff-id="${staff.id}" style="margin-top: 10px;">
-                            <i class="fas fa-trash"></i> Hapus
-                        </button>
-                    </div>
-                `;
-                container.appendChild(staffItem);
-            });
-            
-            // Add event listeners to shift selects
-            document.querySelectorAll('.shift-select').forEach(select => {
-                select.addEventListener('change', function() {
-                    const staffId = parseInt(this.dataset.staffId);
-                    const newShift = this.value;
-                    
-                    const staffIndex = staffData.findIndex(staff => staff.id === staffId);
-                    if (staffIndex !== -1) {
-                        staffData[staffIndex].shift = newShift;
-                        localStorage.setItem('staffData', JSON.stringify(staffData));
-                        renderAttendanceStaff();
-                        renderShiftStaff('pagi');
-                        renderShiftStaff('siang');
-                        renderShiftStaff('malam');
-                        updateNotifications();
-                        showToast('Shift staff berhasil diubah');
-                    }
-                });
-            });
-            
-            // Add event listeners to delete buttons
-            document.querySelectorAll('.delete-staff').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const staffId = parseInt(this.dataset.staffId);
-                    if (confirm('Apakah Anda yakin ingin menghapus staff ini?')) {
-                        staffData = staffData.filter(staff => staff.id !== staffId);
-                        localStorage.setItem('staffData', JSON.stringify(staffData));
-                        renderAllStaff();
-                        renderAttendanceStaff();
-                        renderShiftStaff('pagi');
-                        renderShiftStaff('siang');
-                        renderShiftStaff('malam');
-                        updateStatsBar();
-                        updateNotifications();
-                        showToast('Staff berhasil dihapus');
-                    }
-                });
-            });
-        }
-
-        // Render late history
-        function renderLateHistory() {
-            const container = document.getElementById('late-history-body');
-            container.innerHTML = '';
-            
-            if (lateHistory.length === 0) {
-                container.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px; color: var(--gray);">
-                            <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 10px; display: block;"></i>
-                            Tidak ada riwayat keterlambatan
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            // Sort by date (newest first)
-            const sortedHistory = [...lateHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            sortedHistory.forEach(record => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${new Date(record.date).toLocaleDateString('id-ID')}</td>
-                    <td>${record.staffName}</td>
-                    <td>${record.position}</td>
-                    <td>
-                        <span class="shift-badge ${getShiftBadgeClass(record.shift)}">${getShiftDisplayName(record.shift)}</span>
-                    </td>
-                    <td>${record.time}</td>
-                    <td><span class="late-badge">TERLAMBAT</span></td>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        // Admin functionality
-        document.getElementById('reset-today').addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin mereset data hari ini?')) {
-                attendanceData[today] = {};
-                checkinData[today] = {};
-                localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-                localStorage.setItem('checkinData', JSON.stringify(checkinData));
-                
-                renderAttendanceStaff();
-                renderShiftStaff('pagi');
-                renderShiftStaff('siang');
-                renderShiftStaff('malam');
-                updateSummary();
-                updateStatsBar();
-                updateNotifications();
-                showToast('Data hari ini berhasil direset');
-            }
-        });
-
-        document.getElementById('reset-all').addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus SEMUA data? Tindakan ini tidak dapat dibatalkan!')) {
-                attendanceData = {};
-                checkinData = {};
-                localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-                localStorage.setItem('checkinData', JSON.stringify(checkinData));
-                
-                renderAttendanceStaff();
-                renderShiftStaff('pagi');
-                renderShiftStaff('siang');
-                renderShiftStaff('malam');
-                updateSummary();
-                updateStatsBar();
-                updateNotifications();
-                showToast('Semua data berhasil dihapus');
-            }
-        });
-
-        document.getElementById('clear-history').addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus semua riwayat keterlambatan?')) {
-                lateHistory = [];
-                localStorage.setItem('lateHistory', JSON.stringify(lateHistory));
-                renderLateHistory();
-                showToast('Riwayat keterlambatan berhasil dihapus');
-            }
-        });
-
-        document.getElementById('add-staff-btn').addEventListener('click', function() {
-            document.getElementById('add-staff-form').style.display = 'block';
-        });
-
-        document.getElementById('cancel-staff').addEventListener('click', function() {
-            document.getElementById('add-staff-form').style.display = 'none';
-            document.getElementById('new-staff-name').value = '';
-            document.getElementById('new-staff-position').value = 'CS';
-            document.getElementById('new-staff-shift').value = 'pagi';
-        });
-
-        document.getElementById('save-staff').addEventListener('click', function() {
-            const name = document.getElementById('new-staff-name').value.trim().toUpperCase();
-            const position = document.getElementById('new-staff-position').value;
-            const shift = document.getElementById('new-staff-shift').value;
-            
-            if (name === '') {
-                alert('Nama staff tidak boleh kosong');
-                return;
-            }
-            
-            // Check if staff already exists
-            if (staffData.some(staff => staff.name === name)) {
-                alert('Staff dengan nama tersebut sudah ada');
-                return;
-            }
-            
-            // Generate new ID
-            const newId = staffData.length > 0 ? Math.max(...staffData.map(s => s.id)) + 1 : 1;
-            
-            // Add new staff
-            staffData.push({ id: newId, name, position, shift });
-            localStorage.setItem('staffData', JSON.stringify(staffData));
-            
-            // Reset form and update UI
-            document.getElementById('add-staff-form').style.display = 'none';
-            document.getElementById('new-staff-name').value = '';
-            document.getElementById('new-staff-position').value = 'CS';
-            document.getElementById('new-staff-shift').value = 'pagi';
-            
-            renderAllStaff();
-            renderAttendanceStaff();
-            renderShiftStaff('pagi');
-            renderShiftStaff('siang');
-            renderShiftStaff('malam');
-            updateStatsBar();
-            updateNotifications();
-            showToast('Staff baru berhasil ditambahkan');
-        });
-
-        // ========== SISTEM PARSING JADWAL SHIFT YANG LEBIH CERDAS ==========
-
-        // Fungsi untuk parsing data jadwal shift dengan pencocokan nama yang lebih fleksibel
-        function parseShiftSchedule(dataText) {
-            const lines = dataText.split('\n');
-            const result = [];
-            const shiftKeywords = ['PAGI', 'SIANG', 'MALAM'];
-            
-            lines.forEach(line => {
-                // Bersihkan line dari spasi berlebih
-                line = line.trim();
-                if (!line) return;
-                
-                // Cari kata kunci shift dalam line (case insensitive)
-                let shiftFound = null;
-                let shiftIndex = -1;
-                
-                for (const keyword of shiftKeywords) {
-                    const regex = new RegExp(`\\b${keyword}\\b`, 'i');
-                    const match = line.match(regex);
-                    if (match) {
-                        shiftFound = keyword;
-                        shiftIndex = match.index;
-                        break;
-                    }
-                }
-                
-                if (!shiftFound) return; // Skip jika tidak ada shift yang ditemukan
-                
-                // Ekstrak nama (semua teks sebelum shift)
-                let name = line.substring(0, shiftIndex).trim();
-                
-                // Bersihkan nama dari karakter yang tidak diinginkan
-                name = name.replace(/[^a-zA-Z\s]/g, ' ').replace(/\s+/g, ' ').trim();
-                
-                if (name) {
-                    // Konversi nama ke format standar (huruf besar)
-                    name = name.toUpperCase();
-                    
-                    // Coba temukan staff yang cocok dengan nama yang diekstrak
-                    const matchedStaff = findBestStaffMatch(name);
-                    
-                    if (matchedStaff) {
-                        result.push({
-                            originalName: name,
-                            matchedName: matchedStaff.name,
-                            staffId: matchedStaff.id,
-                            position: matchedStaff.position,
-                            shift: shiftFound,
-                            status: 'found'
-                        });
-                    } else {
-                        // Jika tidak ditemukan kecocokan, tambahkan sebagai staff baru
-                        result.push({
-                            originalName: name,
-                            matchedName: name, // Gunakan nama asli
-                            staffId: null, // Akan dibuat ID baru
-                            position: 'Kasir', // Default position
-                            shift: shiftFound,
-                            status: 'new'
-                        });
-                    }
-                }
-            });
-            
-            return result;
-        }
-
-        // Fungsi untuk menemukan staff terbaik yang cocok dengan nama yang diberikan
-        function findBestStaffMatch(inputName) {
-            const inputWords = inputName.split(/\s+/);
-            let bestMatch = null;
-            let bestScore = 0;
-            
-            staffData.forEach(staff => {
-                const staffName = staff.name.toUpperCase();
-                const staffWords = staffName.split(/\s+/);
-                
-                // Hitung skor kecocokan
-                let score = 0;
-                
-                // Cek kecocokan nama lengkap
-                if (staffName === inputName) {
-                    score = 100;
-                }
-                // Cek kecocokan nama depan
-                else if (staffWords[0] === inputWords[0]) {
-                    score = 80;
-                    
-                    // Tambah poin jika ada kata lain yang cocok
-                    for (let i = 1; i < inputWords.length; i++) {
-                        if (staffWords.some(word => word === inputWords[i])) {
-                            score += 10;
-                        }
-                    }
-                }
-                // Cek kecocokan substring
-                else if (staffName.includes(inputName) || inputName.includes(staffName)) {
-                    score = 60;
-                }
-                // Cek kecocokan kata individual
-                else {
-                    let matchedWords = 0;
-                    inputWords.forEach(inputWord => {
-                        if (staffWords.some(staffWord => staffWord.includes(inputWord) || inputWord.includes(staffWord))) {
-                            matchedWords++;
-                        }
-                    });
-                    
-                    if (matchedWords > 0) {
-                        score = 40 + (matchedWords * 10);
-                    }
-                }
-                
-                // Update best match jika skor lebih tinggi
-                if (score > bestScore && score >= 40) {
-                    bestScore = score;
-                    bestMatch = staff;
-                }
-            });
-            
-            return bestMatch;
-        }
-
-        // Fungsi untuk menerapkan jadwal shift yang telah diparsing
-        function applyParsedSchedule(parsedData) {
-            let updatedCount = 0;
-            let addedCount = 0;
-            
-            parsedData.forEach(item => {
-                if (item.status === 'found' && item.staffId !== null) {
-                    // Update shift staff yang sudah ada
-                    const staffIndex = staffData.findIndex(staff => staff.id === item.staffId);
-                    if (staffIndex !== -1) {
-                        staffData[staffIndex].shift = item.shift.toLowerCase();
-                        updatedCount++;
-                    }
-                } else if (item.status === 'new') {
-                    // Tambah staff baru
-                    const newId = staffData.length > 0 ? Math.max(...staffData.map(s => s.id)) + 1 : 1;
-                    staffData.push({
-                        id: newId,
-                        name: item.matchedName,
-                        position: item.position,
-                        shift: item.shift.toLowerCase()
-                    });
-                    addedCount++;
-                }
-            });
-            
-            // Simpan ke localStorage
-            localStorage.setItem('staffData', JSON.stringify(staffData));
-            
-            return { updated: updatedCount, added: addedCount };
-        }
-
-        // Fungsi untuk mengatur jadwal shift (Admin)
-        function setupShiftSchedule() {
-            const scheduleBtn = document.getElementById('schedule-shift-btn');
-            const scheduleForm = document.getElementById('schedule-shift-form');
-            const cancelScheduleBtn = document.getElementById('cancel-schedule');
-            const previewScheduleBtn = document.getElementById('preview-schedule');
-            const applyScheduleBtn = document.getElementById('apply-schedule');
-            const scheduleDataInput = document.getElementById('shift-schedule-data');
-            const schedulePreview = document.getElementById('schedule-preview');
-            const previewContent = document.getElementById('preview-content');
-            
-            // Tampilkan form atur jadwal shift
-            scheduleBtn.addEventListener('click', function() {
-                scheduleForm.style.display = 'block';
-                scheduleDataInput.value = '';
-                schedulePreview.style.display = 'none';
-            });
-            
-            // Sembunyikan form atur jadwal shift
-            cancelScheduleBtn.addEventListener('click', function() {
-                scheduleForm.style.display = 'none';
-                scheduleDataInput.value = '';
-                schedulePreview.style.display = 'none';
-            });
-            
-            // Preview jadwal shift
-            previewScheduleBtn.addEventListener('click', function() {
-                const dataText = scheduleDataInput.value.trim();
-                if (!dataText) {
-                    alert('Silakan tempel data jadwal shift terlebih dahulu');
-                    return;
-                }
-                
-                const parsedData = parseShiftSchedule(dataText);
-                if (parsedData.length === 0) {
-                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
-                    return;
-                }
-                
-                // Tampilkan preview
-                previewContent.innerHTML = '';
-                parsedData.forEach(item => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-                    
-                    let statusHtml = '';
-                    let statusClass = '';
-                    
-                    if (item.status === 'found') {
-                        statusHtml = `<div class="match-status match-found">✓ Cocok dengan: ${item.matchedName}</div>`;
-                    } else if (item.status === 'new') {
-                        statusHtml = `<div class="match-status match-new">+ Staff baru akan ditambahkan</div>`;
-                    }
-                    
-                    previewItem.innerHTML = `
-                        <div>
-                            <div class="preview-name">${item.originalName}</div>
-                            ${statusHtml}
-                        </div>
-                        <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
-                    `;
-                    previewContent.appendChild(previewItem);
-                });
-                
-                schedulePreview.style.display = 'block';
-            });
-            
-            // Terapkan jadwal shift
-            applyScheduleBtn.addEventListener('click', function() {
-                const dataText = scheduleDataInput.value.trim();
-                if (!dataText) {
-                    alert('Silakan tempel data jadwal shift terlebih dahulu');
-                    return;
-                }
-                
-                const parsedData = parseShiftSchedule(dataText);
-                if (parsedData.length === 0) {
-                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
-                    return;
-                }
-                
-                // Terapkan perubahan shift
-                const result = applyParsedSchedule(parsedData);
-                
-                // Refresh tampilan
-                renderAllStaff();
-                renderAttendanceStaff();
-                renderShiftStaff('pagi');
-                renderShiftStaff('siang');
-                renderShiftStaff('malam');
-                updateStatsBar();
-                updateNotifications();
-                
-                // Tampilkan pesan sukses
-                let message = `Jadwal shift berhasil diubah untuk ${result.updated} staff`;
-                if (result.added > 0) {
-                    message += ` dan ${result.added} staff baru ditambahkan`;
-                }
-                showToast(message);
-                
-                // Sembunyikan form
-                scheduleForm.style.display = 'none';
-                scheduleDataInput.value = '';
-                schedulePreview.style.display = 'none';
-            });
         }
         
-        // Fungsi untuk mengatur jadwal shift (Kapten)
-        function setupKaptenShiftSchedule() {
-            const previewScheduleBtn = document.getElementById('kapten-preview-schedule');
-            const applyScheduleBtn = document.getElementById('kapten-apply-schedule');
-            const scheduleDataInput = document.getElementById('kapten-shift-schedule-data');
-            const schedulePreview = document.getElementById('kapten-schedule-preview');
-            const previewContent = document.getElementById('kapten-preview-content');
+        // Create digital lines
+        function createDigitalLines() {
+            const linesContainer = document.getElementById('digital-lines');
+            const lineCount = 10;
             
-            // Preview jadwal shift
-            previewScheduleBtn.addEventListener('click', function() {
-                const dataText = scheduleDataInput.value.trim();
-                if (!dataText) {
-                    alert('Silakan tempel data jadwal shift terlebih dahulu');
-                    return;
-                }
-                
-                const parsedData = parseShiftSchedule(dataText);
-                if (parsedData.length === 0) {
-                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
-                    return;
-                }
-                
-                // Tampilkan preview
-                previewContent.innerHTML = '';
-                parsedData.forEach(item => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-                    
-                    let statusHtml = '';
-                    
-                    if (item.status === 'found') {
-                        statusHtml = `<div class="match-status match-found">✓ Cocok dengan: ${item.matchedName}</div>`;
-                    } else if (item.status === 'new') {
-                        statusHtml = `<div class="match-status match-new">+ Staff baru akan ditambahkan</div>`;
-                    }
-                    
-                    previewItem.innerHTML = `
-                        <div>
-                            <div class="preview-name">${item.originalName}</div>
-                            ${statusHtml}
-                        </div>
-                        <div class="preview-shift ${'preview-' + item.shift.toLowerCase()}">${item.shift}</div>
-                    `;
-                    previewContent.appendChild(previewItem);
-                });
-                
-                schedulePreview.style.display = 'block';
-            });
-            
-            // Terapkan jadwal shift
-            applyScheduleBtn.addEventListener('click', function() {
-                const dataText = scheduleDataInput.value.trim();
-                if (!dataText) {
-                    alert('Silakan tempel data jadwal shift terlebih dahulu');
-                    return;
-                }
-                
-                const parsedData = parseShiftSchedule(dataText);
-                if (parsedData.length === 0) {
-                    alert('Tidak ada data yang valid ditemukan. Pastikan format sesuai petunjuk.');
-                    return;
-                }
-                
-                // Terapkan perubahan shift
-                const result = applyParsedSchedule(parsedData);
-                
-                // Refresh tampilan
-                renderAllStaff();
-                renderAttendanceStaff();
-                renderShiftStaff('pagi');
-                renderShiftStaff('siang');
-                renderShiftStaff('malam');
-                updateStatsBar();
-                updateNotifications();
-                
-                // Tampilkan pesan sukses
-                let message = `Jadwal shift berhasil diubah untuk ${result.updated} staff`;
-                if (result.added > 0) {
-                    message += ` dan ${result.added} staff baru ditambahkan`;
-                }
-                showToast(message);
-                
-                // Reset form
-                scheduleDataInput.value = '';
-                schedulePreview.style.display = 'none';
-            });
-        }
-
-        // Fungsi untuk reset jadwal shift ke default
-        function resetShiftSchedule() {
-            if (confirm('Apakah Anda yakin ingin mereset jadwal shift ke kondisi default?')) {
-                // Reset semua shift ke pagi (default)
-                staffData.forEach(staff => {
-                    staff.shift = 'pagi';
-                });
-                
-                // Simpan ke localStorage
-                localStorage.setItem('staffData', JSON.stringify(staffData));
-                
-                // Refresh tampilan
-                renderAllStaff();
-                renderAttendanceStaff();
-                renderShiftStaff('pagi');
-                renderShiftStaff('siang');
-                renderShiftStaff('malam');
-                updateStatsBar();
-                updateNotifications();
-                
-                showToast('Jadwal shift berhasil direset ke kondisi default');
-            }
-        }
-
-        // Tambahkan event listener untuk tombol reset shift di Admin
-        document.getElementById('reset-shift').addEventListener('click', resetShiftSchedule);
-
-        // Tambahkan event listener untuk tombol reset shift di Kapten
-        document.getElementById('kapten-reset-shift').addEventListener('click', resetShiftSchedule);
-
-        // Toast notification
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerHTML = `<i class="fas fa-check-circle"></i><div>${message}</div>`;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-    </script>
-</body>
-</html>
-
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.className = 'digital
