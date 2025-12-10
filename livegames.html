@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permainan Casino</title>
+    <title>Digital Casino - Futuristic Experience</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0a1a3a, #142850, #1c3c6e, #27496d, #0c7b93);
-            color: #fff;
+            background-color: #0a0a16;
+            color: #e0e0ff;
             line-height: 1.6;
             padding: 20px;
             min-height: 100vh;
@@ -22,40 +22,129 @@
             overflow-x: hidden;
         }
         
-        /* Efek dadu berjatuhan */
-        .dice-container {
+        /* Tombol Kembali */
+        .back-button {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(90deg, #00a8cc, #0077cc);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 119, 204, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .back-button:hover {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 119, 204, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+        
+        /* Efek Matrix Digital Rain */
+        .matrix-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            z-index: -2;
+            opacity: 0.15;
+            background: linear-gradient(0deg, #000000 0%, #0a0a16 100%);
             overflow: hidden;
         }
         
-        .dice {
+        .matrix-char {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: #00f3ff;
             font-size: 18px;
             font-weight: bold;
-            color: #142850;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            animation: fall linear forwards;
+            opacity: 0;
+            text-shadow: 0 0 5px #00f3ff;
+            animation: matrixFall linear infinite;
         }
         
-        @keyframes fall {
+        @keyframes matrixFall {
+            from {
+                transform: translateY(-100px) rotateX(90deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
             to {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(100vh) rotateX(0deg);
+                opacity: 0;
             }
         }
         
+        /* Grid Hologram Effect */
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px) 0 0 / 50px 50px,
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px) 0 0 / 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+        
+        /* Neon Glow Effect */
+        .neon-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, rgba(0, 50, 100, 0.05) 40%, transparent 70%);
+            z-index: -1;
+            filter: blur(60px);
+            opacity: 0.7;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+        
+        /* Container utama */
         .container {
             max-width: 2000px;
             margin: 0 auto;
@@ -63,180 +152,310 @@
             z-index: 1;
         }
         
+        /* Header Futuristic */
         header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 20px;
-            background: rgba(20, 40, 80, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            background: rgba(10, 15, 35, 0.7);
+            backdrop-filter: blur(10px) saturate(180%);
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(0, 243, 255, 0.2) inset;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00f3ff, #7b00ff, #00f3ff, transparent);
+            animation: scanline 3s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            background: linear-gradient(to right, #0c7b93, #00a8cc);
+            background: linear-gradient(90deg, #00f3ff, #7b00ff, #00f3ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: 'DIGITAL';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: linear-gradient(90deg, #00f3ff, #7b00ff, #00f3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.3;
+            z-index: -1;
         }
         
         .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-            color: #c8d6e5;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: #a0a0ff;
+            letter-spacing: 1px;
+            font-weight: 300;
+            text-shadow: 0 0 10px rgba(160, 160, 255, 0.5);
         }
         
+        /* Search Bar Futuristic */
         .search-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             position: relative;
         }
         
         .search-input {
             width: 100%;
-            padding: 15px 20px;
+            padding: 18px 25px;
             border: none;
             border-radius: 50px;
-            background: rgba(20, 40, 80, 0.6);
-            backdrop-filter: blur(10px);
-            color: white;
-            font-size: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(20, 25, 50, 0.7);
+            backdrop-filter: blur(15px);
+            color: #e0e0ff;
+            font-size: 1.1rem;
+            box-shadow: 
+                0 5px 20px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(0, 243, 255, 0.2);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            letter-spacing: 1px;
         }
         
         .search-input::placeholder {
-            color: rgba(200, 214, 229, 0.7);
+            color: rgba(160, 160, 255, 0.7);
         }
         
         .search-input:focus {
             outline: none;
-            background: rgba(20, 40, 80, 0.8);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 168, 204, 0.5);
+            background: rgba(20, 25, 60, 0.9);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.7),
+                0 0 0 2px rgba(0, 243, 255, 0.5),
+                0 0 30px rgba(0, 243, 255, 0.3);
         }
         
         .search-icon {
             position: absolute;
-            right: 20px;
+            right: 25px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(200, 214, 229, 0.7);
+            color: #00f3ff;
+            font-size: 1.3rem;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
         }
         
+        /* Game Cards Futuristic */
         .games-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
         
         .game-card {
-            background: rgba(20, 40, 80, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: rgba(15, 20, 40, 0.7);
+            backdrop-filter: blur(15px) saturate(180%);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(0, 243, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(123, 0, 255, 0.05));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s;
         }
         
         .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            background: rgba(20, 40, 80, 0.8);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.7),
+                0 0 0 2px rgba(0, 243, 255, 0.3),
+                0 0 40px rgba(0, 243, 255, 0.2);
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
         }
         
         .game-header {
-            padding: 15px;
-            background: rgba(10, 26, 58, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            background: rgba(10, 15, 30, 0.8);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            position: relative;
+        }
+        
+        .game-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00f3ff, transparent);
         }
         
         .game-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
-            color: #00a8cc;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(90deg, #00f3ff, #a0a0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            letter-spacing: 1px;
         }
         
         .game-image-container {
             position: relative;
             cursor: pointer;
             overflow: hidden;
+            height: 200px;
         }
         
         .game-image {
             width: 100%;
-            height: 180px;
+            height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
+            filter: brightness(0.9) contrast(1.1);
+        }
+        
+        .game-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(10, 15, 40, 0.8));
+            pointer-events: none;
         }
         
         .game-image:hover {
-            transform: scale(1.05);
+            transform: scale(1.1) rotate(1deg);
+            filter: brightness(1.1) contrast(1.2);
         }
         
         .game-description {
-            padding: 15px;
+            padding: 20px;
         }
         
         .game-description p {
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #c8d6e5;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #c0c0ff;
         }
         
         .play-btn {
             display: inline-block;
-            background: linear-gradient(to right, #0c7b93, #00a8cc);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: linear-gradient(90deg, #00a8cc, #0077cc);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0, 119, 204, 0.4);
+            font-size: 0.9rem;
             border: none;
             cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.7s ease;
+            z-index: -1;
         }
         
         .play-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(to right, #00a8cc, #0c7b93);
+            box-shadow: 0 8px 20px rgba(0, 119, 204, 0.6), 0 0 20px rgba(0, 243, 255, 0.5);
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
         }
         
+        .play-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Footer Futuristic */
         footer {
             text-align: center;
             margin-top: 50px;
-            padding: 20px;
+            padding: 25px;
             font-size: 0.9rem;
-            opacity: 0.7;
-            background: rgba(20, 40, 80, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #c8d6e5;
+            background: rgba(10, 15, 35, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            color: #a0a0ff;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2rem;
-            color: rgba(200, 214, 229, 0.7);
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f3ff, #7b00ff, #00f3ff, transparent);
         }
         
-        /* Modal Styles */
+        /* Modal Styles Futuristic */
         .modal {
             display: none;
             position: fixed;
@@ -244,74 +463,93 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.4s;
         }
         
         .modal-content {
             max-width: 90%;
             max-height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(12, 123, 147, 0.5);
+            border-radius: 15px;
+            box-shadow: 
+                0 0 60px rgba(0, 243, 255, 0.4),
+                0 0 0 2px rgba(0, 243, 255, 0.3);
+            border: 1px solid rgba(0, 243, 255, 0.5);
         }
         
         .modal-controls {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .modal-btn {
-            background: rgba(20, 40, 80, 0.7);
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            background: rgba(20, 25, 50, 0.8);
+            color: #00f3ff;
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            padding: 12px 25px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 1px;
         }
         
         .modal-btn:hover {
-            background: rgba(12, 123, 147, 0.7);
+            background: rgba(0, 243, 255, 0.2);
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
         }
         
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 40px;
-            color: white;
+            top: 25px;
+            right: 35px;
+            font-size: 45px;
+            color: #00f3ff;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.8);
+            background: rgba(10, 15, 30, 0.7);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 243, 255, 0.3);
         }
         
         .close-modal:hover {
-            color: #00a8cc;
+            color: #ff0055;
+            transform: rotate(90deg);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
         }
         
+        /* Notifikasi Futuristic */
         .notification {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(10, 26, 58, 0.9);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 5px;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(10, 15, 35, 0.9);
+            color: #00f3ff;
+            padding: 18px 30px;
+            border-radius: 10px;
             display: none;
-            z-index: 1001;
-            animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2001;
+            animation: slideIn 0.4s, fadeOut 0.5s 2.5s forwards;
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
         }
         
         @keyframes fadeIn {
@@ -329,97 +567,279 @@
             to { opacity: 0; }
         }
         
+        /* Responsif */
+        @media (max-width: 1200px) {
+            .games-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
         @media (max-width: 768px) {
             .games-container {
                 grid-template-columns: 1fr;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .game-title {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
             
             .modal-controls {
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .modal-btn {
+                width: 80%;
+                text-align: center;
+            }
+            
+            .neon-glow {
+                width: 500px;
+                height: 500px;
+            }
+            
+            .back-button {
+                top: 15px;
+                right: 15px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .game-card {
+                border-radius: 15px;
+            }
+            
+            .back-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Digital Data Stream Animation */
+        .data-stream {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .stream-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f3ff, transparent);
+            animation: streamFlow 10s linear infinite;
+        }
+        
+        @keyframes streamFlow {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading-pulse {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            animation: loading 2s ease-in-out infinite;
+            z-index: 9999;
+            display: none;
+        }
+        
+        @keyframes loading {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Digital Particles */
+        .digital-particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background-color: #00f3ff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0;
+            box-shadow: 0 0 10px #00f3ff;
+        }
+        
+        /* No Results Message */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px;
+            font-size: 1.5rem;
+            color: #a0a0ff;
+            background: rgba(10, 15, 35, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Game Counter */
+        .game-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00f3ff;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 15, 35, 0.5);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00f3ff, #7b00ff);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #00c6ff, #a000ff);
         }
     </style>
 </head>
 <body>
-    <!-- Container untuk efek dadu berjatuhan -->
-    <div class="dice-container" id="diceContainer"></div>
+    <!-- Tombol Kembali -->
+    <a href="https://novalmuttawali-ym2l.vercel.app/LINEUTAMA.html#" class="back-button">KEMBALI</a>
+    
+    <!-- Efek Background Digital -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div class="hologram-grid"></div>
+    <div class="neon-glow"></div>
+    <div class="data-stream" id="dataStream"></div>
+    
+    <!-- Loading Animation -->
+    <div class="loading-pulse" id="loadingPulse"></div>
     
     <div class="container">
         <header>
-            <h1>Permainan Casino Terpopuler</h1>
-            <p class="subtitle">Nikmati pengalaman bermain yang seru dan menarik</p>
+            <h1>DIGITAL CASINO EXPERIENCE</h1>
+            <p class="subtitle">IMMERSE YOURSELF IN THE FUTURE OF GAMING</p>
             
             <div class="search-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Cari permainan...">
-                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" id="searchInput" placeholder="SEARCH FOR A GAME...">
+                <div class="search-icon">⌕</div>
             </div>
         </header>
         
+        <!-- Game Counter -->
+        <div class="game-counter" id="gameCounter"></div>
+        
         <div class="games-container" id="gamesContainer">
+            <!-- Semua game dari kode sebelumnya -->
             <!-- Permainan Domino Live -->
             <div class="game-card" data-name="domino live">
                 <div class="game-header">
-                    <h2 class="game-title">Domino Live</h2>
+                    <h2 class="game-title">DOMINO LIVE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/VsxGbL8s/capture-20240811090010.png" alt="Domino Live" class="game-image" data-src="https://i.postimg.cc/VsxGbL8s/capture-20240811090010.png">
                 </div>
                 <div class="game-description">
-                    <p>Domino Live merupakan permainan tradisional yang asalnya merupakan pengembangan dari permainan Pai Gow yang merupakan salah satu permainan tertua di dunia. Domino sendiri merupakan permainan yang sangat populer di Indonesia dan merupakan pengembangan Pai Gow versi Indonesia yang sangat sering dimainkan masyarakat Indonesia dahulu.</p>
+                    <p>Domino Live merupakan permainan tradisional yang asalnya merupakan pengembangan dari permainan Pai Gow yang merupakan salah satu permainan tertua di dunia.</p>
                     <p>Permainan ini juga menambahkan unsur seperti Baccarat dan Dragon Tiger. Selamat menikmati permainan unik ini.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
             <!-- Permainan 6D Color -->
             <div class="game-card" data-name="6d color">
                 <div class="game-header">
-                    <h2 class="game-title">6D Color</h2>
+                    <h2 class="game-title">6D COLOR</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/QNprYzSb/capture-20240808085755.png" alt="6D Color" class="game-image" data-src="https://i.postimg.cc/QNprYzSb/capture-20240808085755.png">
                 </div>
                 <div class="game-description">
-                    <p>6D Color ini merupakan game yang memadukan keseruan permainan bola dengan sicbo yang menjadikan ini kombinasi yang unik. Dalam permainan kami hadirkan berbagai macam tipe taruhan yang akan meningkatkan kesempatan anda untuk menang dalam permainan ini.</p>
+                    <p>6D Color ini merupakan game yang memadukan keseruan permainan bola dengan sicbo yang menjadikan ini kombinasi yang unik. Dalam permainan kami hadirkan berbagai macam tipe taruhan.</p>
                     <p>Dalam permainan ini juga kami hadirkan taruhan warna dan angka. Segera mainkan game seru dan baru ini.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
             <!-- Permainan Billiards -->
             <div class="game-card" data-name="billiards">
                 <div class="game-header">
-                    <h2 class="game-title">Billiards</h2>
+                    <h2 class="game-title">BILLIARDS</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/XJBSSDgL/capture-20240811085114.png" alt="Billiards" class="game-image" data-src="https://i.postimg.cc/XJBSSDgL/capture-20240811085114.png">
                 </div>
                 <div class="game-description">
                     <p>Biliar adalah permainan unik yang awalnya dalam permainan sederhana ini, Anda hanya perlu menebak bola mana yang paling dekat dengan breaker.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
             <!-- Permainan Poker Dice -->
             <div class="game-card" data-name="poker dice">
                 <div class="game-header">
-                    <h2 class="game-title">Poker Dice</h2>
+                    <h2 class="game-title">POKER DICE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/JzHpGvMN/capture-20240811134339.png" alt="Poker Dice" class="game-image" data-src="https://i.postimg.cc/JzHpGvMN/capture-20240811134339.png">
                 </div>
                 <div class="game-description">
                     <p>Poker dadu adalah permainan unik yang kombinasi permainan Poker dari dunia barat dan game Dadu dari dunia timur membuat game ini sangat menghibur untuk setiap penjudi.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
@@ -433,7 +853,7 @@
                 </div>
                 <div class="game-description">
                     <p>Fantan merupakan permainan tradisional dari china yang juga sering disebut permainan ini sangat digemari di berbagai casino terkenal di wilayah Asia.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
@@ -446,8 +866,8 @@
                     <img src="https://i.postimg.cc/FKDJybb9/capture-20240811134703.png" alt="RACE BALL" class="game-image" data-src="https://i.postimg.cc/FKDJybb9/capture-20240811134703.png">
                 </div>
                 <div class="game-description">
-                    <p>Race Ball merupakan permainan unik yang mengutamakan teknologi di era modern ini. Permainan ini dijalankan dengan menggunakan mesin yang secara otomatis akan membawakan permainan ini untuk anda. Anda hanya perlu menebak hasil dari pertandingan 10 bola yang akan saling berpacu untuk dapat memenangkan permainan unik ini.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Race Ball merupakan permainan unik yang mengutamakan teknologi di era modern ini. Permainan ini dijalankan dengan menggunakan mesin yang secara otomatis akan membawakan permainan ini untuk anda.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
@@ -461,7 +881,7 @@
                 </div>
                 <div class="game-description">
                     <p>Sic Bo adalah permainan Tiongkok kuno yang berarti dadu berharga. Ini adalah game yang sangat populer di wilayah Asia.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
             
@@ -475,63 +895,63 @@
                 </div>
                 <div class="game-description">
                     <p>48D adalah permainan tradisional menggunakan bola di dalam kandang, mirip dengan permainan roulette. Jadi untuk memenangkan permainan sederhana ini, Anda hanya perlu menebak bola apa yang akan keluar sebagai hasilnya.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan 3D Shio -->
             <div class="game-card" data-name="3d shio">
                 <div class="game-header">
-                    <h2 class="game-title">3D Shio</h2>
+                    <h2 class="game-title">3D SHIO</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/WzYcrcv7/capture-20240808085210.png" alt="3D Shio" class="game-image" data-src="https://i.postimg.cc/WzYcrcv7/capture-20240808085210.png">
                 </div>
                 <div class="game-description">
-                    <p>3D Shio adalah salah satu game terbaru yang terinspirasi oleh zodiak Cina yang juga disebut SHIO. Zodiak Cina ini adalah 12 hewan beruntung menurut mitos yang dimenangkan dalam perlombaan surgawi. Game unik ini dibuat untuk semua pemain setia yang ingin mencoba nuansa permainan baru dan asli, jadi apakah SHIO Anda akan menjadi pemenang?</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>3D Shio adalah salah satu game terbaru yang terinspirasi oleh zodiak Cina yang juga disebut SHIO. Zodiak Cina ini adalah 12 hewan beruntung menurut mitos yang dimenangkan dalam perlombaan surgawi.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Sicbo Ball - Fast -->
             <div class="game-card" data-name="sicbo ball fast">
                 <div class="game-header">
-                    <h2 class="game-title">Sicbo Ball - Fast</h2>
+                    <h2 class="game-title">SICBO BALL - FAST</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/Xvn5VLd4/capture-20240811135144.png" alt="Sicbo Ball - Fast" class="game-image" data-src="https://i.postimg.cc/Xvn5VLd4/capture-20240811135144.png">
                 </div>
                 <div class="game-description">
                     <p>Sic Bo Ball adalah variasi dari permainan Sic Bo Dice yang kami buat. Gameplaynya persis sama dengan game Sic Bo Dice tetapi menggunakan mesin.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan 5D Ball -->
             <div class="game-card" data-name="5d ball">
                 <div class="game-header">
-                    <h2 class="game-title">5D Ball</h2>
+                    <h2 class="game-title">5D BALL</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/tgXNJpW1/capture-20240808085352.png" alt="5D Ball" class="game-image" data-src="https://i.postimg.cc/tgXNJpW1/capture-20240808085352.png">
                 </div>
                 <div class="game-description">
-                    <p>5D ini merupakan salah satu deretan seri permainan baru yang mengutamakan teknologi berbasis mesin. Permainan sederhana namun juga unik ini kami kemas dengan alat permainan yang unik, anda hanya perlu menebak angka angka yang tersedot ke atas oleh mesin dan menjadi pemenangnya.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>5D ini merupakan salah satu deretan seri permainan baru yang mengutamakan teknologi berbasis mesin. Permainan sederhana namun juga unik ini kami kemas dengan alat permainan yang unik.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Xoc Dia -->
             <div class="game-card" data-name="xoc dia">
                 <div class="game-header">
-                    <h2 class="game-title">Xoc Dia</h2>
+                    <h2 class="game-title">XOC DIA</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/9X8bJb9M/capture-20240811135626.png" alt="Xoc Dia" class="game-image" data-src="https://i.postimg.cc/9X8bJb9M/capture-20240811135626.png">
                 </div>
                 <div class="game-description">
                     <p>Xoc Dia adalah permainan tradisional asli Vietnam yang tersedia. Pemain bertaruh pada kombinasi warna Merah dan Putih dari 4 kancing yang dikocok dalam mangkuk tertutup.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -545,21 +965,21 @@
                 </div>
                 <div class="game-description">
                     <p>Bingo Roulette adalah permainan klasik dari kata Perancis yang berarti roda kecil yang menggunakan satu bola kecil dan roda roulette. Jadi untuk memenangkan permainan sederhana ini. Anda hanya perlu menebak di angka berapa bola akan mendarat.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Suwit -->
             <div class="game-card" data-name="suwit">
                 <div class="game-header">
-                    <h2 class="game-title">Suwit</h2>
+                    <h2 class="game-title">SUWIT</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/3RrhHGTt/OG2-In-Lgp-TY2hr-Z6-Uw-Lq-W1w.png" alt="Suwit" class="game-image" data-src="https://i.postimg.cc/3RrhHGTt/OG2-In-Lgp-TY2hr-Z6-Uw-Lq-W1w.png">
                 </div>
                 <div class="game-description">
-                    <p>Permainan ini adalah permainan umum yang sering di mainkan dengan mengadu pilihan kita dengan lawan antara gunting batu dan kertas atau jempol, telunjuk dan kelingking. Media yang di gunakan oleh kita dalam permainan ini adalah 2 dadu (merah dan hitam) dimana terdapat 6 sisi dengan masing-masing 2 sisi untuk jenis gambar yang ada. Dadu dengan warna hitam akan di gunakan untuk suwit yang berisikan gambar Gunting, Batu dan Kertas sedangkan dadu dengan warna merah akan di gunakan untuk suwit yang berisikan gambar Jempol, Telunjuk dan Kelingking.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Permainan ini adalah permainan umum yang sering di mainkan dengan mengadu pilihan kita dengan lawan antara gunting batu dan kertas atau jempol, telunjuk dan kelingking.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -572,134 +992,134 @@
                     <img src="https://i.postimg.cc/Y0hxGtg1/MPpl-Foi-EQh-Cer-Gdh7li-O5w.png" alt="DICE 6 FEVER" class="game-image" data-src="https://i.postimg.cc/Y0hxGtg1/MPpl-Foi-EQh-Cer-Gdh7li-O5w.png">
                 </div>
                 <div class="game-description">
-                    <p>Nikmati banyak Bonus dalam permainan terbaru kami Dice 6 Fever,yang merupakan pengembangan dari permainan terbaik kami Dice 6. Permainan Dice 6 Fever yang sederhana dan menyenangkan dari IDNLIVE ini hadir dengan tampilan baru yang Modern dan sensasi bermain yang baru dengan hadirnya Hot & Cold sistem beserta juga Jackpot sistem yang akan membuat anda lebih bersemangat untuk menaklukan permainan ini.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Nikmati banyak Bonus dalam permainan terbaru kami Dice 6 Fever,yang merupakan pengembangan dari permainan terbaik kami Dice 6.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan 24D Jackpot -->
             <div class="game-card" data-name="24d jackpot">
                 <div class="game-header">
-                    <h2 class="game-title">24D Jackpot</h2>
+                    <h2 class="game-title">24D JACKPOT</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/yNDhYSp6/o-Oi8-IQFHQEmn3kk-Dod-DY4w.png" alt="24D Jackpot" class="game-image" data-src="https://i.postimg.cc/yNDhYSp6/o-Oi8-IQFHQEmn3kk-Dod-DY4w.png">
                 </div>
                 <div class="game-description">
-                    <p>24D Jackpot merupakan permainan tradisional menebak angka yang dibuat menjadi modern sama seperti kebanyakan permainan kami yang sudah mendapatkan sentuhan tampilan yang lebih fresh dan juga tentunya dengan Bonus sistem yang sangat menggiurkan untuk anda memainkan permainan ini. Menangkan Bonus sampai x500 lipat melalui sistem Jackpot didalam game terbaru kami ini!!!</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>24D Jackpot merupakan permainan tradisional menebak angka yang dibuat menjadi modern sama seperti kebanyakan permainan kami yang sudah mendapatkan sentuhan tampilan yang lebih fresh.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Shio Fights -->
             <div class="game-card" data-name="shio fights">
                 <div class="game-header">
-                    <h2 class="game-title">Shio Fights</h2>
+                    <h2 class="game-title">SHIO FIGHTS</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/kgYSRXLj/capture-20240811135019.png" alt="Shio Fights" class="game-image" data-src="https://i.postimg.cc/kgYSRXLj/capture-20240811135019.png">
                 </div>
                 <div class="game-description">
                     <p>Shio Fights adalah permainan kartu unik dengan tema Zodiak Cina sama seperti permainan Shio Balls kami. Di setiap putaran dalam game ini akan diadu dua Shio yang kemenangannya ditentukan berdasarkan peringkat masing-masing Shio.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Gong Ball Jitu -->
             <div class="game-card" data-name="gong ball jitu">
                 <div class="game-header">
-                    <h2 class="game-title">Gong Ball Jitu</h2>
+                    <h2 class="game-title">GONG BALL JITU</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/cCJTw4dX/capture-20240811091646.png" alt="Gong Ball Jitu" class="game-image" data-src="https://i.postimg.cc/cCJTw4dX/capture-20240811091646.png">
                 </div>
                 <div class="game-description">
                     <p>Gongball jitu adalah game yang jauh lebih sederhana yang berasal dari game Gong Ball, permainan ini menggunakan 3 bola dan satu papan. Game ini dibuat untuk pemain yang menyukai game Gong Ball yang lebih cepat.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Poker Dice -->
             <div class="game-card" data-name="europe poker dice">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Poker Dice</h2>
+                    <h2 class="game-title">EUROPE POKER DICE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/QxK2sNDP/78-S0-SRr-DSfm2l9-Imseqx-HA.png" alt="Europe Poker Dice" class="game-image" data-src="https://i.postimg.cc/QxK2sNDP/78-S0-SRr-DSfm2l9-Imseqx-HA.png">
                 </div>
                 <div class="game-description">
                     <p>Poker Dice merupakan permainan autentik dan unik dari IDNLIVE</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Baccarat 2 -->
             <div class="game-card" data-name="europe baccarat 2">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Baccarat 2</h2>
+                    <h2 class="game-title">EUROPE BACCARAT 2</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/C5k92PNv/4-C8-R9-X0-SBq-JAG2-RNLj-OYQ.png" alt="Europe Baccarat 2" class="game-image" data-src="https://i.postimg.cc/C5k92PNv/4-C8-R9-X0-SBq-JAG2-RNLj-OYQ.png">
                 </div>
                 <div class="game-description">
-                    <p>Baccarat, juga dikenal sebagai Punto Banco, adalah salah satu permainan kartu tertua dan paling populer di kasino di seluruh dunia, terutama di kalangan pemain besar dan di Asia. Baccarat sangat dominan di Makau. Meskipun terlihat serius dan elegan, permainan ini sebenarnya sederhana. Anda hanya perlu bertaruh pada pihak yang akan menang atau seri.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Baccarat, juga dikenal sebagai Punto Banco, adalah salah satu permainan kartu tertua dan paling populer di kasino di seluruh dunia, terutama di kalangan pemain besar dan di Asia.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Dragon Tiger -->
             <div class="game-card" data-name="europe dragon tiger">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Dragon Tiger</h2>
+                    <h2 class="game-title">EUROPE DRAGON TIGER</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/kgJ4yh3s/e-JE871-U2-TUGq3-E4-Apgv-FGA.png" alt="Europe Dragon Tiger" class="game-image" data-src="https://i.postimg.cc/kgJ4yh3s/e-JE871-U2-TUGq3-E4-Apgv-FGA.png">
                 </div>
                 <div class="game-description">
-                    <p>Permainan judi paling sederhana. Pada dasarnya ini adalah permainan baccarat versi dua kartu saja. Untuk lebih jelasnya, dua kartu di keluarkan, satu untuk Dragon dan satu untuk Tiger. Player bertaruh sisi mana yang akan lebih tinggi nilainya.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Permainan judi paling sederhana. Pada dasarnya ini adalah permainan baccarat versi dua kartu saja. Untuk lebih jelasnya, dua kartu di keluarkan, satu untuk Dragon dan satu untuk Tiger.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Roulette 2 -->
             <div class="game-card" data-name="europe roulette 2">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Roulette 2</h2>
+                    <h2 class="game-title">EUROPE ROULETTE 2</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/zvZ5f5mJ/Wx-Tvp-2-HSG2j-Q68vm-Yho-Q.png" alt="Europe Roulette 2" class="game-image" data-src="https://i.postimg.cc/zvZ5f5mJ/Wx-Tvp-2-HSG2j-Q68vm-Yho-Q.png">
                 </div>
                 <div class="game-description">
                     <p>Roulette adalah permainan klasik dari kata Perancis yang berarti roda kecil yang menggunakan satu bola kecil dan roda roulette. Jadi untuk memenangkan permainan sederhana ini, Anda hanya perlu menebak di nomor berapa bola akan mendarat.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Ceme -->
             <div class="game-card" data-name="europe ceme">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Ceme</h2>
+                    <h2 class="game-title">EUROPE CEME</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/1Xf0c68m/Q1a-G96q5-QImy-M8-Os-Gbuj-QA.png" alt="Europe Ceme" class="game-image" data-src="https://i.postimg.cc/1Xf0c68m/Q1a-G96q5-QImy-M8-Os-Gbuj-QA.png">
                 </div>
                 <div class="game-description">
-                    <p>CEME 7,8,9 merupakan inovasi permainan autentik terbaru dari IDNLIVE EUROPE yang mirip dengan Baccarat, namun menggunakan kartu domino. Permainan cepat ini menawarkan keseruan baru dengan yang melibatkan 3 Pemain dan 1 Bankir, dimana anda dapat bertaruh pada ketiga Pemain sekaligus melawan Bankir dalam satu ronde. Hadir dengan konsep menarik, taruhan 7,8,9 memberi peluang pembayaran berkali-kali lipat. Segera mainkan dan nikmati sensasi kemenangan di CEME 7,8,9!</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>CEME 7,8,9 merupakan inovasi permainan autentik terbaru dari IDNLIVE EUROPE yang mirip dengan Baccarat, namun menggunakan kartu domino. Permainan cepat ini menawarkan keseruan baru.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Bounce Roulette -->
             <div class="game-card" data-name="bounce roulette">
                 <div class="game-header">
-                    <h2 class="game-title">Bounce Roulette</h2>
+                    <h2 class="game-title">BOUNCE ROULETTE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/CKC9WZwH/48t-MZNWFSMy-Evc-GKSPBEx-Q.png" alt="Bounce Roulette" class="game-image" data-src="https://i.postimg.cc/CKC9WZwH/48t-MZNWFSMy-Evc-GKSPBEx-Q.png">
                 </div>
                 <div class="game-description">
-                    <p>Bounce Roullette adalah lebih dari sekadar game biasa; ini adalah perjalanan menuju ekspektasi yang terpenuhi dan kepuasan yang memuncak. Setiap loncatan bola adalah tantangan baru yang menarik. Mengagumkan, bukan? Grafis canggih dan animasi yang memukau akan membenamkan Anda dalam dunia yang begitu realistis, Anda akan merasa seolah-olah bermain di dalamnya sendiri. Dan ingetlah, Bounce Roullette tidak hanya tentang keberuntungan semata. Inilah kesempatan Anda untuk menguji ketangkasan, ketelitian, dan intuisi Anda. Bounce Roullette adalah game yang akan membuat Anda terus merindukan loncatan berikutnya. Bersiaplah untuk menjalani petualangan yang tak terlupakan dan mengukir namamu di puncak kejayaan. Bergabunglah sekarang dan berani menghadapi tantangan yang luar biasa ini. Temukan keberuntungan di setiap loncatan!</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Bounce Roullette adalah lebih dari sekadar game biasa; ini adalah perjalanan menuju ekspektasi yang terpenuhi dan kepuasan yang memuncak. Setiap loncatan bola adalah tantangan baru yang menarik.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -712,8 +1132,8 @@
                     <img src="https://i.postimg.cc/x1Z07Yg7/t-IDTLv3-MREu-Ngva-N9i-Qzp-A.png" alt="12D THUNDER" class="game-image" data-src="https://i.postimg.cc/x1Z07Yg7/t-IDTLv3-MREu-Ngva-N9i-Qzp-A.png">
                 </div>
                 <div class="game-description">
-                    <p>Permainan 12D merupakan permainan yang sudah tidak asing lagi bagi anda, permainan yang sangat sederhana dan menyenangkan ini hadir dengan sentuhan unik terbaru hanya untuk anda. Nikmati Bonus Thunder sampai 500x dari taruhan anda dan jadilah pemenang.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Permainan 12D merupakan permainan yang sudah tidak asing lagi bagi anda, permainan yang sangat sederhana dan menyenangkan ini hadir dengan sentuhan unik terbaru hanya untuk anda.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -726,50 +1146,50 @@
                     <img src="https://i.postimg.cc/rw1BGk3x/capture-20240811090204.png" alt="DUEL DICE" class="game-image" data-src="https://i.postimg.cc/rw1BGk3x/capture-20240811090204.png">
                 </div>
                 <div class="game-description">
-                    <p>Duel Dice merupakan permainan menebak dadu yang mirip dengan permainan terdahulu kami Dice 6, namun dalam permainan terbaru ini kami berikan sentuhan yang lebih modern dan menyenangkan. dalam permainan sederhana ini anda hanya perlu menebak angka dari kedua buah dadu yang berwarna merah dan biru yang juga mirip dengan permainan dragon tiger</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Duel Dice merupakan permainan menebak dadu yang mirip dengan permainan terdahulu kami Dice 6, namun dalam permainan terbaru ini kami berikan sentuhan yang lebih modern dan menyenangkan.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Roulette 1 -->
             <div class="game-card" data-name="europe roulette 1">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Roulette 1</h2>
+                    <h2 class="game-title">EUROPE ROULETTE 1</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/YSKhMTJ9/s-ROsk-Tm-ZTlq3-exb-Ed8m-Qg.png" alt="Europe Roulette 1" class="game-image" data-src="https://i.postimg.cc/YSKhMTJ9/s-ROsk-Tm-ZTlq3-exb-Ed8m-Qg.png">
                 </div>
                 <div class="game-description">
                     <p>Permainan klasik dari kata Perancis yang berarti roda kecil yang menggunakan satu bola kecil dan roda roulette. Jadi untuk memenangkan permainan sederhana ini, Anda hanya perlu menebak di nomor berapa bola akan mendarat</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Dragon Tiger Wild -->
             <div class="game-card" data-name="dragon tiger wild">
                 <div class="game-header">
-                    <h2 class="game-title">Dragon Tiger Wild</h2>
+                    <h2 class="game-title">DRAGON TIGER WILD</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/yxJNqSFM/VXwd-Y50n-RDKng-O2ge-Ur3-Fw.png" alt="Dragon Tiger Wild" class="game-image" data-src="https://i.postimg.cc/yxJNqSFM/VXwd-Y50n-RDKng-O2ge-Ur3-Fw.png">
                 </div>
                 <div class="game-description">
-                    <p>Dragon Tiger Wild adalah game terbaru dari IDNLIVE EUROPE yang menghadirkan keseruan lebih dengan tambahan Kartu Wild. Permainan ini memberikan pengalaman baru bagi para penggemar Dragon Tiger, dengan peluang kemenangan fantastis hingga 157x! LET'S GET WILD!!!</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Dragon Tiger Wild adalah game terbaru dari IDNLIVE EUROPE yang menghadirkan keseruan lebih dengan tambahan Kartu Wild. Permainan ini memberikan pengalaman baru bagi para penggemar Dragon Tiger.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Oglok -->
             <div class="game-card" data-name="oglok">
                 <div class="game-header">
-                    <h2 class="game-title">Oglok</h2>
+                    <h2 class="game-title">OGLOK</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/bwT9L3hV/u-ILzol-ISQ6mwm-Zmz2-Ir-Brw.png" alt="Oglok" class="game-image" data-src="https://i.postimg.cc/bwT9L3hV/u-ILzol-ISQ6mwm-Zmz2-Ir-Brw.png">
                 </div>
                 <div class="game-description">
                     <p>Oglok adalah permainan tradisional yang mirip dengan permainan Sic Bo tetapi alih-alih menggunakan angka, permainan ini menggunakan gambar. Ini adalah game yang sangat populer di wilayah Asia.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -783,7 +1203,7 @@
                 </div>
                 <div class="game-description">
                     <p>24D adalah permainan tradisional menggunakan bola di dalam kandang, mirip dengan permainan roulette.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -797,21 +1217,21 @@
                 </div>
                 <div class="game-description">
                     <p>12D adalah permainan tradisional menggunakan bola dan papan. Game ini populer di kalangan penjudi falanan di wilayah Asia</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Roulette -->
             <div class="game-card" data-name="roulette">
                 <div class="game-header">
-                    <h2 class="game-title">Roulette</h2>
+                    <h2 class="game-title">ROULETTE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/k5K0w3px/capture-20240811134858.png" alt="Roulette" class="game-image" data-src="https://i.postimg.cc/k5K0w3px/capture-20240811134858.png">
                 </div>
                 <div class="game-description">
                     <p>Cara Bermain : Jika anda memilih angka genap atau ganjil, angka 0 tidak termasuk genap atau ganjil</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -825,77 +1245,77 @@
                 </div>
                 <div class="game-description">
                     <p>Misalnya Dadu yang keluar : 2, 3, 5 Berarti pemenang untuk Dadu angka 2, Dadu angka 3, Dadu angka 5 bet pada jumlah dadu 10</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Soccer Roulette -->
             <div class="game-card" data-name="soccer roulette">
                 <div class="game-header">
-                    <h2 class="game-title">Soccer Roulette</h2>
+                    <h2 class="game-title">SOCCER ROULETTE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/Qx0b14N0/q3byi-Ko-LQV6-LJc-U3-AZYe-Xw.png" alt="Soccer Roulette" class="game-image" data-src="https://i.postimg.cc/Qx0b14N0/q3byi-Ko-LQV6-LJc-U3-AZYe-Xw.png">
                 </div>
                 <div class="game-description">
-                    <p>Kita semua setuju bahwa Sepak Bola dan Roulette adalah dua permainan yang paling digemari. Jadi, mengapa tidak menggabungkan keduanya!! IDNLIVE EROPA mempersembahkan 'SOCCER ROULETTE!'. Putar roda roulette dan raih kemenangan spektakuler, nikmati Bonus Tendangan Penalti yang menegangkan! Panggung telah disiapkan untuk pertaruhan epik di lapangan sepak bola. Ayo berburu Bonus Nomor Keberuntungan!</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Kita semua setuju bahwa Sepak Bola dan Roulette adalah dua permainan yang paling digemari. Jadi, mengapa tidak menggabungkan keduanya!!</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Red White -->
             <div class="game-card" data-name="red white">
                 <div class="game-header">
-                    <h2 class="game-title">Red White</h2>
+                    <h2 class="game-title">RED WHITE</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/BQV8NYZN/f-XHF39tm-S2qevb-Gg-V2-I9-AQ.png" alt="Red White" class="game-image" data-src="https://i.postimg.cc/BQV8NYZN/f-XHF39tm-S2qevb-Gg-V2-I9-AQ.png">
                 </div>
                 <div class="game-description">
-                    <p>Red White adalah permainan unik yang dikembangkan oleh IDNLIVE. Dalam permainan unik ini 3 Bola akan dijatuhkan ke sebuah papan mirip dengan papan catur namun dengan warna Merah, Putih, dan juga ada Jackpot.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Red White adalah permainan unik yang dikembangkan oleh IDNLIVE. Dalam permainan unik ini 3 Bola akan dijatuhkan ke sebuah papan mirip dengan papan catur.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan 24Dspin -->
             <div class="game-card" data-name="24dspin">
                 <div class="game-header">
-                    <h2 class="game-title">24Dspin</h2>
+                    <h2 class="game-title">24DSPIN</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/J7T5JCg2/lr-Ph-YYo-ES22b-I-d-Rdz3e7w.png" alt="24Dspin" class="game-image" data-src="https://i.postimg.cc/J7T5JCg2/lr-Ph-YYo-ES22b-I-d-Rdz3e7w.png">
                 </div>
                 <div class="game-description">
                     <p>Menebak 50-50 Ball 24 (24D). Struktur: AB</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan IDN 4 Stand 2 -->
             <div class="game-card" data-name="idn 4 stand 2">
                 <div class="game-header">
-                    <h2 class="game-title">IDN 4 Stand 2</h2>
+                    <h2 class="game-title">IDN 4 STAND 2</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/Yq5nGwLw/9-Nl1r4-ZTTd-S8-Wg-Nnt-FTRcw.png" alt="IDN 4 Stand 2" class="game-image" data-src="https://i.postimg.cc/Yq5nGwLw/9-Nl1r4-ZTTd-S8-Wg-Nnt-FTRcw.png">
                 </div>
                 <div class="game-description">
                     <p>IDN 4 STAND 2 ini merupakan sebuah permainan yang berasal dari permainan Baccarat atau lebih mudah dimengerti dan bagi pemain vang ingin bermain Baccarat secara lebih cepat</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Dice 6 -->
             <div class="game-card" data-name="dice 6">
                 <div class="game-header">
-                    <h2 class="game-title">Dice 6</h2>
+                    <h2 class="game-title">DICE 6</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/rmKcytPJ/8f-Jy-YMb-TTHOHClytk-Ue-Szw.png" alt="Dice 6" class="game-image" data-src="https://i.postimg.cc/rmKcytPJ/8f-Jy-YMb-TTHOHClytk-Ue-Szw.png">
                 </div>
                 <div class="game-description">
                     <p>Permainan tradisional dengan menebak angka yang keluar dari 1 dadu yang di putar.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -908,22 +1328,22 @@
                     <img src="https://i.postimg.cc/15pL0HxT/sp-DE0-ZKOQgeumj-G0h-I-aj-Q.png" alt="HEAD TAIL" class="game-image" data-src="https://i.postimg.cc/15pL0HxT/sp-DE0-ZKOQgeumj-G0h-I-aj-Q.png">
                 </div>
                 <div class="game-description">
-                    <p>Permainan Head & Tail adalah permainan tebak gambar koin Kepala atau Ekor. Kepala digambarkan Merah dengan logo Naga dan Ekor digambarkan Biru dengan logo Macan. Terdapat 3 buah koin pada permainan ini. Cara bermain hanya perlu menebak koin apa yang akan keluar pada ketiga koin tersebut.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Permainan Head & Tail adalah permainan tebak gambar koin Kepala atau Ekor. Kepala digambarkan Merah dengan logo Naga dan Ekor digambarkan Biru dengan logo Macan.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Roulette 2 - Fast -->
             <div class="game-card" data-name="roulette 2 fast">
                 <div class="game-header">
-                    <h2 class="game-title">Roulette 2 - Fast</h2>
+                    <h2 class="game-title">ROULETTE 2 - FAST</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/6QnkmdT2/BM3-Gqalt-RTCXZ8-MUSDL9-Sw.png" alt="Roulette 2 - Fast" class="game-image" data-src="https://i.postimg.cc/6QnkmdT2/BM3-Gqalt-RTCXZ8-MUSDL9-Sw.png">
                 </div>
                 <div class="game-description">
                     <p>Roulette adalah permainan klasik dari kata Perancis yang berarti roda kecil yang menggunakan satu bola kecil dan roda roulette. Jadi untuk memenangkan permainan sederhana ini, Anda hanya perlu menebak di angka berapa bola akan mendarat</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
@@ -937,125 +1357,125 @@
                 </div>
                 <div class="game-description">
                     <p>Monopoly adalah permainan unik yang dikembangkan oleh IDNLIVE. Permainan ini sama seperti permainan monopoli yang sudah dikenal luas, namun dalam permainan ini kami ganti dengan 16 negara sebagai sebagai taruhannya dan juga terdapat 4 kotak spesial.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Gong Ball -->
             <div class="game-card" data-name="gong ball">
                 <div class="game-header">
-                    <h2 class="game-title">Gong Ball</h2>
+                    <h2 class="game-title">GONG BALL</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/rm4v75mR/in-RKXsn-SSKq-Hm-QQx-TN1-ZJA.png" alt="Gong Ball" class="game-image" data-src="https://i.postimg.cc/rm4v75mR/in-RKXsn-SSKq-Hm-QQx-TN1-ZJA.png">
                 </div>
                 <div class="game-description">
-                    <p>Permainan ini adalah permainan sama seperti samgong atau (3 picture) yang dimana hasil dari permainan ini tergantung dari jumlah 3 kartu yang di dapat. Masing-masing kartu memiliki nilai sebagai berikut : Kartu AS s/d 10 masing-masing bernilai 1 s/d 10 Sedangkan Kartu J,O dan K bernilai 10. Nilai tertinggi permainan ini adalah 3 Picture</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Permainan ini adalah permainan sama seperti samgong atau (3 picture) yang dimana hasil dari permainan ini tergantung dari jumlah 3 kartu yang di dapat.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Baccarat -->
             <div class="game-card" data-name="baccarat">
                 <div class="game-header">
-                    <h2 class="game-title">Baccarat</h2>
+                    <h2 class="game-title">BACCARAT</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/d1zQkg47/9-K72zs-Mu-QC6orm-DLs1i5zw.png" alt="Baccarat" class="game-image" data-src="https://i.postimg.cc/d1zQkg47/9-K72zs-Mu-QC6orm-DLs1i5zw.png">
                 </div>
                 <div class="game-description">
-                    <p>Baccarat yang juga dikenal sebagai punto banco, adalah salah satu game tertua dan terpopuler di casino di seluruh dunia. Permainan ini terutama populer di kalangan para pemain besar dan para penjudi di Asia. Baccarat sangat dominan di Macau. Meskipun permainan ini terlihat serius dan elegan, tapi sebenarnya permainan ini sangat mudah seperti bertaruh pada dua sisi koin</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Baccarat yang juga dikenal sebagai punto banco, adalah salah satu game tertua dan terpopuler di casino di seluruh dunia. Permainan ini terutama populer di kalangan para pemain besar dan para penjudi di Asia.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Niu Niu -->
             <div class="game-card" data-name="niu niu">
                 <div class="game-header">
-                    <h2 class="game-title">Niu Niu</h2>
+                    <h2 class="game-title">NIU NIU</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/KvFSqtp3/j-J1ep-Rph-TPW2-RYBHTGi-THQ.png" alt="Niu Niu" class="game-image" data-src="https://i.postimg.cc/KvFSqtp3/j-J1ep-Rph-TPW2-RYBHTGi-THQ.png">
                 </div>
                 <div class="game-description">
-                    <p>Niu Niu merupakan permainan populer di China dan Cambodia, permainan terasa sulit pertama kali, tapi jika anda sudah mengerti peraturannya, maka permainan ini sebenarnya sangat menarik dan simpel. Permainan ini juga populer di berbagai kasino dan pemain dari Asia.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Niu Niu merupakan permainan populer di China dan Cambodia, permainan terasa sulit pertama kali, tapi jika anda sudah mengerti peraturannya, maka permainan ini sebenarnya sangat menarik dan simpel.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Europe Baccarat -->
             <div class="game-card" data-name="europe baccarat">
                 <div class="game-header">
-                    <h2 class="game-title">Europe Baccarat</h2>
+                    <h2 class="game-title">EUROPE BACCARAT</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/C5ff2WvY/8-Md-USxk-USeqkv3-DRl0n-GNg.png" alt="Europe Baccarat" class="game-image" data-src="https://i.postimg.cc/C5ff2WvY/8-Md-USxk-USeqkv3-DRl0n-GNg.png">
                 </div>
                 <div class="game-description">
                     <p>Baccarat, juga dikenal sebagai Punto Banco, adalah salah satu permainan kartu tertua dan paling populer di kasino di seluruh dunia.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Grand Prix -->
             <div class="game-card" data-name="grand prix">
                 <div class="game-header">
-                    <h2 class="game-title">Grand Prix</h2>
+                    <h2 class="game-title">GRAND PRIX</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/yY3Fprxv/hm9l-C-OYSMerq-OBZVo-Cqsg.png" alt="Grand Prix" class="game-image" data-src="https://i.postimg.cc/yY3Fprxv/hm9l-C-OYSMerq-OBZVo-Cqsg.png">
                 </div>
                 <div class="game-description">
-                    <p>Grandprix Number adalah permainan terbaru yang menambah kumpulan permainan unik dan menarik dari kami untuk para pemain setia. Permainan ini hampir mirip dengan game Race Ball kami sebelumnya, tetapi alih-alih menebak terlalu banyak bola, dalam game ini kami menghilangkan kerumitan Race Ball dan mempermudah pelanggan kami dengan game Grandprix Number ini. Dalam permainan ini anda hanya perlu menebak satu atau dua bola saja.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Grandprix Number adalah permainan terbaru yang menambah kumpulan permainan unik dan menarik dari kami untuk para pemain setia.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan IDN 4 Stand -->
             <div class="game-card" data-name="idn 4 stand">
                 <div class="game-header">
-                    <h2 class="game-title">IDN 4 Stand</h2>
+                    <h2 class="game-title">IDN 4 STAND</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/CM6DQr8M/WRdy-RH5-WQHq-NH-8-VHc2-K8-Q.png" alt="IDN 4 Stand" class="game-image" data-src="https://i.postimg.cc/CM6DQr8M/WRdy-RH5-WQHq-NH-8-VHc2-K8-Q.png">
                 </div>
                 <div class="game-description">
                     <p>IDN 4 STAND ini merupakan sebuah permainan yang berasal dari permainan Baccarat,lebih mudah dimengerti dan bagi pemain yang ingin bermain Baccarat secara lebih cepat</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Dragon Tiger -->
             <div class="game-card" data-name="dragon tiger">
                 <div class="game-header">
-                    <h2 class="game-title">Dragon Tiger</h2>
+                    <h2 class="game-title">DRAGON TIGER</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/FFPXS3LJ/ob-Ylq-ARf-Q1in-Xc9e-VSj-Q0-Q.png" alt="Dragon Tiger" class="game-image" data-src="https://i.postimg.cc/FFPXS3LJ/ob-Ylq-ARf-Q1in-Xc9e-VSj-Q0-Q.png">
                 </div>
                 <div class="game-description">
                     <p>permainan judi paling sederhana. Pada dasarnya ini adalah permainan baccarat versi dua kartu saja. Untuk lebih jelasnya, dua kartu di keluarkan, satu untuk Dragon dan satu untuk Tiger. Player bertaruh sisi mana yang akan lebih tinggi nilainya.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
 
             <!-- Permainan Checkmate Rush -->
             <div class="game-card" data-name="checkmate rush">
                 <div class="game-header">
-                    <h2 class="game-title">Checkmate Rush</h2>
+                    <h2 class="game-title">CHECKMATE RUSH</h2>
                 </div>
                 <div class="game-image-container">
                     <img src="https://i.postimg.cc/sXwM5hwn/1-S4r-Ozk-ORViv-Jl9-Bo54-Mh-Q.png" alt="Checkmate Rush" class="game-image" data-src="https://i.postimg.cc/sXwM5hwn/1-S4r-Ozk-ORViv-Jl9-Bo54-Mh-Q.png">
                 </div>
                 <div class="game-description">
-                    <p>Checkmate Rush hadir sebagai game Crash pertama di IDN LIVE, dengan tema catur yang sudah akrab dan disukai banyak pemain. Dengan gameplay yang menegangkan, pemain ditantang untuk membuat keputusan penting di setiap level: melanjutkan untuk mengejar kemenangan lebih besar, atau berhenti untuk mengamankan keuntungan mereka. Semakin tinggi level, semakin besar risikonya - dan semakin besar pula potensi hadiahnya.</p>
-                    <button class="play-btn">Mainkan Sekarang</button>
+                    <p>Checkmate Rush hadir sebagai game Crash pertama di IDN LIVE, dengan tema catur yang sudah akrab dan disukai banyak pemain. Dengan gameplay yang menegangkan, pemain ditantang untuk membuat keputusan penting di setiap level.</p>
+                    <button class="play-btn">PLAY NOW</button>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>&copy; 2023 Permainan Casino. Semua hak dilindungi. | Hanya untuk hiburan.</p>
+            <p>© 2023 DIGITAL CASINO EXPERIENCE. ALL RIGHTS RESERVED. | FOR ENTERTAINMENT PURPOSES ONLY.</p>
         </footer>
     </div>
     
@@ -1064,13 +1484,13 @@
         <span class="close-modal" id="closeModal">&times;</span>
         <img class="modal-content" id="modalImage">
         <div class="modal-controls">
-            <button class="modal-btn" id="copyImageBtn">Salin Gambar</button>
-            <button class="modal-btn" id="downloadImageBtn">Unduh Gambar</button>
+            <button class="modal-btn" id="copyImageBtn">COPY IMAGE</button>
+            <button class="modal-btn" id="downloadImageBtn">DOWNLOAD</button>
         </div>
     </div>
     
     <!-- Notifikasi -->
-    <div class="notification" id="notification">Gambar telah disalin ke clipboard!</div>
+    <div class="notification" id="notification">IMAGE COPIED TO CLIPBOARD</div>
     
     <script>
         // Mendapatkan elemen-elemen yang diperlukan
@@ -1083,19 +1503,134 @@
         const searchInput = document.getElementById('searchInput');
         const gamesContainer = document.getElementById('gamesContainer');
         const gameCards = document.querySelectorAll('.game-card');
-        const diceContainer = document.getElementById('diceContainer');
+        const matrixBg = document.getElementById('matrixBg');
+        const dataStream = document.getElementById('dataStream');
+        const loadingPulse = document.getElementById('loadingPulse');
+        const gameCounter = document.getElementById('gameCounter');
+        const backButton = document.querySelector('.back-button');
+        
+        // Update game counter
+        function updateGameCounter() {
+            const visibleGames = document.querySelectorAll('.game-card[style=""]').length + 
+                                 document.querySelectorAll('.game-card:not([style])').length;
+            const totalGames = gameCards.length;
+            gameCounter.textContent = `SHOWING ${visibleGames} OF ${totalGames} GAMES`;
+        }
+        
+        // Fungsi untuk membuat efek matrix digital rain
+        function createMatrixEffect() {
+            const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+            
+            for (let i = 0; i < 100; i++) {
+                const matrixChar = document.createElement('div');
+                matrixChar.className = 'matrix-char';
+                matrixChar.textContent = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Posisi acak
+                matrixChar.style.left = `${Math.random() * 100}vw`;
+                
+                // Kecepatan acak
+                const duration = 3 + Math.random() * 10;
+                matrixChar.style.animationDuration = `${duration}s`;
+                
+                // Delay acak
+                const delay = Math.random() * 5;
+                matrixChar.style.animationDelay = `${delay}s`;
+                
+                // Ukuran font acak
+                const fontSize = 14 + Math.random() * 10;
+                matrixChar.style.fontSize = `${fontSize}px`;
+                
+                matrixBg.appendChild(matrixChar);
+            }
+        }
+        
+        // Fungsi untuk membuat efek aliran data
+        function createDataStream() {
+            for (let i = 0; i < 20; i++) {
+                const streamLine = document.createElement('div');
+                streamLine.className = 'stream-line';
+                
+                // Posisi vertikal acak
+                streamLine.style.top = `${Math.random() * 100}vh`;
+                
+                // Kecepatan acak
+                const duration = 15 + Math.random() * 15;
+                streamLine.style.animationDuration = `${duration}s`;
+                
+                // Delay acak
+                const delay = Math.random() * 10;
+                streamLine.style.animationDelay = `${delay}s`;
+                
+                // Tinggi acak
+                const height = 1 + Math.random() * 3;
+                streamLine.style.height = `${height}px`;
+                
+                // Opasitas acak
+                const opacity = 0.05 + Math.random() * 0.15;
+                streamLine.style.opacity = opacity;
+                
+                dataStream.appendChild(streamLine);
+            }
+        }
+        
+        // Fungsi untuk membuat partikel digital
+        function createDigitalParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'digital-particle';
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            
+            // Animasi partikel
+            const size = 2 + Math.random() * 6;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            document.body.appendChild(particle);
+            
+            // Animasi partikel
+            const animation = particle.animate([
+                { 
+                    transform: 'translate(0, 0) scale(1)', 
+                    opacity: 0.8 
+                },
+                { 
+                    transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(0)`, 
+                    opacity: 0 
+                }
+            ], {
+                duration: 1000 + Math.random() * 2000,
+                easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+            });
+            
+            // Hapus partikel setelah animasi selesai
+            animation.onfinish = () => {
+                particle.remove();
+            };
+            
+            return particle;
+        }
         
         // Fungsi untuk membuka modal dengan gambar yang diklik
         function openModal(imageSrc) {
             modal.style.display = 'flex';
             modalImage.src = imageSrc;
-            document.body.style.overflow = 'hidden'; // Mencegah scroll di background
+            document.body.style.overflow = 'hidden';
+            
+            // Tampilkan efek loading
+            loadingPulse.style.display = 'block';
+            
+            // Sembunyikan loading setelah gambar dimuat
+            modalImage.onload = () => {
+                loadingPulse.style.display = 'none';
+            };
         }
         
         // Fungsi untuk menutup modal
         function closeImageModal() {
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+            document.body.style.overflow = 'auto';
+            loadingPulse.style.display = 'none';
         }
         
         // Fungsi untuk menyalin gambar ke clipboard
@@ -1123,22 +1658,32 @@
                         ]);
                         
                         // Menampilkan notifikasi sukses
-                        showNotification('Gambar telah disalin ke clipboard!');
+                        showNotification('IMAGE COPIED TO CLIPBOARD');
+                        
+                        // Buat efek partikel
+                        for (let i = 0; i < 20; i++) {
+                            setTimeout(() => {
+                                createDigitalParticle(
+                                    Math.random() * window.innerWidth,
+                                    Math.random() * window.innerHeight
+                                );
+                            }, i * 50);
+                        }
                     } catch (err) {
-                        console.error('Gagal menyalin gambar: ', err);
-                        showNotification('Gagal menyalin gambar. Coba lagi.');
+                        console.error('Failed to copy image: ', err);
+                        showNotification('FAILED TO COPY IMAGE. TRY AGAIN.');
                     }
                 });
             } catch (err) {
-                console.error('Error dalam proses penyalinan gambar: ', err);
+                console.error('Error in image copying process: ', err);
                 
                 // Fallback: Salin URL gambar jika penyalinan gambar gagal
                 try {
                     await navigator.clipboard.writeText(modalImage.src);
-                    showNotification('URL gambar telah disalin (fallback)');
+                    showNotification('IMAGE URL COPIED (FALLBACK)');
                 } catch (fallbackErr) {
-                    console.error('Gagal menyalin URL gambar: ', fallbackErr);
-                    showNotification('Gagal menyalin gambar dan URL');
+                    console.error('Failed to copy image URL: ', fallbackErr);
+                    showNotification('FAILED TO COPY IMAGE AND URL');
                 }
             }
         }
@@ -1156,6 +1701,8 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
+            showNotification('IMAGE DOWNLOAD STARTED');
         }
         
         // Fungsi untuk menampilkan notifikasi
@@ -1179,6 +1726,9 @@
                 if (gameName.includes(searchTerm)) {
                     card.style.display = 'block';
                     hasResults = true;
+                    
+                    // Tambahkan efek saat muncul
+                    card.style.animation = 'fadeIn 0.5s ease';
                 } else {
                     card.style.display = 'none';
                 }
@@ -1193,54 +1743,65 @@
             if (!hasResults) {
                 const noResults = document.createElement('div');
                 noResults.className = 'no-results';
-                noResults.textContent = `Tidak ditemukan permainan dengan kata kunci "${searchInput.value}"`;
+                noResults.textContent = `NO GAMES FOUND FOR "${searchInput.value}"`;
                 gamesContainer.appendChild(noResults);
+            }
+            
+            // Update game counter
+            updateGameCounter();
+            
+            // Buat efek partikel saat mencari
+            if (searchTerm.length > 0) {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createDigitalParticle(
+                            Math.random() * window.innerWidth,
+                            Math.random() * window.innerHeight
+                        );
+                    }, i * 100);
+                }
             }
         }
         
-        // Fungsi untuk membuat efek dadu berjatuhan
-        function createDice() {
-            const dice = document.createElement('div');
-            dice.className = 'dice';
-            
-            // Nilai dadu acak (1-6)
-            const diceValue = Math.floor(Math.random() * 6) + 1;
-            dice.textContent = diceValue;
-            
-            // Posisi horizontal acak
-            const leftPosition = Math.random() * 100;
-            dice.style.left = `${leftPosition}vw`;
-            
-            // Warna acak
-            const colors = ['#0c7b93', '#00a8cc', '#27496d', '#1c3c6e', '#142850'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            dice.style.background = randomColor;
-            dice.style.color = '#fff';
-            
-            // Durasi animasi acak (5-15 detik)
-            const duration = 5 + Math.random() * 10;
-            dice.style.animationDuration = `${duration}s`;
-            
-            // Delay acak
-            const delay = Math.random() * 5;
-            dice.style.animationDelay = `${delay}s`;
-            
-            diceContainer.appendChild(dice);
-            
-            // Hapus dadu setelah animasi selesai
-            setTimeout(() => {
-                dice.remove();
-            }, (duration + delay) * 1000);
-        }
-        
-        // Menambahkan event listener untuk setiap gambar
+        // Event listener untuk klik pada gambar game
         document.querySelectorAll('.game-image').forEach(image => {
-            image.addEventListener('click', () => {
+            image.addEventListener('click', (e) => {
                 openModal(image.getAttribute('data-src'));
+                
+                // Buat efek partikel di lokasi klik
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        createDigitalParticle(e.clientX, e.clientY);
+                    }, i * 30);
+                }
             });
         });
         
-        // Menambahkan event listener untuk tombol tutup
+        // Event listener untuk tombol play
+        document.querySelectorAll('.play-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Tampilkan efek loading
+                loadingPulse.style.display = 'block';
+                
+                // Simulasi loading game
+                setTimeout(() => {
+                    loadingPulse.style.display = 'none';
+                    showNotification('GAME IS LOADING...');
+                    
+                    // Buat efek partikel
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            createDigitalParticle(e.clientX, e.clientY);
+                        }, i * 50);
+                    }
+                }, 1500);
+                
+                // Mencegah aksi default
+                e.preventDefault();
+            });
+        });
+        
+        // Event listener untuk tombol tutup modal
         closeModal.addEventListener('click', closeImageModal);
         
         // Menutup modal ketika mengklik di luar gambar
@@ -1250,10 +1811,10 @@
             }
         });
         
-        // Menambahkan event listener untuk tombol salin gambar
+        // Event listener untuk tombol salin gambar
         copyImageBtn.addEventListener('click', copyImageToClipboard);
         
-        // Menambahkan event listener untuk tombol unduh
+        // Event listener untuk tombol unduh
         downloadImageBtn.addEventListener('click', downloadImage);
         
         // Menutup modal dengan tombol Escape
@@ -1263,16 +1824,100 @@
             }
         });
         
-        // Menambahkan event listener untuk pencarian
+        // Event listener untuk pencarian
         searchInput.addEventListener('input', searchGames);
         
-        // Membuat efek dadu berjatuhan setiap 0.5 detik
-        setInterval(createDice, 500);
+        // Event listener untuk efek hover pada card game
+        gameCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Buat partikel saat hover
+                const rect = card.getBoundingClientRect();
+                for (let i = 0; i < 5; i++) {
+                    createDigitalParticle(
+                        rect.left + Math.random() * rect.width,
+                        rect.top + Math.random() * rect.height
+                    );
+                }
+            });
+        });
         
-        // Membuat beberapa dadu saat halaman dimuat
-        for (let i = 0; i < 10; i++) {
-            setTimeout(createDice, i * 300);
-        }
+        // Event listener untuk tombol kembali
+        backButton.addEventListener('click', (e) => {
+            // Tambahkan efek loading sebelum navigasi
+            loadingPulse.style.display = 'block';
+            
+            // Buat efek partikel
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createDigitalParticle(e.clientX, e.clientY);
+                }, i * 30);
+            }
+            
+            // Delay sebelum navigasi untuk efek visual
+            setTimeout(() => {
+                loadingPulse.style.display = 'none';
+            }, 1000);
+        });
+        
+        // Inisialisasi efek background saat halaman dimuat
+        window.addEventListener('load', () => {
+            createMatrixEffect();
+            createDataStream();
+            updateGameCounter();
+            
+            // Tampilkan efek loading awal
+            loadingPulse.style.display = 'block';
+            setTimeout(() => {
+                loadingPulse.style.display = 'none';
+                
+                // Buat efek partikel saat halaman selesai dimuat
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        createDigitalParticle(
+                            Math.random() * window.innerWidth,
+                            Math.random() * window.innerHeight
+                        );
+                    }, i * 50);
+                }
+            }, 2000);
+        });
+        
+        // Efek partikel saat mouse bergerak
+        let mouseX = 0, mouseY = 0;
+        let particleTimer = null;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Buat partikel dengan throttling
+            if (!particleTimer) {
+                particleTimer = setTimeout(() => {
+                    // Buat partikel dengan probabilitas 30%
+                    if (Math.random() < 0.3) {
+                        createDigitalParticle(mouseX, mouseY);
+                    }
+                    particleTimer = null;
+                }, 50);
+            }
+        });
+        
+        // Efek partikel saat scroll
+        let scrollParticleTimer = null;
+        window.addEventListener('scroll', () => {
+            if (!scrollParticleTimer) {
+                scrollParticleTimer = setTimeout(() => {
+                    // Buat partikel dengan probabilitas 20% saat scroll
+                    if (Math.random() < 0.2) {
+                        createDigitalParticle(
+                            Math.random() * window.innerWidth,
+                            window.scrollY + Math.random() * window.innerHeight
+                        );
+                    }
+                    scrollParticleTimer = null;
+                }, 100);
+            }
+        });
     </script>
 </body>
 </html>
