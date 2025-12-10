@@ -4,481 +4,898 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seputar LINETOGEL - Premium Experience</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --accent-color: #ffff00;
+            --success-color: #00ff00;
+            --warning-color: #ff9900;
+            --danger-color: #ff0066;
+            --info-color: #0099ff;
+            --text-color: #ffffff;
+            --dark-text: #0a0a0a;
+            --card-bg: rgba(0, 20, 40, 0.9);
+            --neon-glow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+            --optimus-primary: #0051ba;
+            --optimus-secondary: #c0162d;
+            --optimus-accent: #f0f0f0;
+            --transformer-blue: #0066ff;
+            --transformer-red: #e63946;
+            --transformer-yellow: #ffd60a;
+            --cyber-grid: rgba(0, 170, 255, 0.1);
+        }
+        
+        .light-mode {
+            --primary-color: #0066cc;
+            --secondary-color: #cc00cc;
+            --accent-color: #cccc00;
+            --text-color: #1a1a2e;
+            --dark-text: #f0f0f0;
+            --card-bg: rgba(240, 245, 255, 0.9);
+            --cyber-grid: rgba(0, 100, 200, 0.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        :root {
-            --primary-bg: linear-gradient(135deg, rgba(10, 15, 40, 0.9), rgba(5, 10, 30, 0.95));
-            --card-bg: rgba(20, 25, 60, 0.6);
-            --header-bg: rgba(15, 20, 50, 0.6);
-            --text-color: #e0e0ff;
-            --accent-color: #00aaff;
-            --accent-secondary: #00ffcc;
-            --shadow-color: rgba(0, 0, 0, 0.5);
-            --border-color: rgba(0, 200, 255, 0.3);
-            --optimus-primary: #0051ba;
-            --optimus-secondary: #c0162d;
-            --optimus-accent: #f0f0f0;
-        }
-
-        .light-mode {
-            --primary-bg: linear-gradient(135deg, rgba(200, 220, 255, 0.9), rgba(170, 200, 255, 0.95));
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --header-bg: rgba(240, 245, 255, 0.8);
-            --text-color: #1a1a2e;
-            --accent-color: #0066cc;
-            --accent-secondary: #009999;
-            --shadow-color: rgba(0, 0, 100, 0.2);
-            --border-color: rgba(0, 100, 200, 0.4);
-            --optimus-primary: #0051ba;
-            --optimus-secondary: #c0162d;
-            --optimus-accent: #f0f0f0;
-        }
-
+        
         body {
-            font-family: 'Exo 2', sans-serif;
+            font-family: 'Rajdhani', 'Exo 2', sans-serif;
+            line-height: 1.6;
             color: var(--text-color);
-            min-height: 100vh;
+            background: #000;
             overflow-x: hidden;
             position: relative;
             transition: all 0.5s ease;
         }
-
-        /* Animated Background */
-        .animated-bg {
+        
+        /* Floating Consultation Button */
+        .consultation-fab {
+            position: fixed;
+            top: 100px;
+            left: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5);
+            animation: fabPulse 2s ease-in-out infinite, fabRotate 10s linear infinite;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        @keyframes fabPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 40px rgba(0, 255, 255, 1), 0 0 80px rgba(255, 0, 255, 0.7);
+            }
+        }
+        
+        @keyframes fabRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        .consultation-fab::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            z-index: -1;
+            animation: fabBorderRotate 3s linear infinite;
+        }
+        
+        @keyframes fabBorderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .consultation-fab i {
+            font-size: 28px;
+            color: var(--dark-text);
+            animation: fabIconTransform 2s ease-in-out infinite;
+        }
+        
+        @keyframes fabIconTransform {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .consultation-fab:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(255, 0, 255, 0.8);
+        }
+        
+        .consultation-tooltip {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
+        }
+        
+        .consultation-fab:hover .consultation-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(10px);
+        }
+        
+        /* Digital Matrix Background */
+        .matrix-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: 
-                var(--primary-bg),
-                url('https://lh3.googleusercontent.com/gg-dl/ABS2GSmq2YWiE_TuqLAhMPKqOHRsuwtHk8dHdKmLU4dbdUgS49d21mw8c6gJQB-ZnU2LMW5vTZcYD1w9uPpRGpTaRDo7TR5zDCZfKSjiOU8BzNFKKTzqEb_ZvC-sdC0ij1QOx0EHntwUXySZh8fGSDqTs85UND5XqHsIevF4TMRQQgW8rQsw9Q=s1024-rj');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            transition: all 0.5s ease;
+            background: linear-gradient(45deg, #000428, #004e92);
         }
-
-        .particles {
+        
+        .digital-rain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
-
-        .particle {
+        
+        .digital-particle {
             position: absolute;
-            background: rgba(0, 200, 255, 0.3);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-            transition: all 0.5s ease;
+            color: var(--primary-color);
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            animation: digitalFall linear infinite;
+            text-shadow: var(--neon-glow);
         }
-
-        .light-mode .particle {
-            background: rgba(0, 100, 200, 0.2);
+        
+        @keyframes digitalFall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
-
-        .pulse-layer {
+        
+        /* Cyber Grid Background */
+        .cyber-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%);
-            animation: pulse 8s infinite ease-in-out;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
             z-index: -1;
-            transition: all 0.5s ease;
         }
-
-        .light-mode .pulse-layer {
-            background: radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.05) 0%, transparent 50%);
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
-
-        /* Main Layout */
-        .main-wrapper {
-            display: flex;
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 20px;
-            gap: 20px;
+        
+        /* Glitch Effect */
+        .glitch {
             position: relative;
-            z-index: 1;
-        }
-
-        /* Domain Checker Sidebar */
-        .domain-checker-sidebar {
-            width: 180px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .domain-checker-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--border-color);
-            box-shadow: 0 10px 30px var(--shadow-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 15px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            animation: rotateCircle 20s infinite linear;
-        }
-
-        .domain-checker-circle::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            width: calc(100% + 20px);
-            height: calc(100% + 20px);
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                var(--accent-color),
-                transparent,
-                var(--accent-secondary),
-                transparent
-            );
-            animation: rotateGradient 3s infinite linear;
-            z-index: -1;
-        }
-
-        .domain-checker-circle::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            z-index: -1;
-        }
-
-        .domain-checker-circle:hover {
-            transform: scale(1.05);
-            animation-play-state: paused;
-            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.4);
-        }
-
-        .domain-checker-circle:hover::before {
-            animation-play-state: paused;
-        }
-
-        .domain-checker-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--accent-color);
-            animation: pulseIcon 2s infinite alternate;
-        }
-
-        .domain-checker-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
+            color: var(--text-color);
+            font-size: 48px;
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+            text-shadow: var(--neon-glow);
+            animation: glitchText 2s infinite;
         }
-
-        .domain-checker-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 15px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
-            color: #001122;
-            text-decoration: none;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.7rem;
-            transition: all 0.3s ease;
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-
-        .domain-checker-link:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.5);
+        
+        .glitch::before {
+            animation: glitchLayer1 0.5s infinite;
+            color: var(--primary-color);
+            z-index: -1;
         }
-
-        .domain-status {
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(0, 200, 0, 0.2);
-            border-radius: 10px;
-            font-size: 0.7rem;
-            animation: statusPulse 2s infinite alternate;
+        
+        .glitch::after {
+            animation: glitchLayer2 0.5s infinite;
+            color: var(--secondary-color);
+            z-index: -2;
         }
-
-        .content-container {
-            flex: 1;
+        
+        @keyframes glitchText {
+            0%, 100% { text-shadow: var(--neon-glow); }
+            25% { text-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); }
+            50% { text-shadow: 0 0 20px var(--secondary-color), 0 0 40px var(--secondary-color); }
+            75% { text-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-color); }
         }
-
-        /* Header Styles */
-        .header-container {
+        
+        @keyframes glitchLayer1 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
+            80% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -1px); }
+        }
+        
+        @keyframes glitchLayer2 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 1px); }
+            60% { clip-path: inset(30% 0 40% 0); transform: translate(1px, 2px); }
+            80% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, -2px); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Transformer Header */
+        header {
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(0, 40, 80, 0.95));
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: headerTransform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 5% 100%, 0 85%);
+        }
+        
+        @keyframes headerTransform {
+            0% {
+                clip-path: polygon(0 0, 0 0, 0 100%, 0 100%, 0 100%, 0 100%);
+                transform: translateY(-100%);
+            }
+            100% {
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 5% 100%, 0 85%);
+                transform: translateY(0);
+            }
+        }
+        
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            gap: 20px;
+            padding: 20px 0;
         }
-
-        header {
-            text-align: center;
-            padding: 30px 20px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            background: var(--header-bg);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px var(--shadow-color);
-            border: 1px solid var(--border-color);
-            flex: 1;
-            transition: all 0.5s ease;
-        }
-
-        .header-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(0, 150, 255, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(0, 255, 200, 0.2) 0%, transparent 50%);
-            animation: headerGlow 6s infinite alternate;
-            z-index: -1;
-        }
-
-        .light-mode .header-glow {
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(0, 100, 200, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(0, 150, 150, 0.1) 0%, transparent 50%);
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.2rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color), 0 0 35px var(--accent-color);
-            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleGlow 3s ease-in-out infinite alternate;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            font-weight: 300;
-        }
-
-        .tagline {
-            font-size: 1rem;
-            opacity: 0.8;
-            font-style: italic;
-        }
-
-        /* Header Right Section */
-        .header-right {
+        
+        .logo {
             display: flex;
-            gap: 20px;
             align-items: center;
-        }
-
-        /* Digital Clock Styles */
-        .digital-clock {
-            background: var(--header-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 15px 35px var(--shadow-color);
-            min-width: 280px;
-            transition: all 0.5s ease;
-        }
-
-        .clock-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-color);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-color);
-        }
-
-        .time-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-            animation: clockPulse 2s infinite;
-            margin-bottom: 10px;
-        }
-
-        .date-display {
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1rem;
-            opacity: 0.8;
-            letter-spacing: 1px;
-        }
-
-        /* Optimus Prime Circle */
-        .optimus-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--optimus-primary), var(--optimus-secondary));
-            backdrop-filter: blur(15px);
-            border: 3px solid var(--optimus-accent);
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.5),
-                inset 0 0 20px rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 15px;
+            letter-spacing: 3px;
             position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            animation: rotateCircle 20s infinite linear reverse;
         }
-
-        .optimus-circle::before {
+        
+        .logo::before {
             content: '';
             position: absolute;
-            top: -10px;
-            left: -10px;
-            width: calc(100% + 20px);
-            height: calc(100% + 20px);
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                var(--optimus-primary),
-                var(--optimus-accent),
-                var(--optimus-secondary),
-                var(--optimus-accent),
-                var(--optimus-primary)
-            );
-            animation: rotateGradient 3s infinite linear;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
             z-index: -1;
+            filter: blur(10px);
+            opacity: 0.7;
+            animation: logoGlow 2s ease-in-out infinite;
         }
-
-        .optimus-circle::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--optimus-primary), var(--optimus-secondary));
-            z-index: -1;
+        
+        @keyframes logoGlow {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
-
-        .optimus-circle:hover {
-            transform: scale(1.05);
-            animation-play-state: paused;
-            box-shadow: 
-                0 15px 40px rgba(0, 81, 186, 0.7),
-                inset 0 0 30px rgba(255, 255, 255, 0.3);
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 40px;
+            animation: logoTransform 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px var(--primary-color));
         }
-
-        .optimus-circle:hover::before {
-            animation-play-state: paused;
+        
+        @keyframes logoTransform {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.1); }
         }
-
-        .optimus-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--optimus-accent);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            animation: pulseIcon 2s infinite alternate;
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 5px;
         }
-
-        .optimus-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            color: var(--optimus-accent);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        
+        nav ul li {
+            position: relative;
         }
-
-        .optimus-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 15px;
-            background: linear-gradient(135deg, var(--optimus-accent), #d0d0d0);
-            color: var(--optimus-primary);
+        
+        nav ul li a {
+            color: var(--text-color);
             text-decoration: none;
-            border-radius: 20px;
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 16px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid transparent;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
         }
-
-        .optimus-link:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
+        
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            transition: left 0.5s ease;
         }
-
-        .optimus-mask {
+        
+        nav ul li a:hover::before {
+            left: 100%;
+        }
+        
+        nav ul li a:hover {
+            color: var(--dark-text);
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+            transform: translateY(-2px);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+        }
+        
+        nav ul li a i {
+            font-size: 18px;
+        }
+        
+        /* Hero Section with Digital Effects */
+        .hero {
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent, var(--secondary-color), transparent);
+            animation: heroRotate 10s linear infinite;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+        
+        @keyframes heroRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: heroTextTransform 2s ease-out;
+        }
+        
+        @keyframes heroTextTransform {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotateX(90deg);
+                filter: blur(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+                filter: blur(0);
+            }
+        }
+        
+        .hero p {
+            font-size: 24px;
+            max-width: 900px;
+            margin: 0 auto 50px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.9;
+            animation: fadeInUp 1.5s ease-out 0.5s both;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--dark-text);
+            padding: 20px 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%, 15px 50%);
+            animation: btnTransform 1.5s ease-out 1s both;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        
+        @keyframes btnTransform {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(180deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.8);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 80px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            animation: sectionTitleTransform 1s ease-out;
+        }
+        
+        @keyframes sectionTitleTransform {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) skewX(20deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) skewX(0deg);
+            }
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { box-shadow: 0 0 10px var(--primary-color); }
+            50% { box-shadow: 0 0 30px var(--secondary-color), 0 0 50px var(--secondary-color); }
+        }
+        
+        /* Digital Card Styles */
+        .principles {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 0;
+            padding: 50px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+            animation: cardTransform 1s ease-out;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+        }
+        
+        @keyframes cardTransform {
+            0% {
+                opacity: 0;
+                transform: perspective(1000px) rotateY(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(1000px) rotateY(0deg);
+            }
+        }
+        
+        .principles::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .principles h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .principles h2 i {
+            font-size: 40px;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.2); filter: brightness(1.5); }
+        }
+        
+        .principles ul {
+            list-style: none;
+        }
+        
+        .principles li {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .principles li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .principles li:hover::before {
+            left: 100%;
+        }
+        
+        .principles li:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .principles li i {
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 24px;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Menu Cards with Transformer Effects */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+        }
+        
+        .day-card {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: dayCardTransform 1s ease-out backwards;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+        }
+        
+        .day-card:nth-child(1) { animation-delay: 0.1s; }
+        .day-card:nth-child(2) { animation-delay: 0.2s; }
+        .day-card:nth-child(3) { animation-delay: 0.3s; }
+        .day-card:nth-child(4) { animation-delay: 0.4s; }
+        .day-card:nth-child(5) { animation-delay: 0.5s; }
+        .day-card:nth-child(6) { animation-delay: 0.6s; }
+        .day-card:nth-child(7) { animation-delay: 0.7s; }
+        
+        @keyframes dayCardTransform {
+            0% {
+                opacity: 0;
+                transform: perspective(1000px) rotateX(90deg) translateZ(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(1000px) rotateX(0deg) translateZ(0);
+            }
+        }
+        
+        .day-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                135deg,
-                transparent 40%,
-                rgba(255, 255, 255, 0.2) 50%,
-                transparent 60%
-            );
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            animation: shimmer 2s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .day-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.4);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+        }
+        
+        .day-header {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .day-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .day-header i {
+            font-size: 36px;
+            margin-right: 20px;
+            color: var(--primary-color);
+            animation: headerIconTransform 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+        
+        @keyframes headerIconTransform {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.1); }
+        }
+        
+        .day-header h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
             z-index: 1;
         }
-
-        .optimus-circle:hover .optimus-mask {
-            transform: translateX(100%);
+        
+        .day-content {
+            padding: 30px;
         }
-
+        
+        .day-content > p {
+            margin-bottom: 25px;
+            color: var(--text-color);
+            line-height: 1.8;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .meal {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .meal:hover::before {
+            left: 100%;
+        }
+        
+        .meal:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .meal-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .meal-title i {
+            margin-right: 15px;
+            font-size: 24px;
+            animation: mealIconTransform 3s ease-in-out infinite;
+        }
+        
+        @keyframes mealIconTransform {
+            0%, 100% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+        
+        .meal-items {
+            padding-left: 40px;
+        }
+        
+        .meal-items li {
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+        
+        .meal-items li::before {
+            content: '▶';
+            position: absolute;
+            left: -20px;
+            color: var(--accent-color);
+            animation: arrowPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(3px); }
+        }
+        
+        .meal-items li:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .meal-items li i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 16px;
+        }
+        
         /* Theme Toggle Button */
         .theme-toggle {
             position: fixed;
@@ -486,11 +903,11 @@
             right: 20px;
             z-index: 1000;
         }
-
+        
         .toggle-btn {
-            background: var(--header-bg);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--primary-color);
             border-radius: 50px;
             padding: 12px 20px;
             cursor: pointer;
@@ -501,835 +918,158 @@
             font-family: 'Exo 2', sans-serif;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px var(--shadow-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
-
+        
         .toggle-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px var(--shadow-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
         }
-
+        
         .toggle-icon {
             font-size: 1.2rem;
             transition: transform 0.5s ease;
         }
-
+        
         .toggle-btn:hover .toggle-icon {
             transform: rotate(180deg);
         }
-
-        /* Menu Grid Styles */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .menu-card {
+        
+        /* Footer */
+        footer {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 25px 20px;
+            border-top: 2px solid var(--primary-color);
             text-align: center;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 12px 30px var(--shadow-color);
-            border: 1px solid var(--border-color);
+            padding: 50px 0;
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
         }
-
-        .menu-card::before {
+        
+        footer::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.7s ease;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            animation: shimmer 3s linear infinite;
         }
-
-        .light-mode .menu-card::before {
-            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+        
+        .social-icons {
+            margin-bottom: 30px;
         }
-
-        .menu-card:hover::before {
-            left: 100%;
+        
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 32px;
+            margin: 0 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
         }
-
-        .menu-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 200, 255, 0.4);
-            border-color: rgba(0, 255, 200, 0.6);
-        }
-
-        .card-glow {
+        
+        .social-icons a::before {
+            content: '';
             position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .social-icons a:hover::before {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .social-icons a:hover {
+            color: var(--dark-text);
+            transform: translateY(-8px) rotate(15deg) scale(1.2);
+        }
+        
+        /* Loading Screen */
+        .loader {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(0, 200, 255, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: -1;
-        }
-
-        .menu-card:hover .card-glow {
-            opacity: 1;
-        }
-
-        /* Enhanced Menu Icon Styles */
-        .menu-icon {
-            font-size: 3.5rem;
-            margin-bottom: 18px;
+            background: #000;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease-out 2s forwards;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-transform {
             width: 100px;
             height: 100px;
-            border-radius: 50%;
-            background: rgba(0, 50, 100, 0.4);
-            border: 3px solid rgba(0, 200, 255, 0.5);
-            box-shadow: 
-                0 0 20px rgba(0, 150, 255, 0.5),
-                inset 0 0 20px rgba(0, 200, 255, 0.2);
-            transition: all 0.5s ease;
             position: relative;
-            z-index: 1;
-            animation: iconFloat 4s infinite ease-in-out;
+            margin: 0 auto 30px;
+            animation: loaderTransform 2s linear infinite;
         }
-
-        .menu-icon::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                var(--accent-color),
-                transparent,
-                var(--accent-secondary),
-                transparent
-            );
-            animation: iconRotate 4s infinite linear;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        
+        @keyframes loaderTransform {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .menu-icon::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            right: 2px;
-            bottom: 2px;
-            border-radius: 50%;
-            background: rgba(0, 50, 100, 0.4);
-            z-index: -1;
-        }
-
-        .menu-card:hover .menu-icon::before {
-            opacity: 1;
-        }
-
-        .light-mode .menu-icon {
-            background: rgba(200, 230, 255, 0.6);
-            border: 3px solid rgba(0, 100, 200, 0.6);
-            box-shadow: 
-                0 0 20px rgba(0, 100, 200, 0.3),
-                inset 0 0 20px rgba(0, 100, 200, 0.1);
-        }
-
-        .light-mode .menu-icon::after {
-            background: rgba(200, 230, 255, 0.6);
-        }
-
-        .menu-card:hover .menu-icon {
-            transform: scale(1.15) rotateY(360deg);
-            background: rgba(0, 100, 200, 0.7);
-            box-shadow: 
-                0 0 30px rgba(0, 255, 200, 0.8),
-                inset 0 0 30px rgba(0, 255, 200, 0.3);
-            animation-play-state: paused;
-        }
-
-        .light-mode .menu-card:hover .menu-icon {
-            background: rgba(100, 180, 255, 0.8);
-        }
-
-        /* Icon specific animations */
-        .menu-card:nth-child(1) .menu-icon {
-            animation-delay: 0s;
-        }
-
-        .menu-card:nth-child(2) .menu-icon {
-            animation-delay: 0.5s;
-        }
-
-        .menu-card:nth-child(3) .menu-icon {
-            animation-delay: 1s;
-        }
-
-        .menu-card:nth-child(4) .menu-icon {
-            animation-delay: 1.5s;
-        }
-
-        .menu-card:nth-child(5) .menu-icon {
-            animation-delay: 2s;
-        }
-
-        .menu-card:nth-child(6) .menu-icon {
-            animation-delay: 2.5s;
-        }
-
-        .menu-card:nth-child(7) .menu-icon {
-            animation-delay: 3s;
-        }
-
-        .menu-card:nth-child(8) .menu-icon {
-            animation-delay: 3.5s;
-        }
-
-        .menu-card:nth-child(9) .menu-icon {
-            animation-delay: 4s;
-        }
-
-        .menu-card:nth-child(10) .menu-icon {
-            animation-delay: 4.5s;
-        }
-
-        .menu-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--accent-color);
-            position: relative;
-            z-index: 1;
-        }
-
-        .menu-title::after {
-            content: '';
-            display: block;
-            width: 45px;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary));
-            margin: 8px auto;
-            border-radius: 2px;
-        }
-
-        .menu-description {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-            position: relative;
-            z-index: 1;
-        }
-
-        .menu-button {
-            display: inline-block;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
-            color: #001122;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            transition: all 0.4s ease;
-            box-shadow: 0 6px 20px rgba(0, 170, 255, 0.5);
-            width: 100%;
-            max-width: 200px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .menu-button::before {
+        
+        .loader-transform::before,
+        .loader-transform::after {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-color));
-            transition: all 0.5s ease;
-            z-index: -1;
-        }
-
-        .menu-button:hover {
-            transform: scale(1.06);
-            box-shadow: 0 10px 25px rgba(0, 200, 255, 0.7);
-            letter-spacing: 1.2px;
-        }
-
-        .menu-button:hover::before {
-            left: 0;
-        }
-
-        /* Special styling for different card types */
-        .gameplay-card {
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
-        .gameplay-card .menu-icon {
-            border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 
-                0 0 20px rgba(255, 215, 0, 0.5),
-                inset 0 0 20px rgba(255, 215, 0, 0.2);
-            background: rgba(100, 80, 0, 0.4);
-        }
-
-        .gameplay-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #ffd700,
-                transparent,
-                #ffed4e,
-                transparent
-            );
-        }
-
-        .gameplay-card .menu-icon::after {
-            background: rgba(100, 80, 0, 0.4);
-        }
-
-        .gameplay-card:hover {
-            border-color: rgba(255, 215, 0, 0.8);
-            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
-        }
-
-        .gameplay-card:hover .menu-icon {
-            background: rgba(150, 120, 0, 0.6);
-            box-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.8),
-                inset 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .gameplay-card .menu-title {
-            color: #ffd700;
-        }
-
-        .gameplay-card .menu-title::after {
-            background: linear-gradient(to right, #ffd700, #ffed4e);
-        }
-
-        .gameplay-card .menu-button {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #332900;
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .gameplay-card .menu-button::before {
-            background: linear-gradient(135deg, #ffed4e, #ffd700);
-        }
-
-        .gameplay-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.7);
-        }
-
-        .data-card {
-            border-color: rgba(0, 255, 127, 0.5);
-        }
-
-        .data-card .menu-icon {
-            border-color: rgba(0, 255, 127, 0.6);
-            box-shadow: 
-                0 0 20px rgba(0, 255, 127, 0.5),
-                inset 0 0 20px rgba(0, 255, 127, 0.2);
-            background: rgba(0, 80, 40, 0.4);
-        }
-
-        .data-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #00ff7f,
-                transparent,
-                #7fff00,
-                transparent
-            );
-        }
-
-        .data-card .menu-icon::after {
-            background: rgba(0, 80, 40, 0.4);
-        }
-
-        .data-card:hover {
-            border-color: rgba(0, 255, 127, 0.8);
-            box-shadow: 0 20px 40px rgba(0, 255, 127, 0.3);
-        }
-
-        .data-card:hover .menu-icon {
-            background: rgba(0, 120, 60, 0.6);
-            box-shadow: 
-                0 0 30px rgba(0, 255, 127, 0.8),
-                inset 0 0 30px rgba(0, 255, 127, 0.3);
-        }
-
-        .data-card .menu-title {
-            color: #00ff7f;
-        }
-
-        .data-card .menu-title::after {
-            background: linear-gradient(to right, #00ff7f, #7fff00);
-        }
-
-        .data-card .menu-button {
-            background: linear-gradient(135deg, #00ff7f, #7fff00);
-            color: #003315;
-            box-shadow: 0 6px 20px rgba(0, 255, 127, 0.5);
-        }
-
-        .data-card .menu-button::before {
-            background: linear-gradient(135deg, #7fff00, #00ff7f);
-        }
-
-        .data-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(0, 255, 127, 0.7);
-        }
-
-        .audit-card {
-            border-color: rgba(138, 43, 226, 0.5);
-        }
-
-        .audit-card .menu-icon {
-            border-color: rgba(138, 43, 226, 0.6);
-            box-shadow: 
-                0 0 20px rgba(138, 43, 226, 0.5),
-                inset 0 0 20px rgba(138, 43, 226, 0.2);
-            background: rgba(70, 20, 110, 0.4);
-        }
-
-        .audit-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #8a2be2,
-                transparent,
-                #da70d6,
-                transparent
-            );
-        }
-
-        .audit-card .menu-icon::after {
-            background: rgba(70, 20, 110, 0.4);
-        }
-
-        .audit-card:hover {
-            border-color: rgba(138, 43, 226, 0.8);
-            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
-        }
-
-        .audit-card:hover .menu-icon {
-            background: rgba(100, 30, 150, 0.6);
-            box-shadow: 
-                0 0 30px rgba(138, 43, 226, 0.8),
-                inset 0 0 30px rgba(138, 43, 226, 0.3);
-        }
-
-        .audit-card .menu-title {
-            color: #8a2be2;
-        }
-
-        .audit-card .menu-title::after {
-            background: linear-gradient(to right, #8a2be2, #da70d6);
-        }
-
-        .audit-card .menu-button {
-            background: linear-gradient(135deg, #8a2be2, #da70d6);
-            color: #1a0033;
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5);
-        }
-
-        .audit-card .menu-button::before {
-            background: linear-gradient(135deg, #da70d6, #8a2be2);
-        }
-
-        .audit-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.7);
-        }
-
-        /* New profile card styling */
-        .profile-card {
-            border-color: rgba(30, 144, 255, 0.5);
-        }
-
-        .profile-card .menu-icon {
-            border-color: rgba(30, 144, 255, 0.6);
-            box-shadow: 
-                0 0 20px rgba(30, 144, 255, 0.5),
-                inset 0 0 20px rgba(30, 144, 255, 0.2);
-            background: rgba(10, 60, 120, 0.4);
-        }
-
-        .profile-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #1e90ff,
-                transparent,
-                #87ceeb,
-                transparent
-            );
-        }
-
-        .profile-card .menu-icon::after {
-            background: rgba(10, 60, 120, 0.4);
-        }
-
-        .profile-card:hover {
-            border-color: rgba(30, 144, 255, 0.8);
-            box-shadow: 0 20px 40px rgba(30, 144, 255, 0.3);
-        }
-
-        .profile-card:hover .menu-icon {
-            background: rgba(20, 90, 160, 0.6);
-            box-shadow: 
-                0 0 30px rgba(30, 144, 255, 0.8),
-                inset 0 0 30px rgba(30, 144, 255, 0.3);
-        }
-
-        .profile-card .menu-title {
-            color: #1e90ff;
-        }
-
-        .profile-card .menu-title::after {
-            background: linear-gradient(to right, #1e90ff, #87ceeb);
-        }
-
-        .profile-card .menu-button {
-            background: linear-gradient(135deg, #1e90ff, #87ceeb);
-            color: #001a33;
-            box-shadow: 0 6px 20px rgba(30, 144, 255, 0.5);
-        }
-
-        .profile-card .menu-button::before {
-            background: linear-gradient(135deg, #87ceeb, #1e90ff);
-        }
-
-        .profile-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(30, 144, 255, 0.7);
-        }
-
-        /* New Poker Card Styling */
-        .poker-card {
-            border-color: rgba(220, 20, 60, 0.5);
-        }
-
-        .poker-card .menu-icon {
-            border-color: rgba(220, 20, 60, 0.6);
-            box-shadow: 
-                0 0 20px rgba(220, 20, 60, 0.5),
-                inset 0 0 20px rgba(220, 20, 60, 0.2);
-            background: rgba(120, 20, 40, 0.4);
-        }
-
-        .poker-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #dc143c,
-                transparent,
-                #ff6347,
-                transparent
-            );
-        }
-
-        .poker-card .menu-icon::after {
-            background: rgba(120, 20, 40, 0.4);
-        }
-
-        .poker-card:hover {
-            border-color: rgba(220, 20, 60, 0.8);
-            box-shadow: 0 20px 40px rgba(220, 20, 60, 0.3);
-        }
-
-        .poker-card:hover .menu-icon {
-            background: rgba(160, 30, 60, 0.6);
-            box-shadow: 
-                0 0 30px rgba(220, 20, 60, 0.8),
-                inset 0 0 30px rgba(220, 20, 60, 0.3);
-        }
-
-        .poker-card .menu-title {
-            color: #dc143c;
-        }
-
-        .poker-card .menu-title::after {
-            background: linear-gradient(to right, #dc143c, #ff6347);
-        }
-
-        .poker-card .menu-button {
-            background: linear-gradient(135deg, #dc143c, #ff6347);
-            color: #330011;
-            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.5);
-        }
-
-        .poker-card .menu-button::before {
-            background: linear-gradient(135deg, #ff6347, #dc143c);
-        }
-
-        .poker-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(220, 20, 60, 0.7);
-        }
-
-        /* New Gameplay LiveGames Card Styling */
-        .gameplay-live-card {
-            border-color: rgba(255, 69, 0, 0.5);
-        }
-
-        .gameplay-live-card .menu-icon {
-            border-color: rgba(255, 69, 0, 0.6);
-            box-shadow: 
-                0 0 20px rgba(255, 69, 0, 0.5),
-                inset 0 0 20px rgba(255, 69, 0, 0.2);
-            background: rgba(120, 30, 0, 0.4);
-        }
-
-        .gameplay-live-card .menu-icon::before {
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                #ff4500,
-                transparent,
-                #ff6347,
-                transparent
-            );
-        }
-
-        .gameplay-live-card .menu-icon::after {
-            background: rgba(120, 30, 0, 0.4);
-        }
-
-        .gameplay-live-card:hover {
-            border-color: rgba(255, 69, 0, 0.8);
-            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.3);
-        }
-
-        .gameplay-live-card:hover .menu-icon {
-            background: rgba(160, 40, 0, 0.6);
-            box-shadow: 
-                0 0 30px rgba(255, 69, 0, 0.8),
-                inset 0 0 30px rgba(255, 69, 0, 0.3);
-        }
-
-        .gameplay-live-card .menu-title {
-            color: #ff4500;
-        }
-
-        .gameplay-live-card .menu-title::after {
-            background: linear-gradient(to right, #ff4500, #ff6347);
-        }
-
-        .gameplay-live-card .menu-button {
-            background: linear-gradient(135deg, #ff4500, #ff6347);
-            color: #330011;
-            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
-        }
-
-        .gameplay-live-card .menu-button::before {
-            background: linear-gradient(135deg, #ff6347, #ff4500);
-        }
-
-        .gameplay-live-card .menu-button:hover {
-            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.7);
-        }
-
-        footer {
-            margin-top: 80px;
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 1.1rem;
-            opacity: 0.8;
-            border-top: 1px solid var(--border-color);
-            position: relative;
-            background: var(--header-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px 15px 0 0;
-            transition: all 0.5s ease;
-        }
-
-        .footer-glow {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--accent-color), var(--accent-secondary), var(--accent-color));
-            border-radius: 0 0 15px 15px;
-            animation: glowMove 3s infinite linear;
-        }
-
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .floating-element {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 200, 255, 0.1);
+            border: 3px solid transparent;
+            border-top-color: var(--primary-color);
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
-            animation: floatElement 15s infinite linear;
-            transition: all 0.5s ease;
         }
-
-        .light-mode .floating-element {
-            background: rgba(0, 100, 200, 0.1);
-            box-shadow: 0 0 20px rgba(0, 100, 200, 0.2);
+        
+        .loader-transform::after {
+            border-top-color: var(--secondary-color);
+            animation: loaderReverse 1s linear infinite;
         }
-
+        
+        @keyframes loaderReverse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+        
+        .loader-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: loaderText 1s ease-in-out infinite;
+        }
+        
+        @keyframes loaderText {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        
         /* Animations */
-        @keyframes bgMove {
-            0% {
-                background-position: 0% 0%;
-            }
-            25% {
-                background-position: 50% 25%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            75% {
-                background-position: 50% 75%;
-            }
-            100% {
-                background-position: 0% 100%;
-            }
-        }
-
-        @keyframes floatElement {
-            0% {
-                transform: translateY(0) rotate(0deg) translateX(0);
-            }
-            25% {
-                transform: translateY(-50px) rotate(90deg) translateX(50px);
-            }
-            50% {
-                transform: translateY(0) rotate(180deg) translateX(0);
-            }
-            75% {
-                transform: translateY(50px) rotate(270deg) translateX(-50px);
-            }
-            100% {
-                transform: translateY(0) rotate(360deg) translateX(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.6;
-            }
-        }
-
-        @keyframes titleGlow {
-            0% {
-                text-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color), 0 0 35px var(--accent-color);
-            }
-            100% {
-                text-shadow: 0 0 20px var(--accent-secondary), 0 0 30px var(--accent-secondary), 0 0 40px var(--accent-secondary);
-            }
-        }
-
-        @keyframes headerGlow {
-            0% {
-                opacity: 0.5;
-                filter: hue-rotate(0deg);
-            }
-            100% {
-                opacity: 0.8;
-                filter: hue-rotate(180deg);
-            }
-        }
-
-        @keyframes glowMove {
-            0% {
-                background-position: -100% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translate(100px, -1000px) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes clockPulse {
-            0%, 100% {
-                transform: scale(1);
-                text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-            }
-            50% {
-                transform: scale(1.02);
-                text-shadow: 0 0 15px rgba(0, 170, 255, 0.8);
-            }
-        }
-
-        @keyframes transformClock {
-            0% {
-                transform: perspective(1000px) rotateX(0) rotateY(0);
-            }
-            25% {
-                transform: perspective(1000px) rotateX(10deg) rotateY(5deg);
-            }
-            50% {
-                transform: perspective(1000px) rotateX(0) rotateY(0);
-            }
-            75% {
-                transform: perspective(1000px) rotateX(-10deg) rotateY(-5deg);
-            }
-            100% {
-                transform: perspective(1000px) rotateX(0) rotateY(0);
-            }
-        }
-
         @keyframes rotateCircle {
             0% {
                 transform: rotate(0deg);
@@ -1338,7 +1078,7 @@
                 transform: rotate(360deg);
             }
         }
-
+        
         @keyframes rotateGradient {
             0% {
                 transform: rotate(0deg);
@@ -1347,7 +1087,7 @@
                 transform: rotate(360deg);
             }
         }
-
+        
         @keyframes pulseIcon {
             0% {
                 transform: scale(1);
@@ -1356,7 +1096,7 @@
                 transform: scale(1.1);
             }
         }
-
+        
         @keyframes statusPulse {
             0% {
                 opacity: 0.7;
@@ -1365,142 +1105,80 @@
                 opacity: 1;
             }
         }
-
-        /* New Icon Animations */
-        @keyframes iconFloat {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            25% {
-                transform: translateY(-5px) rotate(5deg);
-            }
-            75% {
-                transform: translateY(5px) rotate(-5deg);
-            }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        @keyframes iconRotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes iconPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes iconGlow {
-            0%, 100% {
-                filter: brightness(1) drop-shadow(0 0 10px rgba(0, 200, 255, 0.5));
-            }
-            50% {
-                filter: brightness(1.2) drop-shadow(0 0 20px rgba(0, 200, 255, 0.8));
-            }
-        }
-
-        .clock-transform {
-            animation: transformClock 4s infinite ease-in-out;
-        }
-
-        @media (max-width: 1024px) {
-            .main-wrapper {
-                flex-direction: column;
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .consultation-fab {
+                width: 60px;
+                height: 60px;
+                top: 80px;
+                left: 20px;
             }
             
-            .domain-checker-sidebar {
-                width: 100%;
-                position: relative;
-                flex-direction: row;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-            
-            .domain-checker-circle {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .header-container {
-                flex-direction: column;
-            }
-            
-            .header-right {
-                flex-direction: column;
-                width: 100%;
-                align-items: center;
-            }
-            
-            .digital-clock {
-                width: 100%;
-                max-width: 400px;
-            }
-            
-            .optimus-circle {
-                width: 150px;
-                height: 150px;
+            .consultation-fab i {
+                font-size: 24px;
             }
         }
-
+        }
+        
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
+            .header-content {
+                flex-direction: column;
+                text-align: center;
             }
             
-            .menu-grid {
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .menu-container {
                 grid-template-columns: 1fr;
             }
             
-            .menu-card {
-                padding: 20px 15px;
+            .consultation-fab {
+                width: 60px;
+                height: 60px;
+                top: 80px;
+                left: 20px;
             }
             
-            .menu-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 3rem;
-            }
-            
-            .time-display {
-                font-size: 1.8rem;
-            }
-            
-            .domain-checker-circle {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .domain-checker-title {
-                font-size: 0.8rem;
-            }
-            
-            .optimus-circle {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .optimus-title {
-                font-size: 0.8rem;
+            .consultation-fab i {
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="animated-bg"></div>
-    <div class="pulse-layer"></div>
-    <div class="particles" id="particles"></div>
-
-    <!-- Floating Elements -->
-    <div class="floating-elements" id="floatingElements"></div>
-
+    <!-- Digital Background Effects -->
+    <div class="matrix-bg"></div>
+    <div class="cyber-grid"></div>
+    <div class="digital-rain" id="digitalRain"></div>
+    
+    <!-- Floating Consultation Button -->
+    <a href="https://trustpositif.smbgroup.io/" target="_blank" class="consultation-fab">
+        <i class="fas fa-shield-alt"></i>
+        <span class="consultation-tooltip">Domain Checker</span>
+    </a>
+    
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-transform"></div>
+            <div class="loader-text">Initializing System...</div>
+        </div>
+    </div>
+    
     <!-- Theme Toggle Button -->
     <div class="theme-toggle">
         <button class="toggle-btn" id="themeToggle">
@@ -1508,357 +1186,329 @@
             <span>Mode Gelap</span>
         </button>
     </div>
-
-    <div class="main-wrapper">
-        <!-- Domain Checker Sidebar -->
-        <div class="domain-checker-sidebar">
-            <div class="domain-checker-circle">
-                <i class="fas fa-shield-alt domain-checker-icon"></i>
-                <h3 class="domain-checker-title">Domain Checker</h3>
-                <a href="https://trustpositif.smbgroup.io/" target="_blank" class="domain-checker-link">Cek Domain</a>
-                <div class="domain-status">
-                    Status: <span id="domainStatus">Aman</span>
-                </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span>Seputar LINETOGEL</span>
             </div>
+            <nav>
+                <ul>
+                    <li><a href="#intro"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#menu"><i class="fas fa-gamepad"></i> Livegames</a></li>
+                    <li><a href="#menu"><i class="fas fa-gift"></i> Event</a></li>
+                    <li><a href="#menu"><i class="fas fa-chart-bar"></i> Data</a></li>
+                    <li><a href="#menu"><i class="fas fa-shield-alt"></i> Audit</a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
 
-        <div class="content-container">
-            <div class="header-container">
-                <header>
-                    <div class="header-glow"></div>
-                    <h1>Seputar LINETOGEL</h1>
-                    <p class="subtitle">Portal Informasi Lengkap Seputar Permainan LINETOGEL</p>
-                    <p class="tagline">Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
-                </header>
-
-                <!-- Header Right Section -->
-                <div class="header-right">
-                    <!-- Digital Clock -->
-                    <div class="digital-clock">
-                        <div class="clock-title">Waktu Server</div>
-                        <div class="time-display" id="timeDisplay">00:00:00</div>
-                        <div class="date-display" id="dateDisplay">Hari, 1 Januari 2023</div>
-                    </div>
-
-                    <!-- Optimus Prime Circle -->
-                    <div class="optimus-circle">
-                        <div class="optimus-mask"></div>
-                        <i class="fas fa-robot optimus-icon"></i>
-                        <h3 class="optimus-title">Optimus Prime</h3>
-                        <a href="https://novalmuttawali-ym2l.vercel.app/OptimuPrime.html" class="optimus-link">Akses Sekarang</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-grid">
-                <div class="menu-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-gamepad"></i></div>
-                    <h3 class="menu-title">Livegames</h3>
-                    <p class="menu-description">Nikmati pengalaman bermain game langsung dengan berbagai pilihan permainan menarik dan interaktif.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/livegames.html#">Akses Sekarang</a>
-                </div>
-
-                <div class="menu-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-gift"></i></div>
-                    <h3 class="menu-title">Event Scatter</h3>
-                    <p class="menu-description">Ikuti event scatter menarik dengan hadiah-hadiah spesial yang bisa Anda dapatkan.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/scatterrr.html">Ikuti Event</a>
-                </div>
-
-                <div class="menu-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3 class="menu-title">Akumulasi Togel</h3>
-                    <p class="menu-description">Lihat data akumulasi togel terbaru dan analisis canggih untuk membantu prediksi Anda.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html">Lihat Data</a>
-                </div>
-
-                <div class="menu-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-qrcode"></i></div>
-                    <h3 class="menu-title">Gambar QRIS</h3>
-                    <p class="menu-description">Akses gambar QRIS untuk kemudahan dalam melakukan transaksi pembayaran yang aman.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/gambarqris.html">Scan QRIS</a>
-                </div>
-
-                <div class="menu-card gameplay-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-dice"></i></div>
-                    <h3 class="menu-title">Gameplay Togel</h3>
-                    <p class="menu-description">Jelajahi gameplay togel yang menarik dengan sistem betting yang lengkap.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html">Mulai Bermain</a>
-                </div>
-
-                <div class="menu-card data-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-database"></i></div>
-                    <h3 class="menu-title">Data All</h3>
-                    <p class="menu-description">Akses semua data lengkap dan informasi terkini seputar permainan togel dalam satu tempat.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/index.html">Lihat Data</a>
-                </div>
-
-                <div class="menu-card audit-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="menu-title">LC Audit</h3>
-                    <p class="menu-description">Verifikasi keamanan sistem dengan audit cryptocurrency yang komprehensif dan transparan.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html">Audit System</a>
-                </div>
-
-                <!-- New Profile Card -->
-                <div class="menu-card profile-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
-                    <h3 class="menu-title">Profil Bank/Ewallet</h3>
-                    <p class="menu-description">Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html">Lihat Profil</a>
-                </div>
-
-                <!-- New IDN POKER Card -->
-                <div class="menu-card poker-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-club"></i></div>
-                    <h3 class="menu-title">IDN POKER</h3>
-                    <p class="menu-description">Nikmati pengalaman bermain poker online terbaik dengan berbagai pilihan meja dan turnamen menarik.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html">Mainkan Sekarang</a>
-                </div>
-
-                <!-- New Gameplay LiveGames Card -->
-                <div class="menu-card gameplay-live-card">
-                    <div class="card-glow"></div>
-                    <div class="menu-icon"><i class="fas fa-tv"></i></div>
-                    <h3 class="menu-title">GamePlayLiveGames</h3>
-                    <p class="menu-description">Rasakan sensasi bermain game langsung dengan tampilan interaktif dan pengalaman gaming premium.</p>
-                    <a href="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html" class="menu-button" data-url="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html">Mainkan Sekarang</a>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <section id="intro" class="hero">
+        <div class="container">
+            <h1 class="glitch" data-text="Seputar LINETOGEL">Seputar LINETOGEL</h1>
+            <p>Portal Informasi Lengkap Seputar Permainan LINETOGEL - Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
+            <a href="#menu" class="btn"><i class="fas fa-rocket"></i> Akses Sekarang</a>
         </div>
-    </div>
+    </section>
 
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Menu Section -->
+        <section id="menu">
+            <h2 class="section-title"><i class="fas fa-gamepad"></i> Game Menu</h2>
+            <p style="text-align: center; margin-bottom: 50px; font-size: 20px; color: var(--text-color); opacity: 0.9;">Nikmati berbagai permainan menarik dengan pengalaman premium</p>
+            
+            <div class="menu-container">
+                <!-- Livegames Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>Livegames</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-fire-flame-curved"></i> Nikmati pengalaman bermain game langsung dengan berbagai pilihan permainan menarik dan interaktif.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-star"></i>
+                                <span>Fitur Utama</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-check"></i> Live streaming berkualitas tinggi</li>
+                                <li><i class="fas fa-check"></i> Interaksi real-time dengan dealer</li>
+                                <li><i class="fas fa-check"></i> Berbagai pilihan permainan</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="btn" style="margin-top: 20px;">Akses Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Event Scatter Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-gift"></i>
+                        <h3>Event Scatter</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-bolt"></i> Ikuti event scatter menarik dengan hadiah-hadiah spesial yang bisa Anda dapatkan.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-trophy"></i>
+                                <span>Hadiah Spesial</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-coins"></i> Bonus harian</li>
+                                <li><i class="fas fa-gem"></i> Jackpot progresif</li>
+                                <li><i class="fas fa-medal"></i> Poin loyalitas</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="btn" style="margin-top: 20px;">Ikuti Event</a>
+                    </div>
+                </div>
+
+                <!-- Akumulasi Togel Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Akumulasi Togel</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-calculator"></i> Lihat data akumulasi togel terbaru dan analisis canggih untuk membantu prediksi Anda.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Fitur Analisis</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-database"></i> Data historis lengkap</li>
+                                <li><i class="fas fa-chart-pie"></i> Visualisasi statistik</li>
+                                <li><i class="fas fa-brain"></i> Algoritma prediksi</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="btn" style="margin-top: 20px;">Lihat Data</a>
+                    </div>
+                </div>
+
+                <!-- Gambar QRIS Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-qrcode"></i>
+                        <h3>Gambar QRIS</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-mobile-alt"></i> Akses gambar QRIS untuk kemudahan dalam melakukan transaksi pembayaran yang aman.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Keamanan</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-lock"></i> Enkripsi data</li>
+                                <li><i class="fas fa-fingerprint"></i> Verifikasi biometrik</li>
+                                <li><i class="fas fa-user-shield"></i> Privasi terjamin</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="btn" style="margin-top: 20px;">Scan QRIS</a>
+                    </div>
+                </div>
+
+                <!-- Gameplay Togel Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-dice"></i>
+                        <h3>Gameplay Togel</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-gamepad"></i> Jelajahi gameplay togel yang menarik dengan sistem betting yang lengkap.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-cogs"></i>
+                                <span>Fitur Gameplay</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-sliders-h"></i> Berbagai jenis taruhan</li>
+                                <li><i class="fas fa-history"></i> Riwayat permainan</li>
+                                <li><i class="fas fa-calculator"></i> Kalkulator otomatis</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="btn" style="margin-top: 20px;">Mulai Bermain</a>
+                    </div>
+                </div>
+
+                <!-- Data All Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-database"></i>
+                        <h3>Data All</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-server"></i> Akses semua data lengkap dan informasi terkini seputar permainan togel dalam satu tempat.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-cloud-download-alt"></i>
+                                <span>Fitur Data</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-sync-alt"></i> Update real-time</li>
+                                <li><i class="fas fa-filter"></i> Filter kustom</li>
+                                <li><i class="fas fa-file-export"></i> Ekspor data</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="btn" style="margin-top: 20px;">Lihat Data</a>
+                    </div>
+                </div>
+
+                <!-- LC Audit Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>LC Audit</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-search"></i> Verifikasi keamanan sistem dengan audit cryptocurrency yang komprehensif dan transparan.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-certificate"></i>
+                                <span>Fitur Audit</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-check-circle"></i> Verifikasi transaksi</li>
+                                <li><i class="fas fa-chart-area"></i> Analisis blockchain</li>
+                                <li><i class="fas fa-lock"></i> Enkripsi tingkat tinggi</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="btn" style="margin-top: 20px;">Audit System</a>
+                    </div>
+                </div>
+
+                <!-- Profil Bank/Ewallet Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>Profil Bank/Ewallet</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-wallet"></i> Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-user-cog"></i>
+                                <span>Fitur Profil</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-plus-circle"></i> Tambah rekening</li>
+                                <li><i class="fas fa-edit"></i> Edit informasi</li>
+                                <li><i class="fas fa-trash-alt"></i> Hapus rekening</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="btn" style="margin-top: 20px;">Lihat Profil</a>
+                    </div>
+                </div>
+
+                <!-- IDN POKER Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-club"></i>
+                        <h3>IDN POKER</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-cards"></i> Nikmati pengalaman bermain poker online terbaik dengan berbagai pilihan meja dan turnamen menarik.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-trophy"></i>
+                                <span>Fitur Poker</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-users"></i> Multi-player</li>
+                                <li><i class="fas fa-crown"></i> Turnamen reguler</li>
+                                <li><i class="fas fa-coins"></i> Bonus dan hadiah</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="btn" style="margin-top: 20px;">Mainkan Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- GamePlayLiveGames Card -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <i class="fas fa-tv"></i>
+                        <h3>GamePlayLiveGames</h3>
+                    </div>
+                    <div class="day-content">
+                        <p><i class="fas fa-play-circle"></i> Rasakan sensasi bermain game langsung dengan tampilan interaktif dan pengalaman gaming premium.</p>
+                        
+                        <div class="meal">
+                            <div class="meal-title">
+                                <i class="fas fa-gamepad"></i>
+                                <span>Fitur Live Games</span>
+                            </div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-video"></i> Streaming HD</li>
+                                <li><i class="fas fa-comments"></i> Chat interaktif</li>
+                                <li><i class="fas fa-star"></i> Rating dan review</li>
+                            </ul>
+                        </div>
+                        
+                        <a href="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html" class="btn" style="margin-top: 20px;">Mainkan Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
     <footer>
-        <div class="footer-glow"></div>
-        <p>© 2023 Seputar LINETOGEL. Semua Hak Dilindungi. | Premium Gaming Experience</p>
+        <div class="container">
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>&copy; 2023 Seputar LINETOGEL. All Rights Reserved. Premium Gaming Experience</p>
+        </div>
     </footer>
 
     <script>
-        // Create particles for background
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
+        // Create digital rain effect
+        function createDigitalRain() {
+            const digitalRain = document.getElementById('digitalRain');
+            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()';
             const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random properties
-                const size = Math.random() * 5 + 2;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const animationDuration = Math.random() * 20 + 10;
-                const animationDelay = Math.random() * 5;
-                const hue = Math.random() * 60 + 180; // Blue to cyan colors
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animationDuration = `${animationDuration}s`;
-                particle.style.animationDelay = `${animationDelay}s`;
-                particle.style.background = `rgba(${hue}, 200, 255, ${Math.random() * 0.3 + 0.1})`;
-                
-                particlesContainer.appendChild(particle);
+                particle.className = 'digital-particle';
+                particle.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                digitalRain.appendChild(particle);
             }
         }
-
-        // Create floating elements
-        function createFloatingElements() {
-            const container = document.getElementById('floatingElements');
-            const elementCount = 8;
-            
-            for (let i = 0; i < elementCount; i++) {
-                const element = document.createElement('div');
-                element.classList.add('floating-element');
-                
-                // Random properties
-                const size = Math.random() * 40 + 20;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const animationDuration = Math.random() * 20 + 15;
-                const animationDelay = Math.random() * 5;
-                
-                element.style.width = `${size}px`;
-                element.style.height = `${size}px`;
-                element.style.left = `${posX}%`;
-                element.style.top = `${posY}%`;
-                element.style.animationDuration = `${animationDuration}s`;
-                element.style.animationDelay = `${animationDelay}s`;
-                
-                container.appendChild(element);
-            }
-        }
-
-        // Digital Clock Function
-        function updateClock() {
-            const now = new Date();
-            const timeDisplay = document.getElementById('timeDisplay');
-            const dateDisplay = document.getElementById('dateDisplay');
-            
-            // Format time
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            // Format date
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            
-            const dayName = days[now.getDay()];
-            const date = now.getDate();
-            const monthName = months[now.getMonth()];
-            const year = now.getFullYear();
-            
-            timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-            dateDisplay.textContent = `${dayName}, ${date} ${monthName} ${year}`;
-            
-            // Add transformer effect to clock every 10 seconds
-            if (now.getSeconds() % 10 === 0) {
-                timeDisplay.classList.add('clock-transform');
-                setTimeout(() => {
-                    timeDisplay.classList.remove('clock-transform');
-                }, 4000);
-            }
-        }
-
-        // Domain Status Checker
-        function updateDomainStatus() {
-            const domainStatus = document.getElementById('domainStatus');
-            const statuses = ['Aman', 'Terverifikasi', 'Dipantau'];
-            const colors = ['#00ff7f', '#00aaff', '#ffcc00'];
-            
-            setInterval(() => {
-                const randomIndex = Math.floor(Math.random() * statuses.length);
-                domainStatus.textContent = statuses[randomIndex];
-                domainStatus.style.color = colors[randomIndex];
-            }, 5000);
-        }
-
-        // Enhanced Icon Animations
-        function animateIcons() {
-            const menuIcons = document.querySelectorAll('.menu-icon');
-            
-            menuIcons.forEach((icon, index) => {
-                // Add continuous rotation animation
-                icon.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
-                icon.style.animationDelay = `${index * 0.5}s`;
-                
-                // Add hover effect with enhanced rotation
-                icon.addEventListener('mouseenter', function() {
-                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
-                    this.style.transform = 'scale(1.2) rotate(180deg)';
-                });
-                
-                icon.addEventListener('mouseleave', function() {
-                    this.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
-                    this.style.animationDelay = `${index * 0.5}s`;
-                    this.style.transform = 'scale(1) rotate(0deg)';
-                });
-                
-                // Add click effect
-                icon.addEventListener('click', function() {
-                    this.style.animation = 'iconRotate 0.3s linear';
-                    setTimeout(() => {
-                        this.style.animation = `iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out`;
-                        this.style.animationDelay = `${index * 0.5}s`;
-                    }, 300);
-                });
-            });
-
-            // Add special handling for poker card
-            const pokerCard = document.querySelector('.poker-card .menu-icon');
-            if (pokerCard) {
-                // Add poker card specific animation delay
-                pokerCard.style.animationDelay = '4s';
-                
-                // Add special hover effect
-                pokerCard.addEventListener('mouseenter', function() {
-                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
-                    this.style.transform = 'scale(1.2) rotate(180deg)';
-                });
-                
-                pokerCard.addEventListener('mouseleave', function() {
-                    this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
-                    this.style.animationDelay = '4s';
-                    this.style.transform = 'scale(1) rotate(0deg)';
-                });
-                
-                // Add click effect
-                pokerCard.addEventListener('click', function() {
-                    this.style.animation = 'iconRotate 0.3s linear';
-                    setTimeout(() => {
-                        this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
-                        this.style.animationDelay = '4s';
-                    }, 300);
-                });
-            }
-
-            // Add special handling for gameplay live card
-            const gameplayLiveCard = document.querySelector('.gameplay-live-card .menu-icon');
-            if (gameplayLiveCard) {
-                // Add gameplay live card specific animation delay
-                gameplayLiveCard.style.animationDelay = '4.5s';
-                
-                // Add special hover effect
-                gameplayLiveCard.addEventListener('mouseenter', function() {
-                    this.style.animation = 'iconRotate 0.5s linear, iconPulse 0.5s ease-in-out';
-                    this.style.transform = 'scale(1.2) rotate(180deg)';
-                });
-                
-                gameplayLiveCard.addEventListener('mouseleave', function() {
-                    this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
-                    this.style.animationDelay = '4.5s';
-                    this.style.transform = 'scale(1) rotate(0deg)';
-                });
-                
-                // Add click effect
-                gameplayLiveCard.addEventListener('click', function() {
-                    this.style.animation = 'iconRotate 0.3s linear';
-                    setTimeout(() => {
-                        this.style.animation = 'iconFloat 4s infinite ease-in-out, iconGlow 3s infinite ease-in-out';
-                        this.style.animationDelay = '4.5s';
-                    }, 300);
-                });
-            }
-        }
-
-        // Optimus Prime Circle Animation
-        function animateOptimusCircle() {
-            const optimusCircle = document.querySelector('.optimus-circle');
-            const optimusIcon = document.querySelector('.optimus-icon');
-            
-            // Add special hover effect
-            optimusCircle.addEventListener('mouseenter', function() {
-                optimusIcon.style.transform = 'scale(1.2) rotate(180deg)';
-                optimusIcon.style.color = '#ffffff';
-                optimusIcon.style.textShadow = '0 0 20px rgba(255, 255, 255, 1)';
-            });
-            
-            optimusCircle.addEventListener('mouseleave', function() {
-                optimusIcon.style.transform = 'scale(1) rotate(0deg)';
-                optimusIcon.style.color = 'var(--optimus-accent)';
-                optimusIcon.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.7)';
-            });
-            
-            // Add click effect
-            optimusCircle.addEventListener('click', function() {
-                optimusIcon.style.animation = 'iconRotate 0.5s linear';
-                setTimeout(() => {
-                    optimusIcon.style.animation = 'pulseIcon 2s infinite alternate';
-                }, 500);
-            });
-        }
-
+        
         // Theme Toggle Function
         function toggleTheme() {
             const body = document.body;
@@ -1880,7 +1530,7 @@
                 localStorage.setItem('theme', 'light');
             }
         }
-
+        
         // Initialize theme from localStorage
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
@@ -1898,74 +1548,119 @@
                 toggleText.textContent = 'Mode Gelap';
             }
         }
-
-        // Interactive effects
+        
+        // Enhanced smooth scrolling with easing
         document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            createFloatingElements();
+            createDigitalRain();
             initializeTheme();
-            updateDomainStatus();
-            animateIcons();
-            animateOptimusCircle();
             
-            // Update clock immediately and then every second
-            updateClock();
-            setInterval(updateClock, 1000);
+            // Enhanced smooth scrolling
+            const navLinks = document.querySelectorAll('nav a');
             
-            const cards = document.querySelectorAll('.menu-card');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                });
+            });
             
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-12px) scale(1.02)';
+            // Enhanced parallax effect
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                const parallaxSpeed = 0.5;
+                hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
+                
+                // Add blur effect on scroll
+                const blurAmount = Math.min(scrolled / 100, 5);
+                hero.style.filter = `blur(${blurAmount}px)`;
+            });
+            
+            // Intersection Observer with enhanced animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all cards and sections with initial state
+            document.querySelectorAll('.day-card').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px) scale(0.95)';
+                element.style.transition = 'opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                observer.observe(element);
+            });
+            
+            // Enhanced button hover effects
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.05)';
                 });
                 
-                card.addEventListener('mouseleave', function() {
+                btn.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0) scale(1)';
                 });
             });
             
-            // Add mouse move effect to background
-            document.addEventListener('mousemove', function(e) {
-                const particles = document.querySelectorAll('.particle');
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
+            // Enhanced loading removal
+            setTimeout(() => {
+                const loader = document.querySelector('.loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 500);
+                }
+            }, 2500);
+            
+            // Add interactive hover effect to meal items
+            document.querySelectorAll('.meal-items li').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.paddingLeft = '10px';
+                });
                 
-                particles.forEach(particle => {
-                    const speedX = (x - 0.5) * 2;
-                    const speedY = (y - 0.5) * 2;
-                    
-                    particle.style.transform = `translate(${speedX * 10}px, ${speedY * 10}px)`;
+                item.addEventListener('mouseleave', function() {
+                    this.style.paddingLeft = '0';
                 });
             });
-
-            // Special effects for different card types
-            const specialCards = document.querySelectorAll('.gameplay-card, .data-card, .audit-card, .profile-card, .poker-card, .gameplay-live-card');
-            specialCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-12px) scale(1.05)';
-                });
+            
+            // Add glitch effect to hero title on hover
+            const heroTitle = document.querySelector('.hero h1');
+            heroTitle.addEventListener('mouseenter', function() {
+                this.style.animation = 'glitchText 0.3s infinite';
             });
-
+            
+            heroTitle.addEventListener('mouseleave', function() {
+                this.style.animation = 'glitchText 2s infinite';
+            });
+            
             // Add theme toggle event listener
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
             
-            // Add hover effect to domain checker circle
-            const domainCheckerCircle = document.querySelector('.domain-checker-circle');
-            domainCheckerCircle.addEventListener('mouseenter', function() {
+            // Add hover effect to consultation FAB
+            const consultationFAB = document.querySelector('.consultation-fab');
+            consultationFAB.addEventListener('mouseenter', function() {
                 this.style.animationPlayState = 'paused';
             });
             
-            domainCheckerCircle.addEventListener('mouseleave', function() {
-                this.style.animationPlayState = 'running';
-            });
-            
-            // Add hover effect to optimus circle
-            const optimusCircle = document.querySelector('.optimus-circle');
-            optimusCircle.addEventListener('mouseenter', function() {
-                this.style.animationPlayState = 'paused';
-            });
-            
-            optimusCircle.addEventListener('mouseleave', function() {
+            consultationFAB.addEventListener('mouseleave', function() {
                 this.style.animationPlayState = 'running';
             });
         });
