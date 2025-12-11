@@ -66,128 +66,64 @@
         
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: var(--gradient-bg);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
             color: var(--dark-text);
             line-height: 1.5;
             min-height: 100vh;
             padding: 0;
             position: relative;
             overflow-x: hidden;
+            background: #000;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Animated Floating Particles Background */
-        .floating-particles {
+        /* Transformer Background */
+        .transformer-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            overflow: hidden;
+            background-image: url('https://i.postimg.cc/vTfTNT3G/Gemini-Generated-Image-9gkaxn9gkaxn9gka.png');
+            background-size: cover;
+            background-position: center;
+            animation: bgZoom 20s infinite alternate;
         }
         
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.2), rgba(255, 107, 139, 0.1));
-            animation: float 15s infinite linear;
-        }
-        
-        .particle:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.25), transparent);
-        }
-        
-        .particle:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            top: 70%;
-            left: 10%;
-            animation-delay: 2s;
-            background: radial-gradient(circle, rgba(255, 107, 139, 0.2), transparent);
-        }
-        
-        .particle:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            top: 20%;
-            left: 85%;
-            animation-delay: 4s;
-            background: radial-gradient(circle, rgba(0, 206, 209, 0.2), transparent);
-        }
-        
-        .particle:nth-child(4) {
-            width: 100px;
-            height: 100px;
-            top: 80%;
-            left: 80%;
-            animation-delay: 6s;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.15), transparent);
-        }
-        
-        .particle:nth-child(5) {
-            width: 70px;
-            height: 70px;
-            top: 50%;
-            left: 15%;
-            animation-delay: 8s;
-            background: radial-gradient(circle, rgba(157, 78, 221, 0.2), transparent);
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
+        @keyframes bgZoom {
+            0% {
+                transform: scale(1);
             }
-            25% {
-                transform: translateY(-20px) rotate(90deg);
-            }
-            50% {
-                transform: translateY(0) rotate(180deg);
-            }
-            75% {
-                transform: translateY(20px) rotate(270deg);
+            100% {
+                transform: scale(1.1);
             }
         }
         
-        /* Animated Gradient Background Lines */
-        .gradient-lines {
+        /* Animated Grid Overlay */
+        .grid-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: 
-                linear-gradient(90deg, transparent 49%, rgba(138, 43, 226, 0.03) 50%, transparent 51%),
-                linear-gradient(transparent 49%, rgba(138, 43, 226, 0.03) 50%, transparent 51%);
-            background-size: 50px 50px, 50px 50px;
-            animation: linesMove 20s linear infinite;
-            opacity: 0.4;
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridMove 10s linear infinite;
         }
         
-        @keyframes linesMove {
+        @keyframes gridMove {
             0% {
                 background-position: 0 0, 0 0;
             }
             100% {
-                background-position: 50px 50px, 50px 50px;
+                background-position: 40px 40px, 40px 40px;
             }
         }
         
-        /* Animated Glowing Orbs */
-        .glowing-orbs {
+        /* Transformer-style Particles */
+        .transformer-particles {
             position: fixed;
             top: 0;
             left: 0;
@@ -197,51 +133,182 @@
             overflow: hidden;
         }
         
-        .orb {
+        .t-particle {
             position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
             border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.3;
-            animation: orbFloat 25s infinite ease-in-out;
+            animation: tParticleFloat 15s infinite linear;
         }
         
-        .orb:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            left: -100px;
-            background: radial-gradient(circle, #8A2BE2, transparent);
+        .t-particle:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .t-particle:nth-child(2) {
+            top: 20%;
+            left: 80%;
+            animation-delay: 2s;
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+        
+        .t-particle:nth-child(3) {
+            top: 60%;
+            left: 20%;
+            animation-delay: 4s;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+        
+        .t-particle:nth-child(4) {
+            top: 80%;
+            left: 70%;
+            animation-delay: 6s;
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold);
+        }
+        
+        .t-particle:nth-child(5) {
+            top: 40%;
+            left: 50%;
+            animation-delay: 8s;
+            background: var(--primary-light);
+            box-shadow: 0 0 15px var(--primary-light);
+        }
+        
+        @keyframes tParticleFloat {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(100px, -100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Transformer Lines */
+        .transformer-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .t-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: tLineMove 8s infinite linear;
+        }
+        
+        .t-line:nth-child(1) {
+            top: 20%;
+            width: 100%;
             animation-delay: 0s;
         }
         
-        .orb:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            top: 50%;
-            right: -200px;
-            background: radial-gradient(circle, #FF6B8B, transparent);
-            animation-delay: 5s;
+        .t-line:nth-child(2) {
+            top: 40%;
+            width: 100%;
+            animation-delay: 2s;
         }
         
-        .orb:nth-child(3) {
-            width: 350px;
-            height: 350px;
-            bottom: -150px;
-            left: 20%;
-            background: radial-gradient(circle, #00CED1, transparent);
-            animation-delay: 10s;
+        .t-line:nth-child(3) {
+            top: 60%;
+            width: 100%;
+            animation-delay: 4s;
         }
         
-        @keyframes orbFloat {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
+        .t-line:nth-child(4) {
+            top: 80%;
+            width: 100%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes tLineMove {
+            0% {
+                transform: translateX(-100%);
             }
-            33% {
-                transform: translate(30px, -30px) scale(1.1);
+            100% {
+                transform: translateX(100%);
             }
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
+        }
+        
+        /* Tombol Kembali ke Menu */
+        #backToMenuBtn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+            animation: backButtonTransform 8s infinite alternate;
+        }
+        
+        @keyframes backButtonTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--accent);
             }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: var(--primary);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--secondary);
+            }
+        }
+        
+        #backToMenuBtn:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: var(--gradient-primary);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+            animation-play-state: paused;
+        }
+        
+        #backToMenuBtn i {
+            transition: var(--transition);
+        }
+        
+        #backToMenuBtn:hover i {
+            animation: backIconShake 0.5s ease;
+        }
+        
+        @keyframes backIconShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
         
         /* Layout utama */
@@ -249,88 +316,37 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         
         /* Header */
         header {
-            background: var(--gradient-header);
-            padding: 25px 0 60px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 30px 0;
             text-align: center;
             position: relative;
             overflow: hidden;
             margin-bottom: 30px;
-            border-bottom: 5px solid var(--gold);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
-            position: relative;
+            border-bottom: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 206, 209, 0.4);
+            animation: headerTransform 20s infinite alternate;
         }
         
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 107, 139, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 40% 80%, rgba(0, 206, 209, 0.1) 0%, transparent 40%);
-            z-index: 0;
-            animation: headerGlow 8s infinite alternate;
-        }
-        
-        @keyframes headerGlow {
+        @keyframes headerTransform {
             0% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        .logo-container {
-            display: inline-block;
-            margin-bottom: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 50%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            position: relative;
-            z-index: 1;
-            box-shadow: 
-                0 0 25px rgba(255, 255, 255, 0.4),
-                inset 0 0 20px rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: logoFloat 6s ease-in-out infinite;
-        }
-        
-        @keyframes logoFloat {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--accent);
             }
             50% {
-                transform: translateY(-15px) rotate(5deg);
+                background: rgba(106, 13, 173, 0.7);
+                border-color: var(--primary);
             }
-        }
-        
-        .logo-container:hover {
-            transform: scale(1.1) rotate(10deg);
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 
-                0 0 40px rgba(255, 255, 255, 0.7),
-                inset 0 0 25px rgba(255, 255, 255, 0.3);
-            animation-play-state: paused;
-        }
-        
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            100% {
+                background: rgba(138, 43, 226, 0.7);
+                border-color: var(--secondary);
+            }
         }
         
         .header-content {
@@ -354,24 +370,21 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.1;
-            animation: titleGlow 3s ease-in-out infinite alternate, titleShimmer 8s linear infinite;
+            animation: titleTransform 5s infinite alternate;
         }
         
-        @keyframes titleGlow {
+        @keyframes titleTransform {
             0% {
+                transform: skewX(0deg) scale(1);
                 filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.7));
             }
-            100% {
-                filter: drop-shadow(0 0 25px rgba(255, 107, 139, 0.9));
-            }
-        }
-        
-        @keyframes titleShimmer {
-            0% {
-                background-position: -500px 0;
+            50% {
+                transform: skewX(5deg) scale(1.05);
+                filter: drop-shadow(0 0 20px rgba(255, 107, 139, 0.9));
             }
             100% {
-                background-position: 500px 0;
+                transform: skewX(-5deg) scale(1.1);
+                filter: drop-shadow(0 0 30px rgba(0, 206, 209, 0.9));
             }
         }
         
@@ -421,20 +434,34 @@
             }
         }
         
-        /* Menu Navigasi dengan Ikon Bergerak */
+        /* Menu Navigasi dengan Efek Transformer */
         .main-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 18px 30px;
             margin: 0 auto 35px;
             max-width: 1400px;
-            box-shadow: 
-                0 0 25px rgba(138, 43, 226, 0.2),
-                inset 0 0 15px rgba(138, 43, 226, 0.1);
-            border: 2px solid rgba(138, 43, 226, 0.2);
+            box-shadow: 0 0 25px rgba(0, 206, 209, 0.3);
+            border: 2px solid rgba(0, 206, 209, 0.3);
             position: relative;
             overflow: hidden;
+            animation: navTransform 15s infinite alternate;
+        }
+        
+        @keyframes navTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(0, 206, 209, 0.3);
+            }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: rgba(138, 43, 226, 0.5);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 107, 139, 0.5);
+            }
         }
         
         .main-nav::before {
@@ -471,7 +498,7 @@
         }
         
         .nav-links a {
-            color: var(--dark-text);
+            color: white;
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
@@ -484,6 +511,8 @@
             font-family: 'Rajdhani', sans-serif;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
         
         .nav-links a::before {
@@ -505,7 +534,7 @@
         
         .nav-links a:hover, .nav-links a.active {
             color: white;
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotateX(10deg);
             box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
         }
         
@@ -525,36 +554,36 @@
         }
         
         .nav-links a:hover i {
-            transform: rotate(15deg) scale(1.3);
+            transform: rotateY(180deg) scale(1.3);
             animation-play-state: paused;
         }
         
         .nav-links a:nth-child(1):hover i { /* Home */
-            animation: homeSpin 0.8s ease;
+            animation: homeTransform 0.8s ease;
         }
         
         .nav-links a:nth-child(2):hover i { /* Bank */
-            animation: bankShake 0.5s ease;
+            animation: bankTransform 0.5s ease;
         }
         
         .nav-links a:nth-child(3):hover i { /* E-wallet */
-            animation: walletBounce 0.6s ease;
+            animation: walletTransform 0.6s ease;
         }
         
-        @keyframes homeSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes homeTransform {
+            0% { transform: rotateY(0deg) scale(1.3); }
+            100% { transform: rotateY(360deg) scale(1.3); }
         }
         
-        @keyframes bankShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        @keyframes bankTransform {
+            0%, 100% { transform: translateX(0) rotateZ(0deg) scale(1.3); }
+            25% { transform: translateX(-5px) rotateZ(5deg) scale(1.3); }
+            75% { transform: translateX(5px) rotateZ(-5deg) scale(1.3); }
         }
         
-        @keyframes walletBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes walletTransform {
+            0%, 100% { transform: translateY(0) rotateX(0deg) scale(1.3); }
+            50% { transform: translateY(-10px) rotateX(180deg) scale(1.3); }
         }
         
         .nav-actions {
@@ -579,6 +608,7 @@
             box-shadow: 0 6px 20px rgba(138, 43, 226, 0.3);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
         
         .nav-btn::before {
@@ -598,7 +628,7 @@
         
         .nav-btn:hover {
             background: var(--gradient-secondary);
-            transform: translateY(-5px) scale(1.05);
+            transform: translateY(-5px) rotateX(10deg) scale(1.05);
             box-shadow: 0 12px 25px rgba(255, 107, 139, 0.4);
         }
         
@@ -608,46 +638,60 @@
         }
         
         .nav-btn:hover i {
-            transform: scale(1.3);
+            transform: rotateZ(15deg) scale(1.3);
         }
         
         .nav-btn:nth-child(1):hover i { /* Search */
-            animation: searchSpin 0.8s ease;
+            animation: searchTransform 0.8s ease;
         }
         
         .nav-btn:nth-child(2):hover i { /* User */
-            animation: userJump 0.5s ease;
+            animation: userTransform 0.5s ease;
         }
         
-        @keyframes searchSpin {
-            0% { transform: rotate(0deg) scale(1.3); }
-            100% { transform: rotate(360deg) scale(1.3); }
+        @keyframes searchTransform {
+            0% { transform: rotateZ(0deg) scale(1.3); }
+            100% { transform: rotateZ(360deg) scale(1.3); }
         }
         
-        @keyframes userJump {
-            0%, 100% { transform: translateY(0) scale(1.3); }
-            50% { transform: translateY(-10px) scale(1.3); }
+        @keyframes userTransform {
+            0%, 100% { transform: translateY(0) rotateY(0deg) scale(1.3); }
+            50% { transform: translateY(-10px) rotateY(180deg) scale(1.3); }
         }
         
         /* Breadcrumb */
         .breadcrumb {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             padding: 15px 30px;
             font-size: 0.95rem;
-            backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             max-width: 1400px;
             margin: 0 auto 35px;
             border-radius: 12px;
-            box-shadow: 
-                0 0 20px rgba(138, 43, 226, 0.15),
-                inset 0 0 10px rgba(138, 43, 226, 0.1);
-            border: 2px solid rgba(138, 43, 226, 0.15);
+            box-shadow: 0 0 20px rgba(0, 206, 209, 0.2);
+            border: 2px solid rgba(0, 206, 209, 0.2);
+            animation: breadcrumbTransform 12s infinite alternate;
+        }
+        
+        @keyframes breadcrumbTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(0, 206, 209, 0.2);
+            }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: rgba(138, 43, 226, 0.4);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 107, 139, 0.4);
+            }
         }
         
         .breadcrumb a {
-            color: var(--primary);
+            color: var(--accent);
             text-decoration: none;
             transition: var(--transition);
             font-weight: 600;
@@ -658,7 +702,7 @@
         
         .breadcrumb a:hover {
             color: var(--secondary);
-            transform: translateX(5px);
+            transform: translateX(5px) rotateY(10deg);
         }
         
         .breadcrumb i {
@@ -670,7 +714,7 @@
         
         .breadcrumb a:hover i {
             color: var(--secondary);
-            transform: scale(1.2);
+            transform: scale(1.2) rotate(90deg);
         }
         
         /* Konten utama */
@@ -684,20 +728,30 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
             margin: 50px 0 30px;
-            color: var(--dark-text);
+            color: white;
             text-align: center;
             position: relative;
             padding-bottom: 25px;
             font-weight: 700;
-            animation: sectionTitleFloat 6s ease-in-out infinite;
+            animation: sectionTitleTransform 8s infinite alternate;
+            text-shadow: 0 0 15px rgba(0, 206, 209, 0.7);
         }
         
-        @keyframes sectionTitleFloat {
-            0%, 100% {
-                transform: translateY(0);
+        @keyframes sectionTitleTransform {
+            0% {
+                transform: translateY(0) skewX(0deg);
+                color: white;
+                text-shadow: 0 0 15px rgba(0, 206, 209, 0.7);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-10px) skewX(5deg);
+                color: var(--accent);
+                text-shadow: 0 0 20px rgba(0, 206, 209, 0.9);
+            }
+            100% {
+                transform: translateY(-5px) skewX(-5deg);
+                color: var(--primary);
+                text-shadow: 0 0 25px rgba(138, 43, 226, 0.9);
             }
         }
         
@@ -734,9 +788,10 @@
         }
         
         .filter-btn {
-            background: white;
-            border: 2px solid var(--gray-border);
-            color: var(--dark-text);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--accent);
+            color: white;
             padding: 12px 24px;
             border-radius: 10px;
             font-size: 0.95rem;
@@ -744,12 +799,29 @@
             cursor: pointer;
             transition: var(--transition);
             font-family: 'Rajdhani', sans-serif;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 15px rgba(0, 206, 209, 0.2);
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             gap: 8px;
+            transform-style: preserve-3d;
+            animation: filterTransform 10s infinite alternate;
+        }
+        
+        @keyframes filterTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--accent);
+            }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: var(--primary);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--secondary);
+            }
         }
         
         .filter-btn::before {
@@ -767,7 +839,7 @@
         .filter-btn.active, .filter-btn:hover {
             color: white;
             border-color: var(--primary);
-            transform: translateY(-5px) scale(1.05);
+            transform: translateY(-5px) rotateX(10deg) scale(1.05);
             box-shadow: 0 12px 25px rgba(138, 43, 226, 0.3);
         }
         
@@ -781,7 +853,7 @@
         }
         
         .filter-btn:hover i {
-            transform: rotate(20deg) scale(1.3);
+            transform: rotateZ(20deg) scale(1.3);
         }
         
         /* Grid untuk kartu */
@@ -793,31 +865,46 @@
         }
         
         .card {
-            background: var(--light-card);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: var(--card-radius);
             overflow: hidden;
-            box-shadow: 
-                0 0 20px rgba(138, 43, 226, 0.15),
-                inset 0 0 15px rgba(138, 43, 226, 0.05);
+            box-shadow: 0 0 20px rgba(0, 206, 209, 0.2);
             transition: var(--transition);
             position: relative;
-            border: 2px solid rgba(138, 43, 226, 0.1);
-            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0, 206, 209, 0.2);
             height: 100%;
             display: flex;
             flex-direction: column;
             animation: cardEntrance 0.8s ease-out;
             animation-fill-mode: backwards;
+            transform-style: preserve-3d;
+            animation: cardTransform 15s infinite alternate;
+        }
+        
+        @keyframes cardTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(0, 206, 209, 0.2);
+            }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: rgba(138, 43, 226, 0.4);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 107, 139, 0.4);
+            }
         }
         
         @keyframes cardEntrance {
             0% {
                 opacity: 0;
-                transform: translateY(50px) scale(0.9);
+                transform: translateY(50px) scale(0.9) rotateX(10deg);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0) scale(1) rotateX(0deg);
             }
         }
         
@@ -848,10 +935,8 @@
         }
         
         .card:hover {
-            transform: translateY(-15px) scale(1.05);
-            box-shadow: 
-                0 0 40px rgba(138, 43, 226, 0.3),
-                inset 0 0 20px rgba(138, 43, 226, 0.1);
+            transform: translateY(-15px) scale(1.05) rotateX(10deg);
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.3);
             border-color: rgba(138, 43, 226, 0.3);
         }
         
@@ -937,7 +1022,7 @@
         }
         
         .card:hover .card-image img {
-            transform: scale(1.15);
+            transform: scale(1.15) rotateY(10deg);
             filter: brightness(1) contrast(1.1);
             box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
         }
@@ -981,6 +1066,7 @@
             position: relative;
             overflow: hidden;
             animation: buttonPulse 2s infinite;
+            transform-style: preserve-3d;
         }
         
         @keyframes buttonPulse {
@@ -1005,7 +1091,7 @@
         
         .view-btn:hover {
             background: var(--gradient-secondary);
-            transform: translateY(-5px) scale(1.1);
+            transform: translateY(-5px) rotateX(10deg) scale(1.1);
             box-shadow: 0 0 30px rgba(255, 107, 139, 0.7);
             animation-play-state: paused;
         }
@@ -1020,7 +1106,7 @@
         }
         
         .view-btn:hover i {
-            transform: rotate(90deg) scale(1.3);
+            transform: rotateZ(90deg) scale(1.3);
         }
         
         /* Tombol utama */
@@ -1044,14 +1130,15 @@
             overflow: hidden;
             font-family: 'Orbitron', sans-serif;
             animation: buttonFloat 6s ease-in-out infinite;
+            transform-style: preserve-3d;
         }
         
         @keyframes buttonFloat {
             0%, 100% {
-                transform: translateY(0);
+                transform: translateY(0) rotateX(0deg);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-10px) rotateX(5deg);
             }
         }
         
@@ -1067,7 +1154,7 @@
         }
         
         .btn-primary:hover {
-            transform: translateY(-8px) scale(1.05);
+            transform: translateY(-8px) rotateX(10deg) scale(1.05);
             box-shadow: 0 0 35px rgba(138, 43, 226, 0.7);
             background: var(--gradient-secondary);
             animation-play-state: paused;
@@ -1083,20 +1170,37 @@
         }
         
         .btn-primary:hover i {
-            transform: translateX(-10px) rotate(-20deg);
+            transform: translateX(-10px) rotateY(-20deg);
         }
         
         /* Footer */
         footer {
-            background: var(--gradient-header);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             color: white;
             text-align: center;
             padding: 40px 20px;
             margin-top: 70px;
             position: relative;
-            border-top: 5px solid var(--gold);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            border-top: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 206, 209, 0.4);
             overflow: hidden;
+            animation: footerTransform 20s infinite alternate;
+        }
+        
+        @keyframes footerTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--accent);
+            }
+            50% {
+                background: rgba(106, 13, 173, 0.7);
+                border-color: var(--primary);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: var(--secondary);
+            }
         }
         
         footer::before {
@@ -1157,7 +1261,7 @@
         
         .footer-links a:hover {
             color: var(--accent);
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotateY(10deg);
         }
         
         .footer-links a:hover::after {
@@ -1179,28 +1283,37 @@
         /* Digital Clock dengan animasi */
         .digital-clock {
             position: fixed;
-            top: 30px;
+            top: 100px; /* Adjusted to make space for the back button */
             right: 30px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             padding: 15px 25px;
             border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
-            color: var(--primary);
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
-            border: 2px solid rgba(138, 43, 226, 0.2);
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 206, 209, 0.3);
+            box-shadow: 0 0 20px rgba(0, 206, 209, 0.2);
+            border: 2px solid rgba(0, 206, 209, 0.2);
             z-index: 1000;
-            animation: clockPulse 2s infinite;
-            backdrop-filter: blur(10px);
+            animation: clockTransform 5s infinite alternate;
         }
         
-        @keyframes clockPulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+        @keyframes clockTransform {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(0, 206, 209, 0.2);
+                color: var(--accent);
             }
             50% {
-                box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+                background: rgba(106, 13, 173, 0.7);
+                border-color: rgba(138, 43, 226, 0.4);
+                color: var(--primary);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 107, 139, 0.4);
+                color: var(--secondary);
             }
         }
         
@@ -1240,24 +1353,30 @@
             box-shadow: 0 0 50px rgba(138, 43, 226, 0.8);
             animation: zoomIn 0.5s ease;
             object-fit: contain;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.5);
             padding: 30px;
             border: 3px solid rgba(0, 206, 209, 0.5);
-            animation: modalImageGlow 3s infinite alternate;
+            animation: modalImageTransform 3s infinite alternate;
         }
         
-        @keyframes modalImageGlow {
+        @keyframes modalImageTransform {
             0% {
                 box-shadow: 0 0 50px rgba(138, 43, 226, 0.8);
+                border-color: rgba(0, 206, 209, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(0, 206, 209, 0.9);
+                border-color: rgba(138, 43, 226, 0.7);
             }
             100% {
-                box-shadow: 0 0 60px rgba(0, 206, 209, 0.9);
+                box-shadow: 0 0 70px rgba(255, 107, 139, 0.9);
+                border-color: rgba(255, 107, 139, 0.7);
             }
         }
         
         @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from { transform: scale(0.8) rotateX(10deg); opacity: 0; }
+            to { transform: scale(1) rotateX(0deg); opacity: 1; }
         }
         
         #modalClose {
@@ -1279,15 +1398,24 @@
             align-items: center;
             justify-content: center;
             border: 2px solid rgba(0, 206, 209, 0.5);
-            animation: closeButtonSpin 10s infinite linear;
+            animation: closeButtonTransform 10s infinite linear;
         }
         
-        @keyframes closeButtonSpin {
+        @keyframes closeButtonTransform {
             0% {
                 transform: rotate(0deg);
+                background: rgba(0, 0, 0, 0.4);
+                border-color: rgba(0, 206, 209, 0.5);
+            }
+            50% {
+                transform: rotate(180deg);
+                background: rgba(106, 13, 173, 0.4);
+                border-color: rgba(138, 43, 226, 0.7);
             }
             100% {
                 transform: rotate(360deg);
+                background: rgba(0, 0, 0, 0.4);
+                border-color: rgba(255, 107, 139, 0.7);
             }
         }
         
@@ -1323,6 +1451,7 @@
             font-family: 'Rajdhani', sans-serif;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
         
         .modal-btn::before {
@@ -1338,7 +1467,7 @@
         
         .modal-btn:hover {
             background: var(--gradient-secondary);
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotateX(10deg);
             box-shadow: 0 0 25px rgba(255, 107, 139, 0.7);
         }
         
@@ -1356,28 +1485,28 @@
         }
         
         .modal-btn:nth-child(1):hover i { /* Download */
-            animation: downloadBounce 0.5s ease;
+            animation: downloadTransform 0.5s ease;
         }
         
         .modal-btn:nth-child(2):hover i { /* Copy */
-            animation: copyFlip 0.6s ease;
+            animation: copyTransform 0.6s ease;
         }
         
         .modal-btn:nth-child(3):hover i { /* Close */
-            animation: closeShake 0.4s ease;
+            animation: closeTransform 0.4s ease;
         }
         
-        @keyframes downloadBounce {
+        @keyframes downloadTransform {
             0%, 100% { transform: translateY(0) scale(1.3); }
             50% { transform: translateY(-10px) scale(1.3); }
         }
         
-        @keyframes copyFlip {
-            0% { transform: rotateY(0) scale(1.3); }
+        @keyframes copyTransform {
+            0% { transform: rotateY(0deg) scale(1.3); }
             100% { transform: rotateY(360deg) scale(1.3); }
         }
         
-        @keyframes closeShake {
+        @keyframes closeTransform {
             0%, 100% { transform: translateX(0) scale(1.3); }
             25% { transform: translateX(-5px) scale(1.3); }
             75% { transform: translateX(5px) scale(1.3); }
@@ -1529,15 +1658,6 @@
                 font-size: 0.9rem;
                 padding: 10px 15px;
             }
-            
-            .logo {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .logo-container {
-                padding: 12px;
-            }
         }
         
         @media (max-width: 576px) {
@@ -1552,15 +1672,6 @@
             
             .section-title {
                 font-size: 1.3rem;
-            }
-            
-            .logo {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .logo-container {
-                padding: 10px;
             }
             
             #modalClose {
@@ -1593,6 +1704,18 @@
                 padding: 18px;
                 font-size: 1.1rem;
             }
+            
+            #backToMenuBtn span {
+                display: none;
+            }
+            
+            #backToMenuBtn {
+                padding: 12px;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                justify-content: center;
+            }
         }
         
         @media (max-width: 400px) {
@@ -1621,21 +1744,33 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="floating-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+    <!-- Tombol Kembali ke Menu -->
+    <a href="https://novalmuttawali-ym2l.vercel.app/LINEUTAMA.html#" id="backToMenuBtn" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>MENU UTAMA</span>
+    </a>
+    
+    <!-- Transformer Background -->
+    <div class="transformer-bg"></div>
+    
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Transformer Particles -->
+    <div class="transformer-particles">
+        <div class="t-particle"></div>
+        <div class="t-particle"></div>
+        <div class="t-particle"></div>
+        <div class="t-particle"></div>
+        <div class="t-particle"></div>
     </div>
     
-    <div class="gradient-lines"></div>
-    
-    <div class="glowing-orbs">
-        <div class="orb"></div>
-        <div class="orb"></div>
-        <div class="orb"></div>
+    <!-- Transformer Lines -->
+    <div class="transformer-lines">
+        <div class="t-line"></div>
+        <div class="t-line"></div>
+        <div class="t-line"></div>
+        <div class="t-line"></div>
     </div>
     
     <!-- Digital Clock dengan animasi -->
@@ -1646,16 +1781,13 @@
     
     <div class="main-container">
         <header>
-            <div class="logo-container" onclick="window.location.href='https://gambarcsline.page.gd/'">
-                <img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/23/20250423/a82bdc6fb564d0dff3671aeb9a4d1da5/logo.png" alt="CS Line Logo" class="logo">
-            </div>
             <div class="header-content">
                 <h1 class="animated-title">DIGITAL PROFILE COLLECTION</h1>
                 <p class="subtitle">Koleksi lengkap profile bank dan e-wallet dengan desain futuristik untuk transaksi digital masa depan</p>
             </div>
         </header>
         
-        <!-- Menu Navigasi dengan Ikon Bergerak -->
+        <!-- Menu Navigasi dengan Efek Transformer -->
         <nav class="main-nav">
             <div class="nav-container">
                 <ul class="nav-links">
@@ -1946,7 +2078,7 @@
                 loader.style.display = 'none';
                 
                 // Tambahkan efek animasi pada gambar modal
-                modalImg.style.animation = 'modalImageGlow 3s infinite alternate';
+                modalImg.style.animation = 'modalImageTransform 3s infinite alternate';
             };
             img.onerror = function() {
                 modalImg.src = 'https://via.placeholder.com/800x600/8A2BE2/ffffff?text=GAMBAR+TIDAK+DITEMUKAN';
