@@ -334,6 +334,23 @@
         .jumlah.masuk { color: var(--accent-color); }
         .jumlah.keluar { color: var(--secondary-color); }
 
+        /* Gaya Tombol Hapus */
+        .btn-delete {
+            background-color: var(--secondary-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-delete:hover {
+            background-color: #ff6b6b;
+            transform: scale(1.05);
+        }
+
         /* --- FOOTER --- */
         .footer {
             text-align: center;
@@ -390,7 +407,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Jumlah (Rp)</label>
-                        <input type="number" id="jumlah" placeholder="Contoh: 1000000" required>
+                        <input type="text" id="jumlah" placeholder="Contoh: 1.000.000" required data-raw-value="0">
                     </div>
                     <button type="submit" class="btn-submit">Tambah Transaksi</button>
                 </div>
@@ -406,6 +423,7 @@
                         <th>Keterangan</th>
                         <th>Kategori</th>
                         <th>Jumlah</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -429,6 +447,7 @@
             const totalKeluarEl = document.getElementById('totalKeluar');
             const saldoAkhirEl = document.getElementById('saldoAkhir');
             const tanggalInput = document.getElementById('tanggal');
+            const jumlahInput = document.getElementById('jumlah');
 
             // --- DATA AWAL (DIMULAI DARI NOL) ---
             let totalPemasukan = 0;
@@ -453,7 +472,22 @@
                 saldoAkhirEl.innerText = formatRupiah(saldoAkhir);
             }
 
-            // --- EVENT LISTENER UNTUK FORM ---
+            // --- FITUR AUTO KOMA PADA INPUT JUMLAH ---
+            jumlahInput.addEventListener('input', function(e) {
+                // Hapus semua karakter non-angka
+                let rawValue = e.target.value.replace(/[^\d]/g, '');
+                // Simpan nilai asli di atribut data
+                e.target.dataset.rawValue = rawValue;
+
+                // Format nilai untuk ditampilkan
+                if (rawValue === '') {
+                    e.target.value = '';
+                } else {
+                    e.target.value = parseInt(rawValue).toLocaleString('id-ID');
+                }
+            });
+
+            // --- EVENT LISTENER UNTUK FORM TAMBAH ---
             form.addEventListener('submit', function(event) {
                 event.preventDefault(); // Mencegah reload halaman
 
@@ -461,7 +495,8 @@
                 const tanggal = tanggalInput.value;
                 const keterangan = document.getElementById('keterangan').value;
                 const jenis = document.querySelector('input[name="jenis"]:checked').value;
-                const jumlah = parseInt(document.getElementById('jumlah').value);
+                // Ambil nilai asli dari atribut data-raw-value
+                const jumlah = parseInt(jumlahInput.dataset.rawValue);
 
                 // Validasi sederhana
                 if (!tanggal || !keterangan || !jumlah || jumlah <= 0) {
@@ -488,19 +523,46 @@
                     <td>${keterangan}</td>
                     <td><span class="kategori ${kategoriClass}">${kategoriText}</span></td>
                     <td class="jumlah ${kategoriClass}">${jumlahPrefix} ${formatRupiah(jumlah)}</td>
+                    <td><button class="btn-delete">Hapus</button></td>
                 `;
                 
-                // 4. Tambahkan baris baru ke tabel
+                // 4. Tambahkan event listener untuk tombol hapus pada baris baru
+                const deleteBtn = newRow.querySelector('.btn-delete');
+                deleteBtn.addEventListener('click', function() {
+                    // Konfirmasi penghapusan
+                    if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+                        // Ambil kembali jumlah dan jenis untuk perhitungan
+                        const jumlahHapus = jumlah;
+                        const jenisHapus = jenis;
+
+                        // Kurangi total
+                        if (jenisHapus === 'masuk') {
+                            totalPemasukan -= jumlahHapus;
+                        } else {
+                            totalPengeluaran -= jumlahHapus;
+                        }
+
+                        // Hapus baris dari tabel
+                        newRow.remove();
+
+                        // Perbarui tampilan
+                        updateDisplay();
+                    }
+                });
+
+                // 5. Tambahkan baris baru ke paling atas tabel
                 tableBody.insertBefore(newRow, tableBody.firstChild);
 
-                // 5. Perbarui tampilan kartu ringkasan
+                // 6. Perbarui tampilan kartu ringkasan
                 updateDisplay();
 
-                // 6. Kosongkan form
+                // 7. Kosongkan form
                 form.reset();
                 // Set tanggal kembali ke hari ini
                 const today = new Date().toISOString().split('T')[0];
                 tanggalInput.value = today;
+                // Reset atribut data-raw-value
+                jumlahInput.dataset.rawValue = '0';
             });
 
             // --- INISIALISASI ---
