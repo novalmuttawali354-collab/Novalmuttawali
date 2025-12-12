@@ -407,7 +407,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Jumlah (Rp)</label>
-                        <input type="text" id="jumlah" placeholder="Contoh: 1.000.000" required data-raw-value="0">
+                        <input type="text" id="jumlah" placeholder="Contoh: 1.000.000" required>
                     </div>
                     <button type="submit" class="btn-submit">Tambah Transaksi</button>
                 </div>
@@ -427,7 +427,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <!-- Tabel sekarang kosong, data baru akan ditambahkan di sini oleh JavaScript -->
+                    <!-- Data akan dimuat dari localStorage oleh JavaScript -->
                 </tbody>
             </table>
         </main>
@@ -449,9 +449,8 @@
             const tanggalInput = document.getElementById('tanggal');
             const jumlahInput = document.getElementById('jumlah');
 
-            // --- DATA AWAL (DIMULAI DARI NOL) ---
-            let totalPemasukan = 0;
-            let totalPengeluaran = 0;
+            // --- DATA UTAMA (ARRAY OF OBJECTS) ---
+            let transaksiData = [];
 
             // --- FUNGSI BANTUAN ---
             function formatRupiah(angka) {
@@ -463,8 +462,30 @@
                 return new Date(dateString).toLocaleDateString('id-ID', options);
             }
 
+            // --- FUNGSI LOCAL STORAGE ---
+            function saveData() {
+                localStorage.setItem('rekapanTabunganData', JSON.stringify(transaksiData));
+            }
+
+            function loadData() {
+                const storedData = localStorage.getItem('rekapanTabunganData');
+                if (storedData) {
+                    transaksiData = JSON.parse(storedData);
+                } else {
+                    transaksiData = []; // Jika tidak ada data, mulai dengan array kosong
+                }
+            }
+
             // --- FUNGSI UTAMA MEMPERBARUI TAMPILAN ---
             function updateDisplay() {
+                // Hitung total dari array transaksiData
+                const totalPemasukan = transaksiData
+                    .filter(t => t.jenis === 'masuk')
+                    .reduce((sum, t) => sum + t.jumlah, 0);
+                const totalPengeluaran = transaksiData
+                    .filter(t => t.jenis === 'keluar')
+                    .reduce((sum, t) => sum + t.jumlah, 0);
+                
                 const saldoAkhir = totalPemasukan - totalPengeluaran;
 
                 totalMasukEl.innerText = '+ ' + formatRupiah(totalPemasukan);
@@ -472,103 +493,118 @@
                 saldoAkhirEl.innerText = formatRupiah(saldoAkhir);
             }
 
-            // --- FITUR AUTO KOMA PADA INPUT JUMLAH ---
-            jumlahInput.addEventListener('input', function(e) {
-                // Hapus semua karakter non-angka
-                let rawValue = e.target.value.replace(/[^\d]/g, '');
-                // Simpan nilai asli di atribut data
-                e.target.dataset.rawValue = rawValue;
+            function renderTable() {
+                // Kosongkan tabel terlebih dahulu
+                tableBody.innerHTML = '';
 
-                // Format nilai untuk ditampilkan
-                if (rawValue === '') {
-                    e.target.value = '';
-                } else {
-                    e.target.value = parseInt(rawValue).toLocaleString('id-ID');
+                // Urutkan data dari yang terbaru
+                transaksiData.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+                // Tambahkan setiap transaksi ke dalam tabel
+                transaksiData.forEach(transaksi => {
+                    const newRow = document.createElement('tr');
+                    
+                    const kategoriClass = transaksi.jenis === 'masuk' ? 'masuk' : 'keluar';
+                    const kategoriText = transaksi.jenis === 'masuk' ? 'Uang Masuk' : 'Uang Keluar';
+                    const jumlahPrefix = transaksi.jenis === 'masuk' ? '+' : '-';
+
+                    newRow.innerHTML = `
+                        <td>${formatDate(transaksi.tanggal)}</td>
+                        <td>${transaksi.keterangan}</td>
+                        <td><span class="kategori ${kategoriClass}">${kategoriText}</span></td>
+                        <td class="jumlah ${kategoriClass}">${jumlahPrefix} ${formatRupiah(transaksi.jumlah)}</td>
+                        <td><button class="btn-delete" data-id="${transaksi.id}">Hapus</button></td>
+                    `;
+                    tableBody.appendChild(newRow);
+                });
+            }
+
+            // --- FITUR AUTO KOMA PADA INPUT JUMLAH ---
+            jumlahInput.addEventListener('keyup', function(e) {
+                let value = e.target.value.replace(/[^,\d]/g, '').toString();
+                let split = value.split(',');
+                let sisa = split[0].length % 3;
+                let rupiah = split[0].substr(0, sisa);
+                let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    let separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
                 }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                e.target.value = rupiah;
             });
 
             // --- EVENT LISTENER UNTUK FORM TAMBAH ---
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Mencegah reload halaman
+                event.preventDefault();
 
-                // 1. Ambil nilai dari form
                 const tanggal = tanggalInput.value;
                 const keterangan = document.getElementById('keterangan').value;
                 const jenis = document.querySelector('input[name="jenis"]:checked').value;
-                // Ambil nilai asli dari atribut data-raw-value
-                const jumlah = parseInt(jumlahInput.dataset.rawValue);
+                // Ambil nilai asli dari input, hapus titik dan koma
+                const jumlah = parseInt(jumlahInput.value.replace(/[^\d]/g, ''));
 
-                // Validasi sederhana
                 if (!tanggal || !keterangan || !jumlah || jumlah <= 0) {
                     alert('Harap isi semua field dengan benar!');
                     return;
                 }
 
-                // 2. Update total
-                if (jenis === 'masuk') {
-                    totalPemasukan += jumlah;
-                } else {
-                    totalPengeluaran += jumlah;
-                }
+                // Buat objek transaksi baru dengan ID unik
+                const transaksiBaru = {
+                    id: Date.now(), // Gunakan timestamp sebagai ID sementara
+                    tanggal,
+                    keterangan,
+                    jenis,
+                    jumlah
+                };
 
-                // 3. Buat baris baru untuk tabel
-                const newRow = document.createElement('tr');
-                
-                const kategoriClass = jenis === 'masuk' ? 'masuk' : 'keluar';
-                const kategoriText = jenis === 'masuk' ? 'Uang Masuk' : 'Uang Keluar';
-                const jumlahPrefix = jenis === 'masuk' ? '+' : '-';
+                // Tambahkan ke array data
+                transaksiData.push(transaksiBaru);
 
-                newRow.innerHTML = `
-                    <td>${formatDate(tanggal)}</td>
-                    <td>${keterangan}</td>
-                    <td><span class="kategori ${kategoriClass}">${kategoriText}</span></td>
-                    <td class="jumlah ${kategoriClass}">${jumlahPrefix} ${formatRupiah(jumlah)}</td>
-                    <td><button class="btn-delete">Hapus</button></td>
-                `;
-                
-                // 4. Tambahkan event listener untuk tombol hapus pada baris baru
-                const deleteBtn = newRow.querySelector('.btn-delete');
-                deleteBtn.addEventListener('click', function() {
-                    // Konfirmasi penghapusan
-                    if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
-                        // Ambil kembali jumlah dan jenis untuk perhitungan
-                        const jumlahHapus = jumlah;
-                        const jenisHapus = jenis;
+                // Simpan ke localStorage
+                saveData();
 
-                        // Kurangi total
-                        if (jenisHapus === 'masuk') {
-                            totalPemasukan -= jumlahHapus;
-                        } else {
-                            totalPengeluaran -= jumlahHapus;
-                        }
-
-                        // Hapus baris dari tabel
-                        newRow.remove();
-
-                        // Perbarui tampilan
-                        updateDisplay();
-                    }
-                });
-
-                // 5. Tambahkan baris baru ke paling atas tabel
-                tableBody.insertBefore(newRow, tableBody.firstChild);
-
-                // 6. Perbarui tampilan kartu ringkasan
+                // Perbarui tampilan
+                renderTable();
                 updateDisplay();
 
-                // 7. Kosongkan form
+                // Kosongkan form
                 form.reset();
-                // Set tanggal kembali ke hari ini
                 const today = new Date().toISOString().split('T')[0];
                 tanggalInput.value = today;
-                // Reset atribut data-raw-value
-                jumlahInput.dataset.rawValue = '0';
+            });
+
+            // --- EVENT LISTENER UNTUK TOMBOL HAPUS (Menggunakan Event Delegation) ---
+            tableBody.addEventListener('click', function(event) {
+                if (event.target.classList.contains('btn-delete')) {
+                    const idToDelete = parseInt(event.target.dataset.id);
+                    
+                    if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+                        // Hapus dari array data berdasarkan ID
+                        transaksiData = transaksiData.filter(t => t.id !== idToDelete);
+
+                        // Simpan perubahan ke localStorage
+                        saveData();
+
+                        // Perbarui tampilan
+                        renderTable();
+                        updateDisplay();
+                    }
+                }
             });
 
             // --- INISIALISASI ---
-            // Set tanggal input ke hari ini saat halaman dimuat
-            const today = new Date().toISOString().split('T')[0];
-            tanggalInput.value = today;
+            function init() {
+                loadData();
+                renderTable();
+                updateDisplay();
+                const today = new Date().toISOString().split('T')[0];
+                tanggalInput.value = today;
+            }
+            
+            init();
 
         });
     </script>
