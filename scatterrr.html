@@ -278,7 +278,7 @@
         /* Main Container */
         .cyber-container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             min-height: auto;
             background: var(--card-bg);
             position: relative;
@@ -833,6 +833,141 @@
             margin-top: 25px;
         }
         
+        /* NEW: Seputar Scatter Styles */
+        .scatter-templates {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .scatter-template {
+            background: rgba(20, 25, 45, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scatter-template::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(0, 212, 255, 0.1) 50%, 
+                transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .scatter-template:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 30px rgba(0, 102, 255, 0.3),
+                0 0 40px rgba(176, 38, 255, 0.2);
+            border-color: var(--cyber-blue);
+        }
+        
+        .scatter-template:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .template-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            color: var(--cyber-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .template-copy-btn {
+            background: linear-gradient(135deg, 
+                var(--primary-blue), 
+                var(--neon-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 8px 15px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+        }
+        
+        .template-copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 20px rgba(0, 102, 255, 0.6),
+                0 0 30px rgba(176, 38, 255, 0.4);
+        }
+        
+        .template-content {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: rgba(10, 15, 30, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            white-space: pre-line;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, 
+                var(--primary-blue), 
+                var(--neon-purple));
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                0 10px 30px rgba(0, 102, 255, 0.5),
+                0 0 40px rgba(176, 38, 255, 0.3);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .cyber-container {
@@ -867,6 +1002,10 @@
                 grid-template-columns: 1fr;
             }
             
+            .scatter-templates {
+                grid-template-columns: 1fr;
+            }
+            
             .hologram-container img {
                 max-width: 95%;
             }
@@ -891,6 +1030,16 @@
             .lightbox-actions {
                 flex-direction: column;
                 width: 80%;
+            }
+            
+            .template-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .template-copy-btn {
+                align-self: flex-end;
             }
         }
     </style>
@@ -1075,7 +1224,7 @@
                     <div class="template-item">
                         <div class="template-title">MELEWATI HARI BATAS CLAIM</div>
                         <div class="template-content">
-"mohon maaf bosku untuk claim anda tidak dapat diposes ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku
+"mohon maaf bosku untuk claim anda tidak dapat diproses ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku
 Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku , terimakasih"
                         </div>
                     </div>
@@ -1117,6 +1266,254 @@ Nama Rekening dan Nomor Rekening wajib valid. Apabila tidak valid, bonus akan ha
 Maksimal klaim per hari adalah 2 kali.
 Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya.
 Syarat dan ketentuan dapat berubah sewaktu-waktu"
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- NEW: Seputar Scatter Section -->
+                <section class="cyber-section">
+                    <div class="section-header">
+                        <i class="material-icons section-icon">content_copy</i>
+                        <h2 class="section-title">SEPUTAR SCATTER - TEMPLATE PESAN</h2>
+                    </div>
+                    
+                    <div class="scatter-templates">
+                        <!-- Template 1 -->
+                        <div class="scatter-template" data-content="mohon maaf bosku untuk claim anda tidak dapat diproses ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku , terimakasih">
+                            <div class="template-header">
+                                <div class="template-title">MELEWATI HARI BATAS CLAIM</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+mohon maaf bosku untuk claim anda tidak dapat diproses ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku , terimakasih
+                            </div>
+                        </div>
+                        
+                        <!-- Template 2 -->
+                        <div class="scatter-template" data-content="Mohon maaf bosku , untuk user id anda kami cekkan telah melakukan claim bonus scatter sebanyak 2 kali dan tidak dapat di claim kembali  yang dimana untuk batas claim scatter  Maksimal klaim per hari adalah 2 kali.
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku  , terimakasih">
+                            <div class="template-header">
+                                <div class="template-title">SUDAH MAX CLAIM SCATTER</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Mohon maaf bosku , untuk user id anda kami cekkan telah melakukan claim bonus scatter sebanyak 2 kali dan tidak dapat di claim kembali  yang dimana untuk batas claim scatter  Maksimal klaim per hari adalah 2 kali.
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku  , terimakasih
+                            </div>
+                        </div>
+                        
+                        <!-- Template 3 -->
+                        <div class="scatter-template" data-content="Mohon maaf bosku untuk claim anda sudah tidak dapat di claim karena sudah melewati batas waktu claim ya bosku
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku">
+                            <div class="template-header">
+                                <div class="template-title">CLAIM BATAS WAKTU</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Mohon maaf bosku untuk claim anda sudah tidak dapat di claim karena sudah melewati batas waktu claim ya bosku
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku
+                            </div>
+                        </div>
+                        
+                        <!-- Template 4 -->
+                        <div class="scatter-template" data-content="Berikut hadiahnya ya bosku :
+1 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 50x total taruhan.
+2 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 500x total taruhan.
+3 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 5,000x total taruhan.
+4 Scatter HITAM dalam kombinasi 4 atau lebih scatter jenis apapun membayar 100,000x total taruhan">
+                            <div class="template-header">
+                                <div class="template-title">SCATTER HITAM</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Berikut hadiahnya ya bosku :
+1 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 50x total taruhan.
+2 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 500x total taruhan.
+3 Scatter HITAM dalam kombinasi 3 atau lebih scatter jenis apapun membayar 5,000x total taruhan.
+4 Scatter HITAM dalam kombinasi 4 atau lebih scatter jenis apapun membayar 100,000x total taruhan
+                            </div>
+                        </div>
+                        
+                        <!-- Template 5 -->
+                        <div class="scatter-template" data-content="Yth Member Setia Linetogel
+Kami ingin menginformasikan bahwa untuk Event Scatter Mahjong Ways I & II terdapat perubahan mulai dari tanggal 02 Desember 2025 untuk Hadiahnya dan berikut perubahan yang dilakukan :
+
+BET 1.600 - 2.400 :
+3 - 5 SCATTER : Rp. 15.000,-
+
+BET 2.800 - 8.000 :
+3 - 5 SCATTER : Rp. 25.000,-
+
+BET 12.000 - 16.000 :
+3 - 5 SCATTER : Rp. 40.000,-
+
+BET 20.000 - 1.000.000 :
+3 - 5 SCATTER : Rp. 50.000,-
+
+Terima kasih atas perhatian dan kesetiaan Anda.">
+                            <div class="template-header">
+                                <div class="template-title">PERUBAHAN CLAIM SCATTER</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Yth Member Setia Linetogel
+Kami ingin menginformasikan bahwa untuk Event Scatter Mahjong Ways I & II terdapat perubahan mulai dari tanggal 02 Desember 2025 untuk Hadiahnya dan berikut perubahan yang dilakukan :
+
+BET 1.600 - 2.400 :
+3 - 5 SCATTER : Rp. 15.000,-
+
+BET 2.800 - 8.000 :
+3 - 5 SCATTER : Rp. 25.000,-
+
+BET 12.000 - 16.000 :
+3 - 5 SCATTER : Rp. 40.000,-
+
+BET 20.000 - 1.000.000 :
+3 - 5 SCATTER : Rp. 50.000,-
+
+Terima kasih atas perhatian dan kesetiaan Anda.
+                            </div>
+                        </div>
+                        
+                        <!-- Template 6: CLAIM SUPER SCATTER -->
+                        <div class="scatter-template" data-content="Mohon maaf bosku kami checkan untuk Screenshot yang anda berikan anda tidak memenuhi syarat untuk dapat melakukan claim event tersebut ya bosku,Dikarenakan untuk dapat claim event super scatter Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER ya bosku">
+                            <div class="template-header">
+                                <div class="template-title">CLAIM SUPER SCATTER</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Mohon maaf bosku kami checkan untuk Screenshot yang anda berikan anda tidak memenuhi syarat untuk dapat melakukan claim event tersebut ya bosku,Dikarenakan untuk dapat claim event super scatter Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER ya bosku
+                            </div>
+                        </div>
+                        
+                        <!-- Template 7: BONUS YANG DAPAT DI CLAIM -->
+                        <div class="scatter-template" data-content="Untuk bonus yang dapat di claim : 
+
+- Claim Scatter mahyong pg soft 1 dan 2
+- Claim Buy spin dan freespin provider pragmactic , pg soft , fat panda , slotmania dan no limit city
+- Claim Gate of olympus Super scatter
+
+Untuk lebih lengkap mengenai bonus kami serta syarat dan ketentuan  dapat anda cek pada menu promo yang tertera pada situs kami ya bosku terimakasih">
+                            <div class="template-header">
+                                <div class="template-title">BONUS YANG DAPAT DI CLAIM</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Untuk bonus yang dapat di claim : 
+
+- Claim Scatter mahyong pg soft 1 dan 2
+- Claim Buy spin dan freespin provider pragmactic , pg soft , fat panda , slotmania dan no limit city
+- Claim Gate of olympus Super scatter
+
+Untuk lebih lengkap mengenai bonus kami serta syarat dan ketentuan  dapat anda cek pada menu promo yang tertera pada situs kami ya bosku terimakasih
+                            </div>
+                        </div>
+                        
+                        <!-- Template 8: CARA PERHITUNGAN BUYSPIN -->
+                        <div class="scatter-template" data-content="Buyspin dengan nominal 200.000 dan mendapat kemenangan 607,300
+maka bonus yang diberikan : kemenangan - modal x 25%
+kemenangan  = 607,300 - 200.000 (modal) = 407,300 - total kemenangan sebelum mendapatkan scatter ( 6,000 ) = 401,300
+maka bonus yang diberikan 401,300 x 25% = 100,325">
+                            <div class="template-header">
+                                <div class="template-title">CARA PERHITUNGAN BUYSPIN</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Buyspin dengan nominal 200.000 dan mendapat kemenangan 607,300
+maka bonus yang diberikan : kemenangan - modal x 25%
+kemenangan  = 607,300 - 200.000 (modal) = 407,300 - total kemenangan sebelum mendapatkan scatter ( 6,000 ) = 401,300
+maka bonus yang diberikan 401,300 x 25% = 100,325
+                            </div>
+                        </div>
+                        
+                        <!-- Template 9: CARA PERHITUNGAN FREESPIN -->
+                        <div class="scatter-template" data-content="freespin mendapat kemenangan 607,300
+maka bonus yang diberikan : kemenangan - modal x 25%
+kemenangan  = 607,300 - 200.000 (modal) = 407,300 - total kemenangan sebelum mendapatkan scatter ( 6,000 ) = 401,300
+maka bonus yang diberikan 401,300 x 25% = 100,325">
+                            <div class="template-header">
+                                <div class="template-title">CARA PERHITUNGAN FREESPIN</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+freespin mendapat kemenangan 607,300
+maka bonus yang diberikan : kemenangan - modal x 25%
+kemenangan  = 607,300 - 200.000 (modal) = 407,300 - total kemenangan sebelum mendapatkan scatter ( 6,000 ) = 401,300
+maka bonus yang diberikan 401,300 x 25% = 100,325
+                            </div>
+                        </div>
+                        
+                        <!-- Template 10: TIDAK MENCAPAI TOTAL KEMENANGAN -->
+                        <div class="scatter-template" data-content="Untuk kemenangan minimal Rp 450,000 untuk bisa melakukan Claim Event Buyspin / Freespin ya bosku, dan disini kami checkan setelah kami melakukan perhitungan untuk total kemenangan anda belum mencapai Rp 450,000 di karenakan untuk total kemenangan yang anda dapat tersebut ada di tambahkan dari pecahan di luar scatter ya bosku
+dan hanya kemenangan murni dari Buy Spin dan Free Spin (sesuai ketentuan) yang berlaku untuk dapat melakukan claim bonus event ya bosku">
+                            <div class="template-header">
+                                <div class="template-title">TIDAK MENCAPAI TOTAL KEMENANGAN</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Untuk kemenangan minimal Rp 450,000 untuk bisa melakukan Claim Event Buyspin / Freespin ya bosku, dan disini kami checkan setelah kami melakukan perhitungan untuk total kemenangan anda belum mencapai Rp 450,000 di karenakan untuk total kemenangan yang anda dapat tersebut ada di tambahkan dari pecahan di luar scatter ya bosku
+dan hanya kemenangan murni dari Buy Spin dan Free Spin (sesuai ketentuan) yang berlaku untuk dapat melakukan claim bonus event ya bosku
+                            </div>
+                        </div>
+                        
+                        <!-- Template 11: KEMENANGAN TERDAPAT SCATTER HITAM -->
+                        <div class="scatter-template" data-content="Kemenangan dari fitur Scatter Hitam (1 atau lebih Scatter jenis apa pun membayar 50x total bet) tidak termasuk dalam perhitungan klaim event">
+                            <div class="template-header">
+                                <div class="template-title">KEMENANGAN TERDAPAT SCATTER HITAM</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+Kemenangan dari fitur Scatter Hitam (1 atau lebih Scatter jenis apa pun membayar 50x total bet) tidak termasuk dalam perhitungan klaim event
+                            </div>
+                        </div>
+                        
+                        <!-- Template 12: DILUAR SCATTER -->
+                        <div class="scatter-template" data-content="untuk kemenangan dari hasil kombinasi Scatter tidak termasuk dalam perhitungan klaim event ya bosku">
+                            <div class="template-header">
+                                <div class="template-title">DILUAR SCATTER</div>
+                                <button class="template-copy-btn">
+                                    <i class="material-icons">content_copy</i>
+                                    Salin Teks
+                                </button>
+                            </div>
+                            <div class="template-content">
+untuk kemenangan dari hasil kombinasi Scatter tidak termasuk dalam perhitungan klaim event ya bosku
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -1348,6 +1745,25 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                     console.error('Error copying link:', err);
                     showToast('Gagal menyalin link');
                 });
+        });
+        
+        // NEW: Copy scatter template text functionality
+        const copyButtons = document.querySelectorAll('.template-copy-btn');
+        
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const template = this.closest('.scatter-template');
+                const textToCopy = template.getAttribute('data-content');
+                
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        showToast('Teks template berhasil disalin!');
+                    })
+                    .catch(err => {
+                        console.error('Error copying text:', err);
+                        showToast('Gagal menyalin teks');
+                    });
+            });
         });
         
         // Show toast notification
