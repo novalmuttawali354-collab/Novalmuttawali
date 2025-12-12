@@ -15,7 +15,6 @@
         
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0a0a1a, #0a1a2a, #0a0a1a);
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -24,10 +23,11 @@
             overflow-x: hidden;
             padding: 20px;
             position: relative;
+            background: #000;
         }
         
-        /* Dragon Background Effects - Blue Version */
-        .dragon-background {
+        /* Digital Modern Background dengan efek bergerak */
+        .digital-background {
             position: fixed;
             top: 0;
             left: 0;
@@ -35,142 +35,172 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            background: 
+                url('https://i.postimg.cc/BQR702RH/Gemini-Generated-Image-s2lcfcs2lcfcs2lc.png') center/cover no-repeat,
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%);
+            animation: backgroundPulse 20s ease-in-out infinite;
         }
         
-        .dragon {
-            position: absolute;
-            width: 200px;
-            height: 80px;
-            background: linear-gradient(90deg, transparent, #3B82F6, #1E40AF, #3B82F6, transparent);
-            border-radius: 50% 20% 20% 50%;
-            filter: blur(1px);
-            animation: dragonFly 40s linear infinite;
-            opacity: 0.7;
-        }
-        
-        .dragon::before {
-            content: '🐉';
-            position: absolute;
-            left: -30px;
-            top: -25px;
-            font-size: 40px;
-            filter: hue-rotate(0deg);
-            animation: dragonColor 10s infinite;
-        }
-        
-        .dragon::after {
+        /* Overlay gradient untuk meningkatkan kontras */
+        .digital-background::before {
             content: '';
             position: absolute;
-            right: -50px;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(10, 20, 40, 0.6) 50%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+            z-index: 1;
+        }
+        
+        /* Efek partikel digital bergerak */
+        .digital-particle {
+            position: absolute;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6, #3B82F6);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: particleFloat 15s linear infinite;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        
+        .digital-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3B82F6, #8B5CF6, transparent);
+            animation: lineScan 8s linear infinite;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        
+        .digital-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+        }
+        
+        .digital-orb {
+            position: absolute;
             width: 100px;
-            height: 5px;
-            background: linear-gradient(90deg, #3B82F6, #1E40AF, transparent);
+            height: 100px;
             border-radius: 50%;
-            filter: blur(5px);
-            animation: dragonTail 2s infinite alternate;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent);
+            filter: blur(20px);
+            animation: orbFloat 25s ease-in-out infinite;
+            z-index: 1;
         }
         
-        .fire-particle {
+        .data-stream {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #3B82F6, #1E40AF, transparent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px 2px #3B82F6;
-            animation: fireFall 8s linear infinite;
+            color: #60A5FA;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            opacity: 0.3;
+            animation: dataStream 10s linear infinite;
+            z-index: 1;
         }
         
-        .spark {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #60A5FA;
-            border-radius: 50%;
-            box-shadow: 0 0 5px 1px #60A5FA;
-            animation: sparkFall 5s linear infinite;
+        /* Animasi untuk efek digital */
+        @keyframes backgroundPulse {
+            0%, 100% {
+                filter: brightness(1) contrast(1);
+                background-position: center center;
+            }
+            50% {
+                filter: brightness(1.1) contrast(1.1);
+                background-position: calc(50% + 10px) calc(50% + 10px);
+            }
         }
         
-        .smoke {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            filter: blur(5px);
-            animation: smokeRise 12s linear infinite;
-        }
-        
-        @keyframes dragonFly {
+        @keyframes particleFloat {
             0% {
-                transform: translateX(-200px) translateY(100px) rotate(0deg);
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes lineScan {
+            0% {
+                transform: translateX(-100%) translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateX(100%) translateY(100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes gridMove {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(25px) translateY(25px);
+            }
+        }
+        
+        @keyframes orbFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.4;
             }
             25% {
-                transform: translateX(25vw) translateY(200px) rotate(5deg);
+                transform: translate(50vw, 30vh) scale(1.5);
+                opacity: 0.6;
             }
             50% {
-                transform: translateX(50vw) translateY(100px) rotate(0deg);
-            }
-            75% {
-                transform: translateX(75vw) translateY(200px) rotate(-5deg);
-            }
-            100% {
-                transform: translateX(100vw) translateY(100px) rotate(0deg);
-            }
-        }
-        
-        @keyframes dragonColor {
-            0%, 100% {
-                filter: hue-rotate(0deg);
-            }
-            50% {
-                filter: hue-rotate(30deg);
-            }
-        }
-        
-        @keyframes dragonTail {
-            0% {
-                transform: scaleX(1) scaleY(1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scaleX(1.2) scaleY(0.8);
+                transform: translate(80vw, 60vh) scale(0.8);
                 opacity: 0.3;
             }
-        }
-        
-        @keyframes fireFall {
-            0% {
-                transform: translateY(-100px) translateX(0) scale(1);
-                opacity: 1;
-            }
-            80% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(100vh) translateX(20px) scale(0.5);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes sparkFall {
-            0% {
-                transform: translateY(-50px) translateX(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) translateX(10px) scale(0.3);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes smokeRise {
-            0% {
-                transform: translateY(100vh) translateX(0) scale(1);
+            75% {
+                transform: translate(20vw, 80vh) scale(1.2);
                 opacity: 0.5;
             }
+        }
+        
+        @keyframes dataStream {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.3;
+            }
+            95% {
+                opacity: 0.3;
+            }
             100% {
-                transform: translateY(-100px) translateX(20px) scale(2);
+                transform: translateY(-100px);
                 opacity: 0;
             }
         }
@@ -182,13 +212,17 @@
             background: linear-gradient(135deg, rgba(10, 20, 40, 0.85), rgba(10, 15, 30, 0.85));
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.3),
+                0 0 60px rgba(139, 92, 246, 0.2),
+                inset 0 0 20px rgba(59, 130, 246, 0.1);
             padding: 25px;
             display: flex;
             flex-direction: column;
             border-radius: 15px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(59, 130, 246, 0.2);
+            z-index: 2;
         }
         
         .bg-pattern {
@@ -224,9 +258,10 @@
             background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
         }
         
+        /* Header dengan efek neon digital */
         .header {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             text-align: center;
             margin-bottom: 25px;
         }
@@ -236,15 +271,32 @@
             font-size: 42px;
             font-weight: 700;
             text-transform: uppercase;
-            background: linear-gradient(90deg, #60A5FA, #1E40AF);
+            background: linear-gradient(90deg, #60A5FA, #8B5CF6, #60A5FA);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            text-shadow: 
+                0 0 15px rgba(59, 130, 246, 0.5),
+                0 0 30px rgba(139, 92, 246, 0.3);
             letter-spacing: 2px;
             margin-bottom: 10px;
             position: relative;
             line-height: 1.2;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 
+                    0 0 15px rgba(59, 130, 246, 0.5),
+                    0 0 30px rgba(139, 92, 246, 0.3);
+            }
+            50% {
+                text-shadow: 
+                    0 0 20px rgba(59, 130, 246, 0.8),
+                    0 0 40px rgba(139, 92, 246, 0.5),
+                    0 0 60px rgba(139, 92, 246, 0.3);
+            }
         }
         
         .title::after {
@@ -255,15 +307,39 @@
             transform: translateX(-50%);
             width: 80%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #60A5FA, #1E40AF, transparent);
+            background: linear-gradient(90deg, transparent, #60A5FA, #8B5CF6, transparent);
+            animation: linePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes linePulse {
+            0%, 100% {
+                opacity: 0.7;
+                width: 80%;
+            }
+            50% {
+                opacity: 1;
+                width: 90%;
+            }
         }
         
         .subtitle {
             font-family: 'Oswald', sans-serif;
             font-size: 22px;
-            color: #1E40AF;
+            color: #8B5CF6;
             margin-top: 15px;
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            text-shadow: 
+                0 0 10px rgba(139, 92, 246, 0.3),
+                0 0 20px rgba(139, 92, 246, 0.2);
+            animation: subtitleFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes subtitleFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
         }
         
         /* Tab Styles */
@@ -607,30 +683,6 @@
             border-color: rgba(30, 64, 175, 0.2);
         }
         
-        .copy-btn {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(59, 130, 246, 0.2);
-            border: none;
-            border-radius: 4px;
-            color: #60A5FA;
-            cursor: pointer;
-            padding: 4px 8px;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-        
-        .copy-btn:hover {
-            background: rgba(59, 130, 246, 0.4);
-        }
-        
-        .copy-btn.copied {
-            background: rgba(0, 255, 0, 0.3);
-            color: #00ff00;
-        }
-        
         /* Animations */
         @keyframes floatRotate {
             0%, 100% {
@@ -727,31 +779,6 @@
             line-height: 1.6;
             font-size: 14px;
             position: relative;
-        }
-        
-        .template-copy-btn {
-            background: linear-gradient(90deg, #60A5FA, #1E40AF);
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            cursor: pointer;
-            padding: 8px 15px;
-            font-weight: bold;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .template-copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(59, 130, 246, 0.5);
-        }
-        
-        .template-copy-btn.copied {
-            background: linear-gradient(90deg, #00ff00, #00cc00);
-            color: #000;
         }
         
         /* Lightbox Styles */
@@ -896,30 +923,6 @@
             accent-color: #60A5FA;
         }
         
-        /* Copy All Button */
-        .copy-all-btn {
-            background: linear-gradient(90deg, #60A5FA, #1E40AF);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            padding: 12px 25px;
-            font-weight: bold;
-            font-size: 17px;
-            margin: 18px auto;
-            display: block;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-        }
-        
-        .copy-all-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.6);
-        }
-        
         @media (max-width: 768px) {
             .poster-container {
                 padding: 15px;
@@ -978,8 +981,10 @@
     </style>
 </head>
 <body>
-    <!-- Dragon Background with Blue Effects -->
-    <div class="dragon-background" id="dragonBackground"></div>
+    <!-- Digital Modern Background dengan efek bergerak -->
+    <div class="digital-background" id="digitalBackground">
+        <div class="digital-grid"></div>
+    </div>
     
     <div class="poster-container">
         <!-- Background elements -->
@@ -1028,6 +1033,22 @@
                 </div>
             </div>
             
+            <!-- Contoh Screenshot untuk Klaim -->
+            <div class="game-images">
+                <div class="game-image">
+                    <img src="https://i.postimg.cc/tgJSyds6/em-Ek-Yx-HYRLm-Mxwy-H0-MY2-Q.png" alt="Screenshot Dapat Scatter" id="exampleScatter">
+                    <div class="game-label">Screenshot Dapat Scatter</div>
+                </div>
+                <div class="game-image">
+                    <img src="https://i.postimg.cc/2S6FBkCR/3r-Lf-Vktn-SL27cu-Rm-SSXi-A.png" alt="Screenshot History Kemenangan" id="exampleHistory">
+                    <div class="game-label">Screenshot History Kemenangan</div>
+                </div>
+                <div class="game-image">
+                    <img src="https://i.postimg.cc/4dtrkv05/w-Owz-zg-S3qi-MFdi-Tz-FGBQ.png" alt="Screenshot Kemenangan Akhir" id="exampleFinal">
+                    <div class="game-label">Screenshot Kemenangan Akhir</div>
+                </div>
+            </div>
+            
             <!-- Content -->
             <div class="content">
                 <!-- Important Information Section -->
@@ -1038,27 +1059,15 @@
                     </h2>
                     <div class="important" id="importantText1">
                         Jam claim scatter tanggal semalam start dari jam 00:01 s/d 02:00 AM
-                        <button class="copy-btn" onclick="copyText('importantText1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div class="note" id="noteText1">
                         Note : Untuk Scatter tanggal semalam yang bisa di klaim hanya Scatter di jam 23:00 s/d 00:00 ( Tidak perlu di infokan kepada member )
-                        <button class="copy-btn" onclick="copyText('noteText1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div id="regularText1">
                         Namun Scatter tetap dapat diproseskan hingga maksimal batas akhir pukul 02.00 dini hari untuk yang dapat di jam 23.00- 00.00
-                        <button class="copy-btn" onclick="copyText('regularText1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div class="note" id="noteText2">
                         Untuk dibawah jam 23.00 jika mau klaim hari berikut nya dianggap hangus
-                        <button class="copy-btn" onclick="copyText('noteText2')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                 </section>
                 
@@ -1068,10 +1077,6 @@
                         <i class="material-icons">content_copy</i>
                         INFORMASI LENGKAP EVENT
                     </h2>
-                    
-                    <button class="copy-all-btn" onclick="copyAllContent()">
-                        <i class="material-icons">content_copy</i> Salin Semua Konten
-                    </button>
                     
                     <h3 style="color: #60A5FA; margin: 15px 0;">Hadiah:</h3>
                     <table class="prize-table" id="prizeTable">
@@ -1140,9 +1145,6 @@
                     <div class="template-item">
                         <div class="template-title">
                             MELEWATI HARI BATAS CLAIM
-                            <button class="template-copy-btn" onclick="copyTemplate('template1')">
-                                <i class="material-icons">content_copy</i> Salin
-                            </button>
                         </div>
                         <div class="template-content" id="template1">
 "mohon maaf bosku untuk claim anda tidak dapat diposes ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku
@@ -1154,9 +1156,6 @@ Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap ha
                     <div class="template-item">
                         <div class="template-title">
                             EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL
-                            <button class="template-copy-btn" onclick="copyTemplate('template2')">
-                                <i class="material-icons">content_copy</i> Salin
-                            </button>
                         </div>
                         <div class="template-content" id="template2">
 "EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL
@@ -1194,9 +1193,6 @@ Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap ha
 Syarat dan ketentuan dapat berubah sewaktu-waktu"
                         </div>
                     </div>
-                    
-                    <!-- Additional templates would go here... -->
-                    
                 </section>
             </div>
         </div>
@@ -1213,27 +1209,15 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                     </h2>
                     <div class="important" id="buyspinImportant1">
                         Jam claim tanggal semalam start dari jam 00:01 s/d 02:00 AM
-                        <button class="copy-btn" onclick="copyText('buyspinImportant1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div class="note" id="buyspinNote1">
                         Note : Untuk tanggal semalam yang bisa di klaim hanya di jam 23:00 s/d 00:00 ( Tidak perlu di infokan kepada member )
-                        <button class="copy-btn" onclick="copyText('buyspinNote1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div id="buyspinRegular1">
                         Namun tetap dapat diproseskan hingga maksimal batas akhir pukul 02.00 dini hari untuk yang dapat di jam 23.00- 00.00
-                        <button class="copy-btn" onclick="copyText('buyspinRegular1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     <div class="note" id="buyspinNote2">
                         Untuk dibawah jam 23.00 jika mau klaim hari berikut nya dianggap hangus
-                        <button class="copy-btn" onclick="copyText('buyspinNote2')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                 </section>
                 
@@ -1245,9 +1229,6 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                     </h2>
                     <div class="important" id="buyspinEvent">
                         BERLAKU UNTUK PROVIDER PRAGMATIC PLAY, PG SOFT, FAT PANDA, SLOT MANIA dan NO LIMIT CITY
-                        <button class="copy-btn" onclick="copyText('buyspinEvent')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     
                     <h3 style="color: #60A5FA; margin: 18px 0 12px 0;">Rincian Event :</h3>
@@ -1263,9 +1244,6 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                         maka bonus yang diberikan : kemenangan - modal x 25%
                         kemenangan  = 1.000.000 - 200.000 (modal) = 800.000
                         maka bonus yang diberikan 800.000 x 25% = 200.000
-                        <button class="copy-btn" onclick="copyText('buyspinExample1')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     
                     <h3 style="color: #60A5FA; margin: 18px 0 12px 0;">Contoh Extra Bonus Freespin 20% :</h3>
@@ -1273,16 +1251,10 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                         Ketika bermain dan mendapat Freespin lalu mendapat kemenangan sebesar 1.000.000
                         maka bonus yang diberikan adalah : kemenangan x 20%
                         1.000.000 x 20% = 200.000
-                        <button class="copy-btn" onclick="copyText('buyspinExample2')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     
                     <div class="important" id="buyspinClaim">
                         Silahkan melakukan claim dengan menghubungi kami melalui LIVECHAT.
-                        <button class="copy-btn" onclick="copyText('buyspinClaim')">
-                            <i class="material-icons">content_copy</i>
-                        </button>
                     </div>
                     
                     <h3 style="color: #60A5FA; margin: 18px 0 12px 0;">Syarat & Ketentuan :</h3>
@@ -1298,8 +1270,6 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                         <li><span class="highlight">NB : Jenis permainan yang memiliki fitur RE-SPIN tidak termasuk dalam promo ini.</span> Kami sarankan untuk bermain di permainan yang memenuhi syarat agar dapat menikmati keuntungan dari promo ini.</li>
                     </ul>
                 </section>
-                
-                <!-- Additional sections for Buyspin & Freespin would go here... -->
             </div>
         </div>
     </div>
@@ -1320,47 +1290,64 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
     </div>
 
     <!-- Toast Notification -->
-    <div class="toast" id="toast">Teks berhasil disalin!</div>
+    <div class="toast" id="toast">Gambar berhasil disalin!</div>
 
     <script>
-        // Generate dragon background elements
-        function generateDragonBackground() {
-            const bg = document.getElementById('dragonBackground');
+        // Generate digital background elements
+        function generateDigitalBackground() {
+            const bg = document.getElementById('digitalBackground');
             
-            // Create dragons
-            for (let i = 0; i < 3; i++) {
-                const dragon = document.createElement('div');
-                dragon.className = 'dragon';
-                dragon.style.top = `${Math.random() * 80}%`;
-                dragon.style.animationDelay = `${Math.random() * 40}s`;
-                bg.appendChild(dragon);
+            // Create digital particles
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'digital-particle';
+                particle.style.width = `${Math.random() * 8 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                bg.appendChild(particle);
             }
             
-            // Create fire particles
-            for (let i = 0; i < 50; i++) {
-                const fire = document.createElement('div');
-                fire.className = 'fire-particle';
-                fire.style.left = `${Math.random() * 100}%`;
-                fire.style.animationDelay = `${Math.random() * 8}s`;
-                bg.appendChild(fire);
+            // Create scanning lines
+            for (let i = 0; i < 8; i++) {
+                const line = document.createElement('div');
+                line.className = 'digital-line';
+                line.style.top = `${Math.random() * 100}%`;
+                line.style.width = `${Math.random() * 30 + 20}%`;
+                line.style.animationDelay = `${Math.random() * 8}s`;
+                line.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                bg.appendChild(line);
             }
             
-            // Create sparks
-            for (let i = 0; i < 30; i++) {
-                const spark = document.createElement('div');
-                spark.className = 'spark';
-                spark.style.left = `${Math.random() * 100}%`;
-                spark.style.animationDelay = `${Math.random() * 5}s`;
-                bg.appendChild(spark);
+            // Create digital orbs
+            for (let i = 0; i < 4; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'digital-orb';
+                orb.style.left = `${Math.random() * 100}%`;
+                orb.style.top = `${Math.random() * 100}%`;
+                orb.style.animationDelay = `${Math.random() * 25}s`;
+                orb.style.background = `radial-gradient(circle, ${
+                    Math.random() > 0.5 ? 'rgba(59, 130, 246, 0.4)' : 'rgba(139, 92, 246, 0.4)'
+                }, transparent)`;
+                bg.appendChild(orb);
             }
             
-            // Create smoke
-            for (let i = 0; i < 20; i++) {
-                const smoke = document.createElement('div');
-                smoke.className = 'smoke';
-                smoke.style.left = `${Math.random() * 100}%`;
-                smoke.style.animationDelay = `${Math.random() * 12}s`;
-                bg.appendChild(smoke);
+            // Create data streams
+            for (let i = 0; i < 6; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'data-stream';
+                stream.style.left = `${Math.random() * 100}%`;
+                stream.style.animationDelay = `${Math.random() * 10}s`;
+                stream.style.animationDuration = `${Math.random() * 8 + 8}s`;
+                
+                // Generate random binary data
+                let binaryText = '';
+                for (let j = 0; j < 20; j++) {
+                    binaryText += Math.random() > 0.5 ? '1' : '0';
+                }
+                stream.textContent = binaryText;
+                bg.appendChild(stream);
             }
         }
         
@@ -1450,109 +1437,6 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
                 });
         });
         
-        // Copy text functionality
-        function copyText(elementId) {
-            const element = document.getElementById(elementId);
-            let textToCopy = element.innerText;
-            
-            // Remove the copy button text if present
-            textToCopy = textToCopy.replace('content_copy', '').trim();
-            
-            // Create a temporary textarea element to copy text
-            const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            // Show toast notification
-            showToast('Teks berhasil disalin!');
-            
-            // Change button appearance temporarily
-            const button = event.target.closest('.copy-btn');
-            if (button) {
-                button.classList.add('copied');
-                button.innerHTML = '<i class="material-icons">check</i>';
-                
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = '<i class="material-icons">content_copy</i>';
-                }, 2000);
-            }
-        }
-        
-        // Copy template functionality
-        function copyTemplate(templateId) {
-            const element = document.getElementById(templateId);
-            const textToCopy = element.innerText;
-            
-            // Create a temporary textarea element to copy text
-            const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            // Show toast notification
-            showToast('Template berhasil disalin!');
-            
-            // Change button appearance temporarily
-            const button = event.target;
-            button.classList.add('copied');
-            button.innerHTML = '<i class="material-icons">check</i> Disalin';
-            
-            setTimeout(() => {
-                button.classList.remove('copied');
-                button.innerHTML = '<i class="material-icons">content_copy</i> Salin';
-            }, 2000);
-        }
-        
-        // Copy all content function
-        function copyAllContent() {
-            // Get all content from the combined section
-            const combinedSection = document.getElementById('combinedSection');
-            
-            // Extract text content from the section
-            let allContent = "EVENT SCATTER MAHJONG WAYS 1 & MAHJONG WAYS 2 - LINETOGEL\n\n";
-            
-            // Add table content
-            const table = document.getElementById('prizeTable');
-            allContent += "HADIAH:\n";
-            allContent += "BET\t\tSCATTER\t\tHADIAH\n";
-            
-            const rows = table.querySelectorAll('tr');
-            rows.forEach((row, index) => {
-                if (index > 0) { // Skip header row
-                    const cells = row.querySelectorAll('td');
-                    allContent += `${cells[0].textContent}\t\t${cells[1].textContent}\t\t${cells[2].textContent}\n`;
-                }
-            });
-            
-            allContent += "\nPERSYARATAN KLAIM:\n";
-            allContent += "- SS DAPAT SCATTER\n";
-            allContent += "- SS KEMENANGAN AKHIR\n";
-            allContent += "- SS HISTORY KEMENANGAN\n\n";
-            
-            allContent += "SYARAT & KETENTUAN:\n";
-            const terms = document.querySelectorAll('#termsList li');
-            terms.forEach(term => {
-                allContent += `- ${term.textContent}\n`;
-            });
-            
-            // Create a temporary textarea element to copy text
-            const textarea = document.createElement('textarea');
-            textarea.value = allContent;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            // Show toast notification
-            showToast('Semua konten berhasil disalin!');
-        }
-        
         // Show toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -1571,8 +1455,8 @@ Syarat dan ketentuan dapat berubah sewaktu-waktu"
             }
         });
         
-        // Generate dragon background when page loads
-        window.addEventListener('load', generateDragonBackground);
+        // Generate digital background when page loads
+        window.addEventListener('load', generateDigitalBackground);
     </script>
 </body>
 </html>
