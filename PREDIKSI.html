@@ -13,10 +13,13 @@
             --accent: #9d00ff;
             --dark: #0a0a1a;
             --darker: #050510;
-            --panel: rgba(10, 15, 35, 0.9);
+            --panel: rgba(10, 15, 35, 0.95);
             --glow: 0 0 15px var(--primary), 0 0 30px rgba(0, 243, 255, 0.3);
             --glow-red: 0 0 15px var(--secondary), 0 0 30px rgba(255, 0, 85, 0.3);
             --glow-purple: 0 0 15px var(--accent), 0 0 30px rgba(157, 0, 255, 0.3);
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff9d;
         }
         
         * {
@@ -32,9 +35,9 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(157, 0, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 85, 0.03) 0%, transparent 30%);
+                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(157, 0, 255, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 85, 0.05) 0%, transparent 35%);
             min-height: 100vh;
             position: relative;
         }
@@ -47,110 +50,194 @@
             width: 100%;
             height: 100%;
             background: 
-                linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.03) 50%, transparent 51%),
-                linear-gradient(transparent 49%, rgba(0, 243, 255, 0.03) 50%, transparent 51%);
-            background-size: 50px 50px;
+                linear-gradient(90deg, transparent 49.5%, rgba(0, 243, 255, 0.03) 50%, transparent 50.5%),
+                linear-gradient(transparent 49.5%, rgba(0, 243, 255, 0.03) 50%, transparent 50.5%);
+            background-size: 60px 60px;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.4;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
-        /* Header */
+        /* Header dengan layout vertikal */
         header {
-            padding: 30px 0;
+            padding: 40px 0 30px;
             position: relative;
-            border-bottom: 2px solid var(--primary);
             margin-bottom: 40px;
-            background: linear-gradient(to bottom, rgba(0, 243, 255, 0.1), transparent);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            text-align: center;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-image-slice: 1;
+            background: linear-gradient(to bottom, rgba(0, 243, 255, 0.05), transparent);
         }
         
         .logo {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
         }
         
         .logo-icon {
-            font-size: 3rem;
+            font-size: 4rem;
             color: var(--primary);
             text-shadow: var(--glow);
-            animation: pulse 2s infinite alternate;
+            animation: pulse 2s infinite alternate, float 6s ease-in-out infinite;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         @keyframes pulse {
-            0% { text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(0, 243, 255, 0.5); }
-            100% { text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 243, 255, 0.8), 0 0 40px rgba(0, 243, 255, 0.3); }
+            0% { 
+                text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(0, 243, 255, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 243, 255, 0.8), 0 0 40px rgba(0, 243, 255, 0.3);
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.03); }
         }
         
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            font-size: 3rem;
+            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            border-radius: 50%;
+            filter: blur(1px);
         }
         
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #a0a0ff;
-            margin-top: 5px;
-            letter-spacing: 0.5px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 30px;
         }
         
-        .current-date {
+        .datetime-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .current-date, .current-time {
             background-color: var(--panel);
-            padding: 15px 25px;
-            border-radius: 8px;
+            padding: 20px 30px;
+            border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 500;
             border: 1px solid rgba(0, 243, 255, 0.3);
             box-shadow: var(--glow);
             text-align: center;
-            min-width: 280px;
+            min-width: 250px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
         }
         
-        .date-text {
+        .current-date:hover, .current-time:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+        }
+        
+        .current-date::before, .current-time::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .current-date:hover::before, .current-time:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .date-text, .time-text {
             color: var(--primary);
-            font-size: 1.2rem;
-            text-shadow: 0 0 5px var(--primary);
+            font-size: 1.3rem;
+            text-shadow: 0 0 8px var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .time-text {
-            color: #fff;
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+        
+        .time-label, .date-label {
+            color: #88ccff;
             font-size: 0.9rem;
-            margin-top: 5px;
+            margin-top: 8px;
             opacity: 0.8;
         }
         
         /* Warning */
         .warning {
-            background-color: rgba(255, 0, 85, 0.1);
+            background-color: rgba(255, 0, 85, 0.15);
             color: #ff99bb;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 25px 0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px auto;
             text-align: center;
             font-weight: 600;
             border-left: 5px solid var(--secondary);
             box-shadow: var(--glow-red);
             position: relative;
             overflow: hidden;
+            max-width: 900px;
+            animation: warningPulse 3s infinite alternate;
+        }
+        
+        @keyframes warningPulse {
+            0% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.8); }
         }
         
         .warning::before {
@@ -160,7 +247,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: translateX(-100%);
             animation: warning-shine 3s infinite;
         }
@@ -173,13 +260,16 @@
         /* Mode Selector */
         .mode-selector {
             background-color: var(--panel);
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 35px;
             margin-bottom: 40px;
             border: 1px solid rgba(0, 243, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 243, 255, 0.05);
             position: relative;
             overflow: hidden;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .mode-selector::before {
@@ -187,35 +277,49 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
+        }
+        
+        .mode-selector::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            background: radial-gradient(circle at 30% 20%, rgba(0, 243, 255, 0.1), transparent 50%);
+            pointer-events: none;
         }
         
         .selector-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--primary);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 15px;
             font-family: 'Orbitron', sans-serif;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            text-align: center;
         }
         
         .mode-buttons {
             display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 25px;
+            margin-bottom: 35px;
+            justify-content: center;
         }
         
         .mode-btn {
             flex: 1;
-            padding: 20px;
+            padding: 25px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -226,6 +330,7 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            max-width: 400px;
         }
         
         .mode-btn::before {
@@ -242,24 +347,24 @@
         }
         
         .mode-btn.single {
-            background-color: rgba(0, 100, 255, 0.1);
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.2), rgba(0, 150, 255, 0.1));
             color: #88ccff;
             border: 2px solid rgba(0, 150, 255, 0.5);
         }
         
         .mode-btn.all {
-            background-color: rgba(157, 0, 255, 0.1);
+            background: linear-gradient(135deg, rgba(157, 0, 255, 0.2), rgba(157, 0, 255, 0.1));
             color: #cc99ff;
             border: 2px solid rgba(157, 0, 255, 0.5);
         }
         
         .mode-btn.active {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--glow);
         }
         
         .mode-btn.single.active {
-            background-color: rgba(0, 100, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.4), rgba(0, 150, 255, 0.3));
             color: var(--primary);
             border-color: var(--primary);
         }
@@ -269,7 +374,7 @@
         }
         
         .mode-btn.all.active {
-            background-color: rgba(157, 0, 255, 0.3);
+            background: linear-gradient(135deg, rgba(157, 0, 255, 0.4), rgba(157, 0, 255, 0.3));
             color: var(--accent);
             border-color: var(--accent);
         }
@@ -279,7 +384,8 @@
         }
         
         .mode-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
         
         .mode-btn:hover::before {
@@ -289,30 +395,41 @@
         /* Pasaran Selector */
         .pasaran-selector {
             margin-top: 25px;
-            padding: 25px;
-            background-color: rgba(5, 10, 30, 0.7);
-            border-radius: 10px;
+            padding: 30px;
+            background-color: rgba(5, 10, 35, 0.8);
+            border-radius: 12px;
             border-left: 4px solid var(--primary);
             border-top: 1px solid rgba(0, 243, 255, 0.2);
             display: none;
+            animation: fadeIn 0.5s forwards;
         }
         
-        .pasaran-selector.show {
-            display: block;
-            animation: slideIn 0.5s forwards;
-        }
-        
-        @keyframes slideIn {
+        @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
+        .pasaran-selector.show {
+            display: block;
+        }
+        
+        .selector-subtitle {
+            font-size: 1.2rem;
+            color: #88ccff;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
         .pasaran-dropdown {
             width: 100%;
-            padding: 15px;
-            background-color: rgba(0, 0, 20, 0.8);
+            padding: 18px;
+            background-color: rgba(0, 5, 25, 0.8);
             border: 2px solid rgba(0, 243, 255, 0.5);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1.1rem;
             color: var(--primary);
             font-family: 'Exo 2', sans-serif;
@@ -329,13 +446,14 @@
         .pasaran-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-            max-height: 200px;
+            gap: 15px;
+            max-height: 250px;
             overflow-y: auto;
-            padding: 15px;
+            padding: 20px;
             border: 1px solid rgba(0, 243, 255, 0.2);
-            border-radius: 8px;
-            background-color: rgba(0, 5, 20, 0.5);
+            border-radius: 10px;
+            background-color: rgba(0, 5, 25, 0.6);
+            scrollbar-width: thin;
         }
         
         .pasaran-grid::-webkit-scrollbar {
@@ -344,19 +462,19 @@
         
         .pasaran-grid::-webkit-scrollbar-track {
             background: rgba(0, 20, 40, 0.5);
-            border-radius: 4px;
+            border-radius: 10px;
         }
         
         .pasaran-grid::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 10px;
         }
         
         .pasaran-item {
-            background-color: rgba(0, 30, 60, 0.5);
+            background-color: rgba(0, 30, 70, 0.5);
             border: 1px solid rgba(0, 150, 255, 0.3);
-            padding: 12px;
-            border-radius: 6px;
+            padding: 15px;
+            border-radius: 8px;
             color: #88ccff;
             font-weight: 600;
             cursor: pointer;
@@ -364,14 +482,32 @@
             text-align: left;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 12px;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pasaran-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+        
+        .pasaran-item:hover::before {
+            transform: translateX(100%);
         }
         
         .pasaran-item:hover {
             background-color: rgba(0, 100, 255, 0.3);
             border-color: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.02);
             box-shadow: 0 5px 15px rgba(0, 150, 255, 0.2);
         }
         
@@ -379,7 +515,8 @@
             background-color: rgba(0, 100, 255, 0.5);
             color: var(--primary);
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 150, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+            transform: translateY(-2px);
         }
         
         /* Submit Button */
@@ -387,24 +524,25 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             border: none;
-            padding: 22px 35px;
-            border-radius: 10px;
+            padding: 25px 40px;
+            border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin: 30px auto 0;
-            font-size: 1.3rem;
+            margin: 40px auto 0;
+            font-size: 1.4rem;
             transition: all 0.3s;
             width: 100%;
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             position: relative;
             overflow: hidden;
             z-index: 1;
+            max-width: 500px;
         }
         
         .submit-btn::before {
@@ -414,7 +552,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.7s;
             z-index: -1;
         }
@@ -424,8 +562,8 @@
         }
         
         .submit-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--glow);
         }
         
         .submit-btn:disabled {
@@ -439,17 +577,25 @@
             left: -100%;
         }
         
+        .submit-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
         /* Result Container */
         .result-container {
             display: none;
             background-color: var(--panel);
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 35px;
             margin-top: 40px;
             border: 1px solid rgba(0, 243, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 243, 255, 0.05);
             position: relative;
             overflow: hidden;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .result-container::before {
@@ -468,24 +614,29 @@
         }
         
         @keyframes resultAppear {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .result-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
             border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            text-align: center;
         }
         
         .result-title {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             color: var(--primary);
             font-family: 'Orbitron', sans-serif;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
         }
         
         .result-content {
@@ -493,49 +644,60 @@
             white-space: pre-line;
             line-height: 1.8;
             font-size: 1.1rem;
-            background-color: rgba(0, 5, 15, 0.7);
-            padding: 25px;
-            border-radius: 10px;
+            background-color: rgba(0, 5, 20, 0.8);
+            padding: 30px;
+            border-radius: 12px;
             border: 1px solid rgba(0, 243, 255, 0.2);
-            max-height: 500px;
+            max-height: 600px;
             overflow-y: auto;
             color: #e0e0ff;
             position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
         }
         
         .result-content::-webkit-scrollbar {
-            width: 10px;
+            width: 12px;
         }
         
         .result-content::-webkit-scrollbar-track {
-            background: rgba(0, 20, 40, 0.5);
-            border-radius: 5px;
+            background: rgba(0, 20, 50, 0.5);
+            border-radius: 10px;
         }
         
         .result-content::-webkit-scrollbar-thumb {
             background: linear-gradient(to bottom, var(--primary), var(--accent));
-            border-radius: 5px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 10, 30, 0.8);
+        }
+        
+        .result-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            margin-top: 30px;
         }
         
         .action-buttons {
             display: flex;
-            gap: 20px;
-            margin-top: 30px;
+            gap: 25px;
+            width: 100%;
+            max-width: 500px;
         }
         
         .copy-btn {
             background: linear-gradient(135deg, var(--accent), #6600cc);
             color: white;
             border: none;
-            padding: 18px 25px;
-            border-radius: 8px;
+            padding: 20px 30px;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             flex: 1;
-            justify-content: center;
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -560,32 +722,42 @@
         }
         
         .copy-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), var(--glow-purple);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-purple);
         }
         
         .copy-btn.copied {
             background: linear-gradient(135deg, #00cc66, #00994d);
-            box-shadow: 0 0 20px rgba(0, 204, 102, 0.5);
+            box-shadow: 0 0 25px rgba(0, 204, 102, 0.6);
+            animation: copiedPulse 1s;
+        }
+        
+        @keyframes copiedPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .auto-refresh {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 10px;
             color: #88ccff;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            padding: 15px 25px;
+            background-color: rgba(0, 20, 40, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
         }
         
         .refresh-indicator {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-            animation: blink 1s infinite;
+            background-color: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
+            animation: blink 1.5s infinite, spin 4s linear infinite;
         }
         
         @keyframes blink {
@@ -593,18 +765,24 @@
             50% { opacity: 0.3; }
         }
         
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Disclaimer */
         .disclaimer {
-            background-color: rgba(255, 0, 85, 0.1);
+            background-color: rgba(255, 0, 85, 0.15);
             color: #ffaacc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 40px;
-            font-size: 0.9rem;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 40px auto;
+            font-size: 0.95rem;
             border-left: 5px solid var(--secondary);
             box-shadow: var(--glow-red);
             position: relative;
             overflow: hidden;
+            max-width: 1000px;
         }
         
         .disclaimer::before {
@@ -624,6 +802,7 @@
             padding-top: 30px;
             border-top: 1px solid rgba(0, 243, 255, 0.2);
             font-size: 0.9rem;
+            position: relative;
         }
         
         .footer-glow {
@@ -633,28 +812,73 @@
             margin-bottom: 20px;
         }
         
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 25px;
-                text-align: center;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .current-date {
-                min-width: 100%;
-            }
-            
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            opacity: 0.6;
+            animation: floatAround 15s infinite linear;
+        }
+        
+        @keyframes floatAround {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(100px, 50px); }
+            50% { transform: translate(50px, 100px); }
+            75% { transform: translate(-50px, 50px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        @media (max-width: 992px) {
             .mode-buttons {
                 flex-direction: column;
+                align-items: center;
+            }
+            
+            .mode-btn {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .datetime-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo-icon {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+            
+            .mode-selector, .result-container, .disclaimer {
+                padding: 25px 20px;
             }
             
             .pasaran-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                max-height: 180px;
+                max-height: 200px;
             }
             
             .action-buttons {
@@ -663,27 +887,80 @@
             
             .result-content {
                 font-size: 1rem;
-                max-height: 400px;
+                max-height: 500px;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo-icon {
+                font-size: 2.5rem;
+            }
+            
+            .current-date, .current-time {
+                min-width: 100%;
+                padding: 15px 20px;
+            }
+            
+            .date-text, .time-text {
+                font-size: 1.1rem;
+            }
+            
+            .mode-btn {
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+            
+            .submit-btn {
+                padding: 20px;
+                font-size: 1.2rem;
+            }
+            
+            .result-title {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Floating background elements -->
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+        <div class="floating-element" style="top: 30%; left: 80%; animation-delay: 3s; background-color: var(--accent);"></div>
+        <div class="floating-element" style="top: 70%; left: 10%; animation-delay: 6s; background-color: var(--neon-green);"></div>
+        <div class="floating-element" style="top: 20%; left: 50%; animation-delay: 9s; background-color: var(--secondary);"></div>
+        <div class="floating-element" style="top: 85%; left: 70%; animation-delay: 12s;"></div>
+    </div>
+    
     <div class="container">
         <header>
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div>
-                        <h1>TRANSFORMER PREDICTOR</h1>
-                        <p class="subtitle">Sistem Prediksi Togel Digital Canggih</p>
-                    </div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
                 </div>
+                <h1>TRANSFORMER PREDICTOR</h1>
+                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Generate Prediksi Otomatis Setiap Hari</p>
+            </div>
+            
+            <div class="datetime-container">
                 <div class="current-date">
-                    <div class="date-text" id="currentDate">Loading...</div>
-                    <div class="time-text" id="currentTime">--:--:--</div>
+                    <div class="date-text">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="currentDate">Loading...</span>
+                    </div>
+                    <div class="date-label">TANGGAL HARI INI</div>
+                </div>
+                
+                <div class="current-time">
+                    <div class="time-text">
+                        <i class="far fa-clock"></i>
+                        <span id="currentTime">--:--:--</span>
+                    </div>
+                    <div class="time-label">WAKTU REAL-TIME</div>
                 </div>
             </div>
         </header>
@@ -707,7 +984,7 @@
             </div>
             
             <div class="pasaran-selector show" id="pasaranSelector">
-                <div class="selector-title" style="font-size: 1.2rem; margin-bottom: 15px;">
+                <div class="selector-subtitle">
                     <i class="fas fa-list-alt"></i> PILIH PASARAN TARGET
                 </div>
                 
@@ -737,15 +1014,17 @@
                 <!-- Hasil prediksi akan ditampilkan di sini -->
             </div>
             
-            <div class="auto-refresh">
-                <div class="refresh-indicator"></div>
-                <span>Sistem akan otomatis memperbarui prediksi setiap hari pukul 00:00</span>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="copy-btn" id="copyBtn">
-                    <i class="fas fa-copy"></i> SALIN MATRIX PREDICTION
-                </button>
+            <div class="result-footer">
+                <div class="auto-refresh">
+                    <div class="refresh-indicator"></div>
+                    <span>Sistem akan otomatis memperbarui prediksi setiap hari pukul 00:00</span>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="copy-btn" id="copyBtn">
+                        <i class="fas fa-copy"></i> SALIN MATRIX PREDICTION
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -859,11 +1138,13 @@
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
             
-            // Update tampilan
+            // Update tampilan tanggal
             document.getElementById('currentDate').innerHTML = 
-                `<i class="far fa-calendar-alt"></i> ${dayName}, ${date} ${monthName} ${year}`;
+                `${dayName}, ${date} ${monthName} ${year}`;
+            
+            // Update tampilan waktu
             document.getElementById('currentTime').innerHTML = 
-                `<i class="far fa-clock"></i> ${hours}:${minutes}:${seconds}`;
+                `${hours}:${minutes}:${seconds}`;
             
             // Cek apakah sudah hari baru (setelah tengah malam)
             const todayDate = now.getDate();
@@ -1032,6 +1313,9 @@ Selalu Utamakan Prediksi Sendiri
                     
                     // Update status tombol submit
                     updateSubmitButtonStatus();
+                    
+                    // Efek suara klik (opsional)
+                    playClickSound();
                 });
                 
                 grid.appendChild(button);
@@ -1059,7 +1343,16 @@ Selalu Utamakan Prediksi Sendiri
                 
                 // Update status tombol submit
                 updateSubmitButtonStatus();
+                
+                // Efek suara klik (opsional)
+                playClickSound();
             });
+        }
+        
+        // Fungsi untuk efek suara klik (opsional)
+        function playClickSound() {
+            // Bisa ditambahkan efek suara jika diinginkan
+            // Untuk sekarang hanya efek visual
         }
         
         // Fungsi untuk memperbarui status tombol submit
@@ -1089,34 +1382,51 @@ Selalu Utamakan Prediksi Sendiri
             const resultTitle = document.getElementById('resultTitle');
             const resultContent = document.getElementById('resultContent');
             
-            // Generate prediksi berdasarkan mode
-            let prediksiText = "";
-            
-            if (currentMode === "single") {
-                // Generate prediksi untuk satu pasaran
-                resultTitle.innerHTML = `<i class="fas fa-crosshairs"></i> MATRIX: ${selectedPasaran}`;
-                prediksiText = generatePredictionForPasaran(selectedPasaran);
-            } else {
-                // Generate prediksi untuk semua pasaran
-                resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL MATRIX: ALL PASARAN`;
-                
-                // Generate untuk semua pasaran
-                semuaPasaran.forEach((pasaran, index) => {
-                    prediksiText += generatePredictionForPasaran(pasaran);
-                    
-                    // Tambahkan baris kosong sebagai pemisah antar pasaran
-                    if (index < semuaPasaran.length - 1) {
-                        prediksiText += "\n\n";
-                    }
-                });
-            }
-            
-            // Tampilkan hasil
-            resultContent.textContent = prediksiText;
+            // Efek loading sebelum menampilkan hasil
+            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--primary);"><i class="fas fa-cog fa-spin fa-2x"></i><br><br>Generating Prediction Matrix...</div>';
             resultContainer.classList.add('show');
             
-            // Scroll ke hasil prediksi
-            resultContainer.scrollIntoView({ behavior: 'smooth' });
+            // Delay untuk efek loading
+            setTimeout(() => {
+                // Generate prediksi berdasarkan mode
+                let prediksiText = "";
+                
+                if (currentMode === "single") {
+                    // Generate prediksi untuk satu pasaran
+                    resultTitle.innerHTML = `<i class="fas fa-crosshairs"></i> MATRIX: ${selectedPasaran}`;
+                    prediksiText = generatePredictionForPasaran(selectedPasaran);
+                } else {
+                    // Generate prediksi untuk semua pasaran
+                    resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL MATRIX: ALL PASARAN`;
+                    
+                    // Generate untuk semua pasaran
+                    semuaPasaran.forEach((pasaran, index) => {
+                        prediksiText += generatePredictionForPasaran(pasaran);
+                        
+                        // Tambahkan baris kosong sebagai pemisah antar pasaran
+                        if (index < semuaPasaran.length - 1) {
+                            prediksiText += "\n\n";
+                        }
+                    });
+                }
+                
+                // Tampilkan hasil
+                resultContent.textContent = prediksiText;
+                
+                // Scroll ke hasil prediksi
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+                
+                // Efek visual saat hasil muncul
+                const contentElement = document.getElementById('resultContent');
+                contentElement.style.opacity = '0';
+                contentElement.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    contentElement.style.transition = 'opacity 0.5s, transform 0.5s';
+                    contentElement.style.opacity = '1';
+                    contentElement.style.transform = 'translateY(0)';
+                }, 100);
+            }, 800);
         }
         
         // Fungsi untuk menyalin hasil prediksi
@@ -1165,6 +1475,7 @@ Selalu Utamakan Prediksi Sendiri
                 document.getElementById('allModeBtn').classList.remove('active');
                 document.getElementById('pasaranSelector').classList.add('show');
                 updateSubmitButtonStatus();
+                playClickSound();
             });
             
             // Event listener untuk tombol mode all
@@ -1174,6 +1485,7 @@ Selalu Utamakan Prediksi Sendiri
                 document.getElementById('singleModeBtn').classList.remove('active');
                 document.getElementById('pasaranSelector').classList.remove('show');
                 updateSubmitButtonStatus();
+                playClickSound();
             });
             
             // Event listener untuk tombol submit
@@ -1182,11 +1494,11 @@ Selalu Utamakan Prediksi Sendiri
             // Event listener untuk tombol copy
             document.getElementById('copyBtn').addEventListener('click', copyPredictionToClipboard);
             
-            // Efek suara klik (opsional)
+            // Efek visual saat tombol diklik
             document.querySelectorAll('button').forEach(button => {
                 button.addEventListener('click', function() {
                     // Efek visual saat tombol diklik
-                    this.style.transform = 'scale(0.98)';
+                    this.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         this.style.transform = '';
                     }, 150);
