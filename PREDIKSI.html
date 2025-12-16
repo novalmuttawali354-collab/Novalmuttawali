@@ -827,7 +827,15 @@
         
         // Daftar hari dalam bahasa Indonesia
         const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        const bulan = [
+        
+        // Daftar bulan dalam bahasa Inggris (untuk output prediksi)
+        const bulanInggris = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        
+        // Daftar bulan dalam bahasa Indonesia (untuk header)
+        const bulanIndonesia = [
             "Januari", "Februari", "Maret", "April", "Mei", "Juni",
             "Juli", "Agustus", "September", "Oktober", "November", "Desember"
         ];
@@ -843,7 +851,7 @@
             const now = new Date();
             const dayName = hari[now.getDay()];
             const date = now.getDate();
-            const monthName = bulan[now.getMonth()];
+            const monthName = bulanIndonesia[now.getMonth()];
             const year = now.getFullYear();
             
             // Format waktu
@@ -869,6 +877,17 @@
                     setTimeout(showPredictionResult, 100);
                 }
             }
+        }
+        
+        // Fungsi untuk mendapatkan tanggal hari ini dalam format output prediksi
+        function getTodayDate() {
+            const now = new Date();
+            const dayName = hari[now.getDay()];
+            const date = now.getDate();
+            const monthName = bulanInggris[now.getMonth()];
+            const year = now.getFullYear();
+            
+            return `${dayName}, ${date} ${monthName} ${year}`;
         }
         
         // Fungsi untuk menghasilkan angka acak dengan panjang tertentu
@@ -928,24 +947,13 @@
             return result;
         }
         
-        // Fungsi untuk mendapatkan tanggal besok
-        function getTomorrowDate() {
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            const dayName = hari[tomorrow.getDay()];
-            const date = tomorrow.getDate();
-            const monthName = bulan[tomorrow.getMonth()];
-            const year = tomorrow.getFullYear();
-            
-            return `${dayName}, ${date} ${monthName} ${year}`;
-        }
-        
         // Fungsi untuk menghasilkan prediksi untuk satu pasaran dalam format yang diminta
         function generatePredictionForPasaran(pasaranName) {
             // Gunakan cache jika sudah ada untuk hari ini
-            const cacheKey = `${pasaranName}_${new Date().getDate()}`;
+            const today = new Date();
+            const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+            const cacheKey = `${pasaranName}_${todayKey}`;
+            
             if (cachedPredictions[cacheKey]) {
                 return cachedPredictions[cacheKey];
             }
@@ -964,7 +972,7 @@
             
             // Format sesuai permintaan
             const prediction = `Prediksi ${pasaranName}
-Hari ${getTomorrowDate()}
+Hari ${getTodayDate()}
 BBFS : ${bbfs}
 AM/AI/CK : ${amAiCk}
 4D : ${prediksi4D.join(' ')}
@@ -1096,9 +1104,9 @@ Selalu Utamakan Prediksi Sendiri
                 semuaPasaran.forEach((pasaran, index) => {
                     prediksiText += generatePredictionForPasaran(pasaran);
                     
-                    // Tambahkan separator kecuali untuk pasaran terakhir
+                    // Tambahkan baris kosong sebagai pemisah antar pasaran
                     if (index < semuaPasaran.length - 1) {
-                        prediksiText += "═══════════════════════════════════════════\n\n";
+                        prediksiText += "\n\n";
                     }
                 });
             }
@@ -1139,7 +1147,8 @@ Selalu Utamakan Prediksi Sendiri
         // Fungsi untuk menginisialisasi halaman
         function initializePage() {
             // Set tanggal terakhir generate ke hari ini
-            lastGeneratedDate = new Date().getDate();
+            const today = new Date();
+            lastGeneratedDate = today.getDate();
             
             // Update tanggal dan waktu setiap detik
             updateDateTime();
@@ -1189,8 +1198,8 @@ Selalu Utamakan Prediksi Sendiri
                 console.log(`%cTRANSFORMER PREDICTOR v3.7
 %cSistem Prediksi Digital telah diinisialisasi
 Mode: ${currentMode.toUpperCase()}
-Tanggal: ${new Date().toLocaleDateString('id-ID')}
-Prediksi akan diperbarui otomatis setiap hari`, 
+Tanggal: ${getTodayDate()}
+Prediksi akan diperbarui otomatis setiap hari pukul 00:00`, 
                 'color: #00f3ff; font-size: 16px; font-weight: bold;',
                 'color: #88ccff; font-size: 14px;');
             }, 1000);
