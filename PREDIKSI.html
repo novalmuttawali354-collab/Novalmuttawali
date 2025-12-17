@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRANSFORMER PREDICTOR - Generator Prediksi Togel Digital</title>
+    <title>SPIDER-MATRIX PREDICTOR - Generator Prediksi Togel Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00f3ff;
-            --secondary: #ff0055;
-            --accent: #9d00ff;
-            --dark: #0a0a1a;
-            --darker: #050510;
-            --panel: rgba(10, 15, 35, 0.95);
-            --glow: 0 0 15px var(--primary), 0 0 30px rgba(0, 243, 255, 0.3);
-            --glow-red: 0 0 15px var(--secondary), 0 0 30px rgba(255, 0, 85, 0.3);
-            --glow-purple: 0 0 15px var(--accent), 0 0 30px rgba(157, 0, 255, 0.3);
-            --neon-blue: #00f3ff;
-            --neon-pink: #ff00ff;
-            --neon-green: #00ff9d;
+            --spider-red: #e62429;
+            --spider-blue: #2a7fff;
+            --spider-light: #ffffff;
+            --spider-dark: #0c0c1a;
+            --spider-accent: #ffcc00;
+            --spider-dark-red: #8b0000;
+            --panel: rgba(12, 12, 26, 0.95);
+            --glow-red: 0 0 15px var(--spider-red), 0 0 30px rgba(230, 36, 41, 0.4);
+            --glow-blue: 0 0 15px var(--spider-blue), 0 0 30px rgba(42, 127, 255, 0.4);
+            --glow-yellow: 0 0 15px var(--spider-accent), 0 0 30px rgba(255, 204, 0, 0.4);
         }
         
         * {
@@ -29,45 +27,112 @@
         }
         
         body {
-            background-color: var(--darker);
+            background-color: var(--spider-dark);
             color: #fff;
             font-family: 'Exo 2', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(157, 0, 255, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 85, 0.05) 0%, transparent 35%);
+                radial-gradient(circle at 10% 20%, rgba(230, 36, 41, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(42, 127, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05) 0%, transparent 35%);
             min-height: 100vh;
             position: relative;
+            overflow-y: auto;
         }
         
-        body::before {
-            content: '';
+        /* Jaring Laba-laba Background */
+        .spider-web {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(90deg, transparent 49.5%, rgba(0, 243, 255, 0.03) 50%, transparent 50.5%),
-                linear-gradient(transparent 49.5%, rgba(0, 243, 255, 0.03) 50%, transparent 50.5%);
-            background-size: 60px 60px;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.4;
-            animation: gridMove 20s linear infinite;
+            opacity: 0.15;
+            background-image: 
+                /* Garis vertikal tengah */
+                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                /* Garis horizontal tengah */
+                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
+                /* Lingkaran konsentris */
+                radial-gradient(circle at 50% 50%, transparent 30%, rgba(255, 255, 255, 0.05) 31%, transparent 32%),
+                radial-gradient(circle at 50% 50%, transparent 40%, rgba(255, 255, 255, 0.05) 41%, transparent 42%),
+                radial-gradient(circle at 50% 50%, transparent 50%, rgba(255, 255, 255, 0.05) 51%, transparent 52%),
+                radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.05) 61%, transparent 62%),
+                radial-gradient(circle at 50% 50%, transparent 70%, rgba(255, 255, 255, 0.05) 71%, transparent 72%);
+            background-size: 
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+            background-position: 
+                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%,
+                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%,
+                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+            animation: webPulse 10s infinite alternate;
         }
         
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 30px); }
+        @keyframes webPulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+        
+        /* Spider yang bergerak di jaring */
+        .spider {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, var(--spider-red) 40%, var(--spider-dark-red) 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--spider-red);
+            z-index: -1;
+            animation: spiderMove 25s infinite linear;
+        }
+        
+        .spider::before, .spider::after {
+            content: '';
+            position: absolute;
+            background-color: var(--spider-light);
+            border-radius: 2px;
+        }
+        
+        .spider::before {
+            width: 8px;
+            height: 30px;
+            top: -15px;
+            left: 11px;
+        }
+        
+        .spider::after {
+            width: 30px;
+            height: 8px;
+            top: 11px;
+            left: -15px;
+        }
+        
+        @keyframes spiderMove {
+            0% { transform: translate(10vw, 10vh) rotate(0deg); }
+            25% { transform: translate(80vw, 30vh) rotate(90deg); }
+            50% { transform: translate(50vw, 70vh) rotate(180deg); }
+            75% { transform: translate(20vw, 50vh) rotate(270deg); }
+            100% { transform: translate(10vw, 10vh) rotate(360deg); }
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         
         /* Header dengan layout vertikal */
@@ -77,9 +142,55 @@
             margin-bottom: 40px;
             text-align: center;
             border-bottom: 2px solid transparent;
-            border-image: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-image: linear-gradient(90deg, transparent, var(--spider-red), var(--spider-blue), transparent);
             border-image-slice: 1;
-            background: linear-gradient(to bottom, rgba(0, 243, 255, 0.05), transparent);
+            background: linear-gradient(to bottom, rgba(230, 36, 41, 0.1), transparent);
+        }
+        
+        /* Gambar Spider-Man di sudut kiri dan kanan - LEBIH BESAR */
+        .spider-corner {
+            position: fixed;
+            top: 10px;
+            width: 200px;
+            height: 200px;
+            z-index: 10;
+            filter: drop-shadow(0 0 15px rgba(230, 36, 41, 0.8));
+            animation: spiderSwing 7s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+        
+        .spider-corner:hover {
+            filter: drop-shadow(0 0 25px rgba(230, 36, 41, 1));
+            transform: scale(1.05);
+        }
+        
+        .spider-corner.left {
+            left: 10px;
+            animation-delay: 0s;
+        }
+        
+        .spider-corner.right {
+            right: 10px;
+            animation-delay: 2s;
+        }
+        
+        @keyframes spiderSwing {
+            0%, 100% { 
+                transform: rotate(-8deg) translateY(0);
+                filter: drop-shadow(0 0 15px rgba(230, 36, 41, 0.8));
+            }
+            25% { 
+                transform: rotate(8deg) translateY(-15px);
+                filter: drop-shadow(0 0 20px rgba(230, 36, 41, 1));
+            }
+            50% { 
+                transform: rotate(-5deg) translateY(10px);
+                filter: drop-shadow(0 0 18px rgba(230, 36, 41, 0.9));
+            }
+            75% { 
+                transform: rotate(5deg) translateY(-10px);
+                filter: drop-shadow(0 0 22px rgba(230, 36, 41, 0.95));
+            }
         }
         
         .logo {
@@ -88,42 +199,64 @@
             align-items: center;
             margin-bottom: 30px;
             position: relative;
+            z-index: 3;
         }
         
         .logo-icon {
-            font-size: 4rem;
-            color: var(--primary);
-            text-shadow: var(--glow);
-            animation: pulse 2s infinite alternate, float 6s ease-in-out infinite;
+            width: 180px;
+            height: 180px;
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(230, 36, 41, 0.5);
+            animation: logoFloat 6s ease-in-out infinite, logoShine 3s infinite alternate;
+            transform-origin: center;
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, var(--spider-red), var(--spider-blue), var(--spider-accent)) border-box;
         }
         
-        @keyframes pulse {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            padding: 5px;
+            background-color: var(--spider-dark);
+            box-sizing: border-box;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                box-shadow: 0 0 30px rgba(230, 36, 41, 0.5);
+            }
+            50% { 
+                transform: translateY(-15px) rotate(5deg);
+                box-shadow: 0 15px 40px rgba(230, 36, 41, 0.7);
+            }
+        }
+        
+        @keyframes logoShine {
             0% { 
-                text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(0, 243, 255, 0.5);
-                transform: scale(1);
+                filter: drop-shadow(0 0 10px rgba(230, 36, 41, 0.5));
+                border-color: rgba(230, 36, 41, 0.5);
             }
             100% { 
-                text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 243, 255, 0.8), 0 0 40px rgba(0, 243, 255, 0.3);
-                transform: scale(1.05);
+                filter: drop-shadow(0 0 20px rgba(230, 36, 41, 0.9)) drop-shadow(0 0 30px rgba(255, 204, 0, 0.5));
+                border-color: rgba(255, 204, 0, 0.8);
             }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.03); }
         }
         
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
-            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            text-shadow: 0 0 15px rgba(230, 36, 41, 0.4);
             letter-spacing: 2px;
             margin-bottom: 15px;
             position: relative;
@@ -137,14 +270,14 @@
             left: 10%;
             width: 80%;
             height: 3px;
-            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), transparent);
             border-radius: 50%;
             filter: blur(1px);
         }
         
         .subtitle {
             font-size: 1.2rem;
-            color: #a0a0ff;
+            color: #a0c8ff;
             margin-top: 10px;
             letter-spacing: 1px;
             font-weight: 300;
@@ -166,8 +299,8 @@
             border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 500;
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            box-shadow: var(--glow);
+            border: 1px solid rgba(230, 36, 41, 0.3);
+            box-shadow: var(--glow-red);
             text-align: center;
             min-width: 250px;
             position: relative;
@@ -175,9 +308,21 @@
             transition: all 0.3s;
         }
         
+        .current-time {
+            border: 1px solid rgba(42, 127, 255, 0.3);
+            box-shadow: var(--glow-blue);
+        }
+        
         .current-date:hover, .current-time:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+        }
+        
+        .current-date:hover {
+            box-shadow: 0 10px 25px rgba(230, 36, 41, 0.4);
+        }
+        
+        .current-time:hover {
+            box-shadow: 0 10px 25px rgba(42, 127, 255, 0.4);
         }
         
         .current-date::before, .current-time::before {
@@ -187,9 +332,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(230, 36, 41, 0.1), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s;
+        }
+        
+        .current-time::before {
+            background: linear-gradient(45deg, transparent, rgba(42, 127, 255, 0.1), transparent);
         }
         
         .current-date:hover::before, .current-time:hover::before {
@@ -197,9 +346,9 @@
         }
         
         .date-text, .time-text {
-            color: var(--primary);
+            color: var(--spider-red);
             font-size: 1.3rem;
-            text-shadow: 0 0 8px var(--primary);
+            text-shadow: 0 0 8px var(--spider-red);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -207,12 +356,12 @@
         }
         
         .time-text {
-            color: var(--neon-green);
-            text-shadow: 0 0 8px var(--neon-green);
+            color: var(--spider-blue);
+            text-shadow: 0 0 8px var(--spider-blue);
         }
         
         .time-label, .date-label {
-            color: #88ccff;
+            color: #88aaff;
             font-size: 0.9rem;
             margin-top: 8px;
             opacity: 0.8;
@@ -220,24 +369,25 @@
         
         /* Warning */
         .warning {
-            background-color: rgba(255, 0, 85, 0.15);
-            color: #ff99bb;
+            background-color: rgba(230, 36, 41, 0.2);
+            color: #ff99aa;
             padding: 20px;
             border-radius: 10px;
             margin: 30px auto;
             text-align: center;
             font-weight: 600;
-            border-left: 5px solid var(--secondary);
+            border-left: 5px solid var(--spider-red);
             box-shadow: var(--glow-red);
             position: relative;
             overflow: hidden;
             max-width: 900px;
             animation: warningPulse 3s infinite alternate;
+            z-index: 5;
         }
         
         @keyframes warningPulse {
-            0% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.8); }
+            0% { box-shadow: 0 0 10px rgba(230, 36, 41, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(230, 36, 41, 0.8); }
         }
         
         .warning::before {
@@ -263,13 +413,17 @@
             border-radius: 15px;
             padding: 35px;
             margin-bottom: 40px;
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(230, 36, 41, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.1);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(42, 127, 255, 0.05), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.05), transparent 50%);
+            z-index: 5;
         }
         
         .mode-selector::before {
@@ -279,7 +433,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
         }
         
         .mode-selector::after {
@@ -289,20 +443,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 243, 255, 0.1), transparent 50%);
+            background: radial-gradient(circle at 30% 20%, rgba(230, 36, 41, 0.1), transparent 50%);
             pointer-events: none;
         }
         
         .selector-title {
             font-size: 1.6rem;
-            color: var(--primary);
+            color: var(--spider-red);
             margin-bottom: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            text-shadow: 0 0 10px rgba(230, 36, 41, 0.5);
             text-align: center;
         }
         
@@ -340,46 +494,44 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(157, 0, 255, 0.2));
+            background: linear-gradient(135deg, rgba(230, 36, 41, 0.2), rgba(42, 127, 255, 0.2));
             opacity: 0;
             transition: opacity 0.3s;
             z-index: -1;
         }
         
         .mode-btn.single {
-            background: linear-gradient(135deg, rgba(0, 100, 255, 0.2), rgba(0, 150, 255, 0.1));
-            color: #88ccff;
-            border: 2px solid rgba(0, 150, 255, 0.5);
+            background: linear-gradient(135deg, rgba(230, 36, 41, 0.2), rgba(230, 36, 41, 0.1));
+            color: #ff8888;
+            border: 2px solid rgba(230, 36, 41, 0.5);
         }
         
         .mode-btn.all {
-            background: linear-gradient(135deg, rgba(157, 0, 255, 0.2), rgba(157, 0, 255, 0.1));
-            color: #cc99ff;
-            border: 2px solid rgba(157, 0, 255, 0.5);
+            background: linear-gradient(135deg, rgba(42, 127, 255, 0.2), rgba(42, 127, 255, 0.1));
+            color: #88aaff;
+            border: 2px solid rgba(42, 127, 255, 0.5);
         }
         
         .mode-btn.active {
             transform: translateY(-8px);
-            box-shadow: var(--glow);
+            box-shadow: var(--glow-red);
         }
         
         .mode-btn.single.active {
-            background: linear-gradient(135deg, rgba(0, 100, 255, 0.4), rgba(0, 150, 255, 0.3));
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .mode-btn.single.active::before {
-            opacity: 1;
+            background: linear-gradient(135deg, rgba(230, 36, 41, 0.4), rgba(230, 36, 41, 0.3));
+            color: var(--spider-light);
+            border-color: var(--spider-red);
+            box-shadow: var(--glow-red);
         }
         
         .mode-btn.all.active {
-            background: linear-gradient(135deg, rgba(157, 0, 255, 0.4), rgba(157, 0, 255, 0.3));
-            color: var(--accent);
-            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(42, 127, 255, 0.4), rgba(42, 127, 255, 0.3));
+            color: var(--spider-light);
+            border-color: var(--spider-blue);
+            box-shadow: var(--glow-blue);
         }
         
-        .mode-btn.all.active::before {
+        .mode-btn:hover::before {
             opacity: 1;
         }
         
@@ -388,20 +540,19 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
         
-        .mode-btn:hover::before {
-            opacity: 1;
-        }
-        
         /* Pasaran Selector */
         .pasaran-selector {
             margin-top: 25px;
             padding: 30px;
-            background-color: rgba(5, 10, 35, 0.8);
+            background-color: rgba(10, 10, 30, 0.8);
             border-radius: 12px;
-            border-left: 4px solid var(--primary);
-            border-top: 1px solid rgba(0, 243, 255, 0.2);
+            border-left: 4px solid var(--spider-red);
+            border-top: 1px solid rgba(230, 36, 41, 0.2);
             display: none;
             animation: fadeIn 0.5s forwards;
+            background-image: 
+                linear-gradient(45deg, transparent 98%, rgba(230, 36, 41, 0.1) 100%),
+                linear-gradient(-45deg, transparent 98%, rgba(42, 127, 255, 0.1) 100%);
         }
         
         @keyframes fadeIn {
@@ -415,7 +566,7 @@
         
         .selector-subtitle {
             font-size: 1.2rem;
-            color: #88ccff;
+            color: #88aaff;
             margin-bottom: 15px;
             text-align: center;
             display: flex;
@@ -427,11 +578,11 @@
         .pasaran-dropdown {
             width: 100%;
             padding: 18px;
-            background-color: rgba(0, 5, 25, 0.8);
-            border: 2px solid rgba(0, 243, 255, 0.5);
+            background-color: rgba(5, 5, 20, 0.8);
+            border: 2px solid rgba(230, 36, 41, 0.5);
             border-radius: 10px;
             font-size: 1.1rem;
-            color: var(--primary);
+            color: var(--spider-red);
             font-family: 'Exo 2', sans-serif;
             margin-bottom: 20px;
             outline: none;
@@ -439,8 +590,8 @@
         }
         
         .pasaran-dropdown:focus {
-            box-shadow: var(--glow);
-            border-color: var(--primary);
+            box-shadow: var(--glow-red);
+            border-color: var(--spider-red);
         }
         
         .pasaran-grid {
@@ -450,9 +601,9 @@
             max-height: 250px;
             overflow-y: auto;
             padding: 20px;
-            border: 1px solid rgba(0, 243, 255, 0.2);
+            border: 1px solid rgba(230, 36, 41, 0.2);
             border-radius: 10px;
-            background-color: rgba(0, 5, 25, 0.6);
+            background-color: rgba(5, 5, 20, 0.6);
             scrollbar-width: thin;
         }
         
@@ -461,21 +612,21 @@
         }
         
         .pasaran-grid::-webkit-scrollbar-track {
-            background: rgba(0, 20, 40, 0.5);
+            background: rgba(20, 20, 40, 0.5);
             border-radius: 10px;
         }
         
         .pasaran-grid::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            background: linear-gradient(to bottom, var(--spider-red), var(--spider-blue));
             border-radius: 10px;
         }
         
         .pasaran-item {
-            background-color: rgba(0, 30, 70, 0.5);
-            border: 1px solid rgba(0, 150, 255, 0.3);
+            background-color: rgba(30, 10, 20, 0.5);
+            border: 1px solid rgba(230, 36, 41, 0.3);
             padding: 15px;
             border-radius: 8px;
-            color: #88ccff;
+            color: #ff8888;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -495,7 +646,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(230, 36, 41, 0.1), transparent);
             transform: translateX(-100%);
             transition: transform 0.5s;
         }
@@ -505,23 +656,23 @@
         }
         
         .pasaran-item:hover {
-            background-color: rgba(0, 100, 255, 0.3);
-            border-color: var(--primary);
+            background-color: rgba(230, 36, 41, 0.3);
+            border-color: var(--spider-red);
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 5px 15px rgba(0, 150, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(230, 36, 41, 0.2);
         }
         
         .pasaran-item.selected {
-            background-color: rgba(0, 100, 255, 0.5);
-            color: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+            background-color: rgba(230, 36, 41, 0.5);
+            color: var(--spider-light);
+            border-color: var(--spider-red);
+            box-shadow: 0 0 20px rgba(230, 36, 41, 0.5);
             transform: translateY(-2px);
         }
         
         /* Submit Button */
         .submit-btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--spider-red), var(--spider-blue));
             color: white;
             border: none;
             padding: 25px 40px;
@@ -563,7 +714,7 @@
         
         .submit-btn:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--glow);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--glow-red), var(--glow-blue);
         }
         
         .submit-btn:disabled {
@@ -589,13 +740,17 @@
             border-radius: 15px;
             padding: 35px;
             margin-top: 40px;
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(230, 36, 41, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.1);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(42, 127, 255, 0.05), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.05), transparent 50%);
+            z-index: 5;
         }
         
         .result-container::before {
@@ -605,7 +760,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
         }
         
         .result-container.show {
@@ -624,15 +779,15 @@
             align-items: center;
             margin-bottom: 30px;
             padding-bottom: 25px;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            border-bottom: 1px solid rgba(230, 36, 41, 0.2);
             text-align: center;
         }
         
         .result-title {
             font-size: 1.9rem;
-            color: var(--primary);
+            color: var(--spider-red);
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            text-shadow: 0 0 10px rgba(230, 36, 41, 0.5);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -644,10 +799,10 @@
             white-space: pre-line;
             line-height: 1.8;
             font-size: 1.1rem;
-            background-color: rgba(0, 5, 20, 0.8);
+            background-color: rgba(5, 5, 15, 0.8);
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 243, 255, 0.2);
+            border: 1px solid rgba(230, 36, 41, 0.2);
             max-height: 600px;
             overflow-y: auto;
             color: #e0e0ff;
@@ -660,14 +815,14 @@
         }
         
         .result-content::-webkit-scrollbar-track {
-            background: rgba(0, 20, 50, 0.5);
+            background: rgba(20, 20, 40, 0.5);
             border-radius: 10px;
         }
         
         .result-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            background: linear-gradient(to bottom, var(--spider-red), var(--spider-blue));
             border-radius: 10px;
-            border: 2px solid rgba(0, 10, 30, 0.8);
+            border: 2px solid rgba(10, 10, 30, 0.8);
         }
         
         .result-footer {
@@ -686,7 +841,7 @@
         }
         
         .copy-btn {
-            background: linear-gradient(135deg, var(--accent), #6600cc);
+            background: linear-gradient(135deg, var(--spider-blue), #0044cc);
             color: white;
             border: none;
             padding: 20px 30px;
@@ -723,12 +878,12 @@
         
         .copy-btn:hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-purple);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-blue);
         }
         
         .copy-btn.copied {
-            background: linear-gradient(135deg, #00cc66, #00994d);
-            box-shadow: 0 0 25px rgba(0, 204, 102, 0.6);
+            background: linear-gradient(135deg, var(--spider-accent), #cc9900);
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.6);
             animation: copiedPulse 1s;
         }
         
@@ -743,20 +898,20 @@
             justify-content: center;
             gap: 15px;
             margin-top: 10px;
-            color: #88ccff;
+            color: #88aaff;
             font-size: 1rem;
             padding: 15px 25px;
-            background-color: rgba(0, 20, 40, 0.5);
+            background-color: rgba(10, 20, 40, 0.5);
             border-radius: 10px;
-            border: 1px solid rgba(0, 243, 255, 0.2);
+            border: 1px solid rgba(42, 127, 255, 0.2);
         }
         
         .refresh-indicator {
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background-color: var(--neon-green);
-            box-shadow: 0 0 15px var(--neon-green);
+            background-color: var(--spider-accent);
+            box-shadow: 0 0 15px var(--spider-accent);
             animation: blink 1.5s infinite, spin 4s linear infinite;
         }
         
@@ -772,17 +927,18 @@
         
         /* Disclaimer */
         .disclaimer {
-            background-color: rgba(255, 0, 85, 0.15);
-            color: #ffaacc;
+            background-color: rgba(230, 36, 41, 0.2);
+            color: #ffaabb;
             padding: 25px;
             border-radius: 12px;
             margin: 40px auto;
             font-size: 0.95rem;
-            border-left: 5px solid var(--secondary);
+            border-left: 5px solid var(--spider-red);
             box-shadow: var(--glow-red);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
+            z-index: 5;
         }
         
         .disclaimer::before {
@@ -792,53 +948,48 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--secondary), #ff6699);
+            background: linear-gradient(to bottom, var(--spider-red), #ff6688);
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
-            color: #6666cc;
+            color: #8888cc;
             padding-top: 30px;
-            border-top: 1px solid rgba(0, 243, 255, 0.2);
+            border-top: 1px solid rgba(230, 36, 41, 0.2);
             font-size: 0.9rem;
             position: relative;
+            z-index: 5;
         }
         
         .footer-glow {
             width: 100%;
             height: 2px;
-            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), transparent);
             margin-bottom: 20px;
         }
         
-        .floating-elements {
+        /* Spider Web Lines Animation */
+        .web-line {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+            width: 1px;
             height: 100%;
-            pointer-events: none;
+            top: 0;
+            animation: webLineMove 20s infinite linear;
             z-index: -1;
         }
         
-        .floating-element {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-            opacity: 0.6;
-            animation: floatAround 15s infinite linear;
+        @keyframes webLineMove {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
         
-        @keyframes floatAround {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(100px, 50px); }
-            50% { transform: translate(50px, 100px); }
-            75% { transform: translate(-50px, 50px); }
-            100% { transform: translate(0, 0); }
+        @media (max-width: 1200px) {
+            .spider-corner {
+                width: 160px;
+                height: 160px;
+            }
         }
         
         @media (max-width: 992px) {
@@ -856,6 +1007,11 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .spider-corner {
+                width: 130px;
+                height: 130px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -864,7 +1020,8 @@
             }
             
             .logo-icon {
-                font-size: 3rem;
+                width: 140px;
+                height: 140px;
             }
             
             .subtitle {
@@ -890,6 +1047,27 @@
                 max-height: 500px;
                 padding: 20px;
             }
+            
+            .spider-corner {
+                width: 100px;
+                height: 100px;
+                top: 5px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .spider-corner {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .spider-corner.left {
+                left: 5px;
+            }
+            
+            .spider-corner.right {
+                right: 5px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -898,7 +1076,8 @@
             }
             
             .logo-icon {
-                font-size: 2.5rem;
+                width: 120px;
+                height: 120px;
             }
             
             .current-date, .current-time {
@@ -923,27 +1102,59 @@
             .result-title {
                 font-size: 1.5rem;
             }
+            
+            .spider-corner {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .spider-corner {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .spider-corner {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Floating background elements -->
-    <div class="floating-elements">
-        <div class="floating-element" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
-        <div class="floating-element" style="top: 30%; left: 80%; animation-delay: 3s; background-color: var(--accent);"></div>
-        <div class="floating-element" style="top: 70%; left: 10%; animation-delay: 6s; background-color: var(--neon-green);"></div>
-        <div class="floating-element" style="top: 20%; left: 50%; animation-delay: 9s; background-color: var(--secondary);"></div>
-        <div class="floating-element" style="top: 85%; left: 70%; animation-delay: 12s;"></div>
+    <!-- Background Jaring Laba-laba -->
+    <div class="spider-web"></div>
+    
+    <!-- Spider yang bergerak -->
+    <div class="spider" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+    <div class="spider" style="top: 70%; left: 80%; animation-delay: 5s; animation-duration: 30s;"></div>
+    
+    <!-- Garis jaring laba-laba animasi -->
+    <div class="web-line" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="web-line" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="web-line" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="web-line" style="left: 70%; animation-delay: 6s;"></div>
+    <div class="web-line" style="left: 90%; animation-delay: 8s;"></div>
+    
+    <!-- Gambar Spider-Man Gantung di sudut kiri dan kanan - LEBIH BESAR -->
+    <div class="spider-corner left">
+        <img src="https://i.postimg.cc/y8ggxW2Z/spider.jpg" alt="Spider-Man Gantung" style="width:100%; height:100%; object-fit:contain;">
+    </div>
+    
+    <div class="spider-corner right">
+        <img src="https://i.postimg.cc/y8ggxW2Z/spider.jpg" alt="Spider-Man Gantung" style="width:100%; height:100%; object-fit:contain; transform: scaleX(-1);">
     </div>
     
     <div class="container">
         <header>
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-robot"></i>
+                    <img src="https://i.postimg.cc/bJqKCSh6/spider3.jpg" alt="Spider-Man Logo">
                 </div>
-                <h1>TRANSFORMER PREDICTOR</h1>
-                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Generate Prediksi Otomatis Setiap Hari</p>
+                <h1>SPIDER-MATRIX PREDICTOR</h1>
+                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Dengan Jaring Laba-Laba Digital</p>
             </div>
             
             <div class="datetime-container">
@@ -966,7 +1177,7 @@
         </header>
         
         <div class="warning">
-            <i class="fas fa-exclamation-triangle"></i> SISTEM PREDIKSI DIGITAL - Hasil prediksi dihasilkan secara acak oleh algoritma canggih. Gunakan hanya untuk referensi hiburan.
+            <i class="fas fa-exclamation-triangle"></i> SISTEM SPIDER-MATRIX - Hasil prediksi dihasilkan secara acak oleh algoritma canggih. Gunakan hanya untuk referensi hiburan.
         </div>
         
         <div class="mode-selector">
@@ -999,14 +1210,14 @@
             </div>
             
             <button class="submit-btn" id="submitBtn">
-                <i class="fas fa-bolt"></i> GENERATE PREDICTION MATRIX
+                <i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX
             </button>
         </div>
         
         <div class="result-container" id="resultContainer">
             <div class="result-header">
                 <div class="result-title" id="resultTitle">
-                    <i class="fas fa-chart-network"></i> MATRIX PREDICTION RESULT
+                    <i class="fas fa-chart-network"></i> SPIDER-MATRIX RESULT
                 </div>
             </div>
             
@@ -1022,20 +1233,20 @@
                 
                 <div class="action-buttons">
                     <button class="copy-btn" id="copyBtn">
-                        <i class="fas fa-copy"></i> SALIN MATRIX PREDICTION
+                        <i class="fas fa-copy"></i> SALIN SPIDER-MATRIX
                     </button>
                 </div>
             </div>
         </div>
         
         <div class="disclaimer">
-            <p><strong>PERINGATAN SISTEM:</strong> Semua prediksi yang ditampilkan adalah hasil simulasi algoritma acak dengan teknologi digital canggih. Hasil tidak menjamin akurasi dan hanya untuk tujuan hiburan. Pengguna bertanggung jawab penuh atas segala keputusan berdasarkan prediksi ini.</p>
+            <p><strong>PERINGATAN SISTEM SPIDER-MATRIX:</strong> Semua prediksi yang ditampilkan adalah hasil simulasi algoritma acak dengan teknologi digital canggih. Hasil tidak menjamin akurasi dan hanya untuk tujuan hiburan. Pengguna bertanggung jawab penuh atas segala keputusan berdasarkan prediksi ini.</p>
         </div>
         
         <footer>
             <div class="footer-glow"></div>
-            <p>© 2025 TRANSFORMER PREDICTOR v3.7 | Sistem Prediksi Digital Canggih</p>
-            <p>Data prediksi diperbarui otomatis setiap hari oleh AI Matrix System</p>
+            <p>© 2025 SPIDER-MATRIX PREDICTOR v2.0 | Sistem Prediksi Digital dengan Teknologi Jaring Laba-Laba</p>
+            <p>Data prediksi diperbarui otomatis setiap hari oleh Spider-Matrix System</p>
         </footer>
     </div>
 
@@ -1314,8 +1525,11 @@ Selalu Utamakan Prediksi Sendiri
                     // Update status tombol submit
                     updateSubmitButtonStatus();
                     
-                    // Efek suara klik (opsional)
-                    playClickSound();
+                    // Efek visual klik
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
                 });
                 
                 grid.appendChild(button);
@@ -1343,16 +1557,7 @@ Selalu Utamakan Prediksi Sendiri
                 
                 // Update status tombol submit
                 updateSubmitButtonStatus();
-                
-                // Efek suara klik (opsional)
-                playClickSound();
             });
-        }
-        
-        // Fungsi untuk efek suara klik (opsional)
-        function playClickSound() {
-            // Bisa ditambahkan efek suara jika diinginkan
-            // Untuk sekarang hanya efek visual
         }
         
         // Fungsi untuk memperbarui status tombol submit
@@ -1367,7 +1572,7 @@ Selalu Utamakan Prediksi Sendiri
                 if (selectedPasaran) {
                     submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ${selectedPasaran}`;
                 } else {
-                    submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE PREDICTION MATRIX`;
+                    submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX`;
                 }
             } else {
                 // Untuk mode all, tombol selalu aktif
@@ -1383,7 +1588,7 @@ Selalu Utamakan Prediksi Sendiri
             const resultContent = document.getElementById('resultContent');
             
             // Efek loading sebelum menampilkan hasil
-            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--primary);"><i class="fas fa-cog fa-spin fa-2x"></i><br><br>Generating Prediction Matrix...</div>';
+            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--spider-red);"><i class="fas fa-spider fa-spin fa-2x"></i><br><br>Menjalankan Spider-Matrix...</div>';
             resultContainer.classList.add('show');
             
             // Delay untuk efek loading
@@ -1393,11 +1598,11 @@ Selalu Utamakan Prediksi Sendiri
                 
                 if (currentMode === "single") {
                     // Generate prediksi untuk satu pasaran
-                    resultTitle.innerHTML = `<i class="fas fa-crosshairs"></i> MATRIX: ${selectedPasaran}`;
+                    resultTitle.innerHTML = `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
                     prediksiText = generatePredictionForPasaran(selectedPasaran);
                 } else {
                     // Generate prediksi untuk semua pasaran
-                    resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL MATRIX: ALL PASARAN`;
+                    resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL SPIDER-MATRIX: ALL PASARAN`;
                     
                     // Generate untuk semua pasaran
                     semuaPasaran.forEach((pasaran, index) => {
@@ -1439,7 +1644,7 @@ Selalu Utamakan Prediksi Sendiri
                 .then(() => {
                     // Ubah tampilan tombol untuk menunjukkan berhasil disalin
                     const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = `<i class="fas fa-check"></i> MATRIX COPIED!`;
+                    copyBtn.innerHTML = `<i class="fas fa-check"></i> SPIDER-MATRIX COPIED!`;
                     copyBtn.classList.add('copied');
                     
                     // Kembalikan ke tampilan semula setelah 2 detik
@@ -1475,7 +1680,6 @@ Selalu Utamakan Prediksi Sendiri
                 document.getElementById('allModeBtn').classList.remove('active');
                 document.getElementById('pasaranSelector').classList.add('show');
                 updateSubmitButtonStatus();
-                playClickSound();
             });
             
             // Event listener untuk tombol mode all
@@ -1485,7 +1689,6 @@ Selalu Utamakan Prediksi Sendiri
                 document.getElementById('singleModeBtn').classList.remove('active');
                 document.getElementById('pasaranSelector').classList.remove('show');
                 updateSubmitButtonStatus();
-                playClickSound();
             });
             
             // Event listener untuk tombol submit
@@ -1507,13 +1710,13 @@ Selalu Utamakan Prediksi Sendiri
             
             // Tampilkan notifikasi sistem
             setTimeout(() => {
-                console.log(`%cTRANSFORMER PREDICTOR v3.7
-%cSistem Prediksi Digital telah diinisialisasi
+                console.log(`%cSPIDER-MATRIX PREDICTOR v2.0
+%cSistem Prediksi Digital dengan Jaring Laba-Laba telah diinisialisasi
 Mode: ${currentMode.toUpperCase()}
 Tanggal: ${getTodayDate()}
 Prediksi akan diperbarui otomatis setiap hari pukul 00:00`, 
-                'color: #00f3ff; font-size: 16px; font-weight: bold;',
-                'color: #88ccff; font-size: 14px;');
+                'color: #e62429; font-size: 16px; font-weight: bold;',
+                'color: #88aaff; font-size: 14px;');
             }, 1000);
         }
         
