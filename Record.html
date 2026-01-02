@@ -14,7 +14,6 @@
             --cyber-dark: #12121a;
             --cyber-gray: #1a1a26;
             --cyber-light: #2a2a3a;
-            --matrix-green: #0aff0a;
         }
         
         * {
@@ -32,49 +31,6 @@
             position: relative;
         }
         
-        /* Latar belakang partikel */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        /* Scanline effect */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 243, 255, 0.03) 50%
-            );
-            background-size: 100% 4px;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-        
-        /* Grid pattern */
-        .grid-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            opacity: 0.1;
-        }
-        
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -83,18 +39,12 @@
             z-index: 1;
         }
         
-        /* Header dengan efek glitch */
         .header {
             text-align: center;
             padding: 40px 20px;
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
-        }
-        
-        .glitch-container {
-            position: relative;
-            display: inline-block;
         }
         
         .glitch {
@@ -111,47 +61,6 @@
                 0 0 30px var(--neon-blue);
         }
         
-        .glitch::before,
-        .glitch::after {
-            content: 'NEON RECORDER';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .glitch::before {
-            color: var(--neon-pink);
-            animation: glitch-1 2s infinite linear alternate-reverse;
-            z-index: -1;
-        }
-        
-        .glitch::after {
-            color: var(--neon-green);
-            animation: glitch-2 3s infinite linear alternate-reverse;
-            z-index: -2;
-        }
-        
-        @keyframes glitch-1 {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-        
-        @keyframes glitch-2 {
-            0% { transform: translate(0); }
-            10% { transform: translate(-2px, 2px); }
-            30% { transform: translate(-2px, -2px); }
-            50% { transform: translate(2px, 2px); }
-            70% { transform: translate(2px, -2px); }
-            90% { transform: translate(-2px, 0); }
-            100% { transform: translate(0); }
-        }
-        
         .subtitle {
             font-family: 'Orbitron', monospace;
             font-size: 1.2rem;
@@ -159,26 +68,8 @@
             margin-top: 10px;
             letter-spacing: 2px;
             position: relative;
-            display: inline-block;
         }
         
-        .subtitle::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-            animation: scanline 3s linear infinite;
-        }
-        
-        @keyframes scanline {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        /* Main dashboard */
         .dashboard {
             display: grid;
             grid-template-columns: 1fr 400px;
@@ -192,7 +83,6 @@
             }
         }
         
-        /* Panel kiri - Preview dan kontrol */
         .main-panel {
             background: rgba(18, 18, 26, 0.8);
             border-radius: 20px;
@@ -206,26 +96,6 @@
             overflow: hidden;
         }
         
-        .main-panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                var(--neon-pink), 
-                var(--neon-blue), 
-                var(--neon-green));
-            animation: rgb-border 3s linear infinite;
-        }
-        
-        @keyframes rgb-border {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-        
-        /* Video preview */
         .preview-container {
             position: relative;
             border-radius: 15px;
@@ -273,23 +143,6 @@
             color: var(--cyber-light);
             margin-bottom: 20px;
             position: relative;
-        }
-        
-        .preview-icon::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse-ring 2s infinite;
-        }
-        
-        @keyframes pulse-ring {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
         }
         
         .status-display {
@@ -345,7 +198,6 @@
             border: 1px solid rgba(0, 243, 255, 0.3);
         }
         
-        /* Kontrol tombol */
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -375,48 +227,22 @@
                 -5px -5px 10px rgba(255, 255, 255, 0.05);
         }
         
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.5s;
-        }
-        
-        .control-btn:hover::before {
-            left: 100%;
-        }
-        
-        .control-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.4),
-                0 0 20px var(--btn-glow);
-        }
-        
         .btn-start {
-            --btn-glow: var(--neon-green);
             border: 1px solid var(--neon-green);
             color: var(--neon-green);
         }
         
         .btn-stop {
-            --btn-glow: var(--neon-pink);
             border: 1px solid var(--neon-pink);
             color: var(--neon-pink);
         }
         
         .btn-download {
-            --btn-glow: var(--neon-blue);
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
         }
         
         .btn-clear {
-            --btn-glow: var(--neon-purple);
             border: 1px solid var(--neon-purple);
             color: var(--neon-purple);
         }
@@ -428,11 +254,10 @@
             box-shadow: none !important;
         }
         
-        .control-btn:disabled::before {
-            display: none;
+        .control-btn:hover {
+            transform: translateY(-5px);
         }
         
-        /* Quality selector */
         .quality-selector {
             background: rgba(26, 26, 38, 0.8);
             padding: 25px;
@@ -519,7 +344,6 @@
             line-height: 1.4;
         }
         
-        /* Panel kanan - Library */
         .library-panel {
             background: rgba(18, 18, 26, 0.8);
             border-radius: 20px;
@@ -531,25 +355,6 @@
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
-        }
-        
-        .library-panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                var(--neon-purple), 
-                var(--neon-pink), 
-                var(--neon-blue));
-            animation: rgb-border-reverse 3s linear infinite;
-        }
-        
-        @keyframes rgb-border-reverse {
-            0% { filter: hue-rotate(360deg); }
-            100% { filter: hue-rotate(0deg); }
         }
         
         .library-header {
@@ -594,7 +399,6 @@
             color: #aaa;
         }
         
-        /* Daftar rekaman */
         .recordings-list {
             display: flex;
             flex-direction: column;
@@ -602,20 +406,6 @@
             max-height: 500px;
             overflow-y: auto;
             padding-right: 10px;
-        }
-        
-        .recordings-list::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .recordings-list::-webkit-scrollbar-track {
-            background: rgba(42, 42, 58, 0.5);
-            border-radius: 4px;
-        }
-        
-        .recordings-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--neon-purple), var(--neon-pink));
-            border-radius: 4px;
         }
         
         .recording-item {
@@ -633,16 +423,6 @@
             transform: translateX(5px);
             border-color: var(--neon-purple);
             box-shadow: 0 0 20px rgba(157, 78, 221, 0.2);
-        }
-        
-        .recording-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(var(--neon-purple), var(--neon-pink));
         }
         
         .recording-header {
@@ -747,7 +527,6 @@
             color: var(--cyber-light);
         }
         
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -771,19 +550,6 @@
             border: 1px solid rgba(0, 243, 255, 0.3);
             box-shadow: 0 0 50px rgba(0, 243, 255, 0.3);
             position: relative;
-        }
-        
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, 
-                transparent 60%, 
-                rgba(0, 243, 255, 0.05) 100%);
-            pointer-events: none;
         }
         
         .modal-header {
@@ -834,7 +600,10 @@
             background: #000;
         }
         
-        /* Responsif */
+        .hidden {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .glitch {
                 font-size: 2.5rem;
@@ -869,222 +638,15 @@
                 height: 300px;
             }
         }
-        
-        /* Hologram effect */
-        .hologram {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 200px;
-            background: linear-gradient(45deg, 
-                rgba(0, 243, 255, 0.1), 
-                rgba(255, 0, 255, 0.1));
-            border-radius: 15px;
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            padding: 20px;
-            display: none;
-        }
-        
-        .hologram.active {
-            display: block;
-            animation: hologram-appear 0.5s ease;
-        }
-        
-        @keyframes hologram-appear {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
-        /* Loading spinner */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(0, 243, 255, 0.3);
-            border-top-color: var(--neon-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background: rgba(26, 26, 38, 0.9);
-            border-left: 4px solid var(--neon-green);
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            gap: 15px;
-            max-width: 400px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .notification.error {
-            border-left-color: var(--neon-pink);
-        }
-        
-        .notification.show {
-            display: flex;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Confirm Modal */
-        .confirm-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1001;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .confirm-content {
-            background: linear-gradient(135deg, #12121a, #1a1a26);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid rgba(255, 0, 255, 0.3);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
-            text-align: center;
-        }
-        
-        .confirm-title {
-            color: var(--neon-pink);
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .confirm-message {
-            color: #ccc;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-        
-        .confirm-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .confirm-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Exo 2', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 100px;
-        }
-        
-        .confirm-delete {
-            background: var(--neon-pink);
-            color: white;
-        }
-        
-        .confirm-delete:hover {
-            background: #d500d5;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
-        }
-        
-        .confirm-cancel {
-            background: rgba(42, 42, 58, 0.8);
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-        }
-        
-        .confirm-cancel:hover {
-            background: rgba(0, 243, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Background particles -->
-    <div id="particles"></div>
-    <div class="scanlines"></div>
-    <div class="grid-pattern"></div>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="fas fa-info-circle" style="color: var(--neon-green);"></i>
-        <div>
-            <div id="notificationTitle" style="font-weight: 600;">Info</div>
-            <div id="notificationMessage" style="font-size: 0.9rem; color: #aaa;">Message</div>
-        </div>
-    </div>
-    
-    <!-- Confirmation Modal -->
-    <div class="confirm-modal" id="confirmModal">
-        <div class="confirm-content">
-            <div class="confirm-title">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>CONFIRM DELETE</span>
-            </div>
-            <div class="confirm-message" id="confirmMessage">
-                Are you sure you want to delete this recording?
-            </div>
-            <div class="confirm-buttons">
-                <button class="confirm-btn confirm-delete" id="confirmDeleteBtn">
-                    <i class="fas fa-trash"></i> DELETE
-                </button>
-                <button class="confirm-btn confirm-cancel" id="confirmCancelBtn">
-                    <i class="fas fa-times"></i> CANCEL
-                </button>
-            </div>
-        </div>
-    </div>
-    
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <div class="glitch-container">
-                <h1 class="glitch">NEON RECORDER</h1>
-            </div>
+            <h1 class="glitch">NEON RECORDER</h1>
             <p class="subtitle">DIGITAL SCREEN TRANSFORMER</p>
         </header>
         
@@ -1213,130 +775,7 @@
         </div>
     </div>
 
-    <!-- Hologram terminal -->
-    <div class="hologram" id="hologram">
-        <div style="color: var(--neon-green); font-family: 'Orbitron', monospace; margin-bottom: 15px;">
-            <i class="fas fa-terminal"></i> SYSTEM LOG
-        </div>
-        <div id="hologramLog" style="font-family: monospace; font-size: 0.9rem; line-height: 1.4; color: #aaa;">
-            > System initialized...<br>
-            > Core modules loaded...<br>
-            > Ready for recording protocol
-        </div>
-    </div>
-
     <script>
-        // Notification system
-        function showNotification(title, message, isError = false) {
-            const notification = document.getElementById('notification');
-            const notificationTitle = document.getElementById('notificationTitle');
-            const notificationMessage = document.getElementById('notificationMessage');
-            
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
-            
-            if (isError) {
-                notification.classList.add('error');
-                notification.querySelector('i').style.color = 'var(--neon-pink)';
-            } else {
-                notification.classList.remove('error');
-                notification.querySelector('i').style.color = 'var(--neon-green)';
-            }
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Particle background
-        function initParticles() {
-            const canvas = document.createElement('canvas');
-            const particlesContainer = document.getElementById('particles');
-            
-            // Clear existing canvas
-            particlesContainer.innerHTML = '';
-            particlesContainer.appendChild(canvas);
-            
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const particles = [];
-            const particleCount = 100;
-            
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2 + 0.5;
-                    this.speedX = Math.random() * 0.5 - 0.25;
-                    this.speedY = Math.random() * 0.5 - 0.25;
-                    this.color = `rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, 255, ${Math.random() * 0.5 + 0.1})`;
-                }
-                
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    
-                    if (this.x > canvas.width) this.x = 0;
-                    else if (this.x < 0) this.x = canvas.width;
-                    if (this.y > canvas.height) this.y = 0;
-                    else if (this.y < 0) this.y = canvas.height;
-                }
-                
-                draw() {
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Create connections
-                    for (let i = 0; i < particles.length; i++) {
-                        const dx = this.x - particles[i].x;
-                        const dy = this.y - particles[i].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance < 100) {
-                            ctx.strokeStyle = `rgba(0, 243, 255, ${0.1 * (1 - distance/100)})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.beginPath();
-                            ctx.moveTo(this.x, this.y);
-                            ctx.lineTo(particles[i].x, particles[i].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-            
-            // Create particles
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-            
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(particle => {
-                    particle.update();
-                    particle.draw();
-                });
-                requestAnimationFrame(animate);
-            }
-            
-            animate();
-            
-            // Resize handler
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-        }
-        
-        // Initialize particles
-        initParticles();
-        
         // Elemen DOM
         const startBtn = document.getElementById('startBtn');
         const stopBtn = document.getElementById('stopBtn');
@@ -1356,12 +795,6 @@
         const modalVideo = document.getElementById('modalVideo');
         const modalTitle = document.getElementById('modalTitle');
         const closeModal = document.getElementById('closeModal');
-        const hologram = document.getElementById('hologram');
-        const hologramLog = document.getElementById('hologramLog');
-        const confirmModal = document.getElementById('confirmModal');
-        const confirmMessage = document.getElementById('confirmMessage');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
         
         // Variabel untuk perekaman
         let mediaRecorder;
@@ -1370,8 +803,6 @@
         let startTime;
         let timerInterval;
         let selectedQuality = 'high';
-        let currentRecordingId = null;
-        let recordingToDeleteId = null;
         
         // Konfigurasi kualitas video
         const qualitySettings = {
@@ -1379,15 +810,9 @@
                 video: {
                     width: { ideal: 1920 },
                     height: { ideal: 1080 },
-                    frameRate: { ideal: 30 },
-                    bitrate: 8000000
+                    frameRate: { ideal: 30 }
                 },
-                audio: { 
-                    sampleRate: 48000,
-                    channelCount: 2,
-                    bitrate: 128000
-                },
-                mimeType: 'video/webm;codecs=vp9,opus',
+                audio: true,
                 label: 'NEON HD',
                 resolution: '1080p'
             },
@@ -1395,15 +820,9 @@
                 video: {
                     width: { ideal: 1280 },
                     height: { ideal: 720 },
-                    frameRate: { ideal: 30 },
-                    bitrate: 4000000
+                    frameRate: { ideal: 30 }
                 },
-                audio: { 
-                    sampleRate: 44100,
-                    channelCount: 2,
-                    bitrate: 96000
-                },
-                mimeType: 'video/webm;codecs=vp9,opus',
+                audio: true,
                 label: 'CYBER HD',
                 resolution: '720p'
             },
@@ -1411,23 +830,17 @@
                 video: {
                     width: { ideal: 854 },
                     height: { ideal: 480 },
-                    frameRate: { ideal: 15 },
-                    bitrate: 1500000
+                    frameRate: { ideal: 15 }
                 },
-                audio: { 
-                    sampleRate: 22050,
-                    channelCount: 2,
-                    bitrate: 64000
-                },
-                mimeType: 'video/webm;codecs=vp8,opus',
+                audio: true,
                 label: 'DATA STREAM',
                 resolution: '480p'
             }
         };
         
         // Konfigurasi IndexedDB
-        const DB_NAME = 'NeonRecorderDB';
-        const DB_VERSION = 3;
+        const DB_NAME = 'ScreenRecorderDB';
+        const DB_VERSION = 1;
         const STORE_NAME = 'recordings';
         let db;
         
@@ -1473,18 +886,6 @@
             timer.classList.add('hidden');
         }
         
-        // Tampilkan hologram
-        function showHologram(message) {
-            const timestamp = new Date().toLocaleTimeString();
-            hologramLog.innerHTML += `> [${timestamp}] ${message}<br>`;
-            hologramLog.scrollTop = hologramLog.scrollHeight;
-            
-            hologram.classList.add('active');
-            setTimeout(() => {
-                hologram.classList.remove('active');
-            }, 5000);
-        }
-        
         // Pilih kualitas video
         function setupQualitySelector() {
             const qualityOptions = qualitySelector.querySelectorAll('.quality-option');
@@ -1494,12 +895,11 @@
                     option.classList.add('selected');
                     selectedQuality = option.dataset.quality;
                     statusText.textContent = `Quality: ${qualitySettings[selectedQuality].label}`;
-                    showHologram(`Quality matrix set to ${qualitySettings[selectedQuality].label}`);
                 });
             });
         }
         
-        // Inisialisasi IndexedDB dengan blob storage yang benar
+        // Inisialisasi IndexedDB
         function initDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -1507,13 +907,6 @@
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     db = request.result;
-                    
-                    // Tambahkan event listener untuk error database
-                    db.onerror = (event) => {
-                        console.error('Database error:', event.target.error);
-                        showNotification('Database Error', 'Failed to access storage', true);
-                    };
-                    
                     loadRecordings();
                     updateStorageStats();
                     resolve();
@@ -1527,13 +920,12 @@
                             autoIncrement: true 
                         });
                         store.createIndex('timestamp', 'timestamp', { unique: false });
-                        store.createIndex('quality', 'quality', { unique: false });
                     }
                 };
             });
         }
         
-        // Simpan rekaman ke IndexedDB dengan cara yang benar
+        // Simpan rekaman ke IndexedDB
         async function saveRecording(blob, duration, quality) {
             return new Promise((resolve, reject) => {
                 if (!db) {
@@ -1544,9 +936,8 @@
                 const transaction = db.transaction([STORE_NAME], 'readwrite');
                 const store = transaction.objectStore(STORE_NAME);
                 
-                // Simpan blob secara langsung (bisa disimpan di IndexedDB)
                 const recording = {
-                    blob: blob, // Blob bisa disimpan langsung di IndexedDB
+                    blob: blob,
                     timestamp: Date.now(),
                     duration: duration,
                     quality: quality,
@@ -1560,93 +951,59 @@
                 const request = store.add(recording);
                 
                 request.onsuccess = (event) => {
-                    currentRecordingId = event.target.result;
-                    console.log('Recording saved with ID:', currentRecordingId);
                     loadRecordings();
                     updateStorageStats();
                     resolve(event.target.result);
                 };
                 
-                request.onerror = (event) => {
-                    console.error('Error saving recording:', event.target.error);
-                    reject(event.target.error);
-                };
-                
-                // Handle transaction completion
-                transaction.oncomplete = () => {
-                    console.log('Recording transaction completed');
-                };
-                
-                transaction.onerror = (event) => {
-                    console.error('Transaction error:', event.target.error);
-                };
+                request.onerror = () => reject(request.error);
             });
         }
         
         // Muat semua rekaman dari IndexedDB
         function loadRecordings() {
-            if (!db) {
-                console.log('Database not available');
-                return;
-            }
+            if (!db) return;
             
-            try {
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const index = store.index('timestamp');
-                const request = index.openCursor(null, 'prev');
-                
-                request.onsuccess = (event) => {
-                    const cursor = event.target.result;
-                    if (cursor) {
-                        addRecordingToUI(cursor.value, cursor.key);
-                        cursor.continue();
-                    } else {
-                        if (recordingsList.children.length === 0) {
-                            recordingsList.innerHTML = `
-                                <div class="empty-library">
-                                    <i class="fas fa-database"></i>
-                                    <h4 style="color: var(--neon-purple); margin-bottom: 10px;">DATA LIBRARY EMPTY</h4>
-                                    <p>No recordings found. Start recording to populate library.</p>
-                                </div>
-                            `;
-                        }
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const index = store.index('timestamp');
+            const request = index.openCursor(null, 'prev');
+            
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    addRecordingToUI(cursor.value, cursor.key);
+                    cursor.continue();
+                } else {
+                    if (recordingsList.children.length === 0) {
+                        recordingsList.innerHTML = `
+                            <div class="empty-library">
+                                <i class="fas fa-database"></i>
+                                <h4 style="color: var(--neon-purple); margin-bottom: 10px;">DATA LIBRARY EMPTY</h4>
+                                <p>No recordings found. Start recording to populate library.</p>
+                            </div>
+                        `;
                     }
-                };
-                
-                request.onerror = (event) => {
-                    console.error('Error loading recordings:', event.target.error);
-                    showNotification('Load Error', 'Failed to load recordings', true);
-                };
-            } catch (error) {
-                console.error('Error in loadRecordings:', error);
-            }
+                }
+            };
         }
         
         // Update statistik penyimpanan
         async function updateStorageStats() {
             if (!db) return;
             
-            try {
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.getAll();
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.getAll();
+            
+            request.onsuccess = () => {
+                const recordings = request.result;
+                const count = recordings.length;
+                const totalBytes = recordings.reduce((sum, recording) => sum + (recording.size || 0), 0);
                 
-                request.onsuccess = () => {
-                    const recordings = request.result;
-                    const count = recordings.length;
-                    const totalBytes = recordings.reduce((sum, recording) => sum + (recording.size || 0), 0);
-                    
-                    recordingsCount.textContent = count;
-                    totalSize.textContent = formatFileSize(totalBytes);
-                };
-                
-                request.onerror = (event) => {
-                    console.error('Error getting recordings:', event.target.error);
-                };
-            } catch (error) {
-                console.error('Error in updateStorageStats:', error);
-            }
+                recordingsCount.textContent = count;
+                totalSize.textContent = formatFileSize(totalBytes);
+            };
         }
         
         // Tambahkan rekaman ke UI
@@ -1698,27 +1055,15 @@
             
             playBtn.addEventListener('click', () => playRecording(id));
             downloadBtn.addEventListener('click', () => downloadRecording(id));
-            deleteBtn.addEventListener('click', () => showDeleteConfirmation(id, recording.name));
+            deleteBtn.addEventListener('click', () => deleteRecording(id));
             
             recordingsList.prepend(recordingItem);
         }
         
-        // Show delete confirmation modal
-        function showDeleteConfirmation(id, name) {
-            recordingToDeleteId = id;
-            confirmMessage.textContent = `Are you sure you want to delete recording "${name}"? This action cannot be undone.`;
-            confirmModal.style.display = 'flex';
-        }
-        
-        // Putar rekaman dari penyimpanan - DIPERBAIKI
+        // Putar rekaman dari penyimpanan
         async function playRecording(id) {
             try {
-                console.log('Playing recording with ID:', id);
-                
-                if (!db) {
-                    showNotification('Error', 'Database not available', true);
-                    return;
-                }
+                if (!db) return;
                 
                 const transaction = db.transaction([STORE_NAME], 'readonly');
                 const store = transaction.objectStore(STORE_NAME);
@@ -1726,73 +1071,27 @@
                 
                 request.onsuccess = (event) => {
                     const recording = event.target.result;
-                    if (!recording) {
-                        showNotification('Error', 'Recording not found', true);
-                        return;
-                    }
-                    
-                    console.log('Recording found:', recording);
-                    
-                    // Pastikan blob ada
-                    if (!recording.blob) {
-                        showNotification('Error', 'Video data corrupted', true);
-                        return;
-                    }
-                    
-                    try {
-                        // Buat URL dari blob
+                    if (recording && recording.blob) {
                         const url = URL.createObjectURL(recording.blob);
-                        console.log('Created blob URL:', url);
-                        
-                        // Set video source
                         modalVideo.src = url;
-                        modalVideo.type = recording.mimeType || 'video/webm';
                         modalTitle.textContent = `${recording.name} - ${recording.resolution}`;
                         videoModal.style.display = 'flex';
                         
-                        // Event handler untuk error video
-                        modalVideo.onerror = () => {
-                            console.error('Video playback error');
-                            showNotification('Playback Error', 'Cannot play video file', true);
-                        };
-                        
                         modalVideo.onloadeddata = () => {
-                            console.log('Video loaded successfully');
-                            modalVideo.play().catch(e => {
-                                console.log("Autoplay prevented:", e);
-                                // Tidak masalah, user bisa klik play manual
-                            });
+                            modalVideo.play();
                         };
-                        
-                        showHologram(`Playing ${recording.name}`);
-                        showNotification('Playing', `Now playing: ${recording.name}`);
-                        
-                    } catch (error) {
-                        console.error('Error creating blob URL:', error);
-                        showNotification('Error', 'Failed to play video', true);
                     }
                 };
-                
-                request.onerror = (event) => {
-                    console.error('Error getting recording:', event.target.error);
-                    showNotification('Error', 'Failed to load recording', true);
-                };
-                
             } catch (error) {
-                console.error('Error in playRecording:', error);
-                showNotification('Error', 'Failed to play recording', true);
+                console.error('Error playing recording:', error);
+                alert('Failed to play recording');
             }
         }
         
-        // Unduh rekaman dari penyimpanan - DIPERBAIKI
+        // Unduh rekaman dari penyimpanan
         async function downloadRecording(id) {
             try {
-                console.log('Downloading recording with ID:', id);
-                
-                if (!db) {
-                    showNotification('Error', 'Database not available', true);
-                    return;
-                }
+                if (!db) return;
                 
                 const transaction = db.transaction([STORE_NAME], 'readonly');
                 const store = transaction.objectStore(STORE_NAME);
@@ -1800,173 +1099,102 @@
                 
                 request.onsuccess = (event) => {
                     const recording = event.target.result;
-                    if (!recording) {
-                        showNotification('Error', 'Recording not found', true);
-                        return;
-                    }
-                    
-                    if (!recording.blob) {
-                        showNotification('Error', 'Video data corrupted', true);
-                        return;
-                    }
-                    
-                    try {
+                    if (recording && recording.blob) {
                         const filename = `${recording.name}-${recording.resolution}.webm`;
                         
-                        // Buat URL dari blob
-                        const url = URL.createObjectURL(recording.blob);
-                        
-                        // Buat elemen download
                         const a = document.createElement('a');
-                        a.href = url;
+                        a.href = URL.createObjectURL(recording.blob);
                         a.download = filename;
-                        a.style.display = 'none';
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
                         
-                        // Bersihkan URL setelah download
-                        setTimeout(() => {
-                            URL.revokeObjectURL(url);
-                            console.log('Blob URL revoked');
-                        }, 100);
+                        setTimeout(() => URL.revokeObjectURL(a.href), 100);
                         
                         statusText.textContent = `Downloading: ${filename}`;
-                        showHologram(`Download initiated: ${filename}`);
-                        showNotification('Download Started', `Downloading ${filename}`);
                         
                         setTimeout(() => {
-                            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                                statusText.innerHTML = '<div style="display: flex; align-items: center; gap: 10px;"><div class="status-dot recording"></div> RECORDING ACTIVE</div>';
-                            } else {
-                                statusText.textContent = "Download complete";
-                            }
+                            statusText.textContent = "Download complete";
                         }, 2000);
-                        
-                    } catch (error) {
-                        console.error('Error downloading recording:', error);
-                        showNotification('Error', 'Failed to download video', true);
                     }
                 };
-                
-                request.onerror = (event) => {
-                    console.error('Error getting recording for download:', event.target.error);
-                    showNotification('Error', 'Failed to load recording', true);
-                };
-                
             } catch (error) {
-                console.error('Error in downloadRecording:', error);
-                showNotification('Error', 'Failed to download recording', true);
+                console.error('Error downloading recording:', error);
+                alert('Failed to download recording');
             }
         }
         
-        // Hapus rekaman dari penyimpanan - DIPERBAIKI
+        // Hapus rekaman dari penyimpanan
         async function deleteRecording(id) {
-            try {
-                if (!db) {
-                    showNotification('Error', 'Database not available', true);
-                    return;
-                }
-                
-                const transaction = db.transaction([STORE_NAME], 'readwrite');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.delete(Number(id));
-                
-                request.onsuccess = () => {
-                    console.log('Recording deleted:', id);
+            if (confirm('Are you sure you want to delete this recording?')) {
+                try {
+                    if (!db) return;
                     
-                    // Hapus elemen dari UI
-                    const recordingElement = document.querySelector(`.recording-item[data-id="${id}"]`);
-                    if (recordingElement) {
-                        recordingElement.remove();
-                    }
+                    const transaction = db.transaction([STORE_NAME], 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const request = store.delete(Number(id));
                     
-                    // Reload daftar rekaman
-                    loadRecordings();
-                    updateStorageStats();
-                    
-                    statusText.textContent = "Recording deleted";
-                    showHologram("Recording purged from database");
-                    showNotification('Deleted', 'Recording deleted successfully');
-                    
-                    setTimeout(() => {
-                        if (mediaRecorder && mediaRecorder.state === 'recording') {
-                            statusText.innerHTML = '<div style="display: flex; align-items: center; gap: 10px;"><div class="status-dot recording"></div> RECORDING ACTIVE</div>';
-                        } else {
-                            statusText.textContent = "System Online";
+                    request.onsuccess = () => {
+                        // Hapus elemen dari UI
+                        const recordingElement = document.querySelector(`.recording-item[data-id="${id}"]`);
+                        if (recordingElement) {
+                            recordingElement.remove();
                         }
-                    }, 2000);
-                };
-                
-                request.onerror = (event) => {
-                    console.error('Error deleting recording:', event.target.error);
-                    showNotification('Error', 'Failed to delete recording', true);
-                };
-            } catch (error) {
-                console.error('Error in deleteRecording:', error);
-                showNotification('Error', 'Failed to delete recording', true);
+                        
+                        loadRecordings();
+                        updateStorageStats();
+                        
+                        statusText.textContent = "Recording deleted";
+                        
+                        setTimeout(() => {
+                            statusText.textContent = "System Online";
+                        }, 2000);
+                    };
+                } catch (error) {
+                    console.error('Error deleting recording:', error);
+                    alert('Failed to delete recording');
+                }
             }
         }
         
         // Hapus semua rekaman
         function clearAllRecordings() {
-            if (!db) {
-                showNotification('Error', 'Database not available', true);
-                return;
-            }
+            if (!db) return;
             
-            try {
-                const countRequest = db.transaction([STORE_NAME], 'readonly')
-                    .objectStore(STORE_NAME)
-                    .count();
-                    
-                countRequest.onsuccess = () => {
-                    if (countRequest.result === 0) {
-                        showHologram("No recordings to purge");
-                        showNotification('Info', 'No recordings to delete');
-                        return;
-                    }
-                    
-                    if (confirm(`Purge all recordings (${countRequest.result} files)? This action cannot be undone.`)) {
-                        const transaction = db.transaction([STORE_NAME], 'readwrite');
-                        const store = transaction.objectStore(STORE_NAME);
-                        const clearRequest = store.clear();
-                        
-                        clearRequest.onsuccess = () => {
-                            // Kosongkan daftar rekaman
-                            recordingsList.innerHTML = `
-                                <div class="empty-library">
-                                    <i class="fas fa-database"></i>
-                                    <h4 style="color: var(--neon-purple); margin-bottom: 10px;">DATA LIBRARY EMPTY</h4>
-                                    <p>No recordings found. Start recording to populate library.</p>
-                                </div>
-                            `;
-                            
-                            updateStorageStats();
-                            statusText.textContent = "All recordings purged";
-                            showHologram("Database purged - All records deleted");
-                            showNotification('Purged', 'All recordings deleted');
-                            
-                            setTimeout(() => {
-                                statusText.textContent = "System Online";
-                            }, 2000);
-                        };
-                        
-                        clearRequest.onerror = (event) => {
-                            console.error('Error clearing recordings:', event.target.error);
-                            showNotification('Error', 'Failed to delete all recordings', true);
-                        };
-                    }
-                };
+            const countRequest = db.transaction([STORE_NAME], 'readonly')
+                .objectStore(STORE_NAME)
+                .count();
                 
-                countRequest.onerror = (event) => {
-                    console.error('Error counting recordings:', event.target.error);
-                    showNotification('Error', 'Failed to count recordings', true);
-                };
-            } catch (error) {
-                console.error('Error in clearAllRecordings:', error);
-                showNotification('Error', 'Failed to clear recordings', true);
-            }
+            countRequest.onsuccess = () => {
+                if (countRequest.result === 0) {
+                    alert("No recordings to delete.");
+                    return;
+                }
+                
+                if (confirm(`Delete all ${countRequest.result} recordings? This action cannot be undone.`)) {
+                    const transaction = db.transaction([STORE_NAME], 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const clearRequest = store.clear();
+                    
+                    clearRequest.onsuccess = () => {
+                        // Kosongkan daftar rekaman
+                        recordingsList.innerHTML = `
+                            <div class="empty-library">
+                                <i class="fas fa-database"></i>
+                                <h4 style="color: var(--neon-purple); margin-bottom: 10px;">DATA LIBRARY EMPTY</h4>
+                                <p>No recordings found. Start recording to populate library.</p>
+                            </div>
+                        `;
+                        
+                        updateStorageStats();
+                        statusText.textContent = "All recordings deleted";
+                        
+                        setTimeout(() => {
+                            statusText.textContent = "System Online";
+                        }, 2000);
+                    };
+                }
+            };
         }
         
         // Mulai perekaman
@@ -1976,8 +1204,6 @@
                 statusText.textContent = `Initializing ${quality.label}...`;
                 statusDot.className = 'status-dot';
                 startBtn.disabled = true;
-                showHologram(`Starting ${quality.label} recording protocol`);
-                showNotification('Recording', 'Starting recording...');
                 
                 // Minta izin untuk merekam layar dengan kualitas yang dipilih
                 stream = await navigator.mediaDevices.getDisplayMedia({
@@ -1996,25 +1222,8 @@
                 preview.classList.remove('hidden');
                 previewContainer.classList.add('recording');
                 
-                // Cek dukungan MIME type
-                let mimeType = quality.mimeType;
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    mimeType = 'video/webm;codecs=vp8,opus';
-                    if (!MediaRecorder.isTypeSupported(mimeType)) {
-                        mimeType = 'video/webm';
-                    }
-                }
-                
-                console.log('Using MIME type:', mimeType);
-                
-                // Buat MediaRecorder dengan kualitas yang dipilih
-                const options = {
-                    mimeType: mimeType,
-                    videoBitsPerSecond: quality.video.bitrate,
-                    audioBitsPerSecond: quality.audio.bitrate
-                };
-                
-                mediaRecorder = new MediaRecorder(stream, options);
+                // Buat MediaRecorder
+                mediaRecorder = new MediaRecorder(stream);
                 
                 // Reset recordedChunks
                 recordedChunks = [];
@@ -2023,7 +1232,6 @@
                 mediaRecorder.ondataavailable = (event) => {
                     if (event.data.size > 0) {
                         recordedChunks.push(event.data);
-                        console.log('Data chunk received:', event.data.size, 'bytes');
                     }
                 };
                 
@@ -2031,31 +1239,18 @@
                 mediaRecorder.onstop = async () => {
                     const duration = Date.now() - startTime;
                     
-                    if (recordedChunks.length === 0) {
-                        console.error('No data chunks recorded');
-                        statusText.textContent = "Recording failed - No data";
-                        showNotification('Error', 'Recording failed - No data captured', true);
-                        return;
-                    }
-                    
                     // Buat blob dari data yang direkam
                     const blob = new Blob(recordedChunks, { 
-                        type: mediaRecorder.mimeType 
+                        type: 'video/webm' 
                     });
-                    
-                    console.log('Recording blob created:', blob.size, 'bytes', blob.type);
                     
                     // Simpan ke IndexedDB
                     try {
                         await saveRecording(blob, duration, selectedQuality);
                         statusText.textContent = "Recording saved to library";
-                        showHologram(`Recording saved - ${formatFileSize(blob.size)} - ${formatTime(duration)}`);
-                        showNotification('Saved', 'Recording saved successfully');
                     } catch (error) {
                         console.error("Failed to save recording:", error);
                         statusText.textContent = "Recording ready for download";
-                        showHologram("Warning: Recording saved locally only");
-                        showNotification('Warning', 'Recording saved locally only');
                     }
                     
                     // Buat URL untuk preview
@@ -2068,7 +1263,7 @@
                     downloadBtn.disabled = false;
                     downloadBtn.onclick = () => {
                         const date = new Date();
-                        const filename = `neon-recording-${date.toISOString().slice(0, 10)}-${selectedQuality}.webm`;
+                        const filename = `recording-${date.toISOString().slice(0, 10)}-${selectedQuality}.webm`;
                         
                         const a = document.createElement('a');
                         a.href = url;
@@ -2076,8 +1271,6 @@
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
-                        showHologram(`Downloading ${filename}`);
-                        showNotification('Download', `Downloading ${filename}`);
                     };
                     
                     // Reset recordedChunks untuk rekaman berikutnya
@@ -2089,27 +1282,17 @@
                     stopBtn.disabled = true;
                 };
                 
-                // Handle recording errors
-                mediaRecorder.onerror = (event) => {
-                    console.error('MediaRecorder error:', event.error);
-                    showNotification('Recording Error', 'Recording failed', true);
-                    stopRecording();
-                };
-                
-                // Mulai perekaman (kirim data setiap 1 detik)
-                mediaRecorder.start(1000);
+                // Mulai perekaman
+                mediaRecorder.start();
                 startTimer();
                 
                 // Update UI
                 stopBtn.disabled = false;
                 statusDot.className = 'status-dot recording';
                 statusText.innerHTML = '<div style="display: flex; align-items: center; gap: 10px;"><div class="status-dot recording"></div> RECORDING ACTIVE</div>';
-                showHologram("Recording in progress...");
-                showNotification('Recording', 'Recording in progress...');
                 
                 // Tangani ketika pengguna menghentikan berbagi layar
                 stream.getVideoTracks()[0].onended = () => {
-                    console.log('Screen sharing ended by user');
                     stopRecording();
                 };
                 
@@ -2117,12 +1300,8 @@
                 console.error("Error starting recording:", error);
                 if (error.name === 'NotAllowedError') {
                     statusText.textContent = "Access denied. Please grant screen sharing permission.";
-                    showHologram("ERROR: Screen sharing permission denied");
-                    showNotification('Permission Denied', 'Screen sharing permission required', true);
                 } else {
                     statusText.textContent = "Recording failed: " + error.message;
-                    showHologram(`ERROR: ${error.message}`);
-                    showNotification('Error', `Recording failed: ${error.message}`, true);
                 }
                 startBtn.disabled = false;
                 statusDot.className = 'status-dot';
@@ -2144,8 +1323,6 @@
                 startBtn.disabled = false;
                 stopBtn.disabled = true;
                 statusText.textContent = "Saving recording...";
-                showHologram("Terminating recording...");
-                showNotification('Saving', 'Saving recording...');
             }
         }
         
@@ -2162,20 +1339,6 @@
             modalVideo.pause();
         });
         
-        // Confirm modal buttons
-        confirmDeleteBtn.addEventListener('click', () => {
-            if (recordingToDeleteId) {
-                deleteRecording(recordingToDeleteId);
-            }
-            confirmModal.style.display = 'none';
-            recordingToDeleteId = null;
-        });
-        
-        confirmCancelBtn.addEventListener('click', () => {
-            confirmModal.style.display = 'none';
-            recordingToDeleteId = null;
-        });
-        
         // Tutup modal saat klik di luar
         videoModal.addEventListener('click', (e) => {
             if (e.target === videoModal) {
@@ -2188,13 +1351,6 @@
             }
         });
         
-        confirmModal.addEventListener('click', (e) => {
-            if (e.target === confirmModal) {
-                confirmModal.style.display = 'none';
-                recordingToDeleteId = null;
-            }
-        });
-        
         // Inisialisasi saat halaman dimuat
         window.addEventListener('load', async () => {
             // Setup pemilih kualitas
@@ -2203,16 +1359,12 @@
             // Deteksi dukungan browser
             if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
                 statusText.textContent = "ERROR: Browser not supported";
-                showHologram("CRITICAL: Browser lacks screen recording API");
-                showNotification('Browser Error', 'Screen recording not supported', true);
                 startBtn.disabled = true;
                 return;
             }
             
             if (!MediaRecorder) {
                 statusText.textContent = "ERROR: MediaRecorder API not supported";
-                showHologram("CRITICAL: MediaRecorder API unavailable");
-                showNotification('Browser Error', 'MediaRecorder API not supported', true);
                 startBtn.disabled = true;
                 return;
             }
@@ -2221,41 +1373,9 @@
             try {
                 await initDB();
                 statusText.textContent = "System Online";
-                showHologram("NeonRecorder v2.0 initialized");
-                showNotification('Ready', 'System initialized and ready');
             } catch (error) {
                 console.error("Database init failed:", error);
                 statusText.textContent = "System Online (Local storage offline)";
-                showHologram("WARNING: Local storage offline - recordings temporary");
-                showNotification('Warning', 'Local storage not available', true);
-            }
-        });
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Ctrl+Alt+R untuk mulai rekaman
-            if (e.ctrlKey && e.altKey && e.key === 'r') {
-                if (!startBtn.disabled) startRecording();
-            }
-            // Ctrl+Alt+S untuk stop rekaman
-            if (e.ctrlKey && e.altKey && e.key === 's') {
-                if (!stopBtn.disabled) stopRecording();
-            }
-            // Escape untuk tutup modal
-            if (e.key === 'Escape') {
-                videoModal.style.display = 'none';
-                confirmModal.style.display = 'none';
-            }
-        });
-        
-        // Clean up URLs saat halaman ditutup
-        window.addEventListener('beforeunload', () => {
-            // Revoke semua blob URLs yang mungkin masih aktif
-            if (modalVideo.src && modalVideo.src.startsWith('blob:')) {
-                URL.revokeObjectURL(modalVideo.src);
-            }
-            if (preview.src && preview.src.startsWith('blob:')) {
-                URL.revokeObjectURL(preview.src);
             }
         });
     </script>
