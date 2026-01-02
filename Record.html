@@ -25,7 +25,7 @@
         .container {
             background-color: rgba(255, 255, 255, 0.95);
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
@@ -195,6 +195,104 @@
             line-height: 1.5;
         }
         
+        /* Bagian rekaman tersimpan */
+        .saved-recordings {
+            margin-top: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #9b59b6;
+        }
+        
+        .saved-recordings h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .recordings-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .recording-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .recording-info {
+            flex-grow: 1;
+        }
+        
+        .recording-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .recording-date {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        .recording-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        
+        .play-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .download-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .empty-recordings {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+        }
+        
+        .empty-recordings i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        
         footer {
             text-align: center;
             padding: 20px;
@@ -248,6 +346,10 @@
             h1 {
                 font-size: 2rem;
             }
+            
+            .recordings-list {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -289,6 +391,14 @@
                 </button>
             </div>
             
+            <!-- Bagian Rekaman Tersimpan -->
+            <div class="saved-recordings">
+                <h3><i class="fas fa-save"></i> Rekaman Tersimpan</h3>
+                <div id="recordingsList" class="recordings-list">
+                    <!-- Daftar rekaman akan dimuat di sini -->
+                </div>
+            </div>
+            
             <div class="instructions">
                 <h3><i class="fas fa-info-circle"></i> Cara Menggunakan:</h3>
                 <ul>
@@ -296,14 +406,15 @@
                     <li>Browser akan meminta izin untuk merekam layar - pilih layar atau jendela yang ingin direkam</li>
                     <li>Gunakan tombol "Hentikan Rekaman" untuk menghentikan perekaman</li>
                     <li>Setelah selesai, gunakan tombol "Unduh Video" untuk menyimpan rekaman ke komputer Anda</li>
-                    <li>Rekaman akan disimpan dalam format MP4 yang kompatibel dengan kebanyakan pemutar video</li>
+                    <li>Rekaman akan secara otomatis disimpan di browser dan tidak hilang saat refresh</li>
+                    <li>Rekaman disimpan dalam format WebM yang kompatibel dengan kebanyakan pemutar video</li>
                 </ul>
             </div>
         </div>
         
         <footer>
-            <p>Screen Video Recorder untuk Chrome | Dibuat dengan HTML5, MediaRecorder API, dan JavaScript</p>
-            <p>Catatan: Aplikasi ini hanya berfungsi di browser modern yang mendukung MediaRecorder API (Chrome, Edge, Opera)</p>
+            <p>Screen Video Recorder untuk Chrome | Dibuat dengan HTML5, MediaRecorder API, dan IndexedDB</p>
+            <p>Catatan: Rekaman disimpan di browser lokal dan dapat dihapus jika cache browser dibersihkan</p>
         </footer>
     </div>
 
@@ -316,6 +427,7 @@
         const placeholder = document.getElementById('placeholder');
         const statusText = document.getElementById('statusText');
         const timer = document.getElementById('timer');
+        const recordingsList = document.getElementById('recordingsList');
         
         // Variabel untuk perekaman
         let mediaRecorder;
@@ -323,6 +435,13 @@
         let stream;
         let startTime;
         let timerInterval;
+        let currentRecordingId = null;
+        
+        // Konfigurasi IndexedDB
+        const DB_NAME = 'ScreenRecorderDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'recordings';
+        let db;
         
         // Format waktu
         function formatTime(ms) {
@@ -353,6 +472,185 @@
             timer.classList.add('hidden');
         }
         
+        // Inisialisasi IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    loadRecordings();
+                    resolve();
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        const store = db.createObjectStore(STORE_NAME, { 
+                            keyPath: 'id',
+                            autoIncrement: true 
+                        });
+                        store.createIndex('timestamp', 'timestamp', { unique: false });
+                    }
+                };
+            });
+        }
+        
+        // Simpan rekaman ke IndexedDB
+        async function saveRecording(blob, duration) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject('Database not initialized');
+                    return;
+                }
+                
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                
+                const recording = {
+                    blob: blob,
+                    timestamp: Date.now(),
+                    duration: duration,
+                    name: `Rekaman ${new Date().toLocaleString()}`
+                };
+                
+                const request = store.add(recording);
+                
+                request.onsuccess = () => {
+                    currentRecordingId = request.result;
+                    loadRecordings();
+                    resolve(request.result);
+                };
+                
+                request.onerror = () => reject(request.error);
+            });
+        }
+        
+        // Muat semua rekaman dari IndexedDB
+        function loadRecordings() {
+            if (!db) return;
+            
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const index = store.index('timestamp');
+            const request = index.openCursor(null, 'prev'); // Urutkan dari yang terbaru
+            
+            recordingsList.innerHTML = '';
+            
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    addRecordingToUI(cursor.value, cursor.key);
+                    cursor.continue();
+                } else {
+                    // Tampilkan pesan jika tidak ada rekaman
+                    if (recordingsList.children.length === 0) {
+                        recordingsList.innerHTML = `
+                            <div class="empty-recordings">
+                                <i class="fas fa-film"></i>
+                                <p>Belum ada rekaman yang disimpan</p>
+                            </div>
+                        `;
+                    }
+                }
+            };
+        }
+        
+        // Tambahkan rekaman ke UI
+        function addRecordingToUI(recording, id) {
+            const date = new Date(recording.timestamp);
+            const formattedDate = date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const recordingItem = document.createElement('div');
+            recordingItem.className = 'recording-item';
+            recordingItem.dataset.id = id;
+            
+            recordingItem.innerHTML = `
+                <div class="recording-info">
+                    <div class="recording-title">${recording.name}</div>
+                    <div class="recording-date">${formattedDate}</div>
+                    <div class="recording-date">Durasi: ${formatTime(recording.duration)}</div>
+                </div>
+                <div class="recording-actions">
+                    <button class="action-btn play-btn" onclick="playRecording(${id})">
+                        <i class="fas fa-play"></i> Putar
+                    </button>
+                    <button class="action-btn download-btn" onclick="downloadRecording(${id})">
+                        <i class="fas fa-download"></i> Unduh
+                    </button>
+                    <button class="action-btn delete-btn" onclick="deleteRecording(${id})">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </div>
+            `;
+            
+            recordingsList.prepend(recordingItem);
+        }
+        
+        // Putar rekaman dari penyimpanan
+        window.playRecording = function(id) {
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.get(Number(id));
+            
+            request.onsuccess = () => {
+                const recording = request.result;
+                if (recording && recording.blob) {
+                    const url = URL.createObjectURL(recording.blob);
+                    preview.src = url;
+                    preview.controls = true;
+                    placeholder.classList.add('hidden');
+                    preview.classList.remove('hidden');
+                    statusText.textContent = "Memutar rekaman";
+                }
+            };
+        };
+        
+        // Unduh rekaman dari penyimpanan
+        window.downloadRecording = function(id) {
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.get(Number(id));
+            
+            request.onsuccess = () => {
+                const recording = request.result;
+                if (recording && recording.blob) {
+                    const date = new Date(recording.timestamp);
+                    const filename = `rekaman-layar-${date.toISOString().slice(0, 10)}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}.webm`;
+                    
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(recording.blob);
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    
+                    setTimeout(() => URL.revokeObjectURL(a.href), 100);
+                }
+            };
+        };
+        
+        // Hapus rekaman dari penyimpanan
+        window.deleteRecording = function(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus rekaman ini?')) {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.delete(Number(id));
+                
+                request.onsuccess = () => {
+                    loadRecordings();
+                    statusText.textContent = "Rekaman berhasil dihapus";
+                };
+            }
+        };
+        
         // Mulai perekaman
         async function startRecording() {
             try {
@@ -363,11 +661,11 @@
                 stream = await navigator.mediaDevices.getDisplayMedia({
                     video: {
                         mediaSource: 'screen',
-                        width: { ideal: 1920 },
-                        height: { ideal: 1080 },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
                         frameRate: { ideal: 30 }
                     },
-                    audio: true  // Juga merekam audio
+                    audio: true
                 });
                 
                 // Tampilkan preview
@@ -376,9 +674,11 @@
                 preview.classList.remove('hidden');
                 
                 // Buat MediaRecorder
-                mediaRecorder = new MediaRecorder(stream, {
-                    mimeType: 'video/webm;codecs=vp9,opus'
-                });
+                const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') 
+                    ? 'video/webm;codecs=vp9,opus' 
+                    : 'video/webm';
+                
+                mediaRecorder = new MediaRecorder(stream, { mimeType });
                 
                 // Tangani data rekaman
                 mediaRecorder.ondataavailable = (event) => {
@@ -388,34 +688,48 @@
                 };
                 
                 // Ketika perekaman berhenti
-                mediaRecorder.onstop = () => {
-                    // Buat blob dari data yang direkam
-                    const blob = new Blob(recordedChunks, {
-                        type: 'video/webm'
-                    });
+                mediaRecorder.onstop = async () => {
+                    const duration = Date.now() - startTime;
                     
-                    // Buat URL untuk preview dan download
+                    // Buat blob dari data yang direkam
+                    const blob = new Blob(recordedChunks, { type: mimeType });
+                    
+                    // Simpan ke IndexedDB
+                    try {
+                        await saveRecording(blob, duration);
+                        statusText.textContent = "Rekaman berhasil disimpan";
+                    } catch (error) {
+                        console.error("Gagal menyimpan rekaman:", error);
+                        statusText.textContent = "Rekaman siap diunduh (gagal disimpan)";
+                    }
+                    
+                    // Buat URL untuk preview
                     const url = URL.createObjectURL(blob);
                     preview.srcObject = null;
                     preview.src = url;
                     preview.controls = true;
                     
-                    // Siapkan tombol download
+                    // Reset recordedChunks untuk rekaman berikutnya
+                    recordedChunks = [];
+                    
+                    // Aktifkan tombol download
                     downloadBtn.onclick = () => {
+                        const date = new Date();
+                        const filename = `rekaman-layar-${date.toISOString().slice(0, 10)}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}.webm`;
+                        
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = `rekaman-layar-${new Date().toISOString().slice(0, 10)}.webm`;
+                        a.download = filename;
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
                     };
                     
                     downloadBtn.disabled = false;
-                    statusText.textContent = "Rekaman siap diunduh";
                 };
                 
                 // Mulai perekaman
-                mediaRecorder.start();
+                mediaRecorder.start(1000); // Kirim data setiap 1 detik
                 startTimer();
                 
                 // Update UI
@@ -441,12 +755,14 @@
                 stopTimer();
                 
                 // Hentikan semua track
-                stream.getTracks().forEach(track => track.stop());
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
                 
                 // Update UI
                 startBtn.disabled = false;
                 stopBtn.disabled = true;
-                statusText.textContent = "Rekaman dihentikan";
+                statusText.textContent = "Menyimpan rekaman...";
             }
         }
         
@@ -454,18 +770,30 @@
         startBtn.addEventListener('click', startRecording);
         stopBtn.addEventListener('click', stopRecording);
         
-        // Deteksi dukungan browser
-        window.addEventListener('load', () => {
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('load', async () => {
+            // Deteksi dukungan browser
             if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
                 alert("Browser Anda tidak mendukung perekaman layar. Silakan gunakan Chrome versi terbaru.");
                 startBtn.disabled = true;
                 statusText.textContent = "Browser tidak mendukung perekaman layar";
+                return;
             }
             
             if (!MediaRecorder) {
                 alert("Browser Anda tidak mendukung MediaRecorder API. Silakan gunakan Chrome versi terbaru.");
                 startBtn.disabled = true;
                 statusText.textContent = "Browser tidak mendukung MediaRecorder API";
+                return;
+            }
+            
+            // Inisialisasi IndexedDB
+            try {
+                await initDB();
+                statusText.textContent = "Siap merekam";
+            } catch (error) {
+                console.error("Gagal menginisialisasi database:", error);
+                statusText.textContent = "Siap merekam (penyimpanan lokal tidak tersedia)";
             }
         });
     </script>
