@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Video Recorder untuk Chrome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-start {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-start:hover {
+            background-color: #219653;
+            transform: translateY(-3px);
+        }
+        
+        .btn-stop {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-stop:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+        }
+        
+        .btn-download {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn i {
+            font-size: 1.3rem;
+        }
+        
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .video-preview {
+            background-color: #2c3e50;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+        
+        #preview {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #000;
+        }
+        
+        .placeholder {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #7f8c8d;
+        }
+        
+        .status {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #timer {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        
+        .instructions {
+            background-color: #f1f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .pulse {
+            width: 15px;
+            height: 15px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .video-preview {
+                height: 300px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-video"></i> Screen Video Recorder</h1>
+            <p class="subtitle">Rekam layar komputer Anda langsung dari browser Chrome</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="video-container">
+                <div class="video-preview">
+                    <div class="placeholder" id="placeholder">
+                        <i class="fas fa-desktop"></i>
+                        <p>Pratinjau rekaman akan muncul di sini</p>
+                    </div>
+                    <video id="preview" class="hidden" controls></video>
+                </div>
+                
+                <div class="status">
+                    <div class="status-text">
+                        Status: <span id="statusText">Siap merekam</span>
+                    </div>
+                    <div id="timer" class="hidden">00:00:00</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="startBtn" class="btn btn-start">
+                    <i class="fas fa-circle"></i> Mulai Rekaman
+                </button>
+                <button id="stopBtn" class="btn btn-stop" disabled>
+                    <i class="fas fa-stop"></i> Hentikan Rekaman
+                </button>
+                <button id="downloadBtn" class="btn btn-download" disabled>
+                    <i class="fas fa-download"></i> Unduh Video
+                </button>
+            </div>
+            
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Cara Menggunakan:</h3>
+                <ul>
+                    <li>Klik tombol "Mulai Rekaman" untuk memulai merekam layar Anda</li>
+                    <li>Browser akan meminta izin untuk merekam layar - pilih layar atau jendela yang ingin direkam</li>
+                    <li>Gunakan tombol "Hentikan Rekaman" untuk menghentikan perekaman</li>
+                    <li>Setelah selesai, gunakan tombol "Unduh Video" untuk menyimpan rekaman ke komputer Anda</li>
+                    <li>Rekaman akan disimpan dalam format MP4 yang kompatibel dengan kebanyakan pemutar video</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Screen Video Recorder untuk Chrome | Dibuat dengan HTML5, MediaRecorder API, dan JavaScript</p>
+            <p>Catatan: Aplikasi ini hanya berfungsi di browser modern yang mendukung MediaRecorder API (Chrome, Edge, Opera)</p>
+        </footer>
+    </div>
+
+    <script>
+        // Elemen DOM
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const preview = document.getElementById('preview');
+        const placeholder = document.getElementById('placeholder');
+        const statusText = document.getElementById('statusText');
+        const timer = document.getElementById('timer');
+        
+        // Variabel untuk perekaman
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+        let startTime;
+        let timerInterval;
+        
+        // Format waktu
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update timer
+        function updateTimer() {
+            const elapsed = Date.now() - startTime;
+            timer.textContent = formatTime(elapsed);
+        }
+        
+        // Mulai timer
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+            timer.classList.remove('hidden');
+        }
+        
+        // Hentikan timer
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timer.classList.add('hidden');
+        }
+        
+        // Mulai perekaman
+        async function startRecording() {
+            try {
+                statusText.textContent = "Meminta izin akses layar...";
+                startBtn.disabled = true;
+                
+                // Minta izin untuk merekam layar
+                stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        mediaSource: 'screen',
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        frameRate: { ideal: 30 }
+                    },
+                    audio: true  // Juga merekam audio
+                });
+                
+                // Tampilkan preview
+                preview.srcObject = stream;
+                placeholder.classList.add('hidden');
+                preview.classList.remove('hidden');
+                
+                // Buat MediaRecorder
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp9,opus'
+                });
+                
+                // Tangani data rekaman
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                // Ketika perekaman berhenti
+                mediaRecorder.onstop = () => {
+                    // Buat blob dari data yang direkam
+                    const blob = new Blob(recordedChunks, {
+                        type: 'video/webm'
+                    });
+                    
+                    // Buat URL untuk preview dan download
+                    const url = URL.createObjectURL(blob);
+                    preview.srcObject = null;
+                    preview.src = url;
+                    preview.controls = true;
+                    
+                    // Siapkan tombol download
+                    downloadBtn.onclick = () => {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `rekaman-layar-${new Date().toISOString().slice(0, 10)}.webm`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+                    
+                    downloadBtn.disabled = false;
+                    statusText.textContent = "Rekaman siap diunduh";
+                };
+                
+                // Mulai perekaman
+                mediaRecorder.start();
+                startTimer();
+                
+                // Update UI
+                stopBtn.disabled = false;
+                statusText.innerHTML = '<div class="recording-indicator"><div class="pulse"></div> Sedang merekam...</div>';
+                
+                // Tangani ketika pengguna menghentikan berbagi layar
+                stream.getVideoTracks()[0].onended = () => {
+                    stopRecording();
+                };
+                
+            } catch (error) {
+                console.error("Error saat memulai perekaman:", error);
+                statusText.textContent = "Gagal memulai perekaman: " + error.message;
+                startBtn.disabled = false;
+            }
+        }
+        
+        // Hentikan perekaman
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                stopTimer();
+                
+                // Hentikan semua track
+                stream.getTracks().forEach(track => track.stop());
+                
+                // Update UI
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                statusText.textContent = "Rekaman dihentikan";
+            }
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startRecording);
+        stopBtn.addEventListener('click', stopRecording);
+        
+        // Deteksi dukungan browser
+        window.addEventListener('load', () => {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                alert("Browser Anda tidak mendukung perekaman layar. Silakan gunakan Chrome versi terbaru.");
+                startBtn.disabled = true;
+                statusText.textContent = "Browser tidak mendukung perekaman layar";
+            }
+            
+            if (!MediaRecorder) {
+                alert("Browser Anda tidak mendukung MediaRecorder API. Silakan gunakan Chrome versi terbaru.");
+                startBtn.disabled = true;
+                statusText.textContent = "Browser tidak mendukung MediaRecorder API";
+            }
+        });
+    </script>
+</body>
+</html>
