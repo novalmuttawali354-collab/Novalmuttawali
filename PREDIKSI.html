@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* [Semua kode CSS sebelumnya tetap sama] */
+        /* ... (CSS code remains exactly the same as in the previous version) ... */
         :root {
             --spider-red: #e62429;
             --spider-blue: #2a7fff;
@@ -14,10 +16,14 @@
             --spider-dark: #0c0c1a;
             --spider-accent: #ffcc00;
             --spider-dark-red: #8b0000;
+            --spider-gold: #ffcc00;
+            --spider-purple: #8a2be2;
             --panel: rgba(12, 12, 26, 0.95);
             --glow-red: 0 0 15px var(--spider-red), 0 0 30px rgba(230, 36, 41, 0.4);
             --glow-blue: 0 0 15px var(--spider-blue), 0 0 30px rgba(42, 127, 255, 0.4);
             --glow-yellow: 0 0 15px var(--spider-accent), 0 0 30px rgba(255, 204, 0, 0.4);
+            --glow-gold: 0 0 15px var(--spider-gold), 0 0 30px rgba(255, 204, 0, 0.4);
+            --glow-purple: 0 0 15px var(--spider-purple), 0 0 30px rgba(138, 43, 226, 0.4);
         }
         
         * {
@@ -202,19 +208,20 @@
             z-index: 3;
         }
         
+        /* LOGO BARU YANG LEBIH CANTAK */
         .logo-icon {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
             border-radius: 50%;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(230, 36, 41, 0.5);
-            animation: logoFloat 6s ease-in-out infinite, logoShine 3s infinite alternate;
+            box-shadow: 0 0 30px rgba(230, 36, 41, 0.5), 0 0 60px rgba(42, 127, 255, 0.3), 0 0 90px rgba(255, 204, 0, 0.2);
+            animation: logoFloat 6s ease-in-out infinite, logoShine 3s infinite alternate, logoPulse 4s ease-in-out infinite;
             transform-origin: center;
             border: 4px solid transparent;
-            background: linear-gradient(45deg, var(--spider-red), var(--spider-blue), var(--spider-accent)) border-box;
+            background: linear-gradient(45deg, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple)) border-box;
         }
         
         .logo-icon img {
@@ -222,37 +229,47 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            padding: 5px;
+            padding: 8px;
             background-color: var(--spider-dark);
             box-sizing: border-box;
+            transition: transform 0.5s;
+        }
+        
+        .logo-icon:hover img {
+            transform: scale(1.05) rotate(10deg);
         }
         
         @keyframes logoFloat {
             0%, 100% { 
                 transform: translateY(0) rotate(0deg);
-                box-shadow: 0 0 30px rgba(230, 36, 41, 0.5);
+                box-shadow: 0 0 30px rgba(230, 36, 41, 0.5), 0 0 60px rgba(42, 127, 255, 0.3);
             }
             50% { 
-                transform: translateY(-15px) rotate(5deg);
-                box-shadow: 0 15px 40px rgba(230, 36, 41, 0.7);
+                transform: translateY(-20px) rotate(5deg);
+                box-shadow: 0 15px 50px rgba(230, 36, 41, 0.7), 0 20px 80px rgba(42, 127, 255, 0.4);
             }
         }
         
         @keyframes logoShine {
             0% { 
-                filter: drop-shadow(0 0 10px rgba(230, 36, 41, 0.5));
+                filter: drop-shadow(0 0 10px rgba(230, 36, 41, 0.5)) drop-shadow(0 0 20px rgba(42, 127, 255, 0.3));
                 border-color: rgba(230, 36, 41, 0.5);
             }
             100% { 
-                filter: drop-shadow(0 0 20px rgba(230, 36, 41, 0.9)) drop-shadow(0 0 30px rgba(255, 204, 0, 0.5));
+                filter: drop-shadow(0 0 20px rgba(230, 36, 41, 0.9)) drop-shadow(0 0 30px rgba(255, 204, 0, 0.5)) drop-shadow(0 0 40px rgba(138, 43, 226, 0.4));
                 border-color: rgba(255, 204, 0, 0.8);
             }
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
         
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -270,7 +287,7 @@
             left: 10%;
             width: 80%;
             height: 3px;
-            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), transparent);
+            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple), transparent);
             border-radius: 50%;
             filter: blur(1px);
         }
@@ -479,7 +496,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Mode Selector */
+        /* Mode Selector - KEMBALI ke 2 mode saja */
         .mode-selector {
             background-color: var(--panel);
             border-radius: 15px;
@@ -505,7 +522,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
         }
         
         .mode-selector::after {
@@ -537,6 +554,7 @@
             gap: 25px;
             margin-bottom: 35px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .mode-btn {
@@ -557,6 +575,7 @@
             overflow: hidden;
             z-index: 1;
             max-width: 400px;
+            min-width: 250px;
         }
         
         .mode-btn::before {
@@ -586,7 +605,6 @@
         
         .mode-btn.active {
             transform: translateY(-8px);
-            box-shadow: var(--glow-red);
         }
         
         .mode-btn.single.active {
@@ -706,6 +724,18 @@
             overflow: hidden;
         }
         
+        .pasaran-item.hoki {
+            background-color: rgba(50, 30, 10, 0.5);
+            border: 1px solid rgba(255, 204, 0, 0.5);
+            color: #ffcc66;
+        }
+        
+        .pasaran-item.hoki.selected {
+            background-color: rgba(255, 204, 0, 0.4);
+            color: var(--spider-dark);
+            font-weight: bold;
+        }
+        
         .pasaran-item::before {
             content: '';
             position: absolute;
@@ -718,6 +748,10 @@
             transition: transform 0.5s;
         }
         
+        .pasaran-item.hoki::before {
+            background: linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.1), transparent);
+        }
+        
         .pasaran-item:hover::before {
             transform: translateX(100%);
         }
@@ -727,6 +761,12 @@
             border-color: var(--spider-red);
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 5px 15px rgba(230, 36, 41, 0.2);
+        }
+        
+        .pasaran-item.hoki:hover {
+            background-color: rgba(255, 204, 0, 0.3);
+            border-color: var(--spider-accent);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
         }
         
         .pasaran-item.selected {
@@ -827,7 +867,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
         }
         
         .result-container.show {
@@ -1018,7 +1058,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent));
+            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
         }
         
         .jadwal-header {
@@ -1304,8 +1344,8 @@
             }
             
             .logo-icon {
-                width: 140px;
-                height: 140px;
+                width: 160px;
+                height: 160px;
             }
             
             .subtitle {
@@ -1366,6 +1406,11 @@
             .spider-corner.right {
                 right: 5px;
             }
+            
+            .logo-icon {
+                width: 140px;
+                height: 140px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1390,6 +1435,7 @@
             .mode-btn {
                 padding: 20px;
                 font-size: 1.1rem;
+                min-width: 200px;
             }
             
             .submit-btn {
@@ -1453,8 +1499,9 @@
     <div class="container">
         <header>
             <div class="logo">
+                <!-- LOGO BARU YANG LEBIH CANTAK -->
                 <div class="logo-icon">
-                    <img src="https://i.postimg.cc/tJdmB7nw/spider.jpg" alt="Spider-Man Logo">
+                    <img src="https://i.ibb.co/7yP6gn2/spider-logo-new.png" alt="Spider-Matrix Logo Baru">
                 </div>
                 <h1>SPIDER-MATRIX PREDICTOR</h1>
                 <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Dengan Jaring Laba-Laba Digital</p>
@@ -1502,6 +1549,7 @@
                         <i class="fas fa-sliders-h"></i> PILIH MODE GENERATOR
                     </div>
                     
+                    <!-- KEMBALI ke 2 mode saja -->
                     <div class="mode-buttons">
                         <button class="mode-btn single active" id="singleModeBtn">
                             <i class="fas fa-crosshairs"></i> SINGLE PASARAN
@@ -1511,6 +1559,7 @@
                         </button>
                     </div>
                     
+                    <!-- Pasaran Selector (hanya untuk mode Single) -->
                     <div class="pasaran-selector show" id="pasaranSelector">
                         <div class="selector-subtitle">
                             <i class="fas fa-list-alt"></i> PILIH PASARAN TARGET
@@ -1615,6 +1664,7 @@
 
     <script>
         // Daftar lengkap semua pasaran dengan data yang lebih akurat
+        // TAMBAHKAN HOKI DRAW di dalam daftar pasaran
         const semuaPasaran = [
             "TOTO MACAU PAGI",
             "HUAHIN 0100",
@@ -1668,10 +1718,11 @@
             "TOTO MACAU MALAM III",
             "TOTO MALI 2330",
             "JAKARTA 2330",
-            "KINGKONG 4D MALAM"
+            "KINGKONG 4D MALAM",
+            "HOKI DRAW"  // TAMBAHKAN HOKI DRAW sebagai pasaran biasa
         ];
         
-        // Data jadwal pasaran lengkap
+        // Data jadwal pasaran lengkap - TAMBAHKAN HOKI DRAW
         const jadwalPasaran = [
             { code: "KMEC", pasaran: "TOTO MACAU PAGI", jamTutup: "00:00", jamResult: "00:15" },
             { code: "TM", pasaran: "HUAHIN 0100", jamTutup: "00:45", jamResult: "01:00" },
@@ -1725,7 +1776,8 @@
             { code: "TM", pasaran: "TOTO MACAU MALAM III", jamTutup: "23:00", jamResult: "23:15" },
             { code: "WQOI", pasaran: "TOTO MALI 2330", jamTutup: "23:15", jamResult: "23:30" },
             { code: "JKEC", pasaran: "JAKARTA 2330", jamTutup: "23:25", jamResult: "23:40" },
-            { code: "KK4D", pasaran: "KINGKONG 4D MALAM", jamTutup: "23:30", jamResult: "23:45" }
+            { code: "KK4D", pasaran: "KINGKONG 4D MALAM", jamTutup: "23:30", jamResult: "23:45" },
+            { code: "HOKI", pasaran: "HOKI DRAW", jamTutup: "00:00", jamResult: "00:00" } // TAMBAHKAN HOKI DRAW
         ];
         
         // Daftar shio
@@ -1876,19 +1928,36 @@
                 return cachedPredictions[cacheKey];
             }
             
-            // Generate data prediksi acak
-            const bbfs = generateRandomNumber(7);
-            const amAiCk = generateRandomNumber(5);
-            const prediksi4D = generate4D(4);
-            const prediksi3D = generate3D(4);
-            const prediksi2D = generate2D(10);
+            // Untuk HOKI DRAW, kita akan gunakan jumlah angka yang sedikit lebih banyak
+            // tapi tetap dalam format yang sama dengan pasaran lainnya
+            let bbfs, amAiCk, prediksi4D, prediksi3D, prediksi2D, colokBebas2D, twin, shio;
+            
+            if (pasaranName === "HOKI DRAW") {
+                // Format yang sama, tapi jumlah angka sedikit lebih banyak untuk HOKI DRAW
+                bbfs = generateRandomNumber(8); // 8 digit untuk HOKI DRAW
+                amAiCk = generateRandomNumber(6); // 6 digit untuk HOKI DRAW
+                prediksi4D = generate4D(6); // 6 angka 4D
+                prediksi3D = generate3D(6); // 6 angka 3D
+                prediksi2D = generate2D(12); // 12 angka 2D
+                colokBebas2D = generate2D(5); // 5 kombinasi 2D
+                twin = generateTwin(4); // 4 angka twin
+                shio = getRandomShio(4); // 4 shio
+            } else {
+                // Format standar untuk pasaran biasa
+                bbfs = generateRandomNumber(7);
+                amAiCk = generateRandomNumber(5);
+                prediksi4D = generate4D(4);
+                prediksi3D = generate3D(4);
+                prediksi2D = generate2D(10);
+                colokBebas2D = generate2D(3);
+                twin = generateTwin(3);
+                shio = getRandomShio(3);
+            }
+            
             const colokBebas1 = Math.floor(Math.random() * 10);
             const colokBebas2 = Math.floor(Math.random() * 10);
-            const colokBebas2D = generate2D(3);
-            const twin = generateTwin(3);
-            const shio = getRandomShio(3);
             
-            // Format sesuai permintaan
+            // Format sesuai permintaan - SAMA untuk semua pasaran termasuk HOKI DRAW
             const prediction = `Prediksi ${pasaranName}
 Hari ${getTodayDate()}
 BBFS : ${bbfs}
@@ -1927,10 +1996,13 @@ Selalu Utamakan Prediksi Sendiri
                 option.textContent = pasaran;
                 dropdown.appendChild(option);
                 
-                // Tambahkan ke grid
+                // Tambahkan ke grid dengan class khusus untuk HOKI DRAW
                 const button = document.createElement('button');
-                button.className = 'pasaran-item';
-                button.innerHTML = `<i class="fas fa-bullseye"></i> ${pasaran}`;
+                const isHoki = pasaran === "HOKI DRAW";
+                button.className = isHoki ? 'pasaran-item hoki' : 'pasaran-item';
+                button.innerHTML = isHoki 
+                    ? `<i class="fas fa-crown"></i> ${pasaran}`
+                    : `<i class="fas fa-bullseye"></i> ${pasaran}`;
                 button.dataset.pasaran = pasaran;
                 
                 button.addEventListener('click', function() {
@@ -1996,7 +2068,11 @@ Selalu Utamakan Prediksi Sendiri
                 
                 // Update teks tombol
                 if (selectedPasaran) {
-                    submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ${selectedPasaran}`;
+                    if (selectedPasaran === "HOKI DRAW") {
+                        submitBtn.innerHTML = `<i class="fas fa-crown"></i> GENERATE HOKI DRAW`;
+                    } else {
+                        submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ${selectedPasaran}`;
+                    }
                 } else {
                     submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX`;
                 }
@@ -2024,7 +2100,9 @@ Selalu Utamakan Prediksi Sendiri
                 
                 if (currentMode === "single") {
                     // Generate prediksi untuk satu pasaran
-                    resultTitle.innerHTML = `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
+                    resultTitle.innerHTML = selectedPasaran === "HOKI DRAW" 
+                        ? `<i class="fas fa-crown"></i> SPIDER-MATRIX: HOKI DRAW`
+                        : `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
                     prediksiText = generatePredictionForPasaran(selectedPasaran);
                 } else {
                     // Generate prediksi untuk semua pasaran
@@ -2133,9 +2211,15 @@ Selalu Utamakan Prediksi Sendiri
                 const row = document.createElement('tr');
                 const timeStatus = getTimeStatus(item.jamTutup, item.jamResult);
                 
+                // Tampilkan khusus untuk HOKI DRAW
+                const isHoki = item.pasaran === "HOKI DRAW";
+                const pasaranCell = isHoki 
+                    ? `<span style="color: #ffcc00; font-weight: bold;">${item.pasaran}</span>`
+                    : item.pasaran;
+                
                 row.innerHTML = `
                     <td>${item.code}</td>
-                    <td>${item.pasaran}</td>
+                    <td>${pasaranCell}</td>
                     <td>${item.jamTutup} <span class="time-status ${timeStatus.status}">${timeStatus.text}</span></td>
                     <td>${item.jamResult}</td>
                 `;
@@ -2254,7 +2338,7 @@ Selalu Utamakan Prediksi Sendiri
 %cSistem Prediksi Digital dengan Jaring Laba-Laba telah diinisialisasi
 Mode: ${currentMode.toUpperCase()}
 Tanggal: ${getTodayDate()}
-Total Pasaran: ${semuaPasaran.length}
+Total Pasaran: ${semuaPasaran.length} (termasuk HOKI DRAW)
 Prediksi akan diperbarui otomatis setiap hari pukul 00:00`, 
                 'color: #e62429; font-size: 16px; font-weight: bold;',
                 'color: #88aaff; font-size: 14px;');
