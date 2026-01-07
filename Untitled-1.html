@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TRANSFORMER LEADERBOARD</title>
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <!-- PWA Settings for Mobile -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LC AUDIT">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://picsum.photos/seed/icon192/192/192">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS SAMA SEPERTI SEBELUMNYA (SAYA RINGKAS DISINI UNTUK TAMPILAN) --- */
+        :root {
+            --primary: #00f3ff; --secondary: #ff00ff; --accent: #00ff9d; --warning: #ffaa00;
+            --dark: #0a0a0a; --darker: #000000; --light: #ffffff; --metal: #c0c0c0;
+            --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32;
+            --cyan-glow: rgba(0, 243, 255, 0.8); --magenta-glow: rgba(255, 0, 255, 0.8);
+            --green-glow: rgba(0, 255, 157, 0.8); --amber-glow: rgba(255, 170, 0, 0.8);
+            --cyber-gradient: linear-gradient(45deg, #00f3ff, #ff00ff, #00ff9d);
+            --card-bg: rgba(26, 26, 26, 0.85); --card-border: rgba(0, 243, 255, 0.3);
+            --error-bg: rgba(255, 50, 50, 0.2); --error-color: #ff5555;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background: var(--darker); color: var(--light); min-height: 100vh; padding: 20px;
+            position: relative; overflow-x: hidden;
+            background-image: linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Background Animations */
+        .cyber-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%),
+                        linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%);
+            background-size: 100px 100px; z-index: -3; animation: gridPulse 10s ease-in-out infinite; pointer-events: none;
+        }
+        @keyframes gridPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+        .scan-lines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 95%, rgba(0, 243, 255, 0.1) 100%);
+            background-size: 100% 4px; z-index: -2; pointer-events: none; animation: scan 8s linear infinite;
+        }
+        @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
+
+        .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; padding-bottom: 80px; }
+        
+        header {
+            text-align: center; margin-bottom: 30px; padding: 20px;
+            background: rgba(10, 10, 10, 0.8); border: 1px solid var(--card-border);
+            border-radius: 20px; box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        h1 {
+            font-size: 2rem; margin-bottom: 10px; background: var(--cyber-gradient);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            text-transform: uppercase; letter-spacing: 1px; font-weight: 900;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(20px); border-radius: 15px;
+            border: 1px solid var(--card-border); margin-bottom: 20px; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card-header {
+            background: rgba(0, 0, 0, 0.7); padding: 20px; text-align: center;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .card-header h2 { color: var(--primary); font-size: 1.4rem; text-transform: uppercase; }
+
+        .card-body { padding: 20px; }
+
+        /* Form & Inputs */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--primary); font-size: 0.9rem; font-weight: 600; }
+        input {
+            width: 100%; padding: 15px; border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 10px; font-size: 16px; background: rgba(0, 0, 0, 0.6);
+            color: var(--light); outline: none; transition: all 0.3s;
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn {
+            flex: 1; background: rgba(0, 243, 255, 0.1); color: var(--primary); border: 1px solid var(--primary);
+            padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn i { font-size: 1.2rem; }
+        #refreshData { color: var(--secondary); border-color: var(--secondary); background: rgba(255, 0, 255, 0.1); }
+
+        /* Tabs */
+        .tab-navigation { display: flex; background: rgba(0, 0, 0, 0.5); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .tab-button {
+            flex: 1; padding: 15px 5px; background: transparent; color: rgba(255, 255, 255, 0.6);
+            border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+        }
+        .tab-button.active { background: rgba(0, 243, 255, 0.2); color: var(--primary); border-bottom: 2px solid var(--primary); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--accent); margin: 5px 0; }
+        .stat-label { font-size: 0.7rem; color: var(--metal); text-transform: uppercase; }
+
+        /* Table */
+        .leaderboard, .column-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        .leaderboard th, .column-table th { background: rgba(0,0,0,0.8); color: var(--primary); padding: 10px; text-align: left; font-size: 0.75rem; }
+        .leaderboard td, .column-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--metal); }
+        .rank { text-align: center; width: 40px; font-weight: bold; }
+        .bonus-clickable { color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 5px; }
+
+        /* CS Section */
+        .cs-section { margin-bottom: 20px; }
+        .cs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .cs-card { background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; border-left: 3px solid var(--accent); }
+        .cs-name { font-weight: bold; margin-bottom: 5px; color: var(--light); }
+        .cs-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 5px; }
+
+        /* Utilities */
+        .message { padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem; text-align: center; }
+        .error { background: var(--error-bg); color: var(--error-color); }
+        .success { background: var(--success-bg); color: var(--success-color); }
+        .hidden { display: none !important; }
+        .loading { text-align: center; padding: 20px; color: var(--metal); }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center;
+        }
+        .modal.show { display: flex; animation: fadeIn 0.3s; }
+        .modal-content {
+            background: #111; border: 1px solid var(--primary); padding: 25px; width: 90%; max-width: 400px;
+            border-radius: 15px; text-align: center; box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+        .modal-title { color: var(--primary); margin-bottom: 15px; text-transform: uppercase; font-size: 1.2rem; }
+        .bonus-value { font-size: 2rem; color: var(--accent); font-weight: bold; margin: 15px 0; text-shadow: 0 0 15px var(--accent); }
+        .close-btn { background: var(--primary); color: #000; border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+
+        /* Image Preview */
+        .image-preview { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--primary); }
+        .image-link { color: var(--primary); font-size: 0.8rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(20, 20, 20, 0.95); border: 1px solid var(--primary); color: var(--light);
+            padding: 12px 20px; border-radius: 30px; z-index: 2000; transition: transform 0.3s;
+            display: flex; align-items: center; gap: 10px; font-size: 0.9rem; white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5rem; flex-direction: column; }
+            .stats { grid-template-columns: 1fr; }
+            .btn { font-size: 0.8rem; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Backgrounds -->
+    <div class="cyber-grid"></div>
+    <div class="scan-lines"></div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> LC AUDIT <i class="fas fa-microchip"></i></h1>
+            <div style="height: 2px; width: 50px; background: var(--primary); margin: 10px auto;"></div>
+        </header>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>DATA PORTAL</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>SHEET NAME</label>
+                    <input type="text" id="sheetName" placeholder="Contoh: Sheet1" value="Sheet1">
+                </div>
+                <div class="btn-group">
+                    <button id="fetchData" class="btn"><i class="fas fa-download"></i> FETCH</button>
+                    <button id="refreshData" class="btn"><i class="fas fa-sync"></i> REFRESH</button>
+                </div>
+                <div id="message"></div>
+                <div id="loading" class="loading hidden">
+                    <i class="fas fa-circle-notch fa-spin fa-2x" style="color: var(--primary);"></i>
+                    <p>CONNECTING...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="results" class="hidden">
+            <!-- CS Section -->
+            <div class="cs-section hidden" id="csLineSection">
+                <h3 style="color: var(--accent); margin-bottom: 10px;"><i class="fas fa-headset"></i> CS LINE</h3>
+                <div class="cs-grid" id="csLineGrid"></div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('regular')">RANKING</button>
+                <button class="tab-button" onclick="switchTab('valueError')">ERRORS</button>
+                <button class="tab-button" onclick="switchTab('columnsAD')">DATA A-D</button>
+            </div>
+            
+            <!-- Tab Regular -->
+            <div class="tab-content active" id="regularTab">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalParticipants">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="lowestErrors">0</div>
+                        <div class="stat-label">Lowest Error</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="averageErrors">0</div>
+                        <div class="stat-label">Average</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="errorCount" style="color: var(--error-color)">0</div>
+                        <div class="stat-label">Data Error</div>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="leaderboard">
+                        <thead>
+                            <tr>
+                                <th class="rank">#</th>
+                                <th>NAME</th>
+                                <th>ERR</th>
+                                <th>BONUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Tab Error -->
+            <div class="tab-content" id="valueErrorTab">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalValueError" style="color: var(--warning)">0</div>
+                        <div class="stat-label">#VALUE! Data</div>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="leaderboard">
+                        <thead>
+                            <tr>
+                                <th class="rank">#</th>
+                                <th>NAME</th>
+                                <th>ERROR TYPE</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="valueErrorBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Tab Columns AD -->
+            <div class="tab-content" id="columnsADTab">
+                <div class="form-group">
+                    <input type="text" id="searchColumnsAD" placeholder="Search A-D..." style="font-size: 14px; padding: 10px;">
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="column-table">
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>D</th>
+                            </tr>
+                        </thead>
+                        <tbody id="columnsADBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="bonusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">BONUS DETAILS</div>
+            <div style="font-size: 0.9rem; color: #aaa;" id="participantName">Name</div>
+            <div class="bonus-value" id="bonusPoints">Rp 0</div>
+            <p id="motivationalText" style="font-style: italic; color: var(--light); margin-bottom: 15px;">Message</p>
+            <button class="close-btn" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal" onclick="if(event.target === this) closeImageModal()">
+        <img id="modalImage" src="" style="max-width: 90%; max-height: 80%; border-radius: 10px; border: 2px solid var(--primary);">
+    </div>
+
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i> <span id="toastMessage">Message</span>
+    </div>
+
+    <script>
+        // CONFIG
+        const SPREADSHEET_ID = "157fFlXiCD9AqDDDbIcHAKUUKI9O4wMft7kvdL3vaRxA";
+        const CS_LINE_NAMES = ["CHARLIE C7377694", "RINAL ABDILLAH NASUTION", "ANDI"];
+        
+        // STATE
+        let cachedData = null;
+        let currentSheetName = '';
+        
+        // DOM ELEMENTS
+        const els = {
+            sheetName: document.getElementById('sheetName'),
+            fetchBtn: document.getElementById('fetchData'),
+            refreshBtn: document.getElementById('refreshData'),
+            message: document.getElementById('message'),
+            loading: document.getElementById('loading'),
+            results: document.getElementById('results'),
+            csLineSection: document.getElementById('csLineSection'),
+            csLineGrid: document.getElementById('csLineGrid'),
+            leaderboardBody: document.getElementById('leaderboardBody'),
+            valueErrorBody: document.getElementById('valueErrorBody'),
+            columnsADBody: document.getElementById('columnsADBody'),
+            searchInput: document.getElementById('searchColumnsAD'),
+            stats: {
+                total: document.getElementById('totalParticipants'),
+                lowest: document.getElementById('lowestErrors'),
+                avg: document.getElementById('averageErrors'),
+                err: document.getElementById('errorCount'),
+                valErr: document.getElementById('totalValueError')
+            }
+        };
+
+        // EVENTS
+        els.fetchBtn.addEventListener('click', fetchData);
+        els.refreshBtn.addEventListener('click', () => { if(cachedData) processData(cachedData); else fetchData(); });
+        els.searchInput.addEventListener('input', filterColumnsAD);
+
+        // FUNCTIONS
+        async function fetchData() {
+            const sheet = els.sheetName.value.trim() || 'Sheet1';
+            currentSheetName = sheet;
+            
+            setLoading(true);
+            els.message.innerHTML = '';
+            els.results.classList.add('hidden');
+            
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}`;
+                const res = await fetch(url);
+                if(!res.ok) throw new Error('Gagal mengambil data');
+                const text = await res.text();
+                
+                cachedData = parseCSV(text);
+                processData(cachedData);
+                showToast('Data berhasil dimuat!', 'success');
+            } catch (e) {
+                showMessage(e.message, 'error');
+                showToast('Error koneksi', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function processData(rows) {
+            if(!rows.length) return showMessage('Data kosong', 'error');
+            
+            // 1. Prepare Column A-D Data (Copy to avoid mutation issues)
+            const columnsADData = rows.map(row => {
+                const r = [];
+                for(let i=0; i<4; i++) r.push(row[i] || '');
+                return r;
+            });
+            displayColumnsAD(columnsADData);
+
+            // 2. Identify Headers
+            const headers = rows[0].map(h => (h||'').toLowerCase());
+            const nameIdx = headers.findIndex(h => h.includes('nama'));
+            const errIdx = headers.findIndex(h => h.includes('kesalahan'));
+            
+            if(nameIdx === -1 || errIdx === -1) return showMessage('Kolom Nama/Kesalahan tidak ditemukan', 'error');
+
+            // 3. Process Participants
+            const participants = [];
+            let totalErr = 0;
+            let countValid = 0;
+            
+            for(let i=1; i<rows.length; i++) {
+                const name = rows[i][nameIdx];
+                const errVal = rows[i][errIdx];
+                if(!name) continue;
+
+                const isValueErr = (name+'').includes('#VALUE!') || (errVal+'').includes('#VALUE!');
+                const isCsLine = CS_LINE_NAMES.some(cs => (name||'').toUpperCase().includes(cs));
+                
+                let errors = 0;
+                let hasError = false;
+                
+                if(isValueErr) {
+                    hasError = true; errors = null;
+                } else if(isNaN(parseInt(errVal))) {
+                    hasError = true; errors = null;
+                } else {
+                    errors = parseInt(errVal) || 0;
+                }
+
+                const bonus = !hasError && !isCsLine ? calculateBonus(errors) : {amount: 0, desc: '-'};
+                
+                if(!hasError && !isCsLine) {
+                    totalErr += errors;
+                    countValid++;
+                }
+
+                participants.push({ name, errors, hasError, isCsLine, raw: errVal, isValueErr, bonus });
+            }
+
+            // 4. Separate Groups
+            const csLine = participants.filter(p => p.isCsLine);
+            const valueErrs = participants.filter(p => p.isValueErr);
+            const regulars = participants.filter(p => !p.isCsLine && !p.isValueErr);
+            
+            // Sort Regulars
+            regulars.sort((a,b) => a.errors - b.errors);
+
+            // 5. Render
+            renderStats(regulars, valueErrs, totalErr, countValid);
+            renderCsLine(csLine);
+            renderLeaderboard(regulars);
+            renderValueErrors(valueErrs);
+            
+            els.results.classList.remove('hidden');
+        }
+
+        // UI RENDERERS
+        function renderStats(reg, valErr, totalErr, count) {
+            animate(els.stats.total, reg.length);
+            animate(els.stats.valErr, valErr.length);
+            els.stats.err.textContent = reg.filter(p => p.hasError).length;
+            
+            if(count > 0) {
+                animate(els.stats.lowest, reg[0].errors);
+                els.stats.avg.textContent = (totalErr/count).toFixed(1);
+            } else {
+                els.stats.lowest.textContent = '-';
+                els.stats.avg.textContent = '-';
+            }
+        }
+
+        function renderCsLine(data) {
+            els.csLineGrid.innerHTML = '';
+            if(!data.length) return els.csLineSection.classList.add('hidden');
+            
+            els.csLineSection.classList.remove('hidden');
+            data.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'cs-card';
+                div.innerHTML = `
+                    <div class="cs-name">${p.name}</div>
+                    <div class="cs-info">
+                        <span>Error: ${p.hasError ? p.raw : p.errors}</span>
+                        <span style="color:var(--accent)">CS</span>
+                    </div>`;
+                els.csLineGrid.appendChild(div);
+            });
+        }
+
+        function renderLeaderboard(data) {
+            els.leaderboardBody.innerHTML = '';
+            data.forEach((p, i) => {
+                const tr = document.createElement('tr');
+                let rankClass = '';
+                if(i===0) rankClass = 'color:var(--gold)';
+                if(i===1) rankClass = 'color:var(--silver)';
+                if(i===2) rankClass = 'color:var(--bronze)';
+                
+                tr.innerHTML = `
+                    <td class="rank" style="${rankClass}">${i+1}</td>
+                    <td>${p.name}</td>
+                    <td>${p.errors}</td>
+                    <td class="bonus-clickable" onclick='showBonus("${p.name}", ${p.errors}, ${p.bonus.amount})'>
+                        <i class="fas fa-gift"></i> ${formatRp(p.bonus.amount)}
+                    </td>
+                `;
+                els.leaderboardBody.appendChild(tr);
+            });
+        }
+        
+        function renderValueErrors(data) {
+            els.valueErrorBody.innerHTML = '';
+            data.forEach((p, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="rank">${i+1}</td>
+                    <td>${p.name}</td>
+                    <td style="color:var(--error-color)">${p.raw}</td>
+                    <td style="color:var(--warning)">FIX</td>
+                `;
+                els.valueErrorBody.appendChild(tr);
+            });
+        }
+
+        function displayColumnsAD(data) {
+            // Initial render
+            const render = (arr) => {
+                els.columnsADBody.innerHTML = '';
+                if(!arr.length) return;
+                
+                arr.forEach((row, i) => {
+                    const tr = document.createElement('tr');
+                    row.forEach((cell, colIdx) => {
+                        const td = document.createElement('td');
+                        const colName = String.fromCharCode(65+colIdx);
+                        
+                        // Check Image
+                        if(isImg(cell)) {
+                            td.innerHTML = `
+                                <div style="display:flex; align-items:center; gap:5px;">
+                                    <img src="${cell}" class="image-preview" onclick="showImg('${cell}')">
+                                    <span style="font-size:0.7rem; opacity:0.7">IMG</span>
+                                </div>`;
+                        } else {
+                            td.textContent = cell;
+                        }
+                        tr.appendChild(td);
+                    });
+                    els.columnsADBody.appendChild(tr);
+                });
+            };
+            
+            // Attach to window for filtering
+            window.currentAD = data;
+            render(data);
+        }
+
+        function filterColumnsAD() {
+            const term = els.searchInput.value.toLowerCase();
+            const filtered = window.currentAD.filter(row => 
+                row.some(cell => String(cell).toLowerCase().includes(term))
+            );
+            // Re-render logic simplified (calling display columns again)
+            // For better performance in real app, separate render function, but here we reuse logic
+            els.columnsADBody.innerHTML = '';
+            filtered.forEach((row) => {
+                const tr = document.createElement('tr');
+                row.forEach((cell) => {
+                    const td = document.createElement('td');
+                    if(isImg(cell)) {
+                         td.innerHTML = `<img src="${cell}" class="image-preview" onclick="showImg('${cell}')">`;
+                    } else {
+                        td.textContent = cell;
+                    }
+                    tr.appendChild(td);
+                });
+                els.columnsADBody.appendChild(tr);
+            });
+        }
+
+        // UTILS
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            return lines.map(line => {
+                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                const matches = line.match(regex) || [];
+                return matches.map(c => c.replace(/^"|"$/g, '').trim());
+            }).filter(l => l.length > 0);
+        }
+
+        function calculateBonus(err) {
+            if(err < 26) return {amount: 30000000, desc: 'FULL'};
+            if(err <= 40) return {amount: 25500000, desc: '15% OFF'};
+            return {amount: 21000000, desc: '30% OFF'};
+        }
+
+        function formatRp(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+        }
+
+        function isImg(str) {
+            return typeof str === 'string' && str.match(/\.(jpeg|jpg|gif|png)$/) != null;
+        }
+
+        // ANIMATIONS & MODALS
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab+'Tab').classList.add('active');
+        }
+
+        function showBonus(name, err, amt) {
+            document.getElementById('participantName').textContent = name;
+            document.getElementById('bonusPoints').textContent = formatRp(amt);
+            const msg = err < 26 ? "EXCELLENT!" : (err <= 40 ? "GOOD JOB!" : "KEEP FIGHTING!");
+            document.getElementById('motivationalText').textContent = msg;
+            document.getElementById('bonusModal').classList.add('show');
+        }
+
+        function showImg(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').classList.add('show');
+        }
+
+        function closeModal() { document.getElementById('bonusModal').classList.remove('show'); }
+        function closeImageModal() { document.getElementById('imageModal').classList.remove('show'); }
+        
+        function showToast(msg, type='info') {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            t.style.borderColor = type==='error'?'red':(type==='success'?'#00ff9d':'var(--primary)');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+        
+        function showMessage(msg, type) {
+            els.message.innerHTML = `<div class="message ${type}">${msg}</div>`;
+        }
+        
+        function setLoading(bool) {
+            if(bool) els.loading.classList.remove('hidden');
+            else els.loading.classList.add('hidden');
+        }
+        
+        function animate(obj, target) {
+            let start = 0;
+            const duration = 1000;
+            const startTime = performance.now();
+            
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                obj.textContent = Math.floor(progress * target);
+                if(progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+    </script>
+</body>
+</html>
