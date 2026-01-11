@@ -752,7 +752,7 @@
                 </div>
             </section>
 
-            <!-- Other Pages (Placeholder) -->
+            <!-- Events Page -->
             <section id="events-page" class="page-content hidden">
                 <h1 class="page-title">EVENT LINE</h1>
                 <p style="text-align: center; color: var(--text-secondary);">
@@ -760,13 +760,34 @@
                 </p>
             </section>
 
+            <!-- QRIS Page -->
             <section id="qris-page" class="page-content hidden">
-                <h1 class="page-title">ALL ABOUT QRIS</h1>
-                <p style="text-align: center; color: var(--text-secondary);">
-                    Halaman dalam pengembangan.
-                </p>
+                <div class="shortcut-header">
+                    <h1 class="page-title">ALL ABOUT QRIS</h1>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="🔍 Cari informasi QRIS..." id="qris-search-input">
+                    </div>
+                </div>
+
+                <!-- Categories View -->
+                <div id="qris-categories-view">
+                    <div class="categories-grid" id="qris-categories-container">
+                        <!-- Categories will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Items View -->
+                <div id="qris-items-view" class="shortcut-items-container">
+                    <button class="back-button" id="qris-back-button">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Kategori
+                    </button>
+                    <div id="qris-items-container">
+                        <!-- Items will be loaded here -->
+                    </div>
+                </div>
             </section>
 
+            <!-- Promotions Page -->
             <section id="promotions-page" class="page-content hidden">
                 <h1 class="page-title">PROMOSI LINE TOGEL</h1>
                 <p style="text-align: center; color: var(--text-secondary);">
@@ -963,6 +984,128 @@
             ]
         };
 
+        // Data QRIS
+        const qrisData = {
+            categories: [
+                {
+                    id: 'qris-maintenance',
+                    name: 'QRIS Maintenance',
+                    icon: 'fas fa-tools',
+                    color: '#ff5555',
+                    items: [
+                        {
+                            title: 'QRIS MAINTENANCE',
+                            content: `Mohon maaf bosku, untuk saat ini layanan deposit menggunakan QRIS sedang Maintenance ya bosku.\nSaran kami silahkan melakukan deposit ke rekening Bank aktif kami ya bosku agar deposit anda dapat kami proseskan tanpa berkendala ya bosku.\nMohon maaf atas ketidaknyamananya , Terima kasih`
+                        },
+                        {
+                            title: 'ESTIMASI QRIS MAINTENANCE',
+                            content: `Mohon maaf ya bosku, untuk estimasi Maintenance QRIS tidak dapat di pastikan ya bosku, dikarenakan kendala dari Merchant Qris\nSilahkan di tunggu hingga Qris Normal kembali ya bosku, Terima kasih`
+                        },
+                        {
+                            title: 'QRIS MAINTENANCE SAAT TUKAS',
+                            content: `Mohon maaf bosku , untuk saat ini layanan deposit via QRIS sedang Maintenance ya bosku\nKami sarankan silahkan deposit ke rekening kami yang normal dan aktif ya bosku\nNamun saat ini sistem kami sedang mereset keseluruhan data ya bosku untuk perihal deposit mengalami keterlambatan proses mulai dari jam 23:50 s/d 00:15 WIB\nMohon pengertiannya dan mohon maaf atas ketidaknyamannya ya bosku\nTerima kasih`
+                        }
+                    ]
+                },
+                {
+                    id: 'barcode-error',
+                    name: 'Barcode Error',
+                    icon: 'fas fa-qrcode',
+                    color: '#ffaa00',
+                    items: [
+                        {
+                            title: 'BARCODE GAK BISA',
+                            content: `Mohon maaf ya bosku, Apabila terjadi error , gagal / tidak muncul Barcode pada saat melakukan transfer via QRIS silahkan melakukan Clear Cache terlebih dahulu ya bosku, namun jika masih tidak bisa kami sarankan untuk melakukan Deposit ke Bank yang sedang Online terlebih dahulu ya bosku. terima kasih`
+                        }
+                    ]
+                },
+                {
+                    id: 'bukan-qris-linetogel',
+                    name: 'Bukan QRIS Line Togel',
+                    icon: 'fas fa-times-circle',
+                    color: '#ff5555',
+                    items: [
+                        {
+                            title: 'BUKAN QRIS LINE TOGEL - STEP 1',
+                            content: `Mohon maaf ya bosku, untuk bukti yang anda berikan kami cekkan bukan Merchant Qris milik kami ya bosku`
+                        },
+                        {
+                            title: 'BUKAN QRIS LINE TOGEL - STEP 2',
+                            content: `kami informasikan bosku untuk bukti tersebut bukan milik kami ya bosku , Terima kasih`
+                        },
+                        {
+                            title: 'BUKAN QRIS LINE TOGEL - STEP 3',
+                            content: `kami informasikan kembali untuk bukti transfer yang anda berikan diatas bukanlah qris deposit milik kami ya bosku`
+                        }
+                    ]
+                },
+                {
+                    id: 'refund-saldo',
+                    name: 'Refund Saldo',
+                    icon: 'fas fa-undo',
+                    color: '#55aaff',
+                    items: [
+                        {
+                            title: 'REFUND SALDO KALAU BANK',
+                            content: `Mohon maaf ya bosku, Setelah kami lakukan pengecekan untuk deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo anda menghubungi pihak bank terkait agar kembali ke saldo anda ya bosku`
+                        },
+                        {
+                            title: 'STEP KEDUA REFUND SALDO',
+                            content: `Mohon maaf ya bosku, perihal dana yang anda kirimkan tidak tercetak dalam mutasi Qris kami ya bosku sehingga kami menyarankan anda melakukan refund saldo ya bosku kepada pihak bank/Ewallet anda ya bosku.`
+                        },
+                        {
+                            title: 'STEP KETIGA REFUND SALDO',
+                            content: `Mohon maaf ya bosku, silahkan melakukan refund saldo seperti arahan yang kami berikan di atas ya bosku`
+                        }
+                    ]
+                },
+                {
+                    id: 'refund-ewallet',
+                    name: 'Refund E-Wallet',
+                    icon: 'fas fa-mobile-alt',
+                    color: '#7b00ff',
+                    items: [
+                        {
+                            title: 'REFUND DANA',
+                            content: `Setelah kami lakukan pengecekan untuk Deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo dana anda agar kembali ke saldo anda ya bosku\n\nCara refund saldo dana :\n1. Buka aplikasi Dana kemudian login\n2. Pilih menu Transaksi\n3. Cari transaksi yang ingin kamu minta refund lalu pilih transaksinya\n4. Klik menu Refund\n5. Isi lengkap formulir pengajuan pengembalian dana.\n6. Tekan klik tombol Ajukan Refund\n7. Tunggu konfirmasi dari pihak Dana\n8. Selesai`
+                        },
+                        {
+                            title: 'REFUND GOPAY',
+                            content: `Setelah kami lakukan pengecekan untuk Deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo anda agar kembali ke saldo anda ya bosku\n\nCara refund saldo GOPAY :\n1. Pada halaman utama aplikasi Gojek, klik Eksplor atau Explore.\n2. Klik menu Plus\n3. Pilih menu Jaminan Saldo Kembali atau Money Back Guarantee\n4. Klik tombol Ajukan Klaim atau Claim Refund\n5. Isi formulir dengan lengkap untuk mempercepat proses investigasi\n6. Cek perkembangan proses klaim melalui My Tickets di halaman utama aplikasi Gojek\n7. Selesai`
+                        },
+                        {
+                            title: 'REFUND OVO',
+                            content: `Setelah kami lakukan pengecekan untuk deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo anda agar kembali ke saldo anda ya bosku\n\nCara refund saldo OVO :\n1. Pergi ke Transactions Tab atau eWallet Tab\n2. Cari eWallet Reference ID Anda.\n3. Klik transaksi tersebut.\n4. Klik tombol "Refund"\n5. Selesai`
+                        }
+                    ]
+                },
+                {
+                    id: 'deposit-dana-qris-pga',
+                    name: 'Deposit Dana ke QRIS PGA',
+                    icon: 'fas fa-exchange-alt',
+                    color: '#00cc66',
+                    items: [
+                        {
+                            title: 'DEPOSIT DANA KE QRIS PGA',
+                            content: `Mohon maaf ya bosku, untuk layanan deposit E-WALLET DANA kami alihkan ke PGA / Qris Payment sementara karena adanya indikasi E-WALLET DANA akan mengalami gangguan mutasi, estimasi berapa lama tidak dapat kami pastikan dan akan kami usahakan secepatnya.\nSilahkan melakukan deposit dengan mengklik Deposit PGA / Qris Payment ya bosku`
+                        }
+                    ]
+                },
+                {
+                    id: 'inbox-tidak-cetak',
+                    name: 'Inbox QRIS Tidak Cetak',
+                    icon: 'fas fa-inbox',
+                    color: '#ff66aa',
+                    items: [
+                        {
+                            title: 'QRIS INBOX TIDAK CETAK',
+                            content: `Mohon maaf bosku apabila pada menu inbox QRIS anda tidak tercetak bukti transfer anda yang detail yang melihatkan RRN ny mohon untuk tunggu dari pihak bank terkait mencetak bukti pada inbox QRIS tersebut 10 menit kedepan apabila sudah tercetak mohon untuk lampirkan bukti pengiriman detail anda yang ada RRN pada menu inbox QRIS anda, atau anda bisa menghubungi langsung ke pihak bank terkait jika kendala belum tercetak nya bukti transfer anda yang detail pada menu inbox pengiriman QRIS anda ya bosku`
+                        }
+                    ]
+                }
+            ]
+        };
+
         // Application State
         const appState = {
             currentPage: 'home',
@@ -988,7 +1131,13 @@
             categoriesView: document.getElementById('categories-view'),
             itemsView: document.getElementById('items-view'),
             searchInput: document.getElementById('search-input'),
-            backButton: document.getElementById('back-button')
+            backButton: document.getElementById('back-button'),
+            qrisCategoriesContainer: document.getElementById('qris-categories-container'),
+            qrisItemsContainer: document.getElementById('qris-items-container'),
+            qrisCategoriesView: document.getElementById('qris-categories-view'),
+            qrisItemsView: document.getElementById('qris-items-view'),
+            qrisSearchInput: document.getElementById('qris-search-input'),
+            qrisBackButton: document.getElementById('qris-back-button')
         };
 
         // Initialize Application
@@ -1007,6 +1156,9 @@
 
             // Initialize shortcut system
             initShortcutSystem();
+
+            // Initialize QRIS system
+            initQrisSystem();
 
             // Update daily info
             updateDailyInfo();
@@ -1085,10 +1237,13 @@
                 appState.currentPage = page;
             }
 
-            // Special handling for shortcut page
+            // Special handling for pages
             if (page === 'shortcut') {
                 showCategoriesView();
                 renderCategories();
+            } else if (page === 'qris') {
+                showQrisCategoriesView();
+                renderQrisCategories();
             }
         }
 
@@ -1205,21 +1360,153 @@
             });
         }
 
-        // Search System
-        function initSearch() {
-            elements.searchInput.addEventListener('input', (e) => {
-                appState.searchQuery = e.target.value.toLowerCase();
-                filterCategories();
+        // QRIS System
+        function initQrisSystem() {
+            // Back button
+            elements.qrisBackButton.addEventListener('click', () => {
+                showQrisCategoriesView();
+                renderQrisCategories();
+            });
+
+            // Initial render
+            renderQrisCategories();
+        }
+
+        function renderQrisCategories() {
+            elements.qrisCategoriesContainer.innerHTML = '';
+            
+            qrisData.categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.dataset.category = category.id;
+                categoryCard.style.borderColor = category.color;
+                
+                categoryCard.innerHTML = `
+                    <div class="category-icon" style="color: ${category.color}">
+                        <i class="${category.icon}"></i>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-count">${category.items.length} template</div>
+                `;
+                
+                categoryCard.addEventListener('click', () => {
+                    showQrisItemsView(category.id);
+                });
+                
+                elements.qrisCategoriesContainer.appendChild(categoryCard);
             });
         }
 
-        function filterCategories() {
-            const categories = document.querySelectorAll('.category-card');
+        function showQrisCategoriesView() {
+            elements.qrisCategoriesView.style.display = 'block';
+            elements.qrisItemsView.classList.remove('active');
+        }
+
+        function showQrisItemsView(categoryId) {
+            const category = qrisData.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            elements.qrisCategoriesView.style.display = 'none';
+            elements.qrisItemsView.classList.add('active');
+            
+            renderQrisItems(category);
+        }
+
+        function renderQrisItems(category) {
+            elements.qrisItemsContainer.innerHTML = '';
+            
+            category.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'shortcut-item';
+                
+                itemElement.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-title">${item.title}</div>
+                        <button class="copy-button" data-content="${encodeURIComponent(item.content)}">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <div class="item-content">${item.content}</div>
+                `;
+                
+                elements.qrisItemsContainer.appendChild(itemElement);
+            });
+            
+            // Add copy functionality
+            document.querySelectorAll('#qris-items-container .copy-button').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const content = decodeURIComponent(button.dataset.content);
+                    
+                    try {
+                        await navigator.clipboard.writeText(content);
+                        
+                        // Visual feedback
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = content;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+            });
+        }
+
+        // Search System
+        function initSearch() {
+            // Shortcut search
+            elements.searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterCategories(query);
+            });
+            
+            // QRIS search
+            elements.qrisSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterQrisCategories(query);
+            });
+        }
+
+        function filterCategories(query) {
+            const categories = document.querySelectorAll('#categories-container .category-card');
             
             categories.forEach(card => {
                 const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
                 
-                if (categoryName.includes(appState.searchQuery) || !appState.searchQuery) {
+                if (categoryName.includes(query) || !query) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterQrisCategories(query) {
+            const categories = document.querySelectorAll('#qris-categories-container .category-card');
+            
+            categories.forEach(card => {
+                const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+                
+                if (categoryName.includes(query) || !query) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
@@ -1255,18 +1542,22 @@
                 e.preventDefault();
                 if (appState.currentPage === 'shortcut') {
                     elements.searchInput.focus();
+                } else if (appState.currentPage === 'qris') {
+                    elements.qrisSearchInput.focus();
                 }
             }
             
             // Escape to go back
             if (e.key === 'Escape') {
-                if (appState.currentCategory) {
+                if (appState.currentPage === 'shortcut' && appState.currentCategory) {
                     showCategoriesView();
                     renderCategories();
+                } else if (appState.currentPage === 'qris') {
+                    showQrisCategoriesView();
+                    renderQrisCategories();
                 }
             }
         });
     </script>
 </body>
 </html>
-
