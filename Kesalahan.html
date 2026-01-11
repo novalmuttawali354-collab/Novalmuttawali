@@ -6,7 +6,7 @@
     <title>TRANSFORMER LEADERBOARD</title>
     <meta name="theme-color" content="#0a0a0a">
     
-    <!-- PWA Settings for Mobile -->
+    <!-- PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="LC AUDIT">
@@ -14,17 +14,20 @@
     <link rel="apple-touch-icon" href="https://picsum.photos/seed/icon192/192/192">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        /* --- CSS SAMA SEPERTI SEBELUMNYA (SAYA RINGKAS DISINI UNTUK TAMPILAN) --- */
+        /* --- CSS UTAMA --- */
         :root {
             --primary: #00f3ff; --secondary: #ff00ff; --accent: #00ff9d; --warning: #ffaa00;
             --dark: #0a0a0a; --darker: #000000; --light: #ffffff; --metal: #c0c0c0;
             --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32;
-            --cyan-glow: rgba(0, 243, 255, 0.8); --magenta-glow: rgba(255, 0, 255, 0.8);
-            --green-glow: rgba(0, 255, 157, 0.8); --amber-glow: rgba(255, 170, 0, 0.8);
-            --cyber-gradient: linear-gradient(45deg, #00f3ff, #ff00ff, #00ff9d);
-            --card-bg: rgba(26, 26, 26, 0.85); --card-border: rgba(0, 243, 255, 0.3);
+            --cyan-glow: rgba(0, 243, 255, 0.8); 
+            --card-bg: rgba(26, 26, 26, 0.85); 
+            --card-border: rgba(0, 243, 255, 0.3);
             --error-bg: rgba(255, 50, 50, 0.2); --error-color: #ff5555;
+            --success-bg: rgba(0, 255, 157, 0.1);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -32,26 +35,20 @@
         body {
             background: var(--darker); color: var(--light); min-height: 100vh; padding: 20px;
             position: relative; overflow-x: hidden;
-            background-image: linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-image: 
+                linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
         }
         
-        /* Background Animations */
+        /* Background Grid Animation */
         .cyber-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%),
-                        linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%);
+            background: linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.05) 50%, transparent 51%),
+                        linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.05) 50%, transparent 51%);
             background-size: 100px 100px; z-index: -3; animation: gridPulse 10s ease-in-out infinite; pointer-events: none;
         }
         @keyframes gridPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
-
-        .scan-lines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 95%, rgba(0, 243, 255, 0.1) 100%);
-            background-size: 100% 4px; z-index: -2; pointer-events: none; animation: scan 8s linear infinite;
-        }
-        @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
 
         .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; padding-bottom: 80px; }
         
@@ -62,7 +59,7 @@
         }
         
         h1 {
-            font-size: 2rem; margin-bottom: 10px; background: var(--cyber-gradient);
+            font-size: 2rem; margin-bottom: 10px; background: linear-gradient(45deg, #00f3ff, #ff00ff, #00ff9d);
             -webkit-background-clip: text; background-clip: text; color: transparent;
             text-transform: uppercase; letter-spacing: 1px; font-weight: 900;
             display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -81,7 +78,6 @@
         }
         
         .card-header h2 { color: var(--primary); font-size: 1.4rem; text-transform: uppercase; }
-
         .card-body { padding: 20px; }
 
         /* Form & Inputs */
@@ -102,6 +98,7 @@
             display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;
         }
         .btn:active { transform: scale(0.98); }
+        .btn.active-view { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
         .btn i { font-size: 1.2rem; }
         #refreshData { color: var(--secondary); border-color: var(--secondary); background: rgba(255, 0, 255, 0.1); }
 
@@ -130,6 +127,24 @@
         .leaderboard td, .column-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--metal); }
         .rank { text-align: center; width: 40px; font-weight: bold; }
         .bonus-clickable { color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 5px; }
+
+        /* Chart Section (Combined) */
+        .chart-container {
+            position: relative; height: 350px; width: 100%; margin-bottom: 20px;
+            background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .view-controls {
+            display: flex; gap: 10px; margin-bottom: 15px;
+        }
+        .view-btn {
+            flex: 1; padding: 12px; border: 1px solid var(--primary); background: transparent; color: var(--primary);
+            border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .view-btn.active {
+            background: var(--primary); color: #000; font-weight: bold;
+            box-shadow: 0 0 10px var(--primary);
+        }
 
         /* CS Section */
         .cs-section { margin-bottom: 20px; }
@@ -177,13 +192,14 @@
             h1 { font-size: 1.5rem; flex-direction: column; }
             .stats { grid-template-columns: 1fr; }
             .btn { font-size: 0.8rem; padding: 12px; }
+            .chart-container { height: 280px; }
+            .view-btn { font-size: 0.75rem; padding: 10px; }
         }
     </style>
 </head>
 <body>
     <!-- Backgrounds -->
     <div class="cyber-grid"></div>
-    <div class="scan-lines"></div>
     
     <div class="container">
         <header>
@@ -246,8 +262,19 @@
                         <div class="stat-label">Data Error</div>
                     </div>
                 </div>
+
+                <!-- VIEW TOGGLE: TABEL vs GRAFIK GABUNGAN -->
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="toggleView('table')" id="btnTableView">
+                        <i class="fas fa-list"></i> TABEL (Ranking)
+                    </button>
+                    <button class="view-btn" onclick="toggleView('graph')" id="btnGraphView">
+                        <i class="fas fa-chart-line"></i> GRAFIK (Candle + Line)
+                    </button>
+                </div>
                 
-                <div style="overflow-x: auto;">
+                <!-- TAMPILAN TABEL (Sorted by Error) -->
+                <div id="tableView" style="overflow-x: auto;">
                     <table class="leaderboard">
                         <thead>
                             <tr>
@@ -259,6 +286,19 @@
                         </thead>
                         <tbody id="leaderboardBody"></tbody>
                     </table>
+                </div>
+
+                <!-- TAMPILAN GRAFIK GABUNGAN (Mixed Chart) -->
+                <div id="graphView" class="hidden">
+                    <div class="chart-container">
+                        <canvas id="mixedChart"></canvas>
+                    </div>
+                    <p style="text-align: center; color: var(--metal); font-size: 0.8rem; margin-bottom: 10px;">
+                        <span style="color: var(--accent)">█</span> Candle (Jumlah Error) 
+                        &nbsp;|&nbsp; 
+                        <span style="color: var(--primary)">━</span> Line (Tren Error)
+                        <br><i style="font-size: 0.7rem">*Data diurutkan berdasarkan nama</i>
+                    </p>
                 </div>
             </div>
             
@@ -335,6 +375,7 @@
         // STATE
         let cachedData = null;
         let currentSheetName = '';
+        let mixedChartInstance = null; // Instance chart gabungan
         
         // DOM ELEMENTS
         const els = {
@@ -356,6 +397,12 @@
                 avg: document.getElementById('averageErrors'),
                 err: document.getElementById('errorCount'),
                 valErr: document.getElementById('totalValueError')
+            },
+            views: {
+                table: document.getElementById('tableView'),
+                graph: document.getElementById('graphView'),
+                btnTable: document.getElementById('btnTableView'),
+                btnGraph: document.getElementById('btnGraphView')
             }
         };
 
@@ -393,7 +440,7 @@
         function processData(rows) {
             if(!rows.length) return showMessage('Data kosong', 'error');
             
-            // 1. Prepare Column A-D Data (Copy to avoid mutation issues)
+            // 1. Prepare Column A-D Data
             const columnsADData = rows.map(row => {
                 const r = [];
                 for(let i=0; i<4; i++) r.push(row[i] || '');
@@ -445,18 +492,136 @@
             // 4. Separate Groups
             const csLine = participants.filter(p => p.isCsLine);
             const valueErrs = participants.filter(p => p.isValueErr);
-            const regulars = participants.filter(p => !p.isCsLine && !p.isValueErr);
             
-            // Sort Regulars
-            regulars.sort((a,b) => a.errors - b.errors);
+            // Raw Regulars (Untuk Grafik - Urut Nama)
+            const rawRegulars = participants.filter(p => !p.isCsLine && !p.isValueErr);
+            
+            // Ranked Regulars (Untuk Tabel - Urut Error)
+            const regulars = [...rawRegulars].sort((a,b) => a.errors - b.errors);
 
             // 5. Render
             renderStats(regulars, valueErrs, totalErr, countValid);
             renderCsLine(csLine);
             renderLeaderboard(regulars);
+            renderMixedChart(rawRegulars); // Render Grafik Gabungan
             renderValueErrors(valueErrs);
             
             els.results.classList.remove('hidden');
+        }
+
+        // --- MIXED CHART LOGIC (Candle + Line Combined) ---
+        function renderMixedChart(data) {
+            const ctx = document.getElementById('mixedChart').getContext('2d');
+            
+            // Hancurkan chart lama
+            if (mixedChartInstance) {
+                mixedChartInstance.destroy();
+            }
+
+            // Ambil 20 data pertama (Urut Nama)
+            const topData = data.slice(0, 20);
+            const labels = topData.map(p => p.name.split(' ')[0]);
+            const values = topData.map(p => p.errors);
+
+            // 1. Setup untuk Batang (Candle)
+            const createBarGradient = (ctx, colorStart) => {
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, colorStart);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); // Fade out ke bawah
+                return gradient;
+            };
+
+            const barColors = topData.map(p => {
+                if (p.errors < 26) return createBarGradient(ctx, '#00ff9d'); // Hijau
+                if (p.errors <= 40) return createBarGradient(ctx, '#ffaa00'); // Kuning
+                return createBarGradient(ctx, '#ff0055'); // Merah
+            });
+
+            const barBorders = topData.map(p => {
+                if (p.errors < 26) return '#00ff9d';
+                if (p.errors <= 40) return '#ffaa00';
+                return '#ff0055';
+            });
+
+            // 2. Setup untuk Garis (Line)
+            // Menggunakan warna Cyan yang kontras agar terlihat di atas batang berwarna-warni
+            const lineGradient = ctx.createLinearGradient(0, 0, 0, 400);
+            lineGradient.addColorStop(0, '#00f3ff');
+            lineGradient.addColorStop(1, 'rgba(0, 243, 255, 0)');
+
+            mixedChartInstance = new Chart(ctx, {
+                type: 'bar', // Tipe default, nanti kita override dataset line
+                data: {
+                    labels: labels,
+                    datasets: [
+                        // DATASET 1: BATANG (CANDLE)
+                        {
+                            type: 'bar',
+                            label: 'Errors (Candle)',
+                            data: values,
+                            backgroundColor: barColors,
+                            borderColor: barBorders,
+                            borderWidth: 2,
+                            borderRadius: 4,
+                            barPercentage: 0.5,
+                            order: 2 // Render di bawah line
+                        },
+                        // DATASET 2: GARIS (LINE)
+                        {
+                            type: 'line',
+                            label: 'Trend (Line)',
+                            data: values,
+                            borderColor: '#00f3ff', // Warna Cyan
+                            backgroundColor: lineGradient, // Fill di bawah garis (Optional)
+                            borderWidth: 3,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#00f3ff',
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            fill: true, // Aktifkan fill area di bawah line
+                            tension: 0.4, // Kurva halus
+                            order: 1 // Render di atas batang
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(10, 10, 10, 0.9)',
+                            titleColor: '#00f3ff',
+                            bodyColor: '#fff',
+                            borderColor: '#00f3ff',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    if(context.dataset.type === 'line') {
+                                        return `Errors: ${context.raw} (Trend)`;
+                                    }
+                                    return `Errors: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#00f3ff' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#aaa', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
         }
 
         // UI RENDERERS
@@ -528,24 +693,15 @@
         }
 
         function displayColumnsAD(data) {
-            // Initial render
             const render = (arr) => {
                 els.columnsADBody.innerHTML = '';
                 if(!arr.length) return;
-                
-                arr.forEach((row, i) => {
+                arr.forEach((row) => {
                     const tr = document.createElement('tr');
-                    row.forEach((cell, colIdx) => {
+                    row.forEach((cell) => {
                         const td = document.createElement('td');
-                        const colName = String.fromCharCode(65+colIdx);
-                        
-                        // Check Image
                         if(isImg(cell)) {
-                            td.innerHTML = `
-                                <div style="display:flex; align-items:center; gap:5px;">
-                                    <img src="${cell}" class="image-preview" onclick="showImg('${cell}')">
-                                    <span style="font-size:0.7rem; opacity:0.7">IMG</span>
-                                </div>`;
+                             td.innerHTML = `<img src="${cell}" class="image-preview" onclick="showImg('${cell}')">`;
                         } else {
                             td.textContent = cell;
                         }
@@ -554,8 +710,6 @@
                     els.columnsADBody.appendChild(tr);
                 });
             };
-            
-            // Attach to window for filtering
             window.currentAD = data;
             render(data);
         }
@@ -565,8 +719,6 @@
             const filtered = window.currentAD.filter(row => 
                 row.some(cell => String(cell).toLowerCase().includes(term))
             );
-            // Re-render logic simplified (calling display columns again)
-            // For better performance in real app, separate render function, but here we reuse logic
             els.columnsADBody.innerHTML = '';
             filtered.forEach((row) => {
                 const tr = document.createElement('tr');
@@ -605,6 +757,26 @@
 
         function isImg(str) {
             return typeof str === 'string' && str.match(/\.(jpeg|jpg|gif|png)$/) != null;
+        }
+
+        // VIEW TOGGLE LOGIC (Table vs Graph)
+        function toggleView(view) {
+            // Hide all
+            els.views.table.classList.add('hidden');
+            els.views.graph.classList.add('hidden');
+            
+            els.views.btnTable.classList.remove('active');
+            els.views.btnGraph.classList.remove('active');
+
+            // Show selected
+            if (view === 'table') {
+                els.views.table.classList.remove('hidden');
+                els.views.btnTable.classList.add('active');
+            } else if (view === 'graph') {
+                els.views.graph.classList.remove('hidden');
+                els.views.btnGraph.classList.add('active');
+                if (mixedChartInstance) mixedChartInstance.resize();
+            }
         }
 
         // ANIMATIONS & MODALS
@@ -652,7 +824,6 @@
             let start = 0;
             const duration = 1000;
             const startTime = performance.now();
-            
             function update(now) {
                 const elapsed = now - startTime;
                 const progress = Math.min(elapsed / duration, 1);
