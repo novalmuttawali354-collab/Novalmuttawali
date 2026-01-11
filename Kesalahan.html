@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* --- CSS UTAMA --- */
+        /* --- CSS UTAMA (NEON THEME) --- */
         :root {
             --primary: #00f3ff; --secondary: #ff00ff; --accent: #00ff9d; --warning: #ffaa00;
             --dark: #0a0a0a; --darker: #000000; --light: #ffffff; --metal: #c0c0c0;
@@ -44,8 +44,8 @@
         /* Background Grid Animation */
         .cyber-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.05) 50%, transparent 51%),
-                        linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.05) 50%, transparent 51%);
+            background: linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%),
+                        linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.1) 50%, transparent 51%);
             background-size: 100px 100px; z-index: -3; animation: gridPulse 10s ease-in-out infinite; pointer-events: none;
         }
         @keyframes gridPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
@@ -128,7 +128,7 @@
         .rank { text-align: center; width: 40px; font-weight: bold; }
         .bonus-clickable { color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 5px; }
 
-        /* Chart Section (Combined) */
+        /* Chart Section */
         .chart-container {
             position: relative; height: 350px; width: 100%; margin-bottom: 20px;
             background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
@@ -174,9 +174,27 @@
         .bonus-value { font-size: 2rem; color: var(--accent); font-weight: bold; margin: 15px 0; text-shadow: 0 0 15px var(--accent); }
         .close-btn { background: var(--primary); color: #000; border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; margin-top: 15px; cursor: pointer; }
 
-        /* Image Preview */
-        .image-preview { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--primary); }
-        .image-link { color: var(--primary); font-size: 0.8rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; }
+        /* Image Preview (Khusus Kolom B) */
+        .image-preview {
+            width: 50px; height: 50px; object-fit: cover; border-radius: 8px; cursor: pointer; 
+            border: 2px solid var(--primary); transition: all 0.3s; box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        .image-preview:hover {
+            transform: scale(1.1); border-color: var(--secondary); box-shadow: 0 0 15px var(--secondary);
+        }
+        
+        .image-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center;
+            animation: fadeIn 0.2s;
+        }
+        .image-modal.show { display: flex; }
+        .image-modal-content {
+            max-width: 95%; max-height: 90%; border-radius: 10px; border: 2px solid var(--primary);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.5);
+        }
+
+        .image-link { color: var(--primary); font-size: 0.8rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; cursor: pointer; text-decoration: underline; }
 
         /* Toast */
         .toast {
@@ -359,8 +377,8 @@
     </div>
     
     <!-- Image Modal -->
-    <div id="imageModal" class="modal" onclick="if(event.target === this) closeImageModal()">
-        <img id="modalImage" src="" style="max-width: 90%; max-height: 80%; border-radius: 10px; border: 2px solid var(--primary);">
+    <div id="imageModal" class="image-modal" onclick="if(event.target === this) closeImageModal()">
+        <img id="modalImage" class="image-modal-content" src="">
     </div>
 
     <div id="toast" class="toast">
@@ -544,13 +562,12 @@
             });
 
             // 2. Setup untuk Garis (Line)
-            // Menggunakan warna Cyan yang kontras agar terlihat di atas batang berwarna-warni
             const lineGradient = ctx.createLinearGradient(0, 0, 0, 400);
             lineGradient.addColorStop(0, '#00f3ff');
             lineGradient.addColorStop(1, 'rgba(0, 243, 255, 0)');
 
             mixedChartInstance = new Chart(ctx, {
-                type: 'bar', // Tipe default, nanti kita override dataset line
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
@@ -564,23 +581,23 @@
                             borderWidth: 2,
                             borderRadius: 4,
                             barPercentage: 0.5,
-                            order: 2 // Render di bawah line
+                            order: 2
                         },
                         // DATASET 2: GARIS (LINE)
                         {
                             type: 'line',
                             label: 'Trend (Line)',
                             data: values,
-                            borderColor: '#00f3ff', // Warna Cyan
-                            backgroundColor: lineGradient, // Fill di bawah garis (Optional)
+                            borderColor: '#00f3ff',
+                            backgroundColor: lineGradient,
                             borderWidth: 3,
                             pointBackgroundColor: '#fff',
                             pointBorderColor: '#00f3ff',
                             pointRadius: 4,
                             pointHoverRadius: 7,
-                            fill: true, // Aktifkan fill area di bawah line
-                            tension: 0.4, // Kurva halus
-                            order: 1 // Render di atas batang
+                            fill: true,
+                            tension: 0.4,
+                            order: 1
                         }
                     ]
                 },
@@ -692,16 +709,55 @@
             });
         }
 
+        // --- DISPLAY COLUMNS A-D (UPDATED FOR IMAGE LINK) ---
         function displayColumnsAD(data) {
             const render = (arr) => {
                 els.columnsADBody.innerHTML = '';
                 if(!arr.length) return;
                 arr.forEach((row) => {
                     const tr = document.createElement('tr');
-                    row.forEach((cell) => {
+                    // Loop A (0), B (1), C (2), D (3)
+                    row.forEach((cell, colIndex) => {
                         const td = document.createElement('td');
+                        
+                        // Cek apakah kolom B (index 1) dan isinya link gambar
+                        // Atau umumnya semua kolom jika ada link gambar
                         if(isImg(cell)) {
-                             td.innerHTML = `<img src="${cell}" class="image-preview" onclick="showImg('${cell}')">`;
+                            // Container untuk gambar dan link
+                            const container = document.createElement('div');
+                            container.style.display = 'flex';
+                            container.style.alignItems = 'center';
+                            container.style.gap = '10px';
+                            
+                            // Image Preview (Thumbnail) - Lebih besar (50px) agar mudah diklik
+                            const img = document.createElement('img');
+                            img.src = cell;
+                            img.className = 'image-preview';
+                            img.alt = 'Screenshot Preview';
+                            // Event Klik Langsung
+                            img.onclick = () => showImgModal(cell);
+                            
+                            // Text Link (Opsional)
+                            const link = document.createElement('a');
+                            link.href = cell;
+                            link.target = '_blank';
+                            link.className = 'image-link';
+                            link.textContent = cell.length > 20 ? cell.substring(0, 20) + '...' : cell;
+                            link.onclick = (e) => {
+                                e.preventDefault();
+                                showImgModal(cell);
+                            };
+                            
+                            container.appendChild(img);
+                            td.appendChild(container);
+                        } else if (isUrl(cell)) {
+                            // Link biasa (bukan gambar)
+                            const link = document.createElement('a');
+                            link.href = cell;
+                            link.target = '_blank';
+                            link.className = 'image-link';
+                            link.textContent = cell.length > 30 ? cell.substring(0, 30) + '...' : cell;
+                            td.appendChild(link);
                         } else {
                             td.textContent = cell;
                         }
@@ -719,13 +775,15 @@
             const filtered = window.currentAD.filter(row => 
                 row.some(cell => String(cell).toLowerCase().includes(term))
             );
+            // Re-use render logic but with filtered data
             els.columnsADBody.innerHTML = '';
+            if(!filtered.length) return;
             filtered.forEach((row) => {
                 const tr = document.createElement('tr');
                 row.forEach((cell) => {
                     const td = document.createElement('td');
                     if(isImg(cell)) {
-                         td.innerHTML = `<img src="${cell}" class="image-preview" onclick="showImg('${cell}')">`;
+                         td.innerHTML = `<img src="${cell}" class="image-preview" onclick='showImgModal("${cell}")'>`;
                     } else {
                         td.textContent = cell;
                     }
@@ -756,19 +814,24 @@
         }
 
         function isImg(str) {
-            return typeof str === 'string' && str.match(/\.(jpeg|jpg|gif|png)$/) != null;
+            if (!str || typeof str !== 'string') return false;
+            const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+            const lowerStr = str.toLowerCase();
+            return exts.some(ext => lowerStr.includes(ext));
+        }
+        
+        function isUrl(str) {
+            try { new URL(str); return true; } catch { return false; }
         }
 
         // VIEW TOGGLE LOGIC (Table vs Graph)
         function toggleView(view) {
-            // Hide all
             els.views.table.classList.add('hidden');
             els.views.graph.classList.add('hidden');
             
             els.views.btnTable.classList.remove('active');
             els.views.btnGraph.classList.remove('active');
 
-            // Show selected
             if (view === 'table') {
                 els.views.table.classList.remove('hidden');
                 els.views.btnTable.classList.add('active');
@@ -795,9 +858,11 @@
             document.getElementById('bonusModal').classList.add('show');
         }
 
-        function showImg(src) {
-            document.getElementById('modalImage').src = src;
-            document.getElementById('imageModal').classList.add('show');
+        function showImgModal(src) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            img.src = src;
+            modal.classList.add('show');
         }
 
         function closeModal() { document.getElementById('bonusModal').classList.remove('show'); }
