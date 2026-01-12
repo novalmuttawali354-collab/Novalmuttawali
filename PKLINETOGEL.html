@@ -401,6 +401,18 @@
             font-size: 1.2rem;
         }
 
+        /* Category Badge for Flat List */
+        .item-category-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
         .copy-button {
             background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
             color: white;
@@ -951,7 +963,7 @@
                 </div>
             </section>
 
-            <!-- PK BONUS & SCATTER Page -->
+            <!-- PK BONUS & SCATTER Page (MODIFIED) -->
             <section id="pkbonus-page" class="page-content hidden">
                 <div class="shortcut-header">
                     <h1 class="page-title">PK BONUS & SCATTER</h1>
@@ -960,21 +972,9 @@
                     </div>
                 </div>
 
-                <!-- Categories View -->
-                <div id="pkbonus-categories-view">
-                    <div class="categories-grid" id="pkbonus-categories-container">
-                        <!-- Categories will be loaded here -->
-                    </div>
-                </div>
-
-                <!-- Items View -->
-                <div id="pkbonus-items-view" class="shortcut-items-container">
-                    <button class="back-button" id="pkbonus-back-button">
-                        <i class="fas fa-arrow-left"></i> Kembali ke Kategori
-                    </button>
-                    <div id="pkbonus-items-container">
-                        <!-- Items will be loaded here -->
-                    </div>
+                <!-- Direct Container (No Categories) -->
+                <div id="pkbonus-container">
+                    <!-- All Items will be loaded here directly -->
                 </div>
             </section>
 
@@ -1293,7 +1293,7 @@
                         },
                         {
                             title: 'REFUND OVO',
-                            content: `Setelah kami lakukan pengecekan untuk deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo anda agar kembali ke saldo anda ya bosku\n\nCara refund saldo OVO :\n1. Pergi ke Transactions Tab atau eWallet Tab\n2. Cari eWallet Reference ID Anda.\n3. Klik transaksi tersebut.\n4. Klik tombol "Refund"\n5. Selesai`
+                            content: `Setelah kami lakukan pengecekan untuk Deposit anda masih belum tercetak pada mutasi deposit kami ya bosku saran kami silahkan melakukan refund saldo anda agar kembali ke saldo anda ya bosku\n\nCara refund saldo OVO :\n1. Pergi ke Transactions Tab atau eWallet Tab\n2. Cari eWallet Reference ID Anda.\n3. Klik transaksi tersebut.\n4. Klik tombol "Refund"\n5. Selesai`
                         }
                     ]
                 },
@@ -1586,7 +1586,7 @@ Contoh :
 Jika dalam 1 minggu total turnover yang dikumpulkan sebesar Rp.100.000.000 x 0.5% = Rp.500.000 ( Total bonus yang didapatkan )
 - Pembagian Bonus Cashback TurnOver 0.5% hanya diberikan setiap hari kamis setelah maintenance selesai & akan dibagikan secara otomatis tanpa perlu diklaim
 - Selalu aktif bermain dan kumpulkan turnover sebanyak - banyaknya
-- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat`
             },
             {
                 id: 'turnover-elottery',
@@ -1604,7 +1604,7 @@ Contoh :
 Jika dalam 1 minggu total turnover yang dikumpulkan sebesar Rp.100.000.000 x 0.5% = Rp.500.000 ( Total bonus yang didapatkan )
 - Pembagian Bonus Cashback TurnOver 0.5% hanya diberikan setiap hari kamis setelah maintenance selesai & akan dibagikan secara otomatis tanpa perlu diklaim
 - Selalu aktif bermain dan kumpulkan turnover sebanyak - banyaknya
-- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat`
             },
             {
                 id: 'turnover-livegames',
@@ -1840,12 +1840,9 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             qrisBackButton: document.getElementById('qris-back-button'),
             eventsContainer: document.getElementById('events-container'),
             eventsSearchInput: document.getElementById('events-search-input'),
-            pkbonusCategoriesContainer: document.getElementById('pkbonus-categories-container'),
-            pkbonusItemsContainer: document.getElementById('pkbonus-items-container'),
-            pkbonusCategoriesView: document.getElementById('pkbonus-categories-view'),
-            pkbonusItemsView: document.getElementById('pkbonus-items-view'),
-            pkbonusSearchInput: document.getElementById('pkbonus-search-input'),
-            pkbonusBackButton: document.getElementById('pkbonus-back-button')
+            // Modified: Removed pkbonus specific category/item views, now uses single container
+            pkbonusContainer: document.getElementById('pkbonus-container'),
+            pkbonusSearchInput: document.getElementById('pkbonus-search-input')
         };
 
         // Initialize Application
@@ -1871,7 +1868,7 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             // Initialize events system
             initEventsSystem();
 
-            // Initialize PK Bonus system
+            // Initialize PK Bonus system (Modified)
             initPkBonusSystem();
 
             // Update daily info
@@ -1961,8 +1958,8 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             } else if (page === 'events') {
                 renderEvents();
             } else if (page === 'pkbonus') {
-                showPkBonusCategoriesView();
-                renderPkBonusCategories();
+                // Render all items directly
+                renderAllPkBonusItems();
             }
         }
 
@@ -2303,80 +2300,40 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             });
         }
 
-        // PK Bonus System
+        // PK Bonus System (MODIFIED: Flat List)
         function initPkBonusSystem() {
-            // Back button
-            elements.pkbonusBackButton.addEventListener('click', () => {
-                showPkBonusCategoriesView();
-                renderPkBonusCategories();
-            });
-
-            // Initial render
-            renderPkBonusCategories();
+            // Initial render (Render all directly)
+            renderAllPkBonusItems();
         }
 
-        function renderPkBonusCategories() {
-            elements.pkbonusCategoriesContainer.innerHTML = '';
-            
+        function renderAllPkBonusItems() {
+            elements.pkbonusContainer.innerHTML = '';
+
             pkBonusData.categories.forEach(category => {
-                const categoryCard = document.createElement('div');
-                categoryCard.className = 'category-card';
-                categoryCard.dataset.category = category.id;
-                categoryCard.style.borderColor = category.color;
-                
-                categoryCard.innerHTML = `
-                    <div class="category-icon" style="color: ${category.color}">
-                        <i class="${category.icon}"></i>
-                    </div>
-                    <div class="category-name">${category.name}</div>
-                    <div class="category-count">${category.items.length} template</div>
-                `;
-                
-                categoryCard.addEventListener('click', () => {
-                    showPkBonusItemsView(category.id);
+                category.items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'shortcut-item';
+                    
+                    // Add category badge to the title for clarity
+                    itemElement.innerHTML = `
+                        <div class="item-header">
+                            <div class="item-title">
+                                <span class="item-category-badge" style="background-color: ${category.color}">${category.name}</span>
+                                ${item.title}
+                            </div>
+                            <button class="copy-button" data-content="${encodeURIComponent(item.content)}">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </div>
+                        <div class="item-content">${item.content}</div>
+                    `;
+                    
+                    elements.pkbonusContainer.appendChild(itemElement);
                 });
-                
-                elements.pkbonusCategoriesContainer.appendChild(categoryCard);
             });
-        }
 
-        function showPkBonusCategoriesView() {
-            elements.pkbonusCategoriesView.style.display = 'block';
-            elements.pkbonusItemsView.classList.remove('active');
-        }
-
-        function showPkBonusItemsView(categoryId) {
-            const category = pkBonusData.categories.find(c => c.id === categoryId);
-            if (!category) return;
-            
-            elements.pkbonusCategoriesView.style.display = 'none';
-            elements.pkbonusItemsView.classList.add('active');
-            
-            renderPkBonusItems(category);
-        }
-
-        function renderPkBonusItems(category) {
-            elements.pkbonusItemsContainer.innerHTML = '';
-            
-            category.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'shortcut-item';
-                
-                itemElement.innerHTML = `
-                    <div class="item-header">
-                        <div class="item-title">${item.title}</div>
-                        <button class="copy-button" data-content="${encodeURIComponent(item.content)}">
-                            <i class="fas fa-copy"></i> Salin
-                        </button>
-                    </div>
-                    <div class="item-content">${item.content}</div>
-                `;
-                
-                elements.pkbonusItemsContainer.appendChild(itemElement);
-            });
-            
             // Add copy functionality
-            document.querySelectorAll('#pkbonus-items-container .copy-button').forEach(button => {
+            document.querySelectorAll('#pkbonus-container .copy-button').forEach(button => {
                 button.addEventListener('click', async () => {
                     const content = decodeURIComponent(button.dataset.content);
                     
@@ -2434,10 +2391,10 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 filterEvents(query);
             });
             
-            // PK Bonus search
+            // PK Bonus search (Modified to filter items directly)
             elements.pkbonusSearchInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase();
-                filterPkBonusCategories(query);
+                filterPkBonusItems(query);
             });
         }
 
@@ -2485,16 +2442,20 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             });
         }
 
-        function filterPkBonusCategories(query) {
-            const categories = document.querySelectorAll('#pkbonus-categories-container .category-card');
+        // Modified: Filter the flat list of PK Bonus items
+        function filterPkBonusItems(query) {
+            const items = document.querySelectorAll('#pkbonus-container .shortcut-item');
             
-            categories.forEach(card => {
-                const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+            items.forEach(item => {
+                // Get title and category text for filtering
+                const titleDiv = item.querySelector('.item-title');
+                const titleText = titleDiv.textContent.toLowerCase();
+                const contentText = item.querySelector('.item-content').textContent.toLowerCase();
                 
-                if (categoryName.includes(query) || !query) {
-                    card.style.display = 'block';
+                if (titleText.includes(query) || contentText.includes(query) || !query) {
+                    item.style.display = 'block';
                 } else {
-                    card.style.display = 'none';
+                    item.style.display = 'none';
                 }
             });
         }
@@ -2536,7 +2497,7 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 }
             }
             
-            // Escape to go back
+            // Escape to go back (Only for pages with categories)
             if (e.key === 'Escape') {
                 if (appState.currentPage === 'shortcut' && appState.currentCategory) {
                     showCategoriesView();
@@ -2544,9 +2505,6 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 } else if (appState.currentPage === 'qris') {
                     showQrisCategoriesView();
                     renderQrisCategories();
-                } else if (appState.currentPage === 'pkbonus') {
-                    showPkBonusCategoriesView();
-                    renderPkBonusCategories();
                 }
             }
         });
