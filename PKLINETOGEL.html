@@ -399,6 +399,7 @@
             font-weight: 600;
             color: var(--primary-color);
             font-size: 1.2rem;
+            word-break: break-word;
         }
 
         /* Category Badge for Flat List */
@@ -795,6 +796,12 @@
                         <span>Beranda</span>
                     </a>
                 </li>
+                <li class="nav-item" data-page="bonuslinetogel">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-gift"></i>
+                        <span>BONUS LINETOGEL</span>
+                    </a>
+                </li>
                 <li class="nav-item" data-page="shortcut">
                     <a href="#" class="nav-link">
                         <i class="fas fa-bolt"></i>
@@ -921,6 +928,33 @@
                 </div>
             </section>
 
+            <!-- BONUS LINETOGEL PAGE -->
+            <section id="bonuslinetogel-page" class="page-content hidden">
+                <div class="shortcut-header">
+                    <h1 class="page-title">BONUS LINETOGEL</h1>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="🔍 Cari tipe bonus..." id="bonuslinetogel-search-input">
+                    </div>
+                </div>
+
+                <!-- Categories View -->
+                <div id="bonuslinetogel-categories-view">
+                    <div class="categories-grid" id="bonuslinetogel-categories-container">
+                        <!-- Categories will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Items View (MODIFIED: Shows merged content) -->
+                <div id="bonuslinetogel-items-view" class="shortcut-items-container">
+                    <button class="back-button" id="bonuslinetogel-back-button">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Kategori
+                    </button>
+                    <div id="bonuslinetogel-items-container">
+                        <!-- Merged Items will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
             <!-- Shortcut Page -->
             <section id="shortcut-page" class="page-content hidden">
                 <div class="shortcut-header">
@@ -1027,6 +1061,7 @@
                 <h3 class="info-title">NAVIGASI CEPAT</h3>
                 <ul class="nav-menu">
                     <li><a href="#" class="nav-link" data-page="shortcut"><i class="fas fa-bolt"></i> Shortcut</a></li>
+                    <li><a href="#" class="nav-link" data-page="bonuslinetogel"><i class="fas fa-gift"></i> Bonus</a></li>
                     <li><a href="#" class="nav-link" data-page="pkbonus"><i class="fas fa-star"></i> PK Bonus</a></li>
                     <li><a href="#" class="nav-link" data-page="qris"><i class="fas fa-qrcode"></i> QRIS Info</a></li>
                 </ul>
@@ -1202,6 +1237,155 @@
             ]
         };
 
+        // Data Bonus Linetogel
+        const bonusLinetogelData = {
+            categories: [
+                {
+                    id: 'bonus-all',
+                    name: 'BONUS ALL',
+                    icon: 'fas fa-layer-group',
+                    color: '#ffffff',
+                    items: [
+                        { title: 'Bonus Referral Togel', content: '- Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)' },
+                        { title: 'Bonus Referral Slot', content: '- Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral Live Games', content: '- Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral Live Games PRAGMATIC', content: '- Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral ARCADE', content: '- Bonus Referral ARCADE = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral E-lottery', content: '- Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Rollingan LIVE GAMES', content: '- Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)' },
+                        { title: 'Bonus Rollingan SLOT', content: '- Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)' },
+                        { title: 'Bonus Rollingan LIVE GAMES PRAGMATIC', content: '- Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' },
+                        { title: 'Bonus Rollingan ARCADE', content: '- Bonus Rollingan turnover ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' },
+                        { title: 'Bonus Rollingan E-lottery', content: '- Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' },
+                        { title: 'Bonus Cashback up to 5% ( Live Games )', content: '- Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.\nMinimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan\nUntuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Slot Games )', content: '- Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.' },
+                        { title: 'Bonus Cashback 5% ( Live Games PRAGMATIC )', content: '- Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( E-lottery )', content: '- Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Arcade )', content: '- Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim' },
+                        { title: 'Bonus Extra Slot', content: '- Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level\n( berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari )' },
+                        { title: 'Info Tambahan', content: 'untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs\n\nNB : tidak ada bonus deposit harian / bonus new member.' }
+                    ]
+                },
+                {
+                    id: 'bonus-arcade',
+                    name: 'BONUS ARCADE',
+                    icon: 'fas fa-gamepad',
+                    color: '#ff9900',
+                    items: [
+                        { title: 'Bonus Cashback 5% ( Arcade )', content: '- Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim' },
+                        { title: 'Bonus Rollingan turnover Arcade', content: '- Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan ARCADE\ndibagikan setiap hari KAMIS setelah jadwal maintenance selesai' }
+                    ]
+                },
+                {
+                    id: 'bonus-cashback',
+                    name: 'BONUS CASHBACK',
+                    icon: 'fas fa-coins',
+                    color: '#ff5555',
+                    items: [
+                        { title: 'Bonus Cashback up to 5% ( Live Games )', content: '- Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.\nMinimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan\nUntuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Slot Games )', content: '- Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Live Games PRAGMATIC )', content: '- Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( E-lottery )', content: '- Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Arcade )', content: '- Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim' },
+                        { title: 'Info Tambahan', content: 'NB : tidak ada bonus deposit harian / bonus new member' }
+                    ]
+                },
+                {
+                    id: 'bonus-e-lottery',
+                    name: 'BONUS E - LOTTERY',
+                    icon: 'fas fa-ticket-alt',
+                    color: '#aa00ff',
+                    items: [
+                        { title: 'Bonus Cashback 5% ( E-lottery )', content: '- Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari selasa tanpa perlu diklaim' },
+                        { title: 'Bonus Rollingan turnover E-lottery', content: '- Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan E-lottery\ndibagikan setiap hari KAMIS setelah jadwal maintenance selesai' }
+                    ]
+                },
+                {
+                    id: 'bonus-live-games',
+                    name: 'BONUS LIVE GAMES',
+                    icon: 'fas fa-chess',
+                    color: '#00ff99',
+                    items: [
+                        { title: 'Bonus Cashback up to 5% ( Live Games )', content: '- Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.\nMinimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan\nUntuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Live Games PRAGMATIC )', content: '- Bonus Cashback 5% ( Live Games PRAGMATIC ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games PRAGMATIC\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Rollingan turnover LIVE GAMES', content: '- Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan LIVE GAMES, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai' },
+                        { title: 'Bonus Rollingan turnover LIVE GAMES PRAGMATIC', content: '- Bonus Rollingan turnover LIVE GAMES PRAGMATIC 0,5 dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' }
+                    ]
+                },
+                {
+                    id: 'bonus-mingguan',
+                    name: 'BONUS MINGGUAN',
+                    icon: 'fas fa-calendar-alt',
+                    color: '#00ccff',
+                    items: [
+                        { title: 'Bonus Rollingan turnover LIVE GAMES', content: '- Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)' },
+                        { title: 'Bonus Rollingan turnover SLOT', content: '- Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)' },
+                        { title: 'Bonus Rollingan turnover PRAGMATIC PLAY', content: '- Bonus Rollingan turnover PRAGMATIC PLAY sebesar 0,5% dari total bettingan (dibagikan setiap hari KAMIS setelah jadwal maintenance selesai)' },
+                        { title: 'Bonus Rollingan turnover ARCADE', content: '- Bonus Rollingan turnover ARCADE sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' },
+                        { title: 'Bonus Rollingan turnover E-lottery', content: '- Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan ( dibagikan setiap hari KAMIS setelah maintenance selesai )' },
+                        { title: 'Bonus Cashback up to 5% ( Live Games )', content: '- Bonus Cashback up to 5% ( Live Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Live Games.\nMinimal kekalahan Rp.100.000,Untuk nominal 100,000- 249,999,999 =Bonus yang didapat 2,5% dari total kekalahan\nUntuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan , Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( PRAGMATIC PLAY )', content: '- Bonus Cashback 5% ( PRAGMATIC PLAY) = Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY.\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Slot Games )', content: '- Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa.' },
+                        { title: 'Bonus Cashback 5% ( E-lottery )', content: '- Bonus Cashback 5% ( E-lottery ) = Bonus Kekalahan 5% hanya berlaku untuk permainan E-lottery\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.' },
+                        { title: 'Bonus Cashback 5% ( Arcade )', content: '- Bonus Cashback 5% ( Arcade ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Arcade\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Senin tanpa perlu diklaim' },
+                        { title: 'Info Tambahan', content: 'untuk syarat dan ketentuan bonus dapat di lihat di menu promosi pada situs\n\nNB : tidak ada bonus deposit harian / bonus new member.' }
+                    ]
+                },
+                {
+                    id: 'bonus-referral',
+                    name: 'BONUS REFERRAL',
+                    icon: 'fas fa-users',
+                    color: '#ffaa00',
+                    items: [
+                        { title: 'Bonus Referral Togel', content: '- Bonus Referral Togel = Bonus referral sebesar 0,5% (dibagikan setiap hari Setiap buka pasaran)' },
+                        { title: 'Bonus Referral Slot', content: '- Bonus Referral Slot = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral Live Games', content: '- Bonus Referral Live Games = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral Live Games PRAGMATIC', content: '- Bonus Referral Live Games PRAGMATIC = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral ARCADE', content: '- Bonus Referral ARCADE = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' },
+                        { title: 'Bonus Referral E-lottery', content: '- Bonus Referral E-lottery = Bonus Referral sebesar 0.1% (dibagikan setiap hari)' }
+                    ]
+                },
+                {
+                    id: 'bonus-rollingan',
+                    name: 'BONUS ROLLINGAN',
+                    icon: 'fas fa-sync-alt',
+                    color: '#00ffcc',
+                    items: [
+                        { title: 'Bonus Rollingan turnover LIVE GAMES', content: '- Bonus Rollingan turnover LIVE GAMES sebesar 0,5% dari total bettingan' },
+                        { title: 'Bonus Rollingan turnover PRAGMATIC PLAY', content: '- Bonus Rollingan turnover PRAGMATIC PLAY sebesar 0,5% dari total bettingan' },
+                        { title: 'Bonus Rollingan turnover SLOT', content: '- Bonus Rollingan turnover SLOT sebesar 0,5% dari total bettingan' },
+                        { title: 'Bonus Rollingan turnover ARCADE', content: '- Bonus Rollingan turnover ARCADE sebesar 0,5% dari total bettingan' },
+                        { title: 'Bonus Rollingan turnover E-lottery', content: '- Bonus Rollingan turnover E- lottery sebesar 0,5% dari total bettingan' },
+                        { title: 'Info Pembagian', content: 'bonus rollingan dibagikan setiap hari KAMIS setelah jadwal maintenance selesai ya bosku' }
+                    ]
+                },
+                {
+                    id: 'bonus-slot',
+                    name: 'BONUS SLOT',
+                    icon: 'fas fa-dice',
+                    color: '#ff00ff',
+                    items: [
+                        { title: 'Bonus Cashback 5% ( Slot Games )', content: '- Bonus Cashback 5% ( Slot Games ) = Bonus Kekalahan 5% hanya berlaku untuk permainan Slot Games.\nMinimal kekalahan Rp.100.000, Otomatis dibagikan setiap Hari Selasa tanpa perlu diklaim.' },
+                        { title: 'Bonus Rollingan turnover SLOT', content: '- Bonus Rollingan turnover sebesar 0,5% dari total bettingan => khusus untuk permainan SLOT, dibagikan setiap hari KAMIS setelah jadwal maintenance selesai.' },
+                        { title: 'Bonus Extra Slot', content: '- Bonus Extra Slot = Bonus yang didapatkan setiap tanggal 01, 11, dan 21 dengan sistem level ( berdasarkan turnover bettingan anda dalam permainan SLOT selama 10 hari ) tanpa perlu diklaim.' }
+                    ]
+                },
+                {
+                    id: 'bonus-vip',
+                    name: 'BONUS VIP',
+                    icon: 'fas fa-crown',
+                    color: '#ffd700',
+                    items: [
+                        { title: '1. BONUS CASHBACK LIVEGAMES 8 %', content: 'Up Bonus 5% dari biasanya' },
+                        { title: '2. BONUS CASHBACK SLOT GAMES 12 %', content: 'Up Bonus 3% dari biasanya' },
+                        { title: '3. ROLLINGAN TURNOVER SLOT GAMES 0,3%', content: '' },
+                        { title: '4. BONUS ULANG TAHUN', content: '' },
+                        { title: '5. ROLLINGAN TURNOVER LIVEGAMES 0,1%', content: '' }
+                    ]
+                }
+            ]
+        };
+
         // Data QRIS
         const qrisData = {
             categories: [
@@ -1244,15 +1428,15 @@
                     color: '#ff5555',
                     items: [
                         {
-                            title: 'BUKAN QRIS LINE TOGEL - STEP 1',
+                            title: 'BUKAN QRIS LINE TOGEL - STEP1',
                             content: `Mohon maaf ya bosku, untuk bukti yang anda berikan kami cekkan bukan Merchant Qris milik kami ya bosku`
                         },
                         {
-                            title: 'BUKAN QRIS LINE TOGEL - STEP 2',
+                            title: 'BUKAN QRIS LINE TOGEL - STEP2',
                             content: `kami informasikan bosku untuk bukti tersebut bukan milik kami ya bosku , Terima kasih`
                         },
                         {
-                            title: 'BUKAN QRIS LINE TOGEL - STEP 3',
+                            title: 'BUKAN QRIS LINE TOGEL - STEP3',
                             content: `kami informasikan kembali untuk bukti transfer yang anda berikan diatas bukanlah qris deposit milik kami ya bosku`
                         }
                     ]
@@ -1408,7 +1592,7 @@ NB : Jenis permainan yang memiliki fitur RE-SPIN tidak termasuk dalam promo ini.
             },
             {
                 id: 'scatter-mahjong',
-                title: 'EVENT SCATTER MAHJONG WAYS 1 & 2',
+                title: 'EVENT SCATTER MAHJONG WAYS1 & 2',
                 category: 'Slot Event',
                 icon: 'fas fa-gamepad',
                 color: '#7b00ff',
@@ -1693,7 +1877,7 @@ Jika dalam 1 minggu total turnover anda sebesar 100.000.000 maka bonus yang akan
 
 - Selalu aktif bermain dan kumpulkan turnover anda sebanyak - banyaknya.
 - Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.
-- Semua keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu gugat.`
+- Semua keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
             },
             {
                 id: 'cashback-pragmatic',
@@ -1821,7 +2005,8 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 events: document.getElementById('events-page'),
                 pkbonus: document.getElementById('pkbonus-page'),
                 qris: document.getElementById('qris-page'),
-                promotions: document.getElementById('promotions-page')
+                promotions: document.getElementById('promotions-page'),
+                bonuslinetogel: document.getElementById('bonuslinetogel-page')
             },
             clock: document.getElementById('clock'),
             date: document.getElementById('date'),
@@ -1842,7 +2027,14 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             eventsSearchInput: document.getElementById('events-search-input'),
             // Modified: Removed pkbonus specific category/item views, now uses single container
             pkbonusContainer: document.getElementById('pkbonus-container'),
-            pkbonusSearchInput: document.getElementById('pkbonus-search-input')
+            pkbonusSearchInput: document.getElementById('pkbonus-search-input'),
+            // Bonus Linetogel Elements
+            bonuslinetogelCategoriesContainer: document.getElementById('bonuslinetogel-categories-container'),
+            bonuslinetogelItemsContainer: document.getElementById('bonuslinetogel-items-container'),
+            bonuslinetogelCategoriesView: document.getElementById('bonuslinetogel-categories-view'),
+            bonuslinetogelItemsView: document.getElementById('bonuslinetogel-items-view'),
+            bonuslinetogelSearchInput: document.getElementById('bonuslinetogel-search-input'),
+            bonuslinetogelBackButton: document.getElementById('bonuslinetogel-back-button')
         };
 
         // Initialize Application
@@ -1870,6 +2062,9 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
 
             // Initialize PK Bonus system (Modified)
             initPkBonusSystem();
+
+            // Initialize Bonus Linetogel system
+            initBonusLinetogelSystem();
 
             // Update daily info
             updateDailyInfo();
@@ -1960,6 +2155,10 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             } else if (page === 'pkbonus') {
                 // Render all items directly
                 renderAllPkBonusItems();
+            } else if (page === 'bonuslinetogel') {
+                // Show categories
+                showBonusLinetogelCategoriesView();
+                renderBonusLinetogelCategories();
             }
         }
 
@@ -2251,7 +2450,7 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                     }
                 });
                 
-                // Also allow clicking on the card to expand
+                // Also allow clicking on card to expand
                 eventCard.addEventListener('click', (e) => {
                     if (!e.target.closest('.event-toggle') && !e.target.closest('.copy-button')) {
                         toggleBtn.click();
@@ -2314,7 +2513,7 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                     const itemElement = document.createElement('div');
                     itemElement.className = 'shortcut-item';
                     
-                    // Add category badge to the title for clarity
+                    // Add category badge to title for clarity
                     itemElement.innerHTML = `
                         <div class="item-header">
                             <div class="item-title">
@@ -2334,6 +2533,127 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
 
             // Add copy functionality
             document.querySelectorAll('#pkbonus-container .copy-button').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const content = decodeURIComponent(button.dataset.content);
+                    
+                    try {
+                        await navigator.clipboard.writeText(content);
+                        
+                        // Visual feedback
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = content;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+            });
+        }
+
+        // BONUS LINETOGEL SYSTEM (MODIFIED: Merged Text & Single Copy)
+        function initBonusLinetogelSystem() {
+            // Back button
+            elements.bonuslinetogelBackButton.addEventListener('click', () => {
+                showBonusLinetogelCategoriesView();
+                renderBonusLinetogelCategories();
+            });
+
+            // Initial render
+            renderBonusLinetogelCategories();
+        }
+
+        function renderBonusLinetogelCategories() {
+            elements.bonuslinetogelCategoriesContainer.innerHTML = '';
+            
+            bonusLinetogelData.categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.dataset.category = category.id;
+                categoryCard.style.borderColor = category.color;
+                
+                categoryCard.innerHTML = `
+                    <div class="category-icon" style="color: ${category.color}">
+                        <i class="${category.icon}"></i>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-count">${category.items.length} bonus</div>
+                `;
+                
+                categoryCard.addEventListener('click', () => {
+                    showBonusLinetogelItemsView(category.id);
+                });
+                
+                elements.bonuslinetogelCategoriesContainer.appendChild(categoryCard);
+            });
+        }
+
+        function showBonusLinetogelCategoriesView() {
+            elements.bonuslinetogelCategoriesView.style.display = 'block';
+            elements.bonuslinetogelItemsView.classList.remove('active');
+        }
+
+        function showBonusLinetogelItemsView(categoryId) {
+            const category = bonusLinetogelData.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            elements.bonuslinetogelCategoriesView.style.display = 'none';
+            elements.bonuslinetogelItemsView.classList.add('active');
+            
+            renderBonusLinetogelItems(category);
+        }
+
+        function renderBonusLinetogelItems(category) {
+            elements.bonuslinetogelItemsContainer.innerHTML = '';
+
+            // 1. Combine all items content into a single string
+            let combinedContent = '';
+            category.items.forEach((item, index) => {
+                // Add separator if it's not the first item
+                if (index > 0) {
+                    combinedContent += '\n\n';
+                }
+                // Combine Title and Content
+                combinedContent += `${item.title}\n${item.content}`;
+            });
+
+            // 2. Create the single item container
+            const itemElement = document.createElement('div');
+            itemElement.className = 'shortcut-item';
+            
+            itemElement.innerHTML = `
+                <div class="item-header">
+                    <div class="item-title">Daftar Bonus Lengkap: ${category.name}</div>
+                    <button class="copy-button" data-content="${encodeURIComponent(combinedContent)}">
+                        <i class="fas fa-copy"></i> Salin Semua
+                    </button>
+                </div>
+                <div class="item-content">${combinedContent}</div>
+            `;
+            
+            elements.bonuslinetogelItemsContainer.appendChild(itemElement);
+            
+            // 3. Add copy functionality for the merged text
+            document.querySelectorAll('#bonuslinetogel-items-container .copy-button').forEach(button => {
                 button.addEventListener('click', async () => {
                     const content = decodeURIComponent(button.dataset.content);
                     
@@ -2396,6 +2716,12 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 const query = e.target.value.toLowerCase();
                 filterPkBonusItems(query);
             });
+
+            // Bonus Linetogel Search
+            elements.bonuslinetogelSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterBonusLinetogelCategories(query);
+            });
         }
 
         function filterCategories(query) {
@@ -2442,7 +2768,7 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
             });
         }
 
-        // Modified: Filter the flat list of PK Bonus items
+        // Modified: Filter flat list of PK Bonus items
         function filterPkBonusItems(query) {
             const items = document.querySelectorAll('#pkbonus-container .shortcut-item');
             
@@ -2456,6 +2782,20 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                     item.style.display = 'block';
                 } else {
                     item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterBonusLinetogelCategories(query) {
+            const categories = document.querySelectorAll('#bonuslinetogel-categories-container .category-card');
+            
+            categories.forEach(card => {
+                const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+                
+                if (categoryName.includes(query) || !query) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
                 }
             });
         }
@@ -2494,6 +2834,8 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                     elements.eventsSearchInput.focus();
                 } else if (appState.currentPage === 'pkbonus') {
                     elements.pkbonusSearchInput.focus();
+                } else if (appState.currentPage === 'bonuslinetogel') {
+                    elements.bonuslinetogelSearchInput.focus();
                 }
             }
             
@@ -2505,6 +2847,9 @@ Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang di
                 } else if (appState.currentPage === 'qris') {
                     showQrisCategoriesView();
                     renderQrisCategories();
+                } else if (appState.currentPage === 'bonuslinetogel') {
+                    showBonusLinetogelCategoriesView();
+                    renderBonusLinetogelCategories();
                 }
             }
         });
