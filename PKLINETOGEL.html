@@ -434,6 +434,172 @@
             border-left: 3px solid var(--primary-color);
         }
 
+        /* Event Page Styles */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, rgba(0, 40, 80, 0.8), rgba(0, 20, 40, 0.8));
+            border-radius: 15px;
+            padding: 25px;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.3);
+        }
+
+        .event-card:hover::before {
+            left: 100%;
+        }
+
+        .event-card.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .event-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .event-category {
+            display: inline-block;
+            background: rgba(0, 102, 255, 0.3);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .event-preview {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .event-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 243, 255, 0.1);
+        }
+
+        .event-details.active {
+            display: block;
+        }
+
+        .event-content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+        }
+
+        .event-content-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .event-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-line;
+            background: rgba(0, 30, 60, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-color);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .event-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .event-content::-webkit-scrollbar-track {
+            background: rgba(0, 20, 40, 0.5);
+            border-radius: 4px;
+        }
+
+        .event-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .event-toggle {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 15px;
+        }
+
+        .event-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .event-toggle.collapsed i {
+            transform: rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .event-toggle.expanded i {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+
         /* Quick Info Sidebar */
         .quick-info {
             margin-top: 30px;
@@ -498,6 +664,10 @@
             .page-title {
                 font-size: 2rem;
             }
+            
+            .events-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
@@ -526,6 +696,10 @@
             .categories-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
+            
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -543,6 +717,10 @@
             
             .clock-time {
                 font-size: 1.8rem;
+            }
+            
+            .event-title {
+                font-size: 1.1rem;
             }
         }
 
@@ -615,6 +793,12 @@
                     <a href="#" class="nav-link">
                         <i class="fas fa-gamepad"></i>
                         <span>Event Line</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="pkbonus">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-star"></i>
+                        <span>PK BONUS & SCATTER</span>
                     </a>
                 </li>
                 <li class="nav-item" data-page="qris">
@@ -755,9 +939,43 @@
             <!-- Events Page -->
             <section id="events-page" class="page-content hidden">
                 <h1 class="page-title">EVENT LINE</h1>
-                <p style="text-align: center; color: var(--text-secondary);">
-                    Halaman dalam pengembangan.
-                </p>
+                
+                <div class="shortcut-header">
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="🔍 Cari event..." id="events-search-input">
+                    </div>
+                </div>
+                
+                <div class="events-grid" id="events-container">
+                    <!-- Events will be loaded here -->
+                </div>
+            </section>
+
+            <!-- PK BONUS & SCATTER Page -->
+            <section id="pkbonus-page" class="page-content hidden">
+                <div class="shortcut-header">
+                    <h1 class="page-title">PK BONUS & SCATTER</h1>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="🔍 Cari informasi PK Bonus & Scatter..." id="pkbonus-search-input">
+                    </div>
+                </div>
+
+                <!-- Categories View -->
+                <div id="pkbonus-categories-view">
+                    <div class="categories-grid" id="pkbonus-categories-container">
+                        <!-- Categories will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Items View -->
+                <div id="pkbonus-items-view" class="shortcut-items-container">
+                    <button class="back-button" id="pkbonus-back-button">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Kategori
+                    </button>
+                    <div id="pkbonus-items-container">
+                        <!-- Items will be loaded here -->
+                    </div>
+                </div>
             </section>
 
             <!-- QRIS Page -->
@@ -809,7 +1027,7 @@
                 <h3 class="info-title">NAVIGASI CEPAT</h3>
                 <ul class="nav-menu">
                     <li><a href="#" class="nav-link" data-page="shortcut"><i class="fas fa-bolt"></i> Shortcut</a></li>
-                    <li><a href="#" class="nav-link" data-page="promotions"><i class="fas fa-percentage"></i> Promosi</a></li>
+                    <li><a href="#" class="nav-link" data-page="pkbonus"><i class="fas fa-star"></i> PK Bonus</a></li>
                     <li><a href="#" class="nav-link" data-page="qris"><i class="fas fa-qrcode"></i> QRIS Info</a></li>
                 </ul>
             </div>
@@ -1106,6 +1324,487 @@
             ]
         };
 
+        // Data Events
+        const eventsData = [
+            {
+                id: 'gates-of-olympus',
+                title: 'GATES OF OLYMPUS SUPER SCATTER',
+                category: 'Slot Event',
+                icon: 'fas fa-crown',
+                color: '#ffd700',
+                content: `GATES OF OLYMPUS SUPER SCATTER
+BONUS SETIAP HARI DARI PUKUL 00.00 - 23.59 WIB
+
+BONUS:
+BET 800 - 1.600
+1 Super scatter : 50.000
+2 Super scatter : 100.000
+3 Super scatter : 150.000
+4 Super scatter : 250.000
+
+BET 2.000 - 4.000
+1 Super scatter : 100.000
+2 Super scatter : 200.000
+3 Super scatter : 300.000
+4 Super scatter : 500.000
+
+BET 5.000 - 7.000
+1 Super scatter : 250.000
+2 Super scatter : 500.000
+3 Super scatter : 750.000
+4 Super scatter : 1.000.000
+
+
+Syarat & Ketentuan:
+1. Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER
+2. Event ini berlaku untuk semua member LINETOGEL yang bermain slot GATES OF OLYMPUS SUPER SCATTER
+3. Hadiah Akan Di Berikan Dari Total mendapatkan GATES OF OLYMPUS SUPER SCATTER.
+4. Maksimal Bonus yang di berikan untuk Event ini adalah Rp.1.000.000 per Hari.
+5. Maksimal Claim Bonus GATES OF OLYMPUS SUPER SCATTER 1 User ID per harinya yaitu 3x.
+6. Maksimal Bonus per 1x claim Event gate olympus super scatter yaitu Rp.1.000.000.
+7. Wajib melakukan proses Claim melalui livechat LINETOGEL
+8. Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya.
+9. Event ini tidak dapat digabungkan dengan event slot lainnya.
+10. Semua keputusan LINETOGEL bersifat mutlak dan tidak dapat diganggu gugat.`
+            },
+            {
+                id: 'buy-spin-freespin',
+                title: 'EVENT BUY SPIN & FREE SPIN',
+                category: 'Slot Event',
+                icon: 'fas fa-sync-alt',
+                color: '#00cc66',
+                content: `EVENT BUY SPIN & FREE SPIN
+BERLAKU UNTUK PROVIDER PRAGMATIC PLAY, PG SOFT, FAT PANDA, SLOT MANIA dan NO LIMIT CITY
+
+Rincian Event :
+Kemenangan Minimal : Rp 450.000,- untuk bisa melakukan claim
+Extra Bonus Freespin 20%
+Extra Bonus Buyspin 25%
+
+Contoh Extra Bonus Buyspin 25% sebagai berikut :
+
+Buyspin dengan nominal 200.000 dan mendapat kemenangan 1.000.000
+maka bonus yang diberikan : kemenangan - modal x 25%
+kemenangan  = 1.000.000 - 200.000 (modal) = 800.000
+maka bonus yang diberikan 800.000 x 25% = 200.000
+
+Contoh Extra Bonus Freespin 20% sebagai berikut :
+
+Ketika bermain dan mendapat Freespin lalu mendapat kemenangan sebesar 1.000.000
+maka bonus yang diberikan adalah : kemenangan x 20%
+1.000.000 x 20% = 200.000
+
+Silahkan melakukan claim dengan menghubungi kami melalui LIVECHAT.
+
+- Event Berlaku untuk seluruh member LINETOGEL
+- Maksimal Claim Per ID 1 x Dalam Sehari
+- Maksimal bonus Per ID IDR 400.000,-/hari
+- Batas Claim maksimal  pada pukul 23:50 WIB Setiap harinya dan akan di reset kembali pukul 00.01 setiap harinya
+- Klaim wajib sertakan screenshot kemenangan & History hasil BUYSPIN/FREESPIN
+- Untuk setiap pecahan yang didapat dari provider contoh adalah gambar scatter dengan di setiap gambar ada perkalian khusus dari provider tidak terhitung total kemenangan anda dan perhitungan mulai dari mendapatkan freespin atau buyspin
+- Semua Promo dan syarat ketentuan tidak bersifat mengikat serta dapat berubah sewaktu-waktu tanpa pemberitahuan terlebih dahulu.
+- Keputusan LINETOGEL bersifat mutlak dan tidak dapat diganggu gugat.
+NB : Jenis permainan yang memiliki fitur RE-SPIN tidak termasuk dalam promo ini. Kami sarankan untuk bermain di permainan yang memenuhi syarat agar dapat menikmati keuntungan dari promo ini.`
+            },
+            {
+                id: 'scatter-mahjong',
+                title: 'EVENT SCATTER MAHJONG WAYS 1 & 2',
+                category: 'Slot Event',
+                icon: 'fas fa-gamepad',
+                color: '#7b00ff',
+                content: `EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL
+
+Mahjong Ways 1
+Mahjong Ways 2
+
+Hadiah :
+
+BET 1.600 - 2.400 :
+3 - 5 SCATTER RP. 15.000,-
+
+BET 2.800 - 8.000 :
+3 - 5 SCATTER RP. 25,000,-
+
+BET 12.000 - 16.000 :
+3 - 5 SCATTER RP. 40.000,-
+
+BET 20.000 - 1.000.000 :
+3 - 5 SCATTER RP. 50.000,-
+
+1. SS DAPAT SCATTER
+2. SS KEMENANGAN AKHIR
+3. SS HISTORY KEMENANGAN
+
+Syarat & Ketentuan
+
+Event hanya berlaku pada permainan Slot PG SOFT:
+Mahjong Ways 1
+Mahjong Ways 2
+Claim melalui LIVECHAT.
+Nama Rekening dan Nomor Rekening wajib valid. Apabila tidak valid, bonus akan hangus.
+Maksimal klaim per hari adalah 2 kali.
+Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya.
+Syarat dan ketentuan dapat berubah sewaktu-waktu.`
+            },
+            {
+                id: 'bonus-referral-togel',
+                title: 'BONUS REFERAL TOGEL',
+                category: 'Referral',
+                icon: 'fas fa-users',
+                color: '#55aaff',
+                content: `Bonus Referral 0.5% LINETOGEL
+Sistem referral LINETOGEL adalah program peluang usaha tanpa modal untuk anda dan teman-teman anda. Caranya mudah: hanya cukup dengan menyebarkan link referral anda kepada teman-teman untuk bergabung dan melakukan transaksi maka anda akan memperoleh bonus referral, atau langsung mendaftarkan teman-teman anda menjadi member referral terlebih dahulu maka anda akan mendapatkan keuntungan dari setiap transaksi member referral anda.
+
+Berikut ini Persentase perhitungan bonus :
+1. 4D: 0.5%
+
+2. 3D: 0.5%
+
+3. 2D: 0.5%
+
+4. Permainan colok / shio / 50-50: 0.1%
+
+Komisi referral di atas berlaku untuk semua pasaran togel.
+
+Cara untuk mendapatkan Link Refferal :
+- Daftarkan diri anda sebagai member di LINETOGEL
+- Login kedalam akun anda dan kemudian pilih menu refferal untuk mendapatkan link refferal anda
+- Daftarkan teman / saudara / sahabat / rekan anda yang lainnya melalui link tersebut
+- Contoh Link Referral : https://line83092.com/link.php?member=HANYACONTOH
+- Silahkan diubah tulisan HANYACONTOH menjadi nama akun (username) anda sendiri
+- Apabila nama akun (username) anda linetest maka Link referral anda menjadi https://line83092.com/link.php?member=linetest
+- Ayo dimulai saat ini juga, Peluang Usaha Tanpa Modal dengan cara daftarkan semua teman / rekan anda menjadi downline referral anda dan dapatkan bonus tanpa batas dari LINETOGEL - berlaku seumur hidup! setiap harinya.`
+            },
+            {
+                id: 'bonus-referral-slot-live',
+                title: 'BONUS REFERRAL SLOT GAMES & LIVE GAMES',
+                category: 'Referral',
+                icon: 'fas fa-user-plus',
+                color: '#ff66aa',
+                content: `BONUS REFERRAL 0.1% ( SLOT GAMES & LIVE GAMES )
+
+Syarat & Ketentuan :
+- Wajib memiliki akun (UserID) yang terdaftar pada LINETOGEL
+- Dapatkan link referral akun anda berfungsi untuk mendaftarkan bawahan anda
+- Anda juga bisa menyebarkan link referral anda di media sosial seperti : Facebook / Twitter / Blog / Forum dan lain sebagainya
+- Ketika pendaftaran member baru melalui link refferal anda, maka secara otomatis member tersebut menjadi bawahan referensi anda
+- Perhitungan Bonus Referral Slot & Live Games dihitung berdasarkan Turnover Refferral anda pada pemainan tersebut..
+- Pembagian Bonus Referral dilakukan Setiap hari dan dibagikan secara otomatis :
+  Referral Slot Games : Jam 03:00 WIB
+- Referral Live Games : 5 sesi pembagian bonus.
+( Jam 13:15 WIB ,  16:15 WIB,  19:15 WIB, 22:15 WIB, 23:59 WIB )
+
+Cara untuk mendapatkan Link Refferal :
+- Daftarkan diri anda sebagai member di LINETOGEL
+- Login kedalam akun anda dan kemudian pilih menu refferal untuk mendapatkan link refferal anda
+- Daftarkan teman / saudara / sahabat / rekan anda yang lainnya melalui link tersebut
+- Contoh Link Referral : https://line83092.com/link.php?member=HANYACONTOH
+- Silahkan diubah tulisan HANYACONTOH menjadi nama akun (username) anda sendiri
+- Apabila nama akun (username) anda linetest maka Link referral anda menjadi https://line83092.com/link.php?member=linetest
+- Ayo dimulai saat ini juga, Peluang Usaha Tanpa Modal dengan cara daftarkan semua teman / rekan anda menjadi downline referral anda dan dapatkan bonus tanpa batas dari LINETOGEL - berlaku seumur hidup!`
+            },
+            {
+                id: 'cashback-elottery',
+                title: 'BONUS CASHBACK KEKALAHAN 5% E-LOTTERY',
+                category: 'Cashback',
+                icon: 'fas fa-coins',
+                color: '#ffaa00',
+                content: `Syarat & Ketentuan :
+- Bonus Kekalahan 5% hanya berlaku untuk permainan E-LOTTERY
+- Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000
+- Periode Hitungan cashback kekalahan dari hari Selasa s/d Senin
+
+- Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )
+- Cara Perhitungan Bonus Kekalahan :
+Contoh :
+Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Selasa dan akan dibagikan secara otomatis tanpa perlu diklaim
+- Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'cashback-slot',
+                title: 'BONUS CASHBACK KEKALAHAN 5% SLOT GAMES',
+                category: 'Cashback',
+                icon: 'fas fa-dice',
+                color: '#ff5555',
+                content: `Syarat & Ketentuan :
+- Bonus Kekalahan 5% hanya berlaku untuk permainan SLOT
+- Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000
+- Periode Hitungan cashback kekalahan dari hari Selasa s/d Senin
+- Cara Perhitungan Bonus Kekalahan :
+Contoh :
+Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Selasa dan akan dibagikan secara otomatis tanpa perlu diklaim
+- Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'extra-turnover-slot',
+                title: 'EXTRA BONUS TURNOVER SLOT UP TO Rp.10.000.000',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-chart-bar',
+                color: '#00ffaa',
+                content: `Syarat & Ketentuan :
+
+- Wajib memiliki UserID yang terdaftar pada Line Togel
+- EXTRA BONUS TURNOVER SLOT diberikan dari jumlah Turnover permainan SLOT GAME anda selama 10 hari.
+- MINIMAL TURNOVER yang harus dicapai untuk mendapatkan bonus adalah sebesar 10.000.000
+- EXTRA BONUS TURNOVER SLOT akan dibagikan secara otomatis setiap tanggal 01, 11, & 21 setiap bulannya tanpa perlu melakukan klaim.
+
+Contoh perhitungan EXTRA BONUS TURNOVER SLOT :
+
+LEVEL 1 Jumlah TO 10.000.000 - 24.999.999 = 25.000
+LEVEL 2 Jumlah TO 25.000.000 - 49.999.999 = 100.000
+LEVEL 3 Jumlah TO 50.000.000 - 99.999.999 = 250.000
+LEVEL 4 Jumlah TO 100.000.000 - 299.999.999 = 500.000
+LEVEL 5 Jumlah TO 300.000.000 - 499.999.999 = 1.000.000
+LEVEL 6 Jumlah TO 500.000.000 - 999.999.999 = 2.000.000
+LEVEL 7 Jumlah TO 1.000.000.000 - 2.999.999.999 = 5.000.000
+LEVEL 8 Jumlah TO 3.000.000.000 - 999.999.999.999 = 10.000.000
+
+Note : Jika dalam 10 hari jumlah TurnOver anda pada permainan SLOT GAME mencapai Rp.3.000.000.000
+maka bonus yang akan anda dapatkan sebesar Rp.10.000.000 ( BONUS LEVEL 8 )
+
+- Selalu aktif bermain dan kumpulkan TURNOVER anda sebanyak - banyaknya.
+- Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat`
+            },
+            {
+                id: 'turnover-slotgames',
+                title: 'BONUS CASHBACK TURNOVER SLOTGAMES 0.5%',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-percentage',
+                color: '#aa55ff',
+                content: `Syarat & Ketentuan :
+- Wajib memiliki akun (USER ID) yang terdaftar pada LINETOGEL
+- Bonus Cashback 0.5% dihitung dari total Turnover pada permainan selama 1 minggu
+- Turnover adalah total nominal yang sudah berhasil di betting / pasang dalam meja permainan ( Berapapun nominal yang dibetting dengan hasil menang atau kalah tetap dihitung sebagai Turnover )
+- Periode Hitungan Cashback Turn Over dari hari Kamis s/d Rabu
+- Cara Perhitungan Cashback Turnover :
+Contoh :
+Jika dalam 1 minggu total turnover yang dikumpulkan sebesar Rp.100.000.000 x 0.5% = Rp.500.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Cashback TurnOver 0.5% hanya diberikan setiap hari kamis setelah maintenance selesai & akan dibagikan secara otomatis tanpa perlu diklaim
+- Selalu aktif bermain dan kumpulkan turnover sebanyak - banyaknya
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'turnover-elottery',
+                title: 'BONUS CASHBACK TURNOVER E-LOTTERY 0.5%',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-percentage',
+                color: '#55aaff',
+                content: `Syarat & Ketentuan :
+- Wajib memiliki akun (USER ID) yang terdaftar pada LINETOGEL
+- Bonus Cashback 0.5% dihitung dari total Turnover pada permainan selama 1 minggu
+- Turnover adalah total nominal yang sudah berhasil di betting / pasang dalam meja permainan ( Berapapun nominal yang dibetting dengan hasil menang atau kalah tetap dihitung sebagai Turnover )
+- Periode Hitungan Cashback Turn Over dari hari Kamis s/d Rabu
+- Cara Perhitungan Cashback Turnover :
+Contoh :
+Jika dalam 1 minggu total turnover yang dikumpulkan sebesar Rp.100.000.000 x 0.5% = Rp.500.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Cashback TurnOver 0.5% hanya diberikan setiap hari kamis setelah maintenance selesai & akan dibagikan secara otomatis tanpa perlu diklaim
+- Selalu aktif bermain dan kumpulkan turnover sebanyak - banyaknya
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'turnover-livegames',
+                title: 'BONUS CASHBACK TURNOVER LIVE GAMES 0.5%',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-percentage',
+                color: '#ff66aa',
+                content: `- Wajib memiliki userid yang terdaftar pada LINETOGEL
+- Bonus cashback 0.5% diberikan dari total turnover permainan LIVEGAMES selama 1 minggu
+- Bonus cashback 0.5% dibagikan secara otomatis setiap hari kamis setelah maintenance selesai tanpa perlu di klaim. 
+
+Contoh Perhitungan Cashback Turnover :
+Jika dalam 1 minggu total turnover anda sebesar 100.000.000 maka bonus yang akan anda dapatkan sebesar 100.000.000 x 0.5% = 500.000
+
+- Selalu aktif bermain dan kumpulkan turnover anda sebanyak - banyaknya.
+- Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.
+- Semua keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu gugat.`
+            },
+            {
+                id: 'turnover-arcade',
+                title: 'BONUS CASHBACK TURNOVER ARCADE 0.5%',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-percentage',
+                color: '#ffaa00',
+                content: `- Wajib memiliki userid yang terdaftar pada LINETOGEL
+- Bonus cashback 0.5% diberikan dari total turnover permainan ARCADE anda selama 1 minggu
+- Bonus cashback 0.5% dibagikan secara otomatis setiap hari kamis setelah maintenance selesai tanpa perlu di klaim. 
+
+Contoh Perhitungan Cashback Turnover :
+Jika dalam 1 minggu total turnover anda sebesar 100.000.000 maka bonus yang akan anda dapatkan sebesar 100.000.000 x 0.5% = 500.000
+
+- Selalu aktif bermain dan kumpulkan turnover anda sebanyak - banyaknya.
+- Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.
+- Semua keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu gugat.`
+            },
+            {
+                id: 'cashback-livegames',
+                title: 'BONUS CASHBACK KEKALAHAN UP TO 5%',
+                category: 'Cashback',
+                icon: 'fas fa-coins',
+                color: '#00cc66',
+                content: `Syarat & Ketentuan :
+- Bonus Kekalahan hanya berlaku untuk permainan LIVEGAMES
+- Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000
+- Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu
+- Untuk nominal 100,000 -249,999,999 =Bonus yang didapat 2,5% dari total kekalahan.
+- Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan.
+- Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )
+- Cara Perhitungan Bonus Kekalahan :
+Contoh :
+Member A mengalami kekalahan Rp.1.000.000 x 2,5% = Rp.25.000 ( Total bonus yang didapatkan )
+Member B mengalami kekalahan Rp. 250,000,000 x 5 % = Rp. 12.500.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim
+- Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'cashback-arcade',
+                title: 'BONUS CASHBACK KEKALAHAN ARCADE 5%',
+                category: 'Cashback',
+                icon: 'fas fa-gamepad',
+                color: '#7b00ff',
+                content: `Syarat & Ketentuan :
+- Bonus Kekalahan 5% hanya berlaku untuk permainan ARCADE
+- Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000
+- Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu
+- Cara Perhitungan Bonus Kekalahan :
+Jika dalam 1 minggu total kekalahan anda sebesar 10.000.000 maka bonus yang akan anda dapatkan sebesar 500.000  ( 10.000.000 x 5% = 500.000)
+
+- Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim
+- Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            },
+            {
+                id: 'turnover-pragmatic',
+                title: 'BONUS CASHBACK TURNOVER LIVE CASINO PRAGMATIC PLAY 0.5%',
+                category: 'Turnover Bonus',
+                icon: 'fas fa-percentage',
+                color: '#ff5555',
+                content: `- Wajib memiliki userid yang terdaftar pada LINETOGEL
+- Bonus cashback 0.5% diberikan dari total turnover permainan Live Casino Pragmatic Play anda selama 1 minggu
+- Bonus cashback 0.5% dibagikan secara otomatis setiap hari kamis setelah maintenance selesai tanpa perlu di klaim. 
+
+Contoh Perhitungan Cashback Turnover :
+Jika dalam 1 minggu total turnover anda sebesar 100.000.000 maka bonus yang akan anda dapatkan sebesar 100.000.000 x 0.5% = 500.000
+
+- Selalu aktif bermain dan kumpulkan turnover anda sebanyak - banyaknya.
+- Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.
+- Semua keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu gugat.`
+            },
+            {
+                id: 'cashback-pragmatic',
+                title: 'BONUS CASHBACK KEKALAHAN PRAGMATIC PLAY 5%',
+                category: 'Cashback',
+                icon: 'fas fa-coins',
+                color: '#55aaff',
+                content: `Syarat & Ketentuan :
+- Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY 
+- Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan Live Casino PP ( PRAGMATIC PLAY ) selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000
+- Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu
+- Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )
+- Cara Perhitungan Bonus Kekalahan :
+Contoh :
+Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )
+- Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim
+- Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.
+- Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.`
+            }
+        ];
+
+        // Data PK BONUS & SCATTER
+        const pkBonusData = {
+            categories: [
+                {
+                    id: 'batas-claim-waktu',
+                    name: 'Batas Claim & Waktu',
+                    icon: 'fas fa-clock',
+                    color: '#ff5555',
+                    items: [
+                        {
+                            title: 'MELEWATI HARI BATAS CLAIM',
+                            content: `mohon maaf bosku untuk claim anda tidak dapat diproses ya bosku untuk claim hanya dapat di claim pada hari mendapatkannya ya bosku\nBatas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku , terimakasih`
+                        },
+                        {
+                            title: 'SUDAH MAX CLAIM SCATTER',
+                            content: `Mohon maaf bosku , untuk user id anda kami cekkan telah melakukan claim bonus scatter sebanyak 2 kali dan tidak dapat di claim kembali  yang dimana untuk batas claim scatter  Maksimal klaim per hari adalah 2 kali.\nBatas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku  , terimakasih`
+                        },
+                        {
+                            title: 'CLAIM BATAS WAKTU',
+                            content: `Mohon maaf bosku untuk claim anda sudah tidak dapat di claim karena sudah melewati batas waktu claim ya bosku\nBatas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya ya bosku`
+                        },
+                        {
+                            title: 'CLAIM EVENT (SAAT TUKAS)',
+                            content: `Yth, Member Setia Line Togel, saat ini sistem kami sedang mereset keseluruhan data.\nUntuk perihal Claim Bonus Event anda akan kami proseskan pada pukul 00:01 WIB Mohon pengertiannya dan mohon maaf atas ketidaknyamannya ya bosku, Terima kasih`
+                        }
+                    ]
+                },
+                {
+                    id: 'claim-super-scatter',
+                    name: 'Claim Super Scatter',
+                    icon: 'fas fa-crown',
+                    color: '#ffd700',
+                    items: [
+                        {
+                            title: 'CLAIM SUPER SCATTER',
+                            content: `Untuk perihal Syarat klaim GATES OF OLYMPUS SUPER SCATTER yang dimana anda hanya perlu melengkapi data data yang kami butuhkan saat anda mendapatkan SUPER SCATTER ya bosku :\n\n1. Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER\n2. Screenshot Mendapatkan SUPER SCATTER`
+                        },
+                        {
+                            title: 'TIDAK MEMENUHI SYARAT CLAIM SUPER SCATTER',
+                            content: `Mohon maaf bosku kami checkan untuk Screenshot yang anda berikan anda tidak memenuhi syarat untuk dapat melakukan claim event tersebut ya bosku,Dikarenakan untuk dapat claim event super scatter Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER ya bosku`
+                        }
+                    ]
+                },
+                {
+                    id: 'informasi-bonus',
+                    name: 'Informasi Bonus',
+                    icon: 'fas fa-info-circle',
+                    color: '#55aaff',
+                    items: [
+                        {
+                            title: 'BONUS YANG DAPAT DI CLAIM',
+                            content: `Untuk bonus yang dapat di claim : \n\n- Claim Scatter mahyong pg soft 1 dan 2\n- Claim Buy spin dan freespin provider pragmactic , pg soft , fat panda , slotmania dan no limit city\n- Claim Gate of olympus Super scatter\n\nUntuk lebih lengkap mengenai bonus kami serta syarat dan ketentuan  dapat anda cek pada menu promo yang tertera pada situs kami ya bosku terimakasih`
+                        },
+                        {
+                            title: 'TIDAK MENCAPAI TOTAL KEMENANGAN Buy Spin / Free Spin',
+                            content: `Untuk kemenangan minimal Rp 450,000 untuk bisa melakukan Claim Event Buyspin / Freespin ya bosku, dan disini kami checkan setelah kami melakukan perhitungan untuk total kemenangan anda belum mencapai Rp 450,000 di karenakan untuk total kemenangan yang anda dapat tersebut ada di tambahkan dari pecahan di luar scatter ya bosku\ndan hanya kemenangan murni dari Buy Spin dan Free Spin (sesuai ketentuan) yang berlaku untuk dapat melakukan claim bonus event ya bosku`
+                        },
+                        {
+                            title: 'KEMENANGAN TERDAPAT SCATTER HITAM',
+                            content: `Kemenangan dari fitur Scatter Hitam (1 atau lebih Scatter jenis apa pun membayar 50x total bet) tidak termasuk dalam perhitungan klaim event`
+                        },
+                        {
+                            title: 'DILUAR SCATTER',
+                            content: `untuk kemenangan dari hasil kombinasi Scatter tidak termasuk dalam perhitungan klaim event ya bosku`
+                        }
+                    ]
+                },
+                {
+                    id: 'replay-history',
+                    name: 'Replay / Putar Ulang',
+                    icon: 'fas fa-redo',
+                    color: '#7b00ff',
+                    items: [
+                        {
+                            title: 'REPLAY / PUTAR ULANG HISTORY PERMAINAN PADA SLOT PGSOFT',
+                            content: `Cara melihat kembali Replay / putar ulang History permainan pada slot PGSOFT :\n1. Buka halaman utama permainan PGSOFT yang anda mainkan\n2. Klik gambar "Garis 3 ( ≡ )" di pojok kanan bawah\n3. Pilih menu "History / Riwayat"\n4. Lalu silahkan di Klik History kemenangan yang ingin anda lihat kembali\n5. Kemudian silahkan di Scrool ke bawah dan Klik Replay Spin\n\nContoh Gambar : https://sleekshot.app/v/OLzp3MIoqaXc`
+                        },
+                        {
+                            title: 'REPLAY / PUTAR ULANG SLOT PRAGMATIC PLAY',
+                            content: `Cara melihat kembali Replay / Putar ulang History Kemenangan pada permainan SLOT : \n1. Buka halaman utama permainan SLOT yang anda mainkan\n2. Klik gambar "Garis 3 ( ≡ )"\n3. Pilih menu "Putar Ulang"\n4. Lalu silahkan di Klik kemenangan yang ingin anda lihat kembali\n5. Kemudian silahkan Klik "Tonton Putar Ulang"\n\nContoh Gambar : https://sleekshot.app/v/gNCdWAuiI6GG\n\nNB : Hanya kemenangan di atas atau setara 10x total taruhan yang ditampilkan di Putar Ulang : https://sleekshot.app/v/OCea4ewKef08`
+                        },
+                        {
+                            title: 'REPLY SLOT PP',
+                            content: `mohon maaf bosku jika tidak bisa melihat kembali replay / putar ulang history permainan slot anda maka anda tidak mendapatkan perkalian diatas 10 x ya bosku, Hanya kemenangan di atas atau setara 10x total taruhan yang ditampilkan di Putar Ulang`
+                        }
+                    ]
+                }
+            ]
+        };
+
         // Application State
         const appState = {
             currentPage: 'home',
@@ -1120,6 +1819,7 @@
                 home: document.getElementById('home-page'),
                 shortcut: document.getElementById('shortcut-page'),
                 events: document.getElementById('events-page'),
+                pkbonus: document.getElementById('pkbonus-page'),
                 qris: document.getElementById('qris-page'),
                 promotions: document.getElementById('promotions-page')
             },
@@ -1137,7 +1837,15 @@
             qrisCategoriesView: document.getElementById('qris-categories-view'),
             qrisItemsView: document.getElementById('qris-items-view'),
             qrisSearchInput: document.getElementById('qris-search-input'),
-            qrisBackButton: document.getElementById('qris-back-button')
+            qrisBackButton: document.getElementById('qris-back-button'),
+            eventsContainer: document.getElementById('events-container'),
+            eventsSearchInput: document.getElementById('events-search-input'),
+            pkbonusCategoriesContainer: document.getElementById('pkbonus-categories-container'),
+            pkbonusItemsContainer: document.getElementById('pkbonus-items-container'),
+            pkbonusCategoriesView: document.getElementById('pkbonus-categories-view'),
+            pkbonusItemsView: document.getElementById('pkbonus-items-view'),
+            pkbonusSearchInput: document.getElementById('pkbonus-search-input'),
+            pkbonusBackButton: document.getElementById('pkbonus-back-button')
         };
 
         // Initialize Application
@@ -1159,6 +1867,12 @@
 
             // Initialize QRIS system
             initQrisSystem();
+
+            // Initialize events system
+            initEventsSystem();
+
+            // Initialize PK Bonus system
+            initPkBonusSystem();
 
             // Update daily info
             updateDailyInfo();
@@ -1244,6 +1958,11 @@
             } else if (page === 'qris') {
                 showQrisCategoriesView();
                 renderQrisCategories();
+            } else if (page === 'events') {
+                renderEvents();
+            } else if (page === 'pkbonus') {
+                showPkBonusCategoriesView();
+                renderPkBonusCategories();
             }
         }
 
@@ -1471,6 +2190,230 @@
             });
         }
 
+        // Events System
+        function initEventsSystem() {
+            // Initial render
+            renderEvents();
+        }
+
+        function renderEvents() {
+            elements.eventsContainer.innerHTML = '';
+            
+            eventsData.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.dataset.eventId = event.id;
+                
+                // Create preview text (first 150 characters)
+                const previewText = event.content.length > 150 
+                    ? event.content.substring(0, 150) + '...' 
+                    : event.content;
+                
+                eventCard.innerHTML = `
+                    <div class="event-icon" style="color: ${event.color}">
+                        <i class="${event.icon}"></i>
+                    </div>
+                    <span class="event-category">${event.category}</span>
+                    <h3 class="event-title">${event.title}</h3>
+                    <div class="event-preview">${previewText}</div>
+                    <div class="event-details">
+                        <div class="event-content-header">
+                            <div class="event-content-title">${event.title}</div>
+                            <button class="copy-button" data-content="${encodeURIComponent(event.content)}">
+                                <i class="fas fa-copy"></i> Salin Teks
+                            </button>
+                        </div>
+                        <div class="event-content">${event.content}</div>
+                    </div>
+                    <button class="event-toggle collapsed">
+                        <i class="fas fa-chevron-down"></i> Lihat Detail
+                    </button>
+                `;
+                
+                // Add click event to toggle details
+                const toggleBtn = eventCard.querySelector('.event-toggle');
+                const eventDetails = eventCard.querySelector('.event-details');
+                
+                toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    if (eventDetails.classList.contains('active')) {
+                        // Collapse
+                        eventDetails.classList.remove('active');
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Lihat Detail';
+                        toggleBtn.classList.remove('expanded');
+                        toggleBtn.classList.add('collapsed');
+                        eventCard.classList.remove('active');
+                    } else {
+                        // Expand
+                        eventDetails.classList.add('active');
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Tutup Detail';
+                        toggleBtn.classList.remove('collapsed');
+                        toggleBtn.classList.add('expanded');
+                        eventCard.classList.add('active');
+                    }
+                });
+                
+                // Also allow clicking on the card to expand
+                eventCard.addEventListener('click', (e) => {
+                    if (!e.target.closest('.event-toggle') && !e.target.closest('.copy-button')) {
+                        toggleBtn.click();
+                    }
+                });
+                
+                // Add copy functionality for event content
+                const copyBtn = eventCard.querySelector('.copy-button');
+                copyBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const content = decodeURIComponent(copyBtn.dataset.content);
+                    
+                    try {
+                        await navigator.clipboard.writeText(content);
+                        
+                        // Visual feedback
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        copyBtn.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = content;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        copyBtn.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+                
+                elements.eventsContainer.appendChild(eventCard);
+            });
+        }
+
+        // PK Bonus System
+        function initPkBonusSystem() {
+            // Back button
+            elements.pkbonusBackButton.addEventListener('click', () => {
+                showPkBonusCategoriesView();
+                renderPkBonusCategories();
+            });
+
+            // Initial render
+            renderPkBonusCategories();
+        }
+
+        function renderPkBonusCategories() {
+            elements.pkbonusCategoriesContainer.innerHTML = '';
+            
+            pkBonusData.categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.dataset.category = category.id;
+                categoryCard.style.borderColor = category.color;
+                
+                categoryCard.innerHTML = `
+                    <div class="category-icon" style="color: ${category.color}">
+                        <i class="${category.icon}"></i>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-count">${category.items.length} template</div>
+                `;
+                
+                categoryCard.addEventListener('click', () => {
+                    showPkBonusItemsView(category.id);
+                });
+                
+                elements.pkbonusCategoriesContainer.appendChild(categoryCard);
+            });
+        }
+
+        function showPkBonusCategoriesView() {
+            elements.pkbonusCategoriesView.style.display = 'block';
+            elements.pkbonusItemsView.classList.remove('active');
+        }
+
+        function showPkBonusItemsView(categoryId) {
+            const category = pkBonusData.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            elements.pkbonusCategoriesView.style.display = 'none';
+            elements.pkbonusItemsView.classList.add('active');
+            
+            renderPkBonusItems(category);
+        }
+
+        function renderPkBonusItems(category) {
+            elements.pkbonusItemsContainer.innerHTML = '';
+            
+            category.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'shortcut-item';
+                
+                itemElement.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-title">${item.title}</div>
+                        <button class="copy-button" data-content="${encodeURIComponent(item.content)}">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <div class="item-content">${item.content}</div>
+                `;
+                
+                elements.pkbonusItemsContainer.appendChild(itemElement);
+            });
+            
+            // Add copy functionality
+            document.querySelectorAll('#pkbonus-items-container .copy-button').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const content = decodeURIComponent(button.dataset.content);
+                    
+                    try {
+                        await navigator.clipboard.writeText(content);
+                        
+                        // Visual feedback
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = content;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        
+                        button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+            });
+        }
+
         // Search System
         function initSearch() {
             // Shortcut search
@@ -1483,6 +2426,18 @@
             elements.qrisSearchInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase();
                 filterQrisCategories(query);
+            });
+            
+            // Events search
+            elements.eventsSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterEvents(query);
+            });
+            
+            // PK Bonus search
+            elements.pkbonusSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterPkBonusCategories(query);
             });
         }
 
@@ -1502,6 +2457,36 @@
 
         function filterQrisCategories(query) {
             const categories = document.querySelectorAll('#qris-categories-container .category-card');
+            
+            categories.forEach(card => {
+                const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+                
+                if (categoryName.includes(query) || !query) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterEvents(query) {
+            const events = document.querySelectorAll('.event-card');
+            
+            events.forEach(card => {
+                const eventTitle = card.querySelector('.event-title').textContent.toLowerCase();
+                const eventCategory = card.querySelector('.event-category').textContent.toLowerCase();
+                const eventContent = card.querySelector('.event-preview').textContent.toLowerCase();
+                
+                if (eventTitle.includes(query) || eventCategory.includes(query) || eventContent.includes(query) || !query) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterPkBonusCategories(query) {
+            const categories = document.querySelectorAll('#pkbonus-categories-container .category-card');
             
             categories.forEach(card => {
                 const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
@@ -1544,6 +2529,10 @@
                     elements.searchInput.focus();
                 } else if (appState.currentPage === 'qris') {
                     elements.qrisSearchInput.focus();
+                } else if (appState.currentPage === 'events') {
+                    elements.eventsSearchInput.focus();
+                } else if (appState.currentPage === 'pkbonus') {
+                    elements.pkbonusSearchInput.focus();
                 }
             }
             
@@ -1555,6 +2544,9 @@
                 } else if (appState.currentPage === 'qris') {
                     showQrisCategoriesView();
                     renderQrisCategories();
+                } else if (appState.currentPage === 'pkbonus') {
+                    showPkBonusCategoriesView();
+                    renderPkBonusCategories();
                 }
             }
         });
