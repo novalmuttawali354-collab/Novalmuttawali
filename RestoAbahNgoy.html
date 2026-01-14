@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RestoKita - Pemesanan Meja</title>
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary: #ff6b35; /* Warna Oranye Segar */
+            --primary-dark: #e85d2a;
+            --secondary: #2e2e2e;
+            --bg-light: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --text-gray: #666;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding-bottom: 80px; /* Ruang untuk floating cart button */
+        }
+
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 16px; }
+
+        /* --- HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            padding: 16px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+        .brand span { font-size: 0.8rem; color: var(--text-gray); }
+
+        .table-badge {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- CATEGORY TABS --- */
+        .category-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 16px 0;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+        .category-scroll::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: var(--white);
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cat-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* --- MENU GRID --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile default */
+            gap: 16px;
+            padding-bottom: 20px;
+        }
+
+        @media(min-width: 400px) {
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .menu-card:active { transform: scale(0.98); }
+
+        .menu-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .menu-info {
+            padding: 12px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .menu-desc { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 10px; flex-grow: 1; }
+        
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .menu-price { font-weight: 700; color: var(--primary); }
+
+        .add-btn {
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .add-btn:active { background: var(--primary); color: var(--white); }
+
+        /* --- FLOATING CART BUTTON --- */
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            z-index: 900;
+            width: 90%;
+            max-width: 400px;
+            justify-content: space-between;
+            transition: bottom 0.3s ease;
+        }
+
+        .floating-cart.hidden-cart { bottom: -100px; }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* --- CART DRAWER (MODAL) --- */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 950;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+
+        .cart-drawer {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--white);
+            border-radius: 20px 20px 0 0;
+            z-index: 1000;
+            padding: 20px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cart-drawer.open { transform: translateY(0); }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-items {
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-bottom: 16px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .item-details h4 { font-size: 0.95rem; }
+        .item-details p { font-size: 0.85rem; color: var(--text-gray); }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .qty-btn { cursor: pointer; font-weight: bold; color: var(--text-dark); user-select: none; }
+        .qty-val { font-size: 0.9rem; min-width: 20px; text-align: center; }
+
+        .cart-total {
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .checkout-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- TABLE MODAL (ON LOAD) --- */
+        .modal-center {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+            animation: popUp 0.3s ease-out;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .qr-placeholder {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background-image: url('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ContohMejaRestoran');
+            background-size: cover;
+            border: 4px solid var(--white);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .table-input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+        }
+        .table-input:focus { border-color: var(--primary); }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(46, 46, 46, 0.95);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1500;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <!-- --- MODAL NOMOR MEJA (Simulasi Scan QR) --- -->
+    <div id="tableModal" class="modal-center">
+        <div class="modal-content">
+            <div class="qr-placeholder"></div>
+            <h2>Selamat Datang!</h2>
+            <p style="color:var(--text-gray); margin-bottom:10px;">Silakan masukkan nomor meja yang tertera pada meja Anda</p>
+            <input type="number" id="tableInput" class="table-input" placeholder="Contoh: 5" value="5">
+            <button class="checkout-btn" onclick="setTable()">Mulai Pesan</button>
+        </div>
+    </div>
+
+    <!-- --- HEADER --- -->
+    <header>
+        <div class="container header-content">
+            <div class="brand">
+                <h1>RestoKita 🍽️</h1>
+                <span>Order langsung dari meja</span>
+            </div>
+            <div class="table-badge">
+                📍 Meja <span id="displayTableNumber">?</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- --- MAIN CONTENT --- -->
+    <main class="container">
+        <!-- Kategori -->
+        <nav class="category-scroll" id="categoryContainer">
+            <button class="cat-btn active" onclick="filterMenu('all', this)">Semua</button>
+            <button class="cat-btn" onclick="filterMenu('makanan', this)">Makanan</button>
+            <button class="cat-btn" onclick="filterMenu('minuman', this)">Minuman</button>
+            <button class="cat-btn" onclick="filterMenu('dessert', this)">Dessert</button>
+        </nav>
+
+        <!-- Grid Menu -->
+        <div class="menu-grid" id="menuContainer">
+            <!-- Item menu akan dirender lewat JS -->
+        </div>
+    </main>
+
+    <!-- --- FLOATING CART BUTTON --- -->
+    <div id="floatingCart" class="floating-cart hidden-cart" onclick="openCart()">
+        <div>
+            <span style="font-weight:600;">Keranjang</span>
+            <span style="font-size:0.8rem; opacity:0.8; margin-left:8px;">Item(s)</span>
+        </div>
+        <div class="flex items-center" style="gap:10px;">
+            <span id="cartTotalFloat" style="font-weight:bold;">Rp 0</span>
+            <div class="cart-count" id="cartCountFloat">0</div>
+        </div>
+    </div>
+
+    <!-- --- CART DRAWER (OVERLAY & BOTTOM SHEET) --- -->
+    <div class="overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Pesanan Anda</h3>
+            <span onclick="closeCart()" style="cursor:pointer; font-size:1.5rem;">&times;</span>
+        </div>
+        
+        <div class="cart-items" id="cartItemsContainer">
+            <!-- Item keranjang dirender di sini -->
+            <div style="text-align:center; padding:20px; color:#999;">Keranjang masih kosong</div>
+        </div>
+
+        <div class="cart-total">
+            <span>Total Bayar</span>
+            <span id="cartTotalFinal">Rp 0</span>
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <input type="text" id="custName" placeholder="Nama Anda (Opsional)" 
+                   style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+        </div>
+
+        <button class="checkout-btn" onclick="processCheckout()">Pesan Sekarang</button>
+    </div>
+
+    <!-- --- TOAST MESSAGE --- -->
+    <div id="toast" class="toast">Item ditambahkan!</div>
+
+    <script>
+        /* --- DATA MENU --- */
+        const menuData = [
+            { id: 1, name: "Nasi Goreng Spesial", price: 25000, category: "makanan", desc: "Nasi goreng dengan ayam, telur, dan kerupuk.", img: "https://picsum.photos/seed/nasigoreng/300/200" },
+            { id: 2, name: "Mie Ayam Bakso", price: 20000, category: "makanan", desc: "Mie ayam kenyal dengan topping bakso sapi.", img: "https://picsum.photos/seed/mieayam/300/200" },
+            { id: 3, name: "Ayam Bakar Madu", price: 30000, category: "makanan", desc: "Ayam bakar bumbu madu dengan sambal terasi.", img: "https://picsum.photos/seed/ayambakar/300/200" },
+            { id: 4, name: "Es Teh Manis", price: 5000, category: "minuman", desc: "Teh melati segar dengan gula asli.", img: "https://picsum.photos/seed/esteh/300/200" },
+            { id: 5, name: "Kopi Susu Gula Aren", price: 18000, category: "minuman", desc: "Kopi arabika dengan susu segar dan gula aren.", img: "https://picsum.photos/seed/kopi/300/200" },
+            { id: 6, name: "Jus Alpukat", price: 15000, category: "minuman", desc: "Jus alpukat mentega kental dengan coklat parut.", img: "https://picsum.photos/seed/alpukat/300/200" },
+            { id: 7, name: "Pisang Goreng Keju", price: 12000, category: "dessert", desc: "Pisang kepok goreng tepung dengan topping keju.", img: "https://picsum.photos/seed/pisang/300/200" },
+            { id: 8, name: "Puding Coklat", price: 10000, category: "dessert", desc: "Puding coklat lembut dengan vla vanilla.", img: "https://picsum.photos/seed/puding/300/200" },
+        ];
+
+        /* --- STATE MANAGEMENT --- */
+        let cart = [];
+        let currentTable = "";
+
+        /* --- INITIALIZATION --- */
+        document.addEventListener("DOMContentLoaded", () => {
+            renderMenu("all");
+            
+            // Cek URL parameters untuk simulasi auto-scan (misal: ?table=12)
+            const urlParams = new URLSearchParams(window.location.search);
+            const tableParam = urlParams.get('table');
+            if(tableParam) {
+                document.getElementById('tableInput').value = tableParam;
+                // Bisa langsung setTable() jika ingin otomatis, tapi kita minta konfirmasi user
+            }
+        });
+
+        /* --- FUNCTIONS --- */
+
+        // 1. Set Nomor Meja
+        function setTable() {
+            const input = document.getElementById('tableInput').value;
+            if (!input) {
+                showToast("Mohon masukkan nomor meja!");
+                return;
+            }
+            currentTable = input;
+            document.getElementById('displayTableNumber').textContent = currentTable;
+            document.getElementById('tableModal').classList.add('hidden');
+            showToast(`Selamat datang di Meja ${currentTable}`);
+        }
+
+        // 2. Render Menu ke HTML
+        function renderMenu(category) {
+            const container = document.getElementById('menuContainer');
+            container.innerHTML = "";
+
+            const filtered = category === 'all' 
+                ? menuData 
+                : menuData.filter(item => item.category === category);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" class="menu-img" loading="lazy">
+                    <div class="menu-info">
+                        <div class="menu-title">${item.name}</div>
+                        <div class="menu-desc">${item.desc}</div>
+                        <div class="menu-footer">
+                            <div class="menu-price">${formatRupiah(item.price)}</div>
+                            <div class="add-btn" onclick="addToCart(${item.id})">+</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 3. Filter Kategori
+        function filterMenu(cat, btnElement) {
+            renderMenu(cat);
+            // Update active button state
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // 4. Tambah ke Keranjang
+        function addToCart(id) {
+            const item = menuData.find(p => p.id === id);
+            const existing = cart.find(c => c.id === id);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`${item.name} masuk keranjang`);
+        }
+
+        // 5. Update UI Keranjang (Tombol Float & Drawer)
+        function updateCartUI() {
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+            // Update Floating Button
+            document.getElementById('cartCountFloat').textContent = totalQty;
+            document.getElementById('cartTotalFloat').textContent = formatRupiah(totalPrice);
+            
+            const floatBtn = document.getElementById('floatingCart');
+            if (totalQty > 0) {
+                floatBtn.classList.remove('hidden-cart');
+            } else {
+                floatBtn.classList.add('hidden-cart');
+                closeCart(); // Tutup drawer jika kosong
+            }
+
+            // Update Drawer Content
+            const drawerContainer = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                drawerContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">Keranjang masih kosong</div>';
+            } else {
+                drawerContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <h4>${item.name}</h4>
+                            <p>${formatRupiah(item.price)}</p>
+                        </div>
+                        <div class="qty-controls">
+                            <div class="qty-btn" onclick="changeQty(${item.id}, -1)">-</div>
+                            <div class="qty-val">${item.qty}</div>
+                            <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('cartTotalFinal').textContent = formatRupiah(totalPrice);
+        }
+
+        // 6. Ubah Quantity
+        function changeQty(id, change) {
+            const itemIndex = cart.findIndex(c => c.id === id);
+            if (itemIndex > -1) {
+                cart[itemIndex].qty += change;
+                if (cart[itemIndex].qty <= 0) {
+                    cart.splice(itemIndex, 1);
+                }
+                updateCartUI();
+            }
+        }
+
+        // 7. Buka/Tutup Cart Drawer
+        function openCart() {
+            document.getElementById('cartDrawer').classList.add('open');
+            document.getElementById('cartOverlay').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.remove('open');
+            document.getElementById('cartOverlay').classList.remove('active');
+        }
+
+        // 8. Proses Checkout (Simulasi)
+        function processCheckout() {
+            if (cart.length === 0) {
+                showToast("Keranjang kosong!");
+                return;
+            }
+
+            const name = document.getElementById('custName').value || "Pelanggan";
+            const total = document.getElementById('cartTotalFinal').textContent;
+            
+            // Animasi Loading sederhana di tombol
+            const btn = document.querySelector('.checkout-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Mengirim Pesanan...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Reset
+                cart = [];
+                updateCartUI();
+                closeCart();
+                btn.innerText = originalText;
+                btn.disabled = false;
+                document.getElementById('custName').value = "";
+
+                // Tampilkan Pesan Sukses
+                showToast(`✅ Pesanan Diterima! Mohon tunggu di Meja ${currentTable}`);
+            }, 1500);
+        }
+
+        // Helper: Format Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        // Helper: Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+    </script>
+</body>
+</html>
