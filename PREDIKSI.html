@@ -1303,9 +1303,9 @@
             100% { transform: translateY(100%); }
         }
         
-        /* Style untuk hasil All Pasaran yang lebih kompak */
+        /* Style untuk hasil All Pasaran yang lebih kompak - Jarak 21px */
         .all-pasaran-result {
-            margin-bottom: 5px !important; /* Jarak antar pasaran menjadi sekitar 21px */
+            margin-bottom: 21px !important; /* Jarak 21px antar pasaran */
             padding-bottom: 8px;
             border-bottom: 1px dashed rgba(230, 36, 41, 0.2);
             line-height: 1.4;
@@ -1409,8 +1409,7 @@
             }
             
             .all-pasaran-result {
-                margin-bottom: 4px !important;
-                padding-bottom: 6px;
+                margin-bottom: 16px !important; /* Sesuaikan untuk mobile */
             }
         }
         
@@ -1479,8 +1478,7 @@
             }
             
             .all-pasaran-result {
-                margin-bottom: 3px !important;
-                padding-bottom: 5px;
+                margin-bottom: 12px !important; /* Sesuaikan untuk mobile kecil */
             }
         }
         
@@ -1985,7 +1983,7 @@
             
             // Format untuk All Pasaran: Lebih kompak dengan jarak 21 piksel (1 baris baru)
             if (isForAll) {
-                // Hanya 1 baris baru di akhir untuk jarak 21 piksel
+                // Format dengan jarak 21px (1 baris baru + pemisah khusus)
                 const prediction = `Prediksi ${pasaranName}
 Hari ${getTodayDate()}
 BBFS : ${bbfs}
@@ -1998,6 +1996,7 @@ COLOK BEBAS 2D : ${colokBebas2D.join(' / ')}
 TWIN : ${twin.join(' / ')}
 SHIO : ${shio.join(' / ')}
 Selalu Utamakan Prediksi Sendiri
+
 `;
                 // Simpan ke cache
                 cachedPredictions[cacheKey] = prediction;
@@ -2161,11 +2160,12 @@ Selalu Utamakan Prediksi Sendiri
                     // Tambah class untuk mode kompak
                     resultContainer.classList.add('compact-mode');
                     
-                    // Generate untuk semua pasaran
+                    // Generate untuk semua pasaran dengan jarak 21px
                     semuaPasaran.forEach((pasaran, index) => {
+                        // Untuk All Pasaran, gunakan format yang lebih kompak
                         const prediksi = generatePredictionForPasaran(pasaran, true);
                         
-                        // Untuk teks yang akan disalin: tambahkan 1 baris baru antar pasaran
+                        // Untuk teks yang akan disalin: tambahkan prediksi
                         prediksiText += prediksi;
                         
                         // Untuk tampilan HTML: gunakan div dengan class all-pasaran-result
