@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBFS Digital Transformer Generator Pro</title>
+    
+    <!-- Mengambil Font Futuristik dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #00f3ff; /* Cyan Neon */
+            --secondary-color: #bc13fe; /* Purple Neon */
+            --bg-color: #050505;
+            --panel-bg: rgba(10, 20, 30, 0.9);
+            --border-color: #333;
+            --text-glow: 0 0 10px var(--primary-color);
+            --font-main: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #fff;
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Efek Grid Bergerak di Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #000 90%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Style */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #fff, var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: var(--font-mono);
+            color: #888;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        /* Main Interface */
+        .interface-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+            padding: 2px; 
+            position: relative;
+            clip-path: polygon(
+                20px 0, 100% 0, 
+                100% calc(100% - 20px), calc(100% - 20px) 100%, 
+                0 100%, 0 20px
+            );
+        }
+
+        .interface-inner {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            clip-path: polygon(
+                18px 0, 100% 0, 
+                100% calc(100% - 18px), calc(100% - 18px) 100%, 
+                0 100%, 0 18px
+            );
+        }
+
+        /* Input Section */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        label {
+            font-family: var(--font-mono);
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"] {
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid #333;
+            border-left: 4px solid var(--secondary-color);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            padding: 15px 20px;
+            letter-spacing: 5px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2) inset;
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* Button Transformer Style */
+        .btn-action {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            width: 100%;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: 0.3s;
+            z-index: -1;
+        }
+
+        .btn-action:hover {
+            color: #000;
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+
+        .btn-action:hover::before {
+            left: 0;
+        }
+
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+
+        /* Results Section */
+        #result-area {
+            display: none; 
+            margin-top: 30px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .result-section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #444;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .count-badge {
+            font-family: var(--font-mono);
+            background: rgba(188, 19, 254, 0.2);
+            color: var(--secondary-color);
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            border-radius: 2px;
+        }
+
+        /* Tombol Copy Kecil */
+        .btn-mini-copy {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-mini-copy:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .btn-mini-copy:active {
+            transform: translateY(1px);
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .number-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            user-select: none;
+        }
+
+        .number-box:hover {
+            background: var(--primary-color);
+            color: #000;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Decoration Elements */
+        .decoration-line {
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+            margin: 20px 0;
+            opacity: 0.5;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            border: 1px solid #fff;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .numbers-grid { grid-template-columns: repeat(4, 1fr); }
+            input[type="text"] { font-size: 1.2rem; letter-spacing: 2px; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .header-left { width: 100%; }
+            .btn-mini-copy { width: 100%; justify-content: center; margin-top: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>BBFS Generator <span style="font-size:0.5em; color:var(--primary-color); vertical-align:super;">V.2.0</span></h1>
+            <div class="subtitle">DIGITAL ENCRYPTION // MIXING ALGORITHM</div>
+        </header>
+
+        <main class="interface-panel">
+            <div class="interface-inner">
+                
+                <div class="input-group">
+                    <label for="inputNominal">MASUKKAN ANGKA (INPUT)</label>
+                    <input type="text" id="inputNominal" placeholder="Contoh: 12345" maxlength="9" autocomplete="off">
+                </div>
+
+                <button class="btn-action" onclick="processInput()">INITIALIZE GENERATOR</button>
+
+                <div id="result-area">
+                    <div class="decoration-line"></div>
+
+                    <!-- 4D Result -->
+                    <div class="result-section" id="section-4d">
+                        <div class="section-header">
+                            <div class="header-left">
+                                <span class="section-title">4D Permutations</span>
+                                <span class="count-badge" id="count-4d">0 Data</span>
+                            </div>
+                            <button class="btn-mini-copy" onclick="copySection('4d')">COPY ALL (4D)</button>
+                        </div>
+                        <div class="numbers-grid" id="grid-4d"></div>
+                    </div>
+
+                    <div class="decoration-line"></div>
+
+                    <!-- 3D Result -->
+                    <div class="result-section" id="section-3d">
+                        <div class="section-header">
+                            <div class="header-left">
+                                <span class="section-title">3D Permutations</span>
+                                <span class="count-badge" id="count-3d">0 Data</span>
+                            </div>
+                            <button class="btn-mini-copy" onclick="copySection('3d')">COPY ALL (3D)</button>
+                        </div>
+                        <div class="numbers-grid" id="grid-3d"></div>
+                    </div>
+
+                    <div class="decoration-line"></div>
+
+                    <!-- 2D Result -->
+                    <div class="result-section" id="section-2d">
+                        <div class="section-header">
+                            <div class="header-left">
+                                <span class="section-title">2D Permutations</span>
+                                <span class="count-badge" id="count-2d">0 Data</span>
+                            </div>
+                            <button class="btn-mini-copy" onclick="copySection('2d')">COPY ALL (2D)</button>
+                        </div>
+                        <div class="numbers-grid" id="grid-2d"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast">Data Berhasil Disalin!</div>
+
+    <script>
+        // Element References
+        const inputNominal = document.getElementById('inputNominal');
+        const resultArea = document.getElementById('result-area');
+        const toast = document.getElementById('toast');
+        
+        // Grids
+        const grid4d = document.getElementById('grid-4d');
+        const grid3d = document.getElementById('grid-3d');
+        const grid2d = document.getElementById('grid-2d');
+
+        // Counts
+        const count4d = document.getElementById('count-4d');
+        const count3d = document.getElementById('count-3d');
+        const count2d = document.getElementById('count-2d');
+
+        // Data Storage (Global Variables) for Copy Function
+        let data4D = [];
+        let data3D = [];
+        let data2D = [];
+
+        // Input Validation: Only numbers allowed
+        inputNominal.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Trigger on Enter key
+        inputNominal.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processInput();
+            }
+        });
+
+        function processInput() {
+            const val = inputNominal.value;
+            
+            if (val.length < 2) {
+                showToast("Masukkan minimal 2 angka!", true);
+                return;
+            }
+
+            // Clear previous results
+            grid4d.innerHTML = '';
+            grid3d.innerHTML = '';
+            grid2d.innerHTML = '';
+            
+            // Reset Data Arrays
+            data4D = [];
+            data3D = [];
+            data2D = [];
+
+            // Get unique digits to prevent too many useless duplicates if user types 1111
+            // Standard BBFS implies unique digit pool logic.
+            const uniqueDigits = [...new Set(val.split(''))];
+            
+            // Check special case: only 1 unique number
+            if (uniqueDigits.length === 1) {
+                generateSingle(uniqueDigits[0]);
+            } else {
+                // Generate permutations based on unique digits
+                generatePermutations(uniqueDigits);
+            }
+
+            resultArea.style.display = 'block';
+        }
+
+        function generatePermutations(digits) {
+            // 4D Logic
+            if (digits.length >= 4) {
+                data4D = getPermutations(digits, 4);
+                renderGrid(grid4d, data4D, count4d, '4d');
+            } else {
+                hideSection('section-4d');
+            }
+
+            // 3D Logic
+            if (digits.length >= 3) {
+                data3D = getPermutations(digits, 3);
+                renderGrid(grid3d, data3D, count3d, '3d');
+            } else {
+                hideSection('section-3d');
+            }
+
+            // 2D Logic
+            if (digits.length >= 2) {
+                data2D = getPermutations(digits, 2);
+                renderGrid(grid2d, data2D, count2d, '2d');
+            } else {
+                hideSection('section-2d');
+            }
+        }
+
+        function generateSingle(digit) {
+            // Special case if input is just "7" or "77"
+            const arr4 = [digit.repeat(4)];
+            const arr3 = [digit.repeat(3)];
+            const arr2 = [digit.repeat(2)];
+            
+            // Store
+            data4D = arr4;
+            data3D = arr3;
+            data2D = arr2;
+
+            // Render
+            renderGrid(grid4d, data4D, count4d, '4d');
+            renderGrid(grid3d, data3D, count3d, '3d');
+            renderGrid(grid2d, data2D, count2d, '2d');
+            
+            showSection('section-4d');
+            showSection('section-3d');
+            showSection('section-2d');
+        }
+
+        // Core Permutation Algorithm
+        function getPermutations(array, length) {
+            const result = [];
+            
+            function permute(current, remaining) {
+                if (current.length === length) {
+                    result.push(current.join(''));
+                    return;
+                }
+                
+                for (let i = 0; i < remaining.length; i++) {
+                    const newArr = [...remaining.slice(0, i), ...remaining.slice(i + 1)];
+                    permute([...current, remaining[i]], newArr);
+                }
+            }
+            
+            permute([], array);
+            
+            // Filter duplicates and Sort Numeric
+            const uniqueResult = [...new Set(result)];
+            return uniqueResult.sort((a, b) => parseInt(a) - parseInt(b));
+        }
+
+        function renderGrid(container, data, countLabel, type) {
+            const sectionId = container.parentElement.id;
+            showSection(sectionId);
+            
+            countLabel.innerText = `${data.length} Data`;
+
+            data.forEach((num, index) => {
+                const box = document.createElement('div');
+                box.className = 'number-box';
+                box.innerText = num;
+                
+                // Add staggered animation delay
+                box.style.opacity = '0';
+                box.style.animation = `fadeIn 0.3s ease forwards ${index * 0.01}s`;
+                
+                // Click individual box to copy
+                box.onclick = () => copyToClipboard(num);
+                
+                container.appendChild(box);
+            });
+        }
+
+        // --- NEW FEATURE: COPY SECTION ---
+        function copySection(type) {
+            let targetData = [];
+            let typeName = "";
+
+            if (type === '4d') {
+                targetData = data4D;
+                typeName = "4D";
+            } else if (type === '3d') {
+                targetData = data3D;
+                typeName = "3D";
+            } else if (type === '2d') {
+                targetData = data2D;
+                typeName = "2D";
+            }
+
+            if (targetData.length === 0) {
+                showToast("Tidak ada data untuk disalin", true);
+                return;
+            }
+
+            // Join with asterisk (*) as requested
+            const textToCopy = targetData.join('*');
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast(`Data ${typeName} (${targetData.length} Angka) Disalin!`);
+            }).catch(err => {
+                console.error('Gagal menyalin', err);
+                showToast("Gagal menyalin ke clipboard", true);
+            });
+        }
+
+        function showSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.style.display = 'block';
+        }
+
+        function hideSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.style.display = 'none';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Angka ${text} Disalin!`);
+            }).catch(err => {
+                console.error('Gagal menyalin', err);
+            });
+        }
+
+        function showToast(msg, isError = false) {
+            toast.innerText = msg;
+            toast.style.background = isError ? '#ff0055' : 'var(--secondary-color)';
+            toast.classList.add('show');
+            
+            // Reset timer
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
