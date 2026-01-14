@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* [Semua kode CSS sebelumnya tetap sama] */
-        /* ... (CSS code remains exactly the same as in the previous version) ... */
         :root {
             --spider-red: #e62429;
             --spider-blue: #2a7fff;
@@ -1305,6 +1303,24 @@
             100% { transform: translateY(100%); }
         }
         
+        /* Style untuk hasil All Pasaran yang lebih kompak */
+        .all-pasaran-result {
+            margin-bottom: 5px !important; /* Jarak antar pasaran menjadi sekitar 21px */
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(230, 36, 41, 0.2);
+            line-height: 1.4;
+        }
+        
+        .all-pasaran-result:last-child {
+            border-bottom: none;
+            margin-bottom: 0 !important;
+        }
+        
+        .compact-mode .result-content {
+            line-height: 1.4;
+            font-size: 1rem;
+        }
+        
         @media (max-width: 1200px) {
             .spider-corner {
                 width: 160px;
@@ -1391,6 +1407,11 @@
             .nav-tabs {
                 flex-direction: column;
             }
+            
+            .all-pasaran-result {
+                margin-bottom: 4px !important;
+                padding-bottom: 6px;
+            }
         }
         
         @media (max-width: 600px) {
@@ -1455,6 +1476,11 @@
             .spider-corner {
                 width: 70px;
                 height: 70px;
+            }
+            
+            .all-pasaran-result {
+                margin-bottom: 3px !important;
+                padding-bottom: 5px;
             }
         }
         
@@ -1918,11 +1944,11 @@
         }
         
         // Fungsi untuk menghasilkan prediksi untuk satu pasaran dalam format yang diminta
-        function generatePredictionForPasaran(pasaranName) {
+        function generatePredictionForPasaran(pasaranName, isForAll = false) {
             // Gunakan cache jika sudah ada untuk hari ini
             const today = new Date();
             const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
-            const cacheKey = `${pasaranName}_${todayKey}`;
+            const cacheKey = `${pasaranName}_${todayKey}_${isForAll ? 'all' : 'single'}`;
             
             if (cachedPredictions[cacheKey]) {
                 return cachedPredictions[cacheKey];
@@ -1957,8 +1983,28 @@
             const colokBebas1 = Math.floor(Math.random() * 10);
             const colokBebas2 = Math.floor(Math.random() * 10);
             
-            // Format sesuai permintaan - SAMA untuk semua pasaran termasuk HOKI DRAW
-            const prediction = `Prediksi ${pasaranName}
+            // Format untuk All Pasaran: Lebih kompak dengan jarak 21 piksel (1 baris baru)
+            if (isForAll) {
+                // Hanya 1 baris baru di akhir untuk jarak 21 piksel
+                const prediction = `Prediksi ${pasaranName}
+Hari ${getTodayDate()}
+BBFS : ${bbfs}
+AM/AI/CK : ${amAiCk}
+4D : ${prediksi4D.join(' ')}
+3D : ${prediksi3D.join(' ')}
+2D (BB) : ${prediksi2D.join(' ')}
+COLOK BEBAS : ${colokBebas1} / ${colokBebas2}
+COLOK BEBAS 2D : ${colokBebas2D.join(' / ')}
+TWIN : ${twin.join(' / ')}
+SHIO : ${shio.join(' / ')}
+Selalu Utamakan Prediksi Sendiri
+`;
+                // Simpan ke cache
+                cachedPredictions[cacheKey] = prediction;
+                return prediction;
+            } else {
+                // Format normal untuk Single Pasaran (dengan baris kosong ekstra)
+                const prediction = `Prediksi ${pasaranName}
 Hari ${getTodayDate()}
 BBFS : ${bbfs}
 AM/AI/CK : ${amAiCk}
@@ -1972,11 +2018,10 @@ SHIO : ${shio.join(' / ')}
 Selalu Utamakan Prediksi Sendiri
 
 `;
-            
-            // Simpan ke cache
-            cachedPredictions[cacheKey] = prediction;
-            
-            return prediction;
+                // Simpan ke cache
+                cachedPredictions[cacheKey] = prediction;
+                return prediction;
+            }
         }
         
         // Fungsi untuk menampilkan daftar pasaran di dropdown dan grid
@@ -2093,34 +2138,46 @@ Selalu Utamakan Prediksi Sendiri
             resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--spider-red);"><i class="fas fa-spider fa-spin fa-2x"></i><br><br>Menjalankan Spider-Matrix...</div>';
             resultContainer.classList.add('show');
             
+            // Hapus class compact jika ada
+            resultContainer.classList.remove('compact-mode');
+            
             // Delay untuk efek loading
             setTimeout(() => {
                 // Generate prediksi berdasarkan mode
                 let prediksiText = "";
+                let resultHTML = "";
                 
                 if (currentMode === "single") {
                     // Generate prediksi untuk satu pasaran
                     resultTitle.innerHTML = selectedPasaran === "HOKI DRAW" 
                         ? `<i class="fas fa-crown"></i> SPIDER-MATRIX: HOKI DRAW`
                         : `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
-                    prediksiText = generatePredictionForPasaran(selectedPasaran);
+                    prediksiText = generatePredictionForPasaran(selectedPasaran, false);
+                    resultContent.textContent = prediksiText;
                 } else {
                     // Generate prediksi untuk semua pasaran
                     resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL SPIDER-MATRIX: ALL PASARAN`;
                     
+                    // Tambah class untuk mode kompak
+                    resultContainer.classList.add('compact-mode');
+                    
                     // Generate untuk semua pasaran
                     semuaPasaran.forEach((pasaran, index) => {
-                        prediksiText += generatePredictionForPasaran(pasaran);
+                        const prediksi = generatePredictionForPasaran(pasaran, true);
                         
-                        // Tambahkan baris kosong sebagai pemisah antar pasaran
-                        if (index < semuaPasaran.length - 1) {
-                            prediksiText += "\n\n";
-                        }
+                        // Untuk teks yang akan disalin: tambahkan 1 baris baru antar pasaran
+                        prediksiText += prediksi;
+                        
+                        // Untuk tampilan HTML: gunakan div dengan class all-pasaran-result
+                        resultHTML += `<div class="all-pasaran-result">${prediksi.replace(/\n/g, '<br>')}</div>`;
                     });
+                    
+                    // Tampilkan hasil dengan HTML
+                    resultContent.innerHTML = resultHTML;
                 }
                 
-                // Tampilkan hasil
-                resultContent.textContent = prediksiText;
+                // Simpan teks untuk copy-paste
+                resultContent.dataset.copyText = prediksiText;
                 
                 // Scroll ke hasil prediksi
                 resultContainer.scrollIntoView({ behavior: 'smooth' });
@@ -2143,8 +2200,16 @@ Selalu Utamakan Prediksi Sendiri
             const resultContent = document.getElementById('resultContent');
             const copyBtn = document.getElementById('copyBtn');
             
+            // Ambil teks dari data attribute atau dari textContent
+            let textToCopy = resultContent.dataset.copyText || resultContent.textContent;
+            
+            // Untuk All Pasaran, pastikan kita menggunakan teks yang sudah disiapkan
+            if (currentMode === "all" && resultContent.dataset.copyText) {
+                textToCopy = resultContent.dataset.copyText;
+            }
+            
             // Salin teks ke clipboard
-            navigator.clipboard.writeText(resultContent.textContent)
+            navigator.clipboard.writeText(textToCopy)
                 .then(() => {
                     // Ubah tampilan tombol untuk menunjukkan berhasil disalin
                     const originalText = copyBtn.innerHTML;
