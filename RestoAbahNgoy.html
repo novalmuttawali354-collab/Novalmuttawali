@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RestoKita - Pemesanan Meja</title>
+    <title>Ayam Penyet Resto - Pemesanan Meja</title>
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
@@ -355,6 +355,17 @@
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+        /* --- MENU SPECIAL STYLES --- */
+        .popular-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -374,8 +385,8 @@
     <header>
         <div class="container header-content">
             <div class="brand">
-                <h1>RestoKita 🍽️</h1>
-                <span>Order langsung dari meja</span>
+                <h1>Ayam Penyet Resto 🍗</h1>
+                <span>Pesan langsung dari meja Anda</span>
             </div>
             <div class="table-badge">
                 📍 Meja <span id="displayTableNumber">?</span>
@@ -390,7 +401,6 @@
             <button class="cat-btn active" onclick="filterMenu('all', this)">Semua</button>
             <button class="cat-btn" onclick="filterMenu('makanan', this)">Makanan</button>
             <button class="cat-btn" onclick="filterMenu('minuman', this)">Minuman</button>
-            <button class="cat-btn" onclick="filterMenu('dessert', this)">Dessert</button>
         </nav>
 
         <!-- Grid Menu -->
@@ -441,16 +451,75 @@
     <div id="toast" class="toast">Item ditambahkan!</div>
 
     <script>
-        /* --- DATA MENU --- */
+        /* --- DATA MENU YANG DIPERBARUI --- */
         const menuData = [
-            { id: 1, name: "Nasi Goreng Spesial", price: 25000, category: "makanan", desc: "Nasi goreng dengan ayam, telur, dan kerupuk.", img: "https://picsum.photos/seed/nasigoreng/300/200" },
-            { id: 2, name: "Mie Ayam Bakso", price: 20000, category: "makanan", desc: "Mie ayam kenyal dengan topping bakso sapi.", img: "https://picsum.photos/seed/mieayam/300/200" },
-            { id: 3, name: "Ayam Bakar Madu", price: 30000, category: "makanan", desc: "Ayam bakar bumbu madu dengan sambal terasi.", img: "https://picsum.photos/seed/ayambakar/300/200" },
-            { id: 4, name: "Es Teh Manis", price: 5000, category: "minuman", desc: "Teh melati segar dengan gula asli.", img: "https://picsum.photos/seed/esteh/300/200" },
-            { id: 5, name: "Kopi Susu Gula Aren", price: 18000, category: "minuman", desc: "Kopi arabika dengan susu segar dan gula aren.", img: "https://picsum.photos/seed/kopi/300/200" },
-            { id: 6, name: "Jus Alpukat", price: 15000, category: "minuman", desc: "Jus alpukat mentega kental dengan coklat parut.", img: "https://picsum.photos/seed/alpukat/300/200" },
-            { id: 7, name: "Pisang Goreng Keju", price: 12000, category: "dessert", desc: "Pisang kepok goreng tepung dengan topping keju.", img: "https://picsum.photos/seed/pisang/300/200" },
-            { id: 8, name: "Puding Coklat", price: 10000, category: "dessert", desc: "Puding coklat lembut dengan vla vanilla.", img: "https://picsum.photos/seed/puding/300/200" },
+            // MAKANAN
+            { 
+                id: 1, 
+                name: "Ayam Penyet + Nasi", 
+                price: 25000, 
+                category: "makanan", 
+                desc: "Ayam penyet dengan nasi dan sambal terasi spesial",
+                img: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 2, 
+                name: "Ayam Penyet", 
+                price: 20000, 
+                category: "makanan", 
+                desc: "Ayam penyet dengan sambal terasi spesial",
+                img: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?ixlib=rb-1.2.1&auto=format&fit=crop&w-300&q=200" 
+            },
+            
+            // MINUMAN
+            { 
+                id: 3, 
+                name: "Teh Manis Dingin", 
+                price: 5000, 
+                category: "minuman", 
+                desc: "Teh manis segar dengan es",
+                img: "https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 4, 
+                name: "Teh Hangat/Panas", 
+                price: 5000, 
+                category: "minuman", 
+                desc: "Teh hangat untuk menemani santapan",
+                img: "https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 5, 
+                name: "Air Mineral", 
+                price: 4000, 
+                category: "minuman", 
+                desc: "Air mineral kemasan 600ml",
+                img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 6, 
+                name: "Teh Susu Dingin", 
+                price: 8000, 
+                category: "minuman", 
+                desc: "Teh susu dengan es yang menyegarkan",
+                img: "https://images.unsplash.com/photo-1561122569-308b04c3e2df?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 7, 
+                name: "Teh Susu Panas", 
+                price: 8000, 
+                category: "minuman", 
+                desc: "Teh susu hangat yang menenangkan",
+                img: "https://images.unsplash.com/photo-1561122569-308b04c3e2df?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            },
+            { 
+                id: 8, 
+                name: "Extrajos Susu", 
+                price: 12000, 
+                category: "minuman", 
+                desc: "Jus susu dengan ekstrak buah yang segar",
+                img: "https://images.unsplash.com/photo-1628992682633-bf2d40cb595f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=200" 
+            }
         ];
 
         /* --- STATE MANAGEMENT --- */
@@ -466,7 +535,6 @@
             const tableParam = urlParams.get('table');
             if(tableParam) {
                 document.getElementById('tableInput').value = tableParam;
-                // Bisa langsung setTable() jika ingin otomatis, tapi kita minta konfirmasi user
             }
         });
 
@@ -497,10 +565,16 @@
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'menu-card';
+                
+                // Tambah badge untuk makanan populer
+                const popularBadge = item.id === 1 ? '<span class="popular-badge">POPULER</span>' : '';
+                
                 card.innerHTML = `
                     <img src="${item.img}" alt="${item.name}" class="menu-img" loading="lazy">
                     <div class="menu-info">
-                        <div class="menu-title">${item.name}</div>
+                        <div class="menu-title">
+                            ${item.name} ${popularBadge}
+                        </div>
                         <div class="menu-desc">${item.desc}</div>
                         <div class="menu-footer">
                             <div class="menu-price">${formatRupiah(item.price)}</div>
@@ -606,6 +680,15 @@
             }
 
             const name = document.getElementById('custName').value || "Pelanggan";
+            
+            // Validasi nomor meja
+            if (!currentTable || currentTable === "") {
+                showToast("Harap tentukan nomor meja terlebih dahulu!");
+                document.getElementById('tableModal').classList.remove('hidden');
+                closeCart();
+                return;
+            }
+
             const total = document.getElementById('cartTotalFinal').textContent;
             
             // Animasi Loading sederhana di tombol
@@ -615,7 +698,14 @@
             btn.disabled = true;
 
             setTimeout(() => {
-                // Reset
+                // Buat ringkasan pesanan untuk ditampilkan
+                let orderSummary = `Pesanan dari Meja ${currentTable}:\n`;
+                cart.forEach(item => {
+                    orderSummary += `${item.qty}x ${item.name}\n`;
+                });
+                orderSummary += `\nTotal: ${total}`;
+
+                // Reset cart
                 cart = [];
                 updateCartUI();
                 closeCart();
@@ -623,8 +713,14 @@
                 btn.disabled = false;
                 document.getElementById('custName').value = "";
 
-                // Tampilkan Pesan Sukses
+                // Tampilkan Pesan Sukses dengan detail
                 showToast(`✅ Pesanan Diterima! Mohon tunggu di Meja ${currentTable}`);
+                
+                // Log pesanan untuk simulasi
+                console.log("=== PESANAN BARU ===");
+                console.log(orderSummary);
+                console.log("Nama: " + name);
+                console.log("==================");
             }, 1500);
         }
 
