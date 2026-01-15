@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Izin Keluar Ultimate Sync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --panel-bg: rgba(15, 23, 42, 0.6);
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff9d;
+            --neon-red: #ff0055;
+            --neon-purple: #bc13fe;
+            --text-main: #f8fafc;
+            --border-glow: rgba(0, 242, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.05) 0%, transparent 50%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 40px 40px, 40px 40px, 0 0; }
+        }
+        body { animation: gridMove 20s linear infinite; }
+
+        .hidden { display: none !important; }
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- GLASS PANEL --- */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 242, 255, 0.05), transparent);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+        }
+
+        label { color: #94a3b8; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.9rem; }
+
+        select, input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 10px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+        .btn-login {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+        .btn-login:hover { box-shadow: 0 0 30px rgba(0, 242, 255, 0.6); }
+
+        .btn-start {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6); }
+
+        .btn-end {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        .btn-end:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6); }
+
+        .btn-dashboard {
+            background: transparent;
+            border: 1px solid var(--neon-purple);
+            color: var(--neon-purple);
+            margin-top: 25px;
+        }
+        .btn-dashboard:hover {
+            background: rgba(188, 19, 254, 0.1);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #475569;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .btn-logout:hover { border-color: var(--text-main); color: var(--text-main); }
+
+        /* --- PROFILE UI --- */
+        .profile-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed rgba(255,255,255,0.15); }
+        .staff-name { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: white; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .staff-role { background: rgba(0, 242, 255, 0.1); border: 1px solid rgba(0, 242, 255, 0.3); color: var(--neon-blue); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: inline-block; letter-spacing: 1px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 2rem; }
+        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-box small { display: block; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-box span { display: block; font-family: 'Orbitron'; font-size: 1.4rem; font-weight: 700; margin-top: 5px; }
+
+        .timer-container { text-align: center; margin: 2rem 0; position: relative; }
+        .timer-text { font-family: 'Orbitron', monospace; font-size: 4rem; font-weight: 900; color: white; text-shadow: 0 0 30px rgba(255,255,255,0.2); line-height: 1; }
+
+        @keyframes pulseRed {
+            0% { text-shadow: 0 0 10px rgba(255,0,85,0.2); transform: scale(1); }
+            50% { text-shadow: 0 0 30px rgba(255,0,85,0.6); transform: scale(1.02); }
+            100% { text-shadow: 0 0 10px rgba(255,0,85,0.2); transform: scale(1); }
+        }
+        .timer-active { color: var(--neon-red); animation: pulseRed 2s infinite ease-in-out; }
+
+        /* --- MONITOR UI (FULL WIDTH) --- */
+        .monitor-wrapper { width: 100%; max-width: 1200px; padding: 20px; }
+        .monitor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--neon-blue); }
+        .monitor-section { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 25px; }
+        .section-title { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; display: block; width: 8px; height: 20px; background: var(--neon-blue); border-radius: 2px; }
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        th { text-align: left; color: #64748b; font-size: 0.85rem; text-transform: uppercase; padding: 10px; font-weight: 600; }
+        td { background: rgba(255,255,255,0.03); color: white; padding: 15px; font-weight: 500; }
+        td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+        tr:hover td { background: rgba(255,255,255,0.08); transition: 0.2s; }
+
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .bg-green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .bg-red { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
+
+        /* TOAST */
+        .toast {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: rgba(2, 6, 23, 0.95); border: 1px solid var(--neon-blue);
+            color: white; padding: 15px 30px; border-radius: 50px; z-index: 9999;
+            font-weight: 600; box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- LOGIN VIEW -->
+    <div id="loginView" class="app-container">
+        <div class="glass-panel">
+            <h2>System Login</h2>
+            <div style="margin-bottom: 20px;">
+                <label>Identifikasi Staf</label>
+                <select id="loginName">
+                    <option value="" disabled selected>-- Pilih Nama --</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 25px;">
+                <label>Password Akses</label>
+                <input type="password" id="loginPass" placeholder="Masukkan Password">
+            </div>
+            <button class="btn btn-login" onclick="doLogin()">MASUK SISTEM</button>
+            <div style="text-align:center; margin-top:15px; font-size:0.8rem; color:#475569;">
+                Secure Access System v2.1 (Synced)
+            </div>
+        </div>
+    </div>
+
+    <!-- USER DASHBOARD (SELF) -->
+    <div id="userView" class="app-container hidden">
+        <div class="glass-panel">
+            <div class="profile-header">
+                <div class="staff-name" id="dispName">NAMA STAFF</div>
+                <div class="staff-role" id="dispRole">JABATAN</div>
+                <div style="margin-top:10px; color:#64748b; font-size:0.9rem;" id="dispId">ID: -</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <small>Izin Hari Ini</small>
+                    <span id="dailyCount">0/4</span>
+                </div>
+                <div class="stat-box">
+                    <small>Status Saat Ini</small>
+                    <span id="statusBadge" style="color:var(--neon-green)">IDLE</span>
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-text" id="timerDisplay">00:00</div>
+            </div>
+
+            <button class="btn btn-start" id="btnStart" onclick="startLeave()">
+                MULAI IZIN (START JAM)
+            </button>
+            
+            <button class="btn btn-end" id="btnEnd" onclick="endLeave()" disabled>
+                SELESAI / KEMBALI (END TIME)
+            </button>
+
+            <button class="btn btn-dashboard" onclick="openMonitorTab()">
+                <span style="font-size:1.2rem; vertical-align:middle;">↗</span> DASHBOARD MONITORING
+            </button>
+            
+            <button class="btn btn-logout" onclick="logout()">LOGOUT AKUN</button>
+        </div>
+    </div>
+
+    <!-- MONITOR DASHBOARD (ADMIN VIEW) -->
+    <div id="monitorView" class="app-container monitor-wrapper hidden">
+        <div class="monitor-header">
+            <h2 style="margin:0; font-size:1.5rem;">DASHBOARD MONITORING</h2>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-dashboard" style="margin:0; width:auto; padding:10px 20px;" onclick="location.reload()">
+                    REFRESH MANUAL
+                </button>
+                <button class="btn btn-logout" style="margin:0; width:auto; padding:10px 20px;" onclick="closeMonitor()">
+                    TUTUP
+                </button>
+            </div>
+        </div>
+
+        <div class="monitor-section">
+            <div class="section-title">SEDANG KELUAR (LIVE SYNC)</div>
+            <div style="overflow-x:auto;">
+                <table id="tableActive">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Nama Staf</th>
+                            <th>Jabatan</th>
+                            <th>Jam Mulai</th>
+                            <th>Durasi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="emptyActive" style="text-align:center; padding:30px; color:#64748b; font-style:italic;">
+                    Tidak ada staf yang sedang keluar saat ini.
+                </div>
+            </div>
+        </div>
+
+        <div class="monitor-section">
+            <div class="section-title" style="color:var(--neon-purple);">RIWAYAT KELUAR (HISTORY)</div>
+            <div style="overflow-x:auto;">
+                <table id="tableHistory">
+                    <thead>
+                        <tr>
+                            <th>Nama Staf</th>
+                            <th>Jabatan</th>
+                            <th>Jam Keluar</th>
+                            <th>Jam Masuk</th>
+                            <th>Total Durasi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA STAFF ---
+        const staffData = [
+            // CS
+            { name: "WIDJAYA", id: "C6202945 / E7721607", role: "CS" },
+            { name: "DAVID", id: "C6169860 / E6864058", role: "CS" },
+            { name: "CHARLIE", id: "C7377694 / E9519110", role: "CS" },
+            { name: "HARIANTO", id: "X2242791", role: "CS" },
+            { name: "RINAL ABDILLAH NASUTION", id: "C8409170", role: "CS" },
+            { name: "ERI HARIANTO", id: "C8493406", role: "CS" },
+            { name: "MAHENDRAN", id: "C6813799", role: "CS" },
+            { name: "TOMMY HASIM", id: "C6735321", role: "CS" },
+            { name: "RANJIT", id: "X1068990", role: "CS" },
+            { name: "WILLY PERAYUDA", id: "E0089312", role: "CS" },
+            { name: "ANDI", id: "E4487475", role: "CS" },
+            { name: "ALFINO MUKTI", id: "C8493352", role: "CS" },
+            { name: "AKAS FARMA", id: "C8490102", role: "CS" },
+            { name: "ARI ROMANDUS FERNAND", id: "C8386112", role: "CS" },
+            { name: "SUHAN RAZ", id: "C5862955", role: "CS" },
+            { name: "RAHMADI SORMIN", id: "E0685561", role: "CS" },
+            { name: "NOVAL MUTTAWALI HAKIM", id: "E1475015", role: "CS" },
+            { name: "PUTRA ANUGRAH RIZKI", id: "E1473204", role: "CS" },
+            { name: "WILIAM", id: "E0227447", role: "CS" },
+            { name: "PUTRA RAMADHANI", id: "E1988807", role: "CS" },
+            { name: "M FAJAR SIDDIK", id: "C8993287", role: "CS" },
+            { name: "DANIEL", id: "E0859998", role: "CS" },
+            // CAPTAIN
+            { name: "RAAZ JESEN STEPANUS", id: "C8409387", role: "CAPTAIN" },
+            { name: "MAHAT SANJAYA HARAHAP", id: "E4340773", role: "CAPTAIN" },
+            { name: "AMRUL", id: "E2365928", role: "CAPTAIN" },
+            { name: "DIMAS ADHITYA", id: "E6937626", role: "CAPTAIN" },
+            { name: "RIDZKY RAMADHAN", id: "E6626714", role: "CAPTAIN" },
+            { name: "PRIMA NUGRAHA", id: "E5112965", role: "CAPTAIN" },
+            // KASIR
+            { name: "JONROMAN PURBA", id: "C8491005", role: "KASIR" },
+            { name: "ANNEN", id: "C8486854", role: "KASIR" },
+            { name: "BOBY KASANDRA BANCIN", id: "C8991790", role: "KASIR" },
+            { name: "KIKI YUNITA", id: "C8245909", role: "KASIR" },
+            { name: "GALI PRATAMA", id: "E3773557", role: "KASIR" },
+            { name: "ROY DILEN", id: "C5875009", role: "KASIR" },
+            { name: "AGUNG DEDI IRAWAN", id: "E7089147", role: "KASIR" },
+            { name: "MAICEL TAMPUBOLON", id: "E5843197", role: "KASIR" },
+            { name: "M REZI SYAPUTRA", id: "E6690607", role: "KASIR" },
+            { name: "KHOIRUDDIN", id: "C9148103", role: "KASIR" },
+            { name: "BAMBANG AGUNG SUTRISNO", id: "E7520815", role: "KASIR" },
+            { name: "PUTRA INSANY", id: "E7282317", role: "KASIR" },
+            { name: "FERA SALMA", id: "E7632631", role: "KASIR" },
+            { name: "RIVLAN RIZKY", id: "E6759553", role: "KASIR" },
+            { name: "AHMAD ANDIKA", id: "E7631720", role: "KASIR" },
+            { name: "ANGGARA K S", id: "E7647305", role: "KASIR" },
+            { name: "EGA PRAYUDA", id: "E2703456", role: "KASIR" },
+            { name: "ARJUN PRAISYA", id: "E7879939", role: "KASIR" },
+            { name: "ADITYA PANCA", id: "X3189356", role: "KASIR" },
+            { name: "AUDIS OYONG DUANSYAH", id: "E7281571", role: "KASIR" },
+            { name: "ADE OJI SHAPUTRA", id: "E8491965", role: "KASIR" },
+            { name: "ANDY PUTRA", id: "X3618101", role: "KASIR" },
+            { name: "ALFIANSYAH", id: "E9268104", role: "KASIR" },
+            { name: "JUNITA MARSHA", id: "E2817535", role: "KASIR" },
+            { name: "MELAN PUTRI TRINITA", id: "E0441477", role: "KASIR" },
+            { name: "PERDANA PUTRA", id: "X5420471", role: "KASIR" },
+            { name: "GUNAWAN", id: "E8261752", role: "KASIR" },
+            { name: "MAYA MARSELA", id: "E7892591", role: "KASIR" },
+            { name: "RULLY PRAMANA RIWANDA", id: "X6518459", role: "KASIR" },
+            { name: "HENGKI SANJAYA", id: "C7392958", role: "KASIR" },
+            { name: "NAZLA YUSUF NASUTION", id: "X7654130", role: "KASIR" },
+            { name: "SAKILA ANANDA SARI", id: "E1231228", role: "KASIR" },
+            { name: "JOSEF KUMAR", id: "E3208907", role: "KASIR" },
+            // STAF KHMER
+            { name: "VISEY", id: "-", role: "STAF KHMER" },
+            { name: "REN CHHENGLY", id: "-", role: "STAF KHMER" },
+            { name: "RET CHANTHORN", id: "-", role: "STAF KHMER" }
+        ];
+
+        // --- CONFIG ---
+        const LIMIT_ROLE = { "CS": 3, "CAPTAIN": 1, "KASIR": 3, "STAF KHMER": 1 };
+        const MAX_DAILY_LEAVE = 4;
+        
+        // --- STORAGE KEYS ---
+        const KEY_ACTIVE = 'app_active_leaves';
+        const KEY_HISTORY = 'app_history';
+        const KEY_DAILY = 'app_daily_counts';
+        const KEY_DATE = 'app_current_date';
+        const KEY_USER_SESSION = 'app_current_user_session';
+
+        // --- STATE ---
+        let currentUser = null;
+        let activeLeaves = [];
+        let leaveHistory = [];
+        let dailyCount = {};
+
+        // --- STORAGE FUNCTIONS ---
+        function saveData() {
+            localStorage.setItem(KEY_ACTIVE, JSON.stringify(activeLeaves));
+            localStorage.setItem(KEY_HISTORY, JSON.stringify(leaveHistory));
+            localStorage.setItem(KEY_DAILY, JSON.stringify(dailyCount));
+            localStorage.setItem(KEY_DATE, new Date().toDateString());
+            console.log("Data saved to LocalStorage"); // Debugging
+        }
+
+        function saveUserSession(user) {
+            localStorage.setItem(KEY_USER_SESSION, JSON.stringify(user));
+        }
+
+        function clearUserSession() {
+            localStorage.removeItem(KEY_USER_SESSION);
+        }
+
+        function loadData() {
+            const today = new Date().toDateString();
+            const storedDate = localStorage.getItem(KEY_DATE);
+
+            // Parse JSON carefully
+            try {
+                activeLeaves = JSON.parse(localStorage.getItem(KEY_ACTIVE)) || [];
+                leaveHistory = JSON.parse(localStorage.getItem(KEY_HISTORY)) || [];
+            } catch(e) {
+                console.error("Error parsing storage", e);
+                activeLeaves = [];
+                leaveHistory = [];
+            }
+            
+            if (storedDate !== today) {
+                // Reset harian
+                dailyCount = {};
+                saveData(); // Simpan tanggal baru
+            } else {
+                try {
+                    dailyCount = JSON.parse(localStorage.getItem(KEY_DAILY)) || {};
+                } catch(e) { dailyCount = {}; }
+            }
+        }
+
+        // --- INIT SYSTEM ---
+        function init() {
+            // Populate Dropdown
+            const select = document.getElementById('loginName');
+            if(select) {
+                staffData.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.name;
+                    opt.textContent = `${s.name} - ${s.role}`;
+                    select.appendChild(opt);
+                });
+            }
+
+            // Load Data Storage
+            loadData();
+
+            // Cek Mode Monitor via URL Parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'monitor') {
+                initMonitorMode();
+            } else {
+                initUserMode();
+            }
+        }
+
+        // --- MONITOR MODE (TAB BARU) ---
+        function initMonitorMode() {
+            // Sembunyikan Login & User, Tampilkan Monitor
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('userView').classList.add('hidden');
+            document.getElementById('monitorView').classList.remove('hidden');
+            
+            // Render awal
+            renderMonitorDashboard();
+
+            // 1. Listener Sinkronisasi (Inti dari perbaikan ini)
+            // Saat data berubah di tab lain, event ini dipicu
+            window.addEventListener('storage', (e) => {
+                if (e.key === KEY_ACTIVE || e.key === KEY_HISTORY) {
+                    console.log("Sync detected! Re-rendering dashboard...");
+                    loadData(); // Ambil data terbaru
+                    renderMonitorDashboard(); // Render ulang tabel (tambah/hapus baris)
+                }
+            });
+
+            // 2. Timer Loop (Hanya update teks durasi, tidak rebuild DOM)
+            setInterval(updateMonitorTimers, 1000);
+        }
+
+        function renderMonitorDashboard() {
+            // --- Render Active Table ---
+            const tbodyActive = document.querySelector('#tableActive tbody');
+            const emptyActive = document.getElementById('emptyActive');
+            tbodyActive.innerHTML = '';
+
+            if (activeLeaves.length === 0) {
+                emptyActive.style.display = 'block';
+            } else {
+                emptyActive.style.display = 'none';
+                activeLeaves.forEach(l => {
+                    const timeStr = new Date(l.startTime).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><span class="status-dot bg-red"></span></td>
+                        <td style="color:var(--neon-blue); font-weight:700">${l.name}</td>
+                        <td>${l.role}</td>
+                        <td>${timeStr}</td>
+                        <!-- Cell Durasi punya class khusus untuk update timer tanpa rebuild -->
+                        <td class="timer-cell" data-start="${l.startTime}" style="font-family:'Orbitron'">Loading...</td>
+                    `;
+                    tbodyActive.appendChild(tr);
+                });
+            }
+
+            // --- Render History Table (Hanya jika kosong atau saat storage event) ---
+            // Kita render ulang history setiap kali fungsi ini dipanggil (oleh storage event)
+            const tbodyHistory = document.querySelector('#tableHistory tbody');
+            tbodyHistory.innerHTML = '';
+            const sortedHistory = [...leaveHistory].sort((a,b) => b.endTime - a.endTime);
+            
+            sortedHistory.forEach(h => {
+                const startStr = new Date(h.startTime).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+                const endStr = new Date(h.endTime).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+                const dMins = Math.floor(h.durationMs / 60000);
+                const dSecs = Math.floor((h.durationMs % 60000) / 1000);
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${h.name}</td>
+                    <td>${h.role}</td>
+                    <td>${startStr}</td>
+                    <td>${endStr}</td>
+                    <td style="color:#64748b">${dMins}m ${dSecs}s</td>
+                `;
+                tbodyHistory.appendChild(tr);
+            });
+
+            // Jalankan update timer sekali agar tidak ada "Loading..." delay
+            updateMonitorTimers();
+        }
+
+        function updateMonitorTimers() {
+            // Fungsi ini JARANG mengubah struktur DOM, hanya mengubah teks
+            const timerCells = document.querySelectorAll('.timer-cell');
+            const now = Date.now();
+
+            timerCells.forEach(cell => {
+                const start = parseInt(cell.getAttribute('data-start'));
+                const diff = now - start;
+                const mins = Math.floor(diff / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                
+                cell.textContent = `${mins}m ${secs}s`;
+                
+                // Optional: Beri warna merah jika > 15 menit
+                if(mins >= 15) {
+                    cell.style.color = 'var(--neon-red)';
+                    cell.style.textShadow = '0 0 10px rgba(255,0,85,0.5)';
+                } else {
+                    cell.style.color = 'white';
+                    cell.style.textShadow = 'none';
+                }
+            });
+        }
+
+        function openMonitorTab() {
+            const url = window.location.href.split('?')[0] + '?view=monitor';
+            window.open(url, '_blank');
+        }
+
+        function closeMonitor() {
+            window.close(); // Mencoba menutup tab (tergantung browser setting)
+        }
+
+        // --- USER MODE (NORMAL) ---
+        function initUserMode() {
+            // Cek Session Login
+            const savedUser = localStorage.getItem(KEY_USER_SESSION);
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                if(staffData.find(s => s.name === currentUser.name)) {
+                    enterUserView();
+                } else {
+                    clearUserSession();
+                }
+            }
+
+            // Timer Loop User UI
+            setInterval(updateUserInterface, 1000);
+        }
+
+        function doLogin() {
+            const name = document.getElementById('loginName').value;
+            const pass = document.getElementById('loginPass').value;
+
+            if (!name) return showToast("Pilih nama staf!");
+            if (pass !== 'a1') return showToast("Password Salah! (a1)");
+
+            const userData = staffData.find(s => s.name === name);
+            currentUser = userData;
+            
+            saveUserSession(userData);
+            if (!dailyCount[name]) dailyCount[name] = 0;
+
+            enterUserView();
+            showToast("Login Berhasil!");
+        }
+
+        function enterUserView() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('userView').classList.remove('hidden');
+            setupUserView();
+        }
+
+        function logout() {
+            clearUserSession();
+            currentUser = null;
+            document.getElementById('loginPass').value = "";
+            document.getElementById('loginName').value = "";
+            document.getElementById('userView').classList.add('hidden');
+            document.getElementById('loginView').classList.remove('hidden');
+        }
+
+        function setupUserView() {
+            document.getElementById('dispName').textContent = currentUser.name;
+            document.getElementById('dispRole').textContent = currentUser.role;
+            document.getElementById('dispId').textContent = "ID: " + currentUser.id;
+            const isActive = activeLeaves.find(l => l.name === currentUser.name);
+            updateButtonState(isActive);
+        }
+
+        function updateButtonState(isActive) {
+            const btnStart = document.getElementById('btnStart');
+            const btnEnd = document.getElementById('btnEnd');
+            const statusBadge = document.getElementById('statusBadge');
+            const timerDisplay = document.getElementById('timerDisplay');
+
+            const count = dailyCount[currentUser.name] || 0;
+            const isDailyLimitReached = count >= MAX_DAILY_LEAVE;
+
+            if (isActive) {
+                btnStart.disabled = true;
+                btnStart.textContent = "SEDANG KELUAR...";
+                btnEnd.disabled = false;
+                statusBadge.textContent = "AKTIF KELUAR";
+                statusBadge.style.color = "var(--neon-red)";
+                timerDisplay.classList.add('timer-active');
+            } else {
+                btnEnd.disabled = true;
+                statusBadge.textContent = "SIAP DITEMPATKAN";
+                statusBadge.style.color = "var(--neon-green)";
+                timerDisplay.classList.remove('timer-active');
+                timerDisplay.textContent = "00:00";
+
+                if (isDailyLimitReached) {
+                    btnStart.disabled = true;
+                    btnStart.textContent = "LIMIT HARIAN HABIS";
+                    statusBadge.textContent = "LIMIT HABIS";
+                    statusBadge.style.color = "#f59e0b";
+                } else {
+                    btnStart.disabled = false;
+                    btnStart.textContent = "MULAI IZIN (START JAM)";
+                }
+            }
+            document.getElementById('dailyCount').textContent = `${count}/${MAX_DAILY_LEAVE}`;
+        }
+
+        function startLeave() {
+            if (!currentUser) return;
+
+            // Cek Limit Jabatan
+            const currentRoleCount = activeLeaves.filter(l => l.role === currentUser.role).length;
+            const maxRole = LIMIT_ROLE[currentUser.role] || 99;
+            
+            if (currentRoleCount >= maxRole) {
+                return showToast(`GAGAL: Kuota ${currentUser.role} Sudah Max!`);
+            }
+
+            // Cek Limit Harian
+            const myCount = dailyCount[currentUser.name] || 0;
+            if (myCount >= MAX_DAILY_LEAVE) {
+                return showToast(`GAGAL: Limit harian tercapai.`);
+            }
+
+            activeLeaves.push({
+                name: currentUser.name,
+                role: currentUser.role,
+                startTime: Date.now()
+            });
+
+            dailyCount[currentUser.name]++;
+            
+            // SIMPAN DATA -> Memicu storage event di tab Monitor
+            saveData(); 
+
+            showToast("Izin Keluar Dimulai!");
+            updateButtonState(true);
+        }
+
+        function endLeave() {
+            if (!currentUser) return;
+
+            const index = activeLeaves.findIndex(l => l.name === currentUser.name);
+            if (index === -1) return;
+
+            const leave = activeLeaves[index];
+            const endTime = Date.now();
+            const durationMs = endTime - leave.startTime;
+
+            leaveHistory.push({
+                name: leave.name,
+                role: leave.role,
+                startTime: leave.startTime,
+                endTime: endTime,
+                durationMs: durationMs
+            });
+
+            activeLeaves.splice(index, 1);
+            
+            // SIMPAN DATA -> Memicu storage event di tab Monitor
+            saveData();
+
+            showToast("Anda sudah kembali. Terima kasih.");
+            updateButtonState(false);
+        }
+
+        function updateUserInterface() {
+            if (!currentUser) return;
+
+            const activeData = activeLeaves.find(l => l.name === currentUser.name);
+            
+            if (activeData) {
+                const now = Date.now();
+                const diff = now - activeData.startTime;
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                
+                const mStr = minutes.toString().padStart(2, '0');
+                const sStr = seconds.toString().padStart(2, '0');
+                
+                document.getElementById('timerDisplay').textContent = `${mStr}:${sStr}`;
+            }
+        }
+
+        // --- UTILS ---
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // Start App
+        init();
+
+    </script>
+</body>
+</html>
