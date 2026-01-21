@@ -204,6 +204,21 @@
         .bg-green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
         .bg-red { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
 
+        /* Keterangan Telat */
+        .telat-badge {
+            background: rgba(255, 0, 85, 0.15);
+            color: var(--neon-red);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(255, 0, 85, 0.2);
+        }
+
         /* TOAST */
         .toast {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
@@ -328,6 +343,7 @@
                             <th>Jam Keluar</th>
                             <th>Jam Masuk</th>
                             <th>Total Durasi</th>
+                            <th>Keterangan</th> <!-- Kolom baru untuk keterangan -->
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -412,6 +428,7 @@
         // --- CONFIG ---
         const LIMIT_ROLE = { "CS": 3, "CAPTAIN": 1, "KASIR": 3, "STAF KHMER": 1 };
         const MAX_DAILY_LEAVE = 4;
+        const TELAT_THRESHOLD_MINUTES = 16; // Batas waktu untuk keterlambatan
         
         // --- STORAGE KEYS ---
         const KEY_ACTIVE = 'app_active_leaves';
@@ -432,7 +449,7 @@
             localStorage.setItem(KEY_HISTORY, JSON.stringify(leaveHistory));
             localStorage.setItem(KEY_DAILY, JSON.stringify(dailyCount));
             localStorage.setItem(KEY_DATE, new Date().toDateString());
-            console.log("Data saved to LocalStorage"); // Debugging
+            console.log("Data saved to LocalStorage");
         }
 
         function saveUserSession(user) {
@@ -447,7 +464,6 @@
             const today = new Date().toDateString();
             const storedDate = localStorage.getItem(KEY_DATE);
 
-            // Parse JSON carefully
             try {
                 activeLeaves = JSON.parse(localStorage.getItem(KEY_ACTIVE)) || [];
                 leaveHistory = JSON.parse(localStorage.getItem(KEY_HISTORY)) || [];
@@ -458,9 +474,8 @@
             }
             
             if (storedDate !== today) {
-                // Reset harian
                 dailyCount = {};
-                saveData(); // Simpan tanggal baru
+                saveData();
             } else {
                 try {
                     dailyCount = JSON.parse(localStorage.getItem(KEY_DAILY)) || {};
@@ -470,7 +485,6 @@
 
         // --- INIT SYSTEM ---
         function init() {
-            // Populate Dropdown
             const select = document.getElementById('loginName');
             if(select) {
                 staffData.forEach(s => {
@@ -481,10 +495,8 @@
                 });
             }
 
-            // Load Data Storage
             loadData();
 
-            // Cek Mode Monitor via URL Parameter
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('view') === 'monitor') {
                 initMonitorMode();
@@ -495,25 +507,20 @@
 
         // --- MONITOR MODE (TAB BARU) ---
         function initMonitorMode() {
-            // Sembunyikan Login & User, Tampilkan Monitor
             document.getElementById('loginView').classList.add('hidden');
             document.getElementById('userView').classList.add('hidden');
             document.getElementById('monitorView').classList.remove('hidden');
             
-            // Render awal
             renderMonitorDashboard();
 
-            // 1. Listener Sinkronisasi (Inti dari perbaikan ini)
-            // Saat data berubah di tab lain, event ini dipicu
             window.addEventListener('storage', (e) => {
                 if (e.key === KEY_ACTIVE || e.key === KEY_HISTORY) {
                     console.log("Sync detected! Re-rendering dashboard...");
-                    loadData(); // Ambil data terbaru
-                    renderMonitorDashboard(); // Render ulang tabel (tambah/hapus baris)
+                    loadData();
+                    renderMonitorDashboard();
                 }
             });
 
-            // 2. Timer Loop (Hanya update teks durasi, tidak rebuild DOM)
             setInterval(updateMonitorTimers, 1000);
         }
 
@@ -536,15 +543,13 @@
                         <td style="color:var(--neon-blue); font-weight:700">${l.name}</td>
                         <td>${l.role}</td>
                         <td>${timeStr}</td>
-                        <!-- Cell Durasi punya class khusus untuk update timer tanpa rebuild -->
                         <td class="timer-cell" data-start="${l.startTime}" style="font-family:'Orbitron'">Loading...</td>
                     `;
                     tbodyActive.appendChild(tr);
                 });
             }
 
-            // --- Render History Table (Hanya jika kosong atau saat storage event) ---
-            // Kita render ulang history setiap kali fungsi ini dipanggil (oleh storage event)
+            // --- Render History Table ---
             const tbodyHistory = document.querySelector('#tableHistory tbody');
             tbodyHistory.innerHTML = '';
             const sortedHistory = [...leaveHistory].sort((a,b) => b.endTime - a.endTime);
@@ -555,23 +560,28 @@
                 const dMins = Math.floor(h.durationMs / 60000);
                 const dSecs = Math.floor((h.durationMs % 60000) / 1000);
                 
+                // Cek apakah telat (lebih dari 16 menit)
+                const isTelat = dMins > TELAT_THRESHOLD_MINUTES;
+                const keterangan = isTelat ? '<span class="telat-badge">TELAT</span>' : '';
+                
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${h.name}</td>
                     <td>${h.role}</td>
                     <td>${startStr}</td>
                     <td>${endStr}</td>
-                    <td style="color:#64748b">${dMins}m ${dSecs}s</td>
+                    <td style="${isTelat ? 'color: var(--neon-red);' : 'color: #64748b;'}">
+                        ${dMins}m ${dSecs}s
+                    </td>
+                    <td>${keterangan}</td>
                 `;
                 tbodyHistory.appendChild(tr);
             });
 
-            // Jalankan update timer sekali agar tidak ada "Loading..." delay
             updateMonitorTimers();
         }
 
         function updateMonitorTimers() {
-            // Fungsi ini JARANG mengubah struktur DOM, hanya mengubah teks
             const timerCells = document.querySelectorAll('.timer-cell');
             const now = Date.now();
 
@@ -583,8 +593,8 @@
                 
                 cell.textContent = `${mins}m ${secs}s`;
                 
-                // Optional: Beri warna merah jika > 15 menit
-                if(mins >= 15) {
+                // Jika lebih dari 16 menit, beri warna merah
+                if(mins >= TELAT_THRESHOLD_MINUTES) {
                     cell.style.color = 'var(--neon-red)';
                     cell.style.textShadow = '0 0 10px rgba(255,0,85,0.5)';
                 } else {
@@ -600,12 +610,11 @@
         }
 
         function closeMonitor() {
-            window.close(); // Mencoba menutup tab (tergantung browser setting)
+            window.close();
         }
 
         // --- USER MODE (NORMAL) ---
         function initUserMode() {
-            // Cek Session Login
             const savedUser = localStorage.getItem(KEY_USER_SESSION);
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
@@ -616,7 +625,6 @@
                 }
             }
 
-            // Timer Loop User UI
             setInterval(updateUserInterface, 1000);
         }
 
@@ -699,7 +707,6 @@
         function startLeave() {
             if (!currentUser) return;
 
-            // Cek Limit Jabatan
             const currentRoleCount = activeLeaves.filter(l => l.role === currentUser.role).length;
             const maxRole = LIMIT_ROLE[currentUser.role] || 99;
             
@@ -707,7 +714,6 @@
                 return showToast(`GAGAL: Kuota ${currentUser.role} Sudah Max!`);
             }
 
-            // Cek Limit Harian
             const myCount = dailyCount[currentUser.name] || 0;
             if (myCount >= MAX_DAILY_LEAVE) {
                 return showToast(`GAGAL: Limit harian tercapai.`);
@@ -721,8 +727,7 @@
 
             dailyCount[currentUser.name]++;
             
-            // SIMPAN DATA -> Memicu storage event di tab Monitor
-            saveData(); 
+            saveData();
 
             showToast("Izin Keluar Dimulai!");
             updateButtonState(true);
@@ -748,7 +753,6 @@
 
             activeLeaves.splice(index, 1);
             
-            // SIMPAN DATA -> Memicu storage event di tab Monitor
             saveData();
 
             showToast("Anda sudah kembali. Terima kasih.");
@@ -770,6 +774,11 @@
                 const sStr = seconds.toString().padStart(2, '0');
                 
                 document.getElementById('timerDisplay').textContent = `${mStr}:${sStr}`;
+                
+                // Jika sudah lebih dari 16 menit, timer berubah warna merah
+                if (minutes >= TELAT_THRESHOLD_MINUTES) {
+                    document.getElementById('timerDisplay').classList.add('timer-active');
+                }
             }
         }
 
