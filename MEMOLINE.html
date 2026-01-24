@@ -3,445 +3,1840 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin Spreadsheet</title>
-    <!-- Menggunakan Font Awesome untuk Ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>LINETOGEL - Live Dashboard</title>
     <style>
-        /* --- CSS VARIABLES & RESET --- */
+        /* Variabel CSS */
         :root {
+            --primary-color: #1a237e;
+            --primary-light: #534bae;
+            --secondary-color: #ff4081;
+            --accent-color: #00bcd4;
             --sidebar-width: 280px;
-            --primary-color: #0f9d58; /* Google Sheets Green */
-            --primary-dark: #0b7943;
-            --accent-color: #e8f0fe;
-            --text-dark: #202124;
-            --text-light: #5f6368;
-            --bg-body: #f8f9fa;
-            --bg-card: #ffffff;
-            --border-color: #dadce0;
-            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --sidebar-collapsed: 70px;
+            --header-height: 80px;
+            --transition-speed: 0.3s;
+            --shadow-light: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-medium: 0 5px 20px rgba(0,0,0,0.15);
+            --shadow-heavy: 0 10px 40px rgba(0,0,0,0.2);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        
+        /* Reset dan Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            height: 100vh;
-            display: flex;
-            overflow: hidden; /* Mencegah scroll pada body utama */
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- SIDEBAR STYLING --- */
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: #fff;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
+            background: linear-gradient(180deg, #1a237e 0%, #283593 100%);
+            color: white;
             height: 100vh;
-            z-index: 10;
-            transition: transform 0.3s ease;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow-heavy);
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
         }
 
         .sidebar-header {
-            padding: 1.5rem;
-            background: var(--primary-color);
-            color: white;
+            padding: 25px 20px;
             text-align: center;
-        }
-        .sidebar-header h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; }
-        .sidebar-header span { font-size: 0.8rem; opacity: 0.9; }
-
-        .search-box {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .search-box input {
-            width: 100%;
-            padding: 0.6rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: border 0.3s;
-        }
-        .search-box input:focus { border-color: var(--primary-color); }
-
-        .sidebar-menu {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        /* --- SIDEBAR ITEM (USER REQUEST) --- */
-        .sidebar-item {
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
+        .logo {
             display: flex;
             align-items: center;
-            color: var(--text-dark);
-            transition: background 0.2s, color 0.2s;
-            border-left: 4px solid transparent;
-            font-size: 0.95rem;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #ffeb3b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text.collapsed {
+            display: none;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .sidebar-subtitle.collapsed {
+            display: none;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-title {
+            padding: 0 20px 10px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .nav-title.collapsed {
+            display: none;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             position: relative;
+            border-left: 4px solid transparent;
+            margin: 2px 0;
         }
 
         .sidebar-item:hover {
-            background-color: var(--accent-color);
-            color: var(--primary-dark);
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
         }
 
         .sidebar-item.active {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            border-left-color: var(--primary-color);
-            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: var(--secondary-color);
         }
 
-        /* Ikon menggunakan content dari CSS user */
-        .sidebar-item::after {
-            margin-left: auto;
-            font-family: "Font Awesome 6 Free"; 
-            font-weight: 900;
-            opacity: 0.8;
+        .sidebar-item.collapsed {
+            justify-content: center;
+            padding: 15px 10px;
         }
 
-        /* Spesifik kode ikon dari user */
-        .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS"]::after { content: '\f51e'; color: #f39c12; }
-        .sidebar-item[data-sheet="MEMO INFORMASI BANK"]::after { content: '\f19c'; color: #2980b9; }
-        .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"]::after { content: '\f11b'; color: #c0392b; }
-        .sidebar-item[data-sheet="MEMO KETERLAMBATAN RESULT"]::after { content: '\f12b'; color: #e67e22; }
-        .sidebar-item[data-sheet="MEMO SELESAI RESULT"]::after { content: '\f13b'; color: #27ae60; }
-        .sidebar-item[data-sheet="MEMO KENDALA SISTEM"]::after { content: '\f085'; color: #7f8c8d; }
-        .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS"]::after { content: '\f0ac'; color: #8e44ad; }
-        .sidebar-item[data-sheet="REPORT KENDALA KE IDN"]::after { content: '\f188'; color: #d35400; }
-        .sidebar-item[data-sheet="REPORT KENDALA LINETOGEL"]::after { content: '\f542'; color: #c0392b; }
-        .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"]::after { content: '\f09d'; color: #27ae60; }
-        .sidebar-item[data-sheet="DAFTAR LINK AKTIF"]::after { content: '\f0c1'; color: #16a085; }
-
-        /* --- MAIN CONTENT AREA --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        .sidebar-icon {
+            font-size: 1.2rem;
+            min-width: 24px;
+            text-align: center;
+            margin-right: 15px;
             position: relative;
         }
 
-        .top-bar {
-            height: 60px;
-            background: #fff;
-            border-bottom: 1px solid var(--border-color);
+        .sidebar-icon.collapsed {
+            margin-right: 0;
+        }
+
+        /* Live indicator for active sheet */
+        .live-indicator {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .sidebar-item.active .live-indicator {
+            display: block;
+        }
+
+        .sidebar-text {
+            flex-grow: 1;
+            font-weight: 500;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-text.collapsed {
+            display: none;
+        }
+
+        /* Ikon khusus untuk setiap sheet */
+        .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS"] .sidebar-icon::before { content: '\f51e'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="MEMO INFORMASI BANK"] .sidebar-icon::before { content: '\f19c'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"] .sidebar-icon::before { content: '\f11b'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="MEMO KETERLAMBATAN RESULT"] .sidebar-icon::before { content: '\f12b'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="MEMO SELESAI RESULT"] .sidebar-icon::before { content: '\f13b'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="MEMO KENDALA SISTEM"] .sidebar-icon::before { content: '\f085'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS"] .sidebar-icon::before { content: '\f0ac'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="REPORT KENDALA KE IDN"] .sidebar-icon::before { content: '\f188'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="REPORT KENDALA LINETOGEL"] .sidebar-icon::before { content: '\f542'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"] .sidebar-icon::before { content: '\f09d'; font-family: 'Font Awesome 6 Free'; }
+        .sidebar-item[data-sheet="DAFTAR LINK AKTIF"] .sidebar-icon::before { content: '\f0c1'; font-family: 'Font Awesome 6 Free'; }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: margin-left var(--transition-speed) ease;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-collapsed);
+        }
+
+        /* Top Header */
+        .top-header {
+            background: white;
+            height: var(--header-height);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2rem;
-        }
-        .top-bar h3 { font-size: 1.1rem; color: var(--text-light); }
-        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
-
-        .content-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
+            padding: 0 30px;
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        /* --- CARDS GRID --- */
-        .section-title {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
             font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-dark);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .toggle-sidebar:hover {
+            background: #f0f0f0;
+        }
+
+        .current-sheet {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .current-sheet-icon {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #4caf50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .header-action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        /* Sheet Info Card */
+        .sheet-info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-light);
+            border-left: 6px solid var(--primary-color);
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: slideDown 0.5s ease;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            animation: fadeIn 0.3s ease-in-out;
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--primary-color);
-            transition: transform 0.2s;
+        .sheet-info-left {
+            flex: 1;
+            min-width: 300px;
         }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        .card-header {
-            font-weight: 700;
+        .sheet-info-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sheet-info-description {
+            color: #666;
             font-size: 1.1rem;
-            margin-bottom: 0.8rem;
-            color: var(--text-dark);
-            word-wrap: break-word;
-        }
-
-        .card-body {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            white-space: pre-wrap;
             line-height: 1.5;
         }
 
-        /* --- LOADING & ERROR --- */
-        #loader {
+        .sheet-stats {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-width: 160px;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .stat-content {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--text-light);
         }
-        .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top: 4px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- RESPONSIVE --- */
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Data Container */
+        .data-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .data-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .data-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .data-action-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-action-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .data-action-btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .data-action-btn.primary:hover {
+            background: var(--primary-light);
+        }
+
+        /* Data Grid */
+        .data-grid {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            min-height: 300px;
+        }
+
+        /* Data Card */
+        .data-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-light);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .card-id {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .card-content {
+            padding: 20px;
+            line-height: 1.6;
+            color: #444;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            animation: fadeIn 1s ease;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #bdbdbd;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.8rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .empty-description {
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+
+        /* Cache Status */
+        .cache-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        /* Footer */
+        .main-footer {
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+            background: white;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .data-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .sheet-info-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .sheet-stats {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: var(--sidebar-collapsed);
+            }
+            
+            .sidebar:not(.collapsed) {
+                width: var(--sidebar-width);
+            }
+            
+            .main-content {
+                margin-left: var(--sidebar-collapsed);
+            }
+            
+            .main-content:not(.expanded) {
+                margin-left: 0;
+            }
+            
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+            
+            .main-content.expanded {
+                margin-left: 0;
+            }
+            
+            .toggle-sidebar {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background: white;
+                box-shadow: var(--shadow-medium);
+            }
+        }
+
         @media (max-width: 768px) {
-            .sidebar { position: fixed; left: -280px; height: 100%; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
-            .sidebar.open { transform: translateX(280px); left: 0; }
-            .mobile-toggle { display: block; }
+            .top-header {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .header-left, .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .dashboard-content {
+                padding: 20px;
+            }
+            
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sheet-info-title {
+                font-size: 1.5rem;
+            }
+            
+            .stat-item {
+                min-width: calc(50% - 12.5px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stat-item {
+                min-width: 100%;
+            }
+            
+            .data-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .data-action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        /* Loading Animation - Hanya untuk inisialisasi */
+        .initial-loader {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .initial-loader.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Background refresh indicator */
+        .refresh-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            box-shadow: var(--shadow-medium);
+            animation: slideInRight 0.5s ease;
+            display: none;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .refresh-indicator.show {
+            display: flex;
         }
     </style>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2>ADMIN PANEL</h2>
-            <span>Internal System</span>
-        </div>
-        
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cari menu...">
-        </div>
-
-        <div class="sidebar-menu" id="sidebarMenu">
-            <!-- Menu items akan di-generate oleh JavaScript -->
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="top-bar">
-            <i class="fa-solid fa-bars mobile-toggle" onclick="toggleSidebar()"></i>
-            <h3 id="currentSheetName">Selamat Datang</h3>
-            <div><!-- Spacer --></div>
-        </header>
-
-        <div class="content-scroll" id="contentArea">
-            <div id="loader">
-                <div class="spinner"></div>
-                <p>Memuat data...</p>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="logo-text" id="logoText">LINETOGEL</div>
+                </div>
+                <div class="sidebar-subtitle" id="sidebarSubtitle">Live Dashboard</div>
             </div>
-            <!-- Konten akan muncul di sini -->
-        </div>
-    </main>
 
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title" id="navTitleMemo">MEMO</div>
+                    <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Pembagian Bonus</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Informasi Bank</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala Permainan</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="MEMO KETERLAMBATAN RESULT">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Keterlambatan Result</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="MEMO SELESAI RESULT">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Selesai Result</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala Sistem</div>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title" id="navTitleReport">REPORT</div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala All Situs</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala ke IDN</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA LINETOGEL">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala LINETOGEL</div>
+                    </div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Kendala Bank & E-Wallet</div>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title" id="navTitleLinks">LINKS</div>
+                    <div class="sidebar-item" data-sheet="DAFTAR LINK AKTIF">
+                        <div class="sidebar-icon">
+                            <div class="live-indicator"></div>
+                        </div>
+                        <div class="sidebar-text">Daftar Link Aktif</div>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="mainContent">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="current-sheet">
+                        <i class="current-sheet-icon fas fa-gem"></i>
+                        <span id="currentSheetTitle">MEMO PEMBAGIAN BONUS</span>
+                        <span class="live-badge">
+                            <i class="fas fa-circle"></i>
+                            LIVE
+                        </span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="header-action" id="refreshAllBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh Semua</span>
+                    </button>
+                    <button class="header-action" id="exportDataBtn" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);">
+                        <i class="fas fa-download"></i>
+                        <span>Export Data</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- DASHBOARD CONTENT -->
+            <div class="dashboard-content">
+                <!-- SHEET INFO CARD -->
+                <div class="sheet-info-card">
+                    <div class="sheet-info-left">
+                        <h1 class="sheet-info-title">
+                            <i class="fas fa-gem"></i>
+                            <span id="sheetInfoTitle">MEMO PEMBAGIAN BONUS</span>
+                            <span class="cache-status" id="cacheStatus">
+                                <i class="fas fa-database"></i>
+                                <span>Data Cached</span>
+                            </span>
+                        </h1>
+                        <p class="sheet-info-description" id="sheetInfoDescription">
+                            Data lengkap tentang pembagian bonus untuk member LINETOGEL. Update terakhir: <span id="lastUpdateTime">-</span>
+                            <br>
+                            <small style="color: #4caf50;">
+                                <i class="fas fa-bolt"></i> Live monitoring aktif - Data di-cache untuk akses instan
+                            </small>
+                        </p>
+                    </div>
+                    <div class="sheet-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalDataCount">0</div>
+                                <div class="stat-label">Total Data</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="dataSize">0 KB</div>
+                                <div class="stat-label">Ukuran Data</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="cacheCount">0</div>
+                                <div class="stat-label">Sheet Cached</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATA CONTAINER -->
+                <div class="data-container">
+                    <div class="data-header">
+                        <h2 class="data-title">
+                            <i class="fas fa-list-ul"></i>
+                            <span id="dataTableTitle">Daftar Lengkap Data</span>
+                        </h2>
+                        <div class="data-actions">
+                            <button class="data-action-btn" id="printDataBtn">
+                                <i class="fas fa-print"></i>
+                                Cetak
+                            </button>
+                            <button class="data-action-btn primary" id="forceRefreshBtn">
+                                <i class="fas fa-sync"></i>
+                                Refresh Sheet Ini
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DATA GRID -->
+                    <div class="data-grid" id="dataGrid">
+                        <!-- Data akan dimuat di sini -->
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="empty-title">Data Belum Dimuat</h3>
+                            <p class="empty-description">
+                                Klik tombol "Refresh Sheet Ini" di atas untuk mengambil data dari sheet <strong>MEMO PEMBAGIAN BONUS</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="main-footer">
+                    <p><strong>LINETOGEL - Live Dashboard dengan Cache System</strong></p>
+                    <p>Sistem ini menggunakan cache untuk akses instan ke semua sheet. Data diambil sekali dan disimpan di memori browser.</p>
+                    <div class="footer-links">
+                        <a href="https://docs.google.com/spreadsheets/d/1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U/edit?usp=sharing" 
+                           target="_blank" class="footer-link">
+                            <i class="fas fa-external-link-alt"></i> Buka Spreadsheet Asli
+                        </a>
+                        <a href="#" id="clearCacheBtn" class="footer-link">
+                            <i class="fas fa-trash"></i> Bersihkan Cache
+                        </a>
+                        <a href="#" id="aboutLink" class="footer-link">
+                            <i class="fas fa-info-circle"></i> Tentang Sistem
+                        </a>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+                        &copy; 2023 LINETOGEL. Live Dashboard v2.0 dengan Cache System.
+                    </p>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <!-- Background Refresh Indicator -->
+    <div class="refresh-indicator" id="refreshIndicator">
+        <i class="fas fa-sync fa-spin"></i>
+        <span>Background refresh sedang berjalan...</span>
+    </div>
+
+    <!-- JAVASCRIPT -->
     <script>
-        // ==========================================
-        // KONFIGURASI DATA
-        // ==========================================
-        const PUB_ID = '2PACX-1vSR8lMri5Shul5WUYHw0GKX4LyT6GIxFfFnpL0v-8jFsD4aoRHr46wbX5P037BGEqnJnnlVgmYMNwRF';
-
-        // Daftar Sheet yang ingin ditampilkan di Sidebar
-        // Pastikan 'name' sesuai PERSIS dengan nama tab di Spreadsheet
-        // GID bisa 0, 1, 2, dst. Jika Anda ragu GIDnya, script akan otomatis coba.
-        const sheetList = [
-            { name: "MEMO PEMBAGIAN BONUS", gid: "0" }, 
-            { name: "MEMO INFORMASI BANK", gid: "1" },
-            { name: "MEMO KENDALA PERMAINAN", gid: "2" },
-            { name: "MEMO KETERLAMBATAN RESULT", gid: "3" },
-            { name: "MEMO SELESAI RESULT", gid: "4" },
-            { name: "MEMO KENDALA SISTEM", gid: "5" },
-            { name: "REPORT KENDALA ALL SITUS", gid: "6" },
-            { name: "REPORT KENDALA KE IDN", gid: "7" },
-            { name: "REPORT KENDALA LINETOGEL", gid: "8" },
-            { name: "REPORT KENDALA BANK & EWALLET", gid: "9" },
-            { name: "DAFTAR LINK AKTIF", gid: "10" }
+        // ===============================
+        // KONFIGURASI
+        // ===============================
+        const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
+        
+        // Sheet configuration
+        const SHEET_CONFIG = {
+            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS", description: "Data lengkap tentang pembagian bonus untuk member LINETOGEL." },
+            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK", description: "Informasi bank dan e-wallet yang digunakan untuk transaksi." },
+            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN", description: "Catatan kendala dalam permainan yang dialami oleh member." },
+            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT", description: "Riwayat keterlambatan result dan penanganannya." },
+            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT", description: "Data result yang sudah selesai diproses." },
+            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM", description: "Kendala sistem yang terjadi dan solusinya." },
+            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS", description: "Laporan kendala dari semua situs LINETOGEL." },
+            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN", description: "Laporan kendala yang dilaporkan ke IDN." },
+            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL", description: "Laporan kendala khusus untuk situs LINETOGEL." },
+            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET", description: "Laporan kendala terkait bank dan e-wallet." },
+            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF", description: "Daftar semua link aktif LINETOGEL." }
+        };
+        
+        // Proxy servers untuk menghindari CORS
+        const PROXY_SERVERS = [
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest='
         ];
-        // ==========================================
-
-        // Cache Data agar tidak perlu fetch ulang saat ganti tab
-        const dataCache = {}; 
-
-        // DOM Elements
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const contentArea = document.getElementById('contentArea');
-        const currentSheetName = document.getElementById('currentSheetName');
-        const searchInput = document.getElementById('searchInput');
-
-        // Inisialisasi
-        document.addEventListener('DOMContentLoaded', () => {
-            renderSidebar();
-            // Load sheet pertama secara otomatis
-            if(sheetList.length > 0) {
-                loadSheetData(sheetList[0]);
+        
+        // ===============================
+        // STATE MANAGEMENT
+        // ===============================
+        let currentSheet = "MEMO PEMBAGIAN BONUS";
+        let currentData = [];
+        let isSidebarCollapsed = false;
+        
+        // Cache system untuk semua sheet
+        let sheetCache = {};
+        let cacheTimestamp = {};
+        
+        // Auto-refresh settings
+        let autoRefreshInterval = null;
+        const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 menit
+        
+        // ===============================
+        // ELEMEN DOM
+        // ===============================
+        // Sidebar elements
+        const sidebar = document.getElementById('sidebar');
+        const logoText = document.getElementById('logoText');
+        const sidebarSubtitle = document.getElementById('sidebarSubtitle');
+        const navTitleMemo = document.getElementById('navTitleMemo');
+        const navTitleReport = document.getElementById('navTitleReport');
+        const navTitleLinks = document.getElementById('navTitleLinks');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const toggleSidebarBtn = document.getElementById('toggleSidebar');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Header elements
+        const currentSheetTitle = document.getElementById('currentSheetTitle');
+        const refreshAllBtn = document.getElementById('refreshAllBtn');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        
+        // Dashboard elements
+        const sheetInfoTitle = document.getElementById('sheetInfoTitle');
+        const sheetInfoDescription = document.getElementById('sheetInfoDescription');
+        const lastUpdateTime = document.getElementById('lastUpdateTime');
+        const totalDataCount = document.getElementById('totalDataCount');
+        const dataSize = document.getElementById('dataSize');
+        const cacheCount = document.getElementById('cacheCount');
+        const cacheStatus = document.getElementById('cacheStatus');
+        const dataTableTitle = document.getElementById('dataTableTitle');
+        const forceRefreshBtn = document.getElementById('forceRefreshBtn');
+        const printDataBtn = document.getElementById('printDataBtn');
+        const dataGrid = document.getElementById('dataGrid');
+        const refreshIndicator = document.getElementById('refreshIndicator');
+        
+        // Footer links
+        const clearCacheBtn = document.getElementById('clearCacheBtn');
+        const aboutLink = document.getElementById('aboutLink');
+        
+        // ===============================
+        // FUNGSI UTILITAS
+        // ===============================
+        // Format tanggal dan waktu
+        function formatDateTime(date) {
+            if (!date) return '-';
+            
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            };
+            
+            return date.toLocaleDateString('id-ID', options);
+        }
+        
+        // Format ukuran data
+        function formatDataSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Tampilkan notifikasi
+        function showNotification(message, type = 'info', duration = 3000) {
+            // Hapus notifikasi sebelumnya
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
             }
-        });
-
-        // 1. Render Sidebar Menu
-        function renderSidebar() {
-            sidebarMenu.innerHTML = '';
-            sheetList.forEach(sheet => {
-                const item = document.createElement('div');
-                item.className = 'sidebar-item';
-                item.setAttribute('data-sheet', sheet.name);
-                item.textContent = sheet.name; // Teks Menu
-                
-                item.addEventListener('click', () => {
-                    setActiveItem(item);
-                    loadSheetData(sheet);
-                    
-                    // Di mobile, tutup sidebar setelah klik
-                    if(window.innerWidth <= 768) {
-                        document.getElementById('sidebar').classList.remove('open');
+            
+            // Buat elemen notifikasi
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="position: fixed; top: 100px; right: 20px; background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'}; 
+                     color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+                     z-index: 10000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Tambahkan style animasi
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Hapus setelah duration
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
                     }
-                });
-                sidebarMenu.appendChild(item);
-            });
+                }, 300);
+            }, duration);
         }
-
-        // 2. Fungsi Load Data
-        async function loadSheetData(sheet) {
-            // Update UI Loading
-            contentArea.innerHTML = `
-                <div id="loader" style="display:flex">
-                    <div class="spinner"></div>
-                    <p>Memuat ${sheet.name}...</p>
-                </div>`;
-            currentSheetName.textContent = sheet.name;
-
-            try {
-                let rows = dataCache[sheet.gid];
-
-                // Jika belum ada di cache, fetch dari Google
-                if (!rows) {
-                    const url = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?output=csv&gid=${sheet.gid}`;
-                    const response = await fetch(url);
-                    
-                    if (!response.ok) throw new Error('Gagal mengambil data');
-                    
-                    const text = await response.text();
-                    rows = parseCSV(text);
-                    
-                    // Simpan ke cache
-                    dataCache[sheet.gid] = rows;
-                }
-
-                renderCards(rows);
-
-            } catch (error) {
-                console.error(error);
-                contentArea.innerHTML = `
-                    <div style="text-align:center; padding:2rem; color:#c0392b;">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem; margin-bottom:1rem;"></i>
-                        <h3>Gagal Memuat Data</h3>
-                        <p>Pastikan sheet <strong>"${sheet.name}"</strong> ada di spreadsheet dan sudah dipublikasikan.</p>
-                        <p style="font-size:0.8rem; margin-top:10px;">Error: ${error.message}</p>
-                    </div>`;
-            }
-        }
-
-        // 3. Render Kartu Konten
-        function renderCards(rows) {
-            contentArea.innerHTML = '';
+        
+        // Update informasi sheet
+        function updateSheetInfo() {
+            sheetInfoTitle.textContent = currentSheet;
+            currentSheetTitle.textContent = currentSheet;
+            dataTableTitle.textContent = `Data dari Sheet: ${currentSheet}`;
             
-            // Judul Section
-            const title = document.createElement('div');
-            title.className = 'section-title';
-            title.innerHTML = `<span>${currentSheetName.textContent}</span> <span style="font-size:0.9rem; color:#777;">${rows.length - 1} Data</span>`;
-            contentArea.appendChild(title);
-
-            const grid = document.createElement('div');
-            grid.className = 'grid-container';
-
-            // Loop data (skip index 0 header)
-            let hasData = false;
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                const colA = row[0] || ''; // Judul
-                const colB = row[1] || ''; // Isi
-
-                if (colA || colB) {
-                    hasData = true;
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="card-header">${colA}</div>
-                        <div class="card-body">${colB}</div>
-                    `;
-                    grid.appendChild(card);
-                }
-            }
-
-            if (!hasData) {
-                contentArea.innerHTML += '<p style="text-align:center; color:#777;">Tidak ada data di sheet ini.</p>';
+            const description = SHEET_CONFIG[currentSheet]?.description || "Data dari Google Sheets.";
+            sheetInfoDescription.innerHTML = `${description} Update terakhir: <span id="lastUpdateTime">${cacheTimestamp[currentSheet] ? formatDateTime(new Date(cacheTimestamp[currentSheet])) : '-'}</span>`;
+            
+            // Update cache status
+            if (sheetCache[currentSheet]) {
+                cacheStatus.innerHTML = '<i class="fas fa-database"></i><span>Data Cached</span>';
+                cacheStatus.style.background = '#e8f5e9';
+                cacheStatus.style.color = '#2e7d32';
             } else {
-                contentArea.appendChild(grid);
+                cacheStatus.innerHTML = '<i class="fas fa-cloud-download-alt"></i><span>Belum Cached</span>';
+                cacheStatus.style.background = '#fff3e0';
+                cacheStatus.style.color = '#ef6c00';
             }
         }
-
-        // Helper: Set Active Class di Sidebar
-        function setActiveItem(element) {
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        // Helper: Toggle Sidebar Mobile
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-
-        // Helper: Search Filter
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const items = document.querySelectorAll('.sidebar-item');
+        
+        // Update statistik data
+        function updateDataStats(data) {
+            const count = data.length;
+            totalDataCount.textContent = count.toLocaleString();
             
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(term)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
+            // Hitung ukuran data
+            const dataString = JSON.stringify(data);
+            const bytes = new TextEncoder().encode(dataString).length;
+            dataSize.textContent = formatDataSize(bytes);
+            
+            // Update cache count
+            const cachedSheets = Object.keys(sheetCache).length;
+            cacheCount.textContent = cachedSheets;
+        }
+        
+        // Simpan data ke cache
+        function saveToCache(sheetName, data) {
+            sheetCache[sheetName] = data;
+            cacheTimestamp[sheetName] = new Date().toISOString();
+            
+            // Update cache count
+            const cachedSheets = Object.keys(sheetCache).length;
+            cacheCount.textContent = cachedSheets;
+            
+            // Simpan ke localStorage untuk persistensi
+            try {
+                localStorage.setItem(`linetogel_cache_${sheetName}`, JSON.stringify(data));
+                localStorage.setItem(`linetogel_timestamp_${sheetName}`, cacheTimestamp[sheetName]);
+            } catch (e) {
+                console.warn('Gagal menyimpan cache ke localStorage:', e);
+            }
+        }
+        
+        // Load data dari cache
+        function loadFromCache(sheetName) {
+            // Coba load dari memory cache dulu
+            if (sheetCache[sheetName]) {
+                return sheetCache[sheetName];
+            }
+            
+            // Coba load dari localStorage
+            try {
+                const cachedData = localStorage.getItem(`linetogel_cache_${sheetName}`);
+                const cachedTime = localStorage.getItem(`linetogel_timestamp_${sheetName}`);
+                
+                if (cachedData) {
+                    sheetCache[sheetName] = JSON.parse(cachedData);
+                    cacheTimestamp[sheetName] = cachedTime;
+                    return sheetCache[sheetName];
                 }
+            } catch (e) {
+                console.warn('Gagal memuat cache dari localStorage:', e);
+            }
+            
+            return null;
+        }
+        
+        // ===============================
+        // FUNGSI SIDEBAR
+        // ===============================
+        // Toggle sidebar
+        function toggleSidebar() {
+            isSidebarCollapsed = !isSidebarCollapsed;
+            
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                
+                // Update teks sidebar
+                logoText.classList.add('collapsed');
+                sidebarSubtitle.classList.add('collapsed');
+                navTitleMemo.classList.add('collapsed');
+                navTitleReport.classList.add('collapsed');
+                navTitleLinks.classList.add('collapsed');
+                
+                // Update item sidebar
+                document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('collapsed'));
+                document.querySelectorAll('.sidebar-icon').forEach(el => el.classList.add('collapsed'));
+                
+                // Update tombol toggle
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+                
+                // Update teks sidebar
+                logoText.classList.remove('collapsed');
+                sidebarSubtitle.classList.remove('collapsed');
+                navTitleMemo.classList.remove('collapsed');
+                navTitleReport.classList.remove('collapsed');
+                navTitleLinks.classList.remove('collapsed');
+                
+                // Update item sidebar
+                document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('collapsed'));
+                document.querySelectorAll('.sidebar-icon').forEach(el => el.classList.remove('collapsed'));
+                
+                // Update tombol toggle
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-times"></i>';
+            }
+        }
+        
+        // Pilih sheet dari sidebar
+        function selectSheet(sheetName) {
+            // Update state
+            currentSheet = sheetName;
+            
+            // Update UI sidebar
+            sidebarItems.forEach(item => {
+                if (item.getAttribute('data-sheet') === sheetName) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Update informasi sheet
+            updateSheetInfo();
+            
+            // Cek apakah data sudah ada di cache
+            const cachedData = loadFromCache(sheetName);
+            
+            if (cachedData) {
+                // Tampilkan data dari cache secara instan
+                displayData(cachedData);
+                showNotification(`Data dari cache sheet "${sheetName}" ditampilkan`, 'success', 2000);
+                
+                // Lakukan background refresh untuk update data
+                setTimeout(() => refreshSheetData(sheetName, true), 100);
+            } else {
+                // Jika belum ada cache, load data
+                loadSheetData();
+            }
+        }
+        
+        // ===============================
+        // FUNGSI PENGAMBILAN DATA
+        // ===============================
+        // Ambil data dari Google Sheets
+        async function fetchSheetData(sheetName) {
+            // Coba beberapa format URL untuk sheet yang berbeda
+            const urlFormats = [
+                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`,
+                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}`,
+                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`
+            ];
+            
+            let csvData = '';
+            let success = false;
+            
+            for (const url of urlFormats) {
+                for (const proxy of PROXY_SERVERS) {
+                    try {
+                        const proxyUrl = proxy + encodeURIComponent(url);
+                        
+                        const response = await fetch(proxyUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'text/csv',
+                                'Content-Type': 'text/csv; charset=utf-8'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            csvData = await response.text();
+                            if (csvData && csvData.length > 0 && !csvData.includes('error')) {
+                                success = true;
+                                console.log(`Berhasil mengambil data dari: ${url}`);
+                                break;
+                            }
+                        }
+                    } catch (error) {
+                        console.warn(`Gagal dengan proxy ${proxy}:`, error);
+                        continue;
+                    }
+                }
+                
+                if (success) break;
+            }
+            
+            if (!success) {
+                throw new Error(`Gagal mengambil data dari sheet: ${sheetName}`);
+            }
+            
+            return csvData;
+        }
+        
+        // Parse data CSV
+        function parseCSVData(csvText) {
+            const rows = [];
+            let currentRow = [];
+            let currentValue = '';
+            let insideQuotes = false;
+            
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+                
+                if (char === '"') {
+                    if (insideQuotes && nextChar === '"') {
+                        currentValue += '"';
+                        i++;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (char === ',' && !insideQuotes) {
+                    currentRow.push(currentValue);
+                    currentValue = '';
+                } else if (char === '\n' && !insideQuotes) {
+                    currentRow.push(currentValue);
+                    rows.push([...currentRow]);
+                    currentRow = [];
+                    currentValue = '';
+                } else if (char === '\r') {
+                    continue;
+                } else {
+                    currentValue += char;
+                }
+            }
+            
+            // Tambahkan baris terakhir
+            if (currentValue !== '' || currentRow.length > 0) {
+                currentRow.push(currentValue);
+                rows.push([...currentRow]);
+            }
+            
+            // Konversi ke array objek
+            const data = [];
+            let dataIndex = 1;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                
+                if (row.length === 0 || (row.length === 1 && row[0] === '')) {
+                    continue;
+                }
+                
+                // Kolom A = Judul, Kolom B = Isi
+                const title = row[0] ? row[0].trim() : '';
+                
+                if (!title) {
+                    continue;
+                }
+                
+                let content = '';
+                if (row.length > 1) {
+                    for (let j = 1; j < row.length; j++) {
+                        if (row[j] && row[j].trim()) {
+                            content += (j > 1 ? ' ' : '') + row[j];
+                        }
+                    }
+                    content = content.trim();
+                }
+                
+                data.push({
+                    id: dataIndex,
+                    title: title,
+                    content: content || '(Tidak ada konten)',
+                    rowNumber: i + 1
+                });
+                
+                dataIndex++;
+            }
+            
+            return data;
+        }
+        
+        // Tampilkan data di grid
+        function displayData(data) {
+            if (!data || data.length === 0) {
+                dataGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3 class="empty-title">Tidak Ada Data</h3>
+                        <p class="empty-description">
+                            Tidak ada data yang ditemukan di sheet <strong>${currentSheet}</strong>.
+                            Pastikan sheet memiliki data di Kolom A (Judul) dan Kolom B (Isi).
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            data.forEach((item, index) => {
+                // Format konten
+                const formattedContent = formatContent(item.content);
+                
+                // Delay animasi
+                const animationDelay = `${0.1 + (index * 0.05)}s`;
+                
+                html += `
+                    <div class="data-card" style="animation-delay: ${animationDelay}">
+                        <div class="card-header">
+                            <h3 class="card-title">${item.title}</h3>
+                            <div class="card-meta">
+                                <span>Baris ${item.rowNumber}</span>
+                                <span class="card-id">#${item.id}</span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            ${formattedContent}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            dataGrid.innerHTML = html;
+            currentData = data;
+            updateDataStats(data);
+        }
+        
+        // Format konten untuk tampilan
+        function formatContent(content) {
+            if (!content || content === '(Tidak ada konten)') {
+                return '<em style="color: #999; font-style: italic;">(Tidak ada konten)</em>';
+            }
+            
+            let formatted = content
+                .replace(/\n/g, '<br>')
+                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: #1a237e; text-decoration: underline;">$1</a>')
+                .replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g, '<a href="mailto:$1" style="color: #1a237e;">$1</a>');
+            
+            // Deteksi list items
+            const lines = formatted.split('<br>');
+            formatted = lines.map(line => {
+                const trimmed = line.trim();
+                
+                if (trimmed.startsWith('•') || trimmed.startsWith('-')) {
+                    return `<div style="margin-left: 20px; margin-bottom: 5px; position: relative;">
+                                <span style="position: absolute; left: -15px;">•</span>
+                                ${trimmed.substring(1).trim()}
+                            </div>`;
+                }
+                
+                if (trimmed.match(/^\d+\./)) {
+                    return `<div style="margin-left: 20px; margin-bottom: 5px; position: relative;">
+                                <span style="position: absolute; left: -15px; font-weight: bold;">${trimmed.match(/^\d+/)[0]}.</span>
+                                ${trimmed.replace(/^\d+\.\s*/, '')}
+                            </div>`;
+                }
+                
+                return line;
+            }).join('<br>');
+            
+            return formatted;
+        }
+        
+        // Muat data sheet (dengan cache system)
+        async function loadSheetData() {
+            try {
+                // Tampilkan loading indicator hanya jika belum ada cache
+                if (!sheetCache[currentSheet]) {
+                    dataGrid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="spinner"></div>
+                            <p>Sedang memuat data dari Google Sheets...</p>
+                        </div>
+                    `;
+                }
+                
+                // Ambil data dari sheet
+                const csvData = await fetchSheetData(currentSheet);
+                
+                // Parse data
+                const parsedData = parseCSVData(csvData);
+                
+                // Simpan ke cache
+                saveToCache(currentSheet, parsedData);
+                
+                // Tampilkan data
+                displayData(parsedData);
+                
+                // Update informasi waktu
+                lastUpdateTime.textContent = formatDateTime(new Date(cacheTimestamp[currentSheet]));
+                
+                // Tampilkan notifikasi sukses
+                if (!sheetCache[currentSheet]) {
+                    showNotification(`Data dari sheet "${currentSheet}" berhasil dimuat!`, 'success');
+                }
+                
+            } catch (error) {
+                console.error('Error loading sheet data:', error);
+                
+                // Coba tampilkan data dari cache jika ada
+                const cachedData = loadFromCache(currentSheet);
+                if (cachedData) {
+                    displayData(cachedData);
+                    showNotification(`Menggunakan data cache karena gagal refresh: ${error.message}`, 'warning');
+                } else {
+                    // Tampilkan error state
+                    dataGrid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <h3 class="empty-title">Gagal Memuat Data</h3>
+                            <p class="empty-description">
+                                ${error.message}<br>
+                                Pastikan sheet "${currentSheet}" ada dan dapat diakses.
+                            </p>
+                        </div>
+                    `;
+                    
+                    showNotification(`Gagal memuat data: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        // Refresh data sheet (background)
+        async function refreshSheetData(sheetName, silent = false) {
+            try {
+                if (!silent) {
+                    refreshIndicator.classList.add('show');
+                }
+                
+                const csvData = await fetchSheetData(sheetName);
+                const parsedData = parseCSVData(csvData);
+                
+                // Simpan ke cache
+                saveToCache(sheetName, parsedData);
+                
+                // Update tampilan jika sheet ini sedang aktif
+                if (sheetName === currentSheet) {
+                    displayData(parsedData);
+                    lastUpdateTime.textContent = formatDateTime(new Date(cacheTimestamp[sheetName]));
+                }
+                
+                if (!silent) {
+                    refreshIndicator.classList.remove('show');
+                    showNotification(`Data sheet "${sheetName}" telah diperbarui`, 'success');
+                }
+                
+            } catch (error) {
+                console.error(`Error refreshing sheet ${sheetName}:`, error);
+                
+                if (!silent) {
+                    refreshIndicator.classList.remove('show');
+                    showNotification(`Gagal refresh sheet "${sheetName}"`, 'error');
+                }
+            }
+        }
+        
+        // Refresh semua sheet (background)
+        async function refreshAllSheets() {
+            refreshIndicator.classList.add('show');
+            
+            const sheets = Object.keys(SHEET_CONFIG);
+            let successCount = 0;
+            
+            for (const sheet of sheets) {
+                try {
+                    await refreshSheetData(sheet, true);
+                    successCount++;
+                } catch (error) {
+                    console.error(`Gagal refresh sheet ${sheet}:`, error);
+                }
+            }
+            
+            refreshIndicator.classList.remove('show');
+            
+            if (successCount === sheets.length) {
+                showNotification(`Semua ${sheets.length} sheet berhasil diperbarui`, 'success');
+            } else {
+                showNotification(`${successCount} dari ${sheets.length} sheet berhasil diperbarui`, 'warning');
+            }
+        }
+        
+        // ===============================
+        // FUNGSI EKSPOR DATA
+        // ===============================
+        function exportData() {
+            if (!currentData || currentData.length === 0) {
+                showNotification('Tidak ada data untuk diekspor', 'error');
+                return;
+            }
+            
+            const exportObj = {
+                sheet: currentSheet,
+                exportDate: new Date().toISOString(),
+                totalItems: currentData.length,
+                cachedSheets: Object.keys(sheetCache).length,
+                data: currentData
+            };
+            
+            const dataStr = JSON.stringify(exportObj, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const dataUrl = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = `linetogel-${currentSheet.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification(`Data berhasil diekspor (${currentData.length} items)`, 'success');
+        }
+        
+        // Bersihkan cache
+        function clearCache() {
+            sheetCache = {};
+            cacheTimestamp = {};
+            
+            // Hapus dari localStorage
+            for (const sheet in SHEET_CONFIG) {
+                localStorage.removeItem(`linetogel_cache_${sheet}`);
+                localStorage.removeItem(`linetogel_timestamp_${sheet}`);
+            }
+            
+            // Update UI
+            cacheCount.textContent = '0';
+            cacheStatus.innerHTML = '<i class="fas fa-cloud-download-alt"></i><span>Belum Cached</span>';
+            cacheStatus.style.background = '#fff3e0';
+            cacheStatus.style.color = '#ef6c00';
+            
+            // Reload data sheet saat ini
+            loadSheetData();
+            
+            showNotification('Cache telah dibersihkan', 'success');
+        }
+        
+        // ===============================
+        // EVENT LISTENERS
+        // ===============================
+        // Toggle sidebar
+        toggleSidebarBtn.addEventListener('click', toggleSidebar);
+        
+        // Pilih sheet dari sidebar
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const sheetName = this.getAttribute('data-sheet');
+                selectSheet(sheetName);
             });
         });
-
-        // Parser CSV Sederhana
-        function parseCSV(text) {
-            const arr = [];
-            let quote = false;
-            let col, c;
-            col = c = 0;
-            for (let i = 0; i < text.length; i++) {
-                let l = text[i];
-                let nl = text[i+1];
-                if (l === '"') { 
-                    if (quote && nl === '"') { 
-                        arr[c][col] += l; i++; 
-                    } else { quote = !quote; } 
-                } else if (l === ',' && !quote) { 
-                    col++; 
-                } else if ((l === '\r' || l === '\n') && !quote) {
-                    if (l === '\r' && nl === '\n') i++; 
-                    arr.push([]); c++; col = 0;
-                } else {
-                    if (!arr[c]) arr[c] = [];
-                    if (!arr[c][col]) arr[c][col] = '';
-                    arr[c][col] += l;
-                }
+        
+        // Tombol refresh semua sheet
+        refreshAllBtn.addEventListener('click', refreshAllSheets);
+        
+        // Tombol force refresh sheet saat ini
+        forceRefreshBtn.addEventListener('click', () => refreshSheetData(currentSheet, false));
+        
+        // Tombol export data
+        exportDataBtn.addEventListener('click', exportData);
+        
+        // Tombol print
+        printDataBtn.addEventListener('click', () => window.print());
+        
+        // Footer links
+        clearCacheBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Apakah Anda yakin ingin menghapus semua cache? Data akan dimuat ulang dari Google Sheets.')) {
+                clearCache();
             }
-            return arr;
-        }
+        });
+        
+        aboutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification('LINETOGEL Live Dashboard v2.0 - Cache System dengan Background Refresh', 'info');
+        });
+        
+        // ===============================
+        // INISIALISASI
+        // ===============================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('LINETOGEL Live Dashboard dimuat');
+            
+            // Update informasi sheet awal
+            updateSheetInfo();
+            
+            // Load cache dari localStorage
+            for (const sheet in SHEET_CONFIG) {
+                loadFromCache(sheet);
+            }
+            
+            // Load data sheet pertama (dari cache jika ada)
+            const cachedData = loadFromCache(currentSheet);
+            if (cachedData) {
+                displayData(cachedData);
+                showNotification('Data dari cache ditampilkan secara instan', 'success', 2000);
+                
+                // Lakukan background refresh untuk update data
+                setTimeout(() => refreshSheetData(currentSheet, true), 500);
+            } else {
+                // Jika belum ada cache, load data
+                setTimeout(() => loadSheetData(), 500);
+            }
+            
+            // Setup auto-refresh interval
+            autoRefreshInterval = setInterval(() => {
+                console.log('Auto-refresh semua sheet...');
+                refreshAllSheets();
+            }, AUTO_REFRESH_INTERVAL);
+            
+            // Tampilkan informasi sistem
+            setTimeout(() => {
+                showNotification('Sistem cache aktif. Data akan dimuat secara instan dari cache.', 'info', 5000);
+            }, 2000);
+        });
     </script>
 </body>
 </html>
