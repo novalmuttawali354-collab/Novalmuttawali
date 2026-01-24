@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin Spreadsheet</title>
+    <!-- Menggunakan Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --sidebar-width: 280px;
+            --primary-color: #0f9d58; /* Google Sheets Green */
+            --primary-dark: #0b7943;
+            --accent-color: #e8f0fe;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --bg-body: #f8f9fa;
+            --bg-card: #ffffff;
+            --border-color: #dadce0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            overflow: hidden; /* Mencegah scroll pada body utama */
+        }
+
+        /* --- SIDEBAR STYLING --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #fff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+        .sidebar-header h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; }
+        .sidebar-header span { font-size: 0.8rem; opacity: 0.9; }
+
+        .search-box {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: border 0.3s;
+        }
+        .search-box input:focus { border-color: var(--primary-color); }
+
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+
+        /* --- SIDEBAR ITEM (USER REQUEST) --- */
+        .sidebar-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: var(--text-dark);
+            transition: background 0.2s, color 0.2s;
+            border-left: 4px solid transparent;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-dark);
+        }
+
+        .sidebar-item.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Ikon menggunakan content dari CSS user */
+        .sidebar-item::after {
+            margin-left: auto;
+            font-family: "Font Awesome 6 Free"; 
+            font-weight: 900;
+            opacity: 0.8;
+        }
+
+        /* Spesifik kode ikon dari user */
+        .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS"]::after { content: '\f51e'; color: #f39c12; }
+        .sidebar-item[data-sheet="MEMO INFORMASI BANK"]::after { content: '\f19c'; color: #2980b9; }
+        .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"]::after { content: '\f11b'; color: #c0392b; }
+        .sidebar-item[data-sheet="MEMO KETERLAMBATAN RESULT"]::after { content: '\f12b'; color: #e67e22; }
+        .sidebar-item[data-sheet="MEMO SELESAI RESULT"]::after { content: '\f13b'; color: #27ae60; }
+        .sidebar-item[data-sheet="MEMO KENDALA SISTEM"]::after { content: '\f085'; color: #7f8c8d; }
+        .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS"]::after { content: '\f0ac'; color: #8e44ad; }
+        .sidebar-item[data-sheet="REPORT KENDALA KE IDN"]::after { content: '\f188'; color: #d35400; }
+        .sidebar-item[data-sheet="REPORT KENDALA LINETOGEL"]::after { content: '\f542'; color: #c0392b; }
+        .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"]::after { content: '\f09d'; color: #27ae60; }
+        .sidebar-item[data-sheet="DAFTAR LINK AKTIF"]::after { content: '\f0c1'; color: #16a085; }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .top-bar {
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+        .top-bar h3 { font-size: 1.1rem; color: var(--text-light); }
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        /* --- CARDS GRID --- */
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .card-header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+            word-wrap: break-word;
+        }
+
+        .card-body {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        /* --- LOADING & ERROR --- */
+        #loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-light);
+        }
+        .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top: 4px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -280px; height: 100%; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+            .sidebar.open { transform: translateX(280px); left: 0; }
+            .mobile-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>ADMIN PANEL</h2>
+            <span>Internal System</span>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari menu...">
+        </div>
+
+        <div class="sidebar-menu" id="sidebarMenu">
+            <!-- Menu items akan di-generate oleh JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <i class="fa-solid fa-bars mobile-toggle" onclick="toggleSidebar()"></i>
+            <h3 id="currentSheetName">Selamat Datang</h3>
+            <div><!-- Spacer --></div>
+        </header>
+
+        <div class="content-scroll" id="contentArea">
+            <div id="loader">
+                <div class="spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+            <!-- Konten akan muncul di sini -->
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // KONFIGURASI DATA
+        // ==========================================
+        const PUB_ID = '2PACX-1vSR8lMri5Shul5WUYHw0GKX4LyT6GIxFfFnpL0v-8jFsD4aoRHr46wbX5P037BGEqnJnnlVgmYMNwRF';
+
+        // Daftar Sheet yang ingin ditampilkan di Sidebar
+        // Pastikan 'name' sesuai PERSIS dengan nama tab di Spreadsheet
+        // GID bisa 0, 1, 2, dst. Jika Anda ragu GIDnya, script akan otomatis coba.
+        const sheetList = [
+            { name: "MEMO PEMBAGIAN BONUS", gid: "0" }, 
+            { name: "MEMO INFORMASI BANK", gid: "1" },
+            { name: "MEMO KENDALA PERMAINAN", gid: "2" },
+            { name: "MEMO KETERLAMBATAN RESULT", gid: "3" },
+            { name: "MEMO SELESAI RESULT", gid: "4" },
+            { name: "MEMO KENDALA SISTEM", gid: "5" },
+            { name: "REPORT KENDALA ALL SITUS", gid: "6" },
+            { name: "REPORT KENDALA KE IDN", gid: "7" },
+            { name: "REPORT KENDALA LINETOGEL", gid: "8" },
+            { name: "REPORT KENDALA BANK & EWALLET", gid: "9" },
+            { name: "DAFTAR LINK AKTIF", gid: "10" }
+        ];
+        // ==========================================
+
+        // Cache Data agar tidak perlu fetch ulang saat ganti tab
+        const dataCache = {}; 
+
+        // DOM Elements
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const contentArea = document.getElementById('contentArea');
+        const currentSheetName = document.getElementById('currentSheetName');
+        const searchInput = document.getElementById('searchInput');
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSidebar();
+            // Load sheet pertama secara otomatis
+            if(sheetList.length > 0) {
+                loadSheetData(sheetList[0]);
+            }
+        });
+
+        // 1. Render Sidebar Menu
+        function renderSidebar() {
+            sidebarMenu.innerHTML = '';
+            sheetList.forEach(sheet => {
+                const item = document.createElement('div');
+                item.className = 'sidebar-item';
+                item.setAttribute('data-sheet', sheet.name);
+                item.textContent = sheet.name; // Teks Menu
+                
+                item.addEventListener('click', () => {
+                    setActiveItem(item);
+                    loadSheetData(sheet);
+                    
+                    // Di mobile, tutup sidebar setelah klik
+                    if(window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('open');
+                    }
+                });
+                sidebarMenu.appendChild(item);
+            });
+        }
+
+        // 2. Fungsi Load Data
+        async function loadSheetData(sheet) {
+            // Update UI Loading
+            contentArea.innerHTML = `
+                <div id="loader" style="display:flex">
+                    <div class="spinner"></div>
+                    <p>Memuat ${sheet.name}...</p>
+                </div>`;
+            currentSheetName.textContent = sheet.name;
+
+            try {
+                let rows = dataCache[sheet.gid];
+
+                // Jika belum ada di cache, fetch dari Google
+                if (!rows) {
+                    const url = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?output=csv&gid=${sheet.gid}`;
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) throw new Error('Gagal mengambil data');
+                    
+                    const text = await response.text();
+                    rows = parseCSV(text);
+                    
+                    // Simpan ke cache
+                    dataCache[sheet.gid] = rows;
+                }
+
+                renderCards(rows);
+
+            } catch (error) {
+                console.error(error);
+                contentArea.innerHTML = `
+                    <div style="text-align:center; padding:2rem; color:#c0392b;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem; margin-bottom:1rem;"></i>
+                        <h3>Gagal Memuat Data</h3>
+                        <p>Pastikan sheet <strong>"${sheet.name}"</strong> ada di spreadsheet dan sudah dipublikasikan.</p>
+                        <p style="font-size:0.8rem; margin-top:10px;">Error: ${error.message}</p>
+                    </div>`;
+            }
+        }
+
+        // 3. Render Kartu Konten
+        function renderCards(rows) {
+            contentArea.innerHTML = '';
+            
+            // Judul Section
+            const title = document.createElement('div');
+            title.className = 'section-title';
+            title.innerHTML = `<span>${currentSheetName.textContent}</span> <span style="font-size:0.9rem; color:#777;">${rows.length - 1} Data</span>`;
+            contentArea.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid-container';
+
+            // Loop data (skip index 0 header)
+            let hasData = false;
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const colA = row[0] || ''; // Judul
+                const colB = row[1] || ''; // Isi
+
+                if (colA || colB) {
+                    hasData = true;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-header">${colA}</div>
+                        <div class="card-body">${colB}</div>
+                    `;
+                    grid.appendChild(card);
+                }
+            }
+
+            if (!hasData) {
+                contentArea.innerHTML += '<p style="text-align:center; color:#777;">Tidak ada data di sheet ini.</p>';
+            } else {
+                contentArea.appendChild(grid);
+            }
+        }
+
+        // Helper: Set Active Class di Sidebar
+        function setActiveItem(element) {
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Helper: Toggle Sidebar Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Helper: Search Filter
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.sidebar-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Parser CSV Sederhana
+        function parseCSV(text) {
+            const arr = [];
+            let quote = false;
+            let col, c;
+            col = c = 0;
+            for (let i = 0; i < text.length; i++) {
+                let l = text[i];
+                let nl = text[i+1];
+                if (l === '"') { 
+                    if (quote && nl === '"') { 
+                        arr[c][col] += l; i++; 
+                    } else { quote = !quote; } 
+                } else if (l === ',' && !quote) { 
+                    col++; 
+                } else if ((l === '\r' || l === '\n') && !quote) {
+                    if (l === '\r' && nl === '\n') i++; 
+                    arr.push([]); c++; col = 0;
+                } else {
+                    if (!arr[c]) arr[c] = [];
+                    if (!arr[c][col]) arr[c][col] = '';
+                    arr[c][col] += l;
+                }
+            }
+            return arr;
+        }
+    </script>
+</body>
+</html>
