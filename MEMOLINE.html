@@ -56,7 +56,7 @@
         .app-container { display: flex; height: 100vh; position: relative; width: 100vw; }
 
         /* =========================================
-           1. LEFT SIDEBAR (Dynamic Ready)
+           1. LEFT SIDEBAR
            ========================================= */
         .sidebar {
             width: var(--sidebar-width);
@@ -468,8 +468,6 @@
         // CONFIG & STATE
         // ===============================
         const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
-        
-        // SHEET_CONFIG AKAN DIISI DINAMIS
         let SHEET_CONFIG = {};
         
         const PROXY_SERVERS = [
@@ -515,61 +513,47 @@
             if (n.includes("SISTEM") || n.includes("ERROR")) return "fa-server";
             if (n.includes("SITUS")) return "fa-globe";
             if (n.includes("IDN")) return "fa-network-wired";
-            if (n.includes("LINETOGEL")) return "fa-bug"; // Default for Linetogel report
+            if (n.includes("LINETOGEL")) return "fa-bug"; 
             if (n.includes("EWALLET")) return "fa-wallet";
             if (n.includes("LINK")) return "fa-link";
-            if (n.includes("PK") || n.includes("SEGALA")) return "fa-layer-group";
-            return "fa-database"; // Default generic
+            if (n.includes("PK") || n.includes("SEGALA")) return "fa-layer-group"; // Icon PK
+            return "fa-database"; 
         }
 
-        // Helper: Tentukan Kategori (Memo, Report, Links, dll)
+        // Helper: Tentukan Kategori
         function getCategory(sheetName) {
             const n = sheetName.toUpperCase();
             if (n.includes("MEMO")) return "MEMO";
             if (n.includes("REPORT")) return "REPORT";
             if (n.includes("LINK")) return "LINKS";
-            if (n.includes("PK") || n.includes("SEGALA")) return "PK";
-            return "OTHER"; // Kategori lain jika ada
+            if (n.includes("PK") || n.includes("SEGALA")) return "PK"; // Kategori PK
+            return "OTHER"; 
         }
 
-        // Helper: Tentukan Display Name (Hapus Prefix jika perlu untuk kebersihan tampilan)
+        // Helper: Tentukan Display Name
         function getDisplayName(sheetName) {
-            // Misal: "MEMO PEMBAGIAN BONUS" -> "Pembagian Bonus" (Opsional, biarkan full jika ingin)
-            // Kita biarkan Full Name agar jelas sesuai nama di sheet
             return sheetName;
         }
 
-        // FETCH METADATA (List Sheet dari Google Sheets)
+        // FETCH METADATA
         async function fetchSheetMetadata() {
-            // Endpoint JSON Feed
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}?alt=json`;
-            
             try {
-                // Coba fetch langsung (biasanya mengizinkan CORS untuk file publik)
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("Failed fetch meta");
-                
                 const data = await res.json();
-                
-                // Parsing Entry dari Feed JSON
                 const sheets = [];
                 if (data.feed && data.feed.entry) {
                     data.feed.entry.forEach(entry => {
-                        // Struktur entry biasanya complex, cari title
-                        // Google Drive API v2 JSON format
                         if (entry.title && entry.title.$t) {
-                            // Filter sheet yang hidden (biasanya punya properti tidak umum di list ini, tapi kita ambil semua saja untuk aman)
                             sheets.push(entry.title.$t);
                         }
                     });
                 }
-                
-                // Urutkan alfabetis
                 return sheets.sort();
-                
             } catch (e) {
                 console.error("Error fetching metadata", e);
-                // Return list default jika gagal fetch (Fallback)
+                // Return list default jika gagal fetch
                 return [
                     "MEMO PEMBAGIAN BONUS", "MEMO INFORMASI BANK", "MEMO KENDALA PERMAINAN", 
                     "MEMO KETERLAMBATAN RESULT", "MEMO SELESAI RESULT", "MEMO KENDALA SISTEM",
@@ -583,7 +567,6 @@
         async function initSidebar() {
             const sheetNames = await fetchSheetMetadata();
             
-            // Grouping Logic
             const grouped = {
                 "MEMO": [],
                 "REPORT": [],
@@ -599,23 +582,16 @@
                 } else {
                     grouped["OTHER"].push(name);
                 }
-                
-                // Populate SHEET_CONFIG
                 SHEET_CONFIG[name] = { name: name };
             });
 
-            // Build HTML
             let html = '';
-            
             for (const [category, names] of Object.entries(grouped)) {
                 if (names.length === 0) continue;
-
                 html += `<div class="nav-section"><div class="nav-title">${category}</div>`;
-                
                 names.forEach(name => {
                     const icon = getIconForSheetName(name);
                     const display = getDisplayName(name);
-                    
                     html += `
                         <div class="sidebar-item" data-sheet="${name}">
                             <div class="sidebar-icon"><i class="fas ${icon}"></i></div>
@@ -623,19 +599,16 @@
                         </div>
                     `;
                 });
-                
                 html += `</div>`;
             }
 
             sidebarNav.innerHTML = html;
             
-            // Re-attach listeners
             const items = document.querySelectorAll('.sidebar-item');
             items.forEach(item => {
                 item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
             });
 
-            // Set Default Sheet (Sheet pertama di list atau fallback)
             const firstSheet = sheetNames[0] || "MEMO PEMBAGIAN BONUS";
             loadSheet(firstSheet);
         }
@@ -654,7 +627,7 @@
             setTimeout(() => copyToast.classList.remove('show'), 2000);
         }
 
-        // --- DATA FETCHING & PARSING ---
+        // --- DATA FETCHING (LIVE FROM SHEET) ---
         async function fetchSheetData(sheetName) {
             const urlFormats = [
                 `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`,
@@ -712,6 +685,7 @@
         async function loadSheetToMemory(sheetName) {
             if (sheetCache[sheetName]) return;
 
+            // CEK LOCALSTORAGE
             try {
                 const cachedData = localStorage.getItem(`linetogel_cache_${sheetName}`);
                 if (cachedData) {
@@ -721,6 +695,7 @@
                 }
             } catch (e) {}
 
+            // FETCH LIVE DATA (Termasuk SEGALA JENIS PK)
             try {
                 const csv = await fetchSheetData(sheetName);
                 const parsed = parseCSVData(csv);
@@ -810,7 +785,6 @@
 
             currentSheetTitle.textContent = sheetName;
             
-            // Highlight active sidebar item
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             const activeItem = document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`);
             if(activeItem) activeItem.classList.add('active');
@@ -891,7 +865,6 @@
             rightDataList.innerHTML = '';
 
             const allResults = [];
-            // Gunakan keys dari SHEET_CONFIG yang dinamis
             const sheetNames = Object.keys(SHEET_CONFIG);
 
             const loadPromises = sheetNames.map(name => loadSheetToMemory(name));
@@ -995,7 +968,6 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // MULAI DARI SINI: Fetch Metadata dulu, baru render sidebar dan load data
             initSidebar();
         });
 
