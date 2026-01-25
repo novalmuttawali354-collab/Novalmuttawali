@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINETOGEL - J.A.R.V.I.S SYSTEM 3.2</title>
+    <title>LINETOGEL - J.A.R.V.I.S SYSTEM 3.3</title>
     <style>
         /* =========================================
            IRONMAN DIGITAL MODERN THEME
@@ -125,16 +125,19 @@
             background: radial-gradient(circle at center, rgba(0, 243, 255, 0.05) 0%, transparent 70%);
         }
 
-        .search-box-wrapper { position: relative; width: 100%; max-width: 600px; }
+        .search-wrapper-group {
+            position: relative; width: 100%; max-width: 700px;
+            display: flex; align-items: center; gap: 10px;
+        }
 
         .search-input-main {
-            width: 100%;
+            flex: 1;
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid rgba(0, 243, 255, 0.3);
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.4rem;
-            padding: 12px 60px 12px 25px;
+            font-size: 1.2rem;
+            padding: 12px 20px;
             border-radius: 8px;
             outline: none;
             text-align: center;
@@ -143,9 +146,30 @@
             transition: all 0.3s;
         }
         .search-input-main:focus { border-color: var(--primary-color); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
-        .search-icon-main { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-color); font-size: 1.4rem; pointer-events: none; }
+        
+        /* GLOBAL SEARCH BUTTON */
+        .btn-global-search {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0 20px;
+            height: 48px; /* Same as input approx */
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+        .btn-global-search:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
 
-        /* DETAIL VIEWER (UPDATED FOR RAPIH) */
+        /* DETAIL VIEWER */
         .detail-viewer {
             flex: 1;
             padding: 20px 40px 40px 40px;
@@ -179,16 +203,15 @@
         .card-title-large { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
         .card-id-large { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--primary-color); background: rgba(0,243,255,0.15); padding: 4px 12px; border-radius: 4px; border: 1px solid rgba(0,243,255,0.4); font-weight: 600; }
 
-        /* --- UPDATED TEXT AREA: RAPIH & SEJAJAR --- */
         .card-content-large {
             font-size: 1.1rem; 
             color: #e6e6e6; 
-            line-height: 1.9; /* Jarak baris lega untuk keterbacaan */
-            text-align: justify; /* KUNCI: Rata Kiri Kanan agar sejajar rapi */
+            line-height: 1.9; 
+            text-align: justify; 
             text-justify: inter-word;
             white-space: pre-wrap; 
             word-wrap: break-word; 
-            padding: 25px 35px; /* Padding nyaman */
+            padding: 25px 35px; 
             background: rgba(0, 0, 0, 0.2); 
             border-left: 4px solid var(--primary-color); 
             font-family: 'Rajdhani', sans-serif;
@@ -196,13 +219,11 @@
             min-height: 100px; 
         }
 
-        /* Styling untuk paragraf yang dipisahkan oleh JS */
         .content-paragraph {
-            margin-bottom: 18px; /* Jarak antar paragraf */
+            margin-bottom: 18px; 
             display: block;
         }
 
-        /* Link Style */
         .card-content-large a { 
             color: var(--primary-color); 
             background: rgba(0, 243, 255, 0.15);
@@ -217,7 +238,6 @@
             color: #000;
             text-shadow: none;
         }
-        /* --------------------------------------------- */
 
         .copy-btn-large {
             margin: 0; 
@@ -272,14 +292,25 @@
             cursor: pointer;
             transition: all 0.2s;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+            display: flex; flex-direction: column; /* Changed to column for global label */
+            align-items: flex-start;
             border-left: 2px solid transparent;
         }
         .list-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left: 2px solid #fff; }
         .list-item.active { background: rgba(0, 243, 255, 0.15); color: var(--primary-color); border: 1px solid rgba(0, 243, 255, 0.3); box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); border-left: 2px solid var(--primary-color); }
         
-        .list-arrow { font-size: 0.7rem; opacity: 0.5; }
+        /* Styling for Category Label in Global Search */
+        .list-item-category {
+            font-size: 0.7rem;
+            color: var(--accent-color); /* Orange/Red for distinction */
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+        .list-item-title { font-weight: 500; }
+        .list-arrow { display: none; /* Hide arrow in column layout */ }
 
         /* Empty State Center */
         .empty-center { text-align: center; color: var(--text-muted); margin-top: 50px; }
@@ -299,6 +330,8 @@
         @media (max-width: 1024px) {
             .right-panel { display: none; }
             .main-content { border-right: none; }
+            .search-wrapper-group { flex-direction: column; }
+            .btn-global-search { width: 100%; justify-content: center; }
         }
         @media (max-width: 768px) {
             .sidebar { position: absolute; transform: translateX(-100%); width: 80%; }
@@ -307,7 +340,7 @@
             .app-container { flex-direction: column; overflow: auto; height: auto; }
             .main-content { height: auto; overflow: visible; }
             .data-card-large { margin-bottom: 20px; }
-            .card-content-large { text-align: left; /* Kembalikan ke rata kiri di mobile biar enak dibaca */ }
+            .card-content-large { text-align: left; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -361,9 +394,12 @@
             </div>
 
             <div class="search-area">
-                <div class="search-box-wrapper">
-                    <input type="text" id="centerSearchInput" class="search-input-main" placeholder="CARI DATA DI LIST KANAN..." autocomplete="off">
-                    <i class="fas fa-search search-icon-main"></i>
+                <div class="search-wrapper-group">
+                    <input type="text" id="centerSearchInput" class="search-input-main" placeholder="CARI DATA DI MENU SAAT INI..." autocomplete="off">
+                    <!-- GLOBAL SEARCH BUTTON -->
+                    <button class="btn-global-search" id="btnGlobalSearch">
+                        <i class="fas fa-globe"></i> ALL CATEGORIES
+                    </button>
                 </div>
             </div>
 
@@ -379,7 +415,7 @@
         <!-- 3. RIGHT PANEL -->
         <aside class="right-panel">
             <div class="right-header">
-                <div class="right-title">DATA INDEX</div>
+                <div class="right-title" id="rightPanelTitle">DATA INDEX</div>
             </div>
             <div class="data-list-container" id="rightDataList"></div>
         </aside>
@@ -422,6 +458,7 @@
         let displayData = [];  
         let sheetCache = {};
         let cacheTimestamp = {};
+        let isGlobalSearchMode = false;
         
         // DOM Elements
         const sidebar = document.getElementById('sidebar');
@@ -430,8 +467,10 @@
         const currentSheetTitle = document.getElementById('currentSheetTitle');
         
         const centerSearchInput = document.getElementById('centerSearchInput');
+        const btnGlobalSearch = document.getElementById('btnGlobalSearch');
         const detailViewer = document.getElementById('detailViewer');
         const rightDataList = document.getElementById('rightDataList');
+        const rightPanelTitle = document.getElementById('rightPanelTitle');
         const copyToast = document.getElementById('copyToast');
 
         // ===============================
@@ -505,50 +544,54 @@
         // --- RENDERING ---
 
         // 1. Render List on Right Panel
-        function renderRightList(data) {
+        function renderRightList(data, isGlobal = false) {
             rightDataList.innerHTML = '';
             if (data.length === 0) {
-                rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:#555; font-size:0.8rem;">NO DATA</div>';
+                rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:#555; font-size:0.8rem;">NO DATA FOUND</div>';
                 return;
             }
 
             data.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'list-item';
-                div.innerHTML = `
-                    <span>${item.title}</span>
-                    <i class="fas fa-chevron-right list-arrow"></i>
-                `;
+                
+                // HTML Structure for Normal vs Global List
+                if(isGlobal) {
+                    div.innerHTML = `
+                        <div class="list-item-category">${item.sourceSheet}</div>
+                        <div class="list-item-title">${item.title}</div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <span>${item.title}</span>
+                        <i class="fas fa-chevron-right list-arrow"></i>
+                    `;
+                }
+                
                 div.onclick = () => {
                     document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
-                    renderCenterDetail(item);
+                    
+                    if (isGlobal) {
+                        // Switch to the sheet of the found item
+                        loadSheet(item.sourceSheet, item.id); // Pass ID to auto-select
+                    } else {
+                        renderCenterDetail(item);
+                    }
                 };
                 rightDataList.appendChild(div);
             });
         }
 
-        // 2. Render Detail in Center Panel (Improved Paragraph Logic)
+        // 2. Render Detail in Center Panel
         function renderCenterDetail(item) {
-            // --- LOGIC PERAPIHAN PARAGRAF ---
-            // 1. Deteksi Link
             let processedContent = item.content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-            
-            // 2. Deteksi Paragraf (Split berdasarkan 2 baris baru)
-            // Menggunakan regex \n\n untuk memisahkan paragraf
             let paragraphs = processedContent.split('\n\n');
-            
             let contentHtml = '';
-            
             paragraphs.forEach(para => {
-                // Di dalam paragraf, ganti \n (satu baris baru) dengan <br>
                 let cleanPara = para.replace(/\n/g, '<br>');
-                
-                // Wrap setiap paragraf dengan div class khusus CSS
-                // Tambahkan margin bawah otomatis via CSS class .content-paragraph
                 contentHtml += `<div class="content-paragraph">${cleanPara}</div>`;
             });
-            // -----------------------------------
 
             detailViewer.innerHTML = `
                 <div class="data-card-large">
@@ -564,17 +607,25 @@
                     </button>
                 </div>
             `;
-            
             detailViewer.scrollTop = 0;
         }
 
         // --- LOAD SHEET LOGIC ---
-        async function loadSheet(sheetName) {
+        async function loadSheet(sheetName, targetId = null) {
             currentSheet = sheetName;
+            isGlobalSearchMode = false; // Exit global mode
+            
+            // UI Updates
             currentSheetTitle.textContent = sheetName;
             sidebarItems.forEach(i => i.classList.remove('active'));
-            document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`).classList.add('active');
+            const activeItem = document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`);
+            if(activeItem) activeItem.classList.add('active');
             
+            rightPanelTitle.textContent = "DATA INDEX"; // Reset Title
+            
+            centerSearchInput.placeholder = "CARI DATA DI MENU SAAT INI...";
+            
+            // Reset Center
             detailViewer.innerHTML = `
                 <div class="empty-center">
                     <div class="spinner"></div>
@@ -588,13 +639,20 @@
                 currentData = sheetCache[sheetName];
                 displayData = [...currentData];
                 renderRightList(displayData);
-                detailViewer.innerHTML = `
-                    <div class="empty-center">
-                        <div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div>
-                        <h3>DATA LOADED</h3>
-                        <p>Pilih data dari panel kanan.</p>
-                        <small style="color:var(--text-muted)">${currentData.length} Records Found</small>
-                    </div>`;
+                
+                if (targetId) {
+                    // Auto select item if coming from global search
+                    const item = currentData.find(d => d.id === targetId);
+                    if(item) renderCenterDetail(item);
+                } else {
+                    detailViewer.innerHTML = `
+                        <div class="empty-center">
+                            <div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div>
+                            <h3>DATA LOADED</h3>
+                            <p>Pilih data dari panel kanan.</p>
+                            <small style="color:var(--text-muted)">${currentData.length} Records Found</small>
+                        </div>`;
+                }
                 return;
             }
 
@@ -606,15 +664,89 @@
                 sheetCache[sheetName] = currentData; 
                 
                 renderRightList(displayData);
-                detailViewer.innerHTML = `
-                    <div class="empty-center">
-                        <div class="empty-icon-center"><i class="fas fa-check"></i></div>
-                        <h3>READY</h3>
-                        <p>${currentData.length} Records Available.</p>
-                    </div>`;
+                
+                if (targetId) {
+                    const item = currentData.find(d => d.id === targetId);
+                    if(item) renderCenterDetail(item);
+                } else {
+                    detailViewer.innerHTML = `
+                        <div class="empty-center">
+                            <div class="empty-icon-center"><i class="fas fa-check"></i></div>
+                            <h3>READY</h3>
+                            <p>${currentData.length} Records Available.</p>
+                        </div>`;
+                }
             } catch (e) {
                 detailViewer.innerHTML = `<div class="empty-center" style="color:var(--accent-color)">ERROR: ${e.message}</div>`;
                 rightDataList.innerHTML = '';
+            }
+        }
+
+        // --- GLOBAL SEARCH LOGIC ---
+        async function performGlobalSearch() {
+            const query = centerSearchInput.value.trim().toLowerCase();
+            if (!query) {
+                showToast("Masukkan kata kunci");
+                centerSearchInput.focus();
+                return;
+            }
+
+            isGlobalSearchMode = true;
+            rightPanelTitle.textContent = "GLOBAL SEARCH RESULTS";
+            detailViewer.innerHTML = `
+                <div class="empty-center">
+                    <div class="spinner"></div>
+                    <p>SCANNING ALL DATABASES...</p>
+                    <small>Mungkin memerlukan waktu beberapa detik...</small>
+                </div>
+            `;
+            rightDataList.innerHTML = '';
+
+            const allResults = [];
+            const sheetNames = Object.keys(SHEET_CONFIG);
+
+            for (const sheetName of sheetNames) {
+                // Fetch if not cached
+                if (!sheetCache[sheetName]) {
+                    try {
+                        const csv = await fetchSheetData(sheetName);
+                        const parsed = parseCSVData(csv);
+                        sheetCache[sheetName] = parsed;
+                    } catch (e) {
+                        console.error(`Failed to load ${sheetName} for search`, e);
+                        continue;
+                    }
+                }
+
+                // Filter
+                const matches = sheetCache[sheetName].filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.content.toLowerCase().includes(query)
+                );
+
+                if (matches.length > 0) {
+                    // Add source sheet info
+                    matches.forEach(m => {
+                        allResults.push({
+                            ...m,
+                            sourceSheet: sheetName
+                        });
+                    });
+                }
+            }
+
+            // Render Results
+            if (allResults.length === 0) {
+                detailViewer.innerHTML = `<div class="empty-center">TIDAK ADA DATA DITEMUKAN DI SEMUA MENU</div>`;
+            } else {
+                renderRightList(allResults, true); // true = isGlobal mode
+                detailViewer.innerHTML = `
+                    <div class="empty-center">
+                        <div class="empty-icon-center"><i class="fas fa-search"></i></div>
+                        <h3>FOUND ${allResults.length} RESULTS</h3>
+                        <p>Hasil pencarian dari semua kategori.</p>
+                        <small>Klik item di kanan untuk melihat detail.</small>
+                    </div>`;
             }
         }
 
@@ -641,13 +773,23 @@
             item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
         });
 
+        // Regular Search (Current Sheet)
         centerSearchInput.addEventListener('input', (e) => {
+            if (isGlobalSearchMode) {
+                // If user types in global mode, we could reset or stay global.
+                // Let's exit global mode to avoid confusion
+                isGlobalSearchMode = false;
+                rightPanelTitle.textContent = "DATA INDEX";
+            }
             const query = e.target.value.toLowerCase();
             displayData = currentData.filter(item => 
                 item.title.toLowerCase().includes(query)
             );
             renderRightList(displayData);
         });
+
+        // Global Search Button Click
+        btnGlobalSearch.addEventListener('click', performGlobalSearch);
 
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('active');
