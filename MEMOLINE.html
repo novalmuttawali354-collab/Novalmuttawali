@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINETOGEL - J.A.R.V.I.S ULTRA 5.2</title>
+    <title>LINETOGEL - J.A.R.V.I.S AUTO-SYNC 6.0</title>
     <style>
         /* =========================================
            IRONMAN DIGITAL MODERN THEME
@@ -56,7 +56,7 @@
         .app-container { display: flex; height: 100vh; position: relative; width: 100vw; }
 
         /* =========================================
-           1. LEFT SIDEBAR
+           1. LEFT SIDEBAR (Dynamic Ready)
            ========================================= */
         .sidebar {
             width: var(--sidebar-width);
@@ -161,44 +161,19 @@
             text-align: center;
             letter-spacing: 1px;
         }
-        .search-input-main::placeholder { color: rgba(255,255,255,0.3); font-weight: 400; font-size: 1.1rem; }
+        .search-input-main::placeholder { color: rgba(255,255,255,0.4); font-weight: 400; font-size: 1.1rem; }
 
         /* --- TOGGLE SWITCH --- */
         .toggle-container { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
         .switch { position: relative; display: inline-block; width: 56px; height: 28px; }
         .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px; border: 1px solid rgba(255,255,255,0.2); }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         
-        .slider { 
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
-            background-color: rgba(255,255,255,0.1); /* OFF State Color (Dim) */
-            transition: .4s; 
-            border-radius: 34px; 
-            border: 1px solid rgba(255,255,255,0.2); 
-        }
-        .slider:before { 
-            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; 
-            background-color: white; 
-            transition: .4s; 
-            border-radius: 50%; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.5); 
-        }
-        
-        /* ON State */
-        input:checked + .slider { 
-            background-color: var(--primary-color); 
-            box-shadow: 0 0 20px var(--primary-color); 
-            border-color: transparent; 
-        }
+        input:checked + .slider { background-color: var(--primary-color); box-shadow: 0 0 20px var(--primary-color); border-color: transparent; }
         input:checked + .slider:before { transform: translateX(28px); background-color: #000; }
         
-        .toggle-label { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; transition: 0.3s; }
-        
-        /* Label color change based on state */
-        input:checked + .slider ~ .toggle-label { 
-            /* Selector tricky because of structure, using JS for class is safer, but CSS :has or general sibling works too. Using JS class for robustness. */
-        color: var(--primary-color); 
-            text-shadow: 0 0 8px var(--primary-glow); 
-        }
+        .toggle-label { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; }
         .toggle-label.active-mode { color: var(--primary-color); text-shadow: 0 0 8px var(--primary-glow); }
 
         /* DETAIL VIEWER */
@@ -220,6 +195,7 @@
             animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(15px);
         }
         
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -347,7 +323,7 @@
         }
         
         .list-item:hover { 
-            background: rgba(255, 255, 255, 0.1); 
+            background: rgba(255,255,255,0.1); 
             color: #fff; 
             border-color: rgba(0, 243, 255, 0.5);
             border-left: 3px solid #fff;
@@ -388,7 +364,7 @@
         /* Toast */
         .toast {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: rgba(0, 10, 20, 0.9); border:1px solid var(--primary-color); color: var(--primary-color);
+            background: rgba(0, 10, 20, 0.9); border: 1px solid var(--primary-color); color: var(--primary-color);
             padding: 15px 40px; border-radius: 50px; backdrop-filter: blur(10px); z-index: 3000;
             font-family: 'Orbitron'; font-size: 1rem; font-weight: 700; letter-spacing: 1px;
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
@@ -415,10 +391,6 @@
             .card-content-large { text-align: left; padding: 20px; }
             .search-input-main { font-size: 1rem; }
             .list-item { padding: 12px; font-size: 0.9rem; }
-            .toggle-label { font-size: 0.7rem; }
-            .switch { width: 40px; height: 22px; }
-            .slider:before { height: 14px; width: 14px; }
-            input:checked + .slider:before { transform: translateX(18px); }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -435,29 +407,11 @@
                 <div class="sidebar-subtitle">SYSTEM ONLINE</div>
             </div>
 
+            <!-- NAV AKAN DIISI OLEH JAVASCRIPT SECARA DINAMIS -->
             <nav class="sidebar-nav" id="sidebarNav">
-                <div class="nav-section">
-                    <div class="nav-title">MEMO</div>
-                    <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS"><div class="sidebar-icon"><i class="fas fa-gift"></i></div><div class="sidebar-text">Bonus</div></div>
-                    <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK"><div class="sidebar-icon"><i class="fas fa-university"></i></div><div class="sidebar-text">Info Bank</div></div>
-                    <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN"><div class="sidebar-icon"><i class="fas fa-gamepad"></i></div><div class="sidebar-text">Kendala Game</div></div>
-                    <div class="sidebar-item" data-sheet="MEMO KETERLAMBATAN RESULT"><div class="sidebar-icon"><i class="fas fa-clock"></i></div><div class="sidebar-text">Telat Result</div></div>
-                    <div class="sidebar-item" data-sheet="MEMO SELESAI RESULT"><div class="sidebar-icon"><i class="fas fa-check-circle"></i></div><div class="sidebar-text">Selesai Result</div></div>
-                    <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM"><div class="sidebar-icon"><i class="fas fa-server"></i></div><div class="sidebar-text">Sistem Error</div></div>
-                </div>
-
-                <div class="nav-section">
-                    <div class="nav-title">REPORT</div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS"><div class="sidebar-icon"><i class="fas fa-globe"></i></div><div class="sidebar-text">All Situs</div></div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN"><div class="sidebar-icon"><i class="fas fa-network-wired"></i></div><div class="sidebar-text">Ke IDN</div></div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA LINETOGEL"><div class="sidebar-icon"><i class="fas fa-bug"></i></div><div class="sidebar-text">Linetogel</div></div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET"><div class="sidebar-icon"><i class="fas fa-wallet"></i></div><div class="sidebar-text">Bank & Ewallet</div></div>
-                </div>
-
-                <div class="nav-section">
-                    <div class="nav-title">LINKS & PK</div>
-                    <div class="sidebar-item" data-sheet="DAFTAR LINK AKTIF"><div class="sidebar-icon"><i class="fas fa-link"></i></div><div class="sidebar-text">Link Aktif</div></div>
-                    <div class="sidebar-item" data-sheet="SEGALA JENIS PK"><div class="sidebar-icon"><i class="fas fa-layer-group"></i></div><div class="sidebar-text">Segala Jenis PK</div></div>
+                <div style="text-align:center; padding:20px; color:var(--text-muted);">
+                    <div class="spinner" style="margin:0 auto 10px; width:30px; height:30px; border-width:3px; border-top-color:var(--text-muted);"></div>
+                    <small>SYNCING MENU...</small>
                 </div>
             </nav>
         </aside>
@@ -467,7 +421,7 @@
             <div class="top-bar">
                 <div class="current-sheet">
                     <i class="fas fa-database"></i>
-                    <span id="currentSheetTitle">MEMO PEMBAGIAN BONUS</span>
+                    <span id="currentSheetTitle">LOADING...</span>
                 </div>
                 <button class="toggle-btn" id="toggleSidebar"><i class="fas fa-bars"></i></button>
             </div>
@@ -476,7 +430,6 @@
                 <div class="search-wrapper-group">
                     <input type="text" id="centerSearchInput" class="search-input-main" placeholder="CARI DATA DI MENU SAAT INI..." autocomplete="off">
                     
-                    <!-- TOGGLE SWITCH (Pertahankan Ceklis) -->
                     <div class="toggle-container" title="Aktifkan pencarian semua kategori">
                         <label class="switch">
                             <input type="checkbox" id="globalToggle">
@@ -489,9 +442,8 @@
 
             <div class="detail-viewer" id="detailViewer">
                 <div class="empty-center">
-                    <div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div>
-                    <h3>SELECT DATA FROM LIST</h3>
-                    <p>Pilih data dari panel kanan untuk melihat detail.</p>
+                    <div class="spinner"></div>
+                    <p>INITIALIZING SYSTEM...</p>
                 </div>
             </div>
         </main>
@@ -517,38 +469,26 @@
         // ===============================
         const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
         
-        const SHEET_CONFIG = {
-            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS" },
-            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK" },
-            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN" },
-            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT" },
-            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT" },
-            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM" },
-            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS" },
-            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN" },
-            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL" },
-            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET" },
-            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF" },
-            "SEGALA JENIS PK": { name: "SEGALA JENIS PK" }
-        };
-
+        // SHEET_CONFIG AKAN DIISI DINAMIS
+        let SHEET_CONFIG = {};
+        
         const PROXY_SERVERS = [
             'https://api.allorigins.win/raw?url=',
             'https://corsproxy.io/?',
             'https://api.codetabs.com/v1/proxy?quest='
         ];
 
-        let currentSheet = "MEMO PEMBAGIAN BONUS";
+        let currentSheet = "";
         let currentData = []; 
         let displayData = [];  
         let sheetCache = {};
         let cacheTimestamp = {};
-        let isGlobalSearchMode = false; // State: false = OFF, true = ON
+        let isGlobalSearchMode = false;
         let searchTimeout;
         
         // DOM Elements
         const sidebar = document.getElementById('sidebar');
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const sidebarNav = document.getElementById('sidebarNav');
         const toggleBtn = document.getElementById('toggleSidebar');
         const currentSheetTitle = document.getElementById('currentSheetTitle');
         
@@ -560,6 +500,145 @@
         const rightDataList = document.getElementById('rightDataList');
         const rightPanelTitle = document.getElementById('rightPanelTitle');
         const copyToast = document.getElementById('copyToast');
+
+        // ===============================
+        // DYNAMIC MENU & ICON LOGIC
+        // ===============================
+        
+        // Helper: Tentukan Ikon berdasarkan Nama Sheet
+        function getIconForSheetName(name) {
+            const n = name.toUpperCase();
+            if (n.includes("BONUS")) return "fa-gift";
+            if (n.includes("BANK")) return "fa-university";
+            if (n.includes("GAME") || n.includes("MAINAN")) return "fa-gamepad";
+            if (n.includes("RESULT") || n.includes("SELESAI")) return "fa-clock";
+            if (n.includes("SISTEM") || n.includes("ERROR")) return "fa-server";
+            if (n.includes("SITUS")) return "fa-globe";
+            if (n.includes("IDN")) return "fa-network-wired";
+            if (n.includes("LINETOGEL")) return "fa-bug"; // Default for Linetogel report
+            if (n.includes("EWALLET")) return "fa-wallet";
+            if (n.includes("LINK")) return "fa-link";
+            if (n.includes("PK") || n.includes("SEGALA")) return "fa-layer-group";
+            return "fa-database"; // Default generic
+        }
+
+        // Helper: Tentukan Kategori (Memo, Report, Links, dll)
+        function getCategory(sheetName) {
+            const n = sheetName.toUpperCase();
+            if (n.includes("MEMO")) return "MEMO";
+            if (n.includes("REPORT")) return "REPORT";
+            if (n.includes("LINK")) return "LINKS";
+            if (n.includes("PK") || n.includes("SEGALA")) return "PK";
+            return "OTHER"; // Kategori lain jika ada
+        }
+
+        // Helper: Tentukan Display Name (Hapus Prefix jika perlu untuk kebersihan tampilan)
+        function getDisplayName(sheetName) {
+            // Misal: "MEMO PEMBAGIAN BONUS" -> "Pembagian Bonus" (Opsional, biarkan full jika ingin)
+            // Kita biarkan Full Name agar jelas sesuai nama di sheet
+            return sheetName;
+        }
+
+        // FETCH METADATA (List Sheet dari Google Sheets)
+        async function fetchSheetMetadata() {
+            // Endpoint JSON Feed
+            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}?alt=json`;
+            
+            try {
+                // Coba fetch langsung (biasanya mengizinkan CORS untuk file publik)
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Failed fetch meta");
+                
+                const data = await res.json();
+                
+                // Parsing Entry dari Feed JSON
+                const sheets = [];
+                if (data.feed && data.feed.entry) {
+                    data.feed.entry.forEach(entry => {
+                        // Struktur entry biasanya complex, cari title
+                        // Google Drive API v2 JSON format
+                        if (entry.title && entry.title.$t) {
+                            // Filter sheet yang hidden (biasanya punya properti tidak umum di list ini, tapi kita ambil semua saja untuk aman)
+                            sheets.push(entry.title.$t);
+                        }
+                    });
+                }
+                
+                // Urutkan alfabetis
+                return sheets.sort();
+                
+            } catch (e) {
+                console.error("Error fetching metadata", e);
+                // Return list default jika gagal fetch (Fallback)
+                return [
+                    "MEMO PEMBAGIAN BONUS", "MEMO INFORMASI BANK", "MEMO KENDALA PERMAINAN", 
+                    "MEMO KETERLAMBATAN RESULT", "MEMO SELESAI RESULT", "MEMO KENDALA SISTEM",
+                    "REPORT KENDALA ALL SITUS", "REPORT KENDALA KE IDN", "REPORT KENDALA LINETOGEL", 
+                    "REPORT KENDALA BANK & EWALLET", "DAFTAR LINK AKTIF", "SEGALA JENIS PK"
+                ];
+            }
+        }
+
+        // RENDER SIDEBAR DYNAMIC
+        async function initSidebar() {
+            const sheetNames = await fetchSheetMetadata();
+            
+            // Grouping Logic
+            const grouped = {
+                "MEMO": [],
+                "REPORT": [],
+                "LINKS": [],
+                "PK": [],
+                "OTHER": []
+            };
+
+            sheetNames.forEach(name => {
+                const cat = getCategory(name);
+                if (grouped[cat]) {
+                    grouped[cat].push(name);
+                } else {
+                    grouped["OTHER"].push(name);
+                }
+                
+                // Populate SHEET_CONFIG
+                SHEET_CONFIG[name] = { name: name };
+            });
+
+            // Build HTML
+            let html = '';
+            
+            for (const [category, names] of Object.entries(grouped)) {
+                if (names.length === 0) continue;
+
+                html += `<div class="nav-section"><div class="nav-title">${category}</div>`;
+                
+                names.forEach(name => {
+                    const icon = getIconForSheetName(name);
+                    const display = getDisplayName(name);
+                    
+                    html += `
+                        <div class="sidebar-item" data-sheet="${name}">
+                            <div class="sidebar-icon"><i class="fas ${icon}"></i></div>
+                            <div class="sidebar-text">${display}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            sidebarNav.innerHTML = html;
+            
+            // Re-attach listeners
+            const items = document.querySelectorAll('.sidebar-item');
+            items.forEach(item => {
+                item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
+            });
+
+            // Set Default Sheet (Sheet pertama di list atau fallback)
+            const firstSheet = sheetNames[0] || "MEMO PEMBAGIAN BONUS";
+            loadSheet(firstSheet);
+        }
 
         // ===============================
         // FUNCTIONS
@@ -726,12 +805,13 @@
             currentSheet = sheetName;
             isGlobalSearchMode = false;
             
-            // Pastikan Switch OFF saat pindah menu manual
             globalToggle.checked = false;
             updateToggleUI(false);
 
             currentSheetTitle.textContent = sheetName;
-            sidebarItems.forEach(i => i.classList.remove('active'));
+            
+            // Highlight active sidebar item
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             const activeItem = document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`);
             if(activeItem) activeItem.classList.add('active');
             
@@ -769,7 +849,6 @@
 
             try {
                 await loadSheetToMemory(sheetName);
-                
                 currentData = sheetCache[sheetName];
                 displayData = [...currentData];
                 
@@ -812,6 +891,7 @@
             rightDataList.innerHTML = '';
 
             const allResults = [];
+            // Gunakan keys dari SHEET_CONFIG yang dinamis
             const sheetNames = Object.keys(SHEET_CONFIG);
 
             const loadPromises = sheetNames.map(name => loadSheetToMemory(name));
@@ -864,15 +944,13 @@
             }
         }
 
-        // --- TOGGLE SEARCH MODE (Pertahankan Ceklis) ---
+        // --- TOGGLE SEARCH MODE ---
         function updateToggleUI(isChecked) {
             if (isChecked) {
-                // MODE ON (All Categories)
                 toggleLabel.classList.add('active-mode');
                 centerSearchInput.placeholder = "GLOBAL SEARCH (SCANNING ALL)...";
                 centerSearchInput.focus();
             } else {
-                // MODE OFF (Current Menu Only)
                 toggleLabel.classList.remove('active-mode');
                 centerSearchInput.placeholder = "CARI DATA DI MENU SAAT INI...";
                 isGlobalSearchMode = false;
@@ -884,8 +962,8 @@
         }
 
         // --- EVENTS ---
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
         });
 
         globalToggle.addEventListener('change', (e) => {
@@ -909,7 +987,6 @@
                     }
                 }, 600);
             } else {
-                // Mode OFF (Local Search)
                 displayData = currentData.filter(item => 
                     item.title.toLowerCase().includes(query)
                 );
@@ -917,12 +994,9 @@
             }
         });
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
-            loadSheet("MEMO PEMBAGIAN BONUS");
+            // MULAI DARI SINI: Fetch Metadata dulu, baru render sidebar dan load data
+            initSidebar();
         });
 
         // CSS Spinner Helper
