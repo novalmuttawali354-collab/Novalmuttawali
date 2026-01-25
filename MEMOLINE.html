@@ -224,20 +224,28 @@
         .data-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 20px rgba(0, 243, 255, 0.15); }
 
         .card-header {
-            padding: 15px 20px; background: rgba(0, 243, 255, 0.05); border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            padding: 10px 20px; background: rgba(0, 243, 255, 0.05); border-bottom: 1px solid rgba(0, 243, 255, 0.1);
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .card-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; text-transform: uppercase; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-title { 
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; text-transform: uppercase; 
+            width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        }
+        
         .card-id { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 2px 6px; border-radius: 2px; }
         
-        /* COPY BUTTON STYLE */
+        /* COPY BUTTON STYLE - FIXED */
         .copy-btn {
-            background: transparent; border: 1px solid rgba(0, 243, 255, 0.3); color: var(--primary-color);
-            padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 0.8rem;
-            display: flex; align-items: center; gap: 5px;
+            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color);
+            padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 0.75rem;
+            display: flex; align-items: center; gap: 5px; z-index: 10;
         }
-        .copy-btn:hover { background: var(--primary-color); color: #000; }
+        
+        .copy-btn i { font-size: 0.8rem; }
+
+        .copy-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 10px var(--primary-color); }
+        .copy-btn:active { transform: scale(0.95); }
 
         .card-content { padding: 20px; color: #d1d5db; font-size: 0.95rem; max-height: 200px; overflow-y: auto; border-left: 2px solid transparent; }
         .data-card:hover .card-content { border-left: 2px solid var(--primary-color); }
@@ -265,7 +273,7 @@
 
         /* TOAST NOTIFICATION */
         .toast {
-            position: fixed; top: 100px; right: 20px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color);
+            position: fixed; top: 100px; right: 20px; background: rgba(0, 243, 255, 0.15); border: 1px solid var(--primary-color);
             color: var(--primary-color); padding: 15px 25px; border-radius: 4px; backdrop-filter: blur(10px);
             z-index: 2000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
@@ -284,7 +292,8 @@
         @media (max-width: 768px) {
             .data-grid { grid-template-columns: 1fr; }
             .sheet-stats { width: 100%; justify-content: center; margin-top: 20px; }
-            .search-container { display: none; } /* Hide search on very small screens to save space */
+            .search-container { display: none; } 
+            .card-title { width: 50%; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -378,7 +387,7 @@
                     </div>
                 </div>
 
-                <!-- SEARCH BAR (Fitur Baru) -->
+                <!-- SEARCH BAR -->
                 <div class="search-container">
                     <input type="text" id="globalSearchInput" class="search-input" placeholder="CARI DATA / CATEGORY...">
                     <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
@@ -434,7 +443,7 @@
                         </a>
                     </div>
                     <p style="margin-top: 20px; font-family: 'Orbitron'; color: rgba(255,255,255,0.3);">
-                        LINETOGEL SYSTEM v2.5 // JARVIS PROTOCOL
+                        LINETOGEL SYSTEM v2.6 // JARVIS PROTOCOL
                     </p>
                 </footer>
             </div>
@@ -481,7 +490,7 @@
         ];
         
         let currentSheet = "MEMO PEMBAGIAN BONUS";
-        let currentData = [];
+        let currentData = []; // Disini disimpan data asli
         let isSidebarCollapsed = false;
         let sheetCache = {};
         let cacheTimestamp = {};
@@ -527,7 +536,8 @@
         }
 
         // Show Copy Toast
-        function showToast() {
+        function showToast(message = "DATA COPIED TO CLIPBOARD") {
+            copyToast.querySelector('span').textContent = message;
             copyToast.classList.add('show');
             setTimeout(() => {
                 copyToast.classList.remove('show');
@@ -606,12 +616,57 @@
                     data.push({
                         id: idCounter++,
                         title: r[0].trim(),
+                        // Kolom B dan seterusnya digabung sebagai content
                         content: r.slice(1).join(' ').trim() || 'NO CONTENT DATA',
                         rowNumber: i + 1
                     });
                 }
             }
             return data;
+        }
+        
+        // ===============================
+        // COPY LOGIC (FIXED)
+        // ===============================
+        function copyContentById(id) {
+            // Cari data di global array currentData berdasarkan ID
+            const item = currentData.find(d => d.id === id);
+            
+            if (item && item.content) {
+                // Gunakan Clipboard API modern
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(item.content).then(() => {
+                        showToast();
+                    }).catch(err => {
+                        console.error('Clipboard API Failed, trying fallback...', err);
+                        fallbackCopy(item.content);
+                    });
+                } else {
+                    // Fallback untuk browser lama
+                    fallbackCopy(item.content);
+                }
+            } else {
+                showToast("NO DATA TO COPY");
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+                showToast("COPY FAILED");
+            }
+            
+            document.body.removeChild(textArea);
         }
         
         function displayData(data) {
@@ -627,44 +682,28 @@
             
             let html = '';
             data.forEach((item) => {
-                let content = item.content
+                // Format content untuk tampilan HTML (link, baris baru)
+                let contentDisplay = item.content
                     .replace(/\n/g, '<br>')
                     .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
                 
+                // Tombol Copy memanggil fungsi dengan ID, bukan teks langsung
+                // Ini mencegah error jika teks mengandung kutip
                 html += `
                     <div class="data-card">
                         <div class="card-header">
                             <span class="card-title" title="${item.title}">${item.title}</span>
-                            <!-- COPY BUTTON (Fitur Baru) -->
-                            <button class="copy-btn" onclick="copyToClipboard(this, '${escape(item.content)}')">
+                            <!-- COPY BUTTON FIXED -->
+                            <button class="copy-btn" onclick="copyContentById(${item.id})" title="Salin Kolom B">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
-                        <div class="card-content">${content}</div>
+                        <div class="card-content">${contentDisplay}</div>
                     </div>`;
             });
             dataGrid.innerHTML = html;
             currentData = data;
             updateSheetInfo();
-        }
-
-        // Copy Function
-        function copyToClipboard(btn, text) {
-            const originalText = text;
-            // Decode escaped quotes handled by escape function if needed, 
-            // but since we pass raw string via escape/unescape logic in older JS or simple string:
-            const textToCopy = unescape(text); 
-            
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showToast();
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-
-        // Simple escape for HTML attribute safety
-        function escape(str) {
-            return str.replace(/'/g, "\\'");
         }
         
         async function loadSheetData() {
@@ -700,44 +739,36 @@
         }
         
         // ===============================
-        // SEARCH LOGIC (Fitur Baru)
+        // SEARCH LOGIC
         // ===============================
         async function performGlobalSearch() {
             const query = searchInput.value.trim().toLowerCase();
             if (!query) return;
 
-            // UI Feedback
             dataGrid.innerHTML = `<div class="empty-state"><div class="spinner"></div><p>SCANNING DATABASE...</p></div>`;
             searchInput.disabled = true;
 
             let bestMatchSheet = null;
             let maxMatches = 0;
-
-            // Get all sheet names
             const sheetNames = Object.keys(SHEET_CONFIG);
 
             for (const sheet of sheetNames) {
-                // 1. Check Sheet Name Match
                 if (sheet.toLowerCase().includes(query)) {
                     bestMatchSheet = sheet;
-                    maxMatches = 999; // Prioritas nama sheet
-                    break; // Langsung pilih jika nama ketemu
+                    maxMatches = 999;
+                    break;
                 }
 
-                // 2. Check Data Content Match
                 try {
-                    // Fetch if not in cache to ensure search is fresh (or use cache for speed)
-                    // Using cache for speed as requested "Direct access", fetch if empty
                     let data = loadFromCache(sheet);
                     if (!data) {
                          try {
                             const csv = await fetchSheetData(sheet);
                             data = parseCSVData(csv);
-                            saveToCache(sheet, data); // Cache hasil pencarian
+                            saveToCache(sheet, data);
                          } catch(e) { continue; }
                     }
 
-                    // Count matches in this sheet
                     const matches = data.filter(item => 
                         item.title.toLowerCase().includes(query) || 
                         item.content.toLowerCase().includes(query)
@@ -747,20 +778,16 @@
                         maxMatches = matches;
                         bestMatchSheet = sheet;
                     }
-                } catch (e) {
-                    console.error("Search error in " + sheet, e);
-                }
+                } catch (e) { console.error("Search error in " + sheet, e); }
             }
 
             searchInput.disabled = false;
 
             if (bestMatchSheet) {
-                // Switch to the found sheet
                 if (bestMatchSheet !== currentSheet) {
                     selectSheet(bestMatchSheet);
                 }
-                // Optionally highlight or filter (currently just switches sheet)
-                showToast(`REDIRECTED TO: ${bestMatchSheet}`);
+                showToast(`FOUND IN: ${bestMatchSheet}`);
             } else {
                 dataGrid.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fas fa-search-minus"></i></div><h3>NO MATCHES FOUND</h3><p>System could not locate data containing "${query}"</p></div>`;
                 showToast("NO DATA FOUND");
@@ -798,7 +825,6 @@
         sidebarItems.forEach(item => { item.addEventListener('click', () => selectSheet(item.getAttribute('data-sheet'))); });
         clearCacheBtn.addEventListener('click', (e) => { e.preventDefault(); if(confirm('FLUSH SYSTEM CACHE?')) { localStorage.clear(); sheetCache = {}; cacheTimestamp = {}; location.reload(); } });
 
-        // Search Event Listeners
         searchBtn.addEventListener('click', performGlobalSearch);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') performGlobalSearch();
