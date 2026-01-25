@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINETOGEL - J.A.R.V.I.S SYSTEM 3.3</title>
+    <title>LINETOGEL - J.A.R.V.I.S SYSTEM 3.4</title>
     <style>
         /* =========================================
            IRONMAN DIGITAL MODERN THEME
@@ -121,53 +121,103 @@
         .search-area {
             padding: 30px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 25%;
+            min-height: 20%;
             background: radial-gradient(circle at center, rgba(0, 243, 255, 0.05) 0%, transparent 70%);
         }
 
         .search-wrapper-group {
-            position: relative; width: 100%; max-width: 700px;
-            display: flex; align-items: center; gap: 10px;
+            position: relative; width: 100%; max-width: 750px;
+            display: flex; align-items: center; gap: 15px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 50px; /* Pill shape */
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .search-input-main {
             flex: 1;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(0, 243, 255, 0.3);
+            background: transparent;
+            border: none;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            padding: 12px 20px;
-            border-radius: 8px;
+            font-size: 1.1rem;
+            padding: 10px 5px;
             outline: none;
             text-align: center;
             letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s;
         }
-        .search-input-main:focus { border-color: var(--primary-color); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
-        
-        /* GLOBAL SEARCH BUTTON */
-        .btn-global-search {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            border: none;
-            color: #000;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            padding: 0 20px;
-            height: 48px; /* Same as input approx */
-            border-radius: 8px;
+        .search-input-main::placeholder { color: rgba(255,255,255,0.4); font-size: 0.9rem; }
+
+        /* --- TOGGLE SWITCH STYLES --- */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             cursor: pointer;
-            white-space: nowrap;
+            user-select: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.1);
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+            background-color: #000;
+        }
+
+        .toggle-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
             transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
         }
-        .btn-global-search:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+
+        input:checked + .slider + .toggle-label { /* Note: JS will handle label color better via class toggle */
+            color: var(--primary-color);
+            text-shadow: 0 0 5px var(--primary-color);
         }
+        /* Active state for the label when switch is on */
+        .toggle-label.active-mode {
+            color: var(--primary-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+        /* --------------------------- */
 
         /* DETAIL VIEWER */
         .detail-viewer {
@@ -293,24 +343,23 @@
             transition: all 0.2s;
             color: var(--text-muted);
             font-size: 0.85rem;
-            display: flex; flex-direction: column; /* Changed to column for global label */
+            display: flex; flex-direction: column; 
             align-items: flex-start;
             border-left: 2px solid transparent;
         }
         .list-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left: 2px solid #fff; }
         .list-item.active { background: rgba(0, 243, 255, 0.15); color: var(--primary-color); border: 1px solid rgba(0, 243, 255, 0.3); box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); border-left: 2px solid var(--primary-color); }
         
-        /* Styling for Category Label in Global Search */
         .list-item-category {
             font-size: 0.7rem;
-            color: var(--accent-color); /* Orange/Red for distinction */
+            color: var(--accent-color); 
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 2px;
             letter-spacing: 0.5px;
         }
         .list-item-title { font-weight: 500; }
-        .list-arrow { display: none; /* Hide arrow in column layout */ }
+        .list-arrow { display: none; }
 
         /* Empty State Center */
         .empty-center { text-align: center; color: var(--text-muted); margin-top: 50px; }
@@ -330,8 +379,7 @@
         @media (max-width: 1024px) {
             .right-panel { display: none; }
             .main-content { border-right: none; }
-            .search-wrapper-group { flex-direction: column; }
-            .btn-global-search { width: 100%; justify-content: center; }
+            .search-wrapper-group { padding: 15px; }
         }
         @media (max-width: 768px) {
             .sidebar { position: absolute; transform: translateX(-100%); width: 80%; }
@@ -341,6 +389,10 @@
             .main-content { height: auto; overflow: visible; }
             .data-card-large { margin-bottom: 20px; }
             .card-content-large { text-align: left; }
+            .toggle-label { font-size: 0.7rem; }
+            .switch { width: 40px; height: 22px; }
+            .slider:before { height: 14px; width: 14px; }
+            input:checked + .slider:before { transform: translateX(18px); }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -396,10 +448,15 @@
             <div class="search-area">
                 <div class="search-wrapper-group">
                     <input type="text" id="centerSearchInput" class="search-input-main" placeholder="CARI DATA DI MENU SAAT INI..." autocomplete="off">
-                    <!-- GLOBAL SEARCH BUTTON -->
-                    <button class="btn-global-search" id="btnGlobalSearch">
-                        <i class="fas fa-globe"></i> ALL CATEGORIES
-                    </button>
+                    
+                    <!-- TOGGLE SWITCH -->
+                    <div class="toggle-container" title="Aktifkan pencarian semua kategori">
+                        <label class="switch">
+                            <input type="checkbox" id="globalToggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label" id="toggleLabel">ALL CATEGORIES</span>
+                    </div>
                 </div>
             </div>
 
@@ -459,6 +516,7 @@
         let sheetCache = {};
         let cacheTimestamp = {};
         let isGlobalSearchMode = false;
+        let searchTimeout; // Untuk debounce global search
         
         // DOM Elements
         const sidebar = document.getElementById('sidebar');
@@ -467,7 +525,9 @@
         const currentSheetTitle = document.getElementById('currentSheetTitle');
         
         const centerSearchInput = document.getElementById('centerSearchInput');
-        const btnGlobalSearch = document.getElementById('btnGlobalSearch');
+        const globalToggle = document.getElementById('globalToggle');
+        const toggleLabel = document.getElementById('toggleLabel');
+        
         const detailViewer = document.getElementById('detailViewer');
         const rightDataList = document.getElementById('rightDataList');
         const rightPanelTitle = document.getElementById('rightPanelTitle');
@@ -543,7 +603,6 @@
 
         // --- RENDERING ---
 
-        // 1. Render List on Right Panel
         function renderRightList(data, isGlobal = false) {
             rightDataList.innerHTML = '';
             if (data.length === 0) {
@@ -555,7 +614,6 @@
                 const div = document.createElement('div');
                 div.className = 'list-item';
                 
-                // HTML Structure for Normal vs Global List
                 if(isGlobal) {
                     div.innerHTML = `
                         <div class="list-item-category">${item.sourceSheet}</div>
@@ -573,8 +631,7 @@
                     div.classList.add('active');
                     
                     if (isGlobal) {
-                        // Switch to the sheet of the found item
-                        loadSheet(item.sourceSheet, item.id); // Pass ID to auto-select
+                        loadSheet(item.sourceSheet, item.id);
                     } else {
                         renderCenterDetail(item);
                     }
@@ -583,7 +640,6 @@
             });
         }
 
-        // 2. Render Detail in Center Panel
         function renderCenterDetail(item) {
             let processedContent = item.content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
             let paragraphs = processedContent.split('\n\n');
@@ -613,19 +669,20 @@
         // --- LOAD SHEET LOGIC ---
         async function loadSheet(sheetName, targetId = null) {
             currentSheet = sheetName;
-            isGlobalSearchMode = false; // Exit global mode
+            isGlobalSearchMode = false;
             
-            // UI Updates
+            // Reset Toggle UI if we switched sheets manually
+            globalToggle.checked = false;
+            updateToggleUI(false);
+
             currentSheetTitle.textContent = sheetName;
             sidebarItems.forEach(i => i.classList.remove('active'));
             const activeItem = document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`);
             if(activeItem) activeItem.classList.add('active');
             
-            rightPanelTitle.textContent = "DATA INDEX"; // Reset Title
-            
+            rightPanelTitle.textContent = "DATA INDEX";
             centerSearchInput.placeholder = "CARI DATA DI MENU SAAT INI...";
             
-            // Reset Center
             detailViewer.innerHTML = `
                 <div class="empty-center">
                     <div class="spinner"></div>
@@ -641,7 +698,6 @@
                 renderRightList(displayData);
                 
                 if (targetId) {
-                    // Auto select item if coming from global search
                     const item = currentData.find(d => d.id === targetId);
                     if(item) renderCenterDetail(item);
                 } else {
@@ -686,18 +742,18 @@
         async function performGlobalSearch() {
             const query = centerSearchInput.value.trim().toLowerCase();
             if (!query) {
-                showToast("Masukkan kata kunci");
-                centerSearchInput.focus();
+                // Jika input kosong di mode global, tapi user mengetik lalu hapus, kembalikan ke tampilan kosong
+                rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">KETIK UNTUK MENCARI</div>';
+                detailViewer.innerHTML = `<div class="empty-center">MENUNGGU INPUT...</div>`;
                 return;
             }
 
-            isGlobalSearchMode = true;
             rightPanelTitle.textContent = "GLOBAL SEARCH RESULTS";
             detailViewer.innerHTML = `
                 <div class="empty-center">
                     <div class="spinner"></div>
                     <p>SCANNING ALL DATABASES...</p>
-                    <small>Mungkin memerlukan waktu beberapa detik...</small>
+                    <small>Mohon tunggu...</small>
                 </div>
             `;
             rightDataList.innerHTML = '';
@@ -706,7 +762,6 @@
             const sheetNames = Object.keys(SHEET_CONFIG);
 
             for (const sheetName of sheetNames) {
-                // Fetch if not cached
                 if (!sheetCache[sheetName]) {
                     try {
                         const csv = await fetchSheetData(sheetName);
@@ -718,14 +773,12 @@
                     }
                 }
 
-                // Filter
                 const matches = sheetCache[sheetName].filter(item => 
                     item.title.toLowerCase().includes(query) || 
                     item.content.toLowerCase().includes(query)
                 );
 
                 if (matches.length > 0) {
-                    // Add source sheet info
                     matches.forEach(m => {
                         allResults.push({
                             ...m,
@@ -735,17 +788,15 @@
                 }
             }
 
-            // Render Results
             if (allResults.length === 0) {
-                detailViewer.innerHTML = `<div class="empty-center">TIDAK ADA DATA DITEMUKAN DI SEMUA MENU</div>`;
+                detailViewer.innerHTML = `<div class="empty-center">TIDAK ADA DATA DITEMUKAN</div>`;
             } else {
-                renderRightList(allResults, true); // true = isGlobal mode
+                renderRightList(allResults, true);
                 detailViewer.innerHTML = `
                     <div class="empty-center">
                         <div class="empty-icon-center"><i class="fas fa-search"></i></div>
                         <h3>FOUND ${allResults.length} RESULTS</h3>
                         <p>Hasil pencarian dari semua kategori.</p>
-                        <small>Klik item di kanan untuk melihat detail.</small>
                     </div>`;
             }
         }
@@ -768,28 +819,62 @@
             }
         }
 
+        // --- TOGGLE SEARCH MODE ---
+        function updateToggleUI(isChecked) {
+            if (isChecked) {
+                toggleLabel.classList.add('active-mode');
+                centerSearchInput.placeholder = "GLOBAL SEARCH (SCANNING ALL)...";
+                centerSearchInput.focus();
+            } else {
+                toggleLabel.classList.remove('active-mode');
+                centerSearchInput.placeholder = "CARI DATA DI MENU SAAT INI...";
+                // Jika user mematikan toggle, reset list ke local current sheet
+                isGlobalSearchMode = false;
+                rightPanelTitle.textContent = "DATA INDEX";
+                displayData = [...currentData];
+                renderRightList(displayData);
+                detailViewer.innerHTML = `<div class="empty-center"><div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div><h3>LOCAL MODE</h3></div>`;
+            }
+        }
+
         // --- EVENTS ---
         sidebarItems.forEach(item => {
             item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
         });
 
-        // Regular Search (Current Sheet)
-        centerSearchInput.addEventListener('input', (e) => {
-            if (isGlobalSearchMode) {
-                // If user types in global mode, we could reset or stay global.
-                // Let's exit global mode to avoid confusion
-                isGlobalSearchMode = false;
-                rightPanelTitle.textContent = "DATA INDEX";
+        // Toggle Change Event
+        globalToggle.addEventListener('change', (e) => {
+            isGlobalSearchMode = e.target.checked;
+            updateToggleUI(isGlobalSearchMode);
+            
+            // Jika ada teks saat diaktifkan, langsung cari
+            if (isGlobalSearchMode && centerSearchInput.value.trim() !== "") {
+                performGlobalSearch();
             }
-            const query = e.target.value.toLowerCase();
-            displayData = currentData.filter(item => 
-                item.title.toLowerCase().includes(query)
-            );
-            renderRightList(displayData);
         });
 
-        // Global Search Button Click
-        btnGlobalSearch.addEventListener('click', performGlobalSearch);
+        // Input Event (Local vs Global)
+        centerSearchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.toLowerCase();
+            
+            if (isGlobalSearchMode) {
+                // Debounce global search (tunggu 800ms setelah user stop ngetik)
+                searchTimeout = setTimeout(() => {
+                    if(query.length > 0) performGlobalSearch();
+                    else {
+                        rightDataList.innerHTML = '';
+                        detailViewer.innerHTML = `<div class="empty-center">MENUNGGU INPUT...</div>`;
+                    }
+                }, 800);
+            } else {
+                // Local Search (Instan)
+                displayData = currentData.filter(item => 
+                    item.title.toLowerCase().includes(query)
+                );
+                renderRightList(displayData);
+            }
+        });
 
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('active');
