@@ -13,34 +13,45 @@
     
     <style>
         :root {
-            --primary-color: #00ffff;
-            --secondary-color: #ff00ff;
-            --accent-color: #ffff00;
-            --success-color: #00ff00;
-            --warning-color: #ff9900;
-            --danger-color: #ff0066;
-            --info-color: #0099ff;
-            --text-color: #ffffff;
+            /* Elegant Dark Palette */
+            --bg-deep: #050505;
+            --bg-secondary: #0a0a0a;
+            
+            /* Muted Accent Colors */
+            --primary-color: #4361ee; /* Royal Blue */
+            --secondary-color: #7209b7; /* Deep Purple */
+            --accent-color: #f72585; /* Soft Magenta */
+            
+            /* Gold/Platinum for Premium Feel */
+            --gold-color: #d4af37;
+            --silver-color: #c0c0c0;
+            
+            /* Text Colors */
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
             --dark-text: #0a0a0a;
-            --card-bg: rgba(0, 20, 40, 0.9);
-            --neon-glow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
-            --optimus-primary: #0051ba;
-            --optimus-secondary: #c0162d;
-            --optimus-accent: #f0f0f0;
-            --transformer-blue: #0066ff;
-            --transformer-red: #e63946;
-            --transformer-yellow: #ffd60a;
-            --cyber-grid: rgba(0, 170, 255, 0.1);
+            
+            /* Glassmorphism Card */
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --card-hover-bg: rgba(255, 255, 255, 0.07);
+            
+            /* Subtle Glow */
+            --neon-glow: 0 0 15px rgba(67, 97, 238, 0.3);
+            
+            /* Background Grid */
+            --cyber-grid: rgba(255, 255, 255, 0.02);
         }
         
         .light-mode {
-            --primary-color: #0066cc;
-            --secondary-color: #cc00cc;
-            --accent-color: #cccc00;
-            --text-color: #1a1a2e;
-            --dark-text: #f0f0f0;
-            --card-bg: rgba(240, 245, 255, 0.9);
-            --cyber-grid: rgba(0, 100, 200, 0.1);
+            --bg-deep: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --card-bg: rgba(0, 0, 0, 0.02);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --card-hover-bg: rgba(0, 0, 0, 0.05);
+            --text-main: #1a1a2e;
+            --text-muted: #4a4a6a;
+            --cyber-grid: rgba(0, 0, 0, 0.05);
         }
         
         * {
@@ -50,10 +61,10 @@
         }
         
         body {
-            font-family: 'Rajdhani', 'Exo 2', sans-serif;
+            font-family: 'Exo 2', 'Rajdhani', sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background: #000;
+            color: var(--text-main);
+            background: var(--bg-deep);
             overflow-x: hidden;
             position: relative;
             transition: all 0.5s ease;
@@ -64,8 +75,8 @@
             position: fixed;
             top: 100px;
             left: 30px;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border-radius: 50%;
             display: flex;
@@ -73,62 +84,20 @@
             justify-content: center;
             cursor: pointer;
             z-index: 2000;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5);
-            animation: fabPulse 2s ease-in-out infinite, fabRotate 10s linear infinite;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
             text-decoration: none;
-        }
-        
-        @keyframes fabPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5);
-            }
-            50% { 
-                transform: scale(1.1);
-                box-shadow: 0 0 40px rgba(0, 255, 255, 1), 0 0 80px rgba(255, 0, 255, 0.7);
-            }
-        }
-        
-        @keyframes fabRotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-        
-        .consultation-fab::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
-            border-radius: 50%;
-            z-index: -1;
-            animation: fabBorderRotate 3s linear infinite;
-        }
-        
-        @keyframes fabBorderRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         
         .consultation-fab i {
-            font-size: 28px;
-            color: var(--dark-text);
-            animation: fabIconTransform 2s ease-in-out infinite;
-        }
-        
-        @keyframes fabIconTransform {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.1) rotate(5deg); }
-            50% { transform: scale(1) rotate(-5deg); }
-            75% { transform: scale(1.1) rotate(5deg); }
+            font-size: 24px;
+            color: #fff;
         }
         
         .consultation-fab:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(255, 0, 255, 0.8);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--primary-color);
         }
         
         .consultation-tooltip {
@@ -136,19 +105,19 @@
             top: 50%;
             left: 100%;
             transform: translateY(-50%);
-            background: var(--card-bg);
+            background: rgba(10, 10, 10, 0.9);
             border: 1px solid var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 16px;
+            border-radius: 8px;
             white-space: nowrap;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
-            color: var(--primary-color);
+            color: #fff;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
             margin-left: 15px;
-            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
+            backdrop-filter: blur(5px);
         }
         
         .consultation-fab:hover .consultation-tooltip {
@@ -157,7 +126,7 @@
             transform: translateY(-50%) translateX(10px);
         }
         
-        /* Digital Matrix Background */
+        /* Background Effects */
         .matrix-bg {
             position: fixed;
             top: 0;
@@ -165,7 +134,7 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: linear-gradient(45deg, #000428, #004e92);
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000000 100%);
         }
         
         .digital-rain {
@@ -176,6 +145,7 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            opacity: 0.3;
         }
         
         .digital-particle {
@@ -184,7 +154,7 @@
             font-family: 'Orbitron', monospace;
             font-size: 14px;
             animation: digitalFall linear infinite;
-            text-shadow: var(--neon-glow);
+            text-shadow: 0 0 5px var(--primary-color);
         }
         
         @keyframes digitalFall {
@@ -194,7 +164,6 @@
             }
         }
         
-        /* Cyber Grid Background */
         .cyber-grid {
             position: fixed;
             top: 0;
@@ -202,72 +171,10 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 10s linear infinite;
+                linear-gradient(var(--cyber-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px);
+            background-size: 40px 40px;
             z-index: -1;
-        }
-        
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        /* Glitch Effect */
-        .glitch {
-            position: relative;
-            color: var(--text-color);
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            text-shadow: var(--neon-glow);
-            animation: glitchText 2s infinite;
-        }
-        
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .glitch::before {
-            animation: glitchLayer1 0.5s infinite;
-            color: var(--primary-color);
-            z-index: -1;
-        }
-        
-        .glitch::after {
-            animation: glitchLayer2 0.5s infinite;
-            color: var(--secondary-color);
-            z-index: -2;
-        }
-        
-        @keyframes glitchText {
-            0%, 100% { text-shadow: var(--neon-glow); }
-            25% { text-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); }
-            50% { text-shadow: 0 0 20px var(--secondary-color), 0 0 40px var(--secondary-color); }
-            75% { text-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-color); }
-        }
-        
-        @keyframes glitchLayer1 {
-            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-            20% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
-            40% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -2px); }
-            60% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
-            80% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -1px); }
-        }
-        
-        @keyframes glitchLayer2 {
-            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
-            40% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 1px); }
-            60% { clip-path: inset(30% 0 40% 0); transform: translate(1px, 2px); }
-            80% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, -2px); }
         }
         
         .container {
@@ -276,437 +183,171 @@
             padding: 0 20px;
         }
         
-        /* Transformer Header */
+        /* Header */
         header {
-            background: linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(0, 40, 80, 0.95));
-            backdrop-filter: blur(20px);
-            border-bottom: 2px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: headerTransform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 5% 100%, 0 85%);
-        }
-        
-        @keyframes headerTransform {
-            0% {
-                clip-path: polygon(0 0, 0 0, 0 100%, 0 100%, 0 100%, 0 100%);
-                transform: translateY(-100%);
-            }
-            100% {
-                clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 5% 100%, 0 85%);
-                transform: translateY(0);
-            }
+            padding: 15px 0;
+            transition: all 0.3s ease;
         }
         
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
         }
         
         .logo {
             display: flex;
             align-items: center;
             font-family: 'Orbitron', monospace;
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            position: relative;
-        }
-        
-        .logo::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            z-index: -1;
-            filter: blur(10px);
-            opacity: 0.7;
-            animation: logoGlow 2s ease-in-out infinite;
-        }
-        
-        @keyframes logoGlow {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
         }
         
         .logo i {
-            margin-right: 15px;
-            font-size: 40px;
-            animation: logoTransform 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px var(--primary-color));
-        }
-        
-        @keyframes logoTransform {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(90deg) scale(1.1); }
-            50% { transform: rotate(180deg) scale(1); }
-            75% { transform: rotate(270deg) scale(1.1); }
+            margin-right: 12px;
+            font-size: 28px;
+            color: var(--primary-color);
         }
         
         nav ul {
             display: flex;
             list-style: none;
-            gap: 5px;
-        }
-        
-        nav ul li {
-            position: relative;
+            gap: 10px;
         }
         
         nav ul li a {
-            color: var(--text-color);
+            color: var(--text-muted);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 30px;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border: 1px solid transparent;
-            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
-        }
-        
-        nav ul li a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        nav ul li a:hover::before {
-            left: 100%;
-        }
-        
-        nav ul li a:hover {
-            color: var(--dark-text);
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-color);
-            transform: translateY(-2px);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         nav ul li a i {
-            font-size: 18px;
+            font-size: 14px;
         }
         
-        /* Hero Section with Digital Effects */
+        nav ul li a:hover {
+            color: #fff;
+            background: rgba(67, 97, 238, 0.1);
+            border: 1px solid var(--primary-color);
+        }
+        
+        /* Hero Section */
         .hero {
-            padding: 120px 0;
+            padding: 100px 0 80px;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent, var(--secondary-color), transparent);
-            animation: heroRotate 10s linear infinite;
-            transform: translate(-50%, -50%);
-            opacity: 0.3;
-        }
-        
-        @keyframes heroRotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
         
         .hero h1 {
             font-family: 'Orbitron', monospace;
-            font-size: 72px;
-            font-weight: 900;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            animation: heroTextTransform 2s ease-out;
-        }
-        
-        @keyframes heroTextTransform {
-            0% {
-                opacity: 0;
-                transform: scale(0.5) rotateX(90deg);
-                filter: blur(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotateX(0deg);
-                filter: blur(0);
-            }
+            letter-spacing: 3px;
         }
         
         .hero p {
-            font-size: 24px;
-            max-width: 900px;
-            margin: 0 auto 50px;
-            position: relative;
-            z-index: 1;
-            opacity: 0.9;
-            animation: fadeInUp 1.5s ease-out 0.5s both;
-        }
-        
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
         }
         
         .btn {
             display: inline-block;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--dark-text);
-            padding: 20px 50px;
-            font-size: 18px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            padding: 14px 40px;
+            font-size: 16px;
             font-weight: 700;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: 1.5px;
+            border-radius: 50px;
             transition: all 0.3s ease;
-            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%, 15px 50%);
-            animation: btnTransform 1.5s ease-out 1s both;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-        }
-        
-        @keyframes btnTransform {
-            0% {
-                opacity: 0;
-                transform: scale(0) rotate(180deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.7s ease;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
+            border: 1px solid transparent;
+            box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
         }
         
         .btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.8);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
         }
         
         /* Section Styles */
         section {
-            padding: 100px 0;
-            position: relative;
+            padding: 60px 0;
         }
         
         .section-title {
             text-align: center;
             font-family: 'Orbitron', monospace;
-            font-size: 56px;
-            font-weight: 900;
-            margin-bottom: 80px;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 50px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            color: #fff;
             position: relative;
-            animation: sectionTitleTransform 1s ease-out;
-        }
-        
-        @keyframes sectionTitleTransform {
-            0% {
-                opacity: 0;
-                transform: translateX(-100px) skewX(20deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0) skewX(0deg);
-            }
         }
         
         .section-title::after {
             content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            animation: titleGlow 2s ease-in-out infinite;
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--gold-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
         }
         
-        @keyframes titleGlow {
-            0%, 100% { box-shadow: 0 0 10px var(--primary-color); }
-            50% { box-shadow: 0 0 30px var(--secondary-color), 0 0 50px var(--secondary-color); }
-        }
-        
-        /* Digital Card Styles */
-        .principles {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-color);
-            border-radius: 0;
-            padding: 50px;
-            margin-bottom: 60px;
-            position: relative;
-            overflow: hidden;
-            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
-            animation: cardTransform 1s ease-out;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
-        }
-        
-        @keyframes cardTransform {
-            0% {
-                opacity: 0;
-                transform: perspective(1000px) rotateY(90deg);
-            }
-            100% {
-                opacity: 1;
-                transform: perspective(1000px) rotateY(0deg);
-            }
-        }
-        
-        .principles::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
-            z-index: -1;
-            animation: borderRotate 3s linear infinite;
-        }
-        
-        @keyframes borderRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .principles h2 {
-            font-family: 'Orbitron', monospace;
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .principles h2 i {
-            font-size: 40px;
-            animation: iconPulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.2); filter: brightness(1.5); }
-        }
-        
-        .principles ul {
-            list-style: none;
-        }
-        
-        .principles li {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: rgba(0, 255, 255, 0.05);
-            border-left: 3px solid var(--primary-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .principles li::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .principles li:hover::before {
-            left: 100%;
-        }
-        
-        .principles li:hover {
-            background: rgba(0, 255, 255, 0.1);
-            transform: translateX(10px);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-        }
-        
-        .principles li i {
-            color: var(--primary-color);
-            margin-right: 15px;
-            font-size: 24px;
-            animation: iconFloat 3s ease-in-out infinite;
-        }
-        
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        /* Menu Cards with Transformer Effects */
+        /* MENU GRID SYSTEM - 3 COLUMNS */
         .menu-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(3, 1fr); /* Fixed 3 Columns */
+            gap: 30px;
         }
         
+        /* Elegant Card Design */
         .day-card {
             background: var(--card-bg);
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--card-border);
             position: relative;
             overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            animation: dayCardTransform 1s ease-out backwards;
-            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 16px; /* Elegant Rounded Corners */
+            backdrop-filter: blur(20px);
+            animation: fadeInUp 0.8s ease-out backwards;
         }
         
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Staggered Animation Delays */
         .day-card:nth-child(1) { animation-delay: 0.1s; }
         .day-card:nth-child(2) { animation-delay: 0.2s; }
         .day-card:nth-child(3) { animation-delay: 0.3s; }
@@ -719,189 +360,151 @@
         .day-card:nth-child(10) { animation-delay: 1.0s; }
         .day-card:nth-child(11) { animation-delay: 1.1s; }
         .day-card:nth-child(12) { animation-delay: 1.2s; }
-        
-        @keyframes dayCardTransform {
-            0% {
-                opacity: 0;
-                transform: perspective(1000px) rotateX(90deg) translateZ(-100px);
-            }
-            100% {
-                opacity: 1;
-                transform: perspective(1000px) rotateX(0deg) translateZ(0);
-            }
-        }
+        .day-card:nth-child(13) { animation-delay: 1.3s; }
+        .day-card:nth-child(14) { animation-delay: 1.4s; }
+        .day-card:nth-child(15) { animation-delay: 1.5s; }
         
         .day-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            animation: shimmer 2s linear infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .day-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.4);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0);
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .day-card:hover::before {
+            opacity: 1;
         }
         
         .day-header {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
-            padding: 30px;
+            padding: 25px;
             display: flex;
             align-items: center;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid var(--primary-color);
-        }
-        
-        .day-header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.01);
         }
         
         .day-header i {
-            font-size: 36px;
-            margin-right: 20px;
-            color: var(--primary-color);
-            animation: headerIconTransform 4s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px currentColor);
+            font-size: 32px;
+            margin-right: 15px;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
         }
         
-        @keyframes headerIconTransform {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(90deg) scale(1.1); }
-            50% { transform: rotate(180deg) scale(1); }
-            75% { transform: rotate(270deg) scale(1.1); }
+        .day-card:hover .day-header i {
+            color: var(--primary-color);
         }
         
         .day-header h3 {
             font-family: 'Orbitron', monospace;
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
+            letter-spacing: 1px;
         }
         
         .day-content {
-            padding: 30px;
+            padding: 25px;
         }
         
         .day-content > p {
-            margin-bottom: 25px;
-            color: var(--text-color);
-            line-height: 1.8;
-            font-size: 16px;
-            opacity: 0.9;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
         }
         
         .meal {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid transparent;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .meal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .meal:hover::before {
-            left: 100%;
         }
         
         .meal:hover {
-            background: rgba(0, 255, 255, 0.1);
-            transform: translateX(5px);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
         }
         
         .meal-title {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
         .meal-title i {
-            margin-right: 15px;
-            font-size: 24px;
-            animation: mealIconTransform 3s ease-in-out infinite;
-        }
-        
-        @keyframes mealIconTransform {
-            0%, 100% { transform: rotateY(0deg) scale(1); }
-            50% { transform: rotateY(180deg) scale(1.1); }
+            margin-right: 10px;
+            font-size: 14px;
+            color: var(--gold-color);
         }
         
         .meal-items {
-            padding-left: 40px;
+            list-style: none;
+            padding-left: 5px;
         }
         
         .meal-items li {
-            margin-bottom: 15px;
-            position: relative;
-            transition: all 0.3s ease;
-            color: var(--text-color);
-            opacity: 0.9;
-        }
-        
-        .meal-items li::before {
-            content: '▶';
-            position: absolute;
-            left: -20px;
-            color: var(--accent-color);
-            animation: arrowPulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes arrowPulse {
-            0%, 100% { opacity: 0.5; transform: translateX(0); }
-            50% { opacity: 1; transform: translateX(3px); }
-        }
-        
-        .meal-items li:hover {
-            color: var(--primary-color);
-            transform: translateX(5px);
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
         }
         
         .meal-items li i {
-            margin-right: 10px;
-            color: var(--secondary-color);
-            font-size: 16px;
+            margin-right: 8px;
+            font-size: 10px;
+            color: var(--primary-color);
         }
         
-        /* Theme Toggle Button */
+        /* Card Action Button */
+        .card-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        
+        .card-btn:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        /* Specific Card Color Accents (Custom Overrides) */
+        .accent-gold .day-header i, .accent-gold .day-header h3 { color: var(--gold-color); }
+        .accent-purple .day-header i, .accent-purple .day-header h3 { color: var(--secondary-color); }
+        .accent-teal .day-header i, .accent-teal .day-header h3 { color: #2ec4b6; }
+        .accent-optimus .day-header i, .accent-optimus .day-header h3 { color: var(--primary-color); }
+        
+        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -910,95 +513,53 @@
         }
         
         .toggle-btn {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50px;
-            padding: 12px 20px;
+            padding: 10px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-color);
-            font-family: 'Exo 2', sans-serif;
+            color: #fff;
+            font-size: 14px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
         }
         
         .toggle-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .toggle-icon {
-            font-size: 1.2rem;
-            transition: transform 0.5s ease;
-        }
-        
-        .toggle-btn:hover .toggle-icon {
-            transform: rotate(180deg);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         /* Footer */
         footer {
-            background: var(--card-bg);
-            border-top: 2px solid var(--primary-color);
+            background: #000;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
-            padding: 50px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            animation: shimmer 3s linear infinite;
-        }
-        
-        .social-icons {
-            margin-bottom: 30px;
+            padding: 40px 0;
+            margin-top: 80px;
         }
         
         .social-icons a {
-            color: var(--text-color);
-            font-size: 32px;
-            margin: 0 20px;
+            color: var(--text-muted);
+            font-size: 20px;
+            margin: 0 15px;
             transition: all 0.3s ease;
-            display: inline-block;
-            position: relative;
-        }
-        
-        .social-icons a::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: var(--primary-color);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-        
-        .social-icons a:hover::before {
-            width: 50px;
-            height: 50px;
         }
         
         .social-icons a:hover {
-            color: var(--dark-text);
-            transform: translateY(-8px) rotate(15deg) scale(1.2);
+            color: var(--primary-color);
+            transform: translateY(-3px);
         }
         
-        /* Loading Screen */
+        footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* Loader */
         .loader {
             position: fixed;
             top: 0;
@@ -1010,7 +571,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            animation: fadeOut 0.5s ease-out 2s forwards;
+            animation: fadeOut 0.5s ease-out 1.5s forwards;
         }
         
         .loader-content {
@@ -1018,176 +579,85 @@
         }
         
         .loader-transform {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            margin: 0 auto 30px;
-            animation: loaderTransform 2s linear infinite;
-        }
-        
-        @keyframes loaderTransform {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .loader-transform::before,
-        .loader-transform::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
             border-top-color: var(--primary-color);
             border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
         
-        .loader-transform::after {
-            border-top-color: var(--secondary-color);
-            animation: loaderReverse 1s linear infinite;
-        }
-        
-        @keyframes loaderReverse {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
         
         .loader-text {
-            font-family: 'Orbitron', monospace;
-            font-size: 24px;
+            font-family: 'Orbitron';
             color: var(--primary-color);
+            font-size: 14px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: loaderText 1s ease-in-out infinite;
         }
         
-        @keyframes loaderText {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-        
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-        
-        /* Animations */
-        @keyframes rotateCircle {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
-        @keyframes rotateGradient {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
-        @keyframes pulseIcon {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.1);
-            }
-        }
-        
-        @keyframes statusPulse {
-            0% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Responsive Design */
+        /* Responsive Grid Breakpoints */
         @media (max-width: 1200px) {
-            .consultation-fab {
-                width: 60px;
-                height: 60px;
-                top: 80px;
-                left: 20px;
-            }
-            
-            .consultation-fab i {
-                font-size: 24px;
+            .menu-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
             }
         }
         
         @media (max-width: 768px) {
+            .menu-container {
+                grid-template-columns: 1fr; /* 1 column for mobile */
+            }
             .header-content {
                 flex-direction: column;
-                text-align: center;
+                gap: 15px;
             }
-            
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-top: 20px;
-            }
-            
             .hero h1 {
-                font-size: 48px;
+                font-size: 36px;
             }
-            
-            .menu-container {
-                grid-template-columns: 1fr;
-            }
-            
             .consultation-fab {
-                width: 60px;
-                height: 60px;
-                top: 80px;
+                width: 50px;
+                height: 50px;
+                top: auto;
+                bottom: 20px;
                 left: 20px;
             }
-            
             .consultation-fab i {
-                font-size: 24px;
+                font-size: 20px;
+            }
+            .consultation-tooltip {
+                display: none; /* Hide tooltip on mobile to save space */
             }
         }
     </style>
 </head>
 <body>
-    <!-- Digital Background Effects -->
+    <!-- Background -->
     <div class="matrix-bg"></div>
     <div class="cyber-grid"></div>
     <div class="digital-rain" id="digitalRain"></div>
     
-    <!-- Floating Consultation Button -->
+    <!-- Floating Button -->
     <a href="https://trustpositif.smbgroup.io/" target="_blank" class="consultation-fab">
         <i class="fas fa-shield-alt"></i>
         <span class="consultation-tooltip">Domain Checker</span>
     </a>
     
-    <!-- Loading Screen -->
+    <!-- Loader -->
     <div class="loader">
         <div class="loader-content">
             <div class="loader-transform"></div>
-            <div class="loader-text">Initializing System...</div>
+            <div class="loader-text">Loading...</div>
         </div>
     </div>
     
-    <!-- Theme Toggle Button -->
+    <!-- Theme Toggle -->
     <div class="theme-toggle">
         <button class="toggle-btn" id="themeToggle">
             <span class="toggle-icon">🌙</span>
-            <span>Mode Gelap</span>
+            <span style="margin-left: 5px;">Dark Mode</span>
         </button>
     </div>
     
@@ -1200,307 +670,297 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#intro"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="#menu"><i class="fas fa-gamepad"></i> Livegames</a></li>
-                    <li><a href="#menu"><i class="fas fa-gift"></i> Event</a></li>
+                    <li><a href="#intro"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#menu"><i class="fas fa-gamepad"></i> Games</a></li>
                     <li><a href="#menu"><i class="fas fa-chart-bar"></i> Data</a></li>
-                    <li><a href="#menu"><i class="fas fa-shield-alt"></i> Audit</a></li>
+                    <li><a href="#menu"><i class="fas fa-tools"></i> Tools</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section id="intro" class="hero">
         <div class="container">
-            <h1 class="glitch" data-text="Seputar LINETOGEL">Seputar LINETOGEL</h1>
-            <p>Portal Informasi Lengkap Seputar Permainan LINETOGEL - Transformasi Pengalaman Bermain Anda Menjadi Lebih Premium</p>
-            <a href="#menu" class="btn"><i class="fas fa-rocket"></i> Akses Sekarang</a>
+            <h1>Premium Dashboard</h1>
+            <p>Sistem informasi lengkap seputar permainan dan analisis data dengan tampilan elegan.</p>
+            <a href="#menu" class="btn">Lihat Menu</a>
         </div>
     </section>
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Menu Section -->
         <section id="menu">
-            <h2 class="section-title"><i class="fas fa-gamepad"></i> Game Menu</h2>
-            <p style="text-align: center; margin-bottom: 50px; font-size: 20px; color: var(--text-color); opacity: 0.9;">Nikmati berbagai permainan menarik dengan pengalaman premium</p>
+            <h2 class="section-title">Game Menu</h2>
             
             <div class="menu-container">
-                <!-- Livegames Card -->
+                
+                <!-- Card 1 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-gamepad"></i>
                         <h3>Livegames</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-fire-flame-curved"></i> Nikmati pengalaman bermain game langsung dengan berbagai pilihan permainan menarik dan interaktif.</p>
-                        
+                        <p>Live streaming berkualitas tinggi dengan interaksi dealer real-time.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-star"></i>
-                                <span>Fitur Utama</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-star"></i> Fitur Utama</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-check"></i> Live streaming berkualitas tinggi</li>
-                                <li><i class="fas fa-check"></i> Interaksi real-time dengan dealer</li>
-                                <li><i class="fas fa-check"></i> Berbagai pilihan permainan</li>
+                                <li><i class="fas fa-check"></i> HD Streaming</li>
+                                <li><i class="fas fa-check"></i> Interactive</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="btn" style="margin-top: 20px;">Akses Sekarang</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/livegames.html#" class="card-btn">Akses Sekarang</a>
                     </div>
                 </div>
 
-                <!-- Event Scatter Card -->
+                <!-- Card 2 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-gift"></i>
                         <h3>Event Scatter</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-bolt"></i> Ikuti event scatter menarik dengan hadiah-hadiah spesial yang bisa Anda dapatkan.</p>
-                        
+                        <p>Ikuti event spesial untuk mendapatkan bonus harian dan jackpot.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-trophy"></i>
-                                <span>Hadiah Spesial</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-trophy"></i> Hadiah</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-coins"></i> Bonus harian</li>
-                                <li><i class="fas fa-gem"></i> Jackpot progresif</li>
-                                <li><i class="fas fa-medal"></i> Poin loyalitas</li>
+                                <li><i class="fas fa-coins"></i> Bonus Harian</li>
+                                <li><i class="fas fa-gem"></i> Progresif Jackpot</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="btn" style="margin-top: 20px;">Ikuti Event</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/scatterrr.html" class="card-btn">Ikuti Event</a>
                     </div>
                 </div>
 
-                <!-- Akumulasi Togel Card -->
+                <!-- Card 3 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-chart-bar"></i>
                         <h3>Akumulasi Togel</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-calculator"></i> Lihat data akumulasi togel terbaru dan analisis canggih untuk membantu prediksi Anda.</p>
-                        
+                        <p>Data akumulasi dan analisis canggih untuk keakuratan prediksi.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-chart-line"></i>
-                                <span>Fitur Analisis</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-chart-line"></i> Analisis</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-database"></i> Data historis lengkap</li>
-                                <li><i class="fas fa-chart-pie"></i> Visualisasi statistik</li>
-                                <li><i class="fas fa-brain"></i> Algoritma prediksi</li>
+                                <li><i class="fas fa-database"></i> Historis Data</li>
+                                <li><i class="fas fa-brain"></i> Algoritma AI</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="btn" style="margin-top: 20px;">Lihat Data</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/HitungTogel.html" class="card-btn">Lihat Data</a>
                     </div>
                 </div>
 
-                <!-- Gambar QRIS Card -->
+                <!-- Card 4 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-qrcode"></i>
                         <h3>Gambar QRIS</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-mobile-alt"></i> Akses gambar QRIS untuk kemudahan dalam melakukan transaksi pembayaran yang aman.</p>
-                        
+                        <p>Metode pembayaran digital aman, cepat, dan terenkripsi.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Keamanan</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-shield-alt"></i> Keamanan</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-lock"></i> Enkripsi data</li>
-                                <li><i class="fas fa-fingerprint"></i> Verifikasi biometrik</li>
-                                <li><i class="fas fa-user-shield"></i> Privasi terjamin</li>
+                                <li><i class="fas fa-lock"></i> Enkripsi Data</li>
+                                <li><i class="fas fa-user-shield"></i> Privasi Aman</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="btn" style="margin-top: 20px;">Scan QRIS</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/gambarqris.html" class="card-btn">Scan QRIS</a>
                     </div>
                 </div>
 
-                <!-- Gameplay Togel Card -->
+                <!-- Card 5 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-dice"></i>
                         <h3>Gameplay Togel</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-gamepad"></i> Jelajahi gameplay togel yang menarik dengan sistem betting yang lengkap.</p>
-                        
+                        <p>Sistem betting lengkap dengan kalkulasi otomatis yang akurat.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-cogs"></i>
-                                <span>Fitur Gameplay</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-cogs"></i> Gameplay</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-sliders-h"></i> Berbagai jenis taruhan</li>
-                                <li><i class="fas fa-history"></i> Riwayat permainan</li>
-                                <li><i class="fas fa-calculator"></i> Kalkulator otomatis</li>
+                                <li><i class="fas fa-sliders-h"></i> Multi Bet</li>
+                                <li><i class="fas fa-history"></i> Riwayat</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="btn" style="margin-top: 20px;">Mulai Bermain</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/BettinganTogel.html" class="card-btn">Mulai Bermain</a>
                     </div>
                 </div>
 
-                <!-- Data All Card -->
+                <!-- Card 6 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-database"></i>
                         <h3>Data All</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-server"></i> Akses semua data lengkap dan informasi terkini seputar permainan togel dalam satu tempat.</p>
-                        
+                        <p>Pusat data terlengkap dengan filter kustom dan ekspor data.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-cloud-download-alt"></i>
-                                <span>Fitur Data</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-cloud-download-alt"></i> Data</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-sync-alt"></i> Update real-time</li>
-                                <li><i class="fas fa-filter"></i> Filter kustom</li>
-                                <li><i class="fas fa-file-export"></i> Ekspor data</li>
+                                <li><i class="fas fa-sync-alt"></i> Real-time</li>
+                                <li><i class="fas fa-file-export"></i> Ekspor CSV</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="btn" style="margin-top: 20px;">Lihat Data</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/index.html" class="card-btn">Lihat Data</a>
                     </div>
                 </div>
 
-                <!-- LC Audit Card -->
+                <!-- Card 7 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-shield-alt"></i>
                         <h3>LC Audit</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-search"></i> Verifikasi keamanan sistem dengan audit cryptocurrency yang komprehensif dan transparan.</p>
-                        
+                        <p>Audit sistem keamanan cryptocurrency yang komprehensif.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-certificate"></i>
-                                <span>Fitur Audit</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-certificate"></i> Audit</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-check-circle"></i> Verifikasi transaksi</li>
-                                <li><i class="fas fa-chart-area"></i> Analisis blockchain</li>
-                                <li><i class="fas fa-lock"></i> Enkripsi tingkat tinggi</li>
+                                <li><i class="fas fa-check-circle"></i> Verifikasi Transaksi</li>
+                                <li><i class="fas fa-chart-area"></i> Blockchain</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="btn" style="margin-top: 20px;">Audit System</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/CryptocurencyAudit.html" class="card-btn">Audit Sistem</a>
                     </div>
                 </div>
 
-                <!-- Profil Bank/Ewallet Card -->
+                <!-- Card 8 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-credit-card"></i>
                         <h3>Profil Bank/Ewallet</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-wallet"></i> Kelola informasi rekening bank dan dompet digital Anda untuk transaksi yang lebih mudah dan aman.</p>
-                        
+                        <p>Kelola rekening bank dan dompet digital dengan aman.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-user-cog"></i>
-                                <span>Fitur Profil</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-user-cog"></i> Profil</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-plus-circle"></i> Tambah rekening</li>
-                                <li><i class="fas fa-edit"></i> Edit informasi</li>
-                                <li><i class="fas fa-trash-alt"></i> Hapus rekening</li>
+                                <li><i class="fas fa-plus-circle"></i> Tambah Rekening</li>
+                                <li><i class="fas fa-edit"></i> Edit Profil</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="btn" style="margin-top: 20px;">Lihat Profil</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/PROFILGAMBAR.html" class="card-btn">Lihat Profil</a>
                     </div>
                 </div>
 
-                <!-- IDN POKER Card -->
+                <!-- Card 9 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-club"></i>
                         <h3>IDN POKER</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-cards"></i> Nikmati pengalaman bermain poker online terbaik dengan berbagai pilihan meja dan turnamen menarik.</p>
-                        
+                        <p>Platform poker online terbaik dengan turnamen mingguan.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-trophy"></i>
-                                <span>Fitur Poker</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-trophy"></i> Poker</div>
                             <ul class="meal-items">
                                 <li><i class="fas fa-users"></i> Multi-player</li>
-                                <li><i class="fas fa-crown"></i> Turnamen reguler</li>
-                                <li><i class="fas fa-coins"></i> Bonus dan hadiah</li>
+                                <li><i class="fas fa-crown"></i> VIP Table</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="btn" style="margin-top: 20px;">Mainkan Sekarang</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/IDNPOKER.html" class="card-btn">Mainkan</a>
                     </div>
                 </div>
 
-                <!-- GamePlayLiveGames Card -->
+                <!-- Card 10 -->
                 <div class="day-card">
                     <div class="day-header">
                         <i class="fas fa-tv"></i>
                         <h3>GamePlayLiveGames</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-play-circle"></i> Rasakan sensasi bermain game langsung dengan tampilan interaktif dan pengalaman gaming premium.</p>
-                        
+                        <p>Pengalaman live gaming dengan kualitas streaming HD.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-gamepad"></i>
-                                <span>Fitur Live Games</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-gamepad"></i> Live</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-video"></i> Streaming HD</li>
-                                <li><i class="fas fa-comments"></i> Chat interaktif</li>
-                                <li><i class="fas fa-star"></i> Rating dan review</li>
+                                <li><i class="fas fa-video"></i> HD Streaming</li>
+                                <li><i class="fas fa-comments"></i> Live Chat</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html" class="btn" style="margin-top: 20px;">Mainkan Sekarang</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/Gameplay%20Livegames.html" class="card-btn">Mainkan</a>
                     </div>
                 </div>
 
-                <!-- Optimus Prime Jadwal Card -->
-                <div class="day-card">
-                    <div class="day-header" style="background: linear-gradient(135deg, rgba(0, 81, 186, 0.3), rgba(192, 22, 45, 0.3));">
-                        <i class="fas fa-robot" style="color: var(--optimus-primary);"></i>
-                        <h3 style="color: var(--optimus-primary);">Optimus Prime Jadwal</h3>
+                <!-- Card 11 -->
+                <div class="day-card accent-optimus">
+                    <div class="day-header">
+                        <i class="fas fa-robot"></i>
+                        <h3>Optimus Prime Jadwal</h3>
                     </div>
                     <div class="day-content">
-                        <p><i class="fas fa-calendar-alt" style="color: var(--optimus-secondary);"></i> Akses jadwal lengkap Optimus Prime dengan informasi terkini dan update real-time.</p>
-                        
+                        <p>Jadwal lengkap update data Optimus Prime secara real-time.</p>
                         <div class="meal">
-                            <div class="meal-title">
-                                <i class="fas fa-cog" style="color: var(--optimus-primary);"></i>
-                                <span>Fitur Jadwal</span>
-                            </div>
+                            <div class="meal-title"><i class="fas fa-cog"></i> Fitur</div>
                             <ul class="meal-items">
-                                <li><i class="fas fa-clock"></i> Update real-time</li>
-                                <li><i class="fas fa-bell"></i> Notifikasi otomatis</li>
-                                <li><i class="fas fa-sync"></i> Sinkronisasi data</li>
+                                <li><i class="fas fa-bell"></i> Notifikasi</li>
+                                <li><i class="fas fa-sync"></i> Auto Sync</li>
                             </ul>
                         </div>
-                        
-                        <a href="https://novalmuttawali-ym2l.vercel.app/OptimuPrime.html" class="btn" style="margin-top: 20px; background: linear-gradient(45deg, var(--optimus-primary), var(--optimus-secondary));">Lihat Jadwal</a>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/OptimuPrime.html" class="card-btn">Lihat Jadwal</a>
                     </div>
                 </div>
+
+                <!-- NEW: MEMO & PK -->
+                <div class="day-card accent-gold">
+                    <div class="day-header">
+                        <i class="fas fa-sticky-note"></i>
+                        <h3>MEMO & PK</h3>
+                    </div>
+                    <div class="day-content">
+                        <p>Simpan catatan pola permainan dan Paito Khusus untuk analisis.</p>
+                        <div class="meal">
+                            <div class="meal-title"><i class="fas fa-file-alt"></i> Fitur</div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-save"></i> Simpan Pola</li>
+                                <li><i class="fas fa-history"></i> Riwayat Memo</li>
+                            </ul>
+                        </div>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/MEMOLINE.html" class="card-btn">Buka Memo</a>
+                    </div>
+                </div>
+
+                <!-- NEW: PREDIKSI -->
+                <div class="day-card accent-purple">
+                    <div class="day-header">
+                        <i class="fas fa-eye"></i>
+                        <h3>PREDIKSI TOGEL</h3>
+                    </div>
+                    <div class="day-content">
+                        <p>Rumusan dan prediksi angka jitu berdasarkan algoritma data.</p>
+                        <div class="meal">
+                            <div class="meal-title"><i class="fas fa-magic"></i> Analisa</div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-search"></i> Rumus Akurat</li>
+                                <li><i class="fas fa-layer-group"></i> Kombinasi</li>
+                            </ul>
+                        </div>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/PREDIKSI.html" class="card-btn">Lihat Prediksi</a>
+                    </div>
+                </div>
+
+                <!-- NEW: SIMULATOR BBFS -->
+                <div class="day-card accent-teal">
+                    <div class="day-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>SIMULATOR BBFS</h3>
+                    </div>
+                    <div class="day-content">
+                        <p>Alat simulasi Bebas Bolak Balik Full Set untuk investasi.</p>
+                        <div class="meal">
+                            <div class="meal-title"><i class="fas fa-tools"></i> Alat</div>
+                            <ul class="meal-items">
+                                <li><i class="fas fa-random"></i> Generator</li>
+                                <li><i class="fas fa-coins"></i> Hitung Invest</li>
+                            </ul>
+                        </div>
+                        <a href="https://novalmuttawali-ym2l.vercel.app/SimulatorBbfs.html" class="card-btn">Mulai Simulasi</a>
+                    </div>
+                </div>
+
             </div>
         </section>
     </main>
@@ -1514,184 +974,90 @@
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
                 <a href="#"><i class="fab fa-tiktok"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
-            <p>&copy; 2023 Seputar LINETOGEL. All Rights Reserved. Premium Gaming Experience</p>
+            <p>&copy; 2023 Seputar LINETOGEL. Premium Gaming Experience</p>
         </div>
     </footer>
 
     <script>
-        // Create digital rain effect
+        // Create digital rain
         function createDigitalRain() {
             const digitalRain = document.getElementById('digitalRain');
-            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()';
-            const particleCount = 50;
+            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const particleCount = 30; // Reduced for elegance
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'digital-particle';
                 particle.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's'; // Slower
                 particle.style.animationDelay = Math.random() * 5 + 's';
                 digitalRain.appendChild(particle);
             }
         }
-        
-        // Theme Toggle Function
+
+        // Theme Toggle
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
-            const toggleIcon = themeToggle.querySelector('.toggle-icon');
             const toggleText = themeToggle.querySelector('span:last-child');
             
             if (body.classList.contains('light-mode')) {
-                // Switch to dark mode
                 body.classList.remove('light-mode');
-                toggleIcon.textContent = '🌙';
-                toggleText.textContent = 'Mode Gelap';
+                toggleText.textContent = 'Dark Mode';
                 localStorage.setItem('theme', 'dark');
             } else {
-                // Switch to light mode
                 body.classList.add('light-mode');
-                toggleIcon.textContent = '☀️';
-                toggleText.textContent = 'Mode Terang';
+                toggleText.textContent = 'Light Mode';
                 localStorage.setItem('theme', 'light');
             }
         }
         
-        // Initialize theme from localStorage
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
             const themeToggle = document.getElementById('themeToggle');
-            const toggleIcon = themeToggle.querySelector('.toggle-icon');
             const toggleText = themeToggle.querySelector('span:last-child');
             
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-                toggleIcon.textContent = '☀️';
-                toggleText.textContent = 'Mode Terang';
+                toggleText.textContent = 'Light Mode';
             } else {
                 document.body.classList.remove('light-mode');
-                toggleIcon.textContent = '🌙';
-                toggleText.textContent = 'Mode Gelap';
+                toggleText.textContent = 'Dark Mode';
             }
         }
-        
-        // Enhanced smooth scrolling with easing
+
         document.addEventListener('DOMContentLoaded', function() {
             createDigitalRain();
             initializeTheme();
             
-            // Enhanced smooth scrolling
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+            // Smooth Scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 100,
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
                         behavior: 'smooth'
                     });
                 });
             });
-            
-            // Enhanced parallax effect
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const hero = document.querySelector('.hero');
-                const parallaxSpeed = 0.5;
-                hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-                
-                // Add blur effect on scroll
-                const blurAmount = Math.min(scrolled / 100, 5);
-                hero.style.filter = `blur(${blurAmount}px)`;
-            });
-            
-            // Intersection Observer with enhanced animations
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-            
-            const observer = new IntersectionObserver((entries, observer) => {
+
+            // Intersection Observer for fade-in
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0) scale(1)';
-                        observer.unobserve(entry.target);
+                        entry.target.style.transform = 'translateY(0)';
                     }
                 });
-            }, observerOptions);
-            
-            // Observe all cards and sections with initial state
-            document.querySelectorAll('.day-card').forEach(element => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(50px) scale(0.95)';
-                element.style.transition = 'opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                observer.observe(element);
+            });
+
+            document.querySelectorAll('.day-card').forEach(card => {
+                card.style.opacity = '0'; // Initial state
+                observer.observe(card);
             });
             
-            // Enhanced button hover effects
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px) scale(1.05)';
-                });
-                
-                btn.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-            
-            // Enhanced loading removal
-            setTimeout(() => {
-                const loader = document.querySelector('.loader');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 500);
-                }
-            }, 2500);
-            
-            // Add interactive hover effect to meal items
-            document.querySelectorAll('.meal-items li').forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    this.style.paddingLeft = '10px';
-                });
-                
-                item.addEventListener('mouseleave', function() {
-                    this.style.paddingLeft = '0';
-                });
-            });
-            
-            // Add glitch effect to hero title on hover
-            const heroTitle = document.querySelector('.hero h1');
-            heroTitle.addEventListener('mouseenter', function() {
-                this.style.animation = 'glitchText 0.3s infinite';
-            });
-            
-            heroTitle.addEventListener('mouseleave', function() {
-                this.style.animation = 'glitchText 2s infinite';
-            });
-            
-            // Add theme toggle event listener
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            
-            // Add hover effect to consultation FAB
-            const consultationFAB = document.querySelector('.consultation-fab');
-            consultationFAB.addEventListener('mouseenter', function() {
-                this.style.animationPlayState = 'paused';
-            });
-            
-            consultationFAB.addEventListener('mouseleave', function() {
-                this.style.animationPlayState = 'running';
-            });
         });
     </script>
 </body>
