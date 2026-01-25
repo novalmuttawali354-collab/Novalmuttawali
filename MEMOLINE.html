@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINETOGEL - J.A.R.V.I.S SYSTEM</title>
+    <title>LINETOGEL - J.A.R.V.I.S SYSTEM 3.0</title>
     <style>
         /* =========================================
            IRONMAN DIGITAL MODERN THEME
@@ -23,9 +23,11 @@
             --text-muted: #8b9bb4;
             --border-glow: 0 0 10px rgba(0, 243, 255, 0.3);
             --text-glow: 0 0 5px rgba(0, 243, 255, 0.5);
-            --card-border: 1px solid rgba(0, 243, 255, 0.2);
-            --sidebar-width: 280px;
-            --sidebar-collapsed: 80px;
+            
+            /* Layout Dimensions */
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 70px;
+            --rightpanel-width: 300px;
             --header-height: 70px;
         }
 
@@ -40,536 +42,373 @@
             background-size: 40px 40px;
             color: var(--text-main);
             line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden; /* Prevent body scroll, handle inside panels */
+            height: 100vh;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-        .app-container { display: flex; min-height: 100vh; position: relative; }
+        .app-container { display: flex; height: 100vh; position: relative; width: 100vw; }
 
-        /* Sidebar */
+        /* =========================================
+           1. LEFT SIDEBAR (Menu Kategori)
+           ========================================= */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, rgba(5,5,10,0.95) 0%, rgba(10,10,20,0.98) 100%);
+            background: linear-gradient(180deg, rgba(5,5,10,0.98) 0%, rgba(10,10,20,0.98) 100%);
             color: white;
             height: 100vh;
-            position: fixed;
-            left: 0; top: 0;
+            border-right: 1px solid rgba(0, 243, 255, 0.15);
+            display: flex;
+            flex-direction: column;
             z-index: 1000;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-right: 1px solid rgba(0, 243, 255, 0.1);
-            backdrop-filter: blur(10px);
-            overflow-y: auto;
+            flex-shrink: 0;
+            transition: width 0.3s ease;
         }
 
-        .sidebar.collapsed { width: var(--sidebar-collapsed); }
-
         .sidebar-header {
-            padding: 30px 20px;
+            padding: 25px 15px;
             text-align: center;
             border-bottom: 1px solid rgba(0, 243, 255, 0.15);
             background: radial-gradient(circle at center, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
         }
 
-        .logo { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+        .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+        .logo-icon { font-size: 1.8rem; color: var(--primary-color); filter: drop-shadow(0 0 8px var(--primary-color)); animation: pulse-reactor 3s infinite ease-in-out; }
+        @keyframes pulse-reactor { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+        
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 700; color: #fff; }
+        .sidebar-subtitle { font-size: 0.75rem; color: var(--primary-color); letter-spacing: 2px; text-transform: uppercase; }
 
-        .logo-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            filter: drop-shadow(0 0 8px var(--primary-color));
-            animation: pulse-reactor 3s infinite ease-in-out;
-        }
-
-        @keyframes pulse-reactor {
-            0% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 5px var(--primary-color)); }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--primary-color)); }
-            100% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 5px var(--primary-color)); }
-        }
-
-        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        .sidebar-subtitle { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--primary-color); letter-spacing: 3px; text-transform: uppercase; opacity: 0.9; }
-
-        .sidebar-nav { padding: 20px 0; }
-        .nav-section { margin-bottom: 25px; }
-        .nav-title { padding: 0 25px 10px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 15px; }
+        .sidebar-nav { padding: 20px 0; overflow-y: auto; flex: 1; }
+        .nav-section { margin-bottom: 20px; }
+        .nav-title { padding: 0 15px 5px; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; }
 
         .sidebar-item {
-            display: flex; align-items: center; padding: 12px 25px; cursor: pointer; transition: all 0.3s; position: relative; margin: 2px 10px; border-radius: 4px; color: var(--text-muted);
+            display: flex; align-items: center; padding: 10px 15px; cursor: pointer; transition: all 0.2s; margin: 2px 10px; border-radius: 4px; color: var(--text-muted); border-left: 2px solid transparent;
         }
-
-        .sidebar-item:hover { background: rgba(0, 243, 255, 0.05); color: var(--primary-color); border-left: 2px solid var(--primary-color); }
-        .sidebar-item.active { background: linear-gradient(90deg, rgba(0, 243, 255, 0.1) 0%, transparent 100%); color: #fff; border-left: 4px solid var(--primary-color); text-shadow: var(--text-glow); }
+        .sidebar-item:hover { background: rgba(0, 243, 255, 0.05); color: #fff; }
+        .sidebar-item.active { background: rgba(0, 243, 255, 0.1); color: var(--primary-color); border-left: 2px solid var(--primary-color); text-shadow: 0 0 5px rgba(0, 243, 255, 0.5); }
         
-        .sidebar-icon { font-size: 1.1rem; min-width: 30px; text-align: center; margin-right: 15px; }
-        .sidebar-text { font-weight: 600; font-size: 1rem; letter-spacing: 0.5px; text-transform: uppercase; }
+        .sidebar-icon { font-size: 1rem; min-width: 25px; text-align: center; margin-right: 10px; }
+        .sidebar-text { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; }
 
-        /* Collapsed Sidebar Logic */
-        .collapsed .sidebar-text, .collapsed .nav-title, .collapsed .sidebar-subtitle, .collapsed .logo-text { display: none; }
-        .collapsed .sidebar-item { justify-content: center; padding: 15px 0; }
-        .collapsed .sidebar-icon { margin-right: 0; font-size: 1.4rem; }
-
-        /* Main Content */
-        .main-content { flex: 1; margin-left: var(--sidebar-width); background: transparent; min-height: 100vh; transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .main-content.expanded { margin-left: var(--sidebar-collapsed); }
-
-        /* Header & Search */
-        .top-header {
-            height: var(--header-height);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 30px;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
-            background: rgba(5, 5, 10, 0.8); backdrop-filter: blur(15px);
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        .header-left { display: flex; align-items: center; gap: 20px; }
-
-        .toggle-sidebar {
-            background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.2);
-            color: var(--primary-color); width: 40px; height: 40px; border-radius: 4px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;
-        }
-        .toggle-sidebar:hover { background: var(--primary-color); color: #000; box-shadow: var(--border-glow); }
-
-        .current-sheet {
-            font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #fff;
-            display: flex; align-items: center; gap: 12px; text-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-
-        /* SEARCH BAR STYLES */
-        .search-container {
+        /* =========================================
+           2. MAIN CONTENT (Center - Search & Detail)
+           ========================================= */
+        .main-content {
+            flex: 1;
+            background: rgba(5, 5, 8, 0.4);
+            display: flex;
+            flex-direction: column;
             position: relative;
-            width: 300px;
+            border-right: 1px solid rgba(0, 243, 255, 0.1);
         }
 
-        .search-input {
+        /* Top Bar Center (Logo & Toggle) */
+        .top-bar {
+            height: 60px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+            background: rgba(0,0,0,0.3);
+        }
+        .current-sheet { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--primary-color); text-shadow: 0 0 5px var(--primary-color); }
+        .toggle-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); width: 35px; height: 35px; border-radius: 4px; cursor: pointer; display: none; }
+
+        /* SEARCH AREA (Center Middle) */
+        .search-area {
+            padding: 40px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 30%;
+            background: radial-gradient(circle at center, rgba(0, 243, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .search-box-wrapper {
+            position: relative; width: 100%; max-width: 600px;
+        }
+
+        .search-input-main {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            padding: 10px 40px 10px 15px;
-            border-radius: 4px;
-            font-size: 1rem;
+            font-size: 1.5rem;
+            padding: 15px 60px 15px 25px;
+            border-radius: 8px;
             outline: none;
+            text-align: center;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s;
         }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        .search-input-main:focus { border-color: var(--primary-color); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
+        
+        .search-icon-main {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-color); font-size: 1.5rem; pointer-events: none;
         }
 
-        .search-btn {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: var(--primary-color);
-            cursor: pointer;
-            padding: 5px;
-            font-size: 1rem;
+        /* DETAIL VIEWER (Center Bottom) */
+        .detail-viewer {
+            flex: 1;
+            padding: 20px 40px;
+            overflow-y: auto;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .data-card-large {
+            width: 100%; max-width: 800px;
+            background: rgba(12, 18, 30, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
         }
         
-        .search-btn:hover { color: #fff; text-shadow: 0 0 5px var(--primary-color); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .live-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(0, 255, 0, 0.1); color: #00ff41; border: 1px solid #00ff41;
-            padding: 2px 10px; border-radius: 2px; font-size: 0.7rem; font-weight: 700;
-            letter-spacing: 1px; font-family: 'Orbitron', sans-serif;
-            animation: blink-text 2s infinite;
+        .card-header-large {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .card-title-large { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; text-transform: uppercase; }
+        .card-id-large { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: var(--primary-color); background: rgba(0,243,255,0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(0,243,255,0.3); }
+
+        .card-content-large {
+            font-size: 1.1rem; color: #d1d5db; line-height: 1.8; white-space: pre-wrap;
+        }
+        .card-content-large a { color: var(--primary-color); border-bottom: 1px dotted var(--primary-color); text-decoration: none; }
+        
+        .copy-btn-large {
+            margin-top: 25px; width: 100%; padding: 12px;
+            background: linear-gradient(90deg, rgba(0,243,255,0.1) 0%, transparent 100%);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .copy-btn-large:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+
+        /* =========================================
+           3. RIGHT PANEL (List of Data - Kanan)
+           ========================================= */
+        .right-panel {
+            width: var(--rightpanel-width);
+            background: rgba(8, 8, 15, 0.95);
+            border-left: 1px solid rgba(0, 243, 255, 0.15);
+            display: flex; flex-direction: column;
+            backdrop-filter: blur(10px);
+            z-index: 900;
         }
 
-        @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .right-header {
+            padding: 15px; text-align: center; border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+            background: rgba(0, 243, 255, 0.05);
+        }
+        .right-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--text-muted); letter-spacing: 2px; }
 
-        /* Dashboard Area */
-        .dashboard-content { padding: 30px; }
-
-        .sheet-info-card {
-            background: var(--bg-card); border: var(--card-border); border-radius: 8px;
-            padding: 25px; margin-bottom: 30px; position: relative; backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 20px; overflow: hidden;
+        .data-list-container {
+            flex: 1; overflow-y: auto; padding: 10px;
         }
 
-        .sheet-info-card::before { content: ''; position: absolute; top: 0; left: 0; width: 20px; height: 20px; border-top: 2px solid var(--primary-color); border-left: 2px solid var(--primary-color); }
-        .sheet-info-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; border-bottom: 2px solid var(--primary-color); border-right: 2px solid var(--primary-color); }
-
-        .sheet-info-title { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--primary-color); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .sheet-info-description { color: var(--text-muted); font-size: 1rem; font-weight: 500; }
-        .sheet-stats { display: flex; gap: 20px; }
-        .stat-item { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 20px; min-width: 140px; text-align: center; }
-        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; font-weight: 700; }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Data Grid & Cards */
-        .data-container { background: transparent; border: none; }
-        .data-header { margin-bottom: 20px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding-bottom: 10px; }
-        .data-title { font-family: 'Orbitron', sans-serif; color: var(--primary-color); font-size: 1.2rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
-
-        .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; min-height: 300px; }
-
-        .data-card {
-            background: rgba(12, 18, 30, 0.6); border: 1px solid rgba(0, 243, 255, 0.1); border-radius: 6px;
-            overflow: hidden; transition: all 0.3s; backdrop-filter: blur(5px); position: relative;
-        }
-
-        .data-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 20px rgba(0, 243, 255, 0.15); }
-
-        .card-header {
-            padding: 10px 20px; background: rgba(0, 243, 255, 0.05); border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+        .list-item {
+            padding: 12px 15px;
+            border: 1px solid transparent;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-muted);
+            font-size: 0.9rem;
             display: flex; justify-content: space-between; align-items: center;
         }
-
-        .card-title { 
-            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; text-transform: uppercase; 
-            width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-        }
+        .list-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left: 2px solid #fff; }
+        .list-item.active { background: rgba(0, 243, 255, 0.15); color: var(--primary-color); border: 1px solid rgba(0, 243, 255, 0.3); box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); }
         
-        .card-id { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 2px 6px; border-radius: 2px; }
-        
-        /* COPY BUTTON STYLE - FIXED */
-        .copy-btn {
-            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color);
-            padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 0.75rem;
-            display: flex; align-items: center; gap: 5px; z-index: 10;
-        }
-        
-        .copy-btn i { font-size: 0.8rem; }
+        .list-arrow { font-size: 0.7rem; opacity: 0.5; }
 
-        .copy-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 10px var(--primary-color); }
-        .copy-btn:active { transform: scale(0.95); }
+        /* Empty State Center */
+        .empty-center { text-align: center; color: var(--text-muted); margin-top: 50px; }
+        .empty-icon-center { font-size: 4rem; margin-bottom: 20px; opacity: 0.3; filter: drop-shadow(0 0 5px var(--primary-color)); }
 
-        .card-content { padding: 20px; color: #d1d5db; font-size: 0.95rem; max-height: 200px; overflow-y: auto; border-left: 2px solid transparent; }
-        .data-card:hover .card-content { border-left: 2px solid var(--primary-color); }
-        .card-content a { color: var(--primary-color); text-decoration: none; border-bottom: 1px dotted var(--primary-color); }
-        .card-content a:hover { color: #fff; text-shadow: 0 0 5px var(--primary-color); }
-
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 30px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; color: var(--text-muted); }
-        .empty-icon { font-size: 4rem; color: var(--primary-color); opacity: 0.5; margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--primary-color)); }
-
-        .main-footer { margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: var(--text-muted); }
-        .footer-links { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
-        .footer-link { color: var(--text-muted); text-decoration: none; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-        .footer-link:hover { color: var(--primary-color); text-shadow: var(--text-glow); }
-
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0, 243, 255, 0.1); border-top: 3px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .refresh-indicator {
-            position: fixed; bottom: 20px; right: 20px; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--primary-color);
-            color: var(--primary-color); padding: 8px 15px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem;
-            display: flex; align-items: center; gap: 10px; z-index: 1000; border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); opacity: 0; transition: opacity 0.5s; pointer-events: none;
-        }
-        .refresh-indicator.show { opacity: 1; }
-
-        /* TOAST NOTIFICATION */
+        /* Toast */
         .toast {
-            position: fixed; top: 100px; right: 20px; background: rgba(0, 243, 255, 0.15); border: 1px solid var(--primary-color);
-            color: var(--primary-color); padding: 15px 25px; border-radius: 4px; backdrop-filter: blur(10px);
-            z-index: 2000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 243, 255, 0.15); border: 1px solid var(--primary-color); color: var(--primary-color);
+            padding: 12px 30px; border-radius: 30px; backdrop-filter: blur(10px); z-index: 3000;
+            font-family: 'Orbitron'; font-size: 0.9rem; box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        .toast.show { transform: translateX(0); }
+        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        @media (max-width: 992px) {
-            .sidebar { transform: translateX(-100%); width: var(--sidebar-width); }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .main-content.expanded { margin-left: 0; }
-            .toggle-sidebar { position: fixed; top: 15px; left: 15px; z-index: 1001; background: rgba(0,0,0,0.8); }
-            .search-container { width: 150px; }
+        /* Responsive Logic */
+        @media (max-width: 1024px) {
+            .right-panel { display: none; } /* Hide right list on tablet */
+            .main-content { border-right: none; }
+            .data-list-container { display: block; } /* Fallback to grid on small screens if needed, but for now simplified */
         }
         @media (max-width: 768px) {
-            .data-grid { grid-template-columns: 1fr; }
-            .sheet-stats { width: 100%; justify-content: center; margin-top: 20px; }
-            .search-container { display: none; } 
-            .card-title { width: 50%; }
+            .sidebar { position: absolute; transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .toggle-btn { display: flex; }
+            .app-container { flex-direction: column; overflow: auto; height: auto; }
+            .main-content { height: auto; overflow: visible; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- SIDEBAR -->
+        <!-- 1. LEFT SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <div class="logo-icon"><i class="fas fa-microchip"></i></div>
-                    <div class="logo-text" id="logoText">LINETOGEL</div>
+                    <div class="logo-text">LINETOGEL</div>
                 </div>
-                <div class="sidebar-subtitle" id="sidebarSubtitle">SYSTEM ONLINE</div>
+                <div class="sidebar-subtitle">SYSTEM ONLINE</div>
             </div>
 
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Menu Items will be injected here or static -->
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleMemo">Memo</div>
-                    <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS">
-                        <div class="sidebar-icon"><i class="fas fa-gift"></i></div>
-                        <div class="sidebar-text">Bonus</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK">
-                        <div class="sidebar-icon"><i class="fas fa-university"></i></div>
-                        <div class="sidebar-text">Info Bank</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN">
-                        <div class="sidebar-icon"><i class="fas fa-gamepad"></i></div>
-                        <div class="sidebar-text">Kendala Game</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="MEMO KETERLAMBATAN RESULT">
-                        <div class="sidebar-icon"><i class="fas fa-clock"></i></div>
-                        <div class="sidebar-text">Telat Result</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="MEMO SELESAI RESULT">
-                        <div class="sidebar-icon"><i class="fas fa-check-circle"></i></div>
-                        <div class="sidebar-text">Selesai Result</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM">
-                        <div class="sidebar-icon"><i class="fas fa-server"></i></div>
-                        <div class="sidebar-text">Sistem Error</div>
-                    </div>
+                    <div class="nav-title">MEMO</div>
+                    <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS"><div class="sidebar-icon"><i class="fas fa-gift"></i></div><div class="sidebar-text">Bonus</div></div>
+                    <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK"><div class="sidebar-icon"><i class="fas fa-university"></i></div><div class="sidebar-text">Info Bank</div></div>
+                    <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN"><div class="sidebar-icon"><i class="fas fa-gamepad"></i></div><div class="sidebar-text">Kendala Game</div></div>
+                    <div class="sidebar-item" data-sheet="MEMO KETERLAMBATAN RESULT"><div class="sidebar-icon"><i class="fas fa-clock"></i></div><div class="sidebar-text">Telat Result</div></div>
+                    <div class="sidebar-item" data-sheet="MEMO SELESAI RESULT"><div class="sidebar-icon"><i class="fas fa-check-circle"></i></div><div class="sidebar-text">Selesai Result</div></div>
+                    <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM"><div class="sidebar-icon"><i class="fas fa-server"></i></div><div class="sidebar-text">Sistem Error</div></div>
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleReport">Report</div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS">
-                        <div class="sidebar-icon"><i class="fas fa-globe"></i></div>
-                        <div class="sidebar-text">All Situs</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN">
-                        <div class="sidebar-icon"><i class="fas fa-network-wired"></i></div>
-                        <div class="sidebar-text">Ke IDN</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA LINETOGEL">
-                        <div class="sidebar-icon"><i class="fas fa-bug"></i></div>
-                        <div class="sidebar-text">Linetogel</div>
-                    </div>
-                    <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET">
-                        <div class="sidebar-icon"><i class="fas fa-wallet"></i></div>
-                        <div class="sidebar-text">Bank & Ewallet</div>
-                    </div>
+                    <div class="nav-title">REPORT</div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS"><div class="sidebar-icon"><i class="fas fa-globe"></i></div><div class="sidebar-text">All Situs</div></div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN"><div class="sidebar-icon"><i class="fas fa-network-wired"></i></div><div class="sidebar-text">Ke IDN</div></div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA LINETOGEL"><div class="sidebar-icon"><i class="fas fa-bug"></i></div><div class="sidebar-text">Linetogel</div></div>
+                    <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET"><div class="sidebar-icon"><i class="fas fa-wallet"></i></div><div class="sidebar-text">Bank & Ewallet</div></div>
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleLinks">Links</div>
-                    <div class="sidebar-item" data-sheet="DAFTAR LINK AKTIF">
-                        <div class="sidebar-icon"><i class="fas fa-link"></i></div>
-                        <div class="sidebar-text">Link Aktif</div>
-                    </div>
+                    <div class="nav-title">LINKS</div>
+                    <div class="sidebar-item" data-sheet="DAFTAR LINK AKTIF"><div class="sidebar-icon"><i class="fas fa-link"></i></div><div class="sidebar-text">Link Aktif</div></div>
                 </div>
             </nav>
         </aside>
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content" id="mainContent">
-            <!-- TOP HEADER -->
-            <header class="top-header">
-                <div class="header-left">
-                    <button class="toggle-sidebar" id="toggleSidebar">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="current-sheet">
-                        <i class="fas fa-database" style="color: var(--primary-color);"></i>
-                        <span id="currentSheetTitle">MEMO PEMBAGIAN BONUS</span>
-                        <span class="live-badge">
-                            <i class="fas fa-circle" style="font-size: 6px;"></i>
-                            LIVE
-                        </span>
-                    </div>
+        <!-- 2. CENTER CONTENT (Search & Detail) -->
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="current-sheet">
+                    <i class="fas fa-database"></i>
+                    <span id="currentSheetTitle">MEMO PEMBAGIAN BONUS</span>
                 </div>
+                <button class="toggle-btn" id="toggleSidebar"><i class="fas fa-bars"></i></button>
+            </div>
 
-                <!-- SEARCH BAR -->
-                <div class="search-container">
-                    <input type="text" id="globalSearchInput" class="search-input" placeholder="CARI DATA / CATEGORY...">
-                    <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
+            <!-- Middle: Search -->
+            <div class="search-area">
+                <div class="search-box-wrapper">
+                    <input type="text" id="centerSearchInput" class="search-input-main" placeholder="CARI DATA DI LIST KANAN..." autocomplete="off">
+                    <i class="fas fa-search search-icon-main"></i>
                 </div>
-            </header>
+            </div>
 
-            <!-- DASHBOARD CONTENT -->
-            <div class="dashboard-content">
-                <!-- SHEET INFO CARD -->
-                <div class="sheet-info-card">
-                    <div class="sheet-info-left">
-                        <h1 class="sheet-info-title" id="sheetInfoTitle">MEMO PEMBAGIAN BONUS</h1>
-                        <p class="sheet-info-description" id="sheetInfoDescription">
-                            Accessing secure data stream... <span id="lastUpdateTime">-</span>
-                        </p>
-                    </div>
-                    <div class="sheet-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="totalDataCount" style="color: var(--primary-color);">0</div>
-                            <div class="stat-label">Data Points</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="cacheCount" style="color: var(--secondary-color);">0</div>
-                            <div class="stat-label">Cached Modules</div>
-                        </div>
-                    </div>
+            <!-- Center: Data Detail Viewer -->
+            <div class="detail-viewer" id="detailViewer">
+                <!-- Data Card Will Appear Here -->
+                <div class="empty-center">
+                    <div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div>
+                    <h3>SELECT DATA FROM LIST</h3>
+                    <p>Pilih data dari panel kanan untuk melihat detail.</p>
                 </div>
-
-                <!-- DATA CONTAINER -->
-                <div class="data-container">
-                    <div class="data-header">
-                        <h2 class="data-title">
-                            <i class="fas fa-terminal"></i>
-                            <span id="dataTableTitle">DATA STREAM</span>
-                        </h2>
-                    </div>
-
-                    <!-- DATA GRID -->
-                    <div class="data-grid" id="dataGrid">
-                        <!-- Data will be loaded here -->
-                    </div>
-                </div>
-
-                <!-- FOOTER -->
-                <footer class="main-footer">
-                    <div class="footer-links">
-                        <a href="https://docs.google.com/spreadsheets/d/1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U/edit?usp=sharing" 
-                           target="_blank" class="footer-link">
-                            <i class="fas fa-external-link-alt"></i> Source Database
-                        </a>
-                        <a href="#" id="clearCacheBtn" class="footer-link">
-                            <i class="fas fa-memory"></i> Flush Cache
-                        </a>
-                    </div>
-                    <p style="margin-top: 20px; font-family: 'Orbitron'; color: rgba(255,255,255,0.3);">
-                        LINETOGEL SYSTEM v2.6 // JARVIS PROTOCOL
-                    </p>
-                </footer>
             </div>
         </main>
+
+        <!-- 3. RIGHT PANEL (Data Index) -->
+        <aside class="right-panel">
+            <div class="right-header">
+                <div class="right-title">DATA INDEX</div>
+            </div>
+            <div class="data-list-container" id="rightDataList">
+                <!-- List Items (Titles) will appear here -->
+            </div>
+        </aside>
     </div>
 
-    <!-- Minimal Refresh Indicator -->
-    <div class="refresh-indicator" id="refreshIndicator">
-        <i class="fas fa-sync fa-spin"></i>
-        <span>SYNCING DATA...</span>
-    </div>
-    
-    <!-- Toast Notification Container -->
+    <!-- Toast Notification -->
     <div class="toast" id="copyToast">
-        <i class="fas fa-check-circle"></i>
-        <span>DATA COPIED TO CLIPBOARD</span>
+        <i class="fas fa-check-circle"></i> DATA COPIED
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
         // ===============================
-        // KONFIGURASI & STATE
+        // CONFIG & STATE
         // ===============================
         const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
         
         const SHEET_CONFIG = {
-            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS", description: "Distribusi bonus member." },
-            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK", description: "Status bank aktif." },
-            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN", description: "Log error permainan." },
-            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT", description: "Laporan delay result." },
-            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT", description: "Result terproses." },
-            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM", description: "Log kesalahan sistem." },
-            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS", description: "Report global." },
-            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN", description: "Report provider IDN." },
-            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL", description: "Report internal." },
-            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET", description: "Report transaksi." },
-            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF", description: "URL aktif system." }
+            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS" },
+            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK" },
+            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN" },
+            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT" },
+            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT" },
+            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM" },
+            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS" },
+            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN" },
+            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL" },
+            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET" },
+            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF" }
         };
-        
+
         const PROXY_SERVERS = [
             'https://api.allorigins.win/raw?url=',
             'https://corsproxy.io/?',
             'https://api.codetabs.com/v1/proxy?quest='
         ];
-        
+
         let currentSheet = "MEMO PEMBAGIAN BONUS";
-        let currentData = []; // Disini disimpan data asli
-        let isSidebarCollapsed = false;
+        let currentData = []; // Full data for current sheet
+        let displayData = [];  // Filtered data based on search
+        
         let sheetCache = {};
         let cacheTimestamp = {};
-        let autoRefreshInterval = null;
-        const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 Menit
         
         // DOM Elements
         const sidebar = document.getElementById('sidebar');
         const sidebarItems = document.querySelectorAll('.sidebar-item');
-        const toggleSidebarBtn = document.getElementById('toggleSidebar');
-        const mainContent = document.getElementById('mainContent');
-        
+        const toggleBtn = document.getElementById('toggleSidebar');
         const currentSheetTitle = document.getElementById('currentSheetTitle');
-        const sheetInfoTitle = document.getElementById('sheetInfoTitle');
-        const sheetInfoDescription = document.getElementById('sheetInfoDescription');
-        const lastUpdateTime = document.getElementById('lastUpdateTime');
-        const totalDataCount = document.getElementById('totalDataCount');
-        const cacheCount = document.getElementById('cacheCount');
-        const dataGrid = document.getElementById('dataGrid');
-        const refreshIndicator = document.getElementById('refreshIndicator');
-        const clearCacheBtn = document.getElementById('clearCacheBtn');
-        const copyToast = document.getElementById('copyToast');
         
-        // Search Elements
-        const searchInput = document.getElementById('globalSearchInput');
-        const searchBtn = document.getElementById('globalSearchBtn');
+        const centerSearchInput = document.getElementById('centerSearchInput');
+        const detailViewer = document.getElementById('detailViewer');
+        const rightDataList = document.getElementById('rightDataList');
+        const copyToast = document.getElementById('copyToast');
 
         // ===============================
-        // UTILITIES
+        // FUNCTIONS
         // ===============================
         function formatDateTime(date) {
-            if (!date) return '--:--:--';
-            return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        }
-        
-        function updateSheetInfo() {
-            sheetInfoTitle.textContent = currentSheet;
-            currentSheetTitle.textContent = currentSheet;
-            const desc = SHEET_CONFIG[currentSheet]?.description || "DATA STREAM ACCESS";
-            sheetInfoDescription.innerHTML = `${desc} <span style="color:var(--primary-color)">//</span> UPD: <span id="lastUpdateTime">${cacheTimestamp[currentSheet] ? formatDateTime(new Date(cacheTimestamp[currentSheet])) : 'INITIALIZING...'}</span>`;
-            totalDataCount.textContent = currentData.length.toLocaleString();
-            cacheCount.textContent = Object.keys(sheetCache).length;
+            if (!date) return '';
+            return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
         }
 
-        // Show Copy Toast
-        function showToast(message = "DATA COPIED TO CLIPBOARD") {
-            copyToast.querySelector('span').textContent = message;
+        function showToast(msg = "DATA COPIED") {
+            copyToast.textContent = msg;
             copyToast.classList.add('show');
-            setTimeout(() => {
-                copyToast.classList.remove('show');
-            }, 2000);
+            setTimeout(() => copyToast.classList.remove('show'), 2000);
         }
-        
-        // ===============================
-        // DATA LOGIC
-        // ===============================
-        function saveToCache(sheetName, data) {
-            sheetCache[sheetName] = data;
-            cacheTimestamp[sheetName] = new Date().toISOString();
-            try {
-                localStorage.setItem(`linetogel_cache_${sheetName}`, JSON.stringify(data));
-                localStorage.setItem(`linetogel_ts_${sheetName}`, cacheTimestamp[sheetName]);
-            } catch (e) { console.warn('Storage limit reached', e); }
-            updateSheetInfo();
-        }
-        
-        function loadFromCache(sheetName) {
-            if (sheetCache[sheetName]) return sheetCache[sheetName];
-            try {
-                const d = localStorage.getItem(`linetogel_cache_${sheetName}`);
-                if (d) {
-                    sheetCache[sheetName] = JSON.parse(d);
-                    cacheTimestamp[sheetName] = localStorage.getItem(`linetogel_ts_${sheetName}`);
-                    return sheetCache[sheetName];
-                }
-            } catch (e) {}
-            return null;
-        }
-        
+
+        // --- DATA FETCHING & PARSING ---
         async function fetchSheetData(sheetName) {
             const urlFormats = [
                 `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`,
@@ -596,8 +435,7 @@
             for (let i = 0; i < csvText.length; i++) {
                 const char = csvText[i], next = csvText[i+1];
                 if (char === '"') {
-                    if (inQuote && next === '"') { curVal += '"'; i++; } 
-                    else inQuote = !inQuote;
+                    if (inQuote && next === '"') { curVal += '"'; i++; } else inQuote = !inQuote;
                 } else if (char === ',' && !inQuote) {
                     curRow.push(curVal); curVal = '';
                 } else if ((char === '\n' || char === '\r') && !inQuote) {
@@ -616,7 +454,6 @@
                     data.push({
                         id: idCounter++,
                         title: r[0].trim(),
-                        // Kolom B dan seterusnya digabung sebagai content
                         content: r.slice(1).join(' ').trim() || 'NO CONTENT DATA',
                         rowNumber: i + 1
                     });
@@ -624,217 +461,164 @@
             }
             return data;
         }
-        
-        // ===============================
-        // COPY LOGIC (FIXED)
-        // ===============================
-        function copyContentById(id) {
-            // Cari data di global array currentData berdasarkan ID
-            const item = currentData.find(d => d.id === id);
-            
-            if (item && item.content) {
-                // Gunakan Clipboard API modern
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(item.content).then(() => {
-                        showToast();
-                    }).catch(err => {
-                        console.error('Clipboard API Failed, trying fallback...', err);
-                        fallbackCopy(item.content);
-                    });
-                } else {
-                    // Fallback untuk browser lama
-                    fallbackCopy(item.content);
-                }
-            } else {
-                showToast("NO DATA TO COPY");
+
+        // --- RENDERING ---
+
+        // 1. Render List on Right Panel
+        function renderRightList(data) {
+            rightDataList.innerHTML = '';
+            if (data.length === 0) {
+                rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:#555; font-size:0.8rem;">NO DATA</div>';
+                return;
             }
+
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerHTML = `
+                    <span>${item.title}</span>
+                    <i class="fas fa-chevron-right list-arrow"></i>
+                `;
+                div.onclick = () => {
+                    // Highlight active in list
+                    document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                    // Show detail in center
+                    renderCenterDetail(item);
+                };
+                rightDataList.appendChild(div);
+            });
         }
 
-        function fallbackCopy(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.select();
+        // 2. Render Detail in Center Panel
+        function renderCenterDetail(item) {
+            // Format content for display
+            const contentHtml = item.content
+                .replace(/\n/g, '<br>')
+                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+
+            detailViewer.innerHTML = `
+                <div class="data-card-large">
+                    <div class="card-header-large">
+                        <span class="card-title-large">${item.title}</span>
+                        <span class="card-id-large">#${item.id}</span>
+                    </div>
+                    <div class="card-content-large">
+                        ${contentHtml}
+                    </div>
+                    <button class="copy-btn-large" onclick="copyContentById(${item.id})">
+                        <i class="fas fa-copy"></i> COPY DATA (KOLOM B)
+                    </button>
+                </div>
+            `;
             
-            try {
-                document.execCommand('copy');
-                showToast();
-            } catch (err) {
-                console.error('Fallback copy failed', err);
-                showToast("COPY FAILED");
-            }
-            
-            document.body.removeChild(textArea);
+            // Scroll to top of viewer
+            detailViewer.scrollTop = 0;
         }
-        
-        function displayData(data) {
-            if (!data || data.length === 0) {
-                dataGrid.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon"><i class="fas fa-satellite-dish"></i></div>
-                        <h3>NO DATA FOUND</h3>
-                        <p>Database empty or access restricted.</p>
+
+        // --- LOAD SHEET LOGIC ---
+        async function loadSheet(sheetName) {
+            // Update UI
+            currentSheet = sheetName;
+            currentSheetTitle.textContent = sheetName;
+            sidebarItems.forEach(i => i.classList.remove('active'));
+            document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`).classList.add('active');
+            
+            // Reset Center
+            detailViewer.innerHTML = `
+                <div class="empty-center">
+                    <div class="spinner"></div>
+                    <p>LOADING DATABASE...</p>
+                </div>
+            `;
+            rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--primary-color)">SCANNING...</div>';
+            centerSearchInput.value = '';
+
+            // Check Cache
+            if (sheetCache[sheetName]) {
+                currentData = sheetCache[sheetName];
+                displayData = [...currentData];
+                renderRightList(displayData);
+                detailViewer.innerHTML = `
+                    <div class="empty-center">
+                        <div class="empty-icon-center"><i class="fas fa-hand-pointer"></i></div>
+                        <h3>DATA LOADED</h3>
+                        <p>Pilih data dari panel kanan.</p>
+                        <small style="color:var(--text-muted)">${currentData.length} Records Found</small>
                     </div>`;
                 return;
             }
-            
-            let html = '';
-            data.forEach((item) => {
-                // Format content untuk tampilan HTML (link, baris baru)
-                let contentDisplay = item.content
-                    .replace(/\n/g, '<br>')
-                    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                
-                // Tombol Copy memanggil fungsi dengan ID, bukan teks langsung
-                // Ini mencegah error jika teks mengandung kutip
-                html += `
-                    <div class="data-card">
-                        <div class="card-header">
-                            <span class="card-title" title="${item.title}">${item.title}</span>
-                            <!-- COPY BUTTON FIXED -->
-                            <button class="copy-btn" onclick="copyContentById(${item.id})" title="Salin Kolom B">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
-                        </div>
-                        <div class="card-content">${contentDisplay}</div>
-                    </div>`;
-            });
-            dataGrid.innerHTML = html;
-            currentData = data;
-            updateSheetInfo();
-        }
-        
-        async function loadSheetData() {
-            const cached = loadFromCache(currentSheet);
-            if (cached) {
-                displayData(cached);
-                setTimeout(() => refreshSheetData(currentSheet, true), 500);
-            } else {
-                dataGrid.innerHTML = `<div class="empty-state"><div class="spinner"></div><p>INITIALIZING DATA LINK...</p></div>`;
-                try {
-                    const csv = await fetchSheetData(currentSheet);
-                    const parsed = parseCSVData(csv);
-                    saveToCache(currentSheet, parsed);
-                    displayData(parsed);
-                } catch (e) {
-                    dataGrid.innerHTML = `<div class="empty-state"><div class="empty-icon" style="color:var(--accent-color)"><i class="fas fa-exclamation-triangle"></i></div><h3>CONNECTION ERROR</h3><p>${e.message}</p></div>`;
-                }
-            }
-        }
-        
-        async function refreshSheetData(sheetName, silent) {
+
+            // Fetch New
             try {
-                if(!silent) refreshIndicator.classList.add('show');
                 const csv = await fetchSheetData(sheetName);
                 const parsed = parseCSVData(csv);
-                saveToCache(sheetName, parsed);
-                if (sheetName === currentSheet) displayData(parsed);
-                if(!silent) setTimeout(() => refreshIndicator.classList.remove('show'), 1000);
+                currentData = parsed;
+                displayData = [...currentData];
+                sheetCache[sheetName] = currentData; // Cache it
+                
+                renderRightList(displayData);
+                detailViewer.innerHTML = `
+                    <div class="empty-center">
+                        <div class="empty-icon-center"><i class="fas fa-check"></i></div>
+                        <h3>READY</h3>
+                        <p>${currentData.length} Records Available.</p>
+                    </div>`;
             } catch (e) {
-                console.error(e);
-                if(!silent) refreshIndicator.classList.remove('show');
+                detailViewer.innerHTML = `<div class="empty-center" style="color:var(--accent-color)">ERROR: ${e.message}</div>`;
+                rightDataList.innerHTML = '';
             }
         }
-        
-        // ===============================
-        // SEARCH LOGIC
-        // ===============================
-        async function performGlobalSearch() {
-            const query = searchInput.value.trim().toLowerCase();
-            if (!query) return;
 
-            dataGrid.innerHTML = `<div class="empty-state"><div class="spinner"></div><p>SCANNING DATABASE...</p></div>`;
-            searchInput.disabled = true;
-
-            let bestMatchSheet = null;
-            let maxMatches = 0;
-            const sheetNames = Object.keys(SHEET_CONFIG);
-
-            for (const sheet of sheetNames) {
-                if (sheet.toLowerCase().includes(query)) {
-                    bestMatchSheet = sheet;
-                    maxMatches = 999;
-                    break;
+        // --- COPY LOGIC ---
+        function copyContentById(id) {
+            const item = currentData.find(d => d.id === id);
+            if (item && item.content) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(item.content).then(() => showToast());
+                } else {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = item.content;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast();
                 }
-
-                try {
-                    let data = loadFromCache(sheet);
-                    if (!data) {
-                         try {
-                            const csv = await fetchSheetData(sheet);
-                            data = parseCSVData(csv);
-                            saveToCache(sheet, data);
-                         } catch(e) { continue; }
-                    }
-
-                    const matches = data.filter(item => 
-                        item.title.toLowerCase().includes(query) || 
-                        item.content.toLowerCase().includes(query)
-                    ).length;
-
-                    if (matches > maxMatches) {
-                        maxMatches = matches;
-                        bestMatchSheet = sheet;
-                    }
-                } catch (e) { console.error("Search error in " + sheet, e); }
-            }
-
-            searchInput.disabled = false;
-
-            if (bestMatchSheet) {
-                if (bestMatchSheet !== currentSheet) {
-                    selectSheet(bestMatchSheet);
-                }
-                showToast(`FOUND IN: ${bestMatchSheet}`);
-            } else {
-                dataGrid.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fas fa-search-minus"></i></div><h3>NO MATCHES FOUND</h3><p>System could not locate data containing "${query}"</p></div>`;
-                showToast("NO DATA FOUND");
             }
         }
 
-        // ===============================
-        // INTERACTION
-        // ===============================
-        function toggleSidebar() {
-            isSidebarCollapsed = !isSidebarCollapsed;
-            if (isSidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
-                toggleSidebarBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-            } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
-                toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        }
+        // --- EVENTS ---
         
-        function selectSheet(sheetName) {
-            if (currentSheet === sheetName) return;
-            currentSheet = sheetName;
-            sidebarItems.forEach(i => i.classList.remove('active'));
-            document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`).classList.add('active');
-            loadSheetData();
-        }
-        
-        // ===============================
-        // EVENTS
-        // ===============================
-        toggleSidebarBtn.addEventListener('click', toggleSidebar);
-        sidebarItems.forEach(item => { item.addEventListener('click', () => selectSheet(item.getAttribute('data-sheet'))); });
-        clearCacheBtn.addEventListener('click', (e) => { e.preventDefault(); if(confirm('FLUSH SYSTEM CACHE?')) { localStorage.clear(); sheetCache = {}; cacheTimestamp = {}; location.reload(); } });
-
-        searchBtn.addEventListener('click', performGlobalSearch);
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performGlobalSearch();
+        // 1. Sidebar Click
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => loadSheet(item.getAttribute('data-sheet')));
         });
 
+        // 2. Search Input (Filters Right List)
+        centerSearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            displayData = currentData.filter(item => 
+                item.title.toLowerCase().includes(query)
+            );
+            renderRightList(displayData);
+        });
+
+        // 3. Mobile Toggle
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // 4. Init
         document.addEventListener('DOMContentLoaded', () => {
-            Object.keys(SHEET_CONFIG).forEach(loadFromCache);
-            loadSheetData();
-            autoRefreshInterval = setInterval(() => { refreshSheetData(currentSheet, true); }, AUTO_REFRESH_INTERVAL);
+            loadSheet("MEMO PEMBAGIAN BONUS");
         });
+
+        // CSS Spinner Helper
+        const style = document.createElement('style');
+        style.innerHTML = `.spinner { width: 40px; height: 40px; border: 3px solid rgba(0,243,255,0.1); border-top: 3px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
+        document.head.appendChild(style);
+
     </script>
 </body>
 </html>
