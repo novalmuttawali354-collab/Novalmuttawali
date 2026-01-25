@@ -3,819 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINETOGEL - Live Dashboard</title>
+    <title>LINETOGEL - J.A.R.V.I.S SYSTEM</title>
     <style>
-        /* Variabel CSS */
+        /* =========================================
+           IRONMAN DIGITAL MODERN THEME
+           ========================================= */
+        
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --primary-color: #1a237e;
-            --primary-light: #534bae;
-            --secondary-color: #ff4081;
-            --accent-color: #00bcd4;
+            --primary-color: #00f3ff;
+            --primary-dim: rgba(0, 243, 255, 0.1);
+            --secondary-color: #0051ff;
+            --accent-color: #ff2a2a;
+            --bg-dark: #050505;
+            --bg-panel: #0a0a0f;
+            --bg-card: rgba(16, 24, 40, 0.7);
+            --text-main: #ffffff;
+            --text-muted: #8b9bb4;
+            --border-glow: 0 0 10px rgba(0, 243, 255, 0.3);
+            --text-glow: 0 0 5px rgba(0, 243, 255, 0.5);
+            --card-border: 1px solid rgba(0, 243, 255, 0.2);
             --sidebar-width: 280px;
-            --sidebar-collapsed: 70px;
-            --header-height: 80px;
-            --transition-speed: 0.3s;
-            --shadow-light: 0 2px 10px rgba(0,0,0,0.1);
-            --shadow-medium: 0 5px 20px rgba(0,0,0,0.15);
-            --shadow-heavy: 0 10px 40px rgba(0,0,0,0.2);
+            --sidebar-collapsed: 80px;
+            --header-height: 70px;
         }
 
-        /* Reset dan Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--bg-dark); }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--text-main);
             line-height: 1.6;
-            min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        /* Layout Container */
-        .app-container {
-            display: flex;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* Sidebar Styles */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+
+        .app-container { display: flex; min-height: 100vh; position: relative; }
+
+        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, #1a237e 0%, #283593 100%);
+            background: linear-gradient(180deg, rgba(5,5,10,0.95) 0%, rgba(10,10,20,0.98) 100%);
             color: white;
             height: 100vh;
             position: fixed;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             z-index: 1000;
-            transition: all var(--transition-speed) ease;
-            box-shadow: var(--shadow-heavy);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid rgba(0, 243, 255, 0.1);
+            backdrop-filter: blur(10px);
             overflow-y: auto;
         }
 
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed);
-        }
+        .sidebar.collapsed { width: var(--sidebar-collapsed); }
 
         .sidebar-header {
-            padding: 25px 20px;
+            padding: 30px 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+            background: radial-gradient(circle at center, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
+        .logo { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
 
         .logo-icon {
-            font-size: 2.5rem;
-            color: #ffeb3b;
-            animation: pulse 2s infinite;
+            font-size: 2rem;
+            color: var(--primary-color);
+            filter: drop-shadow(0 0 8px var(--primary-color));
+            animation: pulse-reactor 3s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes pulse-reactor {
+            0% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 5px var(--primary-color)); }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--primary-color)); }
+            100% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 5px var(--primary-color)); }
         }
 
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .sidebar-subtitle { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--primary-color); letter-spacing: 3px; text-transform: uppercase; opacity: 0.9; }
 
-        .logo-text.collapsed {
-            display: none;
-        }
-
-        .sidebar-subtitle {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .sidebar-subtitle.collapsed {
-            display: none;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar-nav {
-            padding: 20px 0;
-        }
-
-        .nav-section {
-            margin-bottom: 25px;
-        }
-
-        .nav-title {
-            padding: 0 20px 10px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 10px;
-        }
-
-        .nav-title.collapsed {
-            display: none;
-        }
+        .sidebar-nav { padding: 20px 0; }
+        .nav-section { margin-bottom: 25px; }
+        .nav-title { padding: 0 25px 10px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 15px; }
 
         .sidebar-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            border-left: 4px solid transparent;
-            margin: 2px 0;
+            display: flex; align-items: center; padding: 12px 25px; cursor: pointer; transition: all 0.3s; position: relative; margin: 2px 10px; border-radius: 4px; color: var(--text-muted);
         }
 
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-left-color: var(--accent-color);
-        }
+        .sidebar-item:hover { background: rgba(0, 243, 255, 0.05); color: var(--primary-color); border-left: 2px solid var(--primary-color); }
+        .sidebar-item.active { background: linear-gradient(90deg, rgba(0, 243, 255, 0.1) 0%, transparent 100%); color: #fff; border-left: 4px solid var(--primary-color); text-shadow: var(--text-glow); }
+        
+        .sidebar-icon { font-size: 1.1rem; min-width: 30px; text-align: center; margin-right: 15px; }
+        .sidebar-text { font-weight: 600; font-size: 1rem; letter-spacing: 0.5px; text-transform: uppercase; }
 
-        .sidebar-item.active {
-            background: rgba(255, 255, 255, 0.15);
-            border-left-color: var(--secondary-color);
-        }
+        /* Collapsed Sidebar Logic */
+        .collapsed .sidebar-text, .collapsed .nav-title, .collapsed .sidebar-subtitle, .collapsed .logo-text { display: none; }
+        .collapsed .sidebar-item { justify-content: center; padding: 15px 0; }
+        .collapsed .sidebar-icon { margin-right: 0; font-size: 1.4rem; }
 
-        .sidebar-item.collapsed {
-            justify-content: center;
-            padding: 15px 10px;
-        }
+        /* Main Content */
+        .main-content { flex: 1; margin-left: var(--sidebar-width); background: transparent; min-height: 100vh; transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .main-content.expanded { margin-left: var(--sidebar-collapsed); }
 
-        .sidebar-icon {
-            font-size: 1.2rem;
-            min-width: 24px;
-            text-align: center;
-            margin-right: 15px;
-            position: relative;
-        }
-
-        .sidebar-icon.collapsed {
-            margin-right: 0;
-        }
-
-        /* Live indicator for active sheet */
-        .live-indicator {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 8px;
-            height: 8px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: blink 2s infinite;
-            display: none;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .sidebar-item.active .live-indicator {
-            display: block;
-        }
-
-        .sidebar-text {
-            flex-grow: 1;
-            font-weight: 500;
-            font-size: 0.95rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sidebar-text.collapsed {
-            display: none;
-        }
-
-        /* Ikon khusus untuk setiap sheet */
-        .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS"] .sidebar-icon::before { content: '\f51e'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="MEMO INFORMASI BANK"] .sidebar-icon::before { content: '\f19c'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"] .sidebar-icon::before { content: '\f11b'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="MEMO KETERLAMBATAN RESULT"] .sidebar-icon::before { content: '\f12b'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="MEMO SELESAI RESULT"] .sidebar-icon::before { content: '\f13b'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="MEMO KENDALA SISTEM"] .sidebar-icon::before { content: '\f085'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS"] .sidebar-icon::before { content: '\f0ac'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="REPORT KENDALA KE IDN"] .sidebar-icon::before { content: '\f188'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="REPORT KENDALA LINETOGEL"] .sidebar-icon::before { content: '\f542'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"] .sidebar-icon::before { content: '\f09d'; font-family: 'Font Awesome 6 Free'; }
-        .sidebar-item[data-sheet="DAFTAR LINK AKTIF"] .sidebar-icon::before { content: '\f0c1'; font-family: 'Font Awesome 6 Free'; }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            transition: margin-left var(--transition-speed) ease;
-            min-height: 100vh;
-            background: #f5f7fa;
-        }
-
-        .main-content.expanded {
-            margin-left: var(--sidebar-collapsed);
-        }
-
-        /* Top Header */
+        /* Header & Search */
         .top-header {
-            background: white;
             height: var(--header-height);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
             padding: 0 30px;
-            box-shadow: var(--shadow-light);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            background: rgba(5, 5, 10, 0.8); backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 100;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
 
         .toggle-sidebar {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.2);
+            color: var(--primary-color); width: 40px; height: 40px; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;
         }
-
-        .toggle-sidebar:hover {
-            background: #f0f0f0;
-        }
+        .toggle-sidebar:hover { background: var(--primary-color); color: #000; box-shadow: var(--border-glow); }
 
         .current-sheet {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #fff;
+            display: flex; align-items: center; gap: 12px; text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
-        .current-sheet-icon {
-            font-size: 1.2rem;
-            color: var(--secondary-color);
+        /* SEARCH BAR STYLES */
+        .search-container {
+            position: relative;
+            width: 300px;
         }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: var(--primary-color);
+            font-family: 'Rajdhani', sans-serif;
+            padding: 10px 40px 10px 15px;
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-btn:hover { color: #fff; text-shadow: 0 0 5px var(--primary-color); }
 
         .live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #4caf50;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            animation: pulse 2s infinite;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(0, 255, 0, 0.1); color: #00ff41; border: 1px solid #00ff41;
+            padding: 2px 10px; border-radius: 2px; font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 1px; font-family: 'Orbitron', sans-serif;
+            animation: blink-text 2s infinite;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .header-action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
+        /* Dashboard Area */
+        .dashboard-content { padding: 30px; }
 
-        .header-action:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        /* Dashboard Content */
-        .dashboard-content {
-            padding: 30px;
-        }
-
-        /* Sheet Info Card */
         .sheet-info-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-light);
-            border-left: 6px solid var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            animation: slideDown 0.5s ease;
+            background: var(--bg-card); border: var(--card-border); border-radius: 8px;
+            padding: 25px; margin-bottom: 30px; position: relative; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 20px; overflow: hidden;
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .sheet-info-card::before { content: ''; position: absolute; top: 0; left: 0; width: 20px; height: 20px; border-top: 2px solid var(--primary-color); border-left: 2px solid var(--primary-color); }
+        .sheet-info-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; border-bottom: 2px solid var(--primary-color); border-right: 2px solid var(--primary-color); }
 
-        .sheet-info-left {
-            flex: 1;
-            min-width: 300px;
-        }
+        .sheet-info-title { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--primary-color); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .sheet-info-description { color: var(--text-muted); font-size: 1rem; font-weight: 500; }
+        .sheet-stats { display: flex; gap: 20px; }
+        .stat-item { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 20px; min-width: 140px; text-align: center; }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; font-weight: 700; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        .sheet-info-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        /* Data Grid & Cards */
+        .data-container { background: transparent; border: none; }
+        .data-header { margin-bottom: 20px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding-bottom: 10px; }
+        .data-title { font-family: 'Orbitron', sans-serif; color: var(--primary-color); font-size: 1.2rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
 
-        .sheet-info-description {
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; min-height: 300px; }
 
-        .sheet-stats {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            min-width: 160px;
-            transition: all 0.3s;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-light);
-        }
-
-        .stat-icon {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .stat-content {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Data Container */
-        .data-container {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--shadow-medium);
-            margin-bottom: 30px;
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .data-header {
-            padding: 20px 25px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            border-bottom: 2px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .data-title {
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .data-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .data-action-btn {
-            padding: 10px 20px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .data-action-btn:hover {
-            background: #f0f0f0;
-            transform: translateY(-2px);
-        }
-
-        .data-action-btn.primary {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .data-action-btn.primary:hover {
-            background: var(--primary-light);
-        }
-
-        /* Data Grid */
-        .data-grid {
-            padding: 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            min-height: 300px;
-        }
-
-        /* Data Card */
         .data-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-light);
-            transition: all 0.3s ease;
-            border: 1px solid #eee;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
+            background: rgba(12, 18, 30, 0.6); border: 1px solid rgba(0, 243, 255, 0.1); border-radius: 6px;
+            overflow: hidden; transition: all 0.3s; backdrop-filter: blur(5px); position: relative;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .data-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--primary-light);
-        }
+        .data-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 20px rgba(0, 243, 255, 0.15); }
 
         .card-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-bottom: 1px solid #eee;
-            position: relative;
+            padding: 15px 20px; background: rgba(0, 243, 255, 0.05); border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        .card-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        .card-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; text-transform: uppercase; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-id { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 2px 6px; border-radius: 2px; }
+        
+        /* COPY BUTTON STYLE */
+        .copy-btn {
+            background: transparent; border: 1px solid rgba(0, 243, 255, 0.3); color: var(--primary-color);
+            padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 0.8rem;
+            display: flex; align-items: center; gap: 5px;
         }
+        .copy-btn:hover { background: var(--primary-color); color: #000; }
 
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
+        .card-content { padding: 20px; color: #d1d5db; font-size: 0.95rem; max-height: 200px; overflow-y: auto; border-left: 2px solid transparent; }
+        .data-card:hover .card-content { border-left: 2px solid var(--primary-color); }
+        .card-content a { color: var(--primary-color); text-decoration: none; border-bottom: 1px dotted var(--primary-color); }
+        .card-content a:hover { color: #fff; text-shadow: 0 0 5px var(--primary-color); }
 
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            color: #666;
-        }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 30px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; color: var(--text-muted); }
+        .empty-icon { font-size: 4rem; color: var(--primary-color); opacity: 0.5; margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--primary-color)); }
 
-        .card-id {
-            background: var(--primary-color);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
+        .main-footer { margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: var(--text-muted); }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .footer-link { color: var(--text-muted); text-decoration: none; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .footer-link:hover { color: var(--primary-color); text-shadow: var(--text-glow); }
 
-        .card-content {
-            padding: 20px;
-            line-height: 1.6;
-            color: #444;
-            max-height: 200px;
-            overflow-y: auto;
-        }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0, 243, 255, 0.1); border-top: 3px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Empty State */
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 80px 30px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
-            animation: fadeIn 1s ease;
+        .refresh-indicator {
+            position: fixed; bottom: 20px; right: 20px; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 8px 15px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem;
+            display: flex; align-items: center; gap: 10px; z-index: 1000; border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); opacity: 0; transition: opacity 0.5s; pointer-events: none;
         }
+        .refresh-indicator.show { opacity: 1; }
 
-        .empty-icon {
-            font-size: 4rem;
-            color: #bdbdbd;
-            margin-bottom: 20px;
-            opacity: 0.5;
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed; top: 100px; right: 20px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 15px 25px; border-radius: 4px; backdrop-filter: blur(10px);
+            z-index: 2000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
-
-        .empty-title {
-            font-size: 1.8rem;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .empty-description {
-            color: #888;
-            max-width: 600px;
-            margin: 0 auto 25px;
-        }
-
-        /* Cache Status */
-        .cache-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-left: 10px;
-        }
-
-        /* Footer */
-        .main-footer {
-            padding: 30px;
-            text-align: center;
-            color: #666;
-            border-top: 1px solid #eee;
-            background: white;
-            margin-top: 30px;
-            border-radius: 15px;
-            box-shadow: var(--shadow-light);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .footer-link:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .data-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-            
-            .sheet-info-card {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .sheet-stats {
-                width: 100%;
-            }
-        }
+        .toast.show { transform: translateX(0); }
 
         @media (max-width: 992px) {
-            .sidebar {
-                width: var(--sidebar-collapsed);
-            }
-            
-            .sidebar:not(.collapsed) {
-                width: var(--sidebar-width);
-            }
-            
-            .main-content {
-                margin-left: var(--sidebar-collapsed);
-            }
-            
-            .main-content:not(.expanded) {
-                margin-left: 0;
-            }
-            
-            .sidebar.collapsed {
-                transform: translateX(-100%);
-            }
-            
-            .main-content.expanded {
-                margin-left: 0;
-            }
-            
-            .toggle-sidebar {
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 1001;
-                background: white;
-                box-shadow: var(--shadow-medium);
-            }
+            .sidebar { transform: translateX(-100%); width: var(--sidebar-width); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .main-content.expanded { margin-left: 0; }
+            .toggle-sidebar { position: fixed; top: 15px; left: 15px; z-index: 1001; background: rgba(0,0,0,0.8); }
+            .search-container { width: 150px; }
         }
-
         @media (max-width: 768px) {
-            .top-header {
-                padding: 0 20px;
-                flex-direction: column;
-                height: auto;
-                padding: 15px;
-                gap: 15px;
-            }
-            
-            .header-left, .header-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .dashboard-content {
-                padding: 20px;
-            }
-            
-            .data-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .sheet-info-title {
-                font-size: 1.5rem;
-            }
-            
-            .stat-item {
-                min-width: calc(50% - 12.5px);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .stat-item {
-                min-width: 100%;
-            }
-            
-            .data-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .data-action-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .footer-links {
-                flex-direction: column;
-                gap: 15px;
-            }
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-light);
-        }
-
-        /* Loading Animation - Hanya untuk inisialisasi */
-        .initial-loader {
-            display: none;
-            text-align: center;
-            padding: 50px;
-        }
-
-        .initial-loader.active {
-            display: block;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Background refresh indicator */
-        .refresh-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-            box-shadow: var(--shadow-medium);
-            animation: slideInRight 0.5s ease;
-            display: none;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .refresh-indicator.show {
-            display: flex;
+            .data-grid { grid-template-columns: 1fr; }
+            .sheet-stats { width: 100%; justify-content: center; margin-top: 20px; }
+            .search-container { display: none; } /* Hide search on very small screens to save space */
         }
     </style>
-    <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
@@ -823,90 +295,66 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
+                    <div class="logo-icon"><i class="fas fa-microchip"></i></div>
                     <div class="logo-text" id="logoText">LINETOGEL</div>
                 </div>
-                <div class="sidebar-subtitle" id="sidebarSubtitle">Live Dashboard</div>
+                <div class="sidebar-subtitle" id="sidebarSubtitle">SYSTEM ONLINE</div>
             </div>
 
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleMemo">MEMO</div>
+                    <div class="nav-title" id="navTitleMemo">Memo</div>
                     <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Pembagian Bonus</div>
+                        <div class="sidebar-icon"><i class="fas fa-gift"></i></div>
+                        <div class="sidebar-text">Bonus</div>
                     </div>
                     <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Informasi Bank</div>
+                        <div class="sidebar-icon"><i class="fas fa-university"></i></div>
+                        <div class="sidebar-text">Info Bank</div>
                     </div>
                     <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala Permainan</div>
+                        <div class="sidebar-icon"><i class="fas fa-gamepad"></i></div>
+                        <div class="sidebar-text">Kendala Game</div>
                     </div>
                     <div class="sidebar-item" data-sheet="MEMO KETERLAMBATAN RESULT">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Keterlambatan Result</div>
+                        <div class="sidebar-icon"><i class="fas fa-clock"></i></div>
+                        <div class="sidebar-text">Telat Result</div>
                     </div>
                     <div class="sidebar-item" data-sheet="MEMO SELESAI RESULT">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
+                        <div class="sidebar-icon"><i class="fas fa-check-circle"></i></div>
                         <div class="sidebar-text">Selesai Result</div>
                     </div>
                     <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala Sistem</div>
+                        <div class="sidebar-icon"><i class="fas fa-server"></i></div>
+                        <div class="sidebar-text">Sistem Error</div>
                     </div>
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleReport">REPORT</div>
+                    <div class="nav-title" id="navTitleReport">Report</div>
                     <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala All Situs</div>
+                        <div class="sidebar-icon"><i class="fas fa-globe"></i></div>
+                        <div class="sidebar-text">All Situs</div>
                     </div>
                     <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala ke IDN</div>
+                        <div class="sidebar-icon"><i class="fas fa-network-wired"></i></div>
+                        <div class="sidebar-text">Ke IDN</div>
                     </div>
                     <div class="sidebar-item" data-sheet="REPORT KENDALA LINETOGEL">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala LINETOGEL</div>
+                        <div class="sidebar-icon"><i class="fas fa-bug"></i></div>
+                        <div class="sidebar-text">Linetogel</div>
                     </div>
                     <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Kendala Bank & E-Wallet</div>
+                        <div class="sidebar-icon"><i class="fas fa-wallet"></i></div>
+                        <div class="sidebar-text">Bank & Ewallet</div>
                     </div>
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-title" id="navTitleLinks">LINKS</div>
+                    <div class="nav-title" id="navTitleLinks">Links</div>
                     <div class="sidebar-item" data-sheet="DAFTAR LINK AKTIF">
-                        <div class="sidebar-icon">
-                            <div class="live-indicator"></div>
-                        </div>
-                        <div class="sidebar-text">Daftar Link Aktif</div>
+                        <div class="sidebar-icon"><i class="fas fa-link"></i></div>
+                        <div class="sidebar-text">Link Aktif</div>
                     </div>
                 </div>
             </nav>
@@ -921,23 +369,19 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="current-sheet">
-                        <i class="current-sheet-icon fas fa-gem"></i>
+                        <i class="fas fa-database" style="color: var(--primary-color);"></i>
                         <span id="currentSheetTitle">MEMO PEMBAGIAN BONUS</span>
                         <span class="live-badge">
-                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle" style="font-size: 6px;"></i>
                             LIVE
                         </span>
                     </div>
                 </div>
-                <div class="header-right">
-                    <button class="header-action" id="refreshAllBtn">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>Refresh Semua</span>
-                    </button>
-                    <button class="header-action" id="exportDataBtn" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);">
-                        <i class="fas fa-download"></i>
-                        <span>Export Data</span>
-                    </button>
+
+                <!-- SEARCH BAR (Fitur Baru) -->
+                <div class="search-container">
+                    <input type="text" id="globalSearchInput" class="search-input" placeholder="CARI DATA / CATEGORY...">
+                    <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
                 </div>
             </header>
 
@@ -946,49 +390,19 @@
                 <!-- SHEET INFO CARD -->
                 <div class="sheet-info-card">
                     <div class="sheet-info-left">
-                        <h1 class="sheet-info-title">
-                            <i class="fas fa-gem"></i>
-                            <span id="sheetInfoTitle">MEMO PEMBAGIAN BONUS</span>
-                            <span class="cache-status" id="cacheStatus">
-                                <i class="fas fa-database"></i>
-                                <span>Data Cached</span>
-                            </span>
-                        </h1>
+                        <h1 class="sheet-info-title" id="sheetInfoTitle">MEMO PEMBAGIAN BONUS</h1>
                         <p class="sheet-info-description" id="sheetInfoDescription">
-                            Data lengkap tentang pembagian bonus untuk member LINETOGEL. Update terakhir: <span id="lastUpdateTime">-</span>
-                            <br>
-                            <small style="color: #4caf50;">
-                                <i class="fas fa-bolt"></i> Live monitoring aktif - Data di-cache untuk akses instan
-                            </small>
+                            Accessing secure data stream... <span id="lastUpdateTime">-</span>
                         </p>
                     </div>
                     <div class="sheet-stats">
                         <div class="stat-item">
-                            <div class="stat-icon">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value" id="totalDataCount">0</div>
-                                <div class="stat-label">Total Data</div>
-                            </div>
+                            <div class="stat-value" id="totalDataCount" style="color: var(--primary-color);">0</div>
+                            <div class="stat-label">Data Points</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value" id="dataSize">0 KB</div>
-                                <div class="stat-label">Ukuran Data</div>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
-                                <i class="fas fa-memory"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value" id="cacheCount">0</div>
-                                <div class="stat-label">Sheet Cached</div>
-                            </div>
+                            <div class="stat-value" id="cacheCount" style="color: var(--secondary-color);">0</div>
+                            <div class="stat-label">Cached Modules</div>
                         </div>
                     </div>
                 </div>
@@ -997,845 +411,403 @@
                 <div class="data-container">
                     <div class="data-header">
                         <h2 class="data-title">
-                            <i class="fas fa-list-ul"></i>
-                            <span id="dataTableTitle">Daftar Lengkap Data</span>
+                            <i class="fas fa-terminal"></i>
+                            <span id="dataTableTitle">DATA STREAM</span>
                         </h2>
-                        <div class="data-actions">
-                            <button class="data-action-btn" id="printDataBtn">
-                                <i class="fas fa-print"></i>
-                                Cetak
-                            </button>
-                            <button class="data-action-btn primary" id="forceRefreshBtn">
-                                <i class="fas fa-sync"></i>
-                                Refresh Sheet Ini
-                            </button>
-                        </div>
                     </div>
 
                     <!-- DATA GRID -->
                     <div class="data-grid" id="dataGrid">
-                        <!-- Data akan dimuat di sini -->
-                        <div class="empty-state">
-                            <div class="empty-icon">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <h3 class="empty-title">Data Belum Dimuat</h3>
-                            <p class="empty-description">
-                                Klik tombol "Refresh Sheet Ini" di atas untuk mengambil data dari sheet <strong>MEMO PEMBAGIAN BONUS</strong>.
-                            </p>
-                        </div>
+                        <!-- Data will be loaded here -->
                     </div>
                 </div>
 
                 <!-- FOOTER -->
                 <footer class="main-footer">
-                    <p><strong>LINETOGEL - Live Dashboard dengan Cache System</strong></p>
-                    <p>Sistem ini menggunakan cache untuk akses instan ke semua sheet. Data diambil sekali dan disimpan di memori browser.</p>
                     <div class="footer-links">
                         <a href="https://docs.google.com/spreadsheets/d/1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U/edit?usp=sharing" 
                            target="_blank" class="footer-link">
-                            <i class="fas fa-external-link-alt"></i> Buka Spreadsheet Asli
+                            <i class="fas fa-external-link-alt"></i> Source Database
                         </a>
                         <a href="#" id="clearCacheBtn" class="footer-link">
-                            <i class="fas fa-trash"></i> Bersihkan Cache
-                        </a>
-                        <a href="#" id="aboutLink" class="footer-link">
-                            <i class="fas fa-info-circle"></i> Tentang Sistem
+                            <i class="fas fa-memory"></i> Flush Cache
                         </a>
                     </div>
-                    <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">
-                        &copy; 2023 LINETOGEL. Live Dashboard v2.0 dengan Cache System.
+                    <p style="margin-top: 20px; font-family: 'Orbitron'; color: rgba(255,255,255,0.3);">
+                        LINETOGEL SYSTEM v2.5 // JARVIS PROTOCOL
                     </p>
                 </footer>
             </div>
         </main>
     </div>
 
-    <!-- Background Refresh Indicator -->
+    <!-- Minimal Refresh Indicator -->
     <div class="refresh-indicator" id="refreshIndicator">
         <i class="fas fa-sync fa-spin"></i>
-        <span>Background refresh sedang berjalan...</span>
+        <span>SYNCING DATA...</span>
+    </div>
+    
+    <!-- Toast Notification Container -->
+    <div class="toast" id="copyToast">
+        <i class="fas fa-check-circle"></i>
+        <span>DATA COPIED TO CLIPBOARD</span>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
         // ===============================
-        // KONFIGURASI
+        // KONFIGURASI & STATE
         // ===============================
         const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
         
-        // Sheet configuration
         const SHEET_CONFIG = {
-            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS", description: "Data lengkap tentang pembagian bonus untuk member LINETOGEL." },
-            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK", description: "Informasi bank dan e-wallet yang digunakan untuk transaksi." },
-            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN", description: "Catatan kendala dalam permainan yang dialami oleh member." },
-            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT", description: "Riwayat keterlambatan result dan penanganannya." },
-            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT", description: "Data result yang sudah selesai diproses." },
-            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM", description: "Kendala sistem yang terjadi dan solusinya." },
-            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS", description: "Laporan kendala dari semua situs LINETOGEL." },
-            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN", description: "Laporan kendala yang dilaporkan ke IDN." },
-            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL", description: "Laporan kendala khusus untuk situs LINETOGEL." },
-            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET", description: "Laporan kendala terkait bank dan e-wallet." },
-            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF", description: "Daftar semua link aktif LINETOGEL." }
+            "MEMO PEMBAGIAN BONUS": { name: "MEMO PEMBAGIAN BONUS", description: "Distribusi bonus member." },
+            "MEMO INFORMASI BANK": { name: "MEMO INFORMASI BANK", description: "Status bank aktif." },
+            "MEMO KENDALA PERMAINAN": { name: "MEMO KENDALA PERMAINAN", description: "Log error permainan." },
+            "MEMO KETERLAMBATAN RESULT": { name: "MEMO KETERLAMBATAN RESULT", description: "Laporan delay result." },
+            "MEMO SELESAI RESULT": { name: "MEMO SELESAI RESULT", description: "Result terproses." },
+            "MEMO KENDALA SISTEM": { name: "MEMO KENDALA SISTEM", description: "Log kesalahan sistem." },
+            "REPORT KENDALA ALL SITUS": { name: "REPORT KENDALA ALL SITUS", description: "Report global." },
+            "REPORT KENDALA KE IDN": { name: "REPORT KENDALA KE IDN", description: "Report provider IDN." },
+            "REPORT KENDALA LINETOGEL": { name: "REPORT KENDALA LINETOGEL", description: "Report internal." },
+            "REPORT KENDALA BANK & EWALLET": { name: "REPORT KENDALA BANK & EWALLET", description: "Report transaksi." },
+            "DAFTAR LINK AKTIF": { name: "DAFTAR LINK AKTIF", description: "URL aktif system." }
         };
         
-        // Proxy servers untuk menghindari CORS
         const PROXY_SERVERS = [
             'https://api.allorigins.win/raw?url=',
             'https://corsproxy.io/?',
             'https://api.codetabs.com/v1/proxy?quest='
         ];
         
-        // ===============================
-        // STATE MANAGEMENT
-        // ===============================
         let currentSheet = "MEMO PEMBAGIAN BONUS";
         let currentData = [];
         let isSidebarCollapsed = false;
-        
-        // Cache system untuk semua sheet
         let sheetCache = {};
         let cacheTimestamp = {};
-        
-        // Auto-refresh settings
         let autoRefreshInterval = null;
-        const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 menit
+        const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 Menit
         
-        // ===============================
-        // ELEMEN DOM
-        // ===============================
-        // Sidebar elements
+        // DOM Elements
         const sidebar = document.getElementById('sidebar');
-        const logoText = document.getElementById('logoText');
-        const sidebarSubtitle = document.getElementById('sidebarSubtitle');
-        const navTitleMemo = document.getElementById('navTitleMemo');
-        const navTitleReport = document.getElementById('navTitleReport');
-        const navTitleLinks = document.getElementById('navTitleLinks');
         const sidebarItems = document.querySelectorAll('.sidebar-item');
         const toggleSidebarBtn = document.getElementById('toggleSidebar');
         const mainContent = document.getElementById('mainContent');
         
-        // Header elements
         const currentSheetTitle = document.getElementById('currentSheetTitle');
-        const refreshAllBtn = document.getElementById('refreshAllBtn');
-        const exportDataBtn = document.getElementById('exportDataBtn');
-        
-        // Dashboard elements
         const sheetInfoTitle = document.getElementById('sheetInfoTitle');
         const sheetInfoDescription = document.getElementById('sheetInfoDescription');
         const lastUpdateTime = document.getElementById('lastUpdateTime');
         const totalDataCount = document.getElementById('totalDataCount');
-        const dataSize = document.getElementById('dataSize');
         const cacheCount = document.getElementById('cacheCount');
-        const cacheStatus = document.getElementById('cacheStatus');
-        const dataTableTitle = document.getElementById('dataTableTitle');
-        const forceRefreshBtn = document.getElementById('forceRefreshBtn');
-        const printDataBtn = document.getElementById('printDataBtn');
         const dataGrid = document.getElementById('dataGrid');
         const refreshIndicator = document.getElementById('refreshIndicator');
-        
-        // Footer links
         const clearCacheBtn = document.getElementById('clearCacheBtn');
-        const aboutLink = document.getElementById('aboutLink');
+        const copyToast = document.getElementById('copyToast');
         
+        // Search Elements
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchBtn = document.getElementById('globalSearchBtn');
+
         // ===============================
-        // FUNGSI UTILITAS
+        // UTILITIES
         // ===============================
-        // Format tanggal dan waktu
         function formatDateTime(date) {
-            if (!date) return '-';
-            
-            const options = {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            };
-            
-            return date.toLocaleDateString('id-ID', options);
+            if (!date) return '--:--:--';
+            return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
         
-        // Format ukuran data
-        function formatDataSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        // Tampilkan notifikasi
-        function showNotification(message, type = 'info', duration = 3000) {
-            // Hapus notifikasi sebelumnya
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-            
-            // Buat elemen notifikasi
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <div style="position: fixed; top: 100px; right: 20px; background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'}; 
-                     color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-                     z-index: 10000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Tambahkan style animasi
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Hapus setelah duration
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, duration);
-        }
-        
-        // Update informasi sheet
         function updateSheetInfo() {
             sheetInfoTitle.textContent = currentSheet;
             currentSheetTitle.textContent = currentSheet;
-            dataTableTitle.textContent = `Data dari Sheet: ${currentSheet}`;
-            
-            const description = SHEET_CONFIG[currentSheet]?.description || "Data dari Google Sheets.";
-            sheetInfoDescription.innerHTML = `${description} Update terakhir: <span id="lastUpdateTime">${cacheTimestamp[currentSheet] ? formatDateTime(new Date(cacheTimestamp[currentSheet])) : '-'}</span>`;
-            
-            // Update cache status
-            if (sheetCache[currentSheet]) {
-                cacheStatus.innerHTML = '<i class="fas fa-database"></i><span>Data Cached</span>';
-                cacheStatus.style.background = '#e8f5e9';
-                cacheStatus.style.color = '#2e7d32';
-            } else {
-                cacheStatus.innerHTML = '<i class="fas fa-cloud-download-alt"></i><span>Belum Cached</span>';
-                cacheStatus.style.background = '#fff3e0';
-                cacheStatus.style.color = '#ef6c00';
-            }
+            const desc = SHEET_CONFIG[currentSheet]?.description || "DATA STREAM ACCESS";
+            sheetInfoDescription.innerHTML = `${desc} <span style="color:var(--primary-color)">//</span> UPD: <span id="lastUpdateTime">${cacheTimestamp[currentSheet] ? formatDateTime(new Date(cacheTimestamp[currentSheet])) : 'INITIALIZING...'}</span>`;
+            totalDataCount.textContent = currentData.length.toLocaleString();
+            cacheCount.textContent = Object.keys(sheetCache).length;
+        }
+
+        // Show Copy Toast
+        function showToast() {
+            copyToast.classList.add('show');
+            setTimeout(() => {
+                copyToast.classList.remove('show');
+            }, 2000);
         }
         
-        // Update statistik data
-        function updateDataStats(data) {
-            const count = data.length;
-            totalDataCount.textContent = count.toLocaleString();
-            
-            // Hitung ukuran data
-            const dataString = JSON.stringify(data);
-            const bytes = new TextEncoder().encode(dataString).length;
-            dataSize.textContent = formatDataSize(bytes);
-            
-            // Update cache count
-            const cachedSheets = Object.keys(sheetCache).length;
-            cacheCount.textContent = cachedSheets;
-        }
-        
-        // Simpan data ke cache
+        // ===============================
+        // DATA LOGIC
+        // ===============================
         function saveToCache(sheetName, data) {
             sheetCache[sheetName] = data;
             cacheTimestamp[sheetName] = new Date().toISOString();
-            
-            // Update cache count
-            const cachedSheets = Object.keys(sheetCache).length;
-            cacheCount.textContent = cachedSheets;
-            
-            // Simpan ke localStorage untuk persistensi
             try {
                 localStorage.setItem(`linetogel_cache_${sheetName}`, JSON.stringify(data));
-                localStorage.setItem(`linetogel_timestamp_${sheetName}`, cacheTimestamp[sheetName]);
-            } catch (e) {
-                console.warn('Gagal menyimpan cache ke localStorage:', e);
-            }
+                localStorage.setItem(`linetogel_ts_${sheetName}`, cacheTimestamp[sheetName]);
+            } catch (e) { console.warn('Storage limit reached', e); }
+            updateSheetInfo();
         }
         
-        // Load data dari cache
         function loadFromCache(sheetName) {
-            // Coba load dari memory cache dulu
-            if (sheetCache[sheetName]) {
-                return sheetCache[sheetName];
-            }
-            
-            // Coba load dari localStorage
+            if (sheetCache[sheetName]) return sheetCache[sheetName];
             try {
-                const cachedData = localStorage.getItem(`linetogel_cache_${sheetName}`);
-                const cachedTime = localStorage.getItem(`linetogel_timestamp_${sheetName}`);
-                
-                if (cachedData) {
-                    sheetCache[sheetName] = JSON.parse(cachedData);
-                    cacheTimestamp[sheetName] = cachedTime;
+                const d = localStorage.getItem(`linetogel_cache_${sheetName}`);
+                if (d) {
+                    sheetCache[sheetName] = JSON.parse(d);
+                    cacheTimestamp[sheetName] = localStorage.getItem(`linetogel_ts_${sheetName}`);
                     return sheetCache[sheetName];
                 }
-            } catch (e) {
-                console.warn('Gagal memuat cache dari localStorage:', e);
-            }
-            
+            } catch (e) {}
             return null;
         }
         
-        // ===============================
-        // FUNGSI SIDEBAR
-        // ===============================
-        // Toggle sidebar
-        function toggleSidebar() {
-            isSidebarCollapsed = !isSidebarCollapsed;
-            
-            if (isSidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
-                
-                // Update teks sidebar
-                logoText.classList.add('collapsed');
-                sidebarSubtitle.classList.add('collapsed');
-                navTitleMemo.classList.add('collapsed');
-                navTitleReport.classList.add('collapsed');
-                navTitleLinks.classList.add('collapsed');
-                
-                // Update item sidebar
-                document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('collapsed'));
-                document.querySelectorAll('.sidebar-icon').forEach(el => el.classList.add('collapsed'));
-                
-                // Update tombol toggle
-                toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
-                
-                // Update teks sidebar
-                logoText.classList.remove('collapsed');
-                sidebarSubtitle.classList.remove('collapsed');
-                navTitleMemo.classList.remove('collapsed');
-                navTitleReport.classList.remove('collapsed');
-                navTitleLinks.classList.remove('collapsed');
-                
-                // Update item sidebar
-                document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('collapsed'));
-                document.querySelectorAll('.sidebar-icon').forEach(el => el.classList.remove('collapsed'));
-                
-                // Update tombol toggle
-                toggleSidebarBtn.innerHTML = '<i class="fas fa-times"></i>';
-            }
-        }
-        
-        // Pilih sheet dari sidebar
-        function selectSheet(sheetName) {
-            // Update state
-            currentSheet = sheetName;
-            
-            // Update UI sidebar
-            sidebarItems.forEach(item => {
-                if (item.getAttribute('data-sheet') === sheetName) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            
-            // Update informasi sheet
-            updateSheetInfo();
-            
-            // Cek apakah data sudah ada di cache
-            const cachedData = loadFromCache(sheetName);
-            
-            if (cachedData) {
-                // Tampilkan data dari cache secara instan
-                displayData(cachedData);
-                showNotification(`Data dari cache sheet "${sheetName}" ditampilkan`, 'success', 2000);
-                
-                // Lakukan background refresh untuk update data
-                setTimeout(() => refreshSheetData(sheetName, true), 100);
-            } else {
-                // Jika belum ada cache, load data
-                loadSheetData();
-            }
-        }
-        
-        // ===============================
-        // FUNGSI PENGAMBILAN DATA
-        // ===============================
-        // Ambil data dari Google Sheets
         async function fetchSheetData(sheetName) {
-            // Coba beberapa format URL untuk sheet yang berbeda
             const urlFormats = [
                 `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`,
-                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}`,
-                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`
+                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}`
             ];
-            
-            let csvData = '';
-            let success = false;
             
             for (const url of urlFormats) {
                 for (const proxy of PROXY_SERVERS) {
                     try {
-                        const proxyUrl = proxy + encodeURIComponent(url);
-                        
-                        const response = await fetch(proxyUrl, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'text/csv',
-                                'Content-Type': 'text/csv; charset=utf-8'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            csvData = await response.text();
-                            if (csvData && csvData.length > 0 && !csvData.includes('error')) {
-                                success = true;
-                                console.log(`Berhasil mengambil data dari: ${url}`);
-                                break;
-                            }
+                        const res = await fetch(proxy + encodeURIComponent(url));
+                        if (res.ok) {
+                            const txt = await res.text();
+                            if (txt.length > 10 && !txt.includes('error')) return txt;
                         }
-                    } catch (error) {
-                        console.warn(`Gagal dengan proxy ${proxy}:`, error);
-                        continue;
-                    }
+                    } catch (e) { continue; }
                 }
-                
-                if (success) break;
             }
-            
-            if (!success) {
-                throw new Error(`Gagal mengambil data dari sheet: ${sheetName}`);
-            }
-            
-            return csvData;
+            throw new Error('Connection Failed');
         }
         
-        // Parse data CSV
         function parseCSVData(csvText) {
             const rows = [];
-            let currentRow = [];
-            let currentValue = '';
-            let insideQuotes = false;
-            
+            let curRow = [], curVal = '', inQuote = false;
             for (let i = 0; i < csvText.length; i++) {
-                const char = csvText[i];
-                const nextChar = csvText[i + 1];
-                
+                const char = csvText[i], next = csvText[i+1];
                 if (char === '"') {
-                    if (insideQuotes && nextChar === '"') {
-                        currentValue += '"';
-                        i++;
-                    } else {
-                        insideQuotes = !insideQuotes;
-                    }
-                } else if (char === ',' && !insideQuotes) {
-                    currentRow.push(currentValue);
-                    currentValue = '';
-                } else if (char === '\n' && !insideQuotes) {
-                    currentRow.push(currentValue);
-                    rows.push([...currentRow]);
-                    currentRow = [];
-                    currentValue = '';
-                } else if (char === '\r') {
-                    continue;
-                } else {
-                    currentValue += char;
-                }
+                    if (inQuote && next === '"') { curVal += '"'; i++; } 
+                    else inQuote = !inQuote;
+                } else if (char === ',' && !inQuote) {
+                    curRow.push(curVal); curVal = '';
+                } else if ((char === '\n' || char === '\r') && !inQuote) {
+                    if(curVal || curRow.length) curRow.push(curVal);
+                    if(curRow.length) rows.push(curRow);
+                    curRow = []; curVal = '';
+                } else curVal += char;
             }
+            if(curVal || curRow.length) { curRow.push(curVal); rows.push(curRow); }
             
-            // Tambahkan baris terakhir
-            if (currentValue !== '' || currentRow.length > 0) {
-                currentRow.push(currentValue);
-                rows.push([...currentRow]);
-            }
-            
-            // Konversi ke array objek
             const data = [];
-            let dataIndex = 1;
-            
+            let idCounter = 1;
             for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                
-                if (row.length === 0 || (row.length === 1 && row[0] === '')) {
-                    continue;
+                const r = rows[i];
+                if (r.length > 0 && r[0]) {
+                    data.push({
+                        id: idCounter++,
+                        title: r[0].trim(),
+                        content: r.slice(1).join(' ').trim() || 'NO CONTENT DATA',
+                        rowNumber: i + 1
+                    });
                 }
-                
-                // Kolom A = Judul, Kolom B = Isi
-                const title = row[0] ? row[0].trim() : '';
-                
-                if (!title) {
-                    continue;
-                }
-                
-                let content = '';
-                if (row.length > 1) {
-                    for (let j = 1; j < row.length; j++) {
-                        if (row[j] && row[j].trim()) {
-                            content += (j > 1 ? ' ' : '') + row[j];
-                        }
-                    }
-                    content = content.trim();
-                }
-                
-                data.push({
-                    id: dataIndex,
-                    title: title,
-                    content: content || '(Tidak ada konten)',
-                    rowNumber: i + 1
-                });
-                
-                dataIndex++;
             }
-            
             return data;
         }
         
-        // Tampilkan data di grid
         function displayData(data) {
             if (!data || data.length === 0) {
                 dataGrid.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <h3 class="empty-title">Tidak Ada Data</h3>
-                        <p class="empty-description">
-                            Tidak ada data yang ditemukan di sheet <strong>${currentSheet}</strong>.
-                            Pastikan sheet memiliki data di Kolom A (Judul) dan Kolom B (Isi).
-                        </p>
-                    </div>
-                `;
+                        <div class="empty-icon"><i class="fas fa-satellite-dish"></i></div>
+                        <h3>NO DATA FOUND</h3>
+                        <p>Database empty or access restricted.</p>
+                    </div>`;
                 return;
             }
             
             let html = '';
-            
-            data.forEach((item, index) => {
-                // Format konten
-                const formattedContent = formatContent(item.content);
-                
-                // Delay animasi
-                const animationDelay = `${0.1 + (index * 0.05)}s`;
+            data.forEach((item) => {
+                let content = item.content
+                    .replace(/\n/g, '<br>')
+                    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
                 
                 html += `
-                    <div class="data-card" style="animation-delay: ${animationDelay}">
+                    <div class="data-card">
                         <div class="card-header">
-                            <h3 class="card-title">${item.title}</h3>
-                            <div class="card-meta">
-                                <span>Baris ${item.rowNumber}</span>
-                                <span class="card-id">#${item.id}</span>
-                            </div>
+                            <span class="card-title" title="${item.title}">${item.title}</span>
+                            <!-- COPY BUTTON (Fitur Baru) -->
+                            <button class="copy-btn" onclick="copyToClipboard(this, '${escape(item.content)}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
                         </div>
-                        <div class="card-content">
-                            ${formattedContent}
-                        </div>
-                    </div>
-                `;
+                        <div class="card-content">${content}</div>
+                    </div>`;
             });
-            
             dataGrid.innerHTML = html;
             currentData = data;
-            updateDataStats(data);
-        }
-        
-        // Format konten untuk tampilan
-        function formatContent(content) {
-            if (!content || content === '(Tidak ada konten)') {
-                return '<em style="color: #999; font-style: italic;">(Tidak ada konten)</em>';
-            }
-            
-            let formatted = content
-                .replace(/\n/g, '<br>')
-                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: #1a237e; text-decoration: underline;">$1</a>')
-                .replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g, '<a href="mailto:$1" style="color: #1a237e;">$1</a>');
-            
-            // Deteksi list items
-            const lines = formatted.split('<br>');
-            formatted = lines.map(line => {
-                const trimmed = line.trim();
-                
-                if (trimmed.startsWith('•') || trimmed.startsWith('-')) {
-                    return `<div style="margin-left: 20px; margin-bottom: 5px; position: relative;">
-                                <span style="position: absolute; left: -15px;">•</span>
-                                ${trimmed.substring(1).trim()}
-                            </div>`;
-                }
-                
-                if (trimmed.match(/^\d+\./)) {
-                    return `<div style="margin-left: 20px; margin-bottom: 5px; position: relative;">
-                                <span style="position: absolute; left: -15px; font-weight: bold;">${trimmed.match(/^\d+/)[0]}.</span>
-                                ${trimmed.replace(/^\d+\.\s*/, '')}
-                            </div>`;
-                }
-                
-                return line;
-            }).join('<br>');
-            
-            return formatted;
-        }
-        
-        // Muat data sheet (dengan cache system)
-        async function loadSheetData() {
-            try {
-                // Tampilkan loading indicator hanya jika belum ada cache
-                if (!sheetCache[currentSheet]) {
-                    dataGrid.innerHTML = `
-                        <div class="empty-state">
-                            <div class="spinner"></div>
-                            <p>Sedang memuat data dari Google Sheets...</p>
-                        </div>
-                    `;
-                }
-                
-                // Ambil data dari sheet
-                const csvData = await fetchSheetData(currentSheet);
-                
-                // Parse data
-                const parsedData = parseCSVData(csvData);
-                
-                // Simpan ke cache
-                saveToCache(currentSheet, parsedData);
-                
-                // Tampilkan data
-                displayData(parsedData);
-                
-                // Update informasi waktu
-                lastUpdateTime.textContent = formatDateTime(new Date(cacheTimestamp[currentSheet]));
-                
-                // Tampilkan notifikasi sukses
-                if (!sheetCache[currentSheet]) {
-                    showNotification(`Data dari sheet "${currentSheet}" berhasil dimuat!`, 'success');
-                }
-                
-            } catch (error) {
-                console.error('Error loading sheet data:', error);
-                
-                // Coba tampilkan data dari cache jika ada
-                const cachedData = loadFromCache(currentSheet);
-                if (cachedData) {
-                    displayData(cachedData);
-                    showNotification(`Menggunakan data cache karena gagal refresh: ${error.message}`, 'warning');
-                } else {
-                    // Tampilkan error state
-                    dataGrid.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">
-                                <i class="fas fa-exclamation-circle"></i>
-                            </div>
-                            <h3 class="empty-title">Gagal Memuat Data</h3>
-                            <p class="empty-description">
-                                ${error.message}<br>
-                                Pastikan sheet "${currentSheet}" ada dan dapat diakses.
-                            </p>
-                        </div>
-                    `;
-                    
-                    showNotification(`Gagal memuat data: ${error.message}`, 'error');
-                }
-            }
-        }
-        
-        // Refresh data sheet (background)
-        async function refreshSheetData(sheetName, silent = false) {
-            try {
-                if (!silent) {
-                    refreshIndicator.classList.add('show');
-                }
-                
-                const csvData = await fetchSheetData(sheetName);
-                const parsedData = parseCSVData(csvData);
-                
-                // Simpan ke cache
-                saveToCache(sheetName, parsedData);
-                
-                // Update tampilan jika sheet ini sedang aktif
-                if (sheetName === currentSheet) {
-                    displayData(parsedData);
-                    lastUpdateTime.textContent = formatDateTime(new Date(cacheTimestamp[sheetName]));
-                }
-                
-                if (!silent) {
-                    refreshIndicator.classList.remove('show');
-                    showNotification(`Data sheet "${sheetName}" telah diperbarui`, 'success');
-                }
-                
-            } catch (error) {
-                console.error(`Error refreshing sheet ${sheetName}:`, error);
-                
-                if (!silent) {
-                    refreshIndicator.classList.remove('show');
-                    showNotification(`Gagal refresh sheet "${sheetName}"`, 'error');
-                }
-            }
-        }
-        
-        // Refresh semua sheet (background)
-        async function refreshAllSheets() {
-            refreshIndicator.classList.add('show');
-            
-            const sheets = Object.keys(SHEET_CONFIG);
-            let successCount = 0;
-            
-            for (const sheet of sheets) {
-                try {
-                    await refreshSheetData(sheet, true);
-                    successCount++;
-                } catch (error) {
-                    console.error(`Gagal refresh sheet ${sheet}:`, error);
-                }
-            }
-            
-            refreshIndicator.classList.remove('show');
-            
-            if (successCount === sheets.length) {
-                showNotification(`Semua ${sheets.length} sheet berhasil diperbarui`, 'success');
-            } else {
-                showNotification(`${successCount} dari ${sheets.length} sheet berhasil diperbarui`, 'warning');
-            }
-        }
-        
-        // ===============================
-        // FUNGSI EKSPOR DATA
-        // ===============================
-        function exportData() {
-            if (!currentData || currentData.length === 0) {
-                showNotification('Tidak ada data untuk diekspor', 'error');
-                return;
-            }
-            
-            const exportObj = {
-                sheet: currentSheet,
-                exportDate: new Date().toISOString(),
-                totalItems: currentData.length,
-                cachedSheets: Object.keys(sheetCache).length,
-                data: currentData
-            };
-            
-            const dataStr = JSON.stringify(exportObj, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const dataUrl = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = `linetogel-${currentSheet.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showNotification(`Data berhasil diekspor (${currentData.length} items)`, 'success');
-        }
-        
-        // Bersihkan cache
-        function clearCache() {
-            sheetCache = {};
-            cacheTimestamp = {};
-            
-            // Hapus dari localStorage
-            for (const sheet in SHEET_CONFIG) {
-                localStorage.removeItem(`linetogel_cache_${sheet}`);
-                localStorage.removeItem(`linetogel_timestamp_${sheet}`);
-            }
-            
-            // Update UI
-            cacheCount.textContent = '0';
-            cacheStatus.innerHTML = '<i class="fas fa-cloud-download-alt"></i><span>Belum Cached</span>';
-            cacheStatus.style.background = '#fff3e0';
-            cacheStatus.style.color = '#ef6c00';
-            
-            // Reload data sheet saat ini
-            loadSheetData();
-            
-            showNotification('Cache telah dibersihkan', 'success');
-        }
-        
-        // ===============================
-        // EVENT LISTENERS
-        // ===============================
-        // Toggle sidebar
-        toggleSidebarBtn.addEventListener('click', toggleSidebar);
-        
-        // Pilih sheet dari sidebar
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const sheetName = this.getAttribute('data-sheet');
-                selectSheet(sheetName);
-            });
-        });
-        
-        // Tombol refresh semua sheet
-        refreshAllBtn.addEventListener('click', refreshAllSheets);
-        
-        // Tombol force refresh sheet saat ini
-        forceRefreshBtn.addEventListener('click', () => refreshSheetData(currentSheet, false));
-        
-        // Tombol export data
-        exportDataBtn.addEventListener('click', exportData);
-        
-        // Tombol print
-        printDataBtn.addEventListener('click', () => window.print());
-        
-        // Footer links
-        clearCacheBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (confirm('Apakah Anda yakin ingin menghapus semua cache? Data akan dimuat ulang dari Google Sheets.')) {
-                clearCache();
-            }
-        });
-        
-        aboutLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showNotification('LINETOGEL Live Dashboard v2.0 - Cache System dengan Background Refresh', 'info');
-        });
-        
-        // ===============================
-        // INISIALISASI
-        // ===============================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('LINETOGEL Live Dashboard dimuat');
-            
-            // Update informasi sheet awal
             updateSheetInfo();
+        }
+
+        // Copy Function
+        function copyToClipboard(btn, text) {
+            const originalText = text;
+            // Decode escaped quotes handled by escape function if needed, 
+            // but since we pass raw string via escape/unescape logic in older JS or simple string:
+            const textToCopy = unescape(text); 
             
-            // Load cache dari localStorage
-            for (const sheet in SHEET_CONFIG) {
-                loadFromCache(sheet);
-            }
-            
-            // Load data sheet pertama (dari cache jika ada)
-            const cachedData = loadFromCache(currentSheet);
-            if (cachedData) {
-                displayData(cachedData);
-                showNotification('Data dari cache ditampilkan secara instan', 'success', 2000);
-                
-                // Lakukan background refresh untuk update data
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Simple escape for HTML attribute safety
+        function escape(str) {
+            return str.replace(/'/g, "\\'");
+        }
+        
+        async function loadSheetData() {
+            const cached = loadFromCache(currentSheet);
+            if (cached) {
+                displayData(cached);
                 setTimeout(() => refreshSheetData(currentSheet, true), 500);
             } else {
-                // Jika belum ada cache, load data
-                setTimeout(() => loadSheetData(), 500);
+                dataGrid.innerHTML = `<div class="empty-state"><div class="spinner"></div><p>INITIALIZING DATA LINK...</p></div>`;
+                try {
+                    const csv = await fetchSheetData(currentSheet);
+                    const parsed = parseCSVData(csv);
+                    saveToCache(currentSheet, parsed);
+                    displayData(parsed);
+                } catch (e) {
+                    dataGrid.innerHTML = `<div class="empty-state"><div class="empty-icon" style="color:var(--accent-color)"><i class="fas fa-exclamation-triangle"></i></div><h3>CONNECTION ERROR</h3><p>${e.message}</p></div>`;
+                }
             }
-            
-            // Setup auto-refresh interval
-            autoRefreshInterval = setInterval(() => {
-                console.log('Auto-refresh semua sheet...');
-                refreshAllSheets();
-            }, AUTO_REFRESH_INTERVAL);
-            
-            // Tampilkan informasi sistem
-            setTimeout(() => {
-                showNotification('Sistem cache aktif. Data akan dimuat secara instan dari cache.', 'info', 5000);
-            }, 2000);
+        }
+        
+        async function refreshSheetData(sheetName, silent) {
+            try {
+                if(!silent) refreshIndicator.classList.add('show');
+                const csv = await fetchSheetData(sheetName);
+                const parsed = parseCSVData(csv);
+                saveToCache(sheetName, parsed);
+                if (sheetName === currentSheet) displayData(parsed);
+                if(!silent) setTimeout(() => refreshIndicator.classList.remove('show'), 1000);
+            } catch (e) {
+                console.error(e);
+                if(!silent) refreshIndicator.classList.remove('show');
+            }
+        }
+        
+        // ===============================
+        // SEARCH LOGIC (Fitur Baru)
+        // ===============================
+        async function performGlobalSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return;
+
+            // UI Feedback
+            dataGrid.innerHTML = `<div class="empty-state"><div class="spinner"></div><p>SCANNING DATABASE...</p></div>`;
+            searchInput.disabled = true;
+
+            let bestMatchSheet = null;
+            let maxMatches = 0;
+
+            // Get all sheet names
+            const sheetNames = Object.keys(SHEET_CONFIG);
+
+            for (const sheet of sheetNames) {
+                // 1. Check Sheet Name Match
+                if (sheet.toLowerCase().includes(query)) {
+                    bestMatchSheet = sheet;
+                    maxMatches = 999; // Prioritas nama sheet
+                    break; // Langsung pilih jika nama ketemu
+                }
+
+                // 2. Check Data Content Match
+                try {
+                    // Fetch if not in cache to ensure search is fresh (or use cache for speed)
+                    // Using cache for speed as requested "Direct access", fetch if empty
+                    let data = loadFromCache(sheet);
+                    if (!data) {
+                         try {
+                            const csv = await fetchSheetData(sheet);
+                            data = parseCSVData(csv);
+                            saveToCache(sheet, data); // Cache hasil pencarian
+                         } catch(e) { continue; }
+                    }
+
+                    // Count matches in this sheet
+                    const matches = data.filter(item => 
+                        item.title.toLowerCase().includes(query) || 
+                        item.content.toLowerCase().includes(query)
+                    ).length;
+
+                    if (matches > maxMatches) {
+                        maxMatches = matches;
+                        bestMatchSheet = sheet;
+                    }
+                } catch (e) {
+                    console.error("Search error in " + sheet, e);
+                }
+            }
+
+            searchInput.disabled = false;
+
+            if (bestMatchSheet) {
+                // Switch to the found sheet
+                if (bestMatchSheet !== currentSheet) {
+                    selectSheet(bestMatchSheet);
+                }
+                // Optionally highlight or filter (currently just switches sheet)
+                showToast(`REDIRECTED TO: ${bestMatchSheet}`);
+            } else {
+                dataGrid.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fas fa-search-minus"></i></div><h3>NO MATCHES FOUND</h3><p>System could not locate data containing "${query}"</p></div>`;
+                showToast("NO DATA FOUND");
+            }
+        }
+
+        // ===============================
+        // INTERACTION
+        // ===============================
+        function toggleSidebar() {
+            isSidebarCollapsed = !isSidebarCollapsed;
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        }
+        
+        function selectSheet(sheetName) {
+            if (currentSheet === sheetName) return;
+            currentSheet = sheetName;
+            sidebarItems.forEach(i => i.classList.remove('active'));
+            document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`).classList.add('active');
+            loadSheetData();
+        }
+        
+        // ===============================
+        // EVENTS
+        // ===============================
+        toggleSidebarBtn.addEventListener('click', toggleSidebar);
+        sidebarItems.forEach(item => { item.addEventListener('click', () => selectSheet(item.getAttribute('data-sheet'))); });
+        clearCacheBtn.addEventListener('click', (e) => { e.preventDefault(); if(confirm('FLUSH SYSTEM CACHE?')) { localStorage.clear(); sheetCache = {}; cacheTimestamp = {}; location.reload(); } });
+
+        // Search Event Listeners
+        searchBtn.addEventListener('click', performGlobalSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performGlobalSearch();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Object.keys(SHEET_CONFIG).forEach(loadFromCache);
+            loadSheetData();
+            autoRefreshInterval = setInterval(() => { refreshSheetData(currentSheet, true); }, AUTO_REFRESH_INTERVAL);
         });
     </script>
 </body>
