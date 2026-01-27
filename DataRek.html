@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA REKENING TOGEL - ROBOTIC SYSTEM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff9d;
+            --primary-dark: #00cc7d;
+            --secondary: #00a8ff;
+            --accent: #9d4edd;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #e0e0e0;
+            --gray: #2a2a2a;
+            --panel: #1a1a1a;
+            --glow: 0 0 15px rgba(0, 255, 157, 0.7);
+            --glow-blue: 0 0 15px rgba(0, 168, 255, 0.7);
+            --glow-purple: 0 0 15px rgba(157, 78, 221, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 157, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 168, 255, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header dengan efek futuristik */
+        .header-section {
+            background-color: rgba(18, 18, 18, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: var(--glow);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+        
+        .header-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: var(--secondary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        
+        /* Robot Icon Animation */
+        .robot-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            height: 60px;
+        }
+        
+        .robot-icon {
+            font-size: 40px;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            animation: pulse 2s infinite alternate;
+            position: relative;
+        }
+        
+        .robot-icon::after {
+            content: "🤖";
+            position: absolute;
+            left: 0;
+            opacity: 0.7;
+            filter: blur(2px);
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        /* Panel Pencarian */
+        .search-panel {
+            background-color: var(--panel);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .search-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+        }
+        
+        .search-title i {
+            margin-right: 15px;
+            font-size: 28px;
+            color: var(--primary);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--gray);
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--light);
+            font-family: 'Roboto Mono', monospace;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+            outline: none;
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--darker);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.3);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+        
+        .search-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray);
+        }
+        
+        .data-info {
+            background-color: rgba(0, 168, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+        }
+        
+        .data-info span {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        /* Tabel Data */
+        .data-panel {
+            background-color: var(--panel);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+        
+        thead {
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.2), rgba(0, 255, 157, 0.2));
+        }
+        
+        th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 16px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid rgba(42, 42, 42, 0.8);
+            transition: all 0.3s;
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(0, 168, 255, 0.05);
+            transform: scale(1.002);
+            box-shadow: 0 0 15px rgba(0, 168, 255, 0.1);
+        }
+        
+        td {
+            padding: 18px 15px;
+            font-size: 15px;
+        }
+        
+        .bank-cell {
+            font-weight: 700;
+            color: var(--secondary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* Tombol Copy */
+        .copy-btn {
+            background: linear-gradient(135deg, var(--accent), #7b2cbf);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(157, 78, 221, 0.3);
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+        }
+        
+        .copy-btn.copied {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: var(--glow);
+        }
+        
+        /* Status Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .robot-loader {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .robot-loader::before {
+            content: "🤖";
+            font-size: 60px;
+            position: absolute;
+            animation: spin 3s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary);
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        
+        .loading-dots::after {
+            content: "";
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+        
+        /* No Data State */
+        .no-data {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .no-data-icon {
+            font-size: 60px;
+            color: var(--gray);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--gray);
+            margin-top: 40px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .footer-glow {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .header-section {
+                padding: 20px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .search-info {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Terminal Effect */
+        .terminal-line {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .terminal-line::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Panel Indicator */
+        .panel-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            margin-right: 10px;
+            box-shadow: 0 0 10px var(--primary);
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header dengan tema robot -->
+        <div class="header-section">
+            <div class="robot-container">
+                <div class="robot-icon">🤖</div>
+            </div>
+            
+            <h1><span class="panel-indicator"></span> DATA REKENING TOGEL - ROBOTIC SYSTEM</h1>
+            <p class="header-subtitle">SYSTEM STATUS: ONLINE | DATA STREAM: ACTIVE | SOURCE: GOOGLE SHEETS</p>
+            
+            <div class="terminal-line" style="margin-top: 20px; color: var(--secondary);">
+                Initializing database connection... <span style="color: var(--primary);">COMPLETE</span>
+            </div>
+            <div class="terminal-line" style="color: var(--secondary);">
+                Loading rekening data from external source... <span style="color: var(--primary);">IN PROGRESS</span>
+            </div>
+        </div>
+        
+        <!-- Panel Pencarian -->
+        <div class="search-panel">
+            <div class="search-title">
+                <i class="fas fa-search"></i> DATA QUERY INTERFACE
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="ENTER SEARCH PARAMETERS (BANK, ACCOUNT NUMBER, NAME...)">
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-bolt"></i> EXECUTE QUERY
+                </button>
+            </div>
+            
+            <div class="search-info">
+                <div class="data-info">
+                    DATA RECORDS FOUND: <span id="dataCount">0</span>
+                </div>
+                <div style="color: var(--secondary); font-size: 14px;">
+                    <i class="fas fa-info-circle"></i> SEARCH FIELDS: BANK, ACCOUNT NUMBER, NAME, ACCOUNT HOLDER
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel Data -->
+        <div class="data-panel">
+            <div class="loading" id="loadingIndicator">
+                <div class="robot-loader"></div>
+                <p class="loading-text">INITIALIZING DATA STREAM<span class="loading-dots"></span></p>
+                <p style="color: var(--secondary); margin-top: 10px; font-size: 14px;">CONNECTING TO GOOGLE SHEETS DATABASE</p>
+            </div>
+            
+            <div class="table-container">
+                <table id="dataTable" style="display: none;">
+                    <thead id="tableHeader">
+                        <!-- Header akan dimuat dari baris ke-5 Google Sheets -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan dimuat di sini -->
+                    </tbody>
+                </table>
+                
+                <div class="no-data" id="noData" style="display: none;">
+                    <div class="no-data-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <p style="color: var(--secondary); font-size: 20px; margin-bottom: 10px; font-family: 'Orbitron', sans-serif;">NO DATA MATCHES QUERY</p>
+                    <p style="color: var(--light); font-size: 14px;">ADJUST SEARCH PARAMETERS AND RETRY</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p><span class="footer-glow">ROBOTIC DATA SYSTEM v2.1</span> | GOOGLE SHEETS INTEGRATION ACTIVE | LAST UPDATE: <span id="currentDate"></span></p>
+            <p style="margin-top: 10px; font-size: 12px; color: var(--gray);">AUTOMATED DATA RETRIEVAL SYSTEM | SECURE CONNECTION ESTABLISHED</p>
+        </div>
+    </div>
+
+    <script>
+        // Data dari Google Sheets (dalam praktek nyata akan diambil via API)
+        const spreadsheetId = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
+        const sheetName = 'DATA ALL REKENING';
+        
+        // Data contoh dengan header dari baris ke-5
+        let allData = [];
+        let filteredData = [];
+        let tableHeaders = [];
+        
+        // Fungsi untuk memuat data dengan header dari baris ke-5
+        async function loadData() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const table = document.getElementById('dataTable');
+            const tableHeader = document.getElementById('tableHeader');
+            const tableBody = document.getElementById('tableBody');
+            const noData = document.getElementById('noData');
+            
+            try {
+                // Simulasi delay untuk memuat data
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Data contoh dengan header dari baris ke-5
+                // Baris 1-4 adalah informasi lain, baris ke-5 adalah header
+                // Kolom yang diambil: B, E, F, G, I, J, K, L (indeks 1, 4, 5, 6, 8, 9, 10, 11)
+                
+                // Header dari baris ke-5
+                tableHeaders = [
+                    "NO",
+                    "BANK",        // Kolom B
+                    "NAMA",        // Kolom E
+                    "NO REKENING", // Kolom F
+                    "ATAS NAMA",   // Kolom G
+                    "KETERANGAN 1", // Kolom I
+                    "KETERANGAN 2", // Kolom J
+                    "KETERANGAN 3", // Kolom K
+                    "KETERANGAN 4", // Kolom L
+                    "ACTION"
+                ];
+                
+                // Data mulai dari baris ke-6
+                allData = [
+                    { no: 1, bank: 'BCA', nama: 'JOHN DOE', noRekening: '1234567890', atasNama: 'JOHN DOE', ket1: '6900759566', ket2: 'MEGA ARTA PRATIWI', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 2, bank: 'BRI', nama: 'JANE SMITH', noRekening: '0987654321', atasNama: 'JANE SMITH', ket1: '7700123456', ket2: 'AGUS SETIAWAN', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 3, bank: 'MANDIRI', nama: 'ROBERT JOHNSON', noRekening: '5678901234', atasNama: 'ROBERT JOHNSON', ket1: '8800234567', ket2: 'SARI DEWI', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 4, bank: 'BNI', nama: 'MARIA GARCIA', noRekening: '4321098765', atasNama: 'MARIA GARCIA', ket1: '9900345678', ket2: 'BUDI SANTOSO', ket3: 'PREMIUM', ket4: 'GROUP C' },
+                    { no: 5, bank: 'BCA', nama: 'DAVID WILSON', noRekening: '9876543210', atasNama: 'DAVID WILSON', ket1: '5500456789', ket2: 'RINA WATI', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 6, bank: 'BRI', nama: 'LISA BROWN', noRekening: '1122334455', atasNama: 'LISA BROWN', ket1: '6600567890', ket2: 'HENDRA GUNAWAN', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 7, bank: 'MANDIRI', nama: 'MICHAEL TAYLOR', noRekening: '5566778899', atasNama: 'MICHAEL TAYLOR', ket1: '7700678901', ket2: 'DIAN ANGGRAINI', ket3: 'PREMIUM', ket4: 'GROUP C' },
+                    { no: 8, bank: 'BNI', nama: 'SARAH MILLER', noRekening: '9988776655', atasNama: 'SARAH MILLER', ket1: '8800789012', ket2: 'FERDIANSYAH', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 9, bank: 'BCA', nama: 'JAMES DAVIS', noRekening: '6677889900', atasNama: 'JAMES DAVIS', ket1: '9900890123', ket2: 'LINA MARLIANA', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 10, bank: 'BRI', nama: 'PATRICIA MARTINEZ', noRekening: '3344556677', atasNama: 'PATRICIA MARTINEZ', ket1: '4400901234', ket2: 'RAHMAD HIDAYAT', ket3: 'PREMIUM', ket4: 'GROUP C' },
+                    { no: 11, bank: 'MANDIRI', nama: 'ANDREW THOMAS', noRekening: '7788990011', atasNama: 'ANDREW THOMAS', ket1: '3300012345', ket2: 'SITI AMINAH', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 12, bank: 'BNI', nama: 'LINDA WHITE', noRekening: '4455667788', atasNama: 'LINDA WHITE', ket1: '2200023456', ket2: 'JOKO SANTOSO', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 13, bank: 'BCA', nama: 'CHARLES HARRIS', noRekening: '8899001122', atasNama: 'CHARLES HARRIS', ket1: '1100034567', ket2: 'RATNA DEWI', ket3: 'PREMIUM', ket4: 'GROUP C' },
+                    { no: 14, bank: 'BRI', nama: 'SUSAN MARTIN', noRekening: '6677889900', atasNama: 'SUSAN MARTIN', ket1: '9900045678', ket2: 'BAYU AJI', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 15, bank: 'MANDIRI', nama: 'DANIEL THOMPSON', noRekening: '3344556677', atasNama: 'DANIEL THOMPSON', ket1: '8800056789', ket2: 'ANI WULAN', ket3: 'VIP', ket4: 'GROUP A' }
+                ];
+                
+                filteredData = [...allData];
+                
+                // Tampilkan data
+                renderTable();
+                updateDataCount();
+                
+                // Sembunyikan indikator loading, tampilkan tabel
+                loadingIndicator.style.display = 'none';
+                table.style.display = 'table';
+                noData.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Gagal memuat data:', error);
+                loadingIndicator.innerHTML = `
+                    <div style="color: #ff4757; font-size: 50px; margin-bottom: 20px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <p class="loading-text" style="color: #ff4757;">SYSTEM ERROR</p>
+                    <p style="color: var(--secondary); margin-top: 10px; font-size: 14px;">ERROR: ${error.message}</p>
+                    <button onclick="loadData()" style="margin-top: 20px; padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--darker); border: none; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700;">RETRY CONNECTION</button>
+                `;
+            }
+        }
+        
+        // Fungsi untuk merender header tabel
+        function renderTableHeader() {
+            const tableHeader = document.getElementById('tableHeader');
+            
+            // Kosongkan header
+            tableHeader.innerHTML = '';
+            
+            // Buat baris header
+            const headerRow = document.createElement('tr');
+            
+            // Isi header dengan data dari tableHeaders
+            tableHeaders.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                
+                // Beri style khusus untuk kolom tertentu
+                if (header === "BANK") {
+                    th.style.color = "var(--secondary)";
+                } else if (header === "ACTION") {
+                    th.style.textAlign = "center";
+                }
+                
+                headerRow.appendChild(th);
+            });
+            
+            tableHeader.appendChild(headerRow);
+        }
+        
+        // Fungsi untuk merender tabel dengan data
+        function renderTable() {
+            const tableHeader = document.getElementById('tableHeader');
+            const tableBody = document.getElementById('tableBody');
+            
+            // Render header
+            renderTableHeader();
+            
+            // Kosongkan body tabel
+            tableBody.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                document.getElementById('dataTable').style.display = 'none';
+                document.getElementById('noData').style.display = 'block';
+                return;
+            }
+            
+            // Isi tabel dengan data
+            filteredData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td style="color: var(--primary); font-weight: bold;">${item.no}</td>
+                    <td class="bank-cell">${item.bank}</td>
+                    <td>${item.nama}</td>
+                    <td style="font-weight: bold; color: var(--secondary);">${item.noRekening}</td>
+                    <td>${item.atasNama}</td>
+                    <td>${item.ket1}</td>
+                    <td>${item.ket2}</td>
+                    <td><span style="color: ${item.ket3 === 'VIP' ? 'var(--primary)' : item.ket3 === 'PREMIUM' ? 'var(--accent)' : 'var(--secondary)'}">${item.ket3}</span></td>
+                    <td><span style="background-color: ${item.ket4 === 'GROUP A' ? 'rgba(0, 255, 157, 0.1)' : item.ket4 === 'GROUP B' ? 'rgba(0, 168, 255, 0.1)' : 'rgba(157, 78, 221, 0.1)'}; padding: 5px 10px; border-radius: 5px; border: 1px solid ${item.ket4 === 'GROUP A' ? 'var(--primary)' : item.ket4 === 'GROUP B' ? 'var(--secondary)' : 'var(--accent)'};">${item.ket4}</span></td>
+                    <td style="text-align: center;">
+                        <button class="copy-btn" onclick="copyRowData(${index})" data-index="${index}">
+                            <i class="far fa-copy"></i> COPY
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            document.getElementById('dataTable').style.display = 'table';
+            document.getElementById('noData').style.display = 'none';
+        }
+        
+        // Fungsi untuk memperbarui jumlah data
+        function updateDataCount() {
+            document.getElementById('dataCount').textContent = filteredData.length;
+        }
+        
+        // Fungsi untuk mencari data
+        function searchData() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.toUpperCase().trim();
+            
+            if (searchTerm === '') {
+                filteredData = [...allData];
+            } else {
+                filteredData = allData.filter(item => {
+                    return (
+                        item.bank.toUpperCase().includes(searchTerm) ||
+                        item.nama.toUpperCase().includes(searchTerm) ||
+                        item.noRekening.includes(searchTerm) ||
+                        item.atasNama.toUpperCase().includes(searchTerm) ||
+                        item.ket1.includes(searchTerm) ||
+                        item.ket2.toUpperCase().includes(searchTerm) ||
+                        item.ket3.toUpperCase().includes(searchTerm) ||
+                        item.ket4.toUpperCase().includes(searchTerm)
+                    );
+                });
+            }
+            
+            renderTable();
+            updateDataCount();
+        }
+        
+        // Fungsi untuk menyalin data dari kolom I dan J dengan format " - "
+        function copyRowData(index) {
+            const item = filteredData[index];
+            // Format: "ket1 - ket2" sesuai permintaan
+            const textToCopy = `${item.ket1} - ${item.ket2}`;
+            
+            // Salin ke clipboard
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    // Tampilkan feedback
+                    const copyBtn = document.querySelector(`button[data-index="${index}"]`);
+                    const originalText = copyBtn.innerHTML;
+                    
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+                    copyBtn.classList.add('copied');
+                    
+                    // Kembalikan ke keadaan semula setelah 2 detik
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                    
+                    // Tampilkan notifikasi visual
+                    showNotification(`Copied: ${textToCopy}`);
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                    showNotification('Failed to copy to clipboard', 'error');
+                });
+        }
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'success') {
+            // Hapus notifikasi sebelumnya
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Buat elemen notifikasi
+            const notification = document.createElement('div');
+            notification.className = `notification`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Style notifikasi
+            notification.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 157, 0.9)' : 'rgba(255, 71, 87, 0.9)';
+            notification.style.color = '#121212';
+            notification.style.border = `1px solid ${type === 'success' ? 'var(--primary)' : '#ff4757'}`;
+            
+            document.body.appendChild(notification);
+            
+            // Hapus notifikasi setelah 3 detik
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Fungsi untuk mengambil data dari Google Sheets (mengambil baris ke-5 sebagai header)
+        async function loadDataFromGoogleSheets() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            try {
+                // URL untuk mengekspor sheet sebagai CSV
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=714670525`;
+                
+                const response = await fetch(csvUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                
+                // Parse CSV menjadi array of rows
+                const rows = csvText.split('\n').map(row => {
+                    // Handle CSV dengan quotes dan koma di dalam value
+                    const result = [];
+                    let inQuotes = false;
+                    let currentValue = '';
+                    
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            result.push(currentValue);
+                            currentValue = '';
+                        } else {
+                            currentValue += char;
+                        }
+                    }
+                    
+                    result.push(currentValue);
+                    return result;
+                });
+                
+                // Cari baris ke-5 (indeks 4) sebagai header
+                if (rows.length >= 5) {
+                    const headerRow = rows[4]; // Baris ke-5 (indeks 4 karena mulai dari 0)
+                    
+                    // Ambil kolom B, E, F, G, I, J, K, L (indeks 1, 4, 5, 6, 8, 9, 10, 11)
+                    const headerIndices = [1, 4, 5, 6, 8, 9, 10, 11];
+                    
+                    // Buat header dari baris ke-5
+                    tableHeaders = ["NO"];
+                    headerIndices.forEach(index => {
+                        if (headerRow[index]) {
+                            tableHeaders.push(headerRow[index].trim());
+                        } else {
+                            // Default header jika kosong
+                            const defaultHeaders = ["BANK", "NAMA", "NO REKENING", "ATAS NAMA", "KETERANGAN 1", "KETERANGAN 2", "KETERANGAN 3", "KETERANGAN 4"];
+                            tableHeaders.push(defaultHeaders[tableHeaders.length - 1]);
+                        }
+                    });
+                    tableHeaders.push("ACTION");
+                    
+                    // Ambil data mulai dari baris ke-6 (indeks 5)
+                    allData = [];
+                    for (let i = 5; i < rows.length; i++) {
+                        const row = rows[i];
+                        
+                        // Pastikan baris memiliki cukup kolom
+                        if (row.length >= 12) {
+                            const dataItem = {
+                                no: i - 4, // Penomoran dimulai dari 1
+                                bank: row[1] || '',
+                                nama: row[4] || '',
+                                noRekening: row[5] || '',
+                                atasNama: row[6] || '',
+                                ket1: row[8] || '',
+                                ket2: row[9] || '',
+                                ket3: row[10] || '',
+                                ket4: row[11] || ''
+                            };
+                            
+                            // Hanya tambah jika ada data bank atau rekening
+                            if (dataItem.bank.trim() || dataItem.noRekening.trim()) {
+                                allData.push(dataItem);
+                            }
+                        }
+                    }
+                    
+                    filteredData = [...allData];
+                    
+                    // Tampilkan data
+                    renderTable();
+                    updateDataCount();
+                    
+                    // Sembunyikan indikator loading, tampilkan tabel
+                    loadingIndicator.style.display = 'none';
+                    document.getElementById('dataTable').style.display = 'table';
+                    document.getElementById('noData').style.display = 'none';
+                    
+                } else {
+                    throw new Error('Sheet tidak memiliki cukup baris');
+                }
+                
+            } catch (error) {
+                console.error('Gagal mengambil data dari Google Sheets:', error);
+                
+                // Fallback ke data contoh jika gagal
+                loadingIndicator.innerHTML = `
+                    <div class="robot-loader"></div>
+                    <p class="loading-text">USING LOCAL DATABASE<span class="loading-dots"></span></p>
+                    <p style="color: var(--secondary); margin-top: 10px; font-size: 14px;">GOOGLE SHEETS UNAVAILABLE, LOADING LOCAL DATA</p>
+                `;
+                
+                // Tunggu sebentar lalu muat data contoh
+                setTimeout(() => {
+                    loadData(); // Memuat data contoh
+                }, 1500);
+            }
+        }
+        
+        // Set tanggal saat ini di footer
+        function setCurrentDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('id-ID', options);
+        }
+        
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set tanggal
+            setCurrentDate();
+            
+            // Coba ambil data dari Google Sheets
+            loadDataFromGoogleSheets();
+            
+            // Setup event listener untuk pencarian
+            document.getElementById('searchBtn').addEventListener('click', searchData);
+            document.getElementById('searchInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchData();
+                }
+            });
+            
+            // Setup event listener untuk input pencarian (real-time search)
+            document.getElementById('searchInput').addEventListener('input', function() {
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(searchData, 400);
+            });
+            
+            // Efek ketik pada placeholder
+            const placeholderText = "ENTER SEARCH PARAMETERS (BANK, ACCOUNT NUMBER, NAME...)";
+            let i = 0;
+            const typingEffect = setInterval(() => {
+                document.getElementById('searchInput').placeholder = placeholderText.substring(0, i);
+                i++;
+                if (i > placeholderText.length) {
+                    clearInterval(typingEffect);
+                    // Reset setelah beberapa saat
+                    setTimeout(() => {
+                        i = 0;
+                    }, 2000);
+                }
+            }, 50);
+        });
+    </script>
+</body>
+</html>
