@@ -45,7 +45,7 @@
             margin: 0 auto;
         }
         
-        /* Header dengan efek futuristik */
+        /* Header Styles */
         .header-section {
             background-color: rgba(18, 18, 18, 0.9);
             padding: 30px;
@@ -104,14 +104,6 @@
             position: relative;
         }
         
-        .robot-icon::after {
-            content: "🤖";
-            position: absolute;
-            left: 0;
-            opacity: 0.7;
-            filter: blur(2px);
-        }
-        
         @keyframes pulse {
             0% { transform: translateY(0); }
             100% { transform: translateY(-10px); }
@@ -157,7 +149,7 @@
             font-size: 16px;
             color: var(--light);
             font-family: 'Roboto Mono', monospace;
-            transition: all 0.3s;
+            transition: all 0.3;
         }
         
         .search-input:focus {
@@ -185,6 +177,129 @@
             box-shadow: var(--glow);
         }
         
+        /* --- Transfer Generator Panel Styles --- */
+        .transfer-panel {
+            background-color: var(--panel);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .transfer-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+        }
+        
+        .transfer-title i {
+            margin-right: 15px;
+            font-size: 28px;
+            color: var(--accent);
+        }
+
+        .transfer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .transfer-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transfer-group label {
+            margin-bottom: 10px;
+            color: var(--light);
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            color: var(--light);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none; 
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300ff9d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
+            transition: all 0.3s;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: var(--glow-purple);
+        }
+
+        .preview-container {
+            background-color: #000;
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-text {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--primary);
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 2;
+            text-align: center;
+        }
+
+        .copy-transfer-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #7b2cbf);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
+        }
+
+        .copy-transfer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+        }
+
+        @media (max-width: 768px) {
+            .transfer-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        /* -------------------------------------------- */
+
         .search-info {
             display: flex;
             justify-content: space-between;
@@ -267,7 +382,7 @@
             letter-spacing: 1px;
         }
         
-        /* Tombol Copy */
+        /* Tombol Copy Table */
         .copy-btn {
             background: linear-gradient(135deg, var(--accent), #7b2cbf);
             color: white;
@@ -505,6 +620,37 @@
                 </div>
             </div>
         </div>
+
+        <!-- Panel Generator Transfer (Updated Columns F, I, J) -->
+        <div class="transfer-panel">
+            <div class="transfer-title">
+                <i class="fas fa-random"></i> TRANSFER TEXT GENERATOR (COL F-I-J)
+            </div>
+            
+            <div class="transfer-grid">
+                <div class="transfer-group">
+                    <label for="selectSource"><i class="fas fa-arrow-up"></i> PILIH REKENING ASAL</label>
+                    <select id="selectSource" class="custom-select">
+                        <option value="">-- Pilih Rekening Asal --</option>
+                    </select>
+                </div>
+                
+                <div class="transfer-group">
+                    <label for="selectDest"><i class="fas fa-arrow-down"></i> PILIH REKENING TUJUAN</label>
+                    <select id="selectDest" class="custom-select">
+                        <option value="">-- Pilih Rekening Tujuan --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="preview-container">
+                <div id="previewOutput" class="preview-text">SILAHKAN PILIH REKENING...</div>
+            </div>
+            
+            <button id="copyTransferBtn" class="copy-transfer-btn" onclick="copyTransferText()">
+                <i class="fas fa-copy"></i> COPY TRANSFER FORMAT
+            </button>
+        </div>
         
         <!-- Panel Data -->
         <div class="data-panel">
@@ -542,71 +688,52 @@
     </div>
 
     <script>
-        // Data dari Google Sheets (dalam praktek nyata akan diambil via API)
+        // Data dari Google Sheets
         const spreadsheetId = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
         const sheetName = 'DATA ALL REKENING';
         
-        // Data contoh dengan header dari baris ke-5
         let allData = [];
         let filteredData = [];
         let tableHeaders = [];
         
-        // Fungsi untuk memuat data dengan header dari baris ke-5
+        // --- Fungsi Load Data Utama ---
         async function loadData() {
             const loadingIndicator = document.getElementById('loadingIndicator');
             const table = document.getElementById('dataTable');
-            const tableHeader = document.getElementById('tableHeader');
-            const tableBody = document.getElementById('tableBody');
             const noData = document.getElementById('noData');
             
             try {
-                // Simulasi delay untuk memuat data
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
-                // Data contoh dengan header dari baris ke-5
-                // Baris 1-4 adalah informasi lain, baris ke-5 adalah header
-                // Kolom yang diambil: B, E, F, G, I, J, K, L (indeks 1, 4, 5, 6, 8, 9, 10, 11)
-                
-                // Header dari baris ke-5
+                // Data Header
                 tableHeaders = [
                     "NO",
-                    "BANK",        // Kolom B
-                    "NAMA",        // Kolom E
-                    "NO REKENING", // Kolom F
-                    "ATAS NAMA",   // Kolom G
-                    "KETERANGAN 1", // Kolom I
-                    "KETERANGAN 2", // Kolom J
-                    "KETERANGAN 3", // Kolom K
-                    "KETERANGAN 4", // Kolom L
+                    "BANK",        
+                    "NAMA",        
+                    "NO REKENING", 
+                    "ATAS NAMA",   
+                    "KETERANGAN 1", 
+                    "KETERANGAN 2", 
+                    "KETERANGAN 3", 
+                    "KETERANGAN 4", 
                     "ACTION"
                 ];
                 
-                // Data mulai dari baris ke-6
+                // Data Dummy (Fallback)
                 allData = [
-                    { no: 1, bank: 'BCA', nama: 'JOHN DOE', noRekening: '1234567890', atasNama: 'JOHN DOE', ket1: '6900759566', ket2: 'MEGA ARTA PRATIWI', ket3: 'VIP', ket4: 'GROUP A' },
-                    { no: 2, bank: 'BRI', nama: 'JANE SMITH', noRekening: '0987654321', atasNama: 'JANE SMITH', ket1: '7700123456', ket2: 'AGUS SETIAWAN', ket3: 'REGULAR', ket4: 'GROUP B' },
-                    { no: 3, bank: 'MANDIRI', nama: 'ROBERT JOHNSON', noRekening: '5678901234', atasNama: 'ROBERT JOHNSON', ket1: '8800234567', ket2: 'SARI DEWI', ket3: 'VIP', ket4: 'GROUP A' },
-                    { no: 4, bank: 'BNI', nama: 'MARIA GARCIA', noRekening: '4321098765', atasNama: 'MARIA GARCIA', ket1: '9900345678', ket2: 'BUDI SANTOSO', ket3: 'PREMIUM', ket4: 'GROUP C' },
-                    { no: 5, bank: 'BCA', nama: 'DAVID WILSON', noRekening: '9876543210', atasNama: 'DAVID WILSON', ket1: '5500456789', ket2: 'RINA WATI', ket3: 'REGULAR', ket4: 'GROUP B' },
-                    { no: 6, bank: 'BRI', nama: 'LISA BROWN', noRekening: '1122334455', atasNama: 'LISA BROWN', ket1: '6600567890', ket2: 'HENDRA GUNAWAN', ket3: 'VIP', ket4: 'GROUP A' },
-                    { no: 7, bank: 'MANDIRI', nama: 'MICHAEL TAYLOR', noRekening: '5566778899', atasNama: 'MICHAEL TAYLOR', ket1: '7700678901', ket2: 'DIAN ANGGRAINI', ket3: 'PREMIUM', ket4: 'GROUP C' },
-                    { no: 8, bank: 'BNI', nama: 'SARAH MILLER', noRekening: '9988776655', atasNama: 'SARAH MILLER', ket1: '8800789012', ket2: 'FERDIANSYAH', ket3: 'REGULAR', ket4: 'GROUP B' },
-                    { no: 9, bank: 'BCA', nama: 'JAMES DAVIS', noRekening: '6677889900', atasNama: 'JAMES DAVIS', ket1: '9900890123', ket2: 'LINA MARLIANA', ket3: 'VIP', ket4: 'GROUP A' },
-                    { no: 10, bank: 'BRI', nama: 'PATRICIA MARTINEZ', noRekening: '3344556677', atasNama: 'PATRICIA MARTINEZ', ket1: '4400901234', ket2: 'RAHMAD HIDAYAT', ket3: 'PREMIUM', ket4: 'GROUP C' },
-                    { no: 11, bank: 'MANDIRI', nama: 'ANDREW THOMAS', noRekening: '7788990011', atasNama: 'ANDREW THOMAS', ket1: '3300012345', ket2: 'SITI AMINAH', ket3: 'REGULAR', ket4: 'GROUP B' },
-                    { no: 12, bank: 'BNI', nama: 'LINDA WHITE', noRekening: '4455667788', atasNama: 'LINDA WHITE', ket1: '2200023456', ket2: 'JOKO SANTOSO', ket3: 'VIP', ket4: 'GROUP A' },
-                    { no: 13, bank: 'BCA', nama: 'CHARLES HARRIS', noRekening: '8899001122', atasNama: 'CHARLES HARRIS', ket1: '1100034567', ket2: 'RATNA DEWI', ket3: 'PREMIUM', ket4: 'GROUP C' },
-                    { no: 14, bank: 'BRI', nama: 'SUSAN MARTIN', noRekening: '6677889900', atasNama: 'SUSAN MARTIN', ket1: '9900045678', ket2: 'BAYU AJI', ket3: 'REGULAR', ket4: 'GROUP B' },
-                    { no: 15, bank: 'MANDIRI', nama: 'DANIEL THOMPSON', noRekening: '3344556677', atasNama: 'DANIEL THOMPSON', ket1: '8800056789', ket2: 'ANI WULAN', ket3: 'VIP', ket4: 'GROUP A' }
+                    { no: 1, bank: 'BCA', nama: 'JOHN DOE', noRekening: '5860575410', atasNama: 'JOHN DOE', ket1: 'BCA MOBILE', ket2: 'Syafikri Ferdiansah', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 2, bank: 'BRI', nama: 'JANE SMITH', noRekening: '7391956727', atasNama: 'JANE SMITH', ket1: 'BRI MOBILE', ket2: 'TENDI KURNIAWAN', ket3: 'REGULAR', ket4: 'GROUP B' },
+                    { no: 3, bank: 'MANDIRI', nama: 'ROBERT JOHNSON', noRekening: '5678901234', atasNama: 'ROBERT JOHNSON', ket1: 'LIVIN MANDIRI', ket2: 'SARI DEWI', ket3: 'VIP', ket4: 'GROUP A' },
+                    { no: 4, bank: 'BNI', nama: 'MARIA GARCIA', noRekening: '4321098765', atasNama: 'MARIA GARCIA', ket1: 'BNI MOBILE', ket2: 'BUDI SANTOSO', ket3: 'PREMIUM', ket4: 'GROUP C' },
+                    { no: 5, bank: 'BCA', nama: 'DAVID WILSON', noRekening: '9876543210', atasNama: 'DAVID WILSON', ket1: 'BCA MOBILE', ket2: 'RINA WATI', ket3: 'REGULAR', ket4: 'GROUP B' }
                 ];
                 
                 filteredData = [...allData];
                 
-                // Tampilkan data
                 renderTable();
                 updateDataCount();
+                populateTransferDropdowns(); // Populate dropdowns
                 
-                // Sembunyikan indikator loading, tampilkan tabel
                 loadingIndicator.style.display = 'none';
                 table.style.display = 'table';
                 noData.style.display = 'none';
@@ -618,49 +745,30 @@
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <p class="loading-text" style="color: #ff4757;">SYSTEM ERROR</p>
-                    <p style="color: var(--secondary); margin-top: 10px; font-size: 14px;">ERROR: ${error.message}</p>
                     <button onclick="loadData()" style="margin-top: 20px; padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--darker); border: none; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700;">RETRY CONNECTION</button>
                 `;
             }
         }
-        
-        // Fungsi untuk merender header tabel
+
+        // --- Fungsi Render Table ---
         function renderTableHeader() {
             const tableHeader = document.getElementById('tableHeader');
-            
-            // Kosongkan header
             tableHeader.innerHTML = '';
-            
-            // Buat baris header
             const headerRow = document.createElement('tr');
             
-            // Isi header dengan data dari tableHeaders
             tableHeaders.forEach(header => {
                 const th = document.createElement('th');
                 th.textContent = header;
-                
-                // Beri style khusus untuk kolom tertentu
-                if (header === "BANK") {
-                    th.style.color = "var(--secondary)";
-                } else if (header === "ACTION") {
-                    th.style.textAlign = "center";
-                }
-                
+                if (header === "BANK") th.style.color = "var(--secondary)";
+                if (header === "ACTION") th.style.textAlign = "center";
                 headerRow.appendChild(th);
             });
-            
             tableHeader.appendChild(headerRow);
         }
         
-        // Fungsi untuk merender tabel dengan data
         function renderTable() {
-            const tableHeader = document.getElementById('tableHeader');
             const tableBody = document.getElementById('tableBody');
-            
-            // Render header
             renderTableHeader();
-            
-            // Kosongkan body tabel
             tableBody.innerHTML = '';
             
             if (filteredData.length === 0) {
@@ -669,10 +777,8 @@
                 return;
             }
             
-            // Isi tabel dengan data
             filteredData.forEach((item, index) => {
                 const row = document.createElement('tr');
-                
                 row.innerHTML = `
                     <td style="color: var(--primary); font-weight: bold;">${item.no}</td>
                     <td class="bank-cell">${item.bank}</td>
@@ -681,15 +787,14 @@
                     <td>${item.atasNama}</td>
                     <td>${item.ket1}</td>
                     <td>${item.ket2}</td>
-                    <td><span style="color: ${item.ket3 === 'VIP' ? 'var(--primary)' : item.ket3 === 'PREMIUM' ? 'var(--accent)' : 'var(--secondary)'}">${item.ket3}</span></td>
-                    <td><span style="background-color: ${item.ket4 === 'GROUP A' ? 'rgba(0, 255, 157, 0.1)' : item.ket4 === 'GROUP B' ? 'rgba(0, 168, 255, 0.1)' : 'rgba(157, 78, 221, 0.1)'}; padding: 5px 10px; border-radius: 5px; border: 1px solid ${item.ket4 === 'GROUP A' ? 'var(--primary)' : item.ket4 === 'GROUP B' ? 'var(--secondary)' : 'var(--accent)'};">${item.ket4}</span></td>
+                    <td><span style="color: ${item.ket3 === 'VIP' ? 'var(--primary)' : 'var(--accent)'}">${item.ket3}</span></td>
+                    <td><span style="background-color: rgba(0, 255, 157, 0.1); padding: 5px 10px; border-radius: 5px; border: 1px solid var(--primary);">${item.ket4}</span></td>
                     <td style="text-align: center;">
                         <button class="copy-btn" onclick="copyRowData(${index})" data-index="${index}">
                             <i class="far fa-copy"></i> COPY
                         </button>
                     </td>
                 `;
-                
                 tableBody.appendChild(row);
             });
             
@@ -697,12 +802,10 @@
             document.getElementById('noData').style.display = 'none';
         }
         
-        // Fungsi untuk memperbarui jumlah data
         function updateDataCount() {
             document.getElementById('dataCount').textContent = filteredData.length;
         }
         
-        // Fungsi untuk mencari data
         function searchData() {
             const searchInput = document.getElementById('searchInput');
             const searchTerm = searchInput.value.toUpperCase().trim();
@@ -717,57 +820,126 @@
                         item.noRekening.includes(searchTerm) ||
                         item.atasNama.toUpperCase().includes(searchTerm) ||
                         item.ket1.includes(searchTerm) ||
-                        item.ket2.toUpperCase().includes(searchTerm) ||
-                        item.ket3.toUpperCase().includes(searchTerm) ||
-                        item.ket4.toUpperCase().includes(searchTerm)
+                        item.ket2.toUpperCase().includes(searchTerm)
                     );
                 });
             }
-            
             renderTable();
             updateDataCount();
         }
         
-        // Fungsi untuk menyalin data dari kolom I dan J dengan format " - "
         function copyRowData(index) {
             const item = filteredData[index];
-            // Format: "ket1 - ket2" sesuai permintaan
             const textToCopy = `${item.noRekening} - ${item.ket1} - ${item.ket2}`;
             
-            // Salin ke clipboard
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => {
-                    // Tampilkan feedback
-                    const copyBtn = document.querySelector(`button[data-index="${index}"]`);
-                    const originalText = copyBtn.innerHTML;
-                    
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
-                    copyBtn.classList.add('copied');
-                    
-                    // Kembalikan ke keadaan semula setelah 2 detik
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalText;
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                    
-                    // Tampilkan notifikasi visual
-                    showNotification(`Copied: ${textToCopy}`);
-                })
-                .catch(err => {
-                    console.error('Gagal menyalin teks: ', err);
-                    showNotification('Failed to copy to clipboard', 'error');
-                });
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyBtn = document.querySelector(`button[data-index="${index}"]`);
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+                showNotification(`Copied: ${textToCopy}`);
+            });
+        }
+
+        // --- Logic Transfer Generator (Updated to use F, I, J) ---
+        
+        function populateTransferDropdowns() {
+            const selectSource = document.getElementById('selectSource');
+            const selectDest = document.getElementById('selectDest');
+            
+            selectSource.innerHTML = '<option value="">-- Pilih Rekening Asal --</option>';
+            selectDest.innerHTML = '<option value="">-- Pilih Rekening Tujuan --</option>';
+            
+            allData.forEach((item, index) => {
+                // Format Tampilan Dropdown: Ket1(I) - NoRekening(F) - Ket2(J)
+                // Sesuai permintaan: kolom F, I, J
+                // Urutan diambil dari contoh user: Bank (I) - No Rek (F) - Nama (J)
+                const displayText = `${item.ket1} - ${item.noRekening} - ${item.ket2}`;
+                const value = index; 
+                
+                const optionSource = document.createElement('option');
+                optionSource.value = value;
+                optionSource.textContent = displayText;
+                
+                const optionDest = document.createElement('option');
+                optionDest.value = value;
+                optionDest.textContent = displayText;
+                
+                selectSource.appendChild(optionSource);
+                selectDest.appendChild(optionDest);
+            });
+
+            selectSource.addEventListener('change', updateTransferPreview);
+            selectDest.addEventListener('change', updateTransferPreview);
         }
         
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, type = 'success') {
-            // Hapus notifikasi sebelumnya
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
+        function updateTransferPreview() {
+            const selectSource = document.getElementById('selectSource');
+            const selectDest = document.getElementById('selectDest');
+            const previewOutput = document.getElementById('previewOutput');
+            
+            const sourceIndex = selectSource.value;
+            const destIndex = selectDest.value;
+            
+            if (sourceIndex === "" || destIndex === "") {
+                previewOutput.textContent = "SILAHKAN PILIH REKENING ASAL DAN TUJUAN...";
+                return;
             }
             
-            // Buat elemen notifikasi
+            const sourceData = allData[sourceIndex];
+            const destData = allData[destIndex];
+            
+            // Format Output:
+            // Kolom I (Ket1) - Kolom F (NoRekening) - Kolom J (Ket2)
+            // Geser ke
+            // Kolom I (Ket1) - Kolom F (NoRekening) - Kolom J (Ket2)
+            
+            const line1 = `${sourceData.ket1} - ${sourceData.noRekening} - ${sourceData.ket2}`;
+            const line2 = `Geser ke`;
+            const line3 = `${destData.ket1} - ${destData.noRekening} - ${destData.ket2}`;
+            
+            previewOutput.textContent = `${line1}\n${line2}\n${line3}`;
+        }
+        
+        function copyTransferText() {
+            const previewOutput = document.getElementById('previewOutput');
+            const textToCopy = previewOutput.textContent;
+            
+            if (textToCopy.includes("SILAHKAN PILIH")) {
+                showNotification("Pilih rekening terlebih dahulu!", "error");
+                return;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.getElementById('copyTransferBtn');
+                const originalHTML = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+                btn.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-dark))';
+                btn.style.color = 'var(--darker)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+                
+                showNotification("Format Transfer Berhasil Disalin!");
+            }).catch(err => {
+                showNotification("Gagal menyalin teks", "error");
+            });
+        }
+
+        // --- Utilitas ---
+        
+        function showNotification(message, type = 'success') {
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) existingNotification.remove();
+            
             const notification = document.createElement('div');
             notification.className = `notification`;
             notification.innerHTML = `
@@ -775,50 +947,35 @@
                 <span>${message}</span>
             `;
             
-            // Style notifikasi
             notification.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 157, 0.9)' : 'rgba(255, 71, 87, 0.9)';
             notification.style.color = '#121212';
             notification.style.border = `1px solid ${type === 'success' ? 'var(--primary)' : '#ff4757'}`;
             
             document.body.appendChild(notification);
             
-            // Hapus notifikasi setelah 3 detik
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease-out';
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
+                    if (notification.parentNode) notification.parentNode.removeChild(notification);
                 }, 300);
             }, 3000);
         }
         
-        // Fungsi untuk mengambil data dari Google Sheets (mengambil baris ke-5 sebagai header)
         async function loadDataFromGoogleSheets() {
             const loadingIndicator = document.getElementById('loadingIndicator');
-            
             try {
-                // URL untuk mengekspor sheet sebagai CSV
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=714670525`;
-                
                 const response = await fetch(csvUrl);
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 const csvText = await response.text();
-                
-                // Parse CSV menjadi array of rows
                 const rows = csvText.split('\n').map(row => {
-                    // Handle CSV dengan quotes dan koma di dalam value
                     const result = [];
                     let inQuotes = false;
                     let currentValue = '';
-                    
                     for (let i = 0; i < row.length; i++) {
                         const char = row[i];
-                        
                         if (char === '"') {
                             inQuotes = !inQuotes;
                         } else if (char === ',' && !inQuotes) {
@@ -828,51 +985,39 @@
                             currentValue += char;
                         }
                     }
-                    
                     result.push(currentValue);
                     return result;
                 });
                 
-                // Cari baris ke-5 (indeks 4) sebagai header
                 if (rows.length >= 5) {
-                    const headerRow = rows[4]; // Baris ke-5 (indeks 4 karena mulai dari 0)
-                    
-                    // Ambil kolom B, E, F, G, I, J, K, L (indeks 1, 4, 5, 6, 8, 9, 10, 11)
+                    const headerRow = rows[4]; 
                     const headerIndices = [1, 4, 5, 6, 8, 9, 10, 11];
                     
-                    // Buat header dari baris ke-5
                     tableHeaders = ["NO"];
                     headerIndices.forEach(index => {
-                        if (headerRow[index]) {
-                            tableHeaders.push(headerRow[index].trim());
-                        } else {
-                            // Default header jika kosong
+                        if (headerRow[index]) tableHeaders.push(headerRow[index].trim());
+                        else {
                             const defaultHeaders = ["BANK", "NAMA", "NO REKENING", "ATAS NAMA", "KETERANGAN 1", "KETERANGAN 2", "KETERANGAN 3", "KETERANGAN 4"];
                             tableHeaders.push(defaultHeaders[tableHeaders.length - 1]);
                         }
                     });
                     tableHeaders.push("ACTION");
                     
-                    // Ambil data mulai dari baris ke-6 (indeks 5)
                     allData = [];
                     for (let i = 5; i < rows.length; i++) {
                         const row = rows[i];
-                        
-                        // Pastikan baris memiliki cukup kolom
                         if (row.length >= 12) {
                             const dataItem = {
-                                no: i - 4, // Penomoran dimulai dari 1
+                                no: i - 4,
                                 bank: row[1] || '',
                                 nama: row[4] || '',
-                                noRekening: row[5] || '',
+                                noRekening: row[5] || '',  // Kolom F
                                 atasNama: row[6] || '',
-                                ket1: row[8] || '',
-                                ket2: row[9] || '',
+                                ket1: row[8] || '',         // Kolom I
+                                ket2: row[9] || '',         // Kolom J
                                 ket3: row[10] || '',
                                 ket4: row[11] || ''
                             };
-                            
-                            // Hanya tambah jika ada data bank atau rekening
                             if (dataItem.bank.trim() || dataItem.noRekening.trim()) {
                                 allData.push(dataItem);
                             }
@@ -880,91 +1025,47 @@
                     }
                     
                     filteredData = [...allData];
-                    
-                    // Tampilkan data
                     renderTable();
                     updateDataCount();
+                    populateTransferDropdowns(); // Populate dropdowns with new column logic
                     
-                    // Sembunyikan indikator loading, tampilkan tabel
                     loadingIndicator.style.display = 'none';
                     document.getElementById('dataTable').style.display = 'table';
                     document.getElementById('noData').style.display = 'none';
-                    
                 } else {
                     throw new Error('Sheet tidak memiliki cukup baris');
                 }
-                
             } catch (error) {
                 console.error('Gagal mengambil data dari Google Sheets:', error);
-                
-                // Fallback ke data contoh jika gagal
                 loadingIndicator.innerHTML = `
                     <div class="robot-loader"></div>
                     <p class="loading-text">USING LOCAL DATABASE<span class="loading-dots"></span></p>
                     <p style="color: var(--secondary); margin-top: 10px; font-size: 14px;">GOOGLE SHEETS UNAVAILABLE, LOADING LOCAL DATA</p>
                 `;
-                
-                // Tunggu sebentar lalu muat data contoh
-                setTimeout(() => {
-                    loadData(); // Memuat data contoh
-                }, 1500);
+                setTimeout(() => { loadData(); }, 1500);
             }
         }
         
-        // Set tanggal saat ini di footer
         function setCurrentDate() {
             const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
             document.getElementById('currentDate').textContent = now.toLocaleDateString('id-ID', options);
         }
         
-        // Inisialisasi saat halaman dimuat
+        // Inisialisasi
         document.addEventListener('DOMContentLoaded', function() {
-            // Set tanggal
             setCurrentDate();
-            
-            // Coba ambil data dari Google Sheets
             loadDataFromGoogleSheets();
             
-            // Setup event listener untuk pencarian
             document.getElementById('searchBtn').addEventListener('click', searchData);
             document.getElementById('searchInput').addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    searchData();
-                }
+                if (event.key === 'Enter') searchData();
             });
-            
-            // Setup event listener untuk input pencarian (real-time search)
             document.getElementById('searchInput').addEventListener('input', function() {
                 clearTimeout(this.searchTimeout);
                 this.searchTimeout = setTimeout(searchData, 400);
             });
-            
-            // Efek ketik pada placeholder
-            const placeholderText = "ENTER SEARCH PARAMETERS (BANK, ACCOUNT NUMBER, NAME...)";
-            let i = 0;
-            const typingEffect = setInterval(() => {
-                document.getElementById('searchInput').placeholder = placeholderText.substring(0, i);
-                i++;
-                if (i > placeholderText.length) {
-                    clearInterval(typingEffect);
-                    // Reset setelah beberapa saat
-                    setTimeout(() => {
-                        i = 0;
-                    }, 2000);
-                }
-            }, 50);
         });
     </script>
 </body>
 </html>
-
-
-
-
