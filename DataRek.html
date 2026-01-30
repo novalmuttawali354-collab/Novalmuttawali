@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVIS SYSTEM - DATA REKENING</title>
+    <title>JARVIS SYSTEM - SECURE ACCESS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* --- IRONMAN / SCI-FI PALETTE --- */
-            --arc-blue: #00f3ff;        /* Main Cyan */
+            --arc-blue: #00f3ff;
             --arc-glow: rgba(0, 243, 255, 0.6);
-            --danger-red: #ff003c;      /* Spooky/Danger Red */
+            --danger-red: #ff003c;
             --danger-glow: rgba(255, 0, 60, 0.6);
-            --tech-gold: #ffce00;       /* HUD Gold */
+            --tech-gold: #ffce00;
+            --success-green: #00ff88;
+            --success-glow: rgba(0, 255, 136, 0.6);
             
-            --bg-dark: #030303;         /* Deepest Black */
+            --bg-dark: #030303;
             --bg-panel: rgba(10, 15, 20, 0.85);
             --text-main: #e0e0e0;
             --text-dim: #6a6a6a;
@@ -36,16 +37,17 @@
             color: var(--text-main);
             font-family: 'Share Tech Mono', monospace;
             line-height: 1.6;
-            padding: 20px;
             min-height: 100vh;
-            /* Sci-Fi Grid Background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
+            padding: 20px;
         }
         
-        /* --- SCANLINE EFFECT --- */
         body::before {
             content: " ";
             display: block;
@@ -61,13 +63,210 @@
         }
 
         .container {
-            max-width: 1500px;
-            margin: 0 auto;
+            max-width: 500px;
+            width: 100%;
             position: relative;
             z-index: 3;
         }
         
-        /* --- HEADER --- */
+        .login-panel {
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass);
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.15);
+            border-bottom: 3px solid var(--arc-blue);
+            border-top: 1px solid var(--arc-blue);
+        }
+        
+        .login-panel::before, .login-panel::after {
+            content: '';
+            position: absolute;
+            width: 80px; height: 80px;
+            opacity: 0.3;
+        }
+        
+        .login-panel::before {
+            top: 0; right: 0;
+            background: radial-gradient(circle at top right, var(--arc-blue), transparent 70%);
+        }
+        
+        .login-panel::after {
+            bottom: 0; left: 0;
+            background: radial-gradient(circle at bottom left, var(--danger-red), transparent 70%);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            text-align: center;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 900;
+            text-shadow: 0 0 20px var(--arc-glow);
+            margin-bottom: 10px;
+        }
+        
+        h1 span { color: var(--arc-blue); }
+        
+        .login-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--arc-blue);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .form-input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            color: var(--text-main);
+            padding: 18px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            width: 100%;
+        }
+        
+        .form-input:focus {
+            border-color: var(--arc-blue);
+            box-shadow: 0 0 15px var(--arc-glow);
+            background: rgba(0, 20, 30, 0.8);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 48px;
+            color: var(--arc-blue);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.7);
+            text-shadow: 0 0 5px white;
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid var(--danger-red);
+            color: var(--danger-red);
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .spinner {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .spinner.active {
+            display: block;
+        }
+        
+        .spinner i {
+            font-size: 30px;
+            color: var(--arc-blue);
+            animation: spin 1s linear infinite;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+            margin-top: 30px;
+        }
+        
+        .status-item i { 
+            color: var(--tech-gold); 
+            margin-right: 8px; 
+        }
+        
+        .status-active { 
+            color: var(--success-green); 
+            text-shadow: 0 0 5px var(--success-glow); 
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #mainSystem {
+            display: none;
+            width: 100%;
+        }
+        
+        .main-container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        
+        /* MAIN SYSTEM STYLES (SAMA DENGAN SEBELUMNYA) */
         .header-section {
             background: var(--bg-panel);
             backdrop-filter: var(--glass);
@@ -80,56 +279,28 @@
             border-bottom: 2px solid var(--arc-blue);
         }
         
-        /* Corner Accents */
-        .header-section::after {
-            content: '';
+        .logout-btn {
             position: absolute;
-            top: 0; right: 0;
-            width: 100px; height: 100px;
-            background: radial-gradient(circle at top right, var(--arc-blue), transparent 70%);
-            opacity: 0.3;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 48px;
-            text-align: center;
-            color: var(--text-main);
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 0, 60, 0.1);
+            color: var(--danger-red);
+            border: 1px solid var(--danger-red);
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 900;
-            text-shadow: 0 0 20px var(--arc-glow);
-            margin-bottom: 10px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
         }
         
-        h1 span { color: var(--arc-blue); }
-        
-        .header-subtitle {
-            text-align: center;
-            font-size: 18px;
-            color: var(--arc-blue);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            opacity: 0.8;
-            font-weight: bold;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            font-size: 14px;
-            color: var(--text-dim);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 15px;
+        .logout-btn:hover {
+            background: var(--danger-red);
+            color: white;
+            box-shadow: 0 0 15px var(--danger-glow);
         }
         
-        .status-item i { color: var(--tech-gold); margin-right: 8px; }
-        .status-active { color: var(--arc-blue); text-shadow: 0 0 5px var(--arc-glow); }
-        .status-danger { color: var(--danger-red); }
-
-        /* --- PANELS --- */
         .panel {
             background: rgba(5, 10, 15, 0.7);
             backdrop-filter: var(--glass);
@@ -140,28 +311,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--arc-blue), transparent);
-        }
-
-        .panel-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            color: var(--arc-blue);
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            letter-spacing: 2px;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-            padding-bottom: 10px;
-        }
-        
-        /* --- FORMS & INPUTS --- */
         .input-group {
             display: grid;
             grid-template-columns: 200px 1fr auto auto;
@@ -177,10 +326,9 @@
             font-family: 'Share Tech Mono', monospace;
             font-size: 16px;
             transition: all 0.3s ease;
-            border-radius: 2px; /* Tech square corners */
+            border-radius: 2px;
         }
 
-        /* Custom Select Styling */
         .tech-select {
             border-color: var(--arc-blue);
             color: var(--arc-blue);
@@ -193,13 +341,6 @@
             background-size: 12px auto;
         }
 
-        input:focus, select:focus {
-            border-color: var(--arc-blue);
-            box-shadow: 0 0 15px var(--arc-glow);
-            background: rgba(0, 20, 30, 0.8);
-        }
-
-        /* Buttons */
         .btn {
             border: none;
             padding: 0 30px;
@@ -223,27 +364,6 @@
             box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.7);
-            text-shadow: 0 0 5px white;
-        }
-
-        .btn-danger {
-            background: transparent;
-            border: 1px solid var(--danger-red);
-            color: var(--danger-red);
-            width: 54px;
-            padding: 0;
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-red);
-            color: white;
-            box-shadow: 0 0 20px var(--danger-glow);
-        }
-
-        /* --- TRANSFER GENERATOR --- */
         .transfer-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -267,16 +387,6 @@
             position: relative;
         }
 
-        .preview-box::before {
-            content: 'DATA STREAM PREVIEW';
-            position: absolute;
-            top: 5px; right: 10px;
-            font-size: 10px;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-        }
-
-        /* Searchable Dropdown Custom Styling */
         .dropdown-wrapper { position: relative; }
         
         .dropdown-list {
@@ -299,17 +409,6 @@
             cursor: pointer;
             transition: 0.2s;
             color: var(--text-main);
-        }
-
-        .dropdown-item:hover {
-            background: rgba(0, 243, 255, 0.2);
-            color: var(--arc-blue);
-            padding-left: 20px;
-        }
-
-        /* --- TABLE --- */
-        .data-panel {
-            border-left: 4px solid var(--danger-red);
         }
 
         table {
@@ -340,12 +439,6 @@
         }
 
         tbody tr:nth-child(even) { background: rgba(0,0,0,0.2); }
-
-        tbody tr:hover {
-            background: rgba(0, 243, 255, 0.08);
-            transform: scale(1.005);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
 
         td {
             padding: 16px;
@@ -380,186 +473,451 @@
             transition: 0.3s;
         }
 
-        .action-btn:hover {
-            background: var(--tech-gold);
-            color: black;
-            box-shadow: 0 0 15px rgba(255, 206, 0, 0.6);
-        }
-
-        /* --- LOADING & NOTIFICATIONS --- */
-        .loading-text { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @media (max-width: 768px) {
             .input-group { grid-template-columns: 1fr; }
             .transfer-grid { grid-template-columns: 1fr; }
             h1 { font-size: 28px; }
+            .login-panel { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header-section">
+    <!-- LOGIN SYSTEM -->
+    <div class="container" id="loginSystem">
+        <div class="login-panel">
             <h1>J.A.R.V.I.S <span>PROTOCOL</span></h1>
-            <p class="header-subtitle">Secure Banking Database // Access Level: Omega</p>
+            <p class="login-subtitle">Secure Access Required</p>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">USER IDENTIFICATION</label>
+                    <input type="text" 
+                           id="username" 
+                           class="form-input" 
+                           placeholder="ENTER USERNAME..." 
+                           autocomplete="off" 
+                           required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">SECURITY PASSCODE</label>
+                    <input type="password" 
+                           id="password" 
+                           class="form-input" 
+                           placeholder="ENTER PASSWORD..." 
+                           autocomplete="off" 
+                           required>
+                    <i class="fas fa-key input-icon"></i>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-unlock-alt"></i> INITIATE ACCESS
+                </button>
+                
+                <div class="error-message" id="loginError">
+                    <i class="fas fa-exclamation-triangle"></i> ACCESS DENIED - INVALID CREDENTIALS
+                </div>
+                
+                <div class="spinner" id="loginSpinner">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <p class="loading-text">VERIFYING CREDENTIALS...</p>
+                </div>
+            </form>
             
             <div class="status-bar">
-                <div class="status-item"><i class="fas fa-wifi"></i> NETWORK: <span class="status-active">SECURE</span></div>
-                <div class="status-item"><i class="fas fa-database"></i> DATABASE: <span class="status-active">ONLINE</span></div>
-                <div class="status-item"><i class="fas fa-shield-alt"></i> ENCRYPTION: <span style="color:var(--tech-gold)">256-BIT</span></div>
+                <div class="status-item"><i class="fas fa-shield-alt"></i> SYSTEM: <span class="status-active">SECURE</span></div>
+                <div class="status-item"><i class="fas fa-clock"></i> TIME: <span id="currentTime">--:--:--</span></div>
             </div>
         </div>
-        
-        <!-- Search Panel -->
-        <div class="panel">
-            <div class="panel-title">
-                <i class="fas fa-search"></i> TARGET ACQUISITION SYSTEM
+    </div>
+    
+    <!-- MAIN SYSTEM (HIDDEN UNTIL LOGIN) -->
+    <div id="mainSystem">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header-section">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> LOGOUT
+                </button>
+                <h1>J.A.R.V.I.S <span>PROTOCOL</span></h1>
+                <p class="header-subtitle">Secure Banking Database // Access Level: Omega</p>
+                
+                <div class="status-bar">
+                    <div class="status-item"><i class="fas fa-wifi"></i> NETWORK: <span class="status-active">SECURE</span></div>
+                    <div class="status-item"><i class="fas fa-database"></i> DATABASE: <span class="status-active">ONLINE</span></div>
+                    <div class="status-item"><i class="fas fa-shield-alt"></i> ENCRYPTION: <span style="color:var(--tech-gold)">256-BIT</span></div>
+                    <div class="status-item"><i class="fas fa-user"></i> USER: <span id="loggedInUser" style="color:var(--success-green)">---</span></div>
+                </div>
             </div>
             
-            <div class="input-group">
-                <select id="searchCategory" class="tech-select">
-                    <option value="all">ALL SECTORS</option>
-                    <option value="bank">BANK ID</option>
-                    <option value="noRekening">ACCOUNT #</option>
-                    <option value="atasNama">OPERATIVE NAME</option>
-                    <option value="ket1">PROTOCOL 1</option>
-                    <option value="ket2">PROTOCOL 2</option>
-                </select>
+            <!-- Search Panel -->
+            <div class="panel">
+                <div class="panel-title">
+                    <i class="fas fa-search"></i> TARGET ACQUISITION SYSTEM
+                </div>
                 
-                <input type="text" id="searchInput" placeholder="INITIATE SEARCH PARAMETERS...">
+                <div class="input-group">
+                    <select id="searchCategory" class="tech-select">
+                        <option value="all">ALL SECTORS</option>
+                        <option value="bank">BANK ID</option>
+                        <option value="noRekening">ACCOUNT #</option>
+                        <option value="atasNama">OPERATIVE NAME</option>
+                        <option value="ket1">PROTOCOL 1</option>
+                        <option value="ket2">PROTOCOL 2</option>
+                    </select>
+                    
+                    <input type="text" id="searchInput" placeholder="INITIATE SEARCH PARAMETERS...">
+                    
+                    <button id="searchBtn" class="btn btn-primary">
+                        <i class="fas fa-bolt"></i> SCAN
+                    </button>
+                    
+                    <button id="clearSearch" class="btn btn-danger" onclick="resetSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 
-                <button id="searchBtn" class="btn btn-primary">
-                    <i class="fas fa-bolt"></i> SCAN
-                </button>
-                
-                <button id="clearSearch" class="btn btn-danger" onclick="resetSearch()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <div style="font-size: 14px; color: var(--text-dim);">
+                    <i class="fas fa-info-circle"></i> RECORDS DETECTED: <span id="dataCount" style="color: var(--arc-blue); font-size: 18px; font-weight: bold;">0</span>
+                </div>
             </div>
-            
-            <div style="font-size: 14px; color: var(--text-dim);">
-                <i class="fas fa-info-circle"></i> RECORDS DETECTED: <span id="dataCount" style="color: var(--arc-blue); font-size: 18px; font-weight: bold;">0</span>
-            </div>
-        </div>
 
-        <!-- Transfer Generator Panel -->
-        <div class="panel" style="border-left-color: var(--tech-gold);">
-            <div class="panel-title" style="color: var(--tech-gold);">
-                <i class="fas fa-random"></i> FUND TRANSFER MATRIX
-            </div>
-            
-            <div class="transfer-grid">
-                <div>
-                    <label style="display:block; margin-bottom:10px; color:var(--tech-gold); font-weight:bold;">SOURCE ACCOUNT</label>
-                    <div class="dropdown-wrapper">
-                        <input type="text" id="sourceInput" placeholder="SEARCH SOURCE..." style="width: 100%;">
-                        <input type="hidden" id="sourceValue">
-                        <ul id="sourceList" class="dropdown-list"></ul>
+            <!-- Transfer Generator Panel -->
+            <div class="panel" style="border-left-color: var(--tech-gold);">
+                <div class="panel-title" style="color: var(--tech-gold);">
+                    <i class="fas fa-random"></i> FUND TRANSFER MATRIX
+                </div>
+                
+                <div class="transfer-grid">
+                    <div>
+                        <label style="display:block; margin-bottom:10px; color:var(--tech-gold); font-weight:bold;">SOURCE ACCOUNT</label>
+                        <div class="dropdown-wrapper">
+                            <input type="text" id="sourceInput" placeholder="SEARCH SOURCE..." style="width: 100%;">
+                            <input type="hidden" id="sourceValue">
+                            <ul id="sourceList" class="dropdown-list"></ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="display:block; margin-bottom:10px; color:var(--tech-gold); font-weight:bold;">DESTINATION ACCOUNT</label>
+                        <div class="dropdown-wrapper">
+                            <input type="text" id="destInput" placeholder="SEARCH DESTINATION..." style="width: 100%;">
+                            <input type="hidden" id="destValue">
+                            <ul id="destList" class="dropdown-list"></ul>
+                        </div>
                     </div>
                 </div>
                 
-                <div>
-                    <label style="display:block; margin-bottom:10px; color:var(--tech-gold); font-weight:bold;">DESTINATION ACCOUNT</label>
-                    <div class="dropdown-wrapper">
-                        <input type="text" id="destInput" placeholder="SEARCH DESTINATION..." style="width: 100%;">
-                        <input type="hidden" id="destValue">
-                        <ul id="destList" class="dropdown-list"></ul>
+                <div class="preview-box">
+                    <div id="previewOutput">AWAITING INPUT DATA...</div>
+                </div>
+                
+                <button id="copyTransferBtn" class="btn btn-primary" onclick="copyTransferText()" style="width: 100%; margin-top: 20px; height: 60px; font-size: 18px; background: linear-gradient(135deg, var(--tech-gold), #ff9900); box-shadow: 0 0 20px rgba(255, 206, 0, 0.4);">
+                    <i class="fas fa-microchip"></i> EXECUTE COPY PROTOCOL
+                </button>
+            </div>
+            
+            <!-- Data Table Panel -->
+            <div class="panel data-panel">
+                <div class="panel-title" style="color: var(--danger-red);">
+                    <i class="fas fa-database"></i> CLASSIFIED DATA VAULT
+                </div>
+                
+                <div id="loadingIndicator" style="text-align: center; padding: 50px; display: block;">
+                    <i class="fas fa-circle-notch fa-spin" style="font-size: 40px; color: var(--arc-blue); margin-bottom: 20px;"></i>
+                    <p class="loading-text">DECRYPTING FILES...</p>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table id="dataTable" style="display: none;">
+                        <thead id="tableHeader"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    
+                    <div id="noData" style="display: none; text-align: center; padding: 50px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 50px; color: var(--danger-red); margin-bottom: 20px;"></i>
+                        <p style="color: var(--text-main); font-size: 20px; font-weight: bold;">NO DATA FOUND</p>
+                        <p style="color: var(--text-dim);">ADJUST SEARCH PARAMETERS</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="preview-box">
-                <div id="previewOutput">AWAITING INPUT DATA...</div>
-            </div>
-            
-            <button id="copyTransferBtn" class="btn btn-primary" onclick="copyTransferText()" style="width: 100%; margin-top: 20px; height: 60px; font-size: 18px; background: linear-gradient(135deg, var(--tech-gold), #ff9900); box-shadow: 0 0 20px rgba(255, 206, 0, 0.4);">
-                <i class="fas fa-microchip"></i> EXECUTE COPY PROTOCOL
-            </button>
-        </div>
-        
-        <!-- Data Table Panel -->
-        <div class="panel data-panel">
-            <div class="panel-title" style="color: var(--danger-red);">
-                <i class="fas fa-database"></i> CLASSIFIED DATA VAULT
-            </div>
-            
-            <div id="loadingIndicator" style="text-align: center; padding: 50px; display: block;">
-                <i class="fas fa-circle-notch fa-spin" style="font-size: 40px; color: var(--arc-blue); margin-bottom: 20px;"></i>
-                <p class="loading-text">DECRYPTING FILES...</p>
-            </div>
-            
-            <div style="overflow-x: auto;">
-                <table id="dataTable" style="display: none;">
-                    <thead id="tableHeader"></thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-                
-                <div id="noData" style="display: none; text-align: center; padding: 50px;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 50px; color: var(--danger-red); margin-bottom: 20px;"></i>
-                    <p style="color: var(--text-main); font-size: 20px; font-weight: bold;">NO DATA FOUND</p>
-                    <p style="color: var(--text-dim);">ADJUST SEARCH PARAMETERS</p>
-                </div>
-            </div>
-        </div>
 
-        <div style="text-align: center; padding: 20px; color: var(--text-dim); font-size: 12px; letter-spacing: 2px;">
-            STARK INDUSTRIES PROPRIETARY SYSTEM <span id="currentDate"></span>
+            <div style="text-align: center; padding: 20px; color: var(--text-dim); font-size: 12px; letter-spacing: 2px;">
+                STARK INDUSTRIES PROPRIETARY SYSTEM <span id="currentDate"></span>
+            </div>
         </div>
     </div>
 
     <script>
+        // Login System Variables
         const spreadsheetId = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
-        const sheetName = 'DATA ALL REKENING';
+        
+        // GID untuk setiap sheet - HARUS DIPERBAIKI SESUAI DENGAN SHEET ANDA
+        const SHEET_GIDS = {
+            'DATA ALL REKENING': '714670525',  // GID untuk sheet data rekening
+            'Data Login': '0'                   // GID untuk sheet login - GANTI INI!
+        };
         
         let allData = [];
         let filteredData = [];
         let tableHeaders = [];
+        let isAuthenticated = false;
         
-        // --- Load Data ---
-        async function loadData() {
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const table = document.getElementById('dataTable');
-            const noData = document.getElementById('noData');
-            
-            try {
-                await new Promise(resolve => setTimeout(resolve, 1200));
-                
-                tableHeaders = ["ID", "BANK", "OPERATIVE", "ACCOUNT #", "OWNER", "PROTOCOL 1", "PROTOCOL 2", "CLEARANCE", "DIVISION", "ACTION"];
-                
-                // Dummy Data for Ironman Theme
-                allData = [
-                    { no: '001', bank: 'STARK BANK', nama: 'J. STARK', noRekening: '5860575410', atasNama: 'TONY STARK', ket1: 'ARC REACTOR', ket2: 'Pepper Potts', ket3: 'LEVEL 10', ket4: 'AVENGERS' },
-                    { no: '002', bank: 'SHIELD', nama: 'N. FURY', noRekening: '7391956727', atasNama: 'NICK FURY', ket1: 'HELI-CARRIER', ket2: 'Maria Hill', ket3: 'LEVEL 9', ket4: 'OPS' },
-                    { no: '003', bank: 'WAKANDA', nama: 'T. CHALLA', noRekening: '5678901234', atasNama: 'BLACK PANTHER', ket1: 'VIBRANIUM', ket2: 'Okoye', ket3: 'LEVEL 10', ket4: 'ROYAL' },
-                    { no: '004', bank: 'HYDRA', nama: 'A. ZOLA', noRekening: '4321098765', atasNama: 'ARNIM ZOLA', ket1: 'PROJECT PAPER', ket2: 'Red Skull', ket3: 'HOSTILE', ket4: 'HIDDEN' },
-                    { no: '005', bank: 'STARK BANK', nama: 'H. POTTER', noRekening: '9876543210', atasNama: 'HAPPY HOGAN', ket1: 'SECURITY', ket2: 'Peter Parker', ket3: 'LEVEL 5', ket4: 'LOGISTICS' }
-                ];
-                
-                filteredData = [...allData];
-                
-                renderTable();
-                updateDataCount();
-                setupTransferDropdowns(); 
-                
-                loadingIndicator.style.display = 'none';
-                table.style.display = 'table';
-                noData.style.display = 'none';
-                
-            } catch (error) {
-                console.error('System Failure:', error);
-                loadingIndicator.innerHTML = `
-                    <i class="fas fa-skull" style="font-size: 50px; color: var(--danger-red); margin-bottom: 20px;"></i>
-                    <p class="loading-text" style="color: var(--danger-red);">CRITICAL ERROR</p>
-                    <button onclick="loadData()" style="margin-top: 20px; padding: 10px 20px; background: var(--arc-blue); border: none; color: black; font-weight: bold; cursor: pointer;">REBOOT SYSTEM</button>
-                `;
+        // --- UPDATE TIME ---
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID');
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
             }
         }
-
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // --- LOGIN SYSTEM ---
+        async function verifyLogin(username, password) {
+            const loginError = document.getElementById('loginError');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            try {
+                loginError.classList.remove('show');
+                loginSpinner.classList.add('active');
+                
+                // PERBAIKAN: Mengambil data login dari sheet "Data Login"
+                // Gunakan gid yang benar untuk sheet login
+                const loginGid = SHEET_GIDS['Data Login']; // Ganti dengan gid yang sesuai
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${2029607001}`;
+                
+                console.log('Loading login data from:', csvUrl);
+                const response = await fetch(csvUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                console.log('CSV Response:', csvText.substring(0, 200));
+                
+                // Parse CSV dengan benar (handle quotes dan koma di dalam cell)
+                const rows = parseCSV(csvText);
+                console.log('Parsed rows:', rows);
+                
+                // Find username in column C (index 2) and password in column D (index 3)
+                let isValid = false;
+                let foundUser = null;
+                
+                // Cari mulai dari baris ke-1 (asumsi baris 0 adalah header)
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (row.length >= 4) {
+                        // Kolom C (index 2) untuk username, kolom D (index 3) untuk password
+                        const sheetUsername = row[2] ? row[2].trim() : '';
+                        const sheetPassword = row[3] ? row[3].trim() : '';
+                        
+                        console.log(`Checking: ${sheetUsername} / ${sheetPassword}`);
+                        
+                        if (sheetUsername === username && sheetPassword === password) {
+                            isValid = true;
+                            foundUser = sheetUsername;
+                            break;
+                        }
+                    }
+                }
+                
+                // Simulate network delay for realism
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                loginSpinner.classList.remove('active');
+                
+                if (isValid) {
+                    return { success: true, username: foundUser };
+                } else {
+                    loginError.textContent = 'ACCESS DENIED - INVALID USERNAME OR PASSWORD';
+                    loginError.classList.add('show');
+                    return { success: false };
+                }
+                
+            } catch (error) {
+                console.error('Login verification failed:', error);
+                loginSpinner.classList.remove('active');
+                loginError.textContent = 'SYSTEM ERROR - COULD NOT VERIFY CREDENTIALS';
+                loginError.classList.add('show');
+                return { success: false };
+            }
+        }
+        
+        // Fungsi untuk parse CSV dengan benar
+        function parseCSV(csvText) {
+            const rows = [];
+            let currentRow = [];
+            let currentValue = '';
+            let insideQuotes = false;
+            
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                
+                if (char === '"') {
+                    // Toggle insideQuotes
+                    insideQuotes = !insideQuotes;
+                } else if (char === ',' && !insideQuotes) {
+                    // Akhir dari sebuah value
+                    currentRow.push(currentValue);
+                    currentValue = '';
+                } else if (char === '\n' && !insideQuotes) {
+                    // Akhir dari sebuah row
+                    currentRow.push(currentValue);
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentValue = '';
+                } else if (char === '\r') {
+                    // Skip carriage return
+                    continue;
+                } else {
+                    currentValue += char;
+                }
+            }
+            
+            // Add the last row if exists
+            if (currentValue !== '' || currentRow.length > 0) {
+                currentRow.push(currentValue);
+                rows.push(currentRow);
+            }
+            
+            return rows;
+        }
+        
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                document.getElementById('loginError').textContent = 'PLEASE ENTER BOTH USERNAME AND PASSWORD';
+                document.getElementById('loginError').classList.add('show');
+                return;
+            }
+            
+            verifyLogin(username, password).then(result => {
+                if (result.success) {
+                    isAuthenticated = true;
+                    document.getElementById('loginSystem').style.display = 'none';
+                    document.getElementById('mainSystem').style.display = 'block';
+                    document.getElementById('loggedInUser').textContent = result.username.toUpperCase();
+                    
+                    // Load main data
+                    loadDataFromGoogleSheets();
+                }
+            });
+        }
+        
+        function logout() {
+            isAuthenticated = false;
+            document.getElementById('mainSystem').style.display = 'none';
+            document.getElementById('loginSystem').style.display = 'block';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').classList.remove('show');
+        }
+        
+        // --- MAIN SYSTEM FUNCTIONS ---
+        async function loadDataFromGoogleSheets() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            try {
+                // Load from DATA ALL REKENING sheet
+                const dataGid = SHEET_GIDS['DATA ALL REKENING'];
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${714670525}`;
+                
+                console.log('Loading data from:', csvUrl);
+                const response = await fetch(csvUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                console.log('Data rows loaded:', rows.length);
+                
+                if (rows.length >= 5) {
+                    allData = [];
+                    
+                    // Asumsi struktur data:
+                    // Kolom: A=no, B=bank, E=nama, F=noRekening, G=atasNama, I=ket1, J=ket2, K=ket3, L=ket4
+                    // (Indeks: 0=A, 1=B, 4=E, 5=F, 6=G, 8=I, 9=J, 10=K, 11=L)
+                    
+                    for (let i = 4; i < rows.length; i++) { // Mulai dari baris ke-5 (indeks 4)
+                        const row = rows[i];
+                        if (row.length >= 12) {
+                            const dataItem = {
+                                no: String(i - 3).padStart(3, '0'), // Nomor urut dimulai dari 1
+                                bank: row[1] || '',           // Kolom B
+                                nama: row[4] || '',           // Kolom E
+                                noRekening: row[5] || '',     // Kolom F
+                                atasNama: row[6] || '',       // Kolom G
+                                ket1: row[8] || '',           // Kolom I
+                                ket2: row[9] || '',           // Kolom J
+                                ket3: row[10] || '',          // Kolom K
+                                ket4: row[11] || ''           // Kolom L
+                            };
+                            
+                            // Hanya tambah jika ada data bank atau noRekening
+                            if (dataItem.bank.trim() || dataItem.noRekening.trim()) {
+                                allData.push(dataItem);
+                            }
+                        }
+                    }
+                    
+                    filteredData = [...allData];
+                    
+                    // Set table headers
+                    tableHeaders = ["ID", "BANK", "OPERATIVE", "ACCOUNT #", "OWNER", "PROTOCOL 1", "PROTOCOL 2", "CLEARANCE", "DIVISION", "ACTION"];
+                    
+                    renderTable();
+                    updateDataCount();
+                    setupTransferDropdowns(); 
+                    
+                    loadingIndicator.style.display = 'none';
+                    document.getElementById('dataTable').style.display = 'table';
+                    document.getElementById('noData').style.display = 'none';
+                    
+                } else {
+                    throw new Error('Invalid data format or not enough rows');
+                }
+                
+            } catch (error) {
+                console.error('Google Sheets Load Failed:', error);
+                // Fallback to dummy data if sheet fails to load
+                loadDummyData();
+            }
+        }
+        
+        function loadDummyData() {
+            allData = [
+                { no: '001', bank: 'STARK BANK', nama: 'J. STARK', noRekening: '5860575410', atasNama: 'TONY STARK', ket1: 'ARC REACTOR', ket2: 'Pepper Potts', ket3: 'LEVEL 10', ket4: 'AVENGERS' },
+                { no: '002', bank: 'SHIELD', nama: 'N. FURY', noRekening: '7391956727', atasNama: 'NICK FURY', ket1: 'HELI-CARRIER', ket2: 'Maria Hill', ket3: 'LEVEL 9', ket4: 'OPS' },
+                { no: '003', bank: 'WAKANDA', nama: 'T. CHALLA', noRekening: '5678901234', atasNama: 'BLACK PANTHER', ket1: 'VIBRANIUM', ket2: 'Okoye', ket3: 'LEVEL 10', ket4: 'ROYAL' },
+                { no: '004', bank: 'HYDRA', nama: 'A. ZOLA', noRekening: '4321098765', atasNama: 'ARNIM ZOLA', ket1: 'PROJECT PAPER', ket2: 'Red Skull', ket3: 'HOSTILE', ket4: 'HIDDEN' },
+                { no: '005', bank: 'STARK BANK', nama: 'H. POTTER', noRekening: '9876543210', atasNama: 'HAPPY HOGAN', ket1: 'SECURITY', ket2: 'Peter Parker', ket3: 'LEVEL 5', ket4: 'LOGISTICS' }
+            ];
+            
+            filteredData = [...allData];
+            tableHeaders = ["ID", "BANK", "OPERATIVE", "ACCOUNT #", "OWNER", "PROTOCOL 1", "PROTOCOL 2", "CLEARANCE", "DIVISION", "ACTION"];
+            
+            renderTable();
+            updateDataCount();
+            setupTransferDropdowns();
+            
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('dataTable').style.display = 'table';
+            document.getElementById('noData').style.display = 'none';
+        }
+        
         function renderTableHeader() {
             const tableHeader = document.getElementById('tableHeader');
             tableHeader.innerHTML = '';
@@ -613,7 +971,6 @@
             document.getElementById('dataCount').textContent = filteredData.length;
         }
 
-        // --- Search Logic ---
         function searchData() {
             const searchInput = document.getElementById('searchInput');
             const searchCategory = document.getElementById('searchCategory').value;
@@ -666,7 +1023,7 @@
             });
         }
 
-        // --- Searchable Dropdown Logic ---
+        // --- SEARCHABLE DROPDOWN LOGIC ---
         function setupTransferDropdowns() {
             const sourceInput = document.getElementById('sourceInput');
             const sourceList = document.getElementById('sourceList');
@@ -734,13 +1091,6 @@
             setupEvents(destInput, destList, destValue);
         }
 
-        document.addEventListener('click', function(e) {
-            const srcWrap = document.querySelector('.dropdown-wrapper:nth-of-type(1)');
-            const dstWrap = document.querySelector('.dropdown-wrapper:nth-of-type(2)');
-            if (srcWrap && !srcWrap.contains(e.target)) document.getElementById('sourceList').classList.remove('active');
-            if (dstWrap && !dstWrap.contains(e.target)) document.getElementById('destList').classList.remove('active');
-        });
-
         function updateTransferPreview() {
             const sourceInput = document.getElementById('sourceInput');
             const destInput = document.getElementById('destInput');
@@ -780,84 +1130,69 @@
                 btn.style.color = 'black';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
-                    btn.style.background = ''; // Reset to gradient
+                    btn.style.background = '';
                     btn.style.color = '';
                 }, 2000);
             });
         }
         
-        async function loadDataFromGoogleSheets() {
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            try {
-                const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=714670525`;
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const csvText = await response.text();
-                const rows = csvText.split('\n').map(row => {
-                    const result = [];
-                    let inQuotes = false;
-                    let currentValue = '';
-                    for (let i = 0; i < row.length; i++) {
-                        const char = row[i];
-                        if (char === '"') inQuotes = !inQuotes;
-                        else if (char === ',' && !inQuotes) { result.push(currentValue); currentValue = ''; }
-                        else currentValue += char;
-                    }
-                    result.push(currentValue);
-                    return result;
-                });
-                
-                if (rows.length >= 5) {
-                    const headerIndices = [1, 4, 5, 6, 8, 9, 10, 11];
-                    allData = [];
-                    for (let i = 5; i < rows.length; i++) {
-                        const row = rows[i];
-                        if (row.length >= 12) {
-                            const dataItem = {
-                                no: String(i - 4).padStart(3, '0'),
-                                bank: row[1] || '',
-                                nama: row[4] || '',
-                                noRekening: row[5] || '',  
-                                atasNama: row[6] || '',
-                                ket1: row[8] || '',         
-                                ket2: row[9] || '',         
-                                ket3: row[10] || '',
-                                ket4: row[11] || ''
-                            };
-                            if (dataItem.bank.trim() || dataItem.noRekening.trim()) {
-                                allData.push(dataItem);
-                            }
-                        }
-                    }
-                    filteredData = [...allData];
-                    renderTable();
-                    updateDataCount();
-                    setupTransferDropdowns(); 
-                    loadingIndicator.style.display = 'none';
-                    document.getElementById('dataTable').style.display = 'table';
-                    document.getElementById('noData').style.display = 'none';
+        // --- EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update date
+            const now = new Date();
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('id-ID');
+            
+            // Login form submit
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Main system event listeners (will be set after login)
+            document.addEventListener('click', function(e) {
+                const srcWrap = document.querySelector('.dropdown-wrapper:nth-of-type(1)');
+                const dstWrap = document.querySelector('.dropdown-wrapper:nth-of-type(2)');
+                if (srcWrap && !srcWrap.contains(e.target)) {
+                    const sourceList = document.getElementById('sourceList');
+                    if (sourceList) sourceList.classList.remove('active');
                 }
-            } catch (error) {
-                console.error('Google Sheets Load Failed:', error);
-                loadData(); // Fallback to dummy
+                if (dstWrap && !dstWrap.contains(e.target)) {
+                    const destList = document.getElementById('destList');
+                    if (destList) destList.classList.remove('active');
+                }
+            });
+            
+            // Password field enter key
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(e);
+                }
+            });
+        });
+        
+        // Set up main system event listeners after login
+        function setupMainSystemEvents() {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', searchData);
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keyup', (e) => { 
+                    if (e.key === 'Enter') searchData(); 
+                });
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(searchData, 300);
+                });
             }
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            const now = new Date();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('id-ID');
-            loadDataFromGoogleSheets();
-            
-            document.getElementById('searchBtn').addEventListener('click', searchData);
-            document.getElementById('searchInput').addEventListener('keyup', (e) => { if (e.key === 'Enter') searchData(); });
-            document.getElementById('searchInput').addEventListener('input', function() {
-                clearTimeout(this.searchTimeout);
-                this.searchTimeout = setTimeout(searchData, 300);
-            });
-        });
+        // Override loadDataFromGoogleSheets to include event setup
+        const originalLoadData = loadDataFromGoogleSheets;
+        loadDataFromGoogleSheets = async function() {
+            await originalLoadData();
+            setupMainSystemEvents();
+        };
     </script>
 </body>
 </html>
-
-
