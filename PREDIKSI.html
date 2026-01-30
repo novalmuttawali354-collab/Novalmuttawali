@@ -8,20 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Original Spider Colors */
             --spider-red: #e62429;
             --spider-blue: #2a7fff;
             --spider-light: #ffffff;
-            --spider-dark: #0c0c1a;
+            --spider-dark: #05050a; /* Lebih gelap untuk efek neon */
             --spider-accent: #ffcc00;
             --spider-dark-red: #8b0000;
             --spider-gold: #ffcc00;
             --spider-purple: #8a2be2;
-            --panel: rgba(12, 12, 26, 0.95);
+            
+            /* Neon Glitch Colors */
+            --neon-cyan: #00f3ff;
+            --neon-pink: #bc13fe;
+            --neon-green: #0aff0a;
+            
+            --panel: rgba(10, 10, 26, 0.95);
+            
+            /* Glow Effects */
             --glow-red: 0 0 15px var(--spider-red), 0 0 30px rgba(230, 36, 41, 0.4);
             --glow-blue: 0 0 15px var(--spider-blue), 0 0 30px rgba(42, 127, 255, 0.4);
-            --glow-yellow: 0 0 15px var(--spider-accent), 0 0 30px rgba(255, 204, 0, 0.4);
-            --glow-gold: 0 0 15px var(--spider-gold), 0 0 30px rgba(255, 204, 0, 0.4);
-            --glow-purple: 0 0 15px var(--spider-purple), 0 0 30px rgba(138, 43, 226, 0.4);
+            --glow-cyan: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0, 243, 255, 0.3);
+            --glow-pink: 0 0 10px var(--neon-pink), 0 0 20px rgba(188, 19, 254, 0.3);
         }
         
         * {
@@ -36,100 +44,149 @@
             font-family: 'Exo 2', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(230, 36, 41, 0.1) 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(42, 127, 255, 0.1) 0%, transparent 25%),
-                radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05) 0%, transparent 35%);
             min-height: 100vh;
             position: relative;
             overflow-y: auto;
         }
+
+        /* =========================================
+           NEON FUTURE GLITCH BACKGROUND STYLES
+           ========================================= */
         
-        /* Jaring Laba-laba Background */
-        .spider-web {
+        /* Container Utama Background */
+        .glitch-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.15;
-            background-image: 
-                /* Garis vertikal tengah */
-                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to bottom, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                /* Garis horizontal tengah */
-                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                linear-gradient(to right, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%),
-                /* Lingkaran konsentris */
-                radial-gradient(circle at 50% 50%, transparent 30%, rgba(255, 255, 255, 0.05) 31%, transparent 32%),
-                radial-gradient(circle at 50% 50%, transparent 40%, rgba(255, 255, 255, 0.05) 41%, transparent 42%),
-                radial-gradient(circle at 50% 50%, transparent 50%, rgba(255, 255, 255, 0.05) 51%, transparent 52%),
-                radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.05) 61%, transparent 62%),
-                radial-gradient(circle at 50% 50%, transparent 70%, rgba(255, 255, 255, 0.05) 71%, transparent 72%);
-            background-size: 
-                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
-                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
-                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-            background-position: 
-                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%,
-                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%,
-                50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
-            animation: webPulse 10s infinite alternate;
+            z-index: -10;
+            background-color: #020205;
+            overflow: hidden;
         }
-        
-        @keyframes webPulse {
-            0% { opacity: 0.1; }
-            100% { opacity: 0.2; }
-        }
-        
-        /* Spider yang bergerak di jaring */
-        .spider {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle, var(--spider-red) 40%, var(--spider-dark-red) 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--spider-red);
-            z-index: -1;
-            animation: spiderMove 25s infinite linear;
-        }
-        
-        .spider::before, .spider::after {
-            content: '';
+
+        /* Layer 1: Animated Neon Gradient Mesh */
+        .neon-mesh {
             position: absolute;
-            background-color: var(--spider-light);
-            border-radius: 2px;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.1) 0%, transparent 40%);
+            animation: meshMove 15s infinite alternate ease-in-out;
+            filter: blur(40px);
         }
-        
-        .spider::before {
-            width: 8px;
-            height: 30px;
-            top: -15px;
-            left: 11px;
+
+        @keyframes meshMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(5deg); }
         }
-        
-        .spider::after {
-            width: 30px;
-            height: 8px;
-            top: 11px;
-            left: -15px;
+
+        /* Layer 2: Perspective Grid (Retro Wave Style) */
+        .retro-grid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-image: 
+                linear-gradient(var(--spider-dark) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(42, 127, 255, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center bottom;
+            transform: perspective(500px) rotateX(60deg) scale(2);
+            transform-origin: bottom center;
+            animation: gridMove 10s linear infinite;
+            opacity: 0.3;
         }
-        
-        @keyframes spiderMove {
-            0% { transform: translate(10vw, 10vh) rotate(0deg); }
-            25% { transform: translate(80vw, 30vh) rotate(90deg); }
-            50% { transform: translate(50vw, 70vh) rotate(180deg); }
-            75% { transform: translate(20vw, 50vh) rotate(270deg); }
-            100% { transform: translate(10vw, 10vh) rotate(360deg); }
+
+        @keyframes gridMove {
+            0% { background-position: center 0; }
+            100% { background-position: center 40px; }
         }
+
+        /* Layer 3: Glitch Overlay (Distortion Lines) */
+        .glitch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
+            z-index: -5;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+        }
+
+        .glitch-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            top: 50%;
+            opacity: 0;
+            animation: glitchLineFlash 4s infinite;
+        }
+
+        .glitch-line:nth-child(1) { top: 20%; animation-delay: 0.5s; background: var(--neon-cyan); }
+        .glitch-line:nth-child(2) { top: 40%; animation-delay: 2.2s; height: 3px; background: var(--neon-pink); }
+        .glitch-line:nth-child(3) { top: 70%; animation-delay: 3.5s; background: var(--spider-blue); }
+        .glitch-line:nth-child(4) { top: 85%; animation-delay: 1.1s; height: 4px; background: var(--neon-green); }
+
+        @keyframes glitchLineFlash {
+            0% { opacity: 0; transform: translateX(-100%); }
+            5% { opacity: 0.8; }
+            10% { opacity: 0; transform: translateX(100%); }
+            100% { opacity: 0; }
+        }
+
+        /* Layer 4: RGB Split Glitch Block (Random Appearance) */
+        .glitch-block {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 10%;
+            background: rgba(255, 255, 255, 0.02);
+            z-index: -4;
+            opacity: 0;
+            animation: blockGlitch 8s infinite;
+        }
+
+        @keyframes blockGlitch {
+            0%, 95% { opacity: 0; transform: translateX(0); clip-path: inset(0 0 0 0); }
+            96% { opacity: 1; transform: translateX(-10px); clip-path: inset(10% 0 20% 0); background: rgba(255, 0, 0, 0.1); }
+            97% { transform: translateX(10px); background: rgba(0, 255, 255, 0.1); }
+            98% { opacity: 1; transform: translateX(-5px); }
+            99% { opacity: 0; }
+        }
+
+        /* Layer 5: CRT Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* =========================================
+           ORIGINAL UI STYLES (ADAPTED)
+           ========================================= */
         
         .container {
             max-width: 1200px;
@@ -139,7 +196,6 @@
             z-index: 1;
         }
         
-        /* Header dengan layout vertikal */
         header {
             padding: 40px 0 30px;
             position: relative;
@@ -148,10 +204,9 @@
             border-bottom: 2px solid transparent;
             border-image: linear-gradient(90deg, transparent, var(--spider-red), var(--spider-blue), transparent);
             border-image-slice: 1;
-            background: linear-gradient(to bottom, rgba(230, 36, 41, 0.1), transparent);
+            background: linear-gradient(to bottom, rgba(230, 36, 41, 0.05), transparent);
         }
         
-        /* Logo Styles (Modified slightly as image removed) */
         .logo {
             display: flex;
             flex-direction: column;
@@ -173,9 +228,53 @@
             margin-bottom: 15px;
             position: relative;
             display: inline-block;
+            animation: textGlitch 5s infinite alternate-reverse;
+        }
+
+        /* Glitch effect pada teks judul */
+        h1::before, h1::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--spider-dark);
+        }
+        
+        h1::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--neon-pink);
+            clip-path: inset(44% 0 61% 0);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
         }
         
         h1::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--neon-cyan);
+            clip-path: inset(20% 0 10% 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 60% 0); }
+            100% { clip-path: inset(30% 0 30% 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 10% 0); }
+            60% { clip-path: inset(10% 0 80% 0); }
+            80% { clip-path: inset(50% 0 30% 0); }
+            100% { clip-path: inset(70% 0 20% 0); }
+        }
+        
+        h1::after { /* Reset dekorasi garis bawah h1 */
             content: '';
             position: absolute;
             bottom: -10px;
@@ -195,6 +294,7 @@
             font-weight: 300;
             max-width: 600px;
             margin: 0 auto 30px;
+            text-shadow: 0 0 5px var(--spider-blue);
         }
         
         .datetime-container {
@@ -218,6 +318,7 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s;
+            backdrop-filter: blur(5px);
         }
         
         .current-time {
@@ -227,6 +328,7 @@
         
         .current-date:hover, .current-time:hover {
             transform: translateY(-5px);
+            background-color: rgba(20, 20, 40, 0.98);
         }
         
         .current-date:hover {
@@ -281,7 +383,7 @@
         
         /* Warning */
         .warning {
-            background-color: rgba(230, 36, 41, 0.2);
+            background-color: rgba(230, 36, 41, 0.15);
             color: #ff99aa;
             padding: 20px;
             border-radius: 10px;
@@ -289,34 +391,19 @@
             text-align: center;
             font-weight: 600;
             border-left: 5px solid var(--spider-red);
-            box-shadow: var(--glow-red);
+            box-shadow: 0 0 15px rgba(230, 36, 41, 0.2);
             position: relative;
             overflow: hidden;
             max-width: 900px;
             animation: warningPulse 3s infinite alternate;
+            backdrop-filter: blur(5px);
             z-index: 5;
+            border: 1px solid var(--spider-red);
         }
         
         @keyframes warningPulse {
             0% { box-shadow: 0 0 10px rgba(230, 36, 41, 0.5); }
             100% { box-shadow: 0 0 20px rgba(230, 36, 41, 0.8); }
-        }
-        
-        .warning::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            animation: warning-shine 3s infinite;
-        }
-        
-        @keyframes warning-shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
         
         /* Navigation Tabs */
@@ -328,7 +415,8 @@
             background-color: var(--panel);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(42, 127, 255, 0.3);
         }
         
         .tab-btn {
@@ -353,6 +441,7 @@
         .tab-btn:hover {
             background-color: rgba(42, 127, 255, 0.2);
             color: var(--spider-light);
+            text-shadow: 0 0 8px var(--spider-blue);
         }
         
         .tab-btn.active {
@@ -391,23 +480,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Mode Selector - KEMBALI ke 2 mode saja */
+        /* Mode Selector */
         .mode-selector {
             background-color: var(--panel);
             border-radius: 15px;
             padding: 35px;
             margin-bottom: 40px;
             border: 1px solid rgba(230, 36, 41, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.05);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(42, 127, 255, 0.05), transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.05), transparent 50%);
             z-index: 5;
+            backdrop-filter: blur(10px);
         }
         
         .mode-selector::before {
@@ -416,19 +503,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
-        }
-        
-        .mode-selector::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 20%, rgba(230, 36, 41, 0.1), transparent 50%);
-            pointer-events: none;
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
         
         .selector-title {
@@ -471,31 +548,19 @@
             z-index: 1;
             max-width: 400px;
             min-width: 250px;
-        }
-        
-        .mode-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(230, 36, 41, 0.2), rgba(42, 127, 255, 0.2));
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: -1;
+            backdrop-filter: blur(5px);
         }
         
         .mode-btn.single {
             background: linear-gradient(135deg, rgba(230, 36, 41, 0.2), rgba(230, 36, 41, 0.1));
             color: #ff8888;
-            border: 2px solid rgba(230, 36, 41, 0.5);
+            border: 1px solid rgba(230, 36, 41, 0.5);
         }
         
         .mode-btn.all {
             background: linear-gradient(135deg, rgba(42, 127, 255, 0.2), rgba(42, 127, 255, 0.1));
             color: #88aaff;
-            border: 2px solid rgba(42, 127, 255, 0.5);
+            border: 1px solid rgba(42, 127, 255, 0.5);
         }
         
         .mode-btn.active {
@@ -516,10 +581,6 @@
             box-shadow: var(--glow-blue);
         }
         
-        .mode-btn:hover::before {
-            opacity: 1;
-        }
-        
         .mode-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -535,9 +596,7 @@
             border-top: 1px solid rgba(230, 36, 41, 0.2);
             display: none;
             animation: fadeIn 0.5s forwards;
-            background-image: 
-                linear-gradient(45deg, transparent 98%, rgba(230, 36, 41, 0.1) 100%),
-                linear-gradient(-45deg, transparent 98%, rgba(42, 127, 255, 0.1) 100%);
+            backdrop-filter: blur(5px);
         }
         
         .pasaran-selector.show {
@@ -631,26 +690,6 @@
             font-weight: bold;
         }
         
-        .pasaran-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(230, 36, 41, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s;
-        }
-        
-        .pasaran-item.hoki::before {
-            background: linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.1), transparent);
-        }
-        
-        .pasaran-item:hover::before {
-            transform: translateX(100%);
-        }
-        
         .pasaran-item:hover {
             background-color: rgba(230, 36, 41, 0.3);
             border-color: var(--spider-red);
@@ -726,15 +765,6 @@
             box-shadow: none;
         }
         
-        .submit-btn:disabled:hover::before {
-            left: -100%;
-        }
-        
-        .submit-btn:disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
         /* Result Container */
         .result-container {
             display: none;
@@ -742,17 +772,15 @@
             border-radius: 15px;
             padding: 35px;
             margin-top: 40px;
-            border: 1px solid rgba(230, 36, 41, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.1);
+            border: 1px solid rgba(42, 127, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(42, 127, 255, 0.05);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(42, 127, 255, 0.05), transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.05), transparent 50%);
             z-index: 5;
+            backdrop-filter: blur(10px);
         }
         
         .result-container::before {
@@ -761,8 +789,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
         
         .result-container.show {
@@ -781,7 +810,7 @@
             align-items: center;
             margin-bottom: 30px;
             padding-bottom: 25px;
-            border-bottom: 1px solid rgba(230, 36, 41, 0.2);
+            border-bottom: 1px solid rgba(42, 127, 255, 0.2);
             text-align: center;
         }
         
@@ -863,35 +892,9 @@
             overflow: hidden;
         }
         
-        .copy-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.7s;
-        }
-        
-        .copy-btn:hover::before {
-            left: 100%;
-        }
-        
         .copy-btn:hover {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-blue);
-        }
-        
-        .copy-btn.copied {
-            background: linear-gradient(135deg, var(--spider-accent), #cc9900);
-            box-shadow: 0 0 25px rgba(255, 204, 0, 0.6);
-            animation: copiedPulse 1s;
-        }
-        
-        @keyframes copiedPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
         
         .auto-refresh {
@@ -940,10 +943,8 @@
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(42, 127, 255, 0.05), transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.05), transparent 50%);
             z-index: 5;
+            backdrop-filter: blur(10px);
         }
         
         .jadwal-container::before {
@@ -952,8 +953,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
         
         .jadwal-header {
@@ -1004,23 +1006,10 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             border-right: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
         }
         
         .jadwal-table th:last-child {
             border-right: none;
-        }
-        
-        .jadwal-table th::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--spider-accent);
-            box-shadow: 0 0 8px var(--spider-accent);
         }
         
         .jadwal-table tbody tr {
@@ -1036,10 +1025,6 @@
         
         .jadwal-table tbody tr:nth-child(even) {
             background-color: rgba(10, 10, 30, 0.5);
-        }
-        
-        .jadwal-table tbody tr:nth-child(even):hover {
-            background-color: rgba(230, 36, 41, 0.15);
         }
         
         .jadwal-table td {
@@ -1060,18 +1045,6 @@
             text-align: left;
             color: #88aaff;
             font-weight: 500;
-        }
-        
-        .jadwal-table td:nth-child(3), 
-        .jadwal-table td:nth-child(4) {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--spider-red);
-            font-weight: 600;
-            text-shadow: 0 0 8px rgba(230, 36, 41, 0.3);
-        }
-        
-        .jadwal-table td:last-child {
-            border-right: none;
         }
         
         /* Time Status */
@@ -1142,28 +1115,19 @@
         
         /* Disclaimer */
         .disclaimer {
-            background-color: rgba(230, 36, 41, 0.2);
+            background-color: rgba(230, 36, 41, 0.15);
             color: #ffaabb;
             padding: 25px;
             border-radius: 12px;
             margin: 40px auto;
             font-size: 0.95rem;
             border-left: 5px solid var(--spider-red);
-            box-shadow: var(--glow-red);
+            box-shadow: 0 0 15px rgba(230, 36, 41, 0.2);
             position: relative;
             overflow: hidden;
             max-width: 1000px;
             z-index: 5;
-        }
-        
-        .disclaimer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--spider-red), #ff6688);
+            border: 1px solid var(--spider-red);
         }
         
         footer {
@@ -1171,7 +1135,7 @@
             margin-top: 50px;
             color: #8888cc;
             padding-top: 30px;
-            border-top: 1px solid rgba(230, 36, 41, 0.2);
+            border-top: 1px solid rgba(42, 127, 255, 0.2);
             font-size: 0.9rem;
             position: relative;
             z-index: 5;
@@ -1184,25 +1148,8 @@
             margin-bottom: 20px;
         }
         
-        /* Spider Web Lines Animation */
-        .web-line {
-            position: fixed;
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
-            width: 1px;
-            height: 100%;
-            top: 0;
-            animation: webLineMove 20s infinite linear;
-            z-index: -1;
-        }
-        
-        @keyframes webLineMove {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        
-        /* Style untuk hasil All Pasaran yang lebih kompak - Jarak 21px */
         .all-pasaran-result {
-            margin-bottom: 21px !important; /* Jarak 21px antar pasaran */
+            margin-bottom: 21px !important; 
             padding-bottom: 8px;
             border-bottom: 1px dashed rgba(230, 36, 41, 0.2);
             line-height: 1.4;
@@ -1217,9 +1164,23 @@
             line-height: 1.4;
             font-size: 1rem;
         }
-        
-        @media (max-width: 1200px) {
-            /* Styles removed as spider-corner elements are deleted */
+
+        /* Floating Particles for Glitch Effect */
+        .glitch-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #fff;
+            z-index: -3;
+            opacity: 0;
+            animation: floatUp 10s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
         
         @media (max-width: 992px) {
@@ -1227,135 +1188,51 @@
                 flex-direction: column;
                 align-items: center;
             }
-            
-            .mode-btn {
-                width: 100%;
-                max-width: 400px;
-            }
-            
             .datetime-container {
                 flex-direction: column;
                 align-items: center;
             }
-            
-            .jadwal-info {
-                flex-direction: column;
-            }
         }
         
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-                padding: 0 15px;
-            }
-            
-            .mode-selector, .result-container, .jadwal-container, .disclaimer {
-                padding: 25px 20px;
-            }
-            
-            .pasaran-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                max-height: 200px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .result-content {
-                font-size: 1rem;
-                max-height: 500px;
-                padding: 20px;
-            }
-            
-            .jadwal-table th {
-                padding: 12px 10px;
-                font-size: 0.9rem;
-            }
-            
-            .jadwal-table td {
-                padding: 10px 8px;
-                font-size: 0.9rem;
-            }
-            
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            .all-pasaran-result {
-                margin-bottom: 16px !important; /* Sesuaikan untuk mobile */
-            }
-        }
-        
-        @media (max-width: 600px) {
-            .date-text, .time-text {
-                font-size: 1.1rem;
-            }
-            
-            .mode-btn {
-                padding: 20px;
-                font-size: 1.1rem;
-                min-width: 200px;
-            }
-            
-            .submit-btn {
-                padding: 20px;
-                font-size: 1.2rem;
-            }
-            
-            .result-title, .jadwal-title {
-                font-size: 1.5rem;
-            }
-            
-            .jadwal-table th, .jadwal-table td {
-                padding: 8px 5px;
-                font-size: 0.8rem;
-            }
-            
-            .all-pasaran-result {
-                margin-bottom: 12px !important; /* Sesuaikan untuk mobile kecil */
-            }
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; padding: 0 15px; }
+            .pasaran-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-height: 200px; }
+            .action-buttons { flex-direction: column; }
+            .nav-tabs { flex-direction: column; }
         }
         
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .current-date, .current-time {
-                min-width: 100%;
-                padding: 15px 20px;
-            }
+            h1 { font-size: 1.8rem; }
+            .current-date, .current-time { min-width: 100%; padding: 15px 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Jaring Laba-laba -->
-    <div class="spider-web"></div>
+    <!-- BACKGROUND: Neon Future Glitch -->
+    <div class="glitch-background">
+        <div class="neon-mesh"></div>
+        <div class="retro-grid"></div>
+        <div class="glitch-overlay">
+            <div class="glitch-line"></div>
+            <div class="glitch-line"></div>
+            <div class="glitch-line"></div>
+            <div class="glitch-line"></div>
+            <div class="glitch-block"></div>
+        </div>
+        <!-- Generated via JS for random positions -->
+        <div id="particles-container"></div>
+    </div>
     
-    <!-- Spider yang bergerak -->
-    <div class="spider" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
-    <div class="spider" style="top: 70%; left: 80%; animation-delay: 5s; animation-duration: 30s;"></div>
-    
-    <!-- Garis jaring laba-laba animasi -->
-    <div class="web-line" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="web-line" style="left: 30%; animation-delay: 2s;"></div>
-    <div class="web-line" style="left: 50%; animation-delay: 4s;"></div>
-    <div class="web-line" style="left: 70%; animation-delay: 6s;"></div>
-    <div class="web-line" style="left: 90%; animation-delay: 8s;"></div>
-    
-    <!-- GAMBAR DIKANAN DAN KIRI DIHAPUS SESUAI PERMINTAAN -->
+    <!-- Scanline Overlay -->
+    <div class="scanlines"></div>
     
     <div class="container">
         <header>
             <div class="logo">
-                <!-- LOGO DI TENGAH DIHAPUS SESUAI PERMINTAAN -->
-                <h1>SPIDER-MATRIX PREDICTOR</h1>
-                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Dengan Jaring Laba-Laba Digital</p>
+                <!-- Data attribute for glitch effect -->
+                <h1 data-text="SPIDER-MATRIX PREDICTOR">SPIDER-MATRIX PREDICTOR</h1>
+                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Neon Future Glitch Edition</p>
             </div>
             
             <div class="datetime-container">
@@ -1508,14 +1385,13 @@
         
         <footer>
             <div class="footer-glow"></div>
-            <p>© 2025 SPIDER-MATRIX PREDICTOR v2.0 | Sistem Prediksi Digital dengan Teknologi Jaring Laba-Laba</p>
+            <p>© 2025 SPIDER-MATRIX PREDICTOR v2.0 | Neon Glitch Edition</p>
             <p>Data prediksi diperbarui otomatis setiap hari oleh Spider-Matrix System</p>
         </footer>
     </div>
 
     <script>
-        // Daftar lengkap semua pasaran dengan data yang lebih akurat
-        // TAMBAHKAN HOKI DRAW di dalam daftar pasaran
+        // Daftar lengkap semua pasaran
         const semuaPasaran = [
             "TOTO MACAU PAGI",
             "HUAHIN 0100",
@@ -1570,10 +1446,10 @@
             "TOTO MALI 2330",
             "JAKARTA 2330",
             "KINGKONG 4D MALAM",
-            "HOKI DRAW"  // TAMBAHKAN HOKI DRAW sebagai pasaran biasa
+            "HOKI DRAW"
         ];
         
-        // Data jadwal pasaran lengkap - TAMBAHKAN HOKI DRAW
+        // Data jadwal pasaran lengkap
         const jadwalPasaran = [
             { code: "KMEC", pasaran: "TOTO MACAU PAGI", jamTutup: "00:00", jamResult: "00:15" },
             { code: "TM", pasaran: "HUAHIN 0100", jamTutup: "00:45", jamResult: "01:00" },
@@ -1628,7 +1504,7 @@
             { code: "WQOI", pasaran: "TOTO MALI 2330", jamTutup: "23:15", jamResult: "23:30" },
             { code: "JKEC", pasaran: "JAKARTA 2330", jamTutup: "23:25", jamResult: "23:40" },
             { code: "KK4D", pasaran: "KINGKONG 4D MALAM", jamTutup: "23:30", jamResult: "23:45" },
-            { code: "HOKI", pasaran: "HOKI DRAW", jamTutup: "00:00", jamResult: "00:00" } // TAMBAHKAN HOKI DRAW
+            { code: "HOKI", pasaran: "HOKI DRAW", jamTutup: "00:00", jamResult: "00:00" }
         ];
         
         // Daftar shio
@@ -1638,27 +1514,26 @@
             "MONYET", "AYAM", "ANJING", "BABI"
         ];
         
-        // Daftar hari dalam bahasa Indonesia
+        // Daftar hari
         const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         
-        // Daftar bulan dalam bahasa Inggris (untuk output prediksi)
+        // Daftar bulan
         const bulanInggris = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
         
-        // Daftar bulan dalam bahasa Indonesia (untuk header)
         const bulanIndonesia = [
             "Januari", "Februari", "Maret", "April", "Mei", "Juni",
             "Juli", "Agustus", "September", "Oktober", "November", "Desember"
         ];
         
         // Variabel global
-        let currentMode = "single"; // "single" atau "all"
+        let currentMode = "single";
         let selectedPasaran = null;
         let lastGeneratedDate = null;
         let cachedPredictions = {};
-        let currentTab = "generator"; // "generator" atau "jadwal"
+        let currentTab = "generator";
         
         // Fungsi untuk memperbarui tanggal dan waktu
         function updateDateTime() {
@@ -1668,50 +1543,36 @@
             const monthName = bulanIndonesia[now.getMonth()];
             const year = now.getFullYear();
             
-            // Format waktu
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
             
-            // Update tampilan tanggal
-            document.getElementById('currentDate').innerHTML = 
-                `${dayName}, ${date} ${monthName} ${year}`;
+            document.getElementById('currentDate').innerHTML = `${dayName}, ${date} ${monthName} ${year}`;
+            document.getElementById('currentTime').innerHTML = `${hours}:${minutes}:${seconds}`;
             
-            // Update tampilan waktu
-            document.getElementById('currentTime').innerHTML = 
-                `${hours}:${minutes}:${seconds}`;
-            
-            // Cek apakah sudah hari baru (setelah tengah malam)
             const todayDate = now.getDate();
             if (lastGeneratedDate !== todayDate) {
-                // Reset cache karena sudah hari baru
                 cachedPredictions = {};
                 lastGeneratedDate = todayDate;
-                
-                // Jika sudah ada hasil prediksi, generate ulang
                 if (document.getElementById('resultContainer').classList.contains('show')) {
                     setTimeout(showPredictionResult, 100);
                 }
             }
             
-            // Update status waktu di tabel jadwal jika sedang dilihat
             if (currentTab === "jadwal") {
                 updateTimeStatus();
             }
         }
         
-        // Fungsi untuk mendapatkan tanggal hari ini dalam format output prediksi
         function getTodayDate() {
             const now = new Date();
             const dayName = hari[now.getDay()];
             const date = now.getDate();
             const monthName = bulanInggris[now.getMonth()];
             const year = now.getFullYear();
-            
             return `${dayName}, ${date} ${monthName} ${year}`;
         }
         
-        // Fungsi untuk menghasilkan angka acak dengan panjang tertentu
         function generateRandomNumber(length) {
             let result = '';
             for (let i = 0; i < length; i++) {
@@ -1720,7 +1581,6 @@
             return result;
         }
         
-        // Fungsi untuk menghasilkan beberapa angka 4D
         function generate4D(count) {
             const result = [];
             for (let i = 0; i < count; i++) {
@@ -1729,7 +1589,6 @@
             return result;
         }
         
-        // Fungsi untuk menghasilkan beberapa angka 3D
         function generate3D(count) {
             const result = [];
             for (let i = 0; i < count; i++) {
@@ -1738,7 +1597,6 @@
             return result;
         }
         
-        // Fungsi untuk menghasilkan beberapa angka 2D
         function generate2D(count) {
             const result = [];
             for (let i = 0; i < count; i++) {
@@ -1747,7 +1605,6 @@
             return result;
         }
         
-        // Fungsi untuk menghasilkan angka twin (dua digit sama)
         function generateTwin(count) {
             const result = [];
             for (let i = 0; i < count; i++) {
@@ -1757,10 +1614,8 @@
             return result;
         }
         
-        // Fungsi untuk mengambil shio acak
         function getRandomShio(count) {
             const result = [];
-            // Acak urutan shio
             const shuffledShio = [...daftarShio].sort(() => 0.5 - Math.random());
             for (let i = 0; i < count && i < shuffledShio.length; i++) {
                 result.push(shuffledShio[i]);
@@ -1768,9 +1623,7 @@
             return result;
         }
         
-        // Fungsi untuk menghasilkan prediksi untuk satu pasaran dalam format yang diminta
         function generatePredictionForPasaran(pasaranName, isForAll = false) {
-            // Gunakan cache jika sudah ada untuk hari ini
             const today = new Date();
             const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
             const cacheKey = `${pasaranName}_${todayKey}_${isForAll ? 'all' : 'single'}`;
@@ -1779,22 +1632,18 @@
                 return cachedPredictions[cacheKey];
             }
             
-            // Untuk HOKI DRAW, kita akan gunakan jumlah angka yang sedikit lebih banyak
-            // tapi tetap dalam format yang sama dengan pasaran lainnya
             let bbfs, amAiCk, prediksi4D, prediksi3D, prediksi2D, colokBebas2D, twin, shio;
             
             if (pasaranName === "HOKI DRAW") {
-                // Format yang sama, tapi jumlah angka sedikit lebih banyak untuk HOKI DRAW
-                bbfs = generateRandomNumber(8); // 8 digit untuk HOKI DRAW
-                amAiCk = generateRandomNumber(6); // 6 digit untuk HOKI DRAW
-                prediksi4D = generate4D(6); // 6 angka 4D
-                prediksi3D = generate3D(6); // 6 angka 3D
-                prediksi2D = generate2D(12); // 12 angka 2D
-                colokBebas2D = generate2D(5); // 5 kombinasi 2D
-                twin = generateTwin(4); // 4 angka twin
-                shio = getRandomShio(4); // 4 shio
+                bbfs = generateRandomNumber(8);
+                amAiCk = generateRandomNumber(6);
+                prediksi4D = generate4D(6);
+                prediksi3D = generate3D(6);
+                prediksi2D = generate2D(12);
+                colokBebas2D = generate2D(5);
+                twin = generateTwin(4);
+                shio = getRandomShio(4);
             } else {
-                // Format standar untuk pasaran biasa
                 bbfs = generateRandomNumber(7);
                 amAiCk = generateRandomNumber(5);
                 prediksi4D = generate4D(4);
@@ -1808,9 +1657,7 @@
             const colokBebas1 = Math.floor(Math.random() * 10);
             const colokBebas2 = Math.floor(Math.random() * 10);
             
-            // Format untuk All Pasaran: Lebih kompak dengan jarak 21 piksel (1 baris baru)
             if (isForAll) {
-                // Format dengan jarak 21px (1 baris baru + pemisah khusus)
                 const prediction = `Prediksi ${pasaranName}
 Hari ${getTodayDate()}
 BBFS : ${bbfs}
@@ -1825,11 +1672,9 @@ SHIO : ${shio.join(' / ')}
 Selalu Utamakan Prediksi Sendiri
 
 `;
-                // Simpan ke cache
                 cachedPredictions[cacheKey] = prediction;
                 return prediction;
             } else {
-                // Format normal untuk Single Pasaran (dengan baris kosong ekstra)
                 const prediction = `Prediksi ${pasaranName}
 Hari ${getTodayDate()}
 BBFS : ${bbfs}
@@ -1844,30 +1689,24 @@ SHIO : ${shio.join(' / ')}
 Selalu Utamakan Prediksi Sendiri
 
 `;
-                // Simpan ke cache
                 cachedPredictions[cacheKey] = prediction;
                 return prediction;
             }
         }
         
-        // Fungsi untuk menampilkan daftar pasaran di dropdown dan grid
         function populatePasaranLists() {
             const dropdown = document.getElementById('pasaranDropdown');
             const grid = document.getElementById('pasaranGrid');
             
-            // Kosongkan konten
             dropdown.innerHTML = '<option value="">-- PILIH PASARAN --</option>';
             grid.innerHTML = '';
             
-            // Tambahkan semua pasaran
             semuaPasaran.forEach(pasaran => {
-                // Tambahkan ke dropdown
                 const option = document.createElement('option');
                 option.value = pasaran;
                 option.textContent = pasaran;
                 dropdown.appendChild(option);
                 
-                // Tambahkan ke grid dengan class khusus untuk HOKI DRAW
                 const button = document.createElement('button');
                 const isHoki = pasaran === "HOKI DRAW";
                 button.className = isHoki ? 'pasaran-item hoki' : 'pasaran-item';
@@ -1877,67 +1716,35 @@ Selalu Utamakan Prediksi Sendiri
                 button.dataset.pasaran = pasaran;
                 
                 button.addEventListener('click', function() {
-                    // Hapus selected dari semua item
-                    document.querySelectorAll('.pasaran-item').forEach(item => {
-                        item.classList.remove('selected');
-                    });
-                    
-                    // Tambahkan selected ke item yang diklik
+                    document.querySelectorAll('.pasaran-item').forEach(item => item.classList.remove('selected'));
                     this.classList.add('selected');
-                    
-                    // Set dropdown value
                     dropdown.value = pasaran;
-                    
-                    // Set pasaran terpilih
                     selectedPasaran = pasaran;
-                    
-                    // Update status tombol submit
                     updateSubmitButtonStatus();
-                    
-                    // Efek visual klik
                     this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
+                    setTimeout(() => { this.style.transform = ''; }, 150);
                 });
                 
                 grid.appendChild(button);
             });
             
-            // Event listener untuk dropdown
             dropdown.addEventListener('change', function() {
                 const pasaran = this.value;
-                
-                // Hapus selected dari semua item grid
-                document.querySelectorAll('.pasaran-item').forEach(item => {
-                    item.classList.remove('selected');
-                });
-                
-                // Tambahkan selected ke item grid yang sesuai
+                document.querySelectorAll('.pasaran-item').forEach(item => item.classList.remove('selected'));
                 if (pasaran) {
                     const correspondingButton = document.querySelector(`.pasaran-item[data-pasaran="${pasaran}"]`);
-                    if (correspondingButton) {
-                        correspondingButton.classList.add('selected');
-                    }
+                    if (correspondingButton) correspondingButton.classList.add('selected');
                 }
-                
-                // Set pasaran terpilih
                 selectedPasaran = pasaran;
-                
-                // Update status tombol submit
                 updateSubmitButtonStatus();
             });
         }
         
-        // Fungsi untuk memperbarui status tombol submit
         function updateSubmitButtonStatus() {
             const submitBtn = document.getElementById('submitBtn');
             
             if (currentMode === "single") {
-                // Untuk mode single, tombol aktif hanya jika pasaran dipilih
                 submitBtn.disabled = !selectedPasaran;
-                
-                // Update teks tombol
                 if (selectedPasaran) {
                     if (selectedPasaran === "HOKI DRAW") {
                         submitBtn.innerHTML = `<i class="fas fa-crown"></i> GENERATE HOKI DRAW`;
@@ -1948,68 +1755,47 @@ Selalu Utamakan Prediksi Sendiri
                     submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX`;
                 }
             } else {
-                // Untuk mode all, tombol selalu aktif
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ALL PASARAN MATRIX`;
             }
         }
         
-        // Fungsi untuk menampilkan hasil prediksi
         function showPredictionResult() {
             const resultContainer = document.getElementById('resultContainer');
             const resultTitle = document.getElementById('resultTitle');
             const resultContent = document.getElementById('resultContent');
             
-            // Efek loading sebelum menampilkan hasil
-            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--spider-red);"><i class="fas fa-spider fa-spin fa-2x"></i><br><br>Menjalankan Spider-Matrix...</div>';
+            // Loading glitch effect
+            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--spider-red);"><i class="fas fa-bolt fa-spin fa-2x"></i><br><br>MENGAKSES MATRIX NEON...</div>';
             resultContainer.classList.add('show');
-            
-            // Hapus class compact jika ada
             resultContainer.classList.remove('compact-mode');
             
-            // Delay untuk efek loading
             setTimeout(() => {
-                // Generate prediksi berdasarkan mode
                 let prediksiText = "";
                 let resultHTML = "";
                 
                 if (currentMode === "single") {
-                    // Generate prediksi untuk satu pasaran
                     resultTitle.innerHTML = selectedPasaran === "HOKI DRAW" 
                         ? `<i class="fas fa-crown"></i> SPIDER-MATRIX: HOKI DRAW`
                         : `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
                     prediksiText = generatePredictionForPasaran(selectedPasaran, false);
                     resultContent.textContent = prediksiText;
                 } else {
-                    // Generate prediksi untuk semua pasaran
                     resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL SPIDER-MATRIX: ALL PASARAN`;
-                    
-                    // Tambah class untuk mode kompak
                     resultContainer.classList.add('compact-mode');
                     
-                    // Generate untuk semua pasaran dengan jarak 21px
-                    semuaPasaran.forEach((pasaran, index) => {
-                        // Untuk All Pasaran, gunakan format yang lebih kompak
+                    semuaPasaran.forEach((pasaran) => {
                         const prediksi = generatePredictionForPasaran(pasaran, true);
-                        
-                        // Untuk teks yang akan disalin: tambahkan prediksi
                         prediksiText += prediksi;
-                        
-                        // Untuk tampilan HTML: gunakan div dengan class all-pasaran-result
                         resultHTML += `<div class="all-pasaran-result">${prediksi.replace(/\n/g, '<br>')}</div>`;
                     });
                     
-                    // Tampilkan hasil dengan HTML
                     resultContent.innerHTML = resultHTML;
                 }
                 
-                // Simpan teks untuk copy-paste
                 resultContent.dataset.copyText = prediksiText;
-                
-                // Scroll ke hasil prediksi
                 resultContainer.scrollIntoView({ behavior: 'smooth' });
                 
-                // Efek visual saat hasil muncul
                 const contentElement = document.getElementById('resultContent');
                 contentElement.style.opacity = '0';
                 contentElement.style.transform = 'translateY(20px)';
@@ -2022,28 +1808,21 @@ Selalu Utamakan Prediksi Sendiri
             }, 800);
         }
         
-        // Fungsi untuk menyalin hasil prediksi
         function copyPredictionToClipboard() {
             const resultContent = document.getElementById('resultContent');
             const copyBtn = document.getElementById('copyBtn');
             
-            // Ambil teks dari data attribute atau dari textContent
             let textToCopy = resultContent.dataset.copyText || resultContent.textContent;
             
-            // Untuk All Pasaran, pastikan kita menggunakan teks yang sudah disiapkan
             if (currentMode === "all" && resultContent.dataset.copyText) {
                 textToCopy = resultContent.dataset.copyText;
             }
             
-            // Salin teks ke clipboard
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
-                    // Ubah tampilan tombol untuk menunjukkan berhasil disalin
                     const originalText = copyBtn.innerHTML;
                     copyBtn.innerHTML = `<i class="fas fa-check"></i> SPIDER-MATRIX COPIED!`;
                     copyBtn.classList.add('copied');
-                    
-                    // Kembalikan ke tampilan semula setelah 2 detik
                     setTimeout(() => {
                         copyBtn.innerHTML = originalText;
                         copyBtn.classList.remove('copied');
@@ -2055,55 +1834,45 @@ Selalu Utamakan Prediksi Sendiri
                 });
         }
         
-        // Fungsi untuk menghitung status waktu pasaran
         function getTimeStatus(jamTutup, jamResult) {
             const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes(); // dalam menit
+            const currentTime = now.getHours() * 60 + now.getMinutes();
             
-            // Parse jam tutup dan result
             const [tutupJam, tutupMenit] = jamTutup.split(':').map(Number);
             const [resultJam, resultMenit] = jamResult.split(':').map(Number);
             
             const tutupTime = tutupJam * 60 + tutupMenit;
             const resultTime = resultJam * 60 + resultMenit;
             
-            // Logika status
             if (currentTime < tutupTime) {
-                // Sebelum jam tutup - pasaran masih buka
                 const diff = tutupTime - currentTime;
-                if (diff <= 30) { // Kurang dari 30 menit lagi tutup
+                if (diff <= 30) {
                     return { status: "soon", text: "SEGERA TUTUP", diff: diff };
                 } else {
                     return { status: "open", text: "OPEN", diff: diff };
                 }
             } else if (currentTime < resultTime) {
-                // Sudah tutup, belum result
                 const diff = resultTime - currentTime;
                 return { status: "closed", text: "CLOSED", diff: diff };
             } else {
-                // Sudah result
                 return { status: "closed", text: "CLOSED", diff: 0 };
             }
         }
         
-        // Fungsi untuk mengisi tabel jadwal
         function populateJadwalTable() {
             const tableBody = document.getElementById('jadwalTableBody');
             tableBody.innerHTML = '';
             
-            // Urutkan jadwal berdasarkan jam tutup
             const sortedJadwal = [...jadwalPasaran].sort((a, b) => {
                 const [aJam, aMenit] = a.jamTutup.split(':').map(Number);
                 const [bJam, bMenit] = b.jamTutup.split(':').map(Number);
                 return (aJam * 60 + aMenit) - (bJam * 60 + bMenit);
             });
             
-            // Tambahkan setiap baris ke tabel
             sortedJadwal.forEach(item => {
                 const row = document.createElement('tr');
                 const timeStatus = getTimeStatus(item.jamTutup, item.jamResult);
                 
-                // Tampilkan khusus untuk HOKI DRAW
                 const isHoki = item.pasaran === "HOKI DRAW";
                 const pasaranCell = isHoki 
                     ? `<span style="color: #ffcc00; font-weight: bold;">${item.pasaran}</span>`
@@ -2120,13 +1889,12 @@ Selalu Utamakan Prediksi Sendiri
             });
         }
         
-        // Fungsi untuk memperbarui status waktu di tabel
         function updateTimeStatus() {
             const rows = document.querySelectorAll('#jadwalTableBody tr');
             
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
-                const jamTutup = cells[2].textContent.split(' ')[0]; // Ambil hanya waktu (exclude status)
+                const jamTutup = cells[2].textContent.split(' ')[0];
                 const jamResult = cells[3].textContent;
                 
                 const timeStatus = getTimeStatus(jamTutup, jamResult);
@@ -2139,15 +1907,10 @@ Selalu Utamakan Prediksi Sendiri
             });
         }
         
-        // Fungsi untuk mengubah tab
         function switchTab(tabName) {
-            // Update current tab
             currentTab = tabName;
             
-            // Update tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
             if (tabName === 'generator') {
                 document.getElementById('tabGenerator').classList.add('active');
@@ -2157,30 +1920,38 @@ Selalu Utamakan Prediksi Sendiri
                 document.getElementById('tabJadwal').classList.add('active');
                 document.getElementById('jadwalContent').classList.add('active');
                 document.getElementById('generatorContent').classList.remove('active');
-                
-                // Update time status when switching to jadwal tab
                 setTimeout(updateTimeStatus, 100);
             }
         }
         
-        // Fungsi untuk menginisialisasi halaman
         function initializePage() {
-            // Set tanggal terakhir generate ke hari ini
+            // Generate Random Particles for Background
+            const particlesContainer = document.getElementById('particles-container');
+            for(let i=0; i<30; i++) {
+                const p = document.createElement('div');
+                p.classList.add('glitch-particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.animationDuration = (5 + Math.random() * 10) + 's';
+                
+                // Random neon colors
+                const colors = ['#fff', '#00f3ff', '#bc13fe', '#e62429'];
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(p);
+            }
+
             const today = new Date();
             lastGeneratedDate = today.getDate();
             
-            // Update tanggal dan waktu setiap detik
             updateDateTime();
             setInterval(updateDateTime, 1000);
             
-            // Inisialisasi daftar pasaran
             populatePasaranLists();
             updateSubmitButtonStatus();
             
-            // Inisialisasi tabel jadwal
             populateJadwalTable();
             
-            // Event listener untuk tombol mode single
             document.getElementById('singleModeBtn').addEventListener('click', function() {
                 currentMode = "single";
                 this.classList.add('active');
@@ -2189,7 +1960,6 @@ Selalu Utamakan Prediksi Sendiri
                 updateSubmitButtonStatus();
             });
             
-            // Event listener untuk tombol mode all
             document.getElementById('allModeBtn').addEventListener('click', function() {
                 currentMode = "all";
                 this.classList.add('active');
@@ -2198,46 +1968,28 @@ Selalu Utamakan Prediksi Sendiri
                 updateSubmitButtonStatus();
             });
             
-            // Event listener untuk tombol submit
             document.getElementById('submitBtn').addEventListener('click', showPredictionResult);
-            
-            // Event listener untuk tombol copy
             document.getElementById('copyBtn').addEventListener('click', copyPredictionToClipboard);
+            document.getElementById('tabGenerator').addEventListener('click', function() { switchTab('generator'); });
+            document.getElementById('tabJadwal').addEventListener('click', function() { switchTab('jadwal'); });
             
-            // Event listener untuk tab navigation
-            document.getElementById('tabGenerator').addEventListener('click', function() {
-                switchTab('generator');
-            });
-            
-            document.getElementById('tabJadwal').addEventListener('click', function() {
-                switchTab('jadwal');
-            });
-            
-            // Efek visual saat tombol diklik
             document.querySelectorAll('button').forEach(button => {
                 button.addEventListener('click', function() {
-                    // Efek visual saat tombol diklik
                     this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
+                    setTimeout(() => { this.style.transform = ''; }, 150);
                 });
             });
             
-            // Tampilkan notifikasi sistem
             setTimeout(() => {
-                console.log(`%cSPIDER-MATRIX PREDICTOR v2.0
-%cSistem Prediksi Digital dengan Jaring Laba-Laba telah diinisialisasi
+                console.log(`%cNEON SPIDER-MATRIX v2.0
+%cSistem Prediksi Digital dengan Neon Glitch Effect telah diinisialisasi
 Mode: ${currentMode.toUpperCase()}
-Tanggal: ${getTodayDate()}
-Total Pasaran: ${semuaPasaran.length} (termasuk HOKI DRAW)
-Prediksi akan diperbarui otomatis setiap hari pukul 00:00`, 
-                'color: #e62429; font-size: 16px; font-weight: bold;',
-                'color: #88aaff; font-size: 14px;');
+Tanggal: ${getTodayDate()}`, 
+                'color: #00f3ff; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #00f3ff;',
+                'color: #bc13fe; font-size: 14px;');
             }, 1000);
         }
         
-        // Jalankan fungsi inisialisasi saat halaman dimuat
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
