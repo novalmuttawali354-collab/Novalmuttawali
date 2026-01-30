@@ -51,6 +51,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            
+            /* Grid Background Dasar (Statis) */
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
@@ -58,8 +60,38 @@
             background-size: 50px 50px, 50px 50px, 100% 100%;
             padding: 20px;
             overflow-x: hidden;
+            position: relative; /* Penting untuk posisi absolute */
         }
         
+        /* --- TAMBAHAN EFEK GARIS BERGERAK (ANIMASI BACKGROUND) --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; /* Di atas background color, di bawah konten */
+            pointer-events: none;
+            
+            /* Membuat pola garis diagonal bercahaya */
+            background: 
+                linear-gradient(
+                    115deg,
+                    transparent 40%,
+                    rgba(0, 243, 255, 0.02) 45%,
+                    rgba(0, 243, 255, 0.08) 50%, /* Garis tengah paling terang */
+                    rgba(0, 243, 255, 0.02) 55%,
+                    transparent 60%
+                );
+            background-size: 300% 300%;
+            animation: moveBeams 10s linear infinite;
+        }
+        
+        @keyframes moveBeams {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        /* ---------------------------------------------------------- */
+
+        /* Efek Scanline Statis (Overlay CRT) */
         body::after {
             content: " ";
             display: block;
@@ -76,7 +108,7 @@
             max-width: 550px; 
             width: 100%;
             position: relative;
-            z-index: 3;
+            z-index: 3; /* Pastikan di atas background animasi */
         }
         
         /* --- LOGIN PANEL --- */
@@ -462,7 +494,6 @@
             display: inline-block;
         }
 
-        /* Garis dekoratif di bawah nama */
         .staff-name-display::after {
             content: '';
             position: absolute;
@@ -1043,8 +1074,8 @@
     <script>
         // CONFIGURATION
         const spreadsheetId = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
-        const loginSheetGid = '2029607001'; // GID untuk sheet Data Login
-        const dataSheetGid = '714670525'; // GID untuk sheet DATA ALL REKENING
+        const loginSheetGid = '2029607001'; 
+        const dataSheetGid = '714670525'; 
         
         const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzY0Woj1sRcRgFFnClc-3rtEETe41RylC-ZeJmmfVQK5OthJJ6e-VCFLtkdUoqY-9tG/exec'; 
         
@@ -1205,7 +1236,6 @@
                 
                 if(iteration >= finalText.length){ 
                     clearInterval(interval);
-                    // Tambahkan kelas active untuk efek garis bawah setelah selesai
                     element.classList.add('active');
                 }
                 
@@ -1237,13 +1267,12 @@
                 
                 let isValid = false;
                 let foundUser = null;
-                let foundStaffName = ""; // Variabel baru untuk menyimpan nama dari Kolom A
+                let foundStaffName = ""; 
                 
                 for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
                     if (row.length >= 4) {
-                        // Ambil data kolom
-                        // Asumsi: A=Nama (0), B=Keterangan (1), C=Username (2), D=Password (3)
+                        // Kolom A (0), B (1), C (2), D (3)
                         const sheetName = row[0] ? row[0].trim() : ''; // Kolom A
                         const sheetUsername = row[2] ? row[2].trim() : ''; // Kolom C
                         const sheetPassword = row[3] ? row[3].trim() : ''; // Kolom D
@@ -1251,7 +1280,7 @@
                         if (sheetUsername === username && sheetPassword === password) {
                             isValid = true;
                             foundUser = sheetUsername;
-                            foundStaffName = sheetName; // Simpan nama dari Kolom A
+                            foundStaffName = sheetName; 
                             break;
                         }
                     }
@@ -1267,7 +1296,6 @@
                         loginSuccess.classList.remove('show');
                     }, 2000);
                     
-                    // Kembalikan nama staff juga
                     return { success: true, username: foundUser, staffName: foundStaffName };
                 } else {
                     loginError.textContent = 'ACCESS DENIED - INVALID USERNAME OR PASSWORD';
@@ -1338,16 +1366,12 @@
                     document.getElementById('mainSystem').style.display = 'block';
                     document.getElementById('loggedInUser').textContent = result.username.toUpperCase();
                     
-                    // --- UPDATE TAMPILAN JUDUL DENGAN NAMA STAFF ---
+                    // --- UPDATE TAMPILAN JUDUL ---
                     const staffNameDisplay = document.getElementById('staffNameDisplay');
-                    
-                    // Format nama staff agar terlihat cantik (Contoh: "TONY STARK")
                     const displayName = result.staffName || "UNKNOWN OPERATIVE";
                     
-                    // Jalankan animasi scramble pada nama
                     runScrambleEffect(staffNameDisplay, displayName);
                     
-                    // Load main data
                     loadDataFromGoogleSheets();
                 }
             });
@@ -1362,11 +1386,8 @@
             document.getElementById('password').value = '';
             document.getElementById('loginError').classList.remove('show');
             document.getElementById('loginSuccess').classList.remove('show');
-            
-            // Reset judul staff
             document.getElementById('staffNameDisplay').classList.remove('active');
             document.getElementById('staffNameDisplay').textContent = "INITIALIZING...";
-            
             document.getElementById('forgotPanel').classList.remove('active');
             document.getElementById('loginForm').style.display = 'flex';
             document.getElementById('forgotPasswordLink').style.display = 'block';
