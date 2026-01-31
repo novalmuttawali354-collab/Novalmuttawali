@@ -52,7 +52,6 @@
             align-items: center;
             justify-content: center;
             
-            /* Grid Background Dasar (Statis) */
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
@@ -63,7 +62,6 @@
             position: relative; 
         }
         
-        /* Efek Garis Bergerak (Background Animation) */
         body::before {
             content: "";
             position: fixed;
@@ -88,7 +86,6 @@
             100% { background-position: 100% 100%; }
         }
 
-        /* Efek Scanline */
         body::after {
             content: " ";
             display: block;
@@ -115,13 +112,7 @@
             padding: 60px 50px;
             border: 1px solid var(--arc-blue);
             position: relative;
-            clip-path: polygon(
-                0 0, 
-                100% 0, 
-                100% calc(100% - 30px), 
-                calc(100% - 30px) 100%, 
-                0 100%
-            );
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
             box-shadow: 
                 0 0 40px rgba(0, 243, 255, 0.2),
                 inset 0 0 20px rgba(0, 243, 255, 0.05);
@@ -836,6 +827,105 @@
             text-shadow: 0 0 15px var(--arc-glow);
         }
 
+        /* --- NEON GLITCH LOADING EFFECT --- */
+        .glitch-container {
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-text {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--arc-blue);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505; /* Match bg */
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--danger-red);
+            clip-path: inset(24% 0 13% 0);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--success-green);
+            clip-path: inset(85% 0 1% 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 50%;
+            background: var(--arc-blue);
+            box-shadow: 0 0 20px var(--arc-blue);
+            animation: loading-slide 1s infinite linear;
+        }
+
+        .loading-spinner-glow {
+            font-size: 50px;
+            color: var(--arc-blue);
+            text-shadow: 0 0 30px var(--arc-blue);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: spin 1s linear infinite, glow-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(10% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(30% 0 40% 0); }
+            100% { clip-path: inset(50% 0 30% 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(10% 0 80% 0); }
+            80% { clip-path: inset(50% 0 10% 0); }
+            100% { clip-path: inset(20% 0 60% 0); }
+        }
+
+        @keyframes loading-slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 10px var(--arc-blue), 0 0 20px var(--arc-blue); opacity: 1; }
+            50% { text-shadow: 0 0 30px var(--arc-blue), 0 0 50px var(--arc-blue); opacity: 0.8; }
+        }
+
         /* Specific Style for E-Wallet Provider Badge */
         .ewallet-badge {
             display: inline-block;
@@ -848,7 +938,7 @@
         .badge-DANA { background: #118EEA; color: white; box-shadow: 0 0 10px rgba(17, 142, 234, 0.5); }
         .badge-OVO { background: #4C3494; color: white; box-shadow: 0 0 10px rgba(76, 52, 148, 0.5); }
         .badge-LINKAJA { background: #E32128; color: white; box-shadow: 0 0 10px rgba(227, 33, 40, 0.5); }
-        .badge-GOPAY { background: #2E8B57; color: white; box-shadow: 0 0 10px rgba(238, 77, 45, 0.5); }
+        .badge-SHOPEEPAY { background: #EE4D2D; color: white; box-shadow: 0 0 10px rgba(238, 77, 45, 0.5); }
 
         @media (max-width: 768px) {
             .input-group { grid-template-columns: 1fr; }
@@ -862,6 +952,7 @@
             .btn { width: 100%; }
             .nav-tabs { flex-direction: column; gap: 10px; }
             .nav-tab { width: 100%; text-align: center; padding: 15px; }
+            .glitch-text { font-size: 24px; }
         }
     </style>
 </head>
@@ -1116,8 +1207,12 @@
                     </div>
                     
                     <div id="loadingIndicatorBank" style="text-align: center; padding: 60px; display: block;">
-                        <i class="fas fa-circle-notch fa-spin" style="font-size: 50px; color: var(--arc-blue); margin-bottom: 20px;"></i>
-                        <p class="loading-text" style="font-weight:bold; font-size:18px;">DECRYPTING FILES...</p>
+                        <!-- NEON GLITCH LOADING EFFECT -->
+                        <i class="fas fa-circle-notch loading-spinner-glow"></i>
+                        <div class="glitch-container">
+                            <div class="glitch-text" data-text="DECRYPTING FILES...">DECRYPTING FILES...</div>
+                        </div>
+                        <div class="loading-bar"></div>
                     </div>
                     
                     <div style="overflow-x: auto;">
@@ -1229,8 +1324,12 @@
                     </div>
                     
                     <div id="loadingIndicatorEwallet" style="text-align: center; padding: 60px; display: block;">
-                        <i class="fas fa-circle-notch fa-spin" style="font-size: 50px; color: var(--arc-blue); margin-bottom: 20px;"></i>
-                        <p class="loading-text" style="font-weight:bold; font-size:18px;">DECRYPTING EWALLET FILES...</p>
+                        <!-- NEON GLITCH LOADING EFFECT -->
+                        <i class="fas fa-circle-notch loading-spinner-glow"></i>
+                        <div class="glitch-container">
+                            <div class="glitch-text" data-text="DECRYPTING FILES...">DECRYPTING FILES...</div>
+                        </div>
+                        <div class="loading-bar"></div>
                     </div>
                     
                     <div style="overflow-x: auto;">
@@ -1271,6 +1370,7 @@
         
         let isAuthenticated = false;
         let currentUser = '';
+        let currentStaffName = '';
         
         // --- UPDATE TIME ---
         function updateTime() {
@@ -1496,6 +1596,11 @@
                         loginSuccess.classList.remove('show');
                     }, 2000);
                     
+                    // --- SAVE SESSION TO LOCAL STORAGE ---
+                    localStorage.setItem('jarvis_auth', 'true');
+                    localStorage.setItem('jarvis_user', foundUser);
+                    localStorage.setItem('jarvis_staff', foundStaffName);
+
                     return { success: true, username: foundUser, staffName: foundStaffName };
                 } else {
                     loginError.textContent = 'ACCESS DENIED - INVALID USERNAME OR PASSWORD';
@@ -1560,25 +1665,37 @@
             
             verifyLogin(username, password).then(result => {
                 if (result.success) {
-                    isAuthenticated = true;
-                    currentUser = result.username;
-                    document.getElementById('loginSystem').style.display = 'none';
-                    document.getElementById('mainSystem').style.display = 'block';
-                    document.getElementById('loggedInUser').textContent = result.username.toUpperCase();
-                    
-                    const staffNameDisplay = document.getElementById('staffNameDisplay');
-                    const displayName = result.staffName || "UNKNOWN OPERATIVE";
-                    
-                    runScrambleEffect(staffNameDisplay, displayName);
-                    
-                    loadDataFromGoogleSheets();
+                    enterSystem(result.username, result.staffName);
                 }
             });
+        }
+
+        function enterSystem(username, staffName) {
+            isAuthenticated = true;
+            currentUser = username;
+            currentStaffName = staffName;
+            
+            document.getElementById('loginSystem').style.display = 'none';
+            document.getElementById('mainSystem').style.display = 'block';
+            document.getElementById('loggedInUser').textContent = username.toUpperCase();
+            
+            const staffNameDisplay = document.getElementById('staffNameDisplay');
+            const displayName = staffName || "UNKNOWN OPERATIVE";
+            
+            runScrambleEffect(staffNameDisplay, displayName);
+            
+            loadDataFromGoogleSheets();
         }
         
         function logout() {
             isAuthenticated = false;
             currentUser = '';
+            
+            // --- CLEAR SESSION FROM LOCAL STORAGE ---
+            localStorage.removeItem('jarvis_auth');
+            localStorage.removeItem('jarvis_user');
+            localStorage.removeItem('jarvis_staff');
+
             document.getElementById('mainSystem').style.display = 'none';
             document.getElementById('loginSystem').style.display = 'block';
             document.getElementById('username').value = '';
@@ -1590,6 +1707,19 @@
             document.getElementById('forgotPanel').classList.remove('active');
             document.getElementById('loginForm').style.display = 'flex';
             document.getElementById('forgotPasswordLink').style.display = 'block';
+        }
+        
+        // --- CHECK SESSION ON LOAD ---
+        function checkSession() {
+            const authStatus = localStorage.getItem('jarvis_auth');
+            if (authStatus === 'true') {
+                const savedUser = localStorage.getItem('jarvis_user');
+                const savedStaff = localStorage.getItem('jarvis_staff');
+                
+                if (savedUser && savedStaff) {
+                    enterSystem(savedUser, savedStaff);
+                }
+            }
         }
         
         // --- MAIN SYSTEM FUNCTIONS ---
@@ -1611,15 +1741,10 @@
                     allDataEwallet = [];
                     
                     // MAPPING INDEX KOLOM (0-based)
-                    // A=0, B=1 ...
-                    // Bank Data: Bank(B=1), Nama(E=4), NoRek(F=5), AtasNama(G=6), Ket1(I=8), Ket2(J=9), Ket3(K=10), Ket4(L=11)
-                    // Ewallet Data: 
-                    // DANA: Nama(AB=28), No(AC=29) -> Note: Prompt said AB/AC. In JS 0-based: A=0 -> AB=27, AC=28. Wait, prompt said: "kolom AB". If A=1, AB=28. If A=0, AB=27.
-                    // Standard Google Sheets: A=0, B=1...
-                    // AB = 27, AC = 28
-                    // AF = 31, AG = 32
-                    // AJ = 35, AK = 36
-                    // AN = 39, AO = 40
+                    // AB=27, AC=28 (DANA)
+                    // AF=31, AG=32 (OVO)
+                    // AJ=35, AK=36 (LINKAJA)
+                    // AN=39, AO=40 (SHOPEEPAY)
                     
                     for (let i = 4; i < rows.length; i++) {
                         const row = rows[i];
@@ -1646,8 +1771,7 @@
                         }
 
                         // --- PARSING EWALLET DATA ---
-                        if (row.length >= 41) { // Ensure we have enough columns up to AO
-                            // Helper to push wallet data
+                        if (row.length >= 41) { 
                             const addWallet = (provider, nameCol, numCol) => {
                                 const name = row[nameCol] ? row[nameCol].trim() : '';
                                 const num = row[numCol] ? row[numCol].trim() : '';
@@ -1660,19 +1784,10 @@
                                 }
                             };
 
-                            // Mapping sesuai permintaan:
-                            // DANA: AB (27), AC (28) -> Nama, Nomor
                             addWallet('DANA', 27, 28);
-                            
-                            // OVO: AF (31), AG (32) -> Nama, Nomor
                             addWallet('OVO', 31, 32);
-                            
-                            // LINK AJA: AJ (35), AK (36) -> Nama, Nomor
                             addWallet('LINKAJA', 35, 36);
-                            
-                            // Prompt asked for "LINK AJA" again for AN/AO, but logically AN/AO is ShopeePay.
-                            // I will label it SHOPEEPAY but use the columns requested.
-                            addWallet('GOPAY', 39, 40);
+                            addWallet('SHOPEEPAY', 39, 40);
                         }
                     }
                     
@@ -1721,23 +1836,20 @@
         }
         
         function loadDummyData() {
-            // Dummy Bank Data
             allDataBank = [
                 { no: '001', bank: 'STARK BANK', nama: 'J. STARK', noRekening: '5860575410', atasNama: 'TONY STARK', ket1: 'ARC REACTOR', ket2: 'Pepper Potts', ket3: 'LEVEL 10', ket4: 'AVENGERS' },
                 { no: '002', bank: 'SHIELD', nama: 'N. FURY', noRekening: '7391956727', atasNama: 'NICK FURY', ket1: 'HELI-CARRIER', ket2: 'Maria Hill', ket3: 'LEVEL 9', ket4: 'OPS' }
             ];
             filteredDataBank = [...allDataBank];
             
-            // Dummy Ewallet Data
             allDataEwallet = [
                 { provider: 'DANA', name: 'Tony Stark', number: '08123456789' },
                 { provider: 'OVO', name: 'Steve Rogers', number: '08987654321' },
                 { provider: 'LINKAJA', name: 'Thor Odinson', number: '08555555555' },
-                { provider: 'GOPAY', name: 'Bruce Banner', number: '0811223344' }
+                { provider: 'SHOPEEPAY', name: 'Bruce Banner', number: '0811223344' }
             ];
             filteredDataEwallet = [...allDataEwallet];
 
-            // Render All
             renderTableHeader('bank');
             renderTable('bank');
             updateDataCount('bank');
@@ -1859,7 +1971,6 @@
                         const columnValue = item[searchCategory] ? item[searchCategory].toString().toUpperCase() : '';
                         return columnValue.includes(searchTerm);
                     }
-                    // Search all fields
                     return Object.values(item).some(val => 
                         val.toString().toUpperCase().includes(searchTerm)
                     );
@@ -1896,17 +2007,9 @@
             }
 
             navigator.clipboard.writeText(textToCopy).then(() => {
-                // Find button (simplified selector logic)
-                const btns = document.querySelectorAll('button');
-                // A bit hacky but works for single file vanilla js without unique IDs on every button
-                // Better to grab specific element via event bubbling or ID, but for now:
-                // Let's just alert user visually via the button they clicked
-                const buttons = document.querySelectorAll(`.action-btn`);
-                // Assuming index matches (might not if hidden rows exist, but ok for now)
-                // Let's rely on the global feedback if button specific is hard to pinpoint without event target
+                // Visual feedback handled via button click usually, but here:
             });
             
-            // Visual feedback override
             const btn = event.currentTarget;
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -1944,7 +2047,7 @@
                     li.innerHTML = `<span class="ewallet-badge badge-${data.provider}" style="margin-right:5px;">${data.provider}</span> - <span style="color:var(--tech-gold)">${data.number}</span> - ${data.name}`;
                 }
                 
-                li.dataset.value = type === 'bank' ? data.no : data.provider + data.number; // Unique ID logic
+                li.dataset.value = type === 'bank' ? data.no : data.provider + data.number; 
                 li.dataset.fullData = JSON.stringify(data);
                 return li;
             };
@@ -2049,6 +2152,7 @@
         // --- EVENT LISTENERS ---
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
+            checkSession(); // CHECK SESSION ON LOAD
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             
             // Bank Search Events
@@ -2073,7 +2177,6 @@
                     const input = document.getElementById(`${prefix}Input${suffix}`);
                     const list = document.getElementById(`${prefix}List${suffix}`);
                     
-                    // Add global click listener to close dropdowns when clicking outside
                     document.addEventListener('click', function(e) {
                         if (!input.contains(e.target) && !list.contains(e.target)) {
                             list.classList.remove('active');
