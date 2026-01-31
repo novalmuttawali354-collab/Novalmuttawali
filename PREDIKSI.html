@@ -62,7 +62,24 @@
             height: 100%;
             z-index: -10;
             background-color: #020205;
+            /* BACKGROUND IMAGE DISIMPAN DISINI */
+            background-image: url('https://i.postimg.cc/8s8FfQxQ/prads.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Efek Parallax */
             overflow: hidden;
+        }
+
+        /* Overlay Gelap agar teks terbaca di atas gambar */
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 2, 8, 0.8); /* Gelapkan gambar 80% */
+            z-index: -9;
         }
 
         /* Layer 1: Animated Neon Gradient Mesh */
@@ -78,6 +95,7 @@
                 radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.1) 0%, transparent 40%);
             animation: meshMove 15s infinite alternate ease-in-out;
             filter: blur(40px);
+            z-index: -8;
         }
 
         @keyframes meshMove {
@@ -101,6 +119,7 @@
             transform-origin: bottom center;
             animation: gridMove 10s linear infinite;
             opacity: 0.3;
+            z-index: -6;
         }
 
         @keyframes gridMove {
@@ -1209,8 +1228,11 @@
     </style>
 </head>
 <body>
-    <!-- BACKGROUND: Neon Future Glitch -->
+    <!-- BACKGROUND: Neon Future Glitch dengan Gambar -->
     <div class="glitch-background">
+        <!-- Overlay Gelap agar gambar terlihat redup dan teks tetap jelas -->
+        <div class="image-overlay"></div>
+        
         <div class="neon-mesh"></div>
         <div class="retro-grid"></div>
         <div class="glitch-overlay">
