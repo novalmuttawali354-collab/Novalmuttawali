@@ -38,16 +38,28 @@
 
         body {
             font-family: 'Rajdhani', sans-serif;
-            background-color: var(--bg-dark);
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.02) 0%, transparent 100%);
-            background-size: 40px 40px, 40px 40px, 100% 100%;
             color: var(--text-main);
             line-height: 1.6;
             overflow: hidden; 
             height: 100vh;
+            /* UPDATED BACKGROUND: TIGER IMAGE + OVERLAY */
+            background: url('https://i.postimg.cc/zvz2m604/harimau.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Dark Overlay untuk memastikan teks terbaca di atas gambar harimau */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5, 5, 10, 0.88); /* Overlay hitam transparan */
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -55,7 +67,120 @@
         ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); box-shadow: 0 0 10px var(--primary-color); }
 
-        .app-container { display: flex; height: 100vh; position: relative; width: 100vw; }
+        .app-container { display: flex; height: 100vh; position: relative; width: 100vw; opacity: 0; transition: opacity 1s ease; }
+        .app-container.loaded { opacity: 1; }
+
+        /* =========================================
+           NEON GLITCH INTRO STYLES (NEW)
+           ========================================= */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .glitch-container {
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            /* Animasi masuk */
+            animation: introZoomIn 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards, 
+                       introFadeOut 0.5s ease-in 3.5s forwards;
+        }
+
+        .glitch-icon {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            animation: pulse-reactor 2s infinite;
+        }
+
+        /* Glitch Effect Layers */
+        .glitch-container::before,
+        .glitch-container::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .glitch-container::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip-path: inset(44% 0 61% 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-container::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9;
+            clip-path: inset(10% 0 86% 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 243, 255, 0.1);
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Intro Keyframes */
+        @keyframes introZoomIn {
+            0% { opacity: 0; transform: scale(3); filter: blur(10px); }
+            50% { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes introFadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: scale(0.9); }
+        }
+        @keyframes scanline {
+            0% { top: -10%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 110%; opacity: 0; }
+        }
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 60% 0); }
+            100% { clip-path: inset(30% 0 30% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(10% 0 80% 0); }
+            80% { clip-path: inset(50% 0 10% 0); }
+            100% { clip-path: inset(70% 0 20% 0); }
+        }
 
         /* =========================================
            1. LEFT SIDEBAR
@@ -135,7 +260,7 @@
            ========================================= */
         .main-content {
             flex: 1;
-            background: rgba(5, 5, 8, 0.6);
+            background: rgba(5, 5, 8, 0.3); /* More transparent to show background image */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -146,7 +271,7 @@
             height: 70px;
             border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             display: flex; align-items: center; justify-content: space-between; padding: 0 30px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
         }
         .current-sheet { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--primary-color); text-shadow: 0 0 10px var(--primary-color); font-weight: 700; letter-spacing: 1px; }
@@ -174,17 +299,17 @@
             gap: 30px;
             margin-bottom: 20px;
             align-items: center;
-            background: rgba(10, 10, 15, 0.6);
+            background: rgba(10, 10, 15, 0.7);
             padding: 8px 25px;
             border-radius: 100px;
             border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
 
         .search-wrapper-group {
             position: relative; width: 100%; max-width: 800px;
             display: flex; align-items: center; gap: 20px;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(10, 10, 15, 0.85);
             padding: 10px 25px;
             border-radius: 100px; 
             border: 1px solid rgba(0, 243, 255, 0.3);
@@ -498,12 +623,23 @@
             .card-content-large { text-align: left; padding: 20px; }
             .search-input-main { font-size: 1rem; }
             .list-item { padding: 12px; font-size: 0.9rem; }
+            .glitch-container { font-size: 2.5rem; }
+            .glitch-icon { font-size: 3rem; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
+    <!-- NEON GLITCH INTRO OVERLAY -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="scanline"></div>
+        <div class="glitch-container" data-text="LINETOGEL">
+            <i class="fas fa-microchip glitch-icon"></i>
+            <div>LINETOGEL</div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer">
         <!-- 1. LEFT SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -587,6 +723,27 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // ===============================
+        // INTRO ANIMATION LOGIC (NEW)
+        // ===============================
+        window.addEventListener('load', () => {
+            const introOverlay = document.getElementById('introOverlay');
+            const appContainer = document.getElementById('appContainer');
+
+            // Intro duration matches CSS animations (approx 3.5s)
+            setTimeout(() => {
+                introOverlay.classList.add('hidden');
+                
+                // Reveal main app with fade in
+                appContainer.classList.add('loaded');
+                
+                // Remove overlay from DOM after transition to save resources
+                setTimeout(() => {
+                    introOverlay.remove();
+                }, 1000);
+            }, 3500);
+        });
+
         // ===============================
         // CONFIG & STATE
         // ===============================
