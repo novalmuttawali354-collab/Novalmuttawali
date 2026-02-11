@@ -1,2019 +1,1263 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPIDER-MATRIX PREDICTOR - Generator Prediksi Togel Digital</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* Original Spider Colors */
-            --spider-red: #e62429;
-            --spider-blue: #2a7fff;
-            --spider-light: #ffffff;
-            --spider-dark: #05050a; /* Lebih gelap untuk efek neon */
-            --spider-accent: #ffcc00;
-            --spider-dark-red: #8b0000;
-            --spider-gold: #ffcc00;
-            --spider-purple: #8a2be2;
-            
-            /* Neon Glitch Colors */
-            --neon-cyan: #00f3ff;
-            --neon-pink: #bc13fe;
-            --neon-green: #0aff0a;
-            
-            --panel: rgba(10, 10, 26, 0.95);
-            
-            /* Glow Effects */
-            --glow-red: 0 0 15px var(--spider-red), 0 0 30px rgba(230, 36, 41, 0.4);
-            --glow-blue: 0 0 15px var(--spider-blue), 0 0 30px rgba(42, 127, 255, 0.4);
-            --glow-cyan: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0, 243, 255, 0.3);
-            --glow-pink: 0 0 10px var(--neon-pink), 0 0 20px rgba(188, 19, 254, 0.3);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background-color: var(--spider-dark);
-            color: #fff;
-            font-family: 'Exo 2', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-            overflow-y: auto;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal Pasaran Togel | Neon Dashboard System</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕹️</text></svg>">
+  <!-- Google Fonts: Orbitron & Rajdhani for Cyberpunk feel -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ========== NEON CYBERPUNK VARIABLES ========== */
+    :root {
+      --bg-dark: #050508;
+      --bg-panel: rgba(10, 10, 16, 0.65);
+      --neon-cyan: #00f3ff;
+      --neon-pink: #bc13fe;
+      --neon-purple: #5e17eb;
+      --neon-green: #0aff0a;
+      --text-main: #e0e0ff;
+      --text-dim: #8892b0;
+      --glass-border: 1px solid rgba(0, 243, 255, 0.2);
+      --shadow-glow: 0 0 15px rgba(0, 243, 255, 0.3);
+      --font-head: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+    }
 
-        /* =========================================
-           NEON FUTURE GLITCH BACKGROUND STYLES
-           ========================================= */
-        
-        /* Container Utama Background */
-        .glitch-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -10;
-            background-color: #020205;
-            /* BACKGROUND IMAGE DISIMPAN DISINI */
-            background-image: url('https://i.postimg.cc/8s8FfQxQ/prads.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Efek Parallax */
-            overflow: hidden;
-        }
+    /* ========== RESET & BASE ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        /* Overlay Gelap agar teks terbaca di atas gambar */
-        .image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(2, 2, 8, 0.8); /* Gelapkan gambar 80% */
-            z-index: -9;
-        }
+    /* Scrollbar Holographic */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #020205; }
+    ::-webkit-scrollbar-thumb { 
+      background: linear-gradient(180deg, var(--neon-purple), var(--neon-cyan)); 
+      border-radius: 4px;
+    }
 
-        /* Layer 1: Animated Neon Gradient Mesh */
-        .neon-mesh {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(230, 36, 41, 0.1) 0%, transparent 40%);
-            animation: meshMove 15s infinite alternate ease-in-out;
-            filter: blur(40px);
-            z-index: -8;
-        }
+    /* ========== BACKGROUND ANIMATION (GRID & PARTICLES) ========== */
+    .cyber-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -2;
+      background: 
+        linear-gradient(rgba(5, 5, 8, 0.95), rgba(5, 5, 8, 0.95)),
+        repeating-linear-gradient(0deg, transparent 0, transparent 1px, rgba(0, 243, 255, 0.03) 1px, rgba(0, 243, 255, 0.03) 2px),
+        repeating-linear-gradient(90deg, transparent 0, transparent 1px, rgba(188, 19, 254, 0.03) 1px, rgba(188, 19, 254, 0.03) 2px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      perspective: 500px;
+      transform-style: preserve-3d;
+      animation: gridMove 20s linear infinite;
+    }
 
-        @keyframes meshMove {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-5%, -5%) rotate(5deg); }
-        }
+    @keyframes gridMove {
+      0% { background-position: center, 0 0, 0 0; }
+      100% { background-position: center, 0 40px, 0 40px; }
+    }
 
-        /* Layer 2: Perspective Grid (Retro Wave Style) */
-        .retro-grid {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background-image: 
-                linear-gradient(var(--spider-dark) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(42, 127, 255, 0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center bottom;
-            transform: perspective(500px) rotateX(60deg) scale(2);
-            transform-origin: bottom center;
-            animation: gridMove 10s linear infinite;
-            opacity: 0.3;
-            z-index: -6;
-        }
+    .glowing-orb {
+      position: fixed;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: -1;
+      opacity: 0.4;
+      animation: orbFloat 10s infinite ease-in-out alternate;
+    }
+    .orb-1 { top: -100px; left: -100px; background: var(--neon-purple); }
+    .orb-2 { bottom: -100px; right: -100px; background: var(--neon-cyan); animation-delay: -5s; }
 
-        @keyframes gridMove {
-            0% { background-position: center 0; }
-            100% { background-position: center 40px; }
-        }
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
 
-        /* Layer 3: Glitch Overlay (Distortion Lines) */
-        .glitch-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            pointer-events: none;
-            z-index: -5;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
-        }
+    /* ========== LAYOUT & CONTAINERS ========== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
 
-        .glitch-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            top: 50%;
-            opacity: 0;
-            animation: glitchLineFlash 4s infinite;
-        }
+    /* ========== HEADER (GLITCH EFFECT) ========== */
+    .header {
+      text-align: center;
+      margin: 40px 0 50px;
+      position: relative;
+    }
 
-        .glitch-line:nth-child(1) { top: 20%; animation-delay: 0.5s; background: var(--neon-cyan); }
-        .glitch-line:nth-child(2) { top: 40%; animation-delay: 2.2s; height: 3px; background: var(--neon-pink); }
-        .glitch-line:nth-child(3) { top: 70%; animation-delay: 3.5s; background: var(--spider-blue); }
-        .glitch-line:nth-child(4) { top: 85%; animation-delay: 1.1s; height: 4px; background: var(--neon-green); }
+    .header h1 {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #fff;
+      letter-spacing: 4px;
+      text-shadow: 
+        0 0 10px var(--neon-cyan),
+        0 0 20px var(--neon-cyan),
+        0 0 40px var(--neon-purple);
+      position: relative;
+      display: inline-block;
+    }
+    
+    /* Subtle glitch animation */
+    .header h1::before, .header h1::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-dark);
+    }
+    .header h1::before {
+      left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .header h1::after {
+      left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
 
-        @keyframes glitchLineFlash {
-            0% { opacity: 0; transform: translateX(-100%); }
-            5% { opacity: 0.8; }
-            10% { opacity: 0; transform: translateX(100%); }
-            100% { opacity: 0; }
-        }
+    @keyframes glitch-anim {
+      0% { clip: rect(12px, 9999px, 32px, 0); }
+      100% { clip: rect(65px, 9999px, 80px, 0); }
+    }
+    @keyframes glitch-anim2 {
+      0% { clip: rect(82px, 9999px, 92px, 0); }
+      100% { clip: rect(2px, 9999px, 12px, 0); }
+    }
 
-        /* Layer 4: RGB Split Glitch Block (Random Appearance) */
-        .glitch-block {
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 80%;
-            height: 10%;
-            background: rgba(255, 255, 255, 0.02);
-            z-index: -4;
-            opacity: 0;
-            animation: blockGlitch 8s infinite;
-        }
+    .header p {
+      color: var(--neon-cyan);
+      font-size: 1.2rem;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 5px var(--neon-cyan);
+    }
 
-        @keyframes blockGlitch {
-            0%, 95% { opacity: 0; transform: translateX(0); clip-path: inset(0 0 0 0); }
-            96% { opacity: 1; transform: translateX(-10px); clip-path: inset(10% 0 20% 0); background: rgba(255, 0, 0, 0.1); }
-            97% { transform: translateX(10px); background: rgba(0, 255, 255, 0.1); }
-            98% { opacity: 1; transform: translateX(-5px); }
-            99% { opacity: 0; }
-        }
+    /* ========== STATS CARDS (HUD STYLE) ========== */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
 
-        /* Layer 5: CRT Scanlines */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.1) 50%,
-                rgba(0,0,0,0.1)
-            );
-            background-size: 100% 4px;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0.6;
-        }
+    .stat-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      border: var(--glass-border);
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
 
-        /* =========================================
-           ORIGINAL UI STYLES (ADAPTED)
-           ========================================= */
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        header {
-            padding: 40px 0 30px;
-            position: relative;
-            margin-bottom: 40px;
-            text-align: center;
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(90deg, transparent, var(--spider-red), var(--spider-blue), transparent);
-            border-image-slice: 1;
-            background: linear-gradient(to bottom, rgba(230, 36, 41, 0.05), transparent);
-        }
-        
-        .logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 3;
-        }
-        
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            background: linear-gradient(to right, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(230, 36, 41, 0.4);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-            animation: textGlitch 5s infinite alternate-reverse;
-        }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
 
-        /* Glitch effect pada teks judul */
-        h1::before, h1::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--spider-dark);
-        }
-        
-        h1::before {
-            left: 2px;
-            text-shadow: -1px 0 var(--neon-pink);
-            clip-path: inset(44% 0 61% 0);
-            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
-        }
-        
-        h1::after {
-            left: -2px;
-            text-shadow: -1px 0 var(--neon-cyan);
-            clip-path: inset(20% 0 10% 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+      border-color: var(--neon-cyan);
+    }
 
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 80% 0); }
-            20% { clip-path: inset(60% 0 10% 0); }
-            40% { clip-path: inset(40% 0 50% 0); }
-            60% { clip-path: inset(80% 0 5% 0); }
-            80% { clip-path: inset(10% 0 60% 0); }
-            100% { clip-path: inset(30% 0 30% 0); }
-        }
+    .stat-icon {
+      width: 60px; height: 60px;
+      border: 2px solid var(--neon-purple);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      color: var(--neon-purple);
+      box-shadow: 0 0 10px var(--neon-purple);
+      background: rgba(94, 23, 235, 0.1);
+    }
 
-        @keyframes glitch-anim-2 {
-            0% { clip-path: inset(10% 0 60% 0); }
-            20% { clip-path: inset(80% 0 5% 0); }
-            40% { clip-path: inset(30% 0 10% 0); }
-            60% { clip-path: inset(10% 0 80% 0); }
-            80% { clip-path: inset(50% 0 30% 0); }
-            100% { clip-path: inset(70% 0 20% 0); }
-        }
-        
-        h1::after { /* Reset dekorasi garis bawah h1 */
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 10%;
-            width: 80%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), var(--spider-accent), var(--spider-purple), transparent);
-            border-radius: 50%;
-            filter: blur(1px);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #a0c8ff;
-            margin-top: 10px;
-            letter-spacing: 1px;
-            font-weight: 300;
-            max-width: 600px;
-            margin: 0 auto 30px;
-            text-shadow: 0 0 5px var(--spider-blue);
-        }
-        
-        .datetime-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .current-date, .current-time {
-            background-color: var(--panel);
-            padding: 20px 30px;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 500;
-            border: 1px solid rgba(230, 36, 41, 0.3);
-            box-shadow: var(--glow-red);
-            text-align: center;
-            min-width: 250px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        
-        .current-time {
-            border: 1px solid rgba(42, 127, 255, 0.3);
-            box-shadow: var(--glow-blue);
-        }
-        
-        .current-date:hover, .current-time:hover {
-            transform: translateY(-5px);
-            background-color: rgba(20, 20, 40, 0.98);
-        }
-        
-        .current-date:hover {
-            box-shadow: 0 10px 25px rgba(230, 36, 41, 0.4);
-        }
-        
-        .current-time:hover {
-            box-shadow: 0 10px 25px rgba(42, 127, 255, 0.4);
-        }
-        
-        .current-date::before, .current-time::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(230, 36, 41, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-        
-        .current-time::before {
-            background: linear-gradient(45deg, transparent, rgba(42, 127, 255, 0.1), transparent);
-        }
-        
-        .current-date:hover::before, .current-time:hover::before {
-            transform: translateX(100%);
-        }
-        
-        .date-text, .time-text {
-            color: var(--spider-red);
-            font-size: 1.3rem;
-            text-shadow: 0 0 8px var(--spider-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .time-text {
-            color: var(--spider-blue);
-            text-shadow: 0 0 8px var(--spider-blue);
-        }
-        
-        .time-label, .date-label {
-            color: #88aaff;
-            font-size: 0.9rem;
-            margin-top: 8px;
-            opacity: 0.8;
-        }
-        
-        /* Warning */
-        .warning {
-            background-color: rgba(230, 36, 41, 0.15);
-            color: #ff99aa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 30px auto;
-            text-align: center;
-            font-weight: 600;
-            border-left: 5px solid var(--spider-red);
-            box-shadow: 0 0 15px rgba(230, 36, 41, 0.2);
-            position: relative;
-            overflow: hidden;
-            max-width: 900px;
-            animation: warningPulse 3s infinite alternate;
-            backdrop-filter: blur(5px);
-            z-index: 5;
-            border: 1px solid var(--spider-red);
-        }
-        
-        @keyframes warningPulse {
-            0% { box-shadow: 0 0 10px rgba(230, 36, 41, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(230, 36, 41, 0.8); }
-        }
-        
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            margin: 40px auto 30px;
-            max-width: 900px;
-            background-color: var(--panel);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(42, 127, 255, 0.3);
-        }
-        
-        .tab-btn {
-            flex: 1;
-            padding: 20px;
-            background-color: rgba(20, 20, 40, 0.8);
-            border: none;
-            color: #88aaff;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tab-btn:hover {
-            background-color: rgba(42, 127, 255, 0.2);
-            color: var(--spider-light);
-            text-shadow: 0 0 8px var(--spider-blue);
-        }
-        
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--spider-red), var(--spider-blue));
-            color: white;
-            box-shadow: 0 0 15px rgba(230, 36, 41, 0.7);
-        }
-        
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--spider-accent);
-            box-shadow: 0 0 10px var(--spider-accent);
-        }
-        
-        /* Content Container */
-        .content-container {
-            display: block;
-        }
-        
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Mode Selector */
-        .mode-selector {
-            background-color: var(--panel);
-            border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(230, 36, 41, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.05);
-            position: relative;
-            overflow: hidden;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            z-index: 5;
-            backdrop-filter: blur(10px);
-        }
-        
-        .mode-selector::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-        
-        .selector-title {
-            font-size: 1.6rem;
-            color: var(--spider-red);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(230, 36, 41, 0.5);
-            text-align: center;
-        }
-        
-        .mode-buttons {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 35px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .mode-btn {
-            flex: 1;
-            padding: 25px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-family: 'Orbitron', sans-serif;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            max-width: 400px;
-            min-width: 250px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .mode-btn.single {
-            background: linear-gradient(135deg, rgba(230, 36, 41, 0.2), rgba(230, 36, 41, 0.1));
-            color: #ff8888;
-            border: 1px solid rgba(230, 36, 41, 0.5);
-        }
-        
-        .mode-btn.all {
-            background: linear-gradient(135deg, rgba(42, 127, 255, 0.2), rgba(42, 127, 255, 0.1));
-            color: #88aaff;
-            border: 1px solid rgba(42, 127, 255, 0.5);
-        }
-        
-        .mode-btn.active {
-            transform: translateY(-8px);
-        }
-        
-        .mode-btn.single.active {
-            background: linear-gradient(135deg, rgba(230, 36, 41, 0.4), rgba(230, 36, 41, 0.3));
-            color: var(--spider-light);
-            border-color: var(--spider-red);
-            box-shadow: var(--glow-red);
-        }
-        
-        .mode-btn.all.active {
-            background: linear-gradient(135deg, rgba(42, 127, 255, 0.4), rgba(42, 127, 255, 0.3));
-            color: var(--spider-light);
-            border-color: var(--spider-blue);
-            box-shadow: var(--glow-blue);
-        }
-        
-        .mode-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Pasaran Selector */
-        .pasaran-selector {
-            margin-top: 25px;
-            padding: 30px;
-            background-color: rgba(10, 10, 30, 0.8);
-            border-radius: 12px;
-            border-left: 4px solid var(--spider-red);
-            border-top: 1px solid rgba(230, 36, 41, 0.2);
-            display: none;
-            animation: fadeIn 0.5s forwards;
-            backdrop-filter: blur(5px);
-        }
-        
-        .pasaran-selector.show {
-            display: block;
-        }
-        
-        .selector-subtitle {
-            font-size: 1.2rem;
-            color: #88aaff;
-            margin-bottom: 15px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .pasaran-dropdown {
-            width: 100%;
-            padding: 18px;
-            background-color: rgba(5, 5, 20, 0.8);
-            border: 2px solid rgba(230, 36, 41, 0.5);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            color: var(--spider-red);
-            font-family: 'Exo 2', sans-serif;
-            margin-bottom: 20px;
-            outline: none;
-            transition: all 0.3s;
-        }
-        
-        .pasaran-dropdown:focus {
-            box-shadow: var(--glow-red);
-            border-color: var(--spider-red);
-        }
-        
-        .pasaran-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            max-height: 250px;
-            overflow-y: auto;
-            padding: 20px;
-            border: 1px solid rgba(230, 36, 41, 0.2);
-            border-radius: 10px;
-            background-color: rgba(5, 5, 20, 0.6);
-            scrollbar-width: thin;
-        }
-        
-        .pasaran-grid::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .pasaran-grid::-webkit-scrollbar-track {
-            background: rgba(20, 20, 40, 0.5);
-            border-radius: 10px;
-        }
-        
-        .pasaran-grid::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--spider-red), var(--spider-blue));
-            border-radius: 10px;
-        }
-        
-        .pasaran-item {
-            background-color: rgba(30, 10, 20, 0.5);
-            border: 1px solid rgba(230, 36, 41, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            color: #ff8888;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.95rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .pasaran-item.hoki {
-            background-color: rgba(50, 30, 10, 0.5);
-            border: 1px solid rgba(255, 204, 0, 0.5);
-            color: #ffcc66;
-        }
-        
-        .pasaran-item.hoki.selected {
-            background-color: rgba(255, 204, 0, 0.4);
-            color: var(--spider-dark);
-            font-weight: bold;
-        }
-        
-        .pasaran-item:hover {
-            background-color: rgba(230, 36, 41, 0.3);
-            border-color: var(--spider-red);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 5px 15px rgba(230, 36, 41, 0.2);
-        }
-        
-        .pasaran-item.hoki:hover {
-            background-color: rgba(255, 204, 0, 0.3);
-            border-color: var(--spider-accent);
-            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
-        }
-        
-        .pasaran-item.selected {
-            background-color: rgba(230, 36, 41, 0.5);
-            color: var(--spider-light);
-            border-color: var(--spider-red);
-            box-shadow: 0 0 20px rgba(230, 36, 41, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        /* Submit Button */
-        .submit-btn {
-            background: linear-gradient(135deg, var(--spider-red), var(--spider-blue));
-            color: white;
-            border: none;
-            padding: 25px 40px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin: 40px auto 0;
-            font-size: 1.4rem;
-            transition: all 0.3s;
-            width: 100%;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            max-width: 500px;
-        }
-        
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.7s;
-            z-index: -1;
-        }
-        
-        .submit-btn:hover::before {
-            left: 100%;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--glow-red), var(--glow-blue);
-        }
-        
-        .submit-btn:disabled {
-            background: linear-gradient(135deg, #555, #777);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        /* Result Container */
-        .result-container {
-            display: none;
-            background-color: var(--panel);
-            border-radius: 15px;
-            padding: 35px;
-            margin-top: 40px;
-            border: 1px solid rgba(42, 127, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(42, 127, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            z-index: 5;
-            backdrop-filter: blur(10px);
-        }
-        
-        .result-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-        
-        .result-container.show {
-            display: block;
-            animation: resultAppear 0.8s forwards;
-        }
-        
-        @keyframes resultAppear {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        .result-header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(42, 127, 255, 0.2);
-            text-align: center;
-        }
-        
-        .result-title {
-            font-size: 1.9rem;
-            color: var(--spider-red);
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(230, 36, 41, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .result-content {
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-line;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            background-color: rgba(5, 5, 15, 0.8);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(230, 36, 41, 0.2);
-            max-height: 600px;
-            overflow-y: auto;
-            color: #e0e0ff;
-            position: relative;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .result-content::-webkit-scrollbar {
-            width: 12px;
-        }
-        
-        .result-content::-webkit-scrollbar-track {
-            background: rgba(20, 20, 40, 0.5);
-            border-radius: 10px;
-        }
-        
-        .result-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--spider-red), var(--spider-blue));
-            border-radius: 10px;
-            border: 2px solid rgba(10, 10, 30, 0.8);
-        }
-        
-        .result-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 25px;
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        .copy-btn {
-            background: linear-gradient(135deg, var(--spider-blue), #0044cc);
-            color: white;
-            border: none;
-            padding: 20px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex: 1;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .copy-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-blue);
-        }
-        
-        .auto-refresh {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-            color: #88aaff;
-            font-size: 1rem;
-            padding: 15px 25px;
-            background-color: rgba(10, 20, 40, 0.5);
-            border-radius: 10px;
-            border: 1px solid rgba(42, 127, 255, 0.2);
-        }
-        
-        .refresh-indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: var(--spider-accent);
-            box-shadow: 0 0 15px var(--spider-accent);
-            animation: blink 1.5s infinite, spin 4s linear infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Jadwal Pasaran Container */
-        .jadwal-container {
-            background-color: var(--panel);
-            border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(230, 36, 41, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(230, 36, 41, 0.1);
-            position: relative;
-            overflow: hidden;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            z-index: 5;
-            backdrop-filter: blur(10px);
-        }
-        
-        .jadwal-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--neon-cyan), var(--spider-red), var(--neon-pink));
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-        
-        .jadwal-header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(230, 36, 41, 0.2);
-            text-align: center;
-        }
-        
-        .jadwal-title {
-            font-size: 1.9rem;
-            color: var(--spider-red);
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(230, 36, 41, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .jadwal-table-container {
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid rgba(230, 36, 41, 0.3);
-            background-color: rgba(5, 5, 15, 0.8);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .jadwal-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Exo 2', sans-serif;
-        }
-        
-        .jadwal-table thead {
-            background: linear-gradient(90deg, rgba(230, 36, 41, 0.7), rgba(42, 127, 255, 0.7));
-        }
-        
-        .jadwal-table th {
-            padding: 18px 15px;
-            text-align: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .jadwal-table th:last-child {
-            border-right: none;
-        }
-        
-        .jadwal-table tbody tr {
-            border-bottom: 1px solid rgba(230, 36, 41, 0.1);
-            transition: all 0.3s;
-        }
-        
-        .jadwal-table tbody tr:hover {
-            background-color: rgba(230, 36, 41, 0.1);
-            transform: scale(1.002);
-            box-shadow: 0 5px 15px rgba(230, 36, 41, 0.1);
-        }
-        
-        .jadwal-table tbody tr:nth-child(even) {
-            background-color: rgba(10, 10, 30, 0.5);
-        }
-        
-        .jadwal-table td {
-            padding: 16px 15px;
-            text-align: center;
-            color: #e0e0ff;
-            font-size: 1rem;
-            border-right: 1px solid rgba(230, 36, 41, 0.1);
-        }
-        
-        .jadwal-table td:first-child {
-            font-weight: 600;
-            color: var(--spider-accent);
-            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
-        }
-        
-        .jadwal-table td:nth-child(2) {
-            text-align: left;
-            color: #88aaff;
-            font-weight: 500;
-        }
-        
-        /* Time Status */
-        .time-status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 5px;
-            transition: all 0.3s;
-        }
-        
-        .time-status.open {
-            background-color: rgba(0, 200, 0, 0.2);
-            color: #4cff4c;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-        }
-        
-        .time-status.closed {
-            background-color: rgba(230, 36, 41, 0.2);
-            color: #ff8888;
-            box-shadow: 0 0 10px rgba(230, 36, 41, 0.3);
-        }
-        
-        .time-status.soon {
-            background-color: rgba(255, 204, 0, 0.2);
-            color: var(--spider-accent);
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-        }
-        
-        /* Informasi Jadwal */
-        .jadwal-info {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(230, 36, 41, 0.2);
-        }
-        
-        .info-box {
-            flex: 1;
-            min-width: 200px;
-            background-color: rgba(10, 10, 30, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(42, 127, 255, 0.3);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .info-box h3 {
-            color: var(--spider-blue);
-            margin-bottom: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .info-box p {
-            color: #a0c8ff;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        /* Disclaimer */
-        .disclaimer {
-            background-color: rgba(230, 36, 41, 0.15);
-            color: #ffaabb;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 40px auto;
-            font-size: 0.95rem;
-            border-left: 5px solid var(--spider-red);
-            box-shadow: 0 0 15px rgba(230, 36, 41, 0.2);
-            position: relative;
-            overflow: hidden;
-            max-width: 1000px;
-            z-index: 5;
-            border: 1px solid var(--spider-red);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #8888cc;
-            padding-top: 30px;
-            border-top: 1px solid rgba(42, 127, 255, 0.2);
-            font-size: 0.9rem;
-            position: relative;
-            z-index: 5;
-        }
-        
-        .footer-glow {
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--spider-red), var(--spider-blue), transparent);
-            margin-bottom: 20px;
-        }
-        
-        .all-pasaran-result {
-            margin-bottom: 21px !important; 
-            padding-bottom: 8px;
-            border-bottom: 1px dashed rgba(230, 36, 41, 0.2);
-            line-height: 1.4;
-        }
-        
-        .all-pasaran-result:last-child {
-            border-bottom: none;
-            margin-bottom: 0 !important;
-        }
-        
-        .compact-mode .result-content {
-            line-height: 1.4;
-            font-size: 1rem;
-        }
+    .stat-content h3 {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        /* Floating Particles for Glitch Effect */
-        .glitch-particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: #fff;
-            z-index: -3;
-            opacity: 0;
-            animation: floatUp 10s infinite linear;
-        }
+    .stat-content .stat-value {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
-        }
-        
-        @media (max-width: 992px) {
-            .mode-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .datetime-container {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            .subtitle { font-size: 1rem; padding: 0 15px; }
-            .pasaran-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-height: 200px; }
-            .action-buttons { flex-direction: column; }
-            .nav-tabs { flex-direction: column; }
-        }
-        
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .current-date, .current-time { min-width: 100%; padding: 15px 20px; }
-        }
-    </style>
+    /* ========== SEARCH SECTION ========== */
+    .search-container {
+      background: var(--bg-panel);
+      border: var(--glass-border);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      position: relative;
+      backdrop-filter: blur(12px);
+    }
+
+    .search-container::after {
+      content: "SEARCH_SYSTEM_V.2.0";
+      position: absolute;
+      top: -10px; right: 20px;
+      background: var(--bg-dark);
+      color: var(--neon-pink);
+      padding: 0 10px;
+      font-size: 0.7rem;
+      font-family: var(--font-head);
+      border: 1px solid var(--neon-pink);
+    }
+
+    .search-box {
+      display: flex; gap: 15px;
+    }
+
+    .search-input-wrapper {
+      flex: 1; position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #333;
+      color: var(--neon-cyan);
+      padding: 15px 20px;
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      border-radius: 4px;
+      transition: 0.3s;
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
+
+    .search-btn {
+      background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+      border: none;
+      color: white;
+      padding: 0 30px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: 0.3s;
+      letter-spacing: 1px;
+    }
+
+    .search-btn:hover {
+      box-shadow: 0 0 20px var(--neon-pink);
+      filter: brightness(1.2);
+    }
+
+    /* ========== TABLE (DATA HUD) ========== */
+    .table-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+    }
+
+    .table-header h2 {
+      font-family: var(--font-head);
+      color: #fff;
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .table-container {
+      background: var(--bg-panel);
+      border: var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+
+    thead {
+      background: rgba(0, 243, 255, 0.1);
+      border-bottom: 2px solid var(--neon-cyan);
+    }
+
+    th {
+      padding: 20px;
+      text-align: left;
+      color: var(--neon-cyan);
+      font-family: var(--font-head);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: rgba(188, 19, 254, 0.1);
+    }
+
+    /* Table Links */
+    .link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--neon-pink);
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid var(--neon-pink);
+      border-radius: 4px;
+      transition: 0.3s;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .link:hover {
+      background: var(--neon-pink);
+      color: #fff;
+      box-shadow: 0 0 15px var(--neon-pink);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      width: 35px; height: 35px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: var(--neon-cyan);
+      color: #000;
+      box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    /* ========== NOTIFICATION BAR ========== */
+    .next-result-notification {
+      background: rgba(5, 5, 8, 0.9);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 20px rgba(10, 255, 10, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Scanning line effect */
+    .next-result-notification::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+      animation: scan 2s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { top: 0; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .notification-pasaran { color: var(--neon-green); font-weight: 700; text-shadow: 0 0 5px var(--neon-green); }
+    .notification-countdown { 
+      font-family: var(--font-head); 
+      font-size: 1.5rem; 
+      color: #fff; 
+      text-shadow: 0 0 10px var(--neon-green);
+      border-left: 1px solid var(--neon-green);
+      padding-left: 20px;
+      margin-left: 20px;
+    }
+
+    /* ========== ACTION BUTTONS ========== */
+    .table-action-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--text-dim);
+      color: var(--text-main);
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      transition: 0.3s;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .table-action-btn:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    }
+
+    /* ========== LOADING & ERROR STATES ========== */
+    .loading, .error {
+      text-align: center;
+      padding: 60px;
+      background: var(--bg-panel);
+      border: var(--glass-border);
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .loading-spinner {
+      width: 60px; height: 60px;
+      border: 3px solid rgba(0, 243, 255, 0.1);
+      border-top: 3px solid var(--neon-cyan);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* ========== SILENT UPDATE INDICATOR ========== */
+    .silent-update-indicator {
+      position: fixed; top: 20px; right: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--neon-green);
+      color: var(--neon-green);
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      z-index: 100;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 0 15px rgba(10, 255, 10, 0.2);
+      transform: translateX(200%);
+      transition: transform 0.5s ease;
+    }
+    .silent-update-indicator.show { transform: translateX(0); }
+    .silent-pulse { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green); animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ========== NOTIFICATION TOAST ========== */
+    .notification-toast {
+      position: fixed; top: 80px; right: 20px;
+      background: rgba(5, 5, 8, 0.95);
+      border-left: 4px solid var(--neon-cyan);
+      padding: 15px 25px;
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      z-index: 1000;
+      color: #fff;
+      font-family: var(--font-body);
+      animation: slideInRight 0.5s forwards;
+    }
+    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+      .search-box { flex-direction: column; }
+      .next-result-notification { flex-direction: column; text-align: center; gap: 15px; }
+      .notification-countdown { border-left: none; padding-left: 0; margin-left: 0; border-top: 1px solid var(--neon-green); padding-top: 15px; width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <!-- BACKGROUND: Neon Future Glitch dengan Gambar -->
-    <div class="glitch-background">
-        <!-- Overlay Gelap agar gambar terlihat redup dan teks tetap jelas -->
-        <div class="image-overlay"></div>
-        
-        <div class="neon-mesh"></div>
-        <div class="retro-grid"></div>
-        <div class="glitch-overlay">
-            <div class="glitch-line"></div>
-            <div class="glitch-line"></div>
-            <div class="glitch-line"></div>
-            <div class="glitch-line"></div>
-            <div class="glitch-block"></div>
+  
+  <!-- Background Elements -->
+  <div class="cyber-bg"></div>
+  <div class="glowing-orb orb-1"></div>
+  <div class="glowing-orb orb-2"></div>
+  
+  <!-- Silent Update Indicator (Custom Style) -->
+  <div class="silent-update-indicator" id="silent-update-indicator">
+    <div class="silent-pulse"></div>
+    <span>SYSTEM UPDATED</span>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 data-text="TOGEL SCHEDULE">TOGEL SCHEDULE</h1>
+      <p><i class="fas fa-satellite-dish"></i> LIVE DATA FEED // REAL-TIME MONITORING</p>
+    </header>
+    
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-database"></i></div>
+        <div class="stat-content">
+          <h3>Total Pasaran</h3>
+          <div class="stat-value" id="total-pasaran">0</div>
         </div>
-        <!-- Generated via JS for random positions -->
-        <div id="particles-container"></div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-video"></i></div>
+        <div class="stat-content">
+          <h3>Live Streams</h3>
+          <div class="stat-value" id="live-streams">0</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-sync-alt"></i></div>
+        <div class="stat-content">
+          <h3>Last Update</h3>
+          <div class="stat-value" id="last-update">--:--</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-content">
+          <h3>Next Result</h3>
+          <div class="stat-value" id="next-result-time">--:--</div>
+        </div>
+      </div>
     </div>
     
-    <!-- Scanline Overlay -->
-    <div class="scanlines"></div>
-    
-    <div class="container">
-        <header>
-            <div class="logo">
-                <!-- Data attribute for glitch effect -->
-                <h1 data-text="SPIDER-MATRIX PREDICTOR">SPIDER-MATRIX PREDICTOR</h1>
-                <p class="subtitle">Sistem Prediksi Togel Digital Canggih - Neon Future Glitch Edition</p>
-            </div>
-            
-            <div class="datetime-container">
-                <div class="current-date">
-                    <div class="date-text">
-                        <i class="far fa-calendar-alt"></i>
-                        <span id="currentDate">Loading...</span>
-                    </div>
-                    <div class="date-label">TANGGAL HARI INI</div>
-                </div>
-                
-                <div class="current-time">
-                    <div class="time-text">
-                        <i class="far fa-clock"></i>
-                        <span id="currentTime">--:--:--</span>
-                    </div>
-                    <div class="time-label">WAKTU REAL-TIME</div>
-                </div>
-            </div>
-        </header>
-        
-        <div class="warning">
-            <i class="fas fa-exclamation-triangle"></i> SISTEM SPIDER-MATRIX - Hasil prediksi dihasilkan secara acak oleh algoritma canggih. Gunakan hanya untuk referensi hiburan.
+    <!-- Next Result Notification -->
+    <div id="next-result-notification" class="next-result-notification" style="display:none;">
+      <div style="display:flex; align-items:center; gap:15px;">
+        <i class="fas fa-exclamation-triangle" style="color:var(--neon-green); font-size:1.5rem; animation: blink 1s infinite;"></i>
+        <div>
+          <div style="font-size:0.9rem; color:var(--text-dim); text-transform:uppercase;">Upcoming Result</div>
+          <div style="font-size:1.2rem;">
+            <span class="notification-pasaran" id="notification-pasaran">-</span> 
+            <span style="color:#fff; font-size:0.9rem;">at</span> 
+            <span style="color:#fff;" id="notification-time">-</span>
+          </div>
         </div>
-        
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="tab-btn active" id="tabGenerator">
-                <i class="fas fa-bolt"></i> GENERATOR PREDIKSI
-            </button>
-            <button class="tab-btn" id="tabJadwal">
-                <i class="fas fa-calendar-alt"></i> JADWAL PASARAN
-            </button>
-        </div>
-        
-        <!-- Content Container -->
-        <div class="content-container">
-            <!-- Generator Prediksi Tab Content -->
-            <div class="tab-content active" id="generatorContent">
-                <div class="mode-selector">
-                    <div class="selector-title">
-                        <i class="fas fa-sliders-h"></i> PILIH MODE GENERATOR
-                    </div>
-                    
-                    <!-- KEMBALI ke 2 mode saja -->
-                    <div class="mode-buttons">
-                        <button class="mode-btn single active" id="singleModeBtn">
-                            <i class="fas fa-crosshairs"></i> SINGLE PASARAN
-                        </button>
-                        <button class="mode-btn all" id="allModeBtn">
-                            <i class="fas fa-globe-americas"></i> ALL PASARAN
-                        </button>
-                    </div>
-                    
-                    <!-- Pasaran Selector (hanya untuk mode Single) -->
-                    <div class="pasaran-selector show" id="pasaranSelector">
-                        <div class="selector-subtitle">
-                            <i class="fas fa-list-alt"></i> PILIH PASARAN TARGET
-                        </div>
-                        
-                        <select class="pasaran-dropdown" id="pasaranDropdown">
-                            <option value="">-- PILIH PASARAN --</option>
-                            <!-- Opsi pasaran akan diisi oleh JavaScript -->
-                        </select>
-                        
-                        <div class="pasaran-grid" id="pasaranGrid">
-                            <!-- Daftar pasaran akan diisi oleh JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <button class="submit-btn" id="submitBtn">
-                        <i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX
-                    </button>
-                </div>
-                
-                <div class="result-container" id="resultContainer">
-                    <div class="result-header">
-                        <div class="result-title" id="resultTitle">
-                            <i class="fas fa-chart-network"></i> SPIDER-MATRIX RESULT
-                        </div>
-                    </div>
-                    
-                    <div class="result-content" id="resultContent">
-                        <!-- Hasil prediksi akan ditampilkan di sini -->
-                    </div>
-                    
-                    <div class="result-footer">
-                        <div class="auto-refresh">
-                            <div class="refresh-indicator"></div>
-                            <span>Sistem akan otomatis memperbarui prediksi setiap hari pukul 00:00</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="copy-btn" id="copyBtn">
-                                <i class="fas fa-copy"></i> SALIN SPIDER-MATRIX
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Jadwal Pasaran Tab Content -->
-            <div class="tab-content" id="jadwalContent">
-                <div class="jadwal-container">
-                    <div class="jadwal-header">
-                        <div class="jadwal-title">
-                            <i class="fas fa-calendar-alt"></i> JADWAL RESULT PASARAN TOGEL
-                        </div>
-                    </div>
-                    
-                    <div class="jadwal-table-container">
-                        <table class="jadwal-table" id="jadwalTable">
-                            <thead>
-                                <tr>
-                                    <th>CODE</th>
-                                    <th>PASARAN</th>
-                                    <th>JAM TUTUP</th>
-                                    <th>JAM RESULT</th>
-                                </tr>
-                            </thead>
-                            <tbody id="jadwalTableBody">
-                                <!-- Data jadwal akan diisi oleh JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="jadwal-info">
-                        <div class="info-box">
-                            <h3><i class="fas fa-info-circle"></i> KETERANGAN WAKTU</h3>
-                            <p>Semua waktu ditampilkan dalam format WIB (Waktu Indonesia Barat). Status "OPEN" berarti pasaran sedang buka, "CLOSED" berarti sudah tutup, dan "SOON" berarti akan buka dalam waktu dekat.</p>
-                        </div>
-                        
-                        <div class="info-box">
-                            <h3><i class="fas fa-sync-alt"></i> PEMBARUAN OTOMATIS</h3>
-                            <p>Jadwal pasaran diperbarui otomatis setiap hari. Sistem Spider-Matrix akan menandai status pasaran secara real-time berdasarkan waktu server.</p>
-                        </div>
-                        
-                        <div class="info-box">
-                            <h3><i class="fas fa-clock"></i> ZONA WAKTU</h3>
-                            <p>Perbedaan waktu dapat terjadi karena perbedaan zona waktu daerah. Disarankan untuk selalu mengecek langsung ke situs resmi pasaran untuk informasi yang lebih akurat.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="disclaimer">
-            <p><strong>PERINGATAN SISTEM SPIDER-MATRIX:</strong> Semua prediksi yang ditampilkan adalah hasil simulasi algoritma acak dengan teknologi digital canggih. Hasil tidak menjamin akurasi dan hanya untuk tujuan hiburan. Pengguna bertanggung jawab penuh atas segala keputusan berdasarkan prediksi ini.</p>
-        </div>
-        
-        <footer>
-            <div class="footer-glow"></div>
-            <p>© 2025 SPIDER-MATRIX PREDICTOR v2.0 | Neon Glitch Edition</p>
-            <p>Data prediksi diperbarui otomatis setiap hari oleh Spider-Matrix System</p>
-        </footer>
+      </div>
+      <div class="notification-countdown" id="notification-countdown">00:00:00</div>
     </div>
+    
+    <!-- Search Section -->
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-input-wrapper">
+          <input type="text" id="search-input" class="search-input" placeholder="ENTER QUERY TO SEARCH DATABASE..." autocomplete="off">
+          <button id="clear-btn" class="copy-btn" style="position:absolute; right:10px; top:10px; display:none; border:none;"><i class="fas fa-times"></i></button>
+        </div>
+        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i> SCAN</button>
+      </div>
+      <div id="search-result-info" style="display:none; margin-top:15px; padding:10px; border:1px dashed var(--neon-pink); color:var(--neon-pink); font-size:0.9rem;">
+        RESULTS FOUND: <span id="result-count">0</span> FOR "<span id="search-query"></span>"
+        <button id="reset-search-btn" style="background:transparent; border:none; color:var(--text-dim); cursor:pointer; margin-left:10px; text-decoration:underline;">[RESET]</button>
+      </div>
+    </div>
+    
+    <!-- Loading -->
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <h2 style="font-family:var(--font-head); color:var(--neon-cyan);">INITIALIZING SYSTEM...</h2>
+      <p style="color:var(--text-dim);">CONNECTING TO SECURE DATA STREAM</p>
+    </div>
+    
+    <!-- Error -->
+    <div id="error" class="error" style="display:none; border-color: #ff3333;">
+      <i class="fas fa-skull-crossbones" style="font-size:3rem; color:#ff3333; margin-bottom:20px;"></i>
+      <h2 style="color:#ff3333; font-family:var(--font-head);">CONNECTION FAILED</h2>
+      <p id="error-message" style="color:#fff; margin:10px 0;">Error establishing link.</p>
+      <button onclick="loadData()" style="background:var(--neon-purple); border:none; padding:10px 20px; color:#fff; cursor:pointer; font-weight:bold; margin-top:10px;">RETRY CONNECTION</button>
+    </div>
+    
+    <!-- Table Section -->
+    <div id="table-section" class="table-section" style="display:none;">
+      <div class="table-header">
+        <h2><i class="fas fa-table"></i> DATABASE</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="refresh-btn" class="table-action-btn"><i class="fas fa-sync"></i> REFRESH</button>
+          <button id="export-btn" class="table-action-btn"><i class="fas fa-download"></i> EXPORT</button>
+        </div>
+      </div>
+      
+      <div class="table-container">
+        <table id="jadwal-table">
+          <thead>
+            <tr id="table-header"></tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2025 NEON TOGEL SYSTEM // SECURE CONNECTION ESTABLISHED</p>
+      <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">LAST SYNC: <span id="footer-update">-</span></p>
+    </footer>
+  </div>
 
-    <script>
-        // Daftar lengkap semua pasaran
-        const semuaPasaran = [
-            "TOTO MACAU PAGI",
-            "HUAHIN 0100",
-            "KENTUCKY MIDDAY",
-            "BANGKOK 0130",
-            "FLORIDA MIDDAY",
-            "NEW YORK MIDDAY",
-            "BRUNEI 02",
-            "NORTH CAROLINA DAY",
-            "OREGON 03",
-            "OREGON 06",
-            "BANGKOK 0930",
-            "CALIFORNIA",
-            "FLORIDA EVENING",
-            "OREGON 09",
-            "NEW YORK EVENING",
-            "KENTUCKY EVENING",
-            "TOTO CAMBODIA",
-            "CHELSEA 11",
-            "CAROLINA EVENING",
-            "BULLSEYE",
-            "POIPET 12",
-            "OREGON 12",
-            "TOTO MACAU SIANG",
-            "SYDNEY",
-            "JAKARTA 1400",
-            "BRUNEI 14",
-            "CHELSEA 15",
-            "TOTO MACAU 5D SORE",
-            "POIPET 15",
-            "TOTO MALI 1530",
-            "TOTO MACAU SORE",
-            "HUAHIN 1630",
-            "KINGKONG 4D SORE",
-            "SINGAPORE 4D",
-            "SINGAPORE TOTO",
-            "MAGNUM 4D",
-            "CHELSEA 19",
-            "TOTO MACAU MALAM I",
-            "POIPET 19",
-            "PCSO",
-            "TOTO MALI 2030",
-            "HUAHIN 2100",
-            "CHELSEA 21",
-            "TOTO MACAU 5D MALAM",
-            "NEVADA",
-            "BRUNEI 21",
-            "TOTO MACAU MALAM II",
-            "POIPET 22",
-            "HONGKONG",
-            "TOTO MACAU MALAM III",
-            "TOTO MALI 2330",
-            "JAKARTA 2330",
-            "KINGKONG 4D MALAM",
-            "HOKI DRAW"
-        ];
+  <script>
+    // ========== KONFIGURASI GOOGLE SHEETS (ORIGINAL LOGIC PRESERVED) ==========
+    const SPREADSHEET_ID = '10LXglc7cEh3MhS9CStG5sEazXz-G6dKpXP_8vTLAW-c';
+    const SHEET_NAME = 'Jadwal Pasaran';
+    
+    // ========== VARIABEL GLOBAL ==========
+    let allData = [];
+    let filteredData = [];
+    let headers = [];
+    let lastDataHash = '';
+    let realTimeInterval;
+    let currentDataVersion = 0;
+    let isFirstLoad = true;
+    
+    // ========== INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('System Neon: Starting...');
+      
+      setupEventListeners();
+      loadData();
+      startSilentMonitoring();
+    });
+    
+    // ========== SILENT MONITORING SYSTEM ==========
+    function startSilentMonitoring() {
+      if (realTimeInterval) clearInterval(realTimeInterval);
+      realTimeInterval = setInterval(() => {
+        checkForUpdatesSilently();
+      }, 3000);
+      console.log('System Neon: Silent Monitoring Active (3s interval)');
+    }
+    
+    async function checkForUpdatesSilently() {
+      try {
+        const timestamp = new Date().getTime();
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&t=${timestamp}`;
         
-        // Data jadwal pasaran lengkap
-        const jadwalPasaran = [
-            { code: "KMEC", pasaran: "TOTO MACAU PAGI", jamTutup: "00:00", jamResult: "00:15" },
-            { code: "TM", pasaran: "HUAHIN 0100", jamTutup: "00:45", jamResult: "01:00" },
-            { code: "HNEC", pasaran: "KENTUCKY MIDDAY", jamTutup: "01:05", jamResult: "01:20" },
-            { code: "FDEC", pasaran: "BANGKOK 0130", jamTutup: "01:15", jamResult: "01:30" },
-            { code: "NMEC", pasaran: "FLORIDA MIDDAY", jamTutup: "01:20", jamResult: "01:30" },
-            { code: "KGEC", pasaran: "NEW YORK MIDDAY", jamTutup: "02:15", jamResult: "02:25" },
-            { code: "CDEC", pasaran: "BRUNEI 02", jamTutup: "02:30", jamResult: "02:45" },
-            { code: "BNAA", pasaran: "NORTH CAROLINA DAY", jamTutup: "02:45", jamResult: "03:00" },
-            { code: "OREC", pasaran: "OREGON 03", jamTutup: "03:50", jamResult: "04:00" },
-            { code: "OEEC", pasaran: "OREGON 06", jamTutup: "06:50", jamResult: "07:00" },
-            { code: "CREC", pasaran: "BANGKOK 0930", jamTutup: "09:00", jamResult: "09:30" },
-            { code: "FREC", pasaran: "CALIFORNIA", jamTutup: "09:25", jamResult: "09:30" },
-            { code: "OGEC", pasaran: "FLORIDA EVENING", jamTutup: "09:35", jamResult: "09:45" },
-            { code: "GKEC", pasaran: "OREGON 09", jamTutup: "09:50", jamResult: "10:00" },
-            { code: "NEEC", pasaran: "NEW YORK EVENING", jamTutup: "10:25", jamResult: "10:35" },
-            { code: "KECA", pasaran: "KENTUCKY EVENING", jamTutup: "10:45", jamResult: "11:00" },
-            { code: "SDEC", pasaran: "TOTO CAMBODIA", jamTutup: "10:45", jamResult: "11:00" },
-            { code: "CEEC", pasaran: "CHELSEA 11", jamTutup: "11:00", jamResult: "11:15" },
-            { code: "CLAA", pasaran: "CAROLINA EVENING", jamTutup: "11:17", jamResult: "11:22" },
-            { code: "OOEC", pasaran: "BULLSEYE", jamTutup: "12:00", jamResult: "12:15" },
-            { code: "BECA", pasaran: "POIPET 12", jamTutup: "12:15", jamResult: "12:30" },
-            { code: "POEC", pasaran: "OREGON 12", jamTutup: "12:50", jamResult: "13:00" },
-            { code: "TM", pasaran: "TOTO MACAU SIANG", jamTutup: "13:00", jamResult: "13:15" },
-            { code: "SECA", pasaran: "SYDNEY", jamTutup: "13:49", jamResult: "14:05" },
-            { code: "JTEC", pasaran: "JAKARTA 1400", jamTutup: "13:55", jamResult: "14:10" },
-            { code: "BRAA", pasaran: "BRUNEI 14", jamTutup: "14:30", jamResult: "14:45" },
-            { code: "CEAA", pasaran: "CHELSEA 15", jamTutup: "15:00", jamResult: "15:15" },
-            { code: "TM5D", pasaran: "TOTO MACAU 5D SORE", jamTutup: "15:15", jamResult: "15:30" },
-            { code: "PIEC", pasaran: "POIPET 15", jamTutup: "15:15", jamResult: "15:30" },
-            { code: "AWLK", pasaran: "TOTO MALI 1530", jamTutup: "15:15", jamResult: "15:30" },
-            { code: "TM", pasaran: "TOTO MACAU SORE", jamTutup: "16:00", jamResult: "16:15" },
-            { code: "HIEC", pasaran: "HUAHIN 1630", jamTutup: "16:00", jamResult: "16:30" },
-            { code: "KK4D", pasaran: "KINGKONG 4D SORE", jamTutup: "17:00", jamResult: "17:15" },
-            { code: "SGCA", pasaran: "SINGAPORE 4D", jamTutup: "17:30", jamResult: "17:45" },
-            { code: "SGCA", pasaran: "SINGAPORE TOTO", jamTutup: "17:30", jamResult: "17:45" },
-            { code: "MGEC", pasaran: "MAGNUM 4D", jamTutup: "18:10", jamResult: "18:40" },
-            { code: "CSAA", pasaran: "CHELSEA 19", jamTutup: "19:00", jamResult: "19:15" },
-            { code: "TM", pasaran: "TOTO MACAU MALAM I", jamTutup: "19:00", jamResult: "19:15" },
-            { code: "PPEC", pasaran: "POIPET 19", jamTutup: "19:30", jamResult: "19:45" },
-            { code: "PCEC", pasaran: "PCSO", jamTutup: "19:50", jamResult: "20:10" },
-            { code: "EIKW", pasaran: "TOTO MALI 2030", jamTutup: "20:15", jamResult: "20:30" },
-            { code: "HHEC", pasaran: "HUAHIN 2100", jamTutup: "20:30", jamResult: "21:00" },
-            { code: "CEWE", pasaran: "CHELSEA 21", jamTutup: "21:00", jamResult: "21:15" },
-            { code: "TM5D", pasaran: "TOTO MACAU 5D MALAM", jamTutup: "21:15", jamResult: "21:30" },
-            { code: "NVEC", pasaran: "NEVADA", jamTutup: "21:15", jamResult: "21:30" },
-            { code: "BUAA", pasaran: "BRUNEI 21", jamTutup: "21:30", jamResult: "21:45" },
-            { code: "TM", pasaran: "TOTO MACAU MALAM II", jamTutup: "22:00", jamResult: "22:15" },
-            { code: "PEEC", pasaran: "POIPET 22", jamTutup: "22:30", jamResult: "22:45" },
-            { code: "HKCA", pasaran: "HONGKONG", jamTutup: "22:59", jamResult: "23:15" },
-            { code: "TM", pasaran: "TOTO MACAU MALAM III", jamTutup: "23:00", jamResult: "23:15" },
-            { code: "WQOI", pasaran: "TOTO MALI 2330", jamTutup: "23:15", jamResult: "23:30" },
-            { code: "JKEC", pasaran: "JAKARTA 2330", jamTutup: "23:25", jamResult: "23:40" },
-            { code: "KK4D", pasaran: "KINGKONG 4D MALAM", jamTutup: "23:30", jamResult: "23:45" },
-            { code: "HOKI", pasaran: "HOKI DRAW", jamTutup: "00:00", jamResult: "00:00" }
-        ];
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
         
-        // Daftar shio
-        const daftarShio = [
-            "TIKUS", "KERBAU", "HARIMAU", "KELINCI", 
-            "NAGA", "ULAR", "KUDA", "KAMBING", 
-            "MONYET", "AYAM", "ANJING", "BABI"
-        ];
+        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+        clearTimeout(timeoutId);
         
-        // Daftar hari
-        const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        if (!response.ok) return;
         
-        // Daftar bulan
-        const bulanInggris = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
+        const text = await response.text();
+        const json = parseGoogleSheetsResponse(text);
+        const newDataHash = generateDataHash(json);
         
-        const bulanIndonesia = [
-            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-        ];
-        
-        // Variabel global
-        let currentMode = "single";
-        let selectedPasaran = null;
-        let lastGeneratedDate = null;
-        let cachedPredictions = {};
-        let currentTab = "generator";
-        
-        // Fungsi untuk memperbarui tanggal dan waktu
-        function updateDateTime() {
-            const now = new Date();
-            const dayName = hari[now.getDay()];
-            const date = now.getDate();
-            const monthName = bulanIndonesia[now.getMonth()];
-            const year = now.getFullYear();
-            
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            
-            document.getElementById('currentDate').innerHTML = `${dayName}, ${date} ${monthName} ${year}`;
-            document.getElementById('currentTime').innerHTML = `${hours}:${minutes}:${seconds}`;
-            
-            const todayDate = now.getDate();
-            if (lastGeneratedDate !== todayDate) {
-                cachedPredictions = {};
-                lastGeneratedDate = todayDate;
-                if (document.getElementById('resultContainer').classList.contains('show')) {
-                    setTimeout(showPredictionResult, 100);
-                }
+        if (newDataHash !== lastDataHash) {
+          console.log('Neon System: Data change detected. Updating...');
+          processDataSilently(json);
+          lastDataHash = newDataHash;
+          showSilentUpdateIndicator();
+          updateLastUpdateTime();
+        }
+      } catch (error) {
+        // Silent fail
+      }
+    }
+    
+    function showSilentUpdateIndicator() {
+      const indicator = document.getElementById('silent-update-indicator');
+      indicator.classList.add('show');
+      setTimeout(() => indicator.classList.remove('show'), 2000);
+    }
+    
+    function updateLastUpdateTime() {
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                      now.getMinutes().toString().padStart(2, '0') + ':' + 
+                      now.getSeconds().toString().padStart(2, '0');
+      
+      // Visual update of time in specific element if needed
+      const lastUpdateEl = document.getElementById('last-update');
+      if(lastUpdateEl) lastUpdateEl.textContent = timeStr;
+    }
+    
+    function generateDataHash(json) {
+      try {
+        if (!json || !json.table || !json.table.rows) return '';
+        const rows = json.table.rows;
+        let hashString = '';
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          if (row && row.c) {
+            for (let j = 0; j < row.c.length; j++) {
+              const cell = row.c[j];
+              if (cell) {
+                if (cell.v !== undefined && cell.v !== null) hashString += String(cell.v);
+                if (cell.f) hashString += String(cell.f);
+              }
             }
-            
-            if (currentTab === "jadwal") {
-                updateTimeStatus();
+          }
+        }
+        let hash = 0;
+        for (let i = 0; i < hashString.length; i++) {
+          const char = hashString.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash;
+        }
+        return hash.toString();
+      } catch (error) {
+        return '';
+      }
+    }
+    
+    // ========== LOAD DATA ==========
+    async function loadData() {
+      if (isFirstLoad) {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('error').style.display = 'none';
+        document.getElementById('table-section').style.display = 'none';
+        document.getElementById('next-result-notification').style.display = 'none';
+      }
+      
+      try {
+        const timestamp = new Date().getTime();
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&t=${timestamp}`;
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        
+        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const text = await response.text();
+        const json = parseGoogleSheetsResponse(text);
+        processGoogleSheetsData(json);
+        lastDataHash = generateDataHash(json);
+        isFirstLoad = false;
+        
+      } catch (error) {
+        console.error('Load Error:', error);
+        showError(error);
+      }
+    }
+    
+    function parseGoogleSheetsResponse(text) {
+      try {
+        const jsonString = text.substring(47).slice(0, -2);
+        return JSON.parse(jsonString);
+      } catch (error) {
+        throw new Error('Invalid Google Sheets Format');
+      }
+    }
+    
+    // ========== PROCESS DATA ==========
+    function processGoogleSheetsData(json) {
+      if (!json || !json.table || !json.table.rows) throw new Error('No data found');
+      
+      const firstRow = json.table.rows[0];
+      const extractedHeaders = [];
+      
+      if (firstRow && firstRow.c) {
+        for (let i = 0; i < firstRow.c.length; i++) {
+          const cell = firstRow.c[i];
+          let headerValue = (cell && cell.v !== undefined && cell.v !== null) ? String(cell.v).trim() : `Col ${i+1}`;
+          if (!headerValue) {
+            const defaults = ['Pasaran', 'Jam Buka', 'Jam Tutup', 'Jam Result', 'Link Resmi', 'Link YouTube'];
+            headerValue = defaults[i] || `Col ${i+1}`;
+          }
+          extractedHeaders.push(headerValue);
+        }
+      }
+      
+      const extractedData = [];
+      for (let i = 1; i < json.table.rows.length; i++) {
+        const row = json.table.rows[i];
+        if (!row || !row.c) continue;
+        
+        const rowData = {};
+        let isEmptyRow = true;
+        
+        for (let j = 0; j < extractedHeaders.length; j++) {
+          const header = extractedHeaders[j];
+          const cell = row.c[j];
+          let cellValue = '';
+          
+          if (cell) {
+            if (cell.v !== undefined && cell.v !== null && cell.v !== '') {
+              cellValue = String(cell.v).trim();
+              isEmptyRow = false;
             }
+            if (cell.f && !cellValue) {
+              cellValue = String(cell.f).trim();
+              isEmptyRow = false;
+            }
+          }
+          rowData[header] = cellValue;
         }
         
-        function getTodayDate() {
-            const now = new Date();
-            const dayName = hari[now.getDay()];
-            const date = now.getDate();
-            const monthName = bulanInggris[now.getMonth()];
-            const year = now.getFullYear();
-            return `${dayName}, ${date} ${monthName} ${year}`;
+        if (!isEmptyRow) extractedData.push(rowData);
+      }
+      
+      allData = extractedData;
+      filteredData = [...allData];
+      headers = extractedHeaders;
+      
+      updateStats();
+      renderTable();
+      setupNextResultNotification();
+      
+      if (isFirstLoad) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('table-section').style.display = 'block';
+      }
+      
+      const now = new Date();
+      document.getElementById('footer-update').textContent = now.toLocaleString('id-ID');
+      updateLastUpdateTime();
+    }
+    
+    // ========== SILENT DATA PROCESS ==========
+    function processDataSilently(json) {
+      if (!json || !json.table || !json.table.rows) return;
+      
+      currentDataVersion++;
+      const firstRow = json.table.rows[0];
+      const extractedHeaders = [];
+      
+      if (firstRow && firstRow.c) {
+        for (let i = 0; i < firstRow.c.length; i++) {
+          const cell = firstRow.c[i];
+          let headerValue = (cell && cell.v !== undefined) ? String(cell.v).trim() : `Col ${i+1}`;
+          if (!headerValue) headerValue = ['Pasaran', 'Jam Buka', 'Jam Tutup', 'Jam Result', 'Link Resmi', 'Link YouTube'][i] || `Col ${i+1}`;
+          extractedHeaders.push(headerValue);
         }
-        
-        function generateRandomNumber(length) {
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += Math.floor(Math.random() * 10);
-            }
-            return result;
+      }
+      
+      const extractedData = [];
+      for (let i = 1; i < json.table.rows.length; i++) {
+        const row = json.table.rows[i];
+        if (!row || !row.c) continue;
+        const rowData = {};
+        let isEmptyRow = true;
+        for (let j = 0; j < extractedHeaders.length; j++) {
+          const cell = row.c[j];
+          let val = '';
+          if (cell) {
+            if (cell.v !== undefined && cell.v !== '') { val = String(cell.v).trim(); isEmptyRow = false; }
+            else if (cell.f) { val = String(cell.f).trim(); isEmptyRow = false; }
+          }
+          rowData[extractedHeaders[j]] = val;
         }
-        
-        function generate4D(count) {
-            const result = [];
-            for (let i = 0; i < count; i++) {
-                result.push(generateRandomNumber(4));
-            }
-            return result;
-        }
-        
-        function generate3D(count) {
-            const result = [];
-            for (let i = 0; i < count; i++) {
-                result.push(generateRandomNumber(3));
-            }
-            return result;
-        }
-        
-        function generate2D(count) {
-            const result = [];
-            for (let i = 0; i < count; i++) {
-                result.push(generateRandomNumber(2));
-            }
-            return result;
-        }
-        
-        function generateTwin(count) {
-            const result = [];
-            for (let i = 0; i < count; i++) {
-                const digit = Math.floor(Math.random() * 10);
-                result.push(`${digit}${digit}`);
-            }
-            return result;
-        }
-        
-        function getRandomShio(count) {
-            const result = [];
-            const shuffledShio = [...daftarShio].sort(() => 0.5 - Math.random());
-            for (let i = 0; i < count && i < shuffledShio.length; i++) {
-                result.push(shuffledShio[i]);
-            }
-            return result;
-        }
-        
-        function generatePredictionForPasaran(pasaranName, isForAll = false) {
-            const today = new Date();
-            const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
-            const cacheKey = `${pasaranName}_${todayKey}_${isForAll ? 'all' : 'single'}`;
-            
-            if (cachedPredictions[cacheKey]) {
-                return cachedPredictions[cacheKey];
-            }
-            
-            let bbfs, amAiCk, prediksi4D, prediksi3D, prediksi2D, colokBebas2D, twin, shio;
-            
-            if (pasaranName === "HOKI DRAW") {
-                bbfs = generateRandomNumber(8);
-                amAiCk = generateRandomNumber(6);
-                prediksi4D = generate4D(6);
-                prediksi3D = generate3D(6);
-                prediksi2D = generate2D(12);
-                colokBebas2D = generate2D(5);
-                twin = generateTwin(4);
-                shio = getRandomShio(4);
-            } else {
-                bbfs = generateRandomNumber(7);
-                amAiCk = generateRandomNumber(5);
-                prediksi4D = generate4D(4);
-                prediksi3D = generate3D(4);
-                prediksi2D = generate2D(10);
-                colokBebas2D = generate2D(3);
-                twin = generateTwin(3);
-                shio = getRandomShio(3);
-            }
-            
-            const colokBebas1 = Math.floor(Math.random() * 10);
-            const colokBebas2 = Math.floor(Math.random() * 10);
-            
-            if (isForAll) {
-                const prediction = `Prediksi ${pasaranName}
-Hari ${getTodayDate()}
-BBFS : ${bbfs}
-AM/AI/CK : ${amAiCk}
-4D : ${prediksi4D.join(' ')}
-3D : ${prediksi3D.join(' ')}
-2D (BB) : ${prediksi2D.join(' ')}
-COLOK BEBAS : ${colokBebas1} / ${colokBebas2}
-COLOK BEBAS 2D : ${colokBebas2D.join(' / ')}
-TWIN : ${twin.join(' / ')}
-SHIO : ${shio.join(' / ')}
-Selalu Utamakan Prediksi Sendiri
+        if (!isEmptyRow) extractedData.push(rowData);
+      }
+      
+      const oldData = [...allData];
+      allData = extractedData;
+      headers = extractedHeaders;
+      
+      const query = document.getElementById('search-input').value.trim().toLowerCase();
+      if (query) {
+        filteredData = allData.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(query)));
+      } else {
+        filteredData = [...allData];
+      }
+      
+      updateStatsSilently();
+      updateTableSilently(oldData);
+      setupNextResultNotification();
+    }
+    
+    function updateStatsSilently() {
+      document.getElementById('total-pasaran').textContent = allData.length;
+      const liveStreams = allData.filter(item => {
+        const yt = item['Link YouTube'] || item['Link Youtube'] || item['YouTube'] || item['Youtube'];
+        return yt && yt.trim() !== '' && yt !== '-';
+      }).length;
+      document.getElementById('live-streams').textContent = liveStreams;
+      
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      document.getElementById('last-update').textContent = timeStr;
+      
+      const nextResult = findNextResult();
+      document.getElementById('next-result-time').textContent = nextResult ? nextResult.time : '--:--';
+      document.getElementById('footer-update').textContent = now.toLocaleString('id-ID');
+      updateLastUpdateTime();
+    }
+    
+    function updateTableSilently(oldData) {
+      const tableBody = document.getElementById('table-body');
+      const scrollTop = document.querySelector('.table-container').scrollTop;
+      
+      tableBody.innerHTML = '';
+      
+      if (filteredData.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = headers.length;
+        td.textContent = 'NO DATA FOUND';
+        td.style.textAlign = 'center';
+        td.style.padding = '40px';
+        td.style.color = 'var(--text-dim)';
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+      } else {
+        filteredData.forEach((rowData, index) => {
+          const row = document.createElement('tr');
+          const isNew = !oldData.some(old => JSON.stringify(old) === JSON.stringify(rowData));
+          if(isNew && index < allData.length - oldData.length) {
+             row.style.backgroundColor = 'rgba(10, 255, 10, 0.2)';
+             setTimeout(() => row.style.backgroundColor = '', 2000);
+          }
 
-`;
-                cachedPredictions[cacheKey] = prediction;
-                return prediction;
+          headers.forEach(header => {
+            const cell = document.createElement('td');
+            const val = rowData[header] || '-';
+            
+            if (header.toLowerCase().includes('link') || header.toLowerCase().includes('youtube') || header.toLowerCase().includes('url')) {
+              const div = document.createElement('div');
+              div.style.display = 'flex'; div.style.alignItems = 'center';
+              
+              if (isValidUrl(val) && val !== '-') {
+                const a = document.createElement('a');
+                a.href = val; a.target = '_blank'; a.rel = 'noopener';
+                a.className = 'link';
+                a.innerHTML = header.toLowerCase().includes('youtube') ? '<i class="fab fa-youtube"></i> LIVE' : '<i class="fas fa-external-link-alt"></i> LINK';
+                div.appendChild(a);
+                
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.innerHTML = '<i class="fas fa-copy"></i>';
+                btn.onclick = function() {
+                  copyToClipboard(val);
+                  const original = this.innerHTML;
+                  this.innerHTML = '<i class="fas fa-check"></i>';
+                  this.style.borderColor = 'var(--neon-green)';
+                  this.style.color = 'var(--neon-green)';
+                  setTimeout(() => {
+                    this.innerHTML = original;
+                    this.style.borderColor = ''; this.style.color = '';
+                  }, 2000);
+                };
+                div.appendChild(btn);
+              } else {
+                cell.textContent = val;
+              }
+              if(div.children.length > 0) cell.appendChild(div);
             } else {
-                const prediction = `Prediksi ${pasaranName}
-Hari ${getTodayDate()}
-BBFS : ${bbfs}
-AM/AI/CK : ${amAiCk}
-4D : ${prediksi4D.join(' ')}
-3D : ${prediksi3D.join(' ')}
-2D (BB) : ${prediksi2D.join(' ')}
-COLOK BEBAS : ${colokBebas1} / ${colokBebas2}
-COLOK BEBAS 2D : ${colokBebas2D.join(' / ')}
-TWIN : ${twin.join(' / ')}
-SHIO : ${shio.join(' / ')}
-Selalu Utamakan Prediksi Sendiri
-
-`;
-                cachedPredictions[cacheKey] = prediction;
-                return prediction;
+              cell.textContent = val;
             }
-        }
+            row.appendChild(cell);
+          });
+          tableBody.appendChild(row);
+        });
+      }
+      
+      document.querySelector('.table-container').scrollTop = scrollTop;
+    }
+    
+    // ========== STATS & NOTIFICATIONS ==========
+    function updateStats() {
+      document.getElementById('total-pasaran').textContent = allData.length;
+      const live = allData.filter(item => {
+        const yt = item['Link YouTube'] || item['Link Youtube'] || item['YouTube'];
+        return yt && yt.trim() !== '' && yt !== '-';
+      }).length;
+      document.getElementById('live-streams').textContent = live;
+      
+      const now = new Date();
+      const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      document.getElementById('last-update').textContent = t;
+      
+      const nr = findNextResult();
+      document.getElementById('next-result-time').textContent = nr ? nr.time : '--:--';
+    }
+    
+    function setupNextResultNotification() {
+      const next = findNextResult();
+      const el = document.getElementById('next-result-notification');
+      if (next) {
+        document.getElementById('notification-pasaran').textContent = next.pasaran;
+        document.getElementById('notification-time').textContent = next.time;
+        el.style.display = 'flex';
+        updateCountdown(next);
+      } else {
+        el.style.display = 'none';
+      }
+    }
+    
+    function findNextResult() {
+      const now = new Date();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      let next = null;
+      let minDiff = Infinity;
+      
+      allData.forEach(p => {
+        let t = '';
+        const cols = ['Jam Result', 'Jam Keluar', 'Result', 'Jam'];
+        for(let c of cols) { if(p[c] && p[c].trim() !== '' && p[c] !== '-') { t = p[c]; break; } }
+        if(!t) return;
         
-        function populatePasaranLists() {
-            const dropdown = document.getElementById('pasaranDropdown');
-            const grid = document.getElementById('pasaranGrid');
-            
-            dropdown.innerHTML = '<option value="">-- PILIH PASARAN --</option>';
-            grid.innerHTML = '';
-            
-            semuaPasaran.forEach(pasaran => {
-                const option = document.createElement('option');
-                option.value = pasaran;
-                option.textContent = pasaran;
-                dropdown.appendChild(option);
-                
-                const button = document.createElement('button');
-                const isHoki = pasaran === "HOKI DRAW";
-                button.className = isHoki ? 'pasaran-item hoki' : 'pasaran-item';
-                button.innerHTML = isHoki 
-                    ? `<i class="fas fa-crown"></i> ${pasaran}`
-                    : `<i class="fas fa-bullseye"></i> ${pasaran}`;
-                button.dataset.pasaran = pasaran;
-                
-                button.addEventListener('click', function() {
-                    document.querySelectorAll('.pasaran-item').forEach(item => item.classList.remove('selected'));
-                    this.classList.add('selected');
-                    dropdown.value = pasaran;
-                    selectedPasaran = pasaran;
-                    updateSubmitButtonStatus();
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => { this.style.transform = ''; }, 150);
-                });
-                
-                grid.appendChild(button);
-            });
-            
-            dropdown.addEventListener('change', function() {
-                const pasaran = this.value;
-                document.querySelectorAll('.pasaran-item').forEach(item => item.classList.remove('selected'));
-                if (pasaran) {
-                    const correspondingButton = document.querySelector(`.pasaran-item[data-pasaran="${pasaran}"]`);
-                    if (correspondingButton) correspondingButton.classList.add('selected');
-                }
-                selectedPasaran = pasaran;
-                updateSubmitButtonStatus();
-            });
+        let h, m;
+        if(t.includes(':')) [h, m] = t.split(':').map(Number);
+        else if(t.includes('.')) [h, m] = t.split('.').map(Number);
+        else {
+          const n = parseInt(t); if(!isNaN(n)) { h = Math.floor(n/100); m = n%100; } else return;
         }
+        if(isNaN(h) || isNaN(m)) return;
         
-        function updateSubmitButtonStatus() {
-            const submitBtn = document.getElementById('submitBtn');
-            
-            if (currentMode === "single") {
-                submitBtn.disabled = !selectedPasaran;
-                if (selectedPasaran) {
-                    if (selectedPasaran === "HOKI DRAW") {
-                        submitBtn.innerHTML = `<i class="fas fa-crown"></i> GENERATE HOKI DRAW`;
-                    } else {
-                        submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ${selectedPasaran}`;
-                    }
-                } else {
-                    submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE SPIDER-MATRIX`;
-                }
-            } else {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fas fa-bolt"></i> GENERATE ALL PASARAN MATRIX`;
-            }
+        const resMin = h * 60 + m;
+        let diff = resMin - currentMin;
+        if(diff < 0) diff += 24*60;
+        
+        if(diff > 0 && diff < minDiff) {
+          minDiff = diff;
+          next = { pasaran: p[headers[0]] || 'Unknown', time: `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}` };
         }
+      });
+      return next;
+    }
+    
+    function updateCountdown(next) {
+      function tick() {
+        const n = new Date();
+        const cur = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
+        const [h, m] = next.time.split(':').map(Number);
+        let target = h*3600 + m*60;
+        if(target <= cur) target += 24*3600;
         
-        function showPredictionResult() {
-            const resultContainer = document.getElementById('resultContainer');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultContent = document.getElementById('resultContent');
-            
-            // Loading glitch effect
-            resultContent.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--spider-red);"><i class="fas fa-bolt fa-spin fa-2x"></i><br><br>MENGAKSES MATRIX NEON...</div>';
-            resultContainer.classList.add('show');
-            resultContainer.classList.remove('compact-mode');
-            
-            setTimeout(() => {
-                let prediksiText = "";
-                let resultHTML = "";
-                
-                if (currentMode === "single") {
-                    resultTitle.innerHTML = selectedPasaran === "HOKI DRAW" 
-                        ? `<i class="fas fa-crown"></i> SPIDER-MATRIX: HOKI DRAW`
-                        : `<i class="fas fa-crosshairs"></i> SPIDER-MATRIX: ${selectedPasaran}`;
-                    prediksiText = generatePredictionForPasaran(selectedPasaran, false);
-                    resultContent.textContent = prediksiText;
-                } else {
-                    resultTitle.innerHTML = `<i class="fas fa-globe-americas"></i> FULL SPIDER-MATRIX: ALL PASARAN`;
-                    resultContainer.classList.add('compact-mode');
-                    
-                    semuaPasaran.forEach((pasaran) => {
-                        const prediksi = generatePredictionForPasaran(pasaran, true);
-                        prediksiText += prediksi;
-                        resultHTML += `<div class="all-pasaran-result">${prediksi.replace(/\n/g, '<br>')}</div>`;
-                    });
-                    
-                    resultContent.innerHTML = resultHTML;
-                }
-                
-                resultContent.dataset.copyText = prediksiText;
-                resultContainer.scrollIntoView({ behavior: 'smooth' });
-                
-                const contentElement = document.getElementById('resultContent');
-                contentElement.style.opacity = '0';
-                contentElement.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    contentElement.style.transition = 'opacity 0.5s, transform 0.5s';
-                    contentElement.style.opacity = '1';
-                    contentElement.style.transform = 'translateY(0)';
-                }, 100);
-            }, 800);
-        }
+        let diff = target - cur;
+        const hh = Math.floor(diff/3600);
+        const mm = Math.floor((diff%3600)/60);
+        const ss = diff%60;
         
-        function copyPredictionToClipboard() {
-            const resultContent = document.getElementById('resultContent');
-            const copyBtn = document.getElementById('copyBtn');
+        document.getElementById('notification-countdown').textContent = 
+          `${hh.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`;
+      }
+      tick(); setInterval(tick, 1000);
+    }
+    
+    // ========== RENDER TABLE ==========
+    function renderTable() {
+      const th = document.getElementById('table-header');
+      const tb = document.getElementById('table-body');
+      th.innerHTML = ''; tb.innerHTML = '';
+      
+      headers.forEach(h => {
+        const e = document.createElement('th'); e.textContent = h; th.appendChild(e);
+      });
+      
+      if (filteredData.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = headers.length;
+        td.textContent = 'DATA NOT FOUND IN DATABASE';
+        td.style.textAlign = 'center'; td.style.padding = '40px'; td.style.color = 'var(--text-dim)';
+        tr.appendChild(td); tb.appendChild(tr);
+      } else {
+        filteredData.forEach((row, idx) => {
+          const tr = document.createElement('tr');
+          headers.forEach(hdr => {
+            const td = document.createElement('td');
+            const v = row[hdr] || '-';
             
-            let textToCopy = resultContent.dataset.copyText || resultContent.textContent;
-            
-            if (currentMode === "all" && resultContent.dataset.copyText) {
-                textToCopy = resultContent.dataset.copyText;
-            }
-            
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => {
-                    const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = `<i class="fas fa-check"></i> SPIDER-MATRIX COPIED!`;
-                    copyBtn.classList.add('copied');
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalText;
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Gagal menyalin: ', err);
-                    alert('Gagal menyalin prediksi ke clipboard');
-                });
-        }
-        
-        function getTimeStatus(jamTutup, jamResult) {
-            const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes();
-            
-            const [tutupJam, tutupMenit] = jamTutup.split(':').map(Number);
-            const [resultJam, resultMenit] = jamResult.split(':').map(Number);
-            
-            const tutupTime = tutupJam * 60 + tutupMenit;
-            const resultTime = resultJam * 60 + resultMenit;
-            
-            if (currentTime < tutupTime) {
-                const diff = tutupTime - currentTime;
-                if (diff <= 30) {
-                    return { status: "soon", text: "SEGERA TUTUP", diff: diff };
-                } else {
-                    return { status: "open", text: "OPEN", diff: diff };
-                }
-            } else if (currentTime < resultTime) {
-                const diff = resultTime - currentTime;
-                return { status: "closed", text: "CLOSED", diff: diff };
-            } else {
-                return { status: "closed", text: "CLOSED", diff: 0 };
-            }
-        }
-        
-        function populateJadwalTable() {
-            const tableBody = document.getElementById('jadwalTableBody');
-            tableBody.innerHTML = '';
-            
-            const sortedJadwal = [...jadwalPasaran].sort((a, b) => {
-                const [aJam, aMenit] = a.jamTutup.split(':').map(Number);
-                const [bJam, bMenit] = b.jamTutup.split(':').map(Number);
-                return (aJam * 60 + aMenit) - (bJam * 60 + bMenit);
-            });
-            
-            sortedJadwal.forEach(item => {
-                const row = document.createElement('tr');
-                const timeStatus = getTimeStatus(item.jamTutup, item.jamResult);
+            if (hdr.toLowerCase().includes('link') || hdr.toLowerCase().includes('youtube') || hdr.toLowerCase().includes('url')) {
+              const d = document.createElement('d');
+              d.style.display = 'flex'; d.style.alignItems = 'center';
+              
+              if (isValidUrl(v) && v !== '-') {
+                const a = document.createElement('a');
+                a.href = v; a.target = '_blank'; a.rel = 'noopener'; a.className = 'link';
+                a.innerHTML = hdr.toLowerCase().includes('youtube') ? '<i class="fab fa-youtube"></i> LIVE' : '<i class="fas fa-external-link-alt"></i> LINK';
+                d.appendChild(a);
                 
-                const isHoki = item.pasaran === "HOKI DRAW";
-                const pasaranCell = isHoki 
-                    ? `<span style="color: #ffcc00; font-weight: bold;">${item.pasaran}</span>`
-                    : item.pasaran;
-                
-                row.innerHTML = `
-                    <td>${item.code}</td>
-                    <td>${pasaranCell}</td>
-                    <td>${item.jamTutup} <span class="time-status ${timeStatus.status}">${timeStatus.text}</span></td>
-                    <td>${item.jamResult}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function updateTimeStatus() {
-            const rows = document.querySelectorAll('#jadwalTableBody tr');
-            
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                const jamTutup = cells[2].textContent.split(' ')[0];
-                const jamResult = cells[3].textContent;
-                
-                const timeStatus = getTimeStatus(jamTutup, jamResult);
-                const statusSpan = cells[2].querySelector('.time-status');
-                
-                if (statusSpan) {
-                    statusSpan.className = `time-status ${timeStatus.status}`;
-                    statusSpan.textContent = timeStatus.text;
-                }
-            });
-        }
-        
-        function switchTab(tabName) {
-            currentTab = tabName;
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            if (tabName === 'generator') {
-                document.getElementById('tabGenerator').classList.add('active');
-                document.getElementById('generatorContent').classList.add('active');
-                document.getElementById('jadwalContent').classList.remove('active');
-            } else {
-                document.getElementById('tabJadwal').classList.add('active');
-                document.getElementById('jadwalContent').classList.add('active');
-                document.getElementById('generatorContent').classList.remove('active');
-                setTimeout(updateTimeStatus, 100);
-            }
-        }
-        
-        function initializePage() {
-            // Generate Random Particles for Background
-            const particlesContainer = document.getElementById('particles-container');
-            for(let i=0; i<30; i++) {
-                const p = document.createElement('div');
-                p.classList.add('glitch-particle');
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDelay = Math.random() * 10 + 's';
-                p.style.animationDuration = (5 + Math.random() * 10) + 's';
-                
-                // Random neon colors
-                const colors = ['#fff', '#00f3ff', '#bc13fe', '#e62429'];
-                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                particlesContainer.appendChild(p);
-            }
-
-            const today = new Date();
-            lastGeneratedDate = today.getDate();
-            
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            populatePasaranLists();
-            updateSubmitButtonStatus();
-            
-            populateJadwalTable();
-            
-            document.getElementById('singleModeBtn').addEventListener('click', function() {
-                currentMode = "single";
-                this.classList.add('active');
-                document.getElementById('allModeBtn').classList.remove('active');
-                document.getElementById('pasaranSelector').classList.add('show');
-                updateSubmitButtonStatus();
-            });
-            
-            document.getElementById('allModeBtn').addEventListener('click', function() {
-                currentMode = "all";
-                this.classList.add('active');
-                document.getElementById('singleModeBtn').classList.remove('active');
-                document.getElementById('pasaranSelector').classList.remove('show');
-                updateSubmitButtonStatus();
-            });
-            
-            document.getElementById('submitBtn').addEventListener('click', showPredictionResult);
-            document.getElementById('copyBtn').addEventListener('click', copyPredictionToClipboard);
-            document.getElementById('tabGenerator').addEventListener('click', function() { switchTab('generator'); });
-            document.getElementById('tabJadwal').addEventListener('click', function() { switchTab('jadwal'); });
-            
-            document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => { this.style.transform = ''; }, 150);
-                });
-            });
-            
-            setTimeout(() => {
-                console.log(`%cNEON SPIDER-MATRIX v2.0
-%cSistem Prediksi Digital dengan Neon Glitch Effect telah diinisialisasi
-Mode: ${currentMode.toUpperCase()}
-Tanggal: ${getTodayDate()}`, 
-                'color: #00f3ff; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #00f3ff;',
-                'color: #bc13fe; font-size: 14px;');
-            }, 1000);
-        }
-        
-        document.addEventListener('DOMContentLoaded', initializePage);
-    </script>
+                const b = document.createElement('button');
+                b.className = 'copy-btn';
+                b.innerHTML = '<i class="fas fa-copy"></i>';
+                b.onclick = function() {
+                  copyToClipboard(v);
+                  this.innerHTML = '<i class="fas fa-check"></i>';
+                  this.style.borderColor = 'var(--neon-green)';
+                  this.style.color = 'var(--neon-green)';
+                  setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i>';
+                    this.style.borderColor = ''; this.style.color = '';
+                  }, 2000);
+                };
+                d.appendChild(b);
+              } else td.textContent = v;
+              if(d.children.length > 0) td.appendChild(d);
+            } else td.textContent = v;
+            tr.appendChild(td);
+          });
+          tb.appendChild(tr);
+        });
+      }
+    }
+    
+    // ========== SEARCH & UTILS ==========
+    function setupEventListeners() {
+      const inp = document.getElementById('search-input');
+      const btn = document.getElementById('search-btn');
+      const clr = document.getElementById('clear-btn');
+      const rst = document.getElementById('reset-search-btn');
+      
+      btn.addEventListener('click', performSearch);
+      inp.addEventListener('keyup', e => { if(e.key === 'Enter') performSearch(); });
+      inp.addEventListener('input', function() {
+        if(this.value.trim().length > 0) clr.style.display = 'block';
+        else { clr.style.display = 'none'; resetSearch(); }
+      });
+      clr.addEventListener('click', () => { inp.value = ''; clr.style.display = 'none'; resetSearch(); });
+      if(rst) rst.addEventListener('click', resetSearch);
+      
+      document.getElementById('refresh-btn').addEventListener('click', () => { loadData(); showNotification('Refreshing database...', 'info'); });
+      document.getElementById('export-btn').addEventListener('click', exportData);
+    }
+    
+    function performSearch() {
+      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      if(!q) { resetSearch(); return; }
+      filteredData = allData.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(q)));
+      
+      document.getElementById('result-count').textContent = filteredData.length;
+      document.getElementById('search-query').textContent = q;
+      document.getElementById('search-result-info').style.display = 'block';
+      renderTable();
+    }
+    
+    function resetSearch() {
+      document.getElementById('search-input').value = '';
+      filteredData = [...allData];
+      document.getElementById('search-result-info').style.display = 'none';
+      document.getElementById('clear-btn').style.display = 'none';
+      renderTable();
+    }
+    
+    function isValidUrl(s) {
+      try { new URL(s); return true; } catch { return false; }
+    }
+    
+    function copyToClipboard(txt) {
+      navigator.clipboard.writeText(txt).then(() => showNotification('Data copied to clipboard', 'success'))
+        .catch(() => showNotification('Failed to copy', 'error'));
+    }
+    
+    function showError(e) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('table-section').style.display = 'none';
+      document.getElementById('error-message').textContent = e.message || 'System Error';
+      document.getElementById('error').style.display = 'block';
+    }
+    
+    function showNotification(msg, type) {
+      const t = document.createElement('div');
+      t.className = 'notification-toast';
+      t.style.borderLeftColor = type === 'error' ? 'var(--neon-pink)' : 'var(--neon-green)';
+      t.innerHTML = `<i class="fas ${type==='error'?'fa-times-circle':'fa-check-circle'}"></i> ${msg}`;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+    
+    function exportData() {
+      if(filteredData.length === 0) return showNotification('No data to export', 'error');
+      const csv = [headers.join(','), ...filteredData.map(r => headers.map(h => {
+        const v = String(r[h]||'').replace(/"/g, '""');
+        return v.includes(',') ? `"${v}"` : v;
+      }).join(','))].join('\n');
+      
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `neon_data_${Date.now()}.csv`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      showNotification('Database exported successfully', 'success');
+    }
+    
+    // ========== SHORTCUT BLOCKER (PRESERVED) ==========
+    const shortcut = {
+      all_shortcuts: {}, add: function(combo, callback, options) {
+        const defaultOpts = { type: "keydown", propagate: false, disable_in_input: false, target: document, keycode: false };
+        const settings = Object.assign({}, defaultOpts, options || {});
+        const target = typeof settings.target === "string" ? document.getElementById(settings.target) : settings.target;
+        combo = combo.toLowerCase();
+        const handler = function(e) {
+          e = e || window.event;
+          if (settings.disable_in_input) {
+            let el = e.target || e.srcElement; if (el.nodeType === 3) el = el.parentNode;
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") return;
+          }
+          const code = e.keyCode || e.which; let key = String.fromCharCode(code).toLowerCase();
+          if (code === 188) key = ","; if (code === 190) key = ".";
+          const keys = combo.split("+"); let matchCount = 0;
+          const specialKeys = { esc:27, escape:27, tab:9, space:32, return:13, enter:13, backspace:8, left:37, up:38, right:39, down:40, f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123 };
+          let ctrlReq=false, shiftReq=false, altReq=false, metaReq=false;
+          let ctrl=e.ctrlKey, shift=e.shiftKey, alt=e.altKey, meta=e.metaKey;
+          for (let i=0; i<keys.length; i++) {
+            const k = keys[i];
+            if (k === "ctrl" || k === "control") { ctrlReq = true; matchCount++; }
+            else if (k === "shift") { shiftReq = true; matchCount++; }
+            else if (k === "alt") { altReq = true; matchCount++; }
+            else if (k === "meta") { metaReq = true; matchCount++; }
+            else if (k.length > 1) { if (specialKeys[k] === code) matchCount++; }
+            else if (settings.keycode ? settings.keycode === code : key === k) { matchCount++; }
+          }
+          if (matchCount === keys.length && ctrl === ctrlReq && shift === shiftReq && alt === altReq && meta === metaReq) {
+            callback(e); if (!settings.propagate) { e.cancelBubble = true; e.returnValue = false; if (e.stopPropagation) e.stopPropagation(); if (e.preventDefault) e.preventDefault(); return false; }
+          }
+        };
+        this.all_shortcuts[combo] = { callback: handler, target, event: settings.type };
+        target.addEventListener(settings.type, handler, false);
+      }
+    };
+    function doNothing(e) { console.log("Shortcut Blocked: " + (e.key || e.keyCode)); }
+    function setupShortcuts() {
+      shortcut.add("Ctrl+U", doNothing);
+      shortcut.add("f12", doNothing);
+      shortcut.add("Ctrl+Shift+I", doNothing);
+      shortcut.add("Ctrl+Shift+J", doNothing);
+      shortcut.add("Ctrl+Shift+C", doNothing);
+    }
+    setupShortcuts();
+    document.addEventListener('keydown', function(e) {
+      if(e.keyCode === 123) { e.preventDefault(); return false; }
+      if(e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
+      if(e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
+      if(e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
+      if(e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+      if(e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
+    });
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
+  </script>
 </body>
 </html>
