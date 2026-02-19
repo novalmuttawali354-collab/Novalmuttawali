@@ -3,1844 +3,812 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Shio - Macau Shio & Shio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Database Hadiah - Dropdown Selector</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-panel: #0a0a12;
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff41;
+            --text-gray: #a0a0a0;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            padding: 20px 0;
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--text-gray);
+            font-family: 'Share Tech Mono', monospace;
+            padding-bottom: 80px;
         }
 
-        /* Animated Background dengan efek partikel */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #8A2BE2, #4B0082, #9400D3, #9932CC);
-            background-size: 400% 400%;
-            z-index: -2;
-            animation: gradientAnimation 15s ease infinite;
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            animation: particleFloat 15s infinite linear;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
-        }
-
-        /* Floating Glow Effect */
-        .floating-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-            filter: blur(20px);
-            z-index: -1;
-            animation: floatingGlow 8s ease-in-out infinite;
-        }
-
-        .glow-1 {
-            top: 10%;
-            left: 10%;
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, rgba(138, 43, 226, 0) 70%);
-        }
-
-        .glow-2 {
-            bottom: 10%;
-            right: 10%;
-            background: radial-gradient(circle, rgba(75, 0, 130, 0.2) 0%, rgba(75, 0, 130, 0) 70%);
-            animation-delay: -4s;
-        }
-
-        @keyframes floatingGlow {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            50% {
-                transform: translate(30px, 30px) scale(1.2);
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 30px rgba(138, 43, 226, 0.3);
-            padding: 30px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #8A2BE2, #4B0082, #9400D3);
-            border-radius: 25px 25px 0 0;
-        }
-
-        .header {
+        /* HEADER */
+        header {
+            background: rgba(10, 10, 18, 0.95);
+            border-bottom: 2px solid var(--neon-blue);
+            padding: 20px;
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            position: relative;
-        }
-
-        .header h1 {
-            background: linear-gradient(90deg, #8A2BE2, #4B0082, #9400D3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-            font-size: 2.8rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 10px;
-        }
-
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 5px rgba(138, 43, 226, 0.5)); }
-            to { filter: drop-shadow(0 0 20px rgba(75, 0, 130, 0.8)); }
-        }
-
-        .header .lead {
-            color: #555;
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(90deg, #8A2BE2, #4B0082);
-            border-radius: 2px;
-        }
-
-        .nav-tabs {
-            border-bottom: none;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-
-        .nav-tabs .nav-link {
-            color: #8A2BE2;
-            font-weight: bold;
-            border: none;
-            background: rgba(138, 43, 226, 0.1);
-            margin: 0 5px;
-            border-radius: 15px;
-            transition: all 0.4s ease;
-            padding: 12px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-tabs .nav-link::before {
-            content: '';
-            position: absolute;
+            position: sticky;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
         }
 
-        .nav-tabs .nav-link:hover::before {
-            left: 100%;
-        }
-
-        .nav-tabs .nav-link:hover {
-            background: rgba(138, 43, 226, 0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
-        }
-
-        .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            border: none;
-            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.4);
-        }
-
-        .calculator-section {
-            margin-bottom: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 255, 0.95));
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calculator-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #8A2BE2, #4B0082);
-        }
-
-        .calculator-section:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .shio-table {
-            margin-bottom: 30px;
-        }
-
-        .shio-table th {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            padding: 15px;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .shio-table th::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        .shio-table td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 12px;
-            border-color: rgba(138, 43, 226, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .shio-row {
-            transition: all 0.3s ease;
-        }
-
-        .shio-row:nth-child(odd) {
-            background: rgba(240, 240, 255, 0.5);
-        }
-
-        .shio-row:hover {
-            background: linear-gradient(90deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1));
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .shio-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            margin: 3px;
-            border-radius: 20px;
-            font-size: 13px;
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.3);
-            cursor: pointer;
-        }
-
-        .shio-badge:hover {
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 8px 15px rgba(138, 43, 226, 0.5);
-        }
-
-        .example-box {
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(209, 236, 241, 0.95), rgba(186, 229, 238, 0.95));
-            border-radius: 20px;
-            margin-top: 20px;
-            border-left: 5px solid #17a2b8;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .example-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            height: 80px;
-            background: rgba(23, 162, 184, 0.1);
-            border-radius: 0 0 0 80px;
-        }
-
-        .note-box {
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(255, 243, 205, 0.95), rgba(255, 235, 156, 0.95));
-            border-radius: 20px;
-            margin-top: 20px;
-            border-left: 5px solid #ffc107;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .note-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 193, 7, 0.1);
-            border-radius: 0 0 0 80px;
-        }
-
-        .shio-name {
-            font-weight: bold;
-            color: #4B0082;
-            font-size: 1.2rem;
-        }
-
-        .shio-number {
-            font-weight: bold;
-            color: #dc3545;
-            font-size: 1.1rem;
-        }
-
-        .formula-box {
-            background: linear-gradient(135deg, rgba(233, 236, 239, 0.95), rgba(206, 212, 218, 0.95));
-            padding: 25px;
-            border-radius: 20px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            position: relative;
-        }
-
-        .formula-box::before {
-            content: '\f1ec';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 10px;
-            right: 15px;
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--neon-blue);
+            letter-spacing: 3px;
             font-size: 1.5rem;
-            color: rgba(138, 43, 226, 0.3);
-        }
-
-        .digit-box {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-            line-height: 60px;
-            text-align: center;
-            border: 3px solid #8A2BE2;
-            border-radius: 15px;
-            margin: 0 8px;
-            font-weight: bold;
-            font-size: 24px;
-            background: white;
-            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .digit-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .digit-box:hover::before {
-            opacity: 1;
-        }
-
-        .digit-box:hover {
-            transform: translateY(-8px) rotate(5deg);
-            box-shadow: 0 15px 25px rgba(138, 43, 226, 0.5);
-        }
-
-        .operator {
-            display: inline-block;
-            margin: 0 8px;
-            font-weight: bold;
-            font-size: 24px;
-            color: #4B0082;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            border: none;
-            padding: 12px 30px;
-            font-weight: bold;
-            border-radius: 15px;
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(138, 43, 226, 0.5);
-            background: linear-gradient(135deg, #4B0082, #8A2BE2);
-        }
-
-        .form-control {
-            border-radius: 15px;
-            border: 2px solid rgba(138, 43, 226, 0.3);
-            padding: 12px 18px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .form-control:focus {
-            border-color: #8A2BE2;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
-        }
-
-        .input-group-text {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            border: none;
-            font-weight: bold;
-            border-radius: 15px 0 0 15px;
-        }
-
-        h2, h4, h5 {
-            color: #333;
-            font-weight: bold;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 15px;
-            display: inline-block;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #8A2BE2, #4B0082);
-            border-radius: 2px;
-        }
-
-        .tab-content {
-            padding-top: 20px;
-        }
-
-        /* Floating animation for elements */
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Unified Result Section */
-        .unified-result {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 255, 0.95));
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            display: none;
-            animation: slideIn 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .unified-result::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #8A2BE2, #4B0082);
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-header {
-            text-align: center;
             margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(138, 43, 226, 0.2);
         }
 
-        .result-header h3 {
-            color: #4B0082;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .result-numbers {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .result-number-box {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            width: 70px;
-            height: 70px;
-            line-height: 70px;
-            text-align: center;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 1.8rem;
-            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
-            transition: all 0.3s ease;
+        /* DROPDOWN CONTAINER */
+        .dropdown-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
             position: relative;
-            overflow: hidden;
         }
 
-        .result-number-box:hover {
-            transform: translateY(-5px) rotate(5deg);
-            box-shadow: 0 12px 25px rgba(138, 43, 226, 0.5);
-        }
-
-        .calculation-flow {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(138, 43, 226, 0.1);
-        }
-
-        .calculation-title {
-            font-weight: bold;
-            color: #4B0082;
-            margin-bottom: 15px;
+        /* Custom Dropdown Styling */
+        select.neon-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 15px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 0; /* Sharp corners for cyberpunk look */
+            appearance: none; /* Hide default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-transform: uppercase;
             text-align: center;
-            font-size: 1.2rem;
-        }
-
-        .calculation-steps {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .calc-step {
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-            padding: 15px;
-            position: relative;
             transition: all 0.3s ease;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
         }
 
-        .calc-step:hover {
-            transform: translateY(-5px);
+        select.neon-select:hover {
+            box-shadow: 0 0 15px var(--neon-blue);
+            background: rgba(0, 0, 0, 1);
         }
 
-        .calc-step:not(:last-child):after {
-            content: '\f054';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
+        select.neon-select:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        /* Custom Arrow for Dropdown */
+        .dropdown-wrapper::after {
+            content: '▼';
+            font-size: 0.8rem;
+            color: var(--neon-blue);
             position: absolute;
-            right: -10px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #8A2BE2;
-            font-size: 1.5rem;
+            pointer-events: none;
         }
 
-        .step-number {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+        /* MAIN CONTAINER */
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 15px;
+            min-height: 50vh;
         }
 
-        .step-value {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .shio-results {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .shio-result {
-            flex: 1;
-            min-width: 250px;
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        /* DATA BLOCK SECTION */
+        .data-section {
+            background: var(--bg-panel);
+            border: 1px solid var(--neon-blue);
+            margin-bottom: 40px;
             position: relative;
-            overflow: hidden;
+            clip-path: polygon(
+                0 0, 
+                100% 0, 
+                100% calc(100% - 20px), 
+                calc(100% - 20px) 100%, 
+                0 100%
+            );
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            transition: all 0.4s ease-in-out;
+            opacity: 1;
+            transform: scale(1);
         }
 
-        .shio-result::before {
+        /* Class untuk menyembunyikan section */
+        .data-section.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        /* Decorative Corners */
+        .data-section::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: inherit;
-            border-left: none;
+            top: -2px; left: -2px;
+            width: 20px; height: 20px;
+            border-top: 3px solid var(--neon-pink);
+            border-left: 3px solid var(--neon-pink);
+        }
+        .data-section::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; right: -2px;
+            width: 20px; height: 20px;
+            border-bottom: 3px solid var(--neon-pink);
+            border-right: 3px solid var(--neon-pink);
         }
 
-        .shio-result:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .shio-result-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #4B0082;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .shio-result-calculation {
-            background: rgba(138, 43, 226, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .calculation-row {
+        .section-header {
+            background: rgba(0, 243, 255, 0.1);
+            border-bottom: 1px solid var(--neon-blue);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .calculation-label {
-            font-weight: bold;
-            color: #555;
-        }
-
-        .calculation-value {
-            color: #333;
-            font-weight: bold;
-        }
-
-        .shio-traits {
-            display: flex;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 10px;
         }
 
-        .shio-trait {
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+
+        /* COPY BUTTON */
+        .copy-all-btn {
+            background: var(--neon-green);
+            border: none;
+            color: #000;
+            padding: 6px 16px;
+            font-family: 'Orbitron', sans-serif;
             font-weight: bold;
-            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .shio-trait:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.5);
-        }
-
-        .result-context {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1));
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-        }
-
-        .result-context-title {
-            color: #4B0082;
-            font-weight: bold;
-            margin-bottom: 15px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            font-size: 1.2rem;
+            gap: 6px;
         }
 
-        .result-context-title i {
-            margin-right: 10px;
+        .copy-all-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 15px var(--neon-green);
+            transform: scale(1.05);
         }
 
-        .result-context-content {
+        /* CONTENT AREA */
+        .data-content {
+            padding: 20px;
+            white-space: pre-wrap;
+            font-size: 1rem;
             line-height: 1.6;
-            text-align: justify;
+            color: #ccc;
         }
 
-        /* Shio color mapping */
-        .tikus { border-left-color: #6c757d; }
-        .kerbau { border-left-color: #8b4513; }
-        .harimau { border-left-color: #ff6b35; }
-        .kelinci { border-left-color: #ff9ff3; }
-        .naga { border-left-color: #4834d4; }
-        .ular { border-left-color: #00d2d3; }
-        .kuda { border-left-color: #c44569; }
-        .kambing { border-left-color: #f8b500; }
-        .monyet { border-left-color: #6c5ce7; }
-        .ayam { border-left-color: #fdcb6e; }
-        .anjing { border-left-color: #636e72; }
-        .babi { border-left-color: #fab1a0; }
+        .data-content strong {
+            color: var(--neon-blue);
+        }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.2rem;
-            }
-            
-            .digit-box {
-                width: 50px;
-                height: 50px;
-                line-height: 50px;
-                font-size: 20px;
-            }
-            
-            .container {
-                padding: 20px;
-            }
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 12px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            z-index: 1000;
+            display: none;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
 
-            .result-number-box {
-                width: 60px;
-                height: 60px;
-                line-height: 60px;
-                font-size: 1.5rem;
-            }
+        .toast.show {
+            display: block;
+            animation: popUp 0.3s ease-out;
+        }
 
-            .shio-results {
-                flex-direction: column;
-            }
+        @keyframes popUp {
+            from { transform: translate(-50%, 20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
 
-            .calculation-steps {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .calc-step:not(:last-child):after {
-                content: '\f078';
-                top: auto;
-                bottom: -20px;
-                right: 50%;
-                transform: translateX(50%);
-            }
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.2rem; }
+            select.neon-select { font-size: 0.9rem; padding: 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="animated-bg"></div>
-    <div class="overlay"></div>
-    
-    <!-- Floating Glow Effects -->
-    <div class="floating-glow glow-1"></div>
-    <div class="floating-glow glow-2"></div>
-    
-    <!-- Particles Container -->
-    <div class="particles-container" id="particles-container"></div>
 
-    <div class="container">
-        <div class="header floating">
-            <h1><i class="fas fa-calculator"></i> Kalkulator Shio</h1>
-            <p class="lead">Panduan Lengkap Perhitungan Macau Shio & Shio</p>
+    <header>
+        <h1>MASTER PRIZE DATABASE</h1>
+        
+        <!-- DROPDOWN SELECTOR (1 BATANG) -->
+        <div class="dropdown-wrapper">
+            <select id="dataSelector" class="neon-select">
+                <option value="all">-- PILIH KATEGORI DATA DI SINI --</option>
+                <option value="full">HADIAH BET FULL</option>
+                <option value="all4d">HADIAH ALL 4D</option>
+                <option value="discount">HADIAH DISCOUNT</option>
+                <option value="all3d">HADIAH ALL 3D</option>
+                <option value="all2d">HADIAH ALL 2D</option>
+                <option value="prize123">HADIAH PRIZE 123</option>
+                <option value="bb">HADIAH BOLAK BALIK / BB</option>
+                <option value="colok">GAMES COLOK & SHIO</option>
+                <option value="kembang">HADIAH KEMBANG KEMPIS</option>
+            </select>
         </div>
+    </header>
 
-        <ul class="nav nav-tabs" id="calculatorTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="macau-shio-tab" data-bs-toggle="tab" data-bs-target="#macau-shio" type="button" role="tab" aria-controls="macau-shio" aria-selected="true">
-                    <i class="fas fa-dice"></i> Macau Shio (4 Angka)
+    <main>
+        <!-- SECTION 1: HADIAH FULL -->
+        <section id="full" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH BET FULL</h2>
+                <button class="copy-all-btn" onclick="copyData('full-content', 'Data Hadiah Full')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
                 </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="shio-tab" data-bs-toggle="tab" data-bs-target="#shio" type="button" role="tab" aria-controls="shio" aria-selected="false">
-                    <i class="fas fa-dice-one"></i> Shio (2 Angka)
+            </div>
+            <div id="full-content" class="data-content">
+<strong>1. Hadiah Bet Full – All Pasaran (TERKECUALI PASARAN SYDNEY , HONGKONG, TOTOMACAU, KING KONG4D & Toto Macau 5D)</strong>
+- 4D : x10000
+- 3D : x1000        
+- 2D : x100
+
+<strong>2. Hadiah Bet Full (Khusus PASARAN SYDNEY & HONGKONG)</strong>
+- 4D : x9800
+- 3D : x980
+- 2D : x98
+
+<strong>3. Hadiah Bet Full Kingkong & Toto Macau 4D</strong>                                                
+- 4D : x 9000                                                
+- 3D : x 950                                                
+- 2D : x 95
+                                                
+<strong>4. Hadiah Bet Full Toto Macau 5D</strong>                                                
+- 5D : x 88000                                                
+- 4D : x 9000                                                
+- 3D : x 950                                                
+- 2D : x 95
+            </div>
+        </section>
+
+        <!-- SECTION 2: HADIAH ALL 4D -->
+        <section id="all4d" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH ALL 4D</h2>
+                <button class="copy-all-btn" onclick="copyData('4d-content', 'Data Hadiah 4D')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
                 </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tabel-shio-tab" data-bs-toggle="tab" data-bs-target="#tabel-shio" type="button" role="tab" aria-controls="tabel-shio" aria-selected="false">
-                    <i class="fas fa-table"></i> Tabel Shio
+            </div>
+            <div id="4d-content" class="data-content">
+<strong>1. Hadiah 4D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+- 4D : x 10,000   
+
+<strong>2. Hadiah 4D Bet full pasaran Sydney & Hongkong</strong>                                                
+- 4D : x 9,800             
+                                   
+<strong>3. Hadiah 4D Bet full Kingkong & Toto macau 4D</strong>                                                
+- 4D : x 9,000
+
+<strong>4. Hadiah 4D Bet full Toto macau 5d</strong>                                                
+- 4D : x 9000 
+                                                 
+<strong>5. Hadiah 4D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 4D : x 3,000
+- Discount : 66.50%                
+                                
+<strong>6. Hadiah 4D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 4D : x 6,000
+- Discount : 33%                  
+                               
+<strong>7. Hadiah 4D Discount Jakarta pools</strong>                                                
+- 4D : x 3,000 
+- Discount : 66%                       
+                    
+<strong>8. Hadiah 4D Discount Toto Mali</strong>                                                
+- 4D : x 3,000
+- Discount : 67%                
+                       
+<strong>9. Hadiah 4D Discount Hokidraw</strong>                                                
+- 4D : x 7,000 
+- Discount : 20%             
+                               
+<strong>10. Hadiah 4D Super Discount Totomacau 4D</strong>                                                
+- 4D : x 3,000 
+- Discount : 66%
+
+<strong>11. Hadiah 4D Discount Toto macau 5D</strong> 
+- 4D : x 7000  
+- DISCOUNT : 20%                                             
+                                                
+<strong>12. Hadiah 4D bet BB / BOLAKBALIK All pasaran</strong>                                                 
+- 4D = x 4,000 
+- Hadiah terbalik = x 200  
+
+<strong>13. Hadiah 4D BB / BOLAKBALIK hokidraw</strong>
+- 4D = x 5000
+- Hadiah terbalik = x 500
+
+<strong>14. Hadiah 4D bet BB / BOLAKBALIK TOTOMACAU5D</strong>  
+- Hadiah 4D = x 5000 
+- Hadiah terbalik = x 180
+            </div>
+        </section>
+
+        <!-- SECTION 3: HADIAH DISCOUNT -->
+        <section id="discount" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH DISCOUNT</h2>
+                <button class="copy-all-btn" onclick="copyData('discount-content', 'Data Hadiah Discount')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
                 </button>
-            </li>
-        </ul>
-
-        <div class="tab-content" id="calculatorTabsContent">
-            <!-- Macau Shio Tab -->
-            <div class="tab-pane fade show active" id="macau-shio" role="tabpanel" aria-labelledby="macau-shio-tab">
-                <div class="calculator-section">
-                    <h2><i class="fas fa-calculator"></i> Kalkulator Macau Shio</h2>
-                    <p>Macau Shio menggunakan 4 angka (As, Kop, Kepala, Ekor) untuk menentukan 2 shio:</p>
-                    
-                    <div class="formula-box">
-                        <h5>Struktur Angka:</h5>
-                        <div class="text-center">
-                            <span class="digit-box">A</span>
-                            <span class="digit-box">B</span>
-                            <span class="digit-box">C</span>
-                            <span class="digit-box">D</span>
-                        </div>
-                        <div class="text-center mt-3">
-                            <span class="badge bg-primary p-2 mx-2">As</span>
-                            <span class="badge bg-primary p-2 mx-2">Kop</span>
-                            <span class="badge bg-primary p-2 mx-2">Kepala</span>
-                            <span class="badge bg-primary p-2 mx-2">Ekor</span>
-                        </div>
-                        
-                        <h5 class="mt-4">Rumus Perhitungan:</h5>
-                        <div class="text-center">
-                            <p><strong>Shio Pertama:</strong> (As × 10) + Kop = AB</p>
-                            <p><strong>Shio Kedua:</strong> (Kepala × 10) + Ekor = CD</p>
-                            <p><strong>Hasil Shio:</strong> AB - (kelipatan 12 terdekat) = X</p>
-                            <p><strong>Hasil Shio:</strong> CD - (kelipatan 12 terdekat) = Y</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">ABCD</span>
-                                <input type="text" class="form-control" id="macau-abcd-input" placeholder="Contoh: 4321" maxlength="4">
-                                <button class="btn btn-primary" id="macau-calculate-btn">Hitung Shio</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="unified-result" id="macau-result-box">
-                        <div class="result-header">
-                            <h3>Hasil Perhitungan Macau Shio</h3>
-                            <div class="result-numbers" id="macau-result-numbers">
-                                <!-- Angka akan dimuat di sini -->
-                            </div>
-                        </div>
-                        
-                        <div class="calculation-flow">
-                            <div class="calculation-title">Proses Perhitungan</div>
-                            <div class="calculation-steps">
-                                <div class="calc-step">
-                                    <div class="step-number">1</div>
-                                    <div class="step-value" id="macau-as-kop-value">AS+KOP</div>
-                                    <div class="step-label">Shio Pertama</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">2</div>
-                                    <div class="step-value" id="macau-kepala-ekor-value">KEPALA+EKOR</div>
-                                    <div class="step-label">Shio Kedua</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">3</div>
-                                    <div class="step-value" id="macau-shio-results">Shio Hasil</div>
-                                    <div class="step-label">Hasil Akhir</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="shio-results">
-                            <div class="shio-result" id="macau-shio1-card">
-                                <div class="shio-result-title">Shio Pertama</div>
-                                <div class="shio-result-calculation">
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">AS:</span>
-                                        <span class="calculation-value" id="macau-as-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">KOP:</span>
-                                        <span class="calculation-value" id="macau-kop-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">AB:</span>
-                                        <span class="calculation-value" id="macau-ab-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">Hasil:</span>
-                                        <span class="calculation-value" id="macau-ab-result"></span>
-                                    </div>
-                                </div>
-                                <div class="shio-result-title" id="macau-shio1-name"></div>
-                                <div class="shio-traits" id="macau-shio1-traits">
-                                    <!-- Sifat akan dimuat di sini -->
-                                </div>
-                            </div>
-                            
-                            <div class="shio-result" id="macau-shio2-card">
-                                <div class="shio-result-title">Shio Kedua</div>
-                                <div class="shio-result-calculation">
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">KEPALA:</span>
-                                        <span class="calculation-value" id="macau-kepala-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">EKOR:</span>
-                                        <span class="calculation-value" id="macau-ekor-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">CD:</span>
-                                        <span class="calculation-value" id="macau-cd-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">Hasil:</span>
-                                        <span class="calculation-value" id="macau-cd-result"></span>
-                                    </div>
-                                </div>
-                                <div class="shio-result-title" id="macau-shio2-name"></div>
-                                <div class="shio-traits" id="macau-shio2-traits">
-                                    <!-- Sifat akan dimuat di sini -->
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="result-context">
-                            <div class="result-context-title">
-                                <i class="fas fa-book-open"></i>
-                                <span>Makna & Konteks Kombinasi Shio</span>
-                            </div>
-                            <div class="result-context-content" id="macau-shio-context">
-                                <!-- Konteks akan dimuat di sini -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="example-box">
-                        <h4><i class="fas fa-info-circle"></i> Contoh Perhitungan Macau Shio</h4>
-                        <p><strong>Keluar: 4321</strong></p>
-                        <div class="calculation-flow">
-                            <div class="calculation-steps">
-                                <div class="calc-step">
-                                    <div class="step-number">1</div>
-                                    <div class="step-value">4+3=7</div>
-                                    <div class="step-label">Shio Babi</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">2</div>
-                                    <div class="step-value">2+1=3</div>
-                                    <div class="step-label">Shio Kelinci</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">3</div>
-                                    <div class="step-value">Babi & Kelinci</div>
-                                    <div class="step-label">Hasil Akhir</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="result-context">
-                            <div class="result-context-title">
-                                <i class="fas fa-book-open"></i>
-                                <span>Makna & Konteks Kombinasi Shio</span>
-                            </div>
-                            <div class="result-context-content">
-                                <p>Kombinasi Shio Babi dan Kelinci melambangkan keberuntungan finansial dan diplomasi. Shio Babi membawa energi kemakmuran dan keberuntungan finansial, sementara Shio Kelinci memberikan kemampuan untuk menciptakan harmoni dalam setiap situasi. Bersama-sama, kombinasi ini menunjukkan potensi kesuksesan finansial yang didasari oleh pendekatan yang harmonis dan diplomatis dalam mencapai tujuan.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <!-- Shio Tab -->
-            <div class="tab-pane fade" id="shio" role="tabpanel" aria-labelledby="shio-tab">
-                <div class="calculator-section">
-                    <h2><i class="fas fa-calculator"></i> Kalkulator Shio</h2>
-                    <p>Shio menggunakan 2 angka (Kepala, Ekor) untuk menentukan 1 shio:</p>
-                    
-                    <div class="formula-box">
-                        <h5>Struktur Angka:</h5>
-                        <div class="text-center">
-                            <span class="digit-box">C</span>
-                            <span class="digit-box">D</span>
-                        </div>
-                        <div class="text-center mt-3">
-                            <span class="badge bg-primary p-2 mx-2">Kepala</span>
-                            <span class="badge bg-primary p-2 mx-2">Ekor</span>
-                        </div>
-                        
-                        <h5 class="mt-4">Rumus Perhitungan:</h5>
-                        <div class="text-center">
-                            <p><strong>Hasil Angka:</strong> (Kepala × 10) + Ekor = CD</p>
-                            <p><strong>Hasil Shio:</strong> CD - (kelipatan 12 terdekat) = X</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">CD</span>
-                                <input type="text" class="form-control" id="shio-cd-input" placeholder="Contoh: 21" maxlength="2">
-                                <button class="btn btn-primary" id="shio-calculate-btn">Hitung Shio</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="unified-result" id="shio-result-box">
-                        <div class="result-header">
-                            <h3>Hasil Perhitungan Shio</h3>
-                            <div class="result-numbers" id="shio-result-numbers">
-                                <!-- Angka akan dimuat di sini -->
-                            </div>
-                        </div>
-                        
-                        <div class="calculation-flow">
-                            <div class="calculation-title">Proses Perhitungan</div>
-                            <div class="calculation-steps">
-                                <div class="calc-step">
-                                    <div class="step-number">1</div>
-                                    <div class="step-value" id="shio-kepala-ekor-value">KEPALA+EKOR</div>
-                                    <div class="step-label">Angka Shio</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">2</div>
-                                    <div class="step-value" id="shio-hasil-value">Hasil Akhir</div>
-                                    <div class="step-label">Shio Hasil</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="shio-results">
-                            <div class="shio-result" id="shio-card">
-                                <div class="shio-result-title">Shio Hasil</div>
-                                <div class="shio-result-calculation">
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">KEPALA:</span>
-                                        <span class="calculation-value" id="shio-kepala-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">EKOR:</span>
-                                        <span class="calculation-value" id="shio-ekor-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">CD:</span>
-                                        <span class="calculation-value" id="shio-cd-value"></span>
-                                    </div>
-                                    <div class="calculation-row">
-                                        <span class="calculation-label">Hasil:</span>
-                                        <span class="calculation-value" id="shio-cd-result"></span>
-                                    </div>
-                                </div>
-                                <div class="shio-result-title" id="shio-name"></div>
-                                <div class="shio-traits" id="shio-traits">
-                                    <!-- Sifat akan dimuat di sini -->
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="result-context">
-                            <div class="result-context-title">
-                                <i class="fas fa-book-open"></i>
-                                <span>Makna & Konteks Shio</span>
-                            </div>
-                            <div class="result-context-content" id="shio-context">
-                                <!-- Konteks akan dimuat di sini -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="example-box">
-                        <h4><i class="fas fa-info-circle"></i> Contoh Perhitungan Shio</h4>
-                        <p><strong>Keluar: 21</strong></p>
-                        <div class="calculation-flow">
-                            <div class="calculation-steps">
-                                <div class="calc-step">
-                                    <div class="step-number">1</div>
-                                    <div class="step-value">21</div>
-                                    <div class="step-label">Angka Shio</div>
-                                </div>
-                                <div class="calc-step">
-                                    <div class="step-number">2</div>
-                                    <div class="step-value">9</div>
-                                    <div class="step-label">Shio Ayam</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="result-context">
-                            <div class="result-context-title">
-                                <i class="fas fa-book-open"></i>
-                                <span>Makna & Konteks Shio</span>
-                            </div>
-                            <div class="result-context-content">
-                                <p>Shio Ayam melambangkan ketelitian, keberanian, dan kebijaksanaan. Dalam konteks permainan, Shio Ayam menunjukkan potensi keberuntungan melalui ketajaman pengambilan keputusan dan keberanian dalam menghadapi tantangan. Orang dengan shio Ayam cenderung memiliki kemampuan observasi yang tajam, percaya diri, dan selalu berusaha untuk tampil menarik.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="discount-content" class="data-content">
+<strong>1. Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 4D : x 3000 
+- Discount : 66.50%                                           
+- 3D : x 400   
+- Discount : 59.50%                                                
+- 2D : x 70    
+- Discount : 29.50%
+- 2D DEPAN : Hadiah x65, Diskon 29.50%
+- 2D TENGAH : Hadiah x65, Diskon 29.50%
+                                                
+<strong>2. Hadiah Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 4D : x 6000
+- DISCOUNT : 33%                                                 
+- 3D : x 700   
+- DISCOUNT : 24%                                               
+- 2D : x 80    
+- DISCOUNT : 15%                                                 
+                                                
+<strong>3. Hadiah Discount Jakarta pools</strong>                                                
+- 4D : x 3000 
+- DISCOUNT : 66%                                                 
+- 3D : x 400 
+- DISCOUNT : 59%                                                 
+- 2D : x 70    
+- DISCOUNT : 29%                                                 
+                                                
+<strong>4. Hadiah Discount Toto Mali</strong>                                                
+- 4D : x 3000
+- DISCOUNT : 67%                                                 
+- 3D : x 400 
+- DISCOUNT : 57%                                                 
+- 2D : x 70   
+- DISCOUNT : 27%                                                 
+                                                
+<strong>5. Hadiah Discount Hokidraw</strong>                                                
+- 4D : x 7000 
+- DISCOUNT : 20%               
+- 3D : x 750   
+- DISCOUNT : 20%                                                 
+- 2D : x 75     
+- DISCOUNT : 20%                                                 
+                                                
+<strong>6. Hadiah Super Discount Totomacau 4D</strong>                                                
+- 4D : x 3000 
+- DISCOUNT : 66%                                                 
+- 3D : x 400
+- DISCOUNT : 59%                                                 
+- 2D : x 70   
+- DISCOUNT : 29%                                                
+                                                
+<strong>7. Hadiah Discount Toto macau 5D</strong>                                                
+- 5D : x 50000 
+- DISCOUNT : 38%                                               
+- 4D : x 7000  
+- DISCOUNT : 20%                                               
+- 3D : x 750    
+- DISCOUNT : 20%                                              
+- 2D : x 75   
+- DISCOUNT : 20% 
             </div>
+        </section>
 
-            <!-- Tabel Shio Tab -->
-            <div class="tab-pane fade" id="tabel-shio" role="tabpanel" aria-labelledby="tabel-shio-tab">
-                <div class="shio-table">
-                    <h2><i class="fas fa-table"></i> Tabel Shio</h2>
-                    <p>SHIO merupakan 12 lambang kelahiran dalam penanggalan China. Dalam permainan ini, setiap lambang diwakili dengan nomor-nomor berikut:</p>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Shio</th>
-                                <th>Nomor Terkait</th>
-                                <th>Karakteristik</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="shio-row">
-                                <td>1</td>
-                                <td class="shio-name">Tikus</td>
-                                <td>
-                                    <span class="shio-badge">06</span>
-                                    <span class="shio-badge">18</span>
-                                    <span class="shio-badge">30</span>
-                                    <span class="shio-badge">42</span>
-                                    <span class="shio-badge">54</span>
-                                    <span class="shio-badge">66</span>
-                                    <span class="shio-badge">78</span>
-                                    <span class="shio-badge">90</span>
-                                </td>
-                                <td>Cerdas, Adaptif, Bijaksana</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>2</td>
-                                <td class="shio-name">Kerbau</td>
-                                <td>
-                                    <span class="shio-badge">05</span>
-                                    <span class="shio-badge">17</span>
-                                    <span class="shio-badge">29</span>
-                                    <span class="shio-badge">41</span>
-                                    <span class="shio-badge">53</span>
-                                    <span class="shio-badge">65</span>
-                                    <span class="shio-badge">77</span>
-                                    <span class="shio-badge">89</span>
-                                </td>
-                                <td>Teguh, Tekun, Andal</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>3</td>
-                                <td class="shio-name">Harimau</td>
-                                <td>
-                                    <span class="shio-badge">04</span>
-                                    <span class="shio-badge">16</span>
-                                    <span class="shio-badge">28</span>
-                                    <span class="shio-badge">40</span>
-                                    <span class="shio-badge">52</span>
-                                    <span class="shio-badge">64</span>
-                                    <span class="shio-badge">76</span>
-                                    <span class="shio-badge">88</span>
-                                    <span class="shio-badge">00</span>
-                                </td>
-                                <td>Brave, Berani, Kompetitif</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>4</td>
-                                <td class="shio-name">Kelinci</td>
-                                <td>
-                                    <span class="shio-badge">03</span>
-                                    <span class="shio-badge">15</span>
-                                    <span class="shio-badge">27</span>
-                                    <span class="shio-badge">39</span>
-                                    <span class="shio-badge">51</span>
-                                    <span class="shio-badge">63</span>
-                                    <span class="shio-badge">75</span>
-                                    <span class="shio-badge">87</span>
-                                    <span class="shio-badge">99</span>
-                                </td>
-                                <td>Ramah, Lembut, Elegan</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>5</td>
-                                <td class="shio-name">Naga</td>
-                                <td>
-                                    <span class="shio-badge">02</span>
-                                    <span class="shio-badge">14</span>
-                                    <span class="shio-badge">26</span>
-                                    <span class="shio-badge">38</span>
-                                    <span class="shio-badge">50</span>
-                                    <span class="shio-badge">62</span>
-                                    <span class="shio-badge">74</span>
-                                    <span class="shio-badge">86</span>
-                                    <span class="shio-badge">98</span>
-                                </td>
-                                <td>Berwibawa, Percaya Diri, Karismatik</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>6</td>
-                                <td class="shio-name">Ular</td>
-                                <td>
-                                    <span class="shio-badge">01</span>
-                                    <span class="shio-badge">13</span>
-                                    <span class="shio-badge">25</span>
-                                    <span class="shio-badge">37</span>
-                                    <span class="shio-badge">49</span>
-                                    <span class="shio-badge">61</span>
-                                    <span class="shio-badge">73</span>
-                                    <span class="shio-badge">85</span>
-                                    <span class="shio-badge">97</span>
-                                </td>
-                                <td>Misterius, Bijaksana, Intuitif</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>7</td>
-                                <td class="shio-name">Kuda</td>
-                                <td>
-                                    <span class="shio-badge">12</span>
-                                    <span class="shio-badge">24</span>
-                                    <span class="shio-badge">36</span>
-                                    <span class="shio-badge">48</span>
-                                    <span class="shio-badge">60</span>
-                                    <span class="shio-badge">72</span>
-                                    <span class="shio-badge">84</span>
-                                    <span class="shio-badge">96</span>
-                                </td>
-                                <td>Enerjik, Independen, Petualang</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>8</td>
-                                <td class="shio-name">Kambing</td>
-                                <td>
-                                    <span class="shio-badge">11</span>
-                                    <span class="shio-badge">23</span>
-                                    <span class="shio-badge">35</span>
-                                    <span class="shio-badge">47</span>
-                                    <span class="shio-badge">59</span>
-                                    <span class="shio-badge">71</span>
-                                    <span class="shio-badge">83</span>
-                                    <span class="shio-badge">95</span>
-                                </td>
-                                <td>Kreatif, Lembut, Suka Damai</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>9</td>
-                                <td class="shio-name">Monyet</td>
-                                <td>
-                                    <span class="shio-badge">10</span>
-                                    <span class="shio-badge">22</span>
-                                    <span class="shio-badge">34</span>
-                                    <span class="shio-badge">46</span>
-                                    <span class="shio-badge">58</span>
-                                    <span class="shio-badge">70</span>
-                                    <span class="shio-badge">82</span>
-                                    <span class="shio-badge">94</span>
-                                </td>
-                                <td>Cerdik, Lincah, Humoris</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>10</td>
-                                <td class="shio-name">Ayam</td>
-                                <td>
-                                    <span class="shio-badge">09</span>
-                                    <span class="shio-badge">21</span>
-                                    <span class="shio-badge">33</span>
-                                    <span class="shio-badge">45</span>
-                                    <span class="shio-badge">57</span>
-                                    <span class="shio-badge">69</span>
-                                    <span class="shio-badge">81</span>
-                                    <span class="shio-badge">93</span>
-                                </td>
-                                <td>Teliti, Percaya Diri, Jujur</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>11</td>
-                                <td class="shio-name">Anjing</td>
-                                <td>
-                                    <span class="shio-badge">08</span>
-                                    <span class="shio-badge">20</span>
-                                    <span class="shio-badge">32</span>
-                                    <span class="shio-badge">44</span>
-                                    <span class="shio-badge">56</span>
-                                    <span class="shio-badge">68</span>
-                                    <span class="shio-badge">80</span>
-                                    <span class="shio-badge">92</span>
-                                </td>
-                                <td>Setia, Jujur, Protektif</td>
-                            </tr>
-                            <tr class="shio-row">
-                                <td>12</td>
-                                <td class="shio-name">Babi</td>
-                                <td>
-                                    <span class="shio-badge">07</span>
-                                    <span class="shio-badge">19</span>
-                                    <span class="shio-badge">31</span>
-                                    <span class="shio-badge">43</span>
-                                    <span class="shio-badge">55</span>
-                                    <span class="shio-badge">67</span>
-                                    <span class="shio-badge">79</span>
-                                    <span class="shio-badge">91</span>
-                                </td>
-                                <td>Dermawan, Baik Hati, Materialistis</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="note-box">
-                    <h4><i class="fas fa-exclamation-triangle"></i> Catatan Penting</h4>
-                    <p>Nilai yang dikurangi merupakan kelipatan 12 terdekat yang lebih kecil dari hasil perhitungan:</p>
-                    <ul>
-                        <li>Jika hasil perhitungan adalah 43, maka kita kurangi dengan kelipatan 12 terdekat (36), sehingga 43-36 = 7</li>
-                        <li>Jika hasil perhitungan adalah 21, maka kita kurangi dengan kelipatan 12 terdekat (12), sehingga 21-12 = 9</li>
-                        <li>Jika hasil perhitungan adalah 8, maka tidak perlu dikurangi karena sudah kurang dari 12</li>
-                    </ul>
-                    <p>Hasil akhir (0-11) kemudian dicocokkan dengan tabel shio untuk menentukan shio yang sesuai.</p>
-                </div>
+        <!-- SECTION 4: HADIAH ALL 3D -->
+        <section id="all3d" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH ALL 3D</h2>
+                <button class="copy-all-btn" onclick="copyData('3d-content', 'Data Hadiah 3D')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
             </div>
-        </div>
-    </div>
+            <div id="3d-content" class="data-content">
+<strong>1. Hadiah 3D Bet full All pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+- 3D : x 1,000                              
+                  
+<strong>2. Hadiah 3D Bet full pasaran Sydney & Hongkong</strong>                                                
+- 3D : x 980                                                
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<strong>3. Hadiah 3D Bet full Kingkong & Toto macau 4D</strong>                                                
+- 3D : x 950 
+                                                
+<strong>4. Hadiah 3D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 3D : x 400   
+- DISCOUNT : 59.50%   
+                                              
+<strong>5. Hadiah 3D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 3D : x 700 
+- DISCOUNT : 24%       
+                                       
+<strong>6. Hadiah 3D Discount Jakarta pools</strong>                                                
+- 3D : x 400 
+- DISCOUNT : 59%       
+                                         
+<strong>7. Hadiah 3D Discount Toto Mali</strong>                                                
+- 3D : x 400
+- DISCOUNT : 57%         
+                                     
+<strong>8. Hadiah 3D Discount Hokidraw</strong>                                                
+- 3D : x 750 
+- DISCOUNT : 20%   
+                                       
+<strong>9. Hadiah 4D Super Discount Totomacau 4D</strong>                                                
+- 3D : x 400   
+- DISCOUNT : 59%                                                
+                                                
+<strong>10. Hadiah 3D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>                                              
+- 3D = x 400 
+- Hadiah terbalik = x 100  
+
+<strong>11. Hadiah Bet full Toto macau 5d</strong>                                                
+- 3D : x 950          
+                                      
+<strong>12. Hadiah Discount Toto macau 5D</strong>                                                
+- 3D : x 750    
+- DISCOUNT : 20%        
+
+<strong>13. Hadiah bet BB / BOLAKBALIK TOTOMACAU5D</strong>                                                                          
+- Hadiah 3D = x 500 
+- Hadiah terbalik = x 75
+            </div>
+        </section>
+
+        <!-- SECTION 5: HADIAH ALL 2D -->
+        <section id="all2d" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH ALL 2D</h2>
+                <button class="copy-all-btn" onclick="copyData('2d-content', 'Data Hadiah 2D')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
+            </div>
+            <div id="2d-content" class="data-content">
+<strong>1. Hadiah 2D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+2D : x 100
+                                                
+<strong>2. Hadiah 2D Bet full pasaran Sydney & Hongkong</strong>                                                
+2D : x 98
+                                                
+<strong>3. Hadiah 2D Bet full Kingkong & Toto macau 4D</strong>                                                
+2D : x 95 
+
+<strong>4. Hadiah 2D Bet full Toto macau 5d</strong>
+- 2D : x 95
+                                                                                             
+<strong>5. Hadiah 2D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 2D : x 70
+- DISCOUNT : 29.50%
+                                                
+<strong>6. Hadiah 2D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 2D : x 80
+- DISCOUNT : 15%
+                                               
+<strong>7. Hadiah 2D Discount Jakarta pools</strong>                                                
+- 2D : x 70 
+- DISCOUNT : 29% 
+                                                
+<strong>8. Hadiah 2D Discount Toto Mali</strong>                                                
+- 2D : x 70     
+- DISCOUNT : 27% 
+                                                
+<strong>9. Hadiah 2D Discount Hokidraw</strong>                                                
+- 2D : x 75     
+- DISCOUNT : 20% 
+                                                
+<strong>10. Hadiah 2D Super Discount Totomacau 4D</strong>                                                
+- 2D : x 70     
+- DISCOUNT : 29% 
+
+<strong>11. Hadiah Discount Toto macau 5D</strong>
+- 2D : x 75   
+- DISCOUNT : 20% 
+                                                
+<strong>12. Hadiah 2D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>                                                      
+- Hadiah 2D = x 70 
+- Hadiah terbalik = x 20
+
+<strong>13. Hadiah bet BB / BOLAKBALIK Hokidraw</strong>
+- Hadiah 2D = x 80
+- Hadiah terbalik = x 15 
+
+<strong>14. Hadiah 2D bet BB / BOLAKBALIK TOTOMACAU5D</strong>
+- Hadiah 2D = x 80 
+- Hadiah terbalik = x 15
+            </div>
+        </section>
+
+        <!-- SECTION 6: HADIAH PRIZE 123 -->
+        <section id="prize123" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH PRIZE 123</h2>
+                <button class="copy-all-btn" onclick="copyData('prize123-content', 'Data Prize 123')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
+            </div>
+            <div id="prize123-content" class="data-content">
+<strong>Pasaran Togel yang menyediakan Tipe Bettingan Prize 123 :</strong>
+- TOTOCAMBODIA
+- POIPET LOTTERY
+- TOTOMALI
+- HUAHIN LOTTERY
+- SYDNEY
+- SINGAPORE 4D Hanya ( Hari Rabu , Sabtu & Minggu )
+- MAGNUM4D
+- NEVADA
+- BANGKOK POOLS
+- BRUNEI POOLS
+- CHELSEA POOLS
+- HONGKONG
+
+<strong>HADIAH BET PRIZE 123</strong>
+<strong>Prize 1</strong> 
+- Hadiah 4D : x6500        
+- Hadiah 3D : x650        
+- Hadiah 2D : x70
+
+<strong>Prize 2</strong> 
+- Hadiah 4D : x2100        
+- Hadiah 3D : x210        
+- Hadiah 2D : x20
+
+<strong>Prize 3</strong> 
+- Hadiah 4D : x1100        
+- Hadiah 3D : x110        
+- Hadiah 2D : x8
+            </div>
+        </section>
+
+        <!-- SECTION 7: HADIAH BOLAK BALIK / BB -->
+        <section id="bb" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH BOLAK BALIK / BB</h2>
+                <button class="copy-all-btn" onclick="copyData('bb-content', 'Data Bolak Balik')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
+            </div>
+            <div id="bb-content" class="data-content">
+<strong>HADIAH BOLAK BALIK / BB</strong>
+
+<strong>1. Hadiah bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>        
+- Hadiah 4D = x 4000 
+- Hadiah terbalik = x 200                                                
+- Hadiah 3D = x 400 
+- Hadiah terbalik = x 100                                                
+- Hadiah 2D = x 70 
+- Hadiah terbalik = x 20  
+
+<strong>2. Hadiah bet BB / BOLAKBALIK Hokidraw</strong> 
+- Hadiah 4D = x 5000
+- Hadiah terbalik = x 180
+- Hadiah 3D = x 500
+- Hadiah terbalik = x 75
+- Hadiah 2D = x 80
+- Hadiah terbalik = x 15                                            
+                                                
+<strong>3. Hadiah bet BB / BOLAKBALIK TOTOMACAU5D</strong>                                                                          
+- Hadiah 5D = x 50000 
+- Hadiah terbalik = x 350                                                
+- Hadiah 4D = x 5000 
+- Hadiah terbalik = x 180                                                
+- Hadiah 3D = x 500 
+- Hadiah terbalik = x 75                                                
+- Hadiah 2D = x 80 
+- Hadiah terbalik = x 15
+            </div>
+        </section>
+
+        <!-- SECTION 8: COLOK BEBAS, JITU, SHIO, MACAU SHIO -->
+        <section id="colok" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">GAMES COLOK & SHIO</h2>
+                <button class="copy-all-btn" onclick="copyData('colok-content', 'Data Colok & Shio')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
+            </div>
+            <div id="colok-content" class="data-content">
+<strong>HADIAH COLOK BEBAS</strong>
+
+<strong>1. ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+x1.5 ( 1 Digit )                                                 
+x3 ( 2 Digit )                                                
+x4.5 ( 3 Digit )                                                
+x6 ( 4 Digit ) 
+                                                
+<strong>2. PASARAN HOKIDRAW</strong>                                                
+x0.9 ( 1 Digit )                                                
+x1.8 ( 2 Digit )                                                
+x2.7 ( 3 Digit )                                                
+x3.6 ( 4 Digit )
+                                                
+<strong>3. PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+x1.6 ( 1 Digit )                                                
+x3.2 ( 2 Digit )                                                
+x4.8 ( 3 Digit )                                                
+x6.4 ( 4 Digit )                                                
+
+<strong>HADIAH COLOK JITU</strong>
+
+<strong>1. ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+Colok Jitu : x8   
+                                             
+<strong>2. PASARAN HOKIDRAW</strong>                                                
+Colok Jitu : x8     
+                                           
+<strong>3. PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+Colok Jitu : x8.3                                                
+
+<strong>HADIAH COLOK SHIO</strong>
+                                                
+<strong>1. ALL PASARAN (Kecuali TOTO MACAU & KING KONG 4D)</strong>                                             
+Shio : x9.5   
+                                             
+<strong>2. PASARAN TOTO MACAU , KING KONG 4D</strong>                            
+Shio : x10 
+
+<strong>HADIAH COLOK MACAU SHIO</strong>
+<strong>ALL PASARAN</strong>                                                
+MACAU SHIO  : x110                                                
+            </div>
+        </section>
+
+        <!-- SECTION 9: HADIAH KEMBANG KEMPIS -->
+        <section id="kembang" class="data-section">
+            <div class="section-header">
+                <h2 class="section-title">HADIAH KEMBANG KEMPIS</h2>
+                <button class="copy-all-btn" onclick="copyData('kembang-content', 'Data Kembang Kempis')">
+                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                    COPY
+                </button>
+            </div>
+            <div id="kembang-content" class="data-content">
+<strong>1. ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D , JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>  
+KEMBANG KEMPIS KEMBAR  :  kei -3% 
+
+<strong>2. PASARAN TOTO MACAU, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI</strong>
+KEMBANG KEMPIS KEMBAR  :  kei -2.2% 
+
+<strong>3. PASARAN KING KONG 4D</strong>
+KEMBANG KEMPIS :  kei -2.2%
+KEMBAR :  kei 50%
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p style="text-align:center; color:#444; padding: 20px; font-size:0.8rem;">
+            SYSTEM GENERATED // END OF LINE
+        </p>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast">DATA COPIED TO CLIPBOARD</div>
+
     <script>
-        // Data shio dengan detail lengkap
-        const shioData = [
-            { 
-                name: 'Tikus', 
-                numbers: [6, 18, 30, 42, 54, 66, 78, 90],
-                element: 'Air',
-                traits: ['Cerdas', 'Adaptif', 'Bijaksana', 'Kreatif', 'Sosial'],
-                context: 'Dalam konteks permainan, Shio Tikus melambangkan kecerdasan dan kemampuan beradaptasi. Orang dengan shio Tikus cenderung memiliki kemampuan analisis yang tajam dan mampu menemukan peluang dalam situasi yang sulit. Mereka adalah pemecah masalah yang kreatif dan mampu mengatasi tantangan dengan cara yang cerdas.'
-            },
-            { 
-                name: 'Kerbau', 
-                numbers: [5, 17, 29, 41, 53, 65, 77, 89],
-                element: 'Tanah',
-                traits: ['Teguh', 'Tekun', 'Andal', 'Kuat', 'Sabar'],
-                context: 'Dalam konteks permainan, Shio Kerbau melambangkan ketekunan dan keandalan. Orang dengan shio Kerbau cenderung memiliki pendekatan yang konsisten dan sabar dalam mencapai tujuan. Mereka adalah pekerja keras yang tidak mudah menyerah dan selalu menyelesaikan apa yang telah mereka mulai.'
-            },
-            { 
-                name: 'Harimau', 
-                numbers: [4, 16, 28, 40, 52, 64, 76, 88, 0],
-                element: 'Kayu',
-                traits: ['Berani', 'Kompetitif', 'Pemimpin', 'Berwibawa', 'Petualang'],
-                context: 'Dalam konteks permainan, Shio Harimau melambangkan keberanian dan kompetitivitas. Orang dengan shio Harimau cenderung memiliki jiwa kepemimpinan yang alami dan selalu siap untuk menghadapi tantangan. Mereka berani mengambil risiko dan tidak takut gagal dalam mengejar tujuan.'
-            },
-            { 
-                name: 'Kelinci', 
-                numbers: [3, 15, 27, 39, 51, 63, 75, 87, 99],
-                element: 'Kayu',
-                traits: ['Ramah', 'Lembut', 'Elegan', 'Diplomatis', 'Berhati-hati'],
-                context: 'Dalam konteks permainan, Shio Kelinci melambangkan kedamaian dan diplomasi. Orang dengan shio Kelinci cenderung memiliki kemampuan untuk menyelesaikan konflik dengan cara yang damai dan mencari jalan tengah dalam situasi yang sulit. Mereka adalah diplomat yang baik dan selalu mencari harmoni.'
-            },
-            { 
-                name: 'Naga', 
-                numbers: [2, 14, 26, 38, 50, 62, 74, 86, 98],
-                element: 'Tanah',
-                traits: ['Berwibawa', 'Percaya Diri', 'Karismatik', 'Ambisius', 'Kreatif'],
-                context: 'Dalam konteks permainan, Shio Naga melambangkan kekuasaan dan keberuntungan. Orang dengan shio Naga cenderung memiliki karisma yang alami dan kemampuan untuk memimpin orang lain. Mereka ambisius dan selalu berusaha untuk mencapai yang terbaik dalam segala hal.'
-            },
-            { 
-                name: 'Ular', 
-                numbers: [1, 13, 25, 37, 49, 61, 73, 85, 97],
-                element: 'Api',
-                traits: ['Misterius', 'Bijaksana', 'Intuitif', 'Tenang', 'Analitis'],
-                context: 'Dalam konteks permainan, Shio Ular melambangkan kebijaksanaan dan intuisi. Orang dengan shio Ular cenderung memiliki kemampuan analisis yang tajam dan mampu melihat detail yang mungkin terlewatkan oleh orang lain. Mereka tenang dalam menghadapi tekanan dan mampu membuat keputusan yang bijaksana.'
-            },
-            { 
-                name: 'Kuda', 
-                numbers: [12, 24, 36, 48, 60, 72, 84, 96],
-                element: 'Api',
-                traits: ['Enerjik', 'Independen', 'Petualang', 'Ceria', 'Populer'],
-                context: 'Dalam konteks permainan, Shio Kuda melambangkan energi dan kebebasan. Orang dengan shio Kuda cenderung memiliki energi yang tak terbatas dan semangat petualangan yang tinggi. Mereka independen dan selalu siap untuk menghadapi tantangan baru.'
-            },
-            { 
-                name: 'Kambing', 
-                numbers: [11, 23, 35, 47, 59, 71, 83, 95],
-                element: 'Tanah',
-                traits: ['Kreatif', 'Lembut', 'Suka Damai', 'Artistik', 'Empatis'],
-                context: 'Dalam konteks permainan, Shio Kambing melambangkan kreativitas dan kedamaian. Orang dengan shio Kambing cenderung memiliki jiwa artistik yang kuat dan selalu mencari keharmonisan dalam hidup. Mereka kreatif dalam menemukan solusi untuk masalah dan empatik terhadap orang lain.'
-            },
-            { 
-                name: 'Monyet', 
-                numbers: [10, 22, 34, 46, 58, 70, 82, 94],
-                element: 'Logam',
-                traits: ['Cerdik', 'Lincah', 'Humoris', 'Inovatif', 'Sosial'],
-                context: 'Dalam konteks permainan, Shio Monyet melambangkan kecerdikan dan inovasi. Orang dengan shio Monyet cenderung memiliki kemampuan beradaptasi yang cepat dan selalu menemukan cara baru untuk mengatasi tantangan. Mereka cerdik dan memiliki selera humor yang tajam.'
-            },
-            { 
-                name: 'Ayam', 
-                numbers: [9, 21, 33, 45, 57, 69, 81, 93],
-                element: 'Logam',
-                traits: ['Teliti', 'Percaya Diri', 'Jujur', 'Organisasi', 'Observatif'],
-                context: 'Dalam konteks permainan, Shio Ayam melambangkan ketelitian dan keberanian. Orang dengan shio Ayam cenderung memiliki kemampuan observasi yang tajam dan selalu berusaha untuk tampil menarik. Mereka jujur, keras kepala, dan sangat teliti dalam pekerjaan.'
-            },
-            { 
-                name: 'Anjing', 
-                numbers: [8, 20, 32, 44, 56, 68, 80, 92],
-                element: 'Tanah',
-                traits: ['Setia', 'Jujur', 'Protektif', 'Bertanggung Jawab', 'Peka'],
-                context: 'Dalam konteks permainan, Shio Anjing melambangkan kesetiaan dan kejujuran. Orang dengan shio Anjing cenderung memiliki kesetiaan yang tak tergoyahkan dan kejujuran yang mutlak. Mereka adalah teman yang dapat diandalkan dan selalu siap membantu.'
-            },
-            { 
-                name: 'Babi', 
-                numbers: [7, 19, 31, 43, 55, 67, 79, 91],
-                element: 'Air',
-                traits: ['Dermawan', 'Baik Hati', 'Materialistis', 'Suka Kemewahan', 'Sosial'],
-                context: 'Dalam konteks permainan, Shio Babi melambangkan kemakmuran dan keberuntungan finansial. Orang dengan shio Babi cenderung memiliki kemurahan hati dan kecintaan pada kemewahan. Mereka adalah teman yang menyenangkan dan selalu siap membantu orang lain.'
-            }
-        ];
+        // --- DROPDOWN FUNCTIONALITY ---
+        const selector = document.getElementById('dataSelector');
+        const sections = document.querySelectorAll('.data-section');
 
-        // Kombinasi shio contexts yang lebih singkat
-        const shioCombinationContexts = {
-            'Tikus-Kerbau': 'Kombinasi Shio Tikus dan Kerbau menggabungkan kecerdasan dan ketekunan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui strategi cerdas yang dijalankan dengan konsistensi dan kerja keras.',
-            'Tikus-Harimau': 'Kombinasi Shio Tikus dan Harimau menggabungkan kecerdasan dan keberanian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui perencanaan strategis yang cerdas dan keberanian untuk mengambil risiko.',
-            'Tikus-Kelinci': 'Kombinasi Shio Tikus dan Kelinci menggabungkan kecerdasan dan diplomasi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui strategi cerdas yang disertai kemampuan bernegosiasi dan menciptakan harmoni.',
-            'Tikus-Naga': 'Kombinasi Shio Tikus dan Naga menggabungkan kecerdasan dan karisma. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui perencanaan strategis yang cerdas dan kemampuan memimpin.',
-            'Tikus-Ular': 'Kombinasi Shio Tikus dan Ular menggabungkan kecerdasan dan kebijaksanaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui analisis tajam dan kemampuan membuat keputusan yang bijaksana.',
-            'Tikus-Kuda': 'Kombinasi Shio Tikus dan Kuda menggabungkan kecerdasan dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui perencanaan strategis yang cerdas dan eksekusi yang cepat.',
-            'Tikus-Kambing': 'Kombinasi Shio Tikus dan Kambing menggabungkan kecerdasan dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui strategi cerdas yang disertai pendekatan kreatif dalam menyelesaikan masalah.',
-            'Tikus-Monyet': 'Kombinasi Shio Tikus dan Monyet menggabungkan kecerdasan dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui strategi cerdas yang disertai kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Tikus-Ayam': 'Kombinasi Shio Tikus dan Ayam menggabungkan kecerdasan dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui analisis tajam dan eksekusi yang teliti.',
-            'Tikus-Anjing': 'Kombinasi Shio Tikus dan Anjing menggabungkan kecerdasan dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui strategi cerdas yang didukung oleh hubungan yang kuat dan dapat diandalkan.',
-            'Tikus-Babi': 'Kombinasi Shio Tikus dan Babi menggabungkan kecerdasan dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui strategi cerdas yang disertai kemurahan hati dalam berbagi keberhasilan.',
-            'Kerbau-Harimau': 'Kombinasi Shio Kerbau dan Harimau menggabungkan ketekunan dan keberanian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan keberanian untuk menghadapi tantangan besar.',
-            'Kerbau-Kelinci': 'Kombinasi Shio Kerbau dan Kelinci menggabungkan ketekunan dan kedamaian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan kemampuan menciptakan harmoni dalam lingkungan.',
-            'Kerbau-Naga': 'Kombinasi Shio Kerbau dan Naga menggabungkan ketekunan dan karisma. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui kerja keras yang konsisten dan kemampuan memimpin orang lain.',
-            'Kerbau-Ular': 'Kombinasi Shio Kerbau dan Ular menggabungkan ketekunan dan kebijaksanaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan kemampuan membuat keputusan yang bijaksana.',
-            'Kerbau-Kuda': 'Kombinasi Shio Kerbau dan Kuda menggabungkan ketekunan dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan energi untuk melaksanakannya dengan cepat.',
-            'Kerbau-Kambing': 'Kombinasi Shio Kerbau dan Kambing menggabungkan ketekunan dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Kerbau-Monyet': 'Kombinasi Shio Kerbau dan Monyet menggabungkan ketekunan dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Kerbau-Ayam': 'Kombinasi Shio Kerbau dan Ayam menggabungkan ketekunan dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan eksekusi yang teliti.',
-            'Kerbau-Anjing': 'Kombinasi Shio Kerbau dan Anjing menggabungkan ketekunan dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kerja keras yang konsisten dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Kerbau-Babi': 'Kombinasi Shio Kerbau dan Babi menggabungkan ketekunan dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui kerja keras yang konsisten dan kemurahan hati dalam berbagi keberhasilan.',
-            'Harimau-Kelinci': 'Kombinasi Shio Harimau dan Kelinci menggabungkan keberanian dan kedamaian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan kemampuan menciptakan harmoni dalam lingkungan.',
-            'Harimau-Naga': 'Kombinasi Shio Harimau dan Naga menggabungkan keberanian dan karisma. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui keberanian untuk menghadapi tantangan besar dan kemampuan memimpin orang lain.',
-            'Harimau-Ular': 'Kombinasi Shio Harimau dan Ular menggabungkan keberanian dan kebijaksanaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan kemampuan membuat keputusan yang bijaksana.',
-            'Harimau-Kuda': 'Kombinasi Shio Harimau dan Kuda menggabungkan keberanian dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan besar dan energi untuk melaksanakannya dengan cepat.',
-            'Harimau-Kambing': 'Kombinasi Shio Harimau dan Kambing menggabungkan keberanian dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Harimau-Monyet': 'Kombinasi Shio Harimau dan Monyet menggabungkan keberanian dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Harimau-Ayam': 'Kombinasi Shio Harimau dan Ayam menggabungkan keberanian dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan eksekusi yang teliti.',
-            'Harimau-Anjing': 'Kombinasi Shio Harimau dan Anjing menggabungkan keberanian dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui keberanian untuk menghadapi tantangan dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Harimau-Babi': 'Kombinasi Shio Harimau dan Babi menggabungkan keberanian dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui keberanian untuk menghadapi tantangan dan kemurahan hati dalam berbagi keberhasilan.',
-            'Kelinci-Naga': 'Kombinasi Shio Kelinci dan Naga menggabungkan kedamaian dan karisma. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan karisma untuk memimpin orang lain.',
-            'Kelinci-Ular': 'Kombinasi Shio Kelinci dan Ular menggabungkan kedamaian dan kebijaksanaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan kebijaksanaan dalam membuat keputusan.',
-            'Kelinci-Kuda': 'Kombinasi Shio Kelinci dan Kuda menggabungkan kedamaian dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan energi untuk melaksanakannya dengan cepat.',
-            'Kelinci-Kambing': 'Kombinasi Shio Kelinci dan Kambing menggabungkan kedamaian dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Kelinci-Monyet': 'Kombinasi Shio Kelinci dan Monyet menggabungkan kedamaian dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Kelinci-Ayam': 'Kombinasi Shio Kelinci dan Ayam menggabungkan kedamaian dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan eksekusi yang teliti.',
-            'Kelinci-Anjing': 'Kombinasi Shio Kelinci dan Anjing menggabungkan kedamaian dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menciptakan harmoni dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Kelinci-Babi': 'Kombinasi Shio Kelinci dan Babi menggabungkan kedamaian dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui kemampuan menciptakan harmoni dan kemurahan hati dalam berbagi keberhasilan.',
-            'Naga-Ular': 'Kombinasi Shio Naga dan Ular menggabungkan karisma dan kebijaksanaan. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan kebijaksanaan dalam membuat keputusan.',
-            'Naga-Kuda': 'Kombinasi Shio Naga dan Kuda menggabungkan karisma dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan energi untuk melaksanakannya dengan cepat.',
-            'Naga-Kambing': 'Kombinasi Shio Naga dan Kambing menggabungkan karisma dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Naga-Monyet': 'Kombinasi Shio Naga dan Monyet menggabungkan karisma dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Naga-Ayam': 'Kombinasi Shio Naga dan Ayam menggabungkan karisma dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan eksekusi yang teliti.',
-            'Naga-Anjing': 'Kombinasi Shio Naga dan Anjing menggabungkan karisma dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan besar melalui karisma untuk memimpin dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Naga-Babi': 'Kombinasi Shio Naga dan Babi menggabungkan karisma dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial besar melalui karisma untuk memimpin dan kemurahan hati dalam berbagi keberhasilan.',
-            'Ular-Kuda': 'Kombinasi Shio Ular dan Kuda menggabungkan kebijaksanaan dan energi. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kebijaksanaan dalam membuat keputusan dan energi untuk melaksanakannya dengan cepat.',
-            'Ular-Kambing': 'Kombinasi Shio Ular dan Kambing menggabungkan kebijaksanaan dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kebijaksanaan dalam membuat keputusan dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Ular-Monyet': 'Kombinasi Shio Ular dan Monyet menggabungkan kebijaksanaan dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kebijaksanaan dalam membuat keputusan dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Ular-Ayam': 'Kombinasi Shio Ular dan Ayam menggabungkan kebijaksanaan dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kebijaksanaan dalam membuat keputusan dan eksekusi yang teliti.',
-            'Ular-Anjing': 'Kombinasi Shio Ular dan Anjing menggabungkan kebijaksanaan dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kebijaksanaan dalam membuat keputusan dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Ular-Babi': 'Kombinasi Shio Ular dan Babi menggabungkan kebijaksanaan dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui kebijaksanaan dalam membuat keputusan dan kemurahan hati dalam berbagi keberhasilan.',
-            'Kuda-Kambing': 'Kombinasi Shio Kuda dan Kambing menggabungkan energi dan kreativitas. Dalam permainan, ini menunjukkan potensi kesuksesan melalui energi untuk melaksanakannya dengan cepat dan pendekatan kreatif dalam menyelesaikan masalah.',
-            'Kuda-Monyet': 'Kombinasi Shio Kuda dan Monyet menggabungkan energi dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui energi untuk melaksanakannya dengan cepat dan kemampuan menyelesaikan masalah dengan cara yang menyenangkan.',
-            'Kuda-Ayam': 'Kombinasi Shio Kuda dan Ayam menggabungkan energi dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui energi untuk melaksanakannya dengan cepat dan eksekusi yang teliti.',
-            'Kuda-Anjing': 'Kombinasi Shio Kuda dan Anjing menggabungkan energi dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui energi untuk melaksanakannya dengan cepat dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Kuda-Babi': 'Kombinasi Shio Kuda dan Babi menggabungkan energi dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui energi untuk melaksanakannya dengan cepat dan kemurahan hati dalam berbagi keberhasilan.',
-            'Kambing-Monyet': 'Kombinasi Shio Kambing dan Monyet menggabungkan kreativitas dan humor. Dalam permainan, ini menunjukkan potensi kesuksesan melalui pendekatan kreatif dalam menyelesaikan masalah dan kemampuan melakukannya dengan cara yang menyenangkan.',
-            'Kambing-Ayam': 'Kombinasi Shio Kambing dan Ayam menggabungkan kreativitas dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui pendekatan kreatif dalam menyelesaikan masalah dan eksekusi yang teliti.',
-            'Kambing-Anjing': 'Kombinasi Shio Kambing dan Anjing menggabungkan kreativitas dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui pendekatan kreatif dalam menyelesaikan masalah dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Kambing-Babi': 'Kombinasi Shio Kambing dan Babi menggabungkan kreativitas dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui pendekatan kreatif dalam menyelesaikan masalah dan kemurahan hati dalam berbagi keberhasilan.',
-            'Monyet-Ayam': 'Kombinasi Shio Monyet dan Ayam menggabungkan humor dan ketelitian. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menyelesaikan masalah dengan cara yang menyenangkan dan eksekusi yang teliti.',
-            'Monyet-Anjing': 'Kombinasi Shio Monyet dan Anjing menggabungkan humor dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui kemampuan menyelesaikan masalah dengan cara yang menyenangkan dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Monyet-Babi': 'Kombinasi Shio Monyet dan Babi menggabungkan humor dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui kemampuan menyelesaikan masalah dengan cara yang menyenangkan dan kemurahan hati dalam berbagi keberhasilan.',
-            'Ayam-Anjing': 'Kombinasi Shio Ayam dan Anjing menggabungkan ketelitian dan kesetiaan. Dalam permainan, ini menunjukkan potensi kesuksesan melalui eksekusi yang teliti dan kesetiaan dalam menjaga hubungan yang baik.',
-            'Ayam-Babi': 'Kombinasi Shio Ayam dan Babi menggabungkan ketelitian dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui eksekusi yang teliti dan kemurahan hati dalam berbagi keberhasilan.',
-            'Anjing-Babi': 'Kombinasi Shio Anjing dan Babi menggabungkan kesetiaan dan kemurahan hati. Dalam permainan, ini menunjukkan potensi kesuksesan finansial melalui kesetiaan dalam menjaga hubungan yang baik dan kemurahan hati dalam berbagi keberhasilan.'
-        };
+        selector.addEventListener('change', function() {
+            const selectedValue = this.value;
 
-        // Fungsi untuk mencari shio berdasarkan angka
-        function findShioByNumber(number) {
-            for (const shio of shioData) {
-                if (shio.numbers.includes(number)) {
-                    return shio;
-                }
-            }
-            return null;
-        }
+            // Scroll ke atas sedikit sebelum filter agar transisi terasa
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Fungsi untuk menghitung kelipatan 12 terdekat
-        function findNearestMultipleOf12(number) {
-            return Math.floor(number / 12) * 12;
-        }
-
-        // Fungsi untuk menghitung Macau Shio
-        function calculateMacauShio() {
-            const input = document.getElementById('macau-abcd-input').value;
-            
-            // Validasi input
-            if (input.length !== 4 || isNaN(input)) {
-                showNotification('Masukkan 4 digit angka yang valid!', 'error');
-                return;
-            }
-            
-            // Ambil nilai AS, KOP, KEPALA, EKOR
-            const as = parseInt(input[0]);
-            const kop = parseInt(input[1]);
-            const kepala = parseInt(input[2]);
-            const ekor = parseInt(input[3]);
-            
-            // Tampilkan angka input
-            document.getElementById('macau-result-numbers').innerHTML = `
-                <div class="result-number-box">${as}</div>
-                <div class="result-number-box">${kop}</div>
-                <div class="result-number-box">${kepala}</div>
-                <div class="result-number-box">${ekor}</div>
-            `;
-            
-            // Hitung shio pertama (AS + KOP)
-            const shio1Value = as * 10 + kop;
-            const nearestMultiple1 = findNearestMultipleOf12(shio1Value);
-            const shio1Result = shio1Value - nearestMultiple1;
-            const shio1 = findShioByNumber(shio1Result);
-            
-            // Hitung shio kedua (KEPALA + EKOR)
-            const shio2Value = kepala * 10 + ekor;
-            const nearestMultiple2 = findNearestMultipleOf12(shio2Value);
-            const shio2Result = shio2Value - nearestMultiple2;
-            const shio2 = findShioByNumber(shio2Result);
-            
-            // Tampilkan proses perhitungan
-            document.getElementById('macau-as-kop-value').textContent = `${as}+${kop}=${shio1Result}`;
-            document.getElementById('macau-kepala-ekor-value').textContent = `${kepala}+${ekor}=${shio2Result}`;
-            document.getElementById('macau-shio-results').textContent = `${shio1 ? shio1.name : 'Tidak Ditemukan'} & ${shio2 ? shio2.name : 'Tidak Ditemukan'}`;
-            
-            // Tampilkan hasil shio pertama
-            document.getElementById('macau-as-value').textContent = as;
-            document.getElementById('macau-kop-value').textContent = kop;
-            document.getElementById('macau-ab-value').textContent = `${shio1Value} - ${nearestMultiple1}`;
-            document.getElementById('macau-ab-result').textContent = shio1Result;
-            document.getElementById('macau-shio1-name').textContent = shio1 ? shio1.name : 'Tidak Ditemukan';
-            
-            // Tampilkan sifat shio pertama
-            if (shio1) {
-                document.getElementById('macau-shio1-traits').innerHTML = shio1.traits.map(trait => 
-                    `<span class="shio-trait">${trait}</span>`
-                ).join('');
-                
-                // Atur warna border
-                document.getElementById('macau-shio1-card').className = `shio-result ${shio1.name.toLowerCase()}`;
-            }
-            
-            // Tampilkan hasil shio kedua
-            document.getElementById('macau-kepala-value').textContent = kepala;
-            document.getElementById('macau-ekor-value').textContent = ekor;
-            document.getElementById('macau-cd-value').textContent = `${shio2Value} - ${nearestMultiple2}`;
-            document.getElementById('macau-cd-result').textContent = shio2Result;
-            document.getElementById('macau-shio2-name').textContent = shio2 ? shio2.name : 'Tidak Ditemukan';
-            
-            // Tampilkan sifat shio kedua
-            if (shio2) {
-                document.getElementById('macau-shio2-traits').innerHTML = shio2.traits.map(trait => 
-                    `<span class="shio-trait">${trait}</span>`
-                ).join('');
-                
-                // Atur warna border
-                document.getElementById('macau-shio2-card').className = `shio-result ${shio2.name.toLowerCase()}`;
-            }
-            
-            // Tampilkan konteks kombinasi
-            if (shio1 && shio2) {
-                const combinationKey = `${shio1.name}-${shio2.name}`;
-                const reverseCombinationKey = `${shio2.name}-${shio1.name}`;
-                let context = shioCombinationContexts[combinationKey] || shioCombinationContexts[reverseCombinationKey];
-                
-                if (!context) {
-                    // Jika tidak ada konteks kombinasi spesifik, buat konteks umum
-                    context = `Kombinasi Shio ${shio1.name} dan ${shio2.name} menciptakan keseimbangan antara karakteristik unik dari kedua shio tersebut. Dalam konteks permainan, kombinasi ini menunjukkan potensi kesuksesan melalui keseimbangan antara ${shio1.traits.join(', ')} dari Shio ${shio1.name} dan ${shio2.traits.join(', ')} dari Shio ${shio2.name}.`;
-                }
-                
-                document.getElementById('macau-shio-context').textContent = context;
-            }
-            
-            // Tampilkan kotak hasil dengan animasi
-            const resultBox = document.getElementById('macau-result-box');
-            resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        // Fungsi untuk menghitung Shio
-        function calculateShio() {
-            const input = document.getElementById('shio-cd-input').value;
-            
-            // Validasi input
-            if (input.length !== 2 || isNaN(input)) {
-                showNotification('Masukkan 2 digit angka yang valid!', 'error');
-                return;
-            }
-            
-            // Ambil nilai KEPALA, EKOR
-            const kepala = parseInt(input[0]);
-            const ekor = parseInt(input[1]);
-            
-            // Tampilkan angka input
-            document.getElementById('shio-result-numbers').innerHTML = `
-                <div class="result-number-box">${kepala}</div>
-                <div class="result-number-box">${ekor}</div>
-            `;
-            
-            // Hitung shio (KEPALA + EKOR)
-            const shioValue = kepala * 10 + ekor;
-            const nearestMultiple = findNearestMultipleOf12(shioValue);
-            const shioResult = shioValue - nearestMultiple;
-            const shio = findShioByNumber(shioResult);
-            
-            // Tampilkan proses perhitungan
-            document.getElementById('shio-kepala-ekor-value').textContent = `${kepala}${ekor}`;
-            document.getElementById('shio-hasil-value').textContent = shio ? shio.name : 'Tidak Ditemukan';
-            
-            // Tampilkan hasil
-            document.getElementById('shio-kepala-value').textContent = kepala;
-            document.getElementById('shio-ekor-value').textContent = ekor;
-            document.getElementById('shio-cd-value').textContent = `${shioValue} - ${nearestMultiple}`;
-            document.getElementById('shio-cd-result').textContent = shioResult;
-            document.getElementById('shio-name').textContent = shio ? shio.name : 'Tidak Ditemukan';
-            
-            // Tampilkan sifat shio
-            if (shio) {
-                document.getElementById('shio-traits').innerHTML = shio.traits.map(trait => 
-                    `<span class="shio-trait">${trait}</span>`
-                ).join('');
-                
-                // Atur warna border
-                document.getElementById('shio-card').className = `shio-result ${shio.name.toLowerCase()}`;
-                
-                // Tampilkan konteks shio
-                document.getElementById('shio-context').textContent = shio.context;
-            }
-            
-            // Tampilkan kotak hasil dengan animasi
-            const resultBox = document.getElementById('shio-result-box');
-            resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, type) {
-            // Buat elemen notifikasi
-            const notification = document.createElement('div');
-            notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed top-0 start-50 translate-middle-x mt-3`;
-            notification.style.zIndex = '9999';
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            // Hapus notifikasi setelah 3 detik
             setTimeout(() => {
-                notification.remove();
+                if (selectedValue === 'all') {
+                    // Tampilkan SEMUA section
+                    sections.forEach(sec => {
+                        sec.classList.remove('hidden');
+                        sec.style.display = 'block';
+                    });
+                } else {
+                    // Sembunyikan SEMUA section dulu
+                    sections.forEach(sec => {
+                        sec.classList.add('hidden');
+                        sec.style.display = 'none';
+                    });
+
+                    // Tampilkan HANYA section yang dipilih
+                    const target = document.getElementById(selectedValue);
+                    if (target) {
+                        target.classList.remove('hidden');
+                        target.style.display = 'block';
+                        
+                        // Scroll otomatis ke section tersebut
+                        const headerOffset = 120;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                }
+            }, 300); // Delay kecil agar scroll ke atas jalan dulu
+        });
+
+        // --- COPY FUNCTIONALITY ---
+        function copyData(elementId, sectionName) {
+            const contentElement = document.getElementById(elementId);
+            
+            if (contentElement) {
+                const textToCopy = contentElement.innerText;
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast(`${sectionName} BERHASIL DISALIN!`);
+                }).catch(err => {
+                    console.error('Gagal menyalin:', err);
+                    showToast('GAGAL MENYALIN DATA');
+                });
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
             }, 3000);
         }
-
-        // Event listener untuk tombol hitung Macau Shio
-        document.getElementById('macau-calculate-btn').addEventListener('click', calculateMacauShio);
-        
-        // Event listener untuk input Enter Macau Shio
-        document.getElementById('macau-abcd-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                calculateMacauShio();
-            }
-        });
-
-        // Event listener untuk tombol hitung Shio
-        document.getElementById('shio-calculate-btn').addEventListener('click', calculateShio);
-        
-        // Event listener untuk input Enter Shio
-        document.getElementById('shio-cd-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                calculateShio();
-            }
-        });
-
-        // Particle Effect
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            // Random size
-            const size = Math.random() * 20 + 5;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            // Random position
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            
-            // Random animation duration
-            particle.style.animationDuration = Math.random() * 10 + 10 + 's';
-            
-            // Random opacity
-            particle.style.opacity = Math.random() * 0.5 + 0.1;
-            
-            document.getElementById('particles-container').appendChild(particle);
-            
-            // Hapus particle setelah animasi selesai
-            setTimeout(() => {
-                particle.remove();
-            }, 15000);
-        }
-
-        // Buat particle secara berkala
-        setInterval(createParticle, 300);
-
-        // Tambahkan efek hover pada tabel shio
-        document.querySelectorAll('.shio-row').forEach(row => {
-            row.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.02)';
-            });
-            
-            row.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
-
-        // Animasi saat halaman dimuat
-        window.addEventListener('load', function() {
-            document.querySelectorAll('.calculator-section').forEach((section, index) => {
-                setTimeout(() => {
-                    section.style.opacity = '0';
-                    section.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(() => {
-                        section.style.transition = 'all 0.5s ease';
-                        section.style.opacity = '1';
-                        section.style.transform = 'translateY(0)';
-                    }, 100);
-                }, index * 100);
-            });
-        });
     </script>
 </body>
 </html>
