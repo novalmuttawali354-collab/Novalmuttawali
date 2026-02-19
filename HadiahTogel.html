@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Prize Database - Sidebar Menu</title>
+    
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette Soft & Elegant */
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            
+            --primary-text: #ffffff;
+            --secondary-text: #e0e7ff; 
+            --accent-gradient: linear-gradient(90deg, #ff9a9e, #fecfef);
+            --number-color: #ffeaa7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--primary-text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.8; 
+            padding-bottom: 80px;
+            min-height: 100vh;
+            font-weight: 400; 
+            overflow-x: hidden;
+        }
+
+        /* HEADER SECTION (Tanpa Dropdown) */
+        header {
+            position: relative; 
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: none;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 0 0 40px 40px; 
+            margin-bottom: 30px; 
+            box-shadow: none; 
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem; 
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .layout-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 30px;
+            position: relative;
+        }
+
+        /* --- SIDEBAR MENU (Penuh Semua Data) --- */
+        .sidebar {
+            width: 280px; /* Sedikit lebih lebar untuk menampung semua menu */
+            flex-shrink: 0; 
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: var(--glass-shadow);
+            
+            /* Scrollbar styling agar rapi */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.3) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--secondary-text);
+            margin-bottom: 10px;
+            padding-left: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .sidebar-title:first-child {
+            margin-top: 0;
+        }
+
+        .nav-link {
+            display: block; /* Block agar klik area lebar */
+            padding: 12px 15px;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            transform: translateX(5px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background: #ffffff;
+            color: #764ba2;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-color: #fff;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 15px 0;
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        main {
+            flex: 1;
+            min-height: 50vh;
+        }
+
+        /* CARD / SECTION DESIGN */
+        .data-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px; 
+            margin-bottom: 30px; 
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .data-section:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .data-section.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* COPY BUTTON */
+        .copy-all-btn {
+            background: #ffffff; 
+            color: #764ba2; 
+            padding: 8px 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: none;
+        }
+
+        .copy-all-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+            background: #f8f9fa;
+            color: #667eea;
+        }
+
+        .copy-all-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* CONTENT AREA */
+        .data-content {
+            padding: 25px; 
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            color: var(--secondary-text); 
+            font-weight: 400;
+        }
+
+        .data-content strong {
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .data-content strong:first-child {
+            margin-top: 0;
+            color: #ffd700; 
+        }
+
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #ffffff; 
+            color: #4c51bf; 
+            padding: 12px 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            font-weight: 600;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 900px) {
+            .layout-container {
+                flex-direction: column; /* Stack vertical pada tablet/mobile */
+                gap: 20px;
+            }
+
+            /* Sidebar menjadi menu biasa di atas pada mobile */
+            .sidebar {
+                width: 100%;
+                position: static; /* Tidak lagi sticky di kiri */
+                max-height: none;
+                overflow-x: auto; /* Horizontal scroll jika perlu, tapi kita biarkan vertical list */
+                display: block; /* Tampilkan sidebar */
+                padding: 15px;
+            }
+            
+            /* Tampilkan sidebar sebagai Grid 2 kolom agar tidak terlalu panjang di HP */
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                align-content: start;
+            }
+            
+            .sidebar-title {
+                grid-column: span 2; /* Judul full lebar */
+                margin-top: 10px;
+                padding-left: 0;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 15px; 
+                border-radius: 0 0 30px 30px;
+                margin-bottom: 20px;
+            }
+            h1 { font-size: 1.5rem; }
+            .data-content { padding: 20px; font-size: 0.9rem; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .copy-all-btn { width: 100%; justify-content: center; margin-top: 10px; }
+            
+            /* Grid Sidebar jadi 1 kolom di HP kecil agar rapi */
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Master Prize Database</h1>
+    </header>
+
+    <div class="layout-container">
+        
+        <!-- SIDEBAR MENU (ISI SEMUA DATA) -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Menu Utama</div>
+            <a href="#" onclick="filterData('full'); return false;" class="nav-link" id="link-full">Hadiah Bet Full</a>
+            <a href="#" onclick="filterData('all4d'); return false;" class="nav-link" id="link-all4d">Hadiah All 4D</a>
+            <a href="#" onclick="filterData('discount'); return false;" class="nav-link" id="link-discount">Hadiah Discount</a>
+            <a href="#" onclick="filterData('all3d'); return false;" class="nav-link" id="link-all3d">Hadiah All 3D</a>
+            <a href="#" onclick="filterData('all2d'); return false;" class="nav-link" id="link-all2d">Hadiah All 2D</a>
+            
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Games & Khusus</div>
+            <a href="#" onclick="filterData('prize123'); return false;" class="nav-link" id="link-prize123">Hadiah Prize 123</a>
+            <a href="#" onclick="filterData('bb'); return false;" class="nav-link" id="link-bb">Hadiah Bolak Balik</a>
+            
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Games Colok</div>
+            <a href="#" onclick="filterData('colok-bebas'); return false;" class="nav-link" id="link-colok-bebas">Colok Bebas</a>
+            <a href="#" onclick="filterData('colok-jitu'); return false;" class="nav-link" id="link-colok-jitu">Colok Jitu</a>
+            <a href="#" onclick="filterData('colok-shio'); return false;" class="nav-link" id="link-colok-shio">Colok Shio</a>
+            <a href="#" onclick="filterData('colok-macau-shio'); return false;" class="nav-link" id="link-colok-macau-shio">Colok Macau Shio</a>
+            <a href="#" onclick="filterData('colok-bebas-2d'); return false;" class="nav-link" id="link-colok-bebas-2d">Colok Bebas 2D</a>
+            <a href="#" onclick="filterData('colok-naga'); return false;" class="nav-link" id="link-colok-naga">Colok Naga</a>
+            <a href="#" onclick="filterData('colok-kombinasi'); return false;" class="nav-link" id="link-colok-kombinasi">Colok Kombinasi</a>
+            <a href="#" onclick="filterData('colok-50-50'); return false;" class="nav-link" id="link-colok-50-50">Colok 50:50</a>
+            <a href="#" onclick="filterData('colok-dasar'); return false;" class="nav-link" id="link-colok-dasar">Hadiah Dasar</a>
+            
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Lainnya</div>
+            <a href="#" onclick="filterData('kembang'); return false;" class="nav-link" id="link-kembang">Kembang Kempis</a>
+            
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Reset</div>
+            <a href="#" onclick="filterData('all'); return false;" class="nav-link" style="text-align:center; font-weight:700; background:rgba(255,255,255,0.1);">Tampilkan Semua</a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main>
+            <!-- SECTION 1: HADIAH FULL -->
+            <section id="full" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH BET FULL</h2>
+                    <button class="copy-all-btn" onclick="copyData('full-content', 'Data Hadiah Full')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="full-content" class="data-content">
+<strong>1. Hadiah Bet Full – All Pasaran (TERKECUALI PASARAN SYDNEY , HONGKONG, TOTOMACAU, KING KONG4D & Toto Macau 5D)</strong>
+- 4D : x10000
+- 3D : x1000        
+- 2D : x100
+
+<strong>2. Hadiah Bet Full (Khusus PASARAN SYDNEY & HONGKONG)</strong>
+- 4D : x9800
+- 3D : x980
+- 2D : x98
+
+<strong>3. Hadiah Bet Full Kingkong & Toto Macau 4D</strong>                                                
+- 4D : x 9000                                                
+- 3D : x 950                                                
+- 2D : x 95
+                                                
+<strong>4. Hadiah Bet Full Toto Macau 5D</strong>                                                
+- 5D : x 88000                                                
+- 4D : x 9000                                                
+- 3D : x 950                                                
+- 2D : x 95
+                </div>
+            </section>
+
+            <!-- SECTION 2: HADIAH ALL 4D -->
+            <section id="all4d" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH ALL 4D</h2>
+                    <button class="copy-all-btn" onclick="copyData('4d-content', 'Data Hadiah 4D')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="4d-content" class="data-content">
+<strong>1. Hadiah 4D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+- 4D : x 10,000   
+
+<strong>2. Hadiah 4D Bet full pasaran Sydney & Hongkong</strong>                                                
+- 4D : x 9,800             
+                                   
+<strong>3. Hadiah 4D Bet full Kingkong & Toto macau 4D</strong>                                                
+- 4D : x 9,000
+
+<strong>4. Hadiah 4D Bet full Toto macau 5d</strong>                                                
+- 4D : x 9000 
+                                                 
+<strong>5. Hadiah 4D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 4D : x 3,000
+- Discount : 66.50%                
+                                
+<strong>6. Hadiah 4D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 4D : x 6,000
+- Discount : 33%                  
+                               
+<strong>7. Hadiah 4D Discount Jakarta pools</strong>                                                
+- 4D : x 3,000 
+- Discount : 66%                       
+                    
+<strong>8. Hadiah 4D Discount Toto Mali</strong>                                                
+- 4D : x 3,000
+- Discount : 67%                
+                       
+<strong>9. Hadiah 4D Discount Hokidraw</strong>                                                
+- 4D : x 7,000 
+- Discount : 20%             
+                               
+<strong>10. Hadiah 4D Super Discount Totomacau 4D</strong>                                                
+- 4D : x 3,000 
+- Discount : 66%
+
+<strong>11. Hadiah 4D Discount Toto macau 5D</strong> 
+- 4D : x 7000  
+- DISCOUNT : 20%                                             
+                                                
+<strong>12. Hadiah 4D bet BB / BOLAKBALIK All pasaran</strong>                                                 
+- 4D = x 4,000 
+- Hadiah terbalik = x 200  
+
+<strong>13. Hadiah 4D BB / BOLAKBALIK hokidraw</strong>
+- 4D = x 5000
+- Hadiah terbalik = x 500
+
+<strong>14. Hadiah 4D bet BB / BOLAKBALIK TOTOMACAU5D</strong>  
+- Hadiah 4D = x 5000 
+- Hadiah terbalik = x 180
+                </div>
+            </section>
+
+            <!-- SECTION 3: HADIAH DISCOUNT -->
+            <section id="discount" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH DISCOUNT</h2>
+                    <button class="copy-all-btn" onclick="copyData('discount-content', 'Data Hadiah Discount')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="discount-content" class="data-content">
+<strong>1. Hadiah Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 4D : x 3000 
+- Discount : 66.50%                                           
+- 3D : x 400   
+- Discount : 59.50%                                                
+- 2D : x 70    
+- Discount : 29.50%
+- 2D DEPAN : Hadiah x65, Diskon 29.50%
+- 2D TENGAH : Hadiah x65, Diskon 29.50%
+                                                
+<strong>2. Hadiah Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 4D : x 6000
+- DISCOUNT : 33%                                                 
+- 3D : x 700   
+- DISCOUNT : 24%                                               
+- 2D : x 80    
+- DISCOUNT : 15%                                                 
+                                                
+<strong>3. Hadiah Discount Jakarta pools</strong>                                                
+- 4D : x 3000 
+- DISCOUNT : 66%                                                 
+- 3D : x 400 
+- DISCOUNT : 59%                                                 
+- 2D : x 70    
+- DISCOUNT : 29%                                                 
+                                                
+<strong>4. Hadiah Discount Toto Mali</strong>                                                
+- 4D : x 3000
+- DISCOUNT : 67%                                                 
+- 3D : x 400 
+- DISCOUNT : 57%                                                 
+- 2D : x 70   
+- DISCOUNT : 27%                                                 
+                                                
+<strong>5. Hadiah Discount Hokidraw</strong>                                                
+- 4D : x 7000 
+- DISCOUNT : 20%               
+- 3D : x 750   
+- DISCOUNT : 20%                                                 
+- 2D : x 75     
+- DISCOUNT : 20%                                                 
+                                                
+<strong>6. Hadiah Super Discount Totomacau 4D</strong>                                                
+- 4D : x 3000 
+- DISCOUNT : 66%                                                 
+- 3D : x 400
+- DISCOUNT : 59%                                                 
+- 2D : x 70   
+- DISCOUNT : 29%                                                
+                                                
+<strong>7. Hadiah Discount Toto macau 5D</strong>                                                
+- 5D : x 50000 
+- DISCOUNT : 38%                                               
+- 4D : x 7000  
+- DISCOUNT : 20%                                               
+- 3D : x 750    
+- DISCOUNT : 20%                                              
+- 2D : x 75   
+- DISCOUNT : 20% 
+                </div>
+            </section>
+
+            <!-- SECTION 4: HADIAH ALL 3D -->
+            <section id="all3d" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH ALL 3D</h2>
+                    <button class="copy-all-btn" onclick="copyData('3d-content', 'Data Hadiah 3D')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="3d-content" class="data-content">
+<strong>1. Hadiah 3D Bet full All pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+- 3D : x 1,000                              
+                  
+<strong>2. Hadiah 3D Bet full pasaran Sydney & Hongkong</strong>                                                
+- 3D : x 980                                                
+
+<strong>3. Hadiah 3D Bet full Kingkong & Toto macau 4D</strong>                                                
+- 3D : x 950 
+                                                
+<strong>4. Hadiah 3D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 3D : x 400   
+- DISCOUNT : 59.50%   
+                                              
+<strong>5. Hadiah 3D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 3D : x 700 
+- DISCOUNT : 24%       
+                                       
+<strong>6. Hadiah 3D Discount Jakarta pools</strong>                                                
+- 3D : x 400 
+- DISCOUNT : 59%       
+                                         
+<strong>7. Hadiah 3D Discount Toto Mali</strong>                                                
+- 3D : x 400
+- DISCOUNT : 57%         
+                                     
+<strong>8. Hadiah 3D Discount Hokidraw</strong>                                                
+- 3D : x 750 
+- DISCOUNT : 20%   
+                                       
+<strong>9. Hadiah 4D Super Discount Totomacau 4D</strong>                                                
+- 3D : x 400   
+- DISCOUNT : 59%                                                
+                                                
+<strong>10. Hadiah 3D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>                                              
+- 3D = x 400 
+- Hadiah terbalik = x 100  
+
+<strong>11. Hadiah Bet full Toto macau 5d</strong>                                                
+- 3D : x 950          
+                                      
+<strong>12. Hadiah Discount Toto macau 5D</strong>                                                
+- 3D : x 750    
+- DISCOUNT : 20%        
+
+<strong>13. Hadiah bet BB / BOLAKBALIK TOTOMACAU5D</strong>                                                                          
+- Hadiah 3D = x 500 
+- Hadiah terbalik = x 75
+                </div>
+            </section>
+
+            <!-- SECTION 5: HADIAH ALL 2D -->
+            <section id="all2d" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH ALL 2D</h2>
+                    <button class="copy-all-btn" onclick="copyData('2d-content', 'Data Hadiah 2D')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="2d-content" class="data-content">
+<strong>1. Hadiah 2D Bet full all pasaran kecuali Toto macau , Kingkong , Sydney & Hongkong</strong>                                                
+2D : x 100
+                                                
+<strong>2. Hadiah 2D Bet full pasaran Sydney & Hongkong</strong>                                                
+2D : x 98
+                                                
+<strong>3. Hadiah 2D Bet full Kingkong & Toto macau 4D</strong>                                                
+2D : x 95 
+
+<strong>4. Hadiah 2D Bet full Toto macau 5d</strong>
+- 2D : x 95
+                                                                                             
+<strong>5. Hadiah 2D Discount All pasaran kecuali ( Toto macau 4D , Kingkong 4D, Jakarta pools , Hokidraw & Toto mali )</strong>                                                
+- 2D : x 70
+- DISCOUNT : 29.50%
+                                                
+<strong>6. Hadiah 2D Discount Toto macau 4D & Kingkong 4D</strong>                                                
+- 2D : x 80
+- DISCOUNT : 15%
+                                               
+<strong>7. Hadiah 2D Discount Jakarta pools</strong>                                                
+- 2D : x 70 
+- DISCOUNT : 29% 
+                                                
+<strong>8. Hadiah 2D Discount Toto Mali</strong>                                                
+- 2D : x 70     
+- DISCOUNT : 27% 
+                                                
+<strong>9. Hadiah 2D Discount Hokidraw</strong>                                                
+- 2D : x 75     
+- DISCOUNT : 20% 
+                                                
+<strong>10. Hadiah 2D Super Discount Totomacau 4D</strong>                                                
+- 2D : x 70     
+- DISCOUNT : 29% 
+
+<strong>11. Hadiah Discount Toto macau 5D</strong>
+- 2D : x 75   
+- DISCOUNT : 20% 
+                                                
+<strong>12. Hadiah 2D bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>                                                      
+- Hadiah 2D = x 70 
+- Hadiah terbalik = x 20
+
+<strong>13. Hadiah bet BB / BOLAKBALIK Hokidraw</strong>
+- Hadiah 2D = x 80
+- Hadiah terbalik = x 15 
+
+<strong>14. Hadiah 2D bet BB / BOLAKBALIK TOTOMACAU5D</strong>
+- Hadiah 2D = x 80 
+- Hadiah terbalik = x 15
+                </div>
+            </section>
+
+            <!-- SECTION 6: HADIAH PRIZE 123 -->
+            <section id="prize123" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH PRIZE 123</h2>
+                    <button class="copy-all-btn" onclick="copyData('prize123-content', 'Data Prize 123')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="prize123-content" class="data-content">
+<strong>Pasaran Togel yang menyediakan Tipe Bettingan Prize 123 :</strong>
+- TOTOCAMBODIA
+- POIPET LOTTERY
+- TOTOMALI
+- HUAHIN LOTTERY
+- SYDNEY
+- SINGAPORE 4D Hanya ( Hari Rabu , Sabtu & Minggu )
+- MAGNUM4D
+- NEVADA
+- BANGKOK POOLS
+- BRUNEI POOLS
+- CHELSEA POOLS
+- HONGKONG
+
+<strong>HADIAH BET PRIZE 123</strong>
+<strong>Prize 1</strong> 
+- Hadiah 4D : x6500        
+- Hadiah 3D : x650        
+- Hadiah 2D : x70
+
+<strong>Prize 2</strong> 
+- Hadiah 4D : x2100        
+- Hadiah 3D : x210        
+- Hadiah 2D : x20
+
+<strong>Prize 3</strong> 
+- Hadiah 4D : x1100        
+- Hadiah 3D : x110        
+- Hadiah 2D : x8
+                </div>
+            </section>
+
+            <!-- SECTION 7: HADIAH BOLAK BALIK / BB -->
+            <section id="bb" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH BOLAK BALIK / BB</h2>
+                    <button class="copy-all-btn" onclick="copyData('bb-content', 'Data Bolak Balik')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="bb-content" class="data-content">
+<strong>HADIAH BOLAK BALIK / BB</strong>
+
+<strong>1. Hadiah bet BB / BOLAKBALIK All pasaran kecuali Hokidraw dan Totomacau 5d</strong>        
+- Hadiah 4D = x 4000 
+- Hadiah terbalik = x 200                                                
+- Hadiah 3D = x 400 
+- Hadiah terbalik = x 100                                                
+- Hadiah 2D = x 70 
+- Hadiah terbalik = x 20  
+
+<strong>2. Hadiah bet BB / BOLAKBALIK Hokidraw</strong> 
+- Hadiah 4D = x 5000
+- Hadiah terbalik = x 180
+- Hadiah 3D = x 500
+- Hadiah terbalik = x 75
+- Hadiah 2D = x 80
+- Hadiah terbalik = x 15                                            
+                                                
+<strong>3. Hadiah bet BB / BOLAKBALIK TOTOMACAU5D</strong>                                                                          
+- Hadiah 5D = x 50000 
+- Hadiah terbalik = x 350                                                
+- Hadiah 4D = x 5000 
+- Hadiah terbalik = x 180                                                
+- Hadiah 3D = x 500 
+- Hadiah terbalik = x 75                                                
+- Hadiah 2D = x 80 
+- Hadiah terbalik = x 15
+                </div>
+            </section>
+
+            <!-- SECTION 8: COLOK BEBAS -->
+            <section id="colok-bebas" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK BEBAS</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-bebas-content', 'Data Colok Bebas')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-bebas-content" class="data-content">
+<strong>1. HADIAH COLOK BEBAS ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+x1.5 ( 1 Digit )                                                 
+x3 ( 2 Digit )                                                
+x4.5 ( 3 Digit )                                                
+x6 ( 4 Digit ) 
+                                                
+<strong>2. HADIAH COLOK BEBAS PASARAN HOKIDRAW</strong>                                                
+x0.9 ( 1 Digit )                                                
+x1.8 ( 2 Digit )                                                
+x2.7 ( 3 Digit )                                                
+x3.6 ( 4 Digit )
+                                                
+<strong>3. HADIAH COLOK BEBAS PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+x1.6 ( 1 Digit )                                                
+x3.2 ( 2 Digit )                                                
+x4.8 ( 3 Digit )                                                
+x6.4 ( 4 Digit )
+                </div>
+            </section>
+
+            <!-- SECTION 9: COLOK JITU -->
+            <section id="colok-jitu" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK JITU</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-jitu-content', 'Data Colok Jitu')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-jitu-content" class="data-content">
+<strong>1. HADIAH COLOK JITU ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+Colok Jitu : x8   
+                                             
+<strong>2. HADIAH COLOK JITU PASARAN HOKIDRAW</strong>                                                
+Colok Jitu : x8     
+                                           
+<strong>3. HADIAH COLOK JITU PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+Colok Jitu : x8.3
+                </div>
+            </section>
+
+            <!-- SECTION 10: COLOK SHIO -->
+            <section id="colok-shio" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK SHIO</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-shio-content', 'Data Colok Shio')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-shio-content" class="data-content">
+<strong>1. HADIAH COLOK SHIO ALL PASARAN (Kecuali TOTO MACAU & KING KONG 4D)</strong>                                             
+Shio : x9.5   
+                                             
+<strong>2. HADIAH COLOK SHIO PASARAN TOTO MACAU , KING KONG 4D</strong>                            
+Shio : x10
+                </div>
+            </section>
+
+            <!-- SECTION 11: COLOK MACAU SHIO -->
+            <section id="colok-macau-shio" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK MACAU SHIO</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-macau-shio-content', 'Data Colok Macau Shio')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-macau-shio-content" class="data-content">
+<strong>HADIAH COLOK MACAU SHIO ALL PASARAN</strong>                                                
+MACAU SHIO  : x110
+                </div>
+            </section>
+
+            <!-- SECTION 12: COLOK BEBAS 2D -->
+            <section id="colok-bebas-2d" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK BEBAS 2D</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-bebas-2d-content', 'Data Colok Bebas 2D')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-bebas-2d-content" class="data-content">
+<strong>1. HADIAH COLOK BEBAS 2D ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+x7 ( 2 Digit )                                                
+x11 ( 3 Digit )                                                
+x18 ( 4 Digit )   
+                                             
+<strong>2. HADIAH COLOK BEBAS 2D PASARAN HOKIDRAW</strong>                                                
+x4 ( 2 Digit )                                                
+x6 ( 3 Digit )                                                
+x20 ( 4 Digit ) 
+                                               
+<strong>3. HADIAH COLOK BEBAS 2D PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+x7 ( 2 Digit )                                                
+x13 ( 3 Digit )                                                
+x21 ( 4 Digit )
+                </div>
+            </section>
+
+            <!-- SECTION 13: COLOK NAGA -->
+            <section id="colok-naga" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK NAGA</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-naga-content', 'Data Colok Naga')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-naga-content" class="data-content">
+<strong>1. HADIAH COLOK NAGA ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+x23 Co. Naga ( 3 Digit )                                                
+x35 Co. Naga ( 4 Digit ) 
+                                               
+<strong>2. HADIAH COLOK NAGA PASARAN HOKIDRAW</strong>                                                
+x12 Co. Naga ( 3 Digit )                                                
+x30 Co. Naga ( 4 Digit )
+                                                
+<strong>3. HADIAH COLOK NAGA PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+x27 Co. Naga ( 3 Digit )                                                
+x41 Co. Naga ( 4 Digit )
+                </div>
+            </section>
+
+            <!-- SECTION 14: COLOK KOMBINASI -->
+            <section id="colok-kombinasi" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK KOMBINASI</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-kombinasi-content', 'Data Colok Kombinasi')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-kombinasi-content" class="data-content">
+<strong>1. HADIAH COLOK KOMBINASI ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>                                                
+Kombinasi : x2.6     
+                                            
+<strong>2. HADIAH COLOK KOMBINASI PASARAN HOKIDRAW</strong>                                                
+Kombinasi : x2.7    
+                                            
+<strong>3. HADIAH COLOK KOMBINASI PASARAN TOTO MACAU , KING KONG 4D, JAKARTA POOLS & TOTOMALI</strong>                                                
+Kombinasi : x2.8
+                </div>
+            </section>
+
+            <!-- SECTION 15: COLOK 50:50 -->
+            <section id="colok-50-50" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH COLOK 50:50</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-50-50-content', 'Data Colok 50:50')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-50-50-content" class="data-content">
+<strong>1. ALL PASARAN (KECUALI HOKIDRAW TOTO MACAU 4D , KINGKONG 4D , JAKARTA & TOTO MALI)</strong>
+HADIAH COLOK 50:50 : kei -3%
+
+
+<strong>2. PASARAN HOKIDRAW</strong> 
+HADIAH COLOK 50:50  :  kei -2.2%
+
+
+<strong>3. PASARAN TOTO MACAU 4D , KINGKONG 4D , JAKARTA & TOTO MALI</strong>
+HADIAH COLOK 50:50  kei -5%
+                </div>
+            </section>
+
+            <!-- SECTION 16: COLOK DASAR -->
+            <section id="colok-dasar" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH DASAR</h2>
+                    <button class="copy-all-btn" onclick="copyData('colok-dasar-content', 'Data Hadiah Dasar')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="colok-dasar-content" class="data-content">
+<strong>HADIAH DASAR ALL PASARAN</strong> : 
+
+Dasar :
+Ganjil / Besar = KEI -25%
+Genap / Kecil = KEI 10%
+                </div>
+            </section>
+
+            <!-- SECTION 17: KEMBANG KEMPIS -->
+            <section id="kembang" class="data-section">
+                <div class="section-header">
+                    <h2 class="section-title">HADIAH KEMBANG KEMPIS</h2>
+                    <button class="copy-all-btn" onclick="copyData('kembang-content', 'Data Kembang Kempis')">
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        SALIN
+                    </button>
+                </div>
+                <div id="kembang-content" class="data-content">
+<strong>1. HADIAH KEMBANG KEMPIS ALL PASARAN (Kecuali TOTO MACAU , KING KONG 4D , JAKARTA POOLS , HOKI DRAW DAN TOTOMALI)</strong>  
+KEMBANG KEMPIS KEMBAR  :  kei -3% 
+
+<strong>2. HADIAH KEMBANG KEMPIS PASARAN TOTO MACAU, JAKARTA POOLS , HOKI DRAW DAN TOTOMALI</strong>
+KEMBANG KEMPIS KEMBAR  :  kei -2.2% 
+
+<strong>3. HADIAH KEMBANG KEMPIS PASARAN KING KONG 4D</strong>
+KEMBANG KEMPIS :  kei -2.2%
+KEMBAR :  kei 50%
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast">Data Berhasil Disalin!</div>
+
+    <script>
+        const sections = document.querySelectorAll('.data-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // --- FILTER FUNCTION ---
+        function filterData(selectedValue) {
+            // Scroll ke atas sedikit sebelum filter
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+                if (selectedValue === 'all') {
+                    // Tampilkan SEMUA section
+                    sections.forEach(sec => {
+                        sec.classList.remove('hidden');
+                        sec.style.display = 'block';
+                    });
+                } else {
+                    // Sembunyikan SEMUA section dulu
+                    sections.forEach(sec => {
+                        sec.classList.add('hidden');
+                        sec.style.display = 'none';
+                    });
+
+                    // Tampilkan HANYA section yang dipilih
+                    const target = document.getElementById(selectedValue);
+                    if (target) {
+                        target.classList.remove('hidden');
+                        target.style.display = 'block';
+                        
+                        // Scroll otomatis ke section tersebut
+                        const headerOffset = 80; 
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                }
+                updateActiveLink(selectedValue);
+            }, 300); 
+        }
+
+        // --- UPDATE ACTIVE LINK ---
+        function updateActiveLink(value) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('onclick').includes(`'${value}'`)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // --- COPY FUNCTIONALITY ---
+        function copyData(elementId, sectionName) {
+            const contentElement = document.getElementById(elementId);
+            
+            if (contentElement) {
+                const textToCopy = contentElement.innerText;
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast(`Data Berhasil Disalin!`);
+                }).catch(err => {
+                    console.error('Gagal menyalin:', err);
+                    showToast('Gagal Menyalin Data');
+                });
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
