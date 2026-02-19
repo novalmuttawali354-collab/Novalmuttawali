@@ -42,9 +42,10 @@
             min-height: 100vh;
             font-weight: 400; 
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* HEADER SECTION (Tanpa Dropdown) */
+        /* HEADER SECTION */
         header {
             position: relative; 
             background: rgba(255, 255, 255, 0.1);
@@ -56,6 +57,7 @@
             border-radius: 0 0 40px 40px; 
             margin-bottom: 30px; 
             box-shadow: none; 
+            z-index: 10;
         }
 
         h1 {
@@ -78,9 +80,9 @@
             position: relative;
         }
 
-        /* --- SIDEBAR MENU (Penuh Semua Data) --- */
+        /* --- SIDEBAR MENU --- */
         .sidebar {
-            width: 280px; /* Sedikit lebih lebar untuk menampung semua menu */
+            width: 280px; 
             flex-shrink: 0; 
             position: sticky;
             top: 20px;
@@ -95,22 +97,14 @@
             border-radius: 24px;
             padding: 25px;
             box-shadow: var(--glass-shadow);
-            
-            /* Scrollbar styling agar rapi */
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.3) transparent;
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 20px;
-        }
+        /* Scrollbar styling */
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.3); border-radius: 20px; }
 
         .sidebar-title {
             font-family: 'Poppins', sans-serif;
@@ -123,12 +117,10 @@
             font-weight: 600;
             margin-top: 20px;
         }
-        .sidebar-title:first-child {
-            margin-top: 0;
-        }
+        .sidebar-title:first-child { margin-top: 0; }
 
         .nav-link {
-            display: block; /* Block agar klik area lebar */
+            display: block; 
             padding: 12px 15px;
             margin-bottom: 6px;
             color: rgba(255, 255, 255, 0.9);
@@ -139,6 +131,7 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
             border: 1px solid transparent;
+            cursor: pointer;
         }
 
         .nav-link:hover {
@@ -154,6 +147,7 @@
             font-weight: 700;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-color: #fff;
+            transform: translateX(5px); 
         }
 
         .sidebar-divider {
@@ -179,6 +173,7 @@
             box-shadow: var(--glass-shadow);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             overflow: hidden;
+            opacity: 1;
         }
 
         .data-section:hover {
@@ -187,10 +182,25 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Class Hidden */
         .data-section.hidden {
             display: none;
-            opacity: 0;
-            transform: scale(0.95);
+        }
+        
+        /* Animation Keyframes for Smooth Entry (Clean Fade In) */
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-enter {
+            animation: fadeInSlide 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
         /* SECTION HEADER */
@@ -295,30 +305,24 @@
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 900px) {
             .layout-container {
-                flex-direction: column; /* Stack vertical pada tablet/mobile */
+                flex-direction: column; 
                 gap: 20px;
             }
 
-            /* Sidebar menjadi menu biasa di atas pada mobile */
             .sidebar {
                 width: 100%;
-                position: static; /* Tidak lagi sticky di kiri */
+                position: static; 
                 max-height: none;
-                overflow-x: auto; /* Horizontal scroll jika perlu, tapi kita biarkan vertical list */
-                display: block; /* Tampilkan sidebar */
-                padding: 15px;
-            }
-            
-            /* Tampilkan sidebar sebagai Grid 2 kolom agar tidak terlalu panjang di HP */
-            .sidebar {
+                overflow-x: auto;
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
                 align-content: start;
+                padding: 15px;
             }
             
             .sidebar-title {
-                grid-column: span 2; /* Judul full lebar */
+                grid-column: span 2; 
                 margin-top: 10px;
                 padding-left: 0;
                 text-align: center;
@@ -326,20 +330,12 @@
         }
 
         @media (max-width: 600px) {
-            header {
-                padding: 20px 15px; 
-                border-radius: 0 0 30px 30px;
-                margin-bottom: 20px;
-            }
+            header { padding: 20px 15px; border-radius: 0 0 30px 30px; margin-bottom: 20px; }
             h1 { font-size: 1.5rem; }
             .data-content { padding: 20px; font-size: 0.9rem; }
             .section-header { flex-direction: column; align-items: flex-start; }
             .copy-all-btn { width: 100%; justify-content: center; margin-top: 10px; }
-            
-            /* Grid Sidebar jadi 1 kolom di HP kecil agar rapi */
-            .sidebar {
-                grid-template-columns: 1fr;
-            }
+            .sidebar { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -351,7 +347,7 @@
 
     <div class="layout-container">
         
-        <!-- SIDEBAR MENU (ISI SEMUA DATA) -->
+        <!-- SIDEBAR MENU -->
         <aside class="sidebar">
             <div class="sidebar-title">Menu Utama</div>
             <a href="#" onclick="filterData('full'); return false;" class="nav-link" id="link-full">Hadiah Bet Full</a>
@@ -393,7 +389,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH BET FULL</h2>
                     <button class="copy-all-btn" onclick="copyData('full-content', 'Data Hadiah Full')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -426,7 +422,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH ALL 4D</h2>
                     <button class="copy-all-btn" onclick="copyData('4d-content', 'Data Hadiah 4D')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -490,7 +486,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH DISCOUNT</h2>
                     <button class="copy-all-btn" onclick="copyData('discount-content', 'Data Hadiah Discount')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -562,7 +558,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH ALL 3D</h2>
                     <button class="copy-all-btn" onclick="copyData('3d-content', 'Data Hadiah 3D')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -622,7 +618,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH ALL 2D</h2>
                     <button class="copy-all-btn" onclick="copyData('2d-content', 'Data Hadiah 2D')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -686,7 +682,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH PRIZE 123</h2>
                     <button class="copy-all-btn" onclick="copyData('prize123-content', 'Data Prize 123')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -728,7 +724,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH BOLAK BALIK / BB</h2>
                     <button class="copy-all-btn" onclick="copyData('bb-content', 'Data Bolak Balik')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -768,7 +764,7 @@
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK BEBAS</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-bebas-content', 'Data Colok Bebas')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -798,7 +794,7 @@ x6.4 ( 4 Digit )
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK JITU</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-jitu-content', 'Data Colok Jitu')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -819,7 +815,7 @@ Colok Jitu : x8.3
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK SHIO</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-shio-content', 'Data Colok Shio')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -837,7 +833,7 @@ Shio : x10
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK MACAU SHIO</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-macau-shio-content', 'Data Colok Macau Shio')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -852,7 +848,7 @@ MACAU SHIO  : x110
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK BEBAS 2D</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-bebas-2d-content', 'Data Colok Bebas 2D')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -879,7 +875,7 @@ x21 ( 4 Digit )
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK NAGA</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-naga-content', 'Data Colok Naga')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -903,7 +899,7 @@ x41 Co. Naga ( 4 Digit )
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK KOMBINASI</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-kombinasi-content', 'Data Colok Kombinasi')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -924,7 +920,7 @@ Kombinasi : x2.8
                 <div class="section-header">
                     <h2 class="section-title">HADIAH COLOK 50:50</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-50-50-content', 'Data Colok 50:50')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -947,7 +943,7 @@ HADIAH COLOK 50:50  kei -5%
                 <div class="section-header">
                     <h2 class="section-title">HADIAH DASAR</h2>
                     <button class="copy-all-btn" onclick="copyData('colok-dasar-content', 'Data Hadiah Dasar')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -965,7 +961,7 @@ Genap / Kecil = KEI 10%
                 <div class="section-header">
                     <h2 class="section-title">HADIAH KEMBANG KEMPIS</h2>
                     <button class="copy-all-btn" onclick="copyData('kembang-content', 'Data Kembang Kempis')">
-                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6:5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
+                        <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 =22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/></svg>
                         SALIN
                     </button>
                 </div>
@@ -992,44 +988,45 @@ KEMBAR :  kei 50%
         const sections = document.querySelectorAll('.data-section');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        // --- FILTER FUNCTION ---
+        // --- FILTER FUNCTION (ONE AT A TIME) ---
         function filterData(selectedValue) {
-            // Scroll ke atas sedikit sebelum filter
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Update Link Active State
+            updateActiveLink(selectedValue);
 
+            // Jika "Tampilkan Semua"
+            if (selectedValue === 'all') {
+                sections.forEach((sec, index) => {
+                    sec.classList.remove('hidden');
+                    sec.classList.add('animate-enter'); // Tambahkan animasi masuk
+                    // Hapus class animasi setelah selesai agar tidak terus menerus
+                    setTimeout(() => { sec.classList.remove('animate-enter'); }, 600);
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Jika Menu Spesifik -> Tampilkan HANYA SATU ITU
+            const target = document.getElementById(selectedValue);
+            if (!target) return;
+
+            // 1. Sembunyikan semua section terlebih dahulu
+            sections.forEach(sec => {
+                sec.classList.add('hidden');
+                sec.classList.remove('animate-enter'); // Reset animasi
+            });
+
+            // 2. Tampilkan target
+            target.classList.remove('hidden');
+            
+            // 3. Tambahkan animasi masuk (fade in)
+            target.classList.add('animate-enter');
+            setTimeout(() => { target.classList.remove('animate-enter'); }, 600);
+
+            // 4. Scroll smooth ke posisi elemen (pastikan elemen tampil)
+            // Beri jeda sedikit agar display block ter-render dulu sebelum scroll
             setTimeout(() => {
-                if (selectedValue === 'all') {
-                    // Tampilkan SEMUA section
-                    sections.forEach(sec => {
-                        sec.classList.remove('hidden');
-                        sec.style.display = 'block';
-                    });
-                } else {
-                    // Sembunyikan SEMUA section dulu
-                    sections.forEach(sec => {
-                        sec.classList.add('hidden');
-                        sec.style.display = 'none';
-                    });
-
-                    // Tampilkan HANYA section yang dipilih
-                    const target = document.getElementById(selectedValue);
-                    if (target) {
-                        target.classList.remove('hidden');
-                        target.style.display = 'block';
-                        
-                        // Scroll otomatis ke section tersebut
-                        const headerOffset = 80; 
-                        const elementPosition = target.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth"
-                        });
-                    }
-                }
-                updateActiveLink(selectedValue);
-            }, 300); 
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
         }
 
         // --- UPDATE ACTIVE LINK ---
@@ -1070,4 +1067,3 @@ KEMBAR :  kei 50%
     </script>
 </body>
 </html>
-
