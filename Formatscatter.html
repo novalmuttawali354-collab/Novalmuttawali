@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Template - Modern Dark</title>
+    <style>
+        /* --- MODERN DARK VARIABLES --- */
+        :root {
+            /* Palette: Deep Slate & Soft Blue */
+            --bg-body: #0f172a;       /* Slate 900 */
+            --bg-card: #1e293b;       /* Slate 800 */
+            --bg-input: #0f172a;      /* Slate 900 */
+            
+            --border: #334155;        /* Slate 700 */
+            --border-focus: #38bdf8;  /* Sky 400 */
+            
+            --text-main: #f1f5f9;     /* Slate 100 */
+            --text-muted: #94a3b8;    /* Slate 400 */
+            
+            --primary: #38bdf8;       /* Sky Blue */
+            --primary-hover: #0ea5e9; /* Sky 500 */
+            
+            --accent-purple: #a855f7; /* Purple */
+            --success: #10b981;       /* Emerald */
+            --danger: #ef4444;        /* Red */
+
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.5;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 1100px) {
+            .container { grid-template-columns: 400px 1fr; }
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* --- CARDS --- */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- FORM ELEMENTS --- */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .input-group { margin-bottom: 20px; }
+
+        input[type="text"], textarea {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'Courier New', Courier, monospace; /* Monospace for data feel */
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        #userIdInput {
+            font-weight: 600;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        textarea {
+            height: 300px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .helper-text {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+            padding: 8px 16px;
+            width: auto;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-success:hover {
+            background-color: #059669; /* Emerald 600 */
+            transform: translateY(-1px);
+        }
+
+        /* --- TABLE --- */
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--bg-card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background-color: rgba(255,255,255,0.03);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        
+        /* Hover row effect */
+        tr:hover td {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .col-id { 
+            width: 15%; 
+            font-weight: 700; 
+            color: var(--accent-purple); 
+            font-size: 1rem; 
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .col-link { width: 28.33%; min-width: 200px; }
+
+        /* Image Styles */
+        .img-box {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .img-box:hover {
+            border-color: var(--success);
+        }
+
+        .img-box img {
+            max-width: 100%;
+            max-height: 140px;
+            object-fit: contain;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Status Badges (Softer) */
+        .badge {
+            position: absolute;
+            top: 6px; right: 6px;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: bold;
+            color: #000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .badge-valid { background: var(--success); }
+        .badge-invalid { background: var(--danger); }
+
+        .url-link {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background-color: rgba(255,255,255,0.05);
+            padding: 6px 10px;
+            border-radius: 4px;
+            word-break: break-all;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .url-link:hover {
+            color: var(--primary);
+            background-color: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.3);
+            text-decoration: underline;
+        }
+
+        .empty-placeholder {
+            color: #475569; /* Slate 600 */
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        /* --- TOAST --- */
+        .toast {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--success);
+            color: var(--text-main);
+            padding: 16px 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            border-radius: 8px;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        .icon { width: 18px; height: 18px; fill: currentColor; }
+
+        /* Scrollbar Styling (Modern) */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Auto Template Formatter</h1>
+        <p class="subtitle">Modern Tool • Auto Arrange • Max 3 Rows</p>
+    </header>
+
+    <div class="container">
+        <!-- INPUT PANEL -->
+        <div class="card">
+            <div class="card-header">
+                <span>Data Input</span>
+            </div>
+
+            <!-- INPUT 1: USER ID -->
+            <div class="input-group">
+                <label for="userIdInput">User ID (Kolom A)</label>
+                <input type="text" id="userIdInput" placeholder="Contoh: DONKOLLAGI" autocomplete="off">
+                <div class="helper-text">ID ini akan berulang untuk setiap baris.</div>
+            </div>
+
+            <!-- INPUT KECIL: IMAGE PREFIX -->
+            <div class="input-group">
+                <label for="imagePrefix">Image Prefix (Opsional)</label>
+                <input type="text" id="imagePrefix" placeholder="https://cdn.example.com/path/" autocomplete="off">
+                <div class="helper-text">Sertakan jika input gambar hanya nama file.</div>
+            </div>
+
+            <div class="input-group">
+                <label for="rawInput">List Gambar (Kolom B - D)</label>
+                <textarea id="rawInput" placeholder="Paste list gambar di sini...&#10;Support auto arrange (3 gambar per baris)."></textarea>
+                <div class="helper-text">Sistem otomatis membuat baris baru setiap 3 gambar.</div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="clearAll()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                Reset Semua
+            </button>
+        </div>
+
+        <!-- OUTPUT PANEL -->
+        <div class="card">
+            <div class="card-header">
+                <span>Hasil Output</span>
+                <button class="btn btn-success" onclick="copyToClipboard()">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    Copy Data
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th class="col-id">Kolom A<br><small>(ID)</small></th>
+                            <th class="col-link">Kolom B<br><small>(Img 1)</small></th>
+                            <th class="col-link">Kolom C<br><small>(Img 2)</small></th>
+                            <th class="col-link">Kolom D<br><small>(Img 3)</small></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #475569; padding: 50px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
+                                Menunggu data input...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">Data berhasil disalin!</div>
+
+    <script>
+        let parsedData = [];
+        const MAX_ROWS = 3;
+
+        function processData() {
+            const userId = document.getElementById('userIdInput').value.trim();
+            const imagePrefix = document.getElementById('imagePrefix').value.trim();
+            const rawText = document.getElementById('rawInput').value;
+            const tbody = document.querySelector('#resultTable tbody');
+            
+            parsedData = [];
+            tbody.innerHTML = '';
+
+            if (!userId && !rawText.trim()) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #475569; padding: 50px;">
+                            <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
+                            Menunggu data input...
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            // 1. Extract Images
+            const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp'];
+            const images = lines.filter(line => {
+                const lowerLine = line.toLowerCase();
+                return imageExtensions.some(ext => lowerLine.endsWith(ext));
+            });
+
+            // 2. Loop Multi-Row (Max 3 rows)
+            for (let i = 0; i < images.length; i += 3) {
+                
+                // Limit rows
+                const currentRowIndex = Math.floor(i / 3);
+                if (currentRowIndex >= MAX_ROWS) break;
+
+                const img1 = images[i] || '';
+                const img2 = images[i+1] || '';
+                const img3 = images[i+2] || '';
+
+                // 3. Build URLs
+                const buildValidUrl = (detectedText) => {
+                    if (!detectedText) return '';
+                    if (detectedText.startsWith('http://') || detectedText.startsWith('https://')) {
+                        return detectedText;
+                    }
+                    if (!imagePrefix) return detectedText;
+
+                    const cleanBase = imagePrefix.replace(/\/+$/, ''); 
+                    const cleanFile = detectedText.replace(/^\/+/, '');
+                    return `${cleanBase}/${cleanFile}`;
+                };
+
+                const urlB = buildValidUrl(img1);
+                const urlC = buildValidUrl(img2);
+                const urlD = buildValidUrl(img3);
+
+                const displayId = userId || "-";
+
+                // Save for copy
+                parsedData.push({ A: displayId, B: urlB, C: urlC, D: urlD });
+
+                // 4. Render
+                const row = document.createElement('tr');
+                
+                const createCellHtml = (url) => {
+                    if (!url) return `<div class="img-box"><span class="empty-placeholder">Kosong</span></div>`;
+
+                    return `
+                        <div class="img-box">
+                            <img src="${url}" 
+                                 alt="Preview" 
+                                 onclick="window.open('${url}', '_blank')"
+                                 onload="this.parentElement.innerHTML += '<span class=\\'badge badge-valid\\'>✓</span>'"
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'badge badge-invalid\\'>✕</span><span class=empty-placeholder>Link Error</span>'">
+                        </div>
+                        <a href="${url}" target="_blank" class="url-link">${url}</a>
+                    `;
+                };
+
+                row.innerHTML = `
+                    <td class="col-id">${displayId}</td>
+                    <td class="col-link">${createCellHtml(urlB)}</td>
+                    <td class="col-link">${createCellHtml(urlC)}</td>
+                    <td class="col-link">${createCellHtml(urlD)}</td>
+                `;
+
+                tbody.appendChild(row);
+            }
+        }
+
+        function copyToClipboard() {
+            if (parsedData.length === 0) {
+                showToast("Tidak ada data untuk disalin.");
+                return;
+            }
+
+            let textToCopy = "";
+            parsedData.forEach(item => {
+                textToCopy += `${item.A}\t${item.B}\t${item.C}\t${item.D}\n`;
+            });
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast(`Berhasil menyalin ${parsedData.length} baris data!`);
+            }).catch(err => {
+                showToast("Gagal menyalin data.");
+            });
+        }
+
+        function clearAll() {
+            document.getElementById('userIdInput').value = '';
+            document.getElementById('imagePrefix').value = '';
+            document.getElementById('rawInput').value = '';
+            processData();
+            showToast("Form berhasil direset.");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('userIdInput').addEventListener('input', processData);
+        document.getElementById('imagePrefix').addEventListener('input', processData);
+        
+        const rawInput = document.getElementById('rawInput');
+        rawInput.addEventListener('input', function() {
+            processData();
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+    </script>
+</body>
+</html>
