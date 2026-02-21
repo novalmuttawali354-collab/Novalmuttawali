@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Template - Modern Dark + Ekstrak Prefix & Angka</title>
+    <title>Auto Template - Modern Dark + Ekstrak Prefix (Tanpa Kolom G)</title>
     <style>
         /* --- MODERN DARK VARIABLES --- */
         :root {
@@ -39,7 +39,7 @@
 
         .container {
             width: 100%;
-            max-width: 1600px;
+            max-width: 1500px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 30px;
@@ -190,7 +190,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1300px; /* Lebih lebar untuk 7 kolom */
+            min-width: 1100px; /* Sesuai 6 kolom */
         }
 
         th {
@@ -220,7 +220,7 @@
         }
 
         .col-id { 
-            width: 8%; 
+            width: 10%; 
             font-weight: 700; 
             color: var(--accent-purple); 
             font-size: 1rem; 
@@ -229,17 +229,16 @@
         }
 
         .col-link { 
-            width: 18%; 
+            width: 20%; 
             min-width: 180px; 
         }
 
-        .col-e, .col-f, .col-g {
-            width: 10%;
+        .col-e, .col-f {
+            width: 15%;
         }
 
         .col-e { color: var(--primary); }
         .col-f { color: var(--success); }
-        .col-g { color: var(--accent-purple); }
 
         .img-box {
             background-color: var(--bg-input);
@@ -348,7 +347,7 @@
 
     <header>
         <h1>Auto Template Formatter</h1>
-        <p class="subtitle">Modern Tool • Ekstrak Angka/Huruf dari Prefix • Angka dari Gambar C</p>
+        <p class="subtitle">Modern Tool • Ekstrak Angka/Huruf dari Prefix (Kolom E & F)</p>
     </header>
 
     <div class="container">
@@ -385,10 +384,10 @@
         <!-- OUTPUT PANEL -->
         <div class="card">
             <div class="card-header">
-                <span>Hasil Output (7 Kolom)</span>
+                <span>Hasil Output (6 Kolom)</span>
                 <button class="btn btn-success" onclick="copyToClipboard()">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    Copy Data (7 Kolom)
+                    Copy Data (6 Kolom)
                 </button>
             </div>
 
@@ -402,12 +401,11 @@
                             <th class="col-link">Kolom D<br><small>(Img 3)</small></th>
                             <th class="col-e">Kolom E<br><small>(Angka Prefix)</small></th>
                             <th class="col-f">Kolom F<br><small>(Huruf Prefix)</small></th>
-                            <th class="col-g">Kolom G<br><small>(Angka dari C)</small></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="7" style="text-align: center; color: #475569; padding: 50px;">
+                            <td colspan="6" style="text-align: center; color: #475569; padding: 50px;">
                                 <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
                                 Menunggu data input...
                             </td>
@@ -438,13 +436,6 @@
             return matches ? matches.join(' ') : '';
         }
 
-        // Ekstrak angka dari URL (untuk kolom G)
-        function extractNumbersFromUrl(url) {
-            if (!url) return '';
-            const matches = url.match(/\d+/g);
-            return matches ? matches.join(' ') : '';
-        }
-
         function processData() {
             const userId = document.getElementById('userIdInput').value.trim();
             const imagePrefix = document.getElementById('imagePrefix').value.trim();
@@ -457,7 +448,7 @@
             if (!userId && !rawText.trim()) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #475569; padding: 50px;">
+                        <td colspan="6" style="text-align: center; color: #475569; padding: 50px;">
                             <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
                             Menunggu data input...
                         </td>
@@ -503,20 +494,16 @@
                 const urlC = buildValidUrl(img2);
                 const urlD = buildValidUrl(img3);
 
-                // Ekstrak angka dari URL C untuk kolom G
-                const angkaDiC = extractNumbersFromUrl(urlC);
-
                 const displayId = userId || "-";
 
-                // Simpan data untuk copy (7 kolom)
+                // Simpan data untuk copy (6 kolom: A, B, C, D, E, F)
                 parsedData.push({ 
                     A: displayId, 
                     B: urlB, 
                     C: urlC, 
                     D: urlD, 
                     E: angkaPrefix, 
-                    F: hurufPrefix, 
-                    G: angkaDiC 
+                    F: hurufPrefix
                 });
 
                 // 4. Render
@@ -537,10 +524,9 @@
                     `;
                 };
 
-                // Tampilan kolom E, F, G
+                // Tampilan kolom E dan F
                 const angkaPrefixDisplay = angkaPrefix ? `<span class="extracted-number">${angkaPrefix}</span>` : '<span class="empty-placeholder">-</span>';
                 const hurufPrefixDisplay = hurufPrefix ? `<span class="extracted-letter">${hurufPrefix}</span>` : '<span class="empty-placeholder">-</span>';
-                const angkaCDisplay = angkaDiC ? `<span class="extracted-number">${angkaDiC}</span>` : '<span class="empty-placeholder">-</span>';
 
                 row.innerHTML = `
                     <td class="col-id">${displayId}</td>
@@ -549,7 +535,6 @@
                     <td class="col-link">${createCellHtml(urlD)}</td>
                     <td class="col-e">${angkaPrefixDisplay}</td>
                     <td class="col-f">${hurufPrefixDisplay}</td>
-                    <td class="col-g">${angkaCDisplay}</td>
                 `;
 
                 tbody.appendChild(row);
@@ -564,12 +549,12 @@
 
             let textToCopy = "";
             parsedData.forEach(item => {
-                // Tab-separated, 7 kolom
-                textToCopy += `${item.A}\t${item.B}\t${item.C}\t${item.D}\t${item.E}\t${item.F}\t${item.G}\n`;
+                // Tab-separated, 6 kolom
+                textToCopy += `${item.A}\t${item.B}\t${item.C}\t${item.D}\t${item.E}\t${item.F}\n`;
             });
 
             navigator.clipboard.writeText(textToCopy).then(() => {
-                showToast(`Berhasil menyalin ${parsedData.length} baris data (7 kolom)!`);
+                showToast(`Berhasil menyalin ${parsedData.length} baris data (6 kolom)!`);
             }).catch(err => {
                 showToast("Gagal menyalin data.");
             });
