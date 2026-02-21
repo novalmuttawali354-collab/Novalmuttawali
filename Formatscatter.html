@@ -3,33 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Template - Modern Dark</title>
+    <title>Auto Template - Modern Dark + Ekstrak Prefix & Angka</title>
     <style>
         /* --- MODERN DARK VARIABLES --- */
         :root {
-            /* Palette: Deep Slate & Soft Blue */
-            --bg-body: #0f172a;       /* Slate 900 */
-            --bg-card: #1e293b;       /* Slate 800 */
-            --bg-input: #0f172a;      /* Slate 900 */
-            
-            --border: #334155;        /* Slate 700 */
-            --border-focus: #38bdf8;  /* Sky 400 */
-            
-            --text-main: #f1f5f9;     /* Slate 100 */
-            --text-muted: #94a3b8;    /* Slate 400 */
-            
-            --primary: #38bdf8;       /* Sky Blue */
-            --primary-hover: #0ea5e9; /* Sky 500 */
-            
-            --accent-purple: #a855f7; /* Purple */
-            --success: #10b981;       /* Emerald */
-            --danger: #ef4444;        /* Red */
-
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #0f172a;
+            --border: #334155;
+            --border-focus: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --accent-purple: #a855f7;
+            --success: #10b981;
+            --danger: #ef4444;
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
         }
 
-        /* --- RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -44,10 +37,9 @@
             line-height: 1.5;
         }
 
-        /* --- LAYOUT --- */
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1600px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 30px;
@@ -57,7 +49,6 @@
             .container { grid-template-columns: 400px 1fr; }
         }
 
-        /* --- HEADER --- */
         header {
             text-align: center;
             margin-bottom: 50px;
@@ -77,7 +68,6 @@
             font-weight: 400;
         }
 
-        /* --- CARDS --- */
         .card {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
@@ -102,7 +92,6 @@
             align-items: center;
         }
 
-        /* --- FORM ELEMENTS --- */
         label {
             display: block;
             margin-bottom: 8px;
@@ -123,7 +112,7 @@
             border-radius: 8px;
             outline: none;
             transition: all 0.2s ease;
-            font-family: 'Courier New', Courier, monospace; /* Monospace for data feel */
+            font-family: 'Courier New', Courier, monospace;
         }
 
         input[type="text"]:focus, textarea:focus {
@@ -150,7 +139,6 @@
             margin-top: 6px;
         }
 
-        /* --- BUTTONS --- */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -188,11 +176,10 @@
         }
 
         .btn-success:hover {
-            background-color: #059669; /* Emerald 600 */
+            background-color: #059669;
             transform: translateY(-1px);
         }
 
-        /* --- TABLE --- */
         .table-wrapper {
             overflow-x: auto;
             border: 1px solid var(--border);
@@ -203,7 +190,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 1300px; /* Lebih lebar untuk 7 kolom */
         }
 
         th {
@@ -228,13 +215,12 @@
 
         tr:last-child td { border-bottom: none; }
         
-        /* Hover row effect */
         tr:hover td {
             background-color: rgba(255,255,255,0.02);
         }
 
         .col-id { 
-            width: 15%; 
+            width: 8%; 
             font-weight: 700; 
             color: var(--accent-purple); 
             font-size: 1rem; 
@@ -242,9 +228,19 @@
             text-transform: uppercase;
         }
 
-        .col-link { width: 28.33%; min-width: 200px; }
+        .col-link { 
+            width: 18%; 
+            min-width: 180px; 
+        }
 
-        /* Image Styles */
+        .col-e, .col-f, .col-g {
+            width: 10%;
+        }
+
+        .col-e { color: var(--primary); }
+        .col-f { color: var(--success); }
+        .col-g { color: var(--accent-purple); }
+
         .img-box {
             background-color: var(--bg-input);
             border: 1px solid var(--border);
@@ -271,7 +267,6 @@
             border-radius: 4px;
         }
 
-        /* Status Badges (Softer) */
         .badge {
             position: absolute;
             top: 6px; right: 6px;
@@ -306,12 +301,22 @@
         }
 
         .empty-placeholder {
-            color: #475569; /* Slate 600 */
+            color: #475569;
             font-style: italic;
             font-size: 0.85rem;
         }
 
-        /* --- TOAST --- */
+        .extracted-number, .extracted-letter {
+            background-color: rgba(16, 185, 129, 0.1);
+            padding: 6px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .extracted-number { color: var(--primary); }
+        .extracted-letter { color: var(--success); }
+
         .toast {
             position: fixed;
             bottom: 30px; right: 30px;
@@ -333,19 +338,17 @@
 
         .icon { width: 18px; height: 18px; fill: currentColor; }
 
-        /* Scrollbar Styling (Modern) */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-body); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
     </style>
 </head>
 <body>
 
     <header>
         <h1>Auto Template Formatter</h1>
-        <p class="subtitle">Modern Tool • Auto Arrange • Max 3 Rows</p>
+        <p class="subtitle">Modern Tool • Ekstrak Angka/Huruf dari Prefix • Angka dari Gambar C</p>
     </header>
 
     <div class="container">
@@ -355,23 +358,21 @@
                 <span>Data Input</span>
             </div>
 
-            <!-- INPUT 1: USER ID -->
             <div class="input-group">
                 <label for="userIdInput">User ID (Kolom A)</label>
                 <input type="text" id="userIdInput" placeholder="Contoh: DONKOLLAGI" autocomplete="off">
                 <div class="helper-text">ID ini akan berulang untuk setiap baris.</div>
             </div>
 
-            <!-- INPUT KECIL: IMAGE PREFIX -->
             <div class="input-group">
                 <label for="imagePrefix">Image Prefix (Opsional)</label>
-                <input type="text" id="imagePrefix" placeholder="https://cdn.example.com/path/" autocomplete="off">
-                <div class="helper-text">Sertakan jika input gambar hanya nama file.</div>
+                <input type="text" id="imagePrefix" placeholder="https://cdn.example.com/path/ atau teks campuran" autocomplete="off">
+                <div class="helper-text">Angka akan masuk Kolom E, huruf ke Kolom F (koma diabaikan). Juga dipakai sebagai base URL.</div>
             </div>
 
             <div class="input-group">
                 <label for="rawInput">List Gambar (Kolom B - D)</label>
-                <textarea id="rawInput" placeholder="Paste list gambar di sini...&#10;Support auto arrange (3 gambar per baris)."></textarea>
+                <textarea id="rawInput" placeholder="Paste list gambar di sini...&#10;Auto arrange 3 gambar per baris."></textarea>
                 <div class="helper-text">Sistem otomatis membuat baris baru setiap 3 gambar.</div>
             </div>
 
@@ -384,10 +385,10 @@
         <!-- OUTPUT PANEL -->
         <div class="card">
             <div class="card-header">
-                <span>Hasil Output</span>
+                <span>Hasil Output (7 Kolom)</span>
                 <button class="btn btn-success" onclick="copyToClipboard()">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    Copy Data
+                    Copy Data (7 Kolom)
                 </button>
             </div>
 
@@ -399,11 +400,14 @@
                             <th class="col-link">Kolom B<br><small>(Img 1)</small></th>
                             <th class="col-link">Kolom C<br><small>(Img 2)</small></th>
                             <th class="col-link">Kolom D<br><small>(Img 3)</small></th>
+                            <th class="col-e">Kolom E<br><small>(Angka Prefix)</small></th>
+                            <th class="col-f">Kolom F<br><small>(Huruf Prefix)</small></th>
+                            <th class="col-g">Kolom G<br><small>(Angka dari C)</small></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4" style="text-align: center; color: #475569; padding: 50px;">
+                            <td colspan="7" style="text-align: center; color: #475569; padding: 50px;">
                                 <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
                                 Menunggu data input...
                             </td>
@@ -414,12 +418,32 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
     <div id="toast" class="toast">Data berhasil disalin!</div>
 
     <script>
         let parsedData = [];
         const MAX_ROWS = 3;
+
+        // Ekstrak angka (digit) dari string, abaikan koma
+        function extractNumbersFromString(str) {
+            if (!str) return '';
+            const matches = str.match(/\d+/g);
+            return matches ? matches.join(' ') : '';
+        }
+
+        // Ekstrak huruf (A-Z a-z) dari string, abaikan koma dan angka
+        function extractLettersFromString(str) {
+            if (!str) return '';
+            const matches = str.match(/[A-Za-z]+/g);
+            return matches ? matches.join(' ') : '';
+        }
+
+        // Ekstrak angka dari URL (untuk kolom G)
+        function extractNumbersFromUrl(url) {
+            if (!url) return '';
+            const matches = url.match(/\d+/g);
+            return matches ? matches.join(' ') : '';
+        }
 
         function processData() {
             const userId = document.getElementById('userIdInput').value.trim();
@@ -433,13 +457,17 @@
             if (!userId && !rawText.trim()) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4" style="text-align: center; color: #475569; padding: 50px;">
+                        <td colspan="7" style="text-align: center; color: #475569; padding: 50px;">
                             <div style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;">📋</div>
                             Menunggu data input...
                         </td>
                     </tr>`;
                 return;
             }
+
+            // Ekstrak angka dan huruf dari prefix (untuk kolom E dan F)
+            const angkaPrefix = extractNumbersFromString(imagePrefix);
+            const hurufPrefix = extractLettersFromString(imagePrefix);
 
             // 1. Extract Images
             const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
@@ -451,8 +479,6 @@
 
             // 2. Loop Multi-Row (Max 3 rows)
             for (let i = 0; i < images.length; i += 3) {
-                
-                // Limit rows
                 const currentRowIndex = Math.floor(i / 3);
                 if (currentRowIndex >= MAX_ROWS) break;
 
@@ -460,7 +486,7 @@
                 const img2 = images[i+1] || '';
                 const img3 = images[i+2] || '';
 
-                // 3. Build URLs
+                // 3. Build URLs (menggunakan imagePrefix sebagai base)
                 const buildValidUrl = (detectedText) => {
                     if (!detectedText) return '';
                     if (detectedText.startsWith('http://') || detectedText.startsWith('https://')) {
@@ -477,10 +503,21 @@
                 const urlC = buildValidUrl(img2);
                 const urlD = buildValidUrl(img3);
 
+                // Ekstrak angka dari URL C untuk kolom G
+                const angkaDiC = extractNumbersFromUrl(urlC);
+
                 const displayId = userId || "-";
 
-                // Save for copy
-                parsedData.push({ A: displayId, B: urlB, C: urlC, D: urlD });
+                // Simpan data untuk copy (7 kolom)
+                parsedData.push({ 
+                    A: displayId, 
+                    B: urlB, 
+                    C: urlC, 
+                    D: urlD, 
+                    E: angkaPrefix, 
+                    F: hurufPrefix, 
+                    G: angkaDiC 
+                });
 
                 // 4. Render
                 const row = document.createElement('tr');
@@ -500,11 +537,19 @@
                     `;
                 };
 
+                // Tampilan kolom E, F, G
+                const angkaPrefixDisplay = angkaPrefix ? `<span class="extracted-number">${angkaPrefix}</span>` : '<span class="empty-placeholder">-</span>';
+                const hurufPrefixDisplay = hurufPrefix ? `<span class="extracted-letter">${hurufPrefix}</span>` : '<span class="empty-placeholder">-</span>';
+                const angkaCDisplay = angkaDiC ? `<span class="extracted-number">${angkaDiC}</span>` : '<span class="empty-placeholder">-</span>';
+
                 row.innerHTML = `
                     <td class="col-id">${displayId}</td>
                     <td class="col-link">${createCellHtml(urlB)}</td>
                     <td class="col-link">${createCellHtml(urlC)}</td>
                     <td class="col-link">${createCellHtml(urlD)}</td>
+                    <td class="col-e">${angkaPrefixDisplay}</td>
+                    <td class="col-f">${hurufPrefixDisplay}</td>
+                    <td class="col-g">${angkaCDisplay}</td>
                 `;
 
                 tbody.appendChild(row);
@@ -519,11 +564,12 @@
 
             let textToCopy = "";
             parsedData.forEach(item => {
-                textToCopy += `${item.A}\t${item.B}\t${item.C}\t${item.D}\n`;
+                // Tab-separated, 7 kolom
+                textToCopy += `${item.A}\t${item.B}\t${item.C}\t${item.D}\t${item.E}\t${item.F}\t${item.G}\n`;
             });
 
             navigator.clipboard.writeText(textToCopy).then(() => {
-                showToast(`Berhasil menyalin ${parsedData.length} baris data!`);
+                showToast(`Berhasil menyalin ${parsedData.length} baris data (7 kolom)!`);
             }).catch(err => {
                 showToast("Gagal menyalin data.");
             });
@@ -544,7 +590,7 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // --- EVENT LISTENERS ---
+        // Event listeners
         document.getElementById('userIdInput').addEventListener('input', processData);
         document.getElementById('imagePrefix').addEventListener('input', processData);
         
