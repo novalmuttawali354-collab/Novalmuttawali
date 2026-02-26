@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SISTEM ABSENSI DIGITAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --secondary: #64748b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --header-bg: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+   body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      color: var(--light);
+      background-image: url('https://i.pinimg.com/736x/6c/70/4e/6c704ebf9a6b53f07507f440e2c00d4e.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: var(--header-bg);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      position: relative;
+      font-weight: 700;
+    }
+
+    .header-info {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.15);
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .stat-card i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .stat-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: var(--secondary);
+      font-weight: 500;
+    }
+
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .total-staff .value { color: var(--primary); }
+    .present .value { color: var(--success); }
+    .absent .value { color: var(--danger); }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .card h2 i {
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+      color: var(--dark);
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 14px 25px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: var(--gray);
+    }
+
+    .btn i {
+      font-size: 1.2rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+      color: var(--dark);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 100px;
+    }
+
+    .present {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .absent {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .time-format {
+      font-family: 'Inter', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      color: var(--secondary);
+    }
+
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+      transition: opacity 0.3s;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+
+    .small-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 25px;
+      border-radius: 10px;
+      color: white;
+      z-index: 1001;
+      opacity: 0;
+      transition: all 0.3s;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 90%;
+      background: var(--dark);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    .toast.success {
+      border-left: 5px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 5px solid var(--danger);
+    }
+
+    .toast.warning {
+      border-left: 5px solid var(--warning);
+    }
+
+    .toast.info {
+      border-left: 5px solid var(--primary);
+    }
+
+    .toast i {
+      font-size: 1.2rem;
+    }
+
+    .highlight-change {
+      animation: highlight-fade 2s ease-out;
+    }
+
+    @keyframes highlight-fade {
+      0% { background-color: rgba(16, 185, 129, 0.2); }
+      100% { background-color: transparent; }
+    }
+
+    .filter-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid var(--gray);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .already-absent {
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .already-absent td {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 20px;
+      }
+      th, td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+      }
+      .mobile-hidden {
+        display: none;
+      }
+      .header-info {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .filter-options {
+        flex-direction: column;
+      }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-pop {
+      animation: pop 0.5s ease-out;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+
+    .last-updated {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .reset-info {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--warning);
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reset-info i {
+      color: var(--warning);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1><i class="fas fa-fingerprint"></i> SISTEM ABSENSI DIGITAL</h1>
+      <p>Catat kehadiran dengan mudah dan efisien</p>
+      <div class="header-info">
+        <span id="currentDate"><i class="far fa-calendar-alt"></i> Loading...</span>
+        <span id="currentTime"><i class="far fa-clock"></i> Loading...</span>
+      </div>
+    </header>
+
+    <div class="dashboard">
+      <div class="stat-card total-staff">
+        <i class="fas fa-users" style="color: var(--primary)"></i>
+        <h3>Total Staff</h3>
+        <div class="value" id="totalStaff">0</div>
+      </div>
+      <div class="stat-card present">
+        <i class="fas fa-user-check" style="color: var(--success)"></i>
+        <h3>Sudah Absen</h3>
+        <div class="value" id="presentCount">0</div>
+      </div>
+      <div class="stat-card absent">
+        <i class="fas fa-user-clock" style="color: var(--danger)"></i>
+        <h3>Belum Absen</h3>
+        <div class="value" id="absentCount">0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-edit"></i> Form Absensi</h2>
+      <div class="form-group">
+        <label for="staffSelect"><i class="fas fa-user-tag"></i> Pilih Nama Anda</label>
+        <select id="staffSelect" class="form-control">
+          <option value="">Memuat data...</option>
+        </select>
+      </div>
+      <button class="btn" id="submitBtn">
+        <i class="fas fa-paper-plane"></i> KIRIM ABSENSI
+      </button>
+      <div class="reset-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Absen hanya dapat dilakukan sekali per hari. Sistem akan reset setiap hari pukul 00:00.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-list-ol"></i> Rekap Absensi Hari Ini</h2>
+      
+      <div class="form-group">
+        <label for="staffSearch"><i class="fas fa-search"></i> Cari Data Staff</label>
+        <input type="text" id="staffSearch" class="form-control" placeholder="Ketik nama atau jabatan...">
+      </div>
+      
+      <div class="filter-options">
+        <button class="filter-btn active" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="present">Sudah Absen</button>
+        <button class="filter-btn" data-filter="absent">Belum Absen</button>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="attendanceTable">
+          <thead>
+            <tr>
+              <th class="mobile-hidden">ID</th>
+              <th>Nama</th>
+              <th class="mobile-hidden">Jabatan</th>
+              <th>Status</th>
+              <th>Waktu Absen</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceBody">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 20px;">
+                <div class="small-spinner"></div> Memuat data...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="last-updated" id="lastUpdated"></div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Data staff sesuai dengan yang diberikan
+    const staffDataRaw = [
+      { nama: "SAMUEL KRISTANTO", jabatan: "LEADER" },
+      { nama: "WIDJAYA", jabatan: "CS" },
+      { nama: "DAVID", jabatan: "CS" },
+      { nama: "FALLEN HARDINANSAH TAJU", jabatan: "CS" },
+      { nama: "CHARLIE", jabatan: "CS" },
+      { nama: "HARIANTO", jabatan: "CS" },
+      { nama: "RINAL ABDILLAH NASUTION", jabatan: "CS" },
+      { nama: "ERI HARIANTO", jabatan: "CS" },
+      { nama: "MAHENDRAN", jabatan: "CS" },
+      { nama: "ANDHIKA DWI PUTRA", jabatan: "CS" },
+      { nama: "TOMMY HASIM", jabatan: "CS" },
+      { nama: "EGI SETIAWAN", jabatan: "CS" },
+      { nama: "RANJIT", jabatan: "CS" },
+      { nama: "WILLY PERAYUDA", jabatan: "CS" },
+      { nama: "ANDI", jabatan: "CS" },
+      { nama: "ALFINO MUKTI", jabatan: "CS" },
+      { nama: "AKAS FARMA", jabatan: "CS" },
+      { nama: "ARI ROMANDUS FERNAND", jabatan: "CS" },
+      { nama: "PARIS AMRULLOH", jabatan: "CS" },
+      { nama: "SAMSUL MAARIF", jabatan: "CS" },
+      { nama: "SUHAN RAZ", jabatan: "CS" },
+      { nama: "RAHMADI SORMIN", jabatan: "CS" },
+      { nama: "NOVAL MUTTAWALI HAKIM", jabatan: "CS" },
+      { nama: "JONROMAN PURBA", jabatan: "TR CS" },
+      { nama: "PUTRA ANUGRAH RIZKI", jabatan: "TR CS" },
+      { nama: "WILIAM", jabatan: "KAPTEN" },
+      { nama: "FIQAL KANA", jabatan: "KAPTEN" },
+      { nama: "MARJOKI SANG", jabatan: "KAPTEN" },
+      { nama: "DANIEL", jabatan: "KAPTEN" },
+      { nama: "RAAZ JESEN STEPANUS", jabatan: "KAPTEN" },
+      { nama: "MAHAT SANJAYA HARAHAP", jabatan: "KAPTEN" },
+      { nama: "ANNEN", jabatan: "KASIR" },
+      { nama: "M FAJAR SIDDIK", jabatan: "KASIR" },
+      { nama: "PUTRA RAMADHANI", jabatan: "KASIR" },
+      { nama: "AMRUL", jabatan: "KASIR" },
+      { nama: "RAM KIRAN", jabatan: "KASIR" },
+      { nama: "BOBY KASANDRA BANCIN", jabatan: "KASIR" },
+      { nama: "KIKI YUNITA", jabatan: "KASIR" },
+      { nama: "CHARLOIPO MANULLANG", jabatan: "KASIR" },
+      { nama: "FAHRI FIRMANSYAH", jabatan: "KASIR" },
+      { nama: "GALI PRATAMA", jabatan: "KASIR" },
+      { nama: "PRIMA NUGRAHA", jabatan: "KASIR" },
+      { nama: "ROY DILEN", jabatan: "KASIR" },
+      { nama: "RIDZKY RAMADHAN", jabatan: "KASIR" },
+      { nama: "AGUNG DEDI IRAWAN", jabatan: "KASIR" },
+      { nama: "MAICEL TAMPUBOLON", jabatan: "KASIR" },
+      { nama: "ADE CHAIRUNNISA", jabatan: "KASIR" },
+      { nama: "M REZI SYAPUTRA", jabatan: "KASIR" },
+      { nama: "KHOIRUDDIN", jabatan: "KASIR" },
+      { nama: "BAMBANG AGUNG SUTRISNO", jabatan: "KASIR" },
+      { nama: "PUTRA INSANY", jabatan: "KASIR" },
+      { nama: "FERA SALMA", jabatan: "KASIR" },
+      { nama: "RIVLAN RIZKY", jabatan: "KASIR" },
+      { nama: "MAULANA ALI SAID", jabatan: "KASIR" },
+      { nama: "AHMAD ANDIKA", jabatan: "KASIR" },
+      { nama: "ANGGARA K S", jabatan: "KASIR" },
+      { nama: "DIMAS ADHITYA", jabatan: "KASIR" },
+      { nama: "GABRIEL RONI ARGANTA HUTABALIAN", jabatan: "KASIR" },
+      { nama: "EGA PRAYUDA", jabatan: "KASIR" },
+      { nama: "ARJUN PRAISYA", jabatan: "KASIR" },
+      { nama: "ADITYA PANCA", jabatan: "KASIR" },
+      { nama: "AUDIS OYONG DUANSYAH", jabatan: "KASIR" },
+      { nama: "ADE OJI SHAPUTRA", jabatan: "KASIR" },
+      { nama: "ALFIANSYAH", jabatan: "KASIR" },
+      { nama: "ANDY PUTRA", jabatan: "KASIR" },
+      { nama: "JUNITA MARSHA", jabatan: "KASIR" },
+      { nama: "MELAN PUTRI TRINITA", jabatan: "KASIR" },
+      { nama: "LAELA ANASILDA", jabatan: "KASIR" },
+      { nama: "ISMI AZRILIA LUBIS", jabatan: "KASIR" },
+      { nama: "SYARIFAH RUMIATI ASTARI", jabatan: "KASIR" },
+      { nama: "VISEY", jabatan: "KASIR" },
+      { nama: "REN CHHENGLY", jabatan: "KASIR" },
+      { nama: "RET CHANTHORN", jabatan: "KASIR" }
+    ];
+
+    // Fungsi utama aplikasi
+    function initApp() {
+      // Variabel global
+      let staffData = [];
+      let isProcessing = false;
+      let dataVersion = null;
+      let lastUpdated = null;
+      let currentFilter = 'all';
+      let currentDate = new Date().toDateString();
+
+      // Cache elemen DOM
+      const elements = {
+        loading: document.getElementById('loading'),
+        toast: document.getElementById('toast'),
+        staffSelect: document.getElementById('staffSelect'),
+        submitBtn: document.getElementById('submitBtn'),
+        attendanceBody: document.getElementById('attendanceBody'),
+        totalStaff: document.getElementById('totalStaff'),
+        presentCount: document.getElementById('presentCount'),
+        absentCount: document.getElementById('absentCount'),
+        staffSearch: document.getElementById('staffSearch'),
+        currentDate: document.getElementById('currentDate'),
+        currentTime: document.getElementById('currentTime'),
+        lastUpdated: document.getElementById('lastUpdated'),
+        filterBtns: document.querySelectorAll('.filter-btn')
+      };
+
+      // Inisialisasi aplikasi
+      function initialize() {
+        updateClock();
+        setInterval(updateClock, 1000);
+        elements.submitBtn.addEventListener('click', markAttendance);
+        elements.staffSearch.addEventListener('input', filterStaff);
+        
+        // Setup filter buttons
+        elements.filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            elements.filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            filterStaff();
+          });
+        });
+        
+        loadInitialData();
+        
+        // Tambahkan interval untuk mengecek update data setiap 30 detik
+        setInterval(checkForUpdates, 30000);
+        
+        // Cek apakah sudah lewat tengah malam untuk reset data
+        setInterval(checkDateChange, 60000);
+      }
+
+      // Fungsi untuk update jam dan tanggal
+      function updateClock() {
+        const now = new Date();
+        elements.currentDate.innerHTML =
+          `<i class="far fa-calendar-alt"></i> ${now.toLocaleDateString('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}`;
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        elements.currentTime.innerHTML =
+          `<i class="far fa-clock"></i> ${hours}:${minutes}:${seconds} WIB`;
+      }
+
+      // Fungsi untuk mengecek pergantian hari
+      function checkDateChange() {
+        const today = new Date().toDateString();
+        if (today !== currentDate) {
+          currentDate = today;
+          showToast('📅 Hari baru, absensi telah direset!', 'info');
+          loadInitialData();
+        }
+      }
+
+      // Fungsi untuk mengecek update data
+      function checkForUpdates() {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(response => {
+              if (response && response.version !== dataVersion) {
+                showToast('⚡ Data diperbarui, memuat ulang...', 'info');
+                setTimeout(loadInitialData, 1000);
+              }
+            })
+            .withFailureHandler(console.error)
+            .getDataVersion();
+        }
+      }
+
+      // Fungsi utama untuk memuat data
+      function loadInitialData() {
+        showLoading(true);
+        
+        // Simulasi data untuk demo
+        setTimeout(() => {
+          // Format data untuk sistem
+          const formattedData = staffDataRaw.map((staff, index) => {
+            // Untuk demo, acak status absensi
+            const hasAbsent = Math.random() > 0.5;
+            
+            return {
+              id: `EMP${(index + 1).toString().padStart(3, '0')}`,
+              nama: staff.nama,
+              jabatan: staff.jabatan,
+              status: hasAbsent ? 'Sudah Absen' : 'Belum Absen',
+              waktu: hasAbsent ? formatTimeFromDate(new Date()) : '',
+              lastAbsenDate: hasAbsent ? currentDate : ''
+            };
+          });
+
+          handleDataLoadSuccess({
+            data: formattedData,
+            version: "1.0",
+            lastUpdated: new Date().toISOString()
+          });
+        }, 1000);
+      }
+
+      function handleDataLoadSuccess(response) {
+        // Jika tidak ada data baru
+        if (response === null) {
+          showLoading(false);
+          return;
+        }
+        
+        // Jika ada data baru
+        const data = response.data;
+        dataVersion = response.version;
+        lastUpdated = response.lastUpdated;
+        
+        staffData = data.map(staff => {
+          if (staff.waktu && typeof staff.waktu === 'string' && staff.waktu.includes('T')) {
+            try {
+              const dateObj = new Date(staff.waktu);
+              if (!isNaN(dateObj.getTime())) {
+                staff.waktu = formatTimeFromDate(dateObj);
+              }
+            } catch (e) {
+              console.error('Error formatting waktu:', e);
+            }
+          }
+          return staff;
+        });
+        
+        renderStaffSelect();
+        renderTable();
+        updateDashboard();
+        showLoading(false);
+        animateElements();
+        
+        // Update last updated time
+        if (lastUpdated) {
+          const updatedDate = new Date(lastUpdated);
+          elements.lastUpdated.textContent = `Terakhir diperbarui: ${updatedDate.toLocaleTimeString('id-ID')}`;
+        }
+      }
+
+      function animateElements() {
+        const cards = document.querySelectorAll('.card, .stat-card');
+        cards.forEach((card, index) => {
+          card.style.animationDelay = `${index * 0.1}s`;
+          card.classList.add('animate-pop');
+        });
+      }
+
+      function handleDataLoadError(error) {
+        console.error('Gagal memuat data:', error);
+        elements.attendanceBody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; color: var(--danger);">
+              <i class="fas fa-exclamation-circle"></i> Gagal memuat data. Memuat ulang...
+            </td>
+          </tr>
+        `;
+        setTimeout(loadInitialData, 3000);
+      }
+
+      // Helper untuk format waktu dari Date object
+      function formatTimeFromDate(date) {
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+      }
+
+      // Render dropdown staff in sheet order
+      function renderStaffSelect() {
+        const select = elements.staffSelect;
+        select.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+        
+        staffData.forEach(staff => {
+          const option = document.createElement('option');
+          option.value = staff.id;
+          option.textContent = `${staff.nama} (${staff.jabatan || 'Tanpa Jabatan'})`;
+          
+          // Nonaktifkan opsi untuk staff yang sudah absen hari ini
+          if (staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+            option.disabled = true;
+            option.textContent += ' - Sudah Absen Hari Ini';
+            option.style.color = '#ef4444';
+            option.style.fontStyle = 'italic';
+          } else if (staff.status === 'Belum Absen') {
+            option.style.color = '#10b981';
+            option.style.fontWeight = '500';
+          }
+          
+          select.appendChild(option);
+        });
+      }
+
+      // Render tabel absensi sesuai urutan sheet
+      function renderTable(data = staffData) {
+        const tbody = elements.attendanceBody;
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--gray);">
+                <i class="fas fa-info-circle"></i> Tidak ada data absensi
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        data.forEach((staff, index) => {
+          const row = document.createElement('tr');
+          row.style.animationDelay = `${index * 0.05}s`;
+          
+          // Tambahkan class khusus untuk yang sudah absen
+          if (staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+            row.classList.add('already-absent');
+          }
+          
+          let waktuDisplay = staff.waktu || '-';
+          if (waktuDisplay.includes('T')) {
+            try {
+              const dateObj = new Date(waktuDisplay);
+              if (!isNaN(dateObj.getTime())) {
+                waktuDisplay = formatTimeFromDate(dateObj);
+              }
+            } catch (e) {
+              console.error('Error formatting waktu:', e);
+            }
+          }
+          
+          row.innerHTML = `
+            <td class="mobile-hidden">${staff.id}</td>
+            <td>${staff.nama}</td>
+            <td class="mobile-hidden">${staff.jabatan || '-'}</td>
+            <td><span class="status ${staff.status === 'Sudah Absen' ? 'present' : 'absent'}">
+              ${staff.status} <i class="fas ${staff.status === 'Sudah Absen' ? 'fa-check' : 'fa-clock'}"></i>
+            </span></td>
+            <td class="time-format">${waktuDisplay}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      // Filter staff dengan tetap mempertahankan urutan asli
+      function filterStaff() {
+        const term = elements.staffSearch.value.toLowerCase().trim();
+        let filtered = staffData;
+        
+        // Apply status filter
+        if (currentFilter === 'present') {
+          filtered = filtered.filter(staff => staff.status === 'Sudah Absen');
+        } else if (currentFilter === 'absent') {
+          filtered = filtered.filter(staff => staff.status === 'Belum Absen');
+        }
+        
+        // Apply search term
+        if (term) {
+          filtered = filtered.filter(staff =>
+            staff.nama.toLowerCase().includes(term) ||
+            (staff.jabatan && staff.jabatan.toLowerCase().includes(term)) ||
+            staff.id.toLowerCase().includes(term)
+          );
+        }
+        
+        renderTable(filtered);
+      }
+
+      // Update dashboard statistik
+      function updateDashboard() {
+        const presentCount = staffData.filter(staff => 
+          staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate
+        ).length;
+        
+        const absentCount = staffData.length - presentCount;
+
+        elements.totalStaff.textContent = staffData.length;
+        elements.presentCount.textContent = presentCount;
+        elements.absentCount.textContent = absentCount;
+        animateCounter(elements.totalStaff, staffData.length);
+        animateCounter(elements.presentCount, presentCount);
+        animateCounter(elements.absentCount, absentCount);
+      }
+
+      function animateCounter(element, target) {
+        const current = parseInt(element.textContent);
+        if (current === target) return;
+        const increment = target > current ? 1 : -1;
+        let currentValue = current;
+        const timer = setInterval(() => {
+          currentValue += increment;
+          element.textContent = currentValue;
+          if (currentValue === target) {
+            clearInterval(timer);
+          }
+        }, 30);
+      }
+
+      // Fungsi untuk mencatat absensi
+      async function markAttendance() {
+        if (isProcessing) return;
+        
+        const selectedOption = elements.staffSelect.options[elements.staffSelect.selectedIndex];
+        const staffId = selectedOption.value?.trim();
+        const staffName = selectedOption.text.split(' (')[0];
+        
+        if (!staffId) {
+          showToast('⚠️ Silakan pilih nama Anda terlebih dahulu!', 'warning');
+          elements.staffSelect.focus();
+          return;
+        }
+
+        // Cek apakah staff sudah absen hari ini
+        const staff = staffData.find(s => s.id === staffId);
+        if (staff && staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate) {
+          showToast('❌ Anda sudah absen hari ini!', 'error');
+          return;
+        }
+
+        isProcessing = true;
+        elements.submitBtn.disabled = true;
+        elements.submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MENGIRIM...';
+
+        try {
+          // Simulasi response untuk demo
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          const response = {
+            success: true,
+            waktu: new Date().toLocaleTimeString('id-ID'),
+            alreadyMarked: false
+          };
+
+          if (response.success) {
+            showToast(`✅ Absen berhasil! ${staffName} - ${response.waktu}`, 'success');
+            
+            // Update data secara lokal untuk demo
+            const updatedIndex = staffData.findIndex(staff => staff.id === staffId);
+            if (updatedIndex !== -1) {
+              staffData[updatedIndex].status = 'Sudah Absen';
+              staffData[updatedIndex].waktu = response.waktu;
+              staffData[updatedIndex].lastAbsenDate = currentDate;
+              
+              updateStaffRow(staffData[updatedIndex]);
+              updateDashboardStats();
+              renderStaffSelect(); // Refresh dropdown
+            }
+          } else {
+            showToast(`⚠️ ${response.message}`, response.alreadyMarked ? 'warning' : 'error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showToast('❌ Gagal terhubung ke server', 'error');
+        } finally {
+          isProcessing = false;
+          resetSubmitButton();
+        }
+      }
+
+      function updateStaffRow(updatedStaff) {
+        if (!updatedStaff) return;
+        const rows = elements.attendanceBody.querySelectorAll('tr');
+        for (let row of rows) {
+          const rowId = row.cells[0]?.textContent.trim().toLowerCase();
+          if (rowId === updatedStaff.id.toLowerCase()) {
+            let waktuDisplay = updatedStaff.waktu || '-';
+            if (waktuDisplay.includes('T')) {
+              try {
+                const dateObj = new Date(waktuDisplay);
+                if (!isNaN(dateObj.getTime())) {
+                  waktuDisplay = formatTimeFromDate(dateObj);
+                }
+              } catch (e) {
+                console.error('Error formatting waktu:', e);
+              }
+            }
+            
+            // Update class untuk menandai sudah absen
+            if (updatedStaff.status === 'Sudah Absen' && updatedStaff.lastAbsenDate === currentDate) {
+              row.classList.add('already-absent');
+            }
+            
+            row.innerHTML = `
+              <td class="mobile-hidden">${updatedStaff.id}</td>
+              <td>${updatedStaff.nama}</td>
+              <td class="mobile-hidden">${updatedStaff.jabatan || '-'}</td>
+              <td><span class="status ${updatedStaff.status === 'Sudah Absen' ? 'present' : 'absent'}">
+                ${updatedStaff.status} <i class="fas ${updatedStaff.status === 'Sudah Absen' ? 'fa-check' : 'fa-clock'}"></i>
+              </span></td>
+              <td class="time-format">${waktuDisplay}</td>
+            `;
+            row.classList.add('highlight-change');
+            setTimeout(() => row.classList.remove('highlight-change'), 2000);
+            break;
+          }
+        }
+      }
+
+      function updateDashboardStats() {
+        const presentCount = staffData.filter(staff => 
+          staff.status === 'Sudah Absen' && staff.lastAbsenDate === currentDate
+        ).length;
+        
+        const absentCount = staffData.length - presentCount;
+
+        animateCounter(elements.presentCount, presentCount);
+        animateCounter(elements.absentCount, absentCount);
+      }
+
+      function resetSubmitButton() {
+        elements.submitBtn.disabled = false;
+        elements.submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> KIRIM ABSENSI';
+      }
+
+      function showLoading(show) {
+        if (show) {
+          elements.loading.style.display = 'flex';
+        } else {
+          elements.loading.style.opacity = '0';
+          setTimeout(() => {
+            elements.loading.style.display = 'none';
+            elements.loading.style.opacity = '1';
+          }, 300);
+        }
+      }
+
+      function showToast(message, type = 'success', duration = 3000) {
+        const toast = elements.toast;
+        const icon = type === 'success' ? 'fa-check-circle' :
+          type === 'error' ? 'fa-exclamation-circle' :
+          type === 'warning' ? 'fa-exclamation-triangle' :
+          type === 'info' ? 'fa-bolt' : 'fa-info-circle';
+        toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+
+        if (toast.timeoutId) clearTimeout(toast.timeoutId);
+        toast.timeoutId = setTimeout(() => {
+          toast.classList.remove('show');
+        }, duration);
+      }
+
+      // Jalankan inisialisasi
+      initialize();
+    }
+
+    // Jalankan aplikasi setelah DOM siap
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
