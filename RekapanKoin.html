@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekap Data Bank</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #030508;
+      --bg-primary: #0a0f1a;
+      --bg-card: rgba(8, 18, 35, 0.9);
+      --border-glow: #00e5ff;
+      --accent-primary: #00e5ff;
+      --accent-secondary: #ff006e;
+      --accent-gold: #ffd700;
+      --text-primary: #e8f4f8;
+      --text-muted: #5a7a8a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-display { font-family: 'Orbitron', monospace; }
+
+    /* Background Layers */
+    .bg-matrix {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: 
+        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 0, 110, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-primary) 50%, var(--bg-deep) 100%);
+    }
+
+    .circuit-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .scan-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+      animation: scanDown 8s linear infinite;
+      opacity: 0.4;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes scanDown {
+      0% { top: -2px; opacity: 0; }
+      5% { opacity: 0.4; }
+      95% { opacity: 0.4; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* Input Container - FIXED */
+    .input-container {
+      background: rgba(0, 10, 20, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 12px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    /* Decorative border - DOES NOT BLOCK CLICKS */
+    .input-container::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 13px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--accent-primary), transparent 50%, var(--accent-secondary));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none; /* KRUSIAL: Agar tidak menghalangi klik */
+      z-index: 1;
+    }
+
+    .input-container:focus-within {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.2), inset 0 0 30px rgba(0, 229, 255, 0.03);
+    }
+
+    .input-container:focus-within::after {
+      opacity: 1;
+    }
+
+    textarea {
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      color: var(--text-primary);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      letter-spacing: 0.3px;
+      width: 100%;
+      display: block;
+      position: relative;
+      z-index: 2; /* Pastikan textarea di atas */
+    }
+
+    textarea::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Stats */
+    .stat-item {
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.04), transparent);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent-primary), transparent);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, var(--accent-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Table */
+    .data-table-container {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .data-table-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+      pointer-events: none;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table thead {
+      background: linear-gradient(180deg, rgba(0, 229, 255, 0.1), transparent);
+    }
+
+    .data-table th {
+      padding: 18px 24px;
+      text-align: left;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-primary);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+    }
+
+    .data-table th.text-center { text-align: center; }
+    .data-table th.text-right { text-align: right; }
+
+    .data-table td {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .data-table tbody tr {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .data-table tbody tr::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent-primary), transparent);
+      transition: width 0.3s ease;
+      opacity: 0.3;
+    }
+
+    .data-table tbody tr:hover::before {
+      width: 4px;
+    }
+
+    .data-table tbody tr:hover {
+      background: rgba(0, 229, 255, 0.04);
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Bank Badge */
+    .bank-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .bank-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .bank-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+    }
+
+    /* Total Row */
+    .total-row {
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.12), rgba(255, 0, 110, 0.06));
+    }
+
+    .total-row td {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      border-top: 2px solid var(--accent-primary);
+      border-bottom: none !important;
+    }
+
+    .total-row td:first-child {
+      color: var(--accent-primary);
+    }
+
+    .total-value {
+      color: var(--accent-gold);
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), #00b8d4);
+      color: var(--bg-deep);
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), 0 10px 30px rgba(0, 229, 255, 0.2);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--accent-primary);
+      font-family: 'Orbitron', monospace;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent-primary);
+      background: rgba(0, 229, 255, 0.1);
+      box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--accent-primary);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Animations */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .row-animate {
+      animation: fadeSlideIn 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    .header-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .header-line::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -3px;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 7px;
+      background: var(--bg-deep);
+      border-left: 1px solid var(--accent-primary);
+      border-right: 1px solid var(--accent-secondary);
+    }
+
+    @media (max-width: 640px) {
+      .stat-grid { grid-template-columns: 1fr !important; }
+      .data-table th, .data-table td { padding: 14px 16px; }
+      .stat-value { font-size: 20px; }
+      .bank-icon { width: 30px; height: 30px; font-size: 9px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-matrix"></div>
+  <div class="circuit-grid"></div>
+  <div class="scan-line"></div>
+
+  <main class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-3 mb-4">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#grad1)" stroke-width="1.5">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00e5ff"/>
+              <stop offset="100%" style="stop-color:#ff006e"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <h1 class="font-display text-3xl md:text-4xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-primary)] to-white">
+          BANK RECAP
+        </h1>
+      </div>
+      <p class="text-[var(--text-muted)] text-lg tracking-wide">Digital Transaction Analyzer</p>
+    </header>
+
+    <div class="header-line"></div>
+
+    <!-- Input Section -->
+    <section class="mb-8">
+      <div class="input-container p-5">
+        <div class="flex items-center justify-between mb-3 relative z-10">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse"></div>
+            <span class="text-xs font-display tracking-widest text-[var(--text-muted)]">INPUT DATA STREAM</span>
+          </div>
+          <button id="clearBtn" class="btn-ghost">CLEAR</button>
+        </div>
+        <textarea 
+          id="dataInput" 
+          rows="6" 
+          class="relative z-10"
+          placeholder="PASTE DATA HERE&#10;Format: Nominal [TAB] Bank&#10;&#10;50000&#9;BCA&#10;30000&#9;DANA&#10;..."
+          spellcheck="false"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="resultSection" class="hidden">
+      <!-- Stats -->
+      <div class="stat-grid grid grid-cols-3 gap-4 mb-6">
+        <div class="stat-item">
+          <div class="stat-label">Transactions</div>
+          <div id="statCount" class="stat-value">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Total Value</div>
+          <div id="statTotal" class="stat-value text-base">Rp 0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Bank Types</div>
+          <div id="statBank" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="data-table-container mb-6">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Bank</th>
+              <th class="text-center">Count</th>
+              <th class="text-right">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Action -->
+      <div class="flex justify-center">
+        <button id="copyBtn" class="btn-primary">
+          COPY SUMMARY
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast font-display tracking-wider">DATA COPIED</div>
+
+  <script>
+    // Elements
+    const dataInput = document.getElementById('dataInput');
+    const resultSection = document.getElementById('resultSection');
+    const tableBody = document.getElementById('tableBody');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const toast = document.getElementById('toast');
+    const statCount = document.getElementById('statCount');
+    const statTotal = document.getElementById('statTotal');
+    const statBank = document.getElementById('statBank');
+
+    // Bank styling
+    const bankStyles = {
+      'BCA': { bg: 'linear-gradient(135deg, #0066b3, #004d8c)', short: 'BCA' },
+      'DANA': { bg: 'linear-gradient(135deg, #108ee9, #0070cc)', short: 'DNA' },
+      'SEABANK': { bg: 'linear-gradient(135deg, #00a86b, #008855)', short: 'SBK' },
+      'GOPAY': { bg: 'linear-gradient(135deg, #00aa13, #008810)', short: 'GPY' },
+      'OVO': { bg: 'linear-gradient(135deg, #4c3494, #382573)', short: 'OVO' },
+      'MANDIRI': { bg: 'linear-gradient(135deg, #003d79, #002d5a)', short: 'MDR' },
+      'BRI': { bg: 'linear-gradient(135deg, #00529c, #003d75)', short: 'BRI' },
+      'BNI': { bg: 'linear-gradient(135deg, #f15a22, #d44a15)', short: 'BNI' }
+    };
+
+    let parsedData = [];
+    let bankSummary = {};
+
+    function formatNum(n) {
+      return new Intl.NumberFormat('id-ID').format(n);
+    }
+
+    // Parsing yang lebih robust
+    function parseData(text) {
+      const lines = text.trim().split('\n');
+      const data = [];
+      
+      lines.forEach(line => {
+        // Mendukung TAB atau spasi ganda sebagai pemisah
+        const parts = line.split(/\t+|\s{2,}/); 
+        if (parts.length >= 2) {
+          const nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
+          const bank = parts[1].trim().toUpperCase();
+          if (!isNaN(nominal) && nominal > 0 && bank) {
+            data.push({ nominal, bank });
+          }
+        }
+      });
+      return data;
+    }
+
+    function calcSummary(data) {
+      const summary = {};
+      data.forEach(item => {
+        if (!summary[item.bank]) {
+          summary[item.bank] = { count: 0, total: 0 };
+        }
+        summary[item.bank].count++;
+        summary[item.bank].total += item.nominal;
+      });
+      return summary;
+    }
+
+    function render() {
+      if (parsedData.length === 0) {
+        resultSection.classList.add('hidden');
+        return;
+      }
+
+      resultSection.classList.remove('hidden');
+
+      const totalCount = parsedData.length;
+      const totalNominal = parsedData.reduce((s, i) => s + i.nominal, 0);
+      const bankCount = Object.keys(bankSummary).length;
+
+      // Update stats
+      statCount.textContent = totalCount;
+      statTotal.textContent = 'Rp ' + formatNum(totalNominal);
+      statBank.textContent = bankCount;
+
+      // Sort by total nominal descending
+      const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
+
+      let html = '';
+      sorted.forEach(([bank, data], idx) => {
+        const style = bankStyles[bank] || { bg: 'linear-gradient(135deg, #3a4a5a, #2a3a4a)', short: bank.substring(0,3) };
+        
+        html += `
+          <tr class="row-animate" style="animation-delay: ${idx * 60}ms">
+            <td>
+              <div class="bank-badge">
+                <div class="bank-icon" style="background: ${style.bg}; color: #fff;">
+                  ${style.short}
+                </div>
+                <span>${bank}</span>
+              </div>
+            </td>
+            <td class="text-center font-display text-lg">${data.count}</td>
+            <td class="text-right font-display text-lg tracking-wide">Rp ${formatNum(data.total)}</td>
+          </tr>
+        `;
+      });
+
+      // Total row
+      html += `
+        <tr class="total-row row-animate" style="animation-delay: ${sorted.length * 60}ms">
+          <td class="font-display">TOTAL</td>
+          <td class="text-center font-display text-lg">${totalCount}</td>
+          <td class="text-right font-display text-lg total-value">Rp ${formatNum(totalNominal)}</td>
+        </tr>
+      `;
+
+      tableBody.innerHTML = html;
+    }
+
+    function processInput() {
+      const text = dataInput.value;
+      if (!text.trim()) {
+        parsedData = [];
+        bankSummary = {};
+        render();
+        return;
+      }
+      parsedData = parseData(text);
+      bankSummary = calcSummary(parsedData);
+      render();
+    }
+
+    function copySummary() {
+      if (Object.keys(bankSummary).length === 0) return;
+
+      const totalNominal = parsedData.reduce((s, i) => s + i.nominal, 0);
+      const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
+
+      let txt = '═══════════════════════════\n';
+      txt += '       BANK RECAP SUMMARY\n';
+      txt += '═══════════════════════════\n\n';
+      
+      sorted.forEach(([bank, data]) => {
+        txt += bank.padEnd(12) + ' | ' + data.count.toString().padStart(3) + ' trx | Rp ' + formatNum(data.total) + '\n';
+      });
+      
+      txt += '\n───────────────────────────\n';
+      txt += 'TOTAL'.padEnd(12) + ' | ' + parsedData.length.toString().padStart(3) + ' trx | Rp ' + formatNum(totalNominal) + '\n';
+      txt += '═══════════════════════════';
+
+      navigator.clipboard.writeText(txt).then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    function clearAll() {
+      dataInput.value = '';
+      parsedData = [];
+      bankSummary = {};
+      render();
+    }
+
+    // Event Listeners
+    dataInput.addEventListener('input', processInput);
+    clearBtn.addEventListener('click', clearAll);
+    copyBtn.addEventListener('click', copySummary);
+    
+    // Auto-paste detection
+    dataInput.addEventListener('paste', () => {
+      // Sedikit delay agar browser sempat memasukkan teks
+      setTimeout(processInput, 50);
+    });
+  </script>
+</body>
+</html>
