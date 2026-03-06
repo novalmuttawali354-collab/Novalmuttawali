@@ -10,7 +10,7 @@
     :root {
       --bg-deep: #030508;
       --bg-primary: #0a0f1a;
-      --bg-card: rgba(8, 18, 35, 0.9);
+      --bg-card: rgba(8, 18, 35, 0.95);
       --border-glow: #00e5ff;
       --accent-primary: #00e5ff;
       --accent-secondary: #ff006e;
@@ -31,14 +31,14 @@
 
     .font-display { font-family: 'Orbitron', monospace; }
 
-    /* Background Layers */
+    /* Background Effects */
     .bg-matrix {
       position: fixed;
       inset: 0;
       z-index: -2;
       background: 
-        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 0, 110, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 0, 110, 0.05) 0%, transparent 40%),
         linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-primary) 50%, var(--bg-deep) 100%);
     }
 
@@ -47,10 +47,10 @@
       inset: 0;
       z-index: -1;
       background-image: 
-        linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
-      background-size: 50px 50px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 70%);
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 70%);
       pointer-events: none;
     }
 
@@ -61,49 +61,48 @@
       right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-      animation: scanDown 8s linear infinite;
-      opacity: 0.4;
+      animation: scanDown 6s linear infinite;
+      opacity: 0.3;
       z-index: 0;
       pointer-events: none;
     }
 
     @keyframes scanDown {
       0% { top: -2px; opacity: 0; }
-      5% { opacity: 0.4; }
-      95% { opacity: 0.4; }
+      5% { opacity: 0.3; }
+      95% { opacity: 0.3; }
       100% { top: 100%; opacity: 0; }
     }
 
-    /* Input Container - FIXED */
+    /* Input Container */
     .input-container {
-      background: rgba(0, 10, 20, 0.7);
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      border-radius: 12px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(0, 10, 20, 0.6);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 16px;
+      transition: all 0.4s ease;
       position: relative;
     }
 
-    /* Decorative border - DOES NOT BLOCK CLICKS */
     .input-container::after {
       content: '';
       position: absolute;
       inset: -1px;
-      border-radius: 13px;
+      border-radius: 17px;
       padding: 1px;
-      background: linear-gradient(135deg, var(--accent-primary), transparent 50%, var(--accent-secondary));
+      background: linear-gradient(135deg, var(--accent-primary), transparent 40%, var(--accent-secondary));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       opacity: 0;
       transition: opacity 0.4s ease;
-      pointer-events: none; /* KRUSIAL: Agar tidak menghalangi klik */
+      pointer-events: none;
       z-index: 1;
     }
 
     .input-container:focus-within {
       border-color: var(--accent-primary);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.2), inset 0 0 30px rgba(0, 229, 255, 0.03);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
     }
 
     .input-container:focus-within::after {
@@ -119,12 +118,11 @@
       font-family: 'Rajdhani', sans-serif;
       font-size: 15px;
       font-weight: 500;
-      line-height: 1.7;
-      letter-spacing: 0.3px;
+      line-height: 1.8;
       width: 100%;
       display: block;
       position: relative;
-      z-index: 2; /* Pastikan textarea di atas */
+      z-index: 2;
     }
 
     textarea::placeholder {
@@ -132,24 +130,24 @@
       font-weight: 400;
     }
 
-    /* Stats */
-    .stat-item {
-      background: linear-gradient(145deg, rgba(0, 229, 255, 0.04), transparent);
-      border: 1px solid rgba(0, 229, 255, 0.12);
+    /* Stat Cards */
+    .stat-card {
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.03), transparent);
+      border: 1px solid rgba(0, 229, 255, 0.1);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px 20px;
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
     }
 
-    .stat-item:hover {
-      border-color: rgba(0, 229, 255, 0.4);
+    .stat-card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
       transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
     }
 
-    .stat-item::before {
+    .stat-card::before {
       content: '';
       position: absolute;
       top: 0;
@@ -162,15 +160,15 @@
     .stat-label {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: 600;
     }
 
     .stat-value {
       font-family: 'Orbitron', monospace;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       background: linear-gradient(135deg, #ffffff, var(--accent-primary));
       -webkit-background-clip: text;
@@ -178,17 +176,18 @@
       background-clip: text;
     }
 
-    /* Table */
-    .data-table-container {
+    /* Table Container */
+    .table-wrapper {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(0, 229, 255, 0.15);
+      border: 1px solid rgba(0, 229, 255, 0.12);
       border-radius: 16px;
       overflow: hidden;
       position: relative;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
 
-    .data-table-container::before {
+    .table-wrapper::before {
       content: '';
       position: absolute;
       top: 0;
@@ -197,61 +196,73 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
       pointer-events: none;
+      z-index: 10;
     }
 
+    /* Sticky Header Table */
     .data-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed; /* Lebar kolom terkontrol */
     }
 
     .data-table thead {
-      background: linear-gradient(180deg, rgba(0, 229, 255, 0.1), transparent);
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
 
     .data-table th {
-      padding: 18px 24px;
+      background: linear-gradient(180deg, rgba(0, 18, 30, 0.98), rgba(0, 12, 22, 0.98));
+      padding: 16px 20px;
       text-align: left;
       font-family: 'Orbitron', monospace;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       color: var(--accent-primary);
-      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      white-space: nowrap;
     }
 
-    .data-table th.text-center { text-align: center; }
     .data-table th.text-right { text-align: right; }
+    .data-table th.text-center { text-align: center; }
+
+    /* Column Widths */
+    .col-bank { width: 45%; }
+    .col-count { width: 20%; }
+    .col-amount { width: 35%; }
 
     .data-table td {
-      padding: 18px 24px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.06);
-      transition: all 0.3s ease;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.05);
+      transition: background 0.2s ease;
+      vertical-align: middle;
     }
 
     .data-table tbody tr {
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       position: relative;
     }
 
-    .data-table tbody tr::before {
+    .data-table tbody tr::after {
       content: '';
       position: absolute;
       left: 0;
-      top: 0;
       bottom: 0;
       width: 0;
-      background: linear-gradient(90deg, var(--accent-primary), transparent);
+      height: 1px;
+      background: var(--accent-primary);
       transition: width 0.3s ease;
-      opacity: 0.3;
     }
 
-    .data-table tbody tr:hover::before {
-      width: 4px;
+    .data-table tbody tr:hover::after {
+      width: 100%;
     }
 
     .data-table tbody tr:hover {
-      background: rgba(0, 229, 255, 0.04);
+      background: rgba(0, 229, 255, 0.03);
     }
 
     .data-table tbody tr:last-child td {
@@ -260,12 +271,12 @@
 
     /* Bank Badge */
     .bank-badge {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 12px;
       font-weight: 600;
       font-size: 15px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     .bank-icon {
@@ -276,40 +287,60 @@
       align-items: center;
       justify-content: center;
       font-family: 'Orbitron', monospace;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
+      color: #fff;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
     .bank-icon::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    }
+
+    /* Cell Typography */
+    .cell-count {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .cell-amount {
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      text-align: right;
+      color: var(--text-primary);
+      white-space: nowrap;
     }
 
     /* Total Row */
     .total-row {
-      background: linear-gradient(90deg, rgba(0, 229, 255, 0.12), rgba(255, 0, 110, 0.06));
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.08), rgba(255, 0, 110, 0.03));
+      position: relative;
     }
 
     .total-row td {
       font-family: 'Orbitron', monospace;
       font-weight: 700;
-      font-size: 14px;
-      border-top: 2px solid var(--accent-primary);
-      border-bottom: none !important;
+      font-size: 13px;
+      border-top: 1px solid rgba(0, 229, 255, 0.25);
     }
 
-    .total-row td:first-child {
+    .total-label {
       color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .total-value {
       color: var(--accent-gold);
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 
     /* Buttons */
@@ -320,7 +351,7 @@
       font-weight: 700;
       font-size: 12px;
       letter-spacing: 1px;
-      padding: 14px 28px;
+      padding: 14px 32px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -329,29 +360,14 @@
       transition: all 0.3s ease;
     }
 
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transition: left 0.5s ease;
-    }
-
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), 0 10px 30px rgba(0, 229, 255, 0.2);
-    }
-
-    .btn-primary:hover::before {
-      left: 100%;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
     }
 
     .btn-ghost {
       background: transparent;
-      border: 1px solid rgba(0, 229, 255, 0.3);
+      border: 1px solid rgba(0, 229, 255, 0.25);
       color: var(--accent-primary);
       font-family: 'Orbitron', monospace;
       font-weight: 500;
@@ -366,7 +382,6 @@
     .btn-ghost:hover {
       border-color: var(--accent-primary);
       background: rgba(0, 229, 255, 0.1);
-      box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1);
     }
 
     /* Toast */
@@ -390,12 +405,12 @@
 
     /* Animations */
     @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .row-animate {
-      animation: fadeSlideIn 0.4s ease forwards;
+      animation: fadeSlideIn 0.35s ease forwards;
       opacity: 0;
     }
 
@@ -403,27 +418,23 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent);
       margin-bottom: 2rem;
-      position: relative;
     }
 
-    .header-line::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: -3px;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 7px;
-      background: var(--bg-deep);
-      border-left: 1px solid var(--accent-primary);
-      border-right: 1px solid var(--accent-secondary);
-    }
-
+    /* Responsive Adjustments */
     @media (max-width: 640px) {
-      .stat-grid { grid-template-columns: 1fr !important; }
-      .data-table th, .data-table td { padding: 14px 16px; }
-      .stat-value { font-size: 20px; }
-      .bank-icon { width: 30px; height: 30px; font-size: 9px; }
+      .stat-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-card { padding: 12px; }
+      .stat-label { font-size: 9px; }
+      .stat-value { font-size: 16px; }
+      
+      .data-table th { padding: 12px 10px; font-size: 9px; }
+      .data-table td { padding: 12px 10px; }
+      
+      .bank-icon { width: 30px; height: 30px; font-size: 8px; }
+      .bank-badge { gap: 8px; font-size: 13px; }
+      
+      .cell-count { font-size: 13px; }
+      .cell-amount { font-size: 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -439,43 +450,32 @@
   <div class="circuit-grid"></div>
   <div class="scan-line"></div>
 
-  <main class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+  <main class="max-w-3xl mx-auto px-4 py-10 md:py-14">
     <!-- Header -->
-    <header class="text-center mb-10">
-      <div class="inline-flex items-center gap-3 mb-4">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#grad1)" stroke-width="1.5">
-          <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#00e5ff"/>
-              <stop offset="100%" style="stop-color:#ff006e"/>
-            </linearGradient>
-          </defs>
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-        </svg>
-        <h1 class="font-display text-3xl md:text-4xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-primary)] to-white">
-          BANK RECAP
-        </h1>
-      </div>
-      <p class="text-[var(--text-muted)] text-lg tracking-wide">Digital Transaction Analyzer</p>
+    <header class="text-center mb-8">
+      <h1 class="font-display text-2xl md:text-3xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-primary)] to-white mb-2">
+        BANK RECAP SYSTEM
+      </h1>
+      <p class="text-[var(--text-muted)] text-sm tracking-wide">Digital Transaction Processor</p>
     </header>
 
     <div class="header-line"></div>
 
     <!-- Input Section -->
-    <section class="mb-8">
-      <div class="input-container p-5">
+    <section class="mb-6">
+      <div class="input-container p-4 md:p-5">
         <div class="flex items-center justify-between mb-3 relative z-10">
           <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse"></div>
-            <span class="text-xs font-display tracking-widest text-[var(--text-muted)]">INPUT DATA STREAM</span>
+            <div class="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] animate-pulse"></div>
+            <span class="text-[10px] font-display tracking-widest text-[var(--text-muted)]">INPUT STREAM</span>
           </div>
           <button id="clearBtn" class="btn-ghost">CLEAR</button>
         </div>
         <textarea 
           id="dataInput" 
-          rows="6" 
+          rows="5" 
           class="relative z-10"
-          placeholder="PASTE DATA HERE&#10;Format: Nominal [TAB] Bank&#10;&#10;50000&#9;BCA&#10;30000&#9;DANA&#10;..."
+          placeholder="Paste data disini (Nominal [TAB] Bank)..."
           spellcheck="false"
         ></textarea>
       </div>
@@ -484,29 +484,29 @@
     <!-- Results -->
     <section id="resultSection" class="hidden">
       <!-- Stats -->
-      <div class="stat-grid grid grid-cols-3 gap-4 mb-6">
-        <div class="stat-item">
-          <div class="stat-label">Transactions</div>
+      <div class="stat-grid grid grid-cols-3 gap-3 md:gap-4 mb-5">
+        <div class="stat-card">
+          <div class="stat-label">Transaksi</div>
           <div id="statCount" class="stat-value">0</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-label">Total Value</div>
-          <div id="statTotal" class="stat-value text-base">Rp 0</div>
+        <div class="stat-card">
+          <div class="stat-label">Total Nilai</div>
+          <div id="statTotal" class="stat-value text-sm md:text-base">Rp 0</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-label">Bank Types</div>
+        <div class="stat-card">
+          <div class="stat-label">Jenis Bank</div>
           <div id="statBank" class="stat-value">0</div>
         </div>
       </div>
 
       <!-- Table -->
-      <div class="data-table-container mb-6">
+      <div class="table-wrapper mb-5">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Bank</th>
-              <th class="text-center">Count</th>
-              <th class="text-right">Total Amount</th>
+              <th class="col-bank">Bank</th>
+              <th class="col-count text-center">Jumlah</th>
+              <th class="col-amount text-right">Total Nominal</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -515,9 +515,7 @@
 
       <!-- Action -->
       <div class="flex justify-center">
-        <button id="copyBtn" class="btn-primary">
-          COPY SUMMARY
-        </button>
+        <button id="copyBtn" class="btn-primary">COPY SUMMARY</button>
       </div>
     </section>
   </main>
@@ -526,7 +524,6 @@
   <div id="toast" class="toast font-display tracking-wider">DATA COPIED</div>
 
   <script>
-    // Elements
     const dataInput = document.getElementById('dataInput');
     const resultSection = document.getElementById('resultSection');
     const tableBody = document.getElementById('tableBody');
@@ -537,11 +534,10 @@
     const statTotal = document.getElementById('statTotal');
     const statBank = document.getElementById('statBank');
 
-    // Bank styling
     const bankStyles = {
       'BCA': { bg: 'linear-gradient(135deg, #0066b3, #004d8c)', short: 'BCA' },
       'DANA': { bg: 'linear-gradient(135deg, #108ee9, #0070cc)', short: 'DNA' },
-      'SEABANK': { bg: 'linear-gradient(135deg, #00a86b, #008855)', short: 'SBK' },
+      'SEABANK': { bg: 'linear-gradient(135deg, #00a86b, #008855)', short: 'SBN' },
       'GOPAY': { bg: 'linear-gradient(135deg, #00aa13, #008810)', short: 'GPY' },
       'OVO': { bg: 'linear-gradient(135deg, #4c3494, #382573)', short: 'OVO' },
       'MANDIRI': { bg: 'linear-gradient(135deg, #003d79, #002d5a)', short: 'MDR' },
@@ -556,14 +552,11 @@
       return new Intl.NumberFormat('id-ID').format(n);
     }
 
-    // Parsing yang lebih robust
     function parseData(text) {
       const lines = text.trim().split('\n');
       const data = [];
-      
       lines.forEach(line => {
-        // Mendukung TAB atau spasi ganda sebagai pemisah
-        const parts = line.split(/\t+|\s{2,}/); 
+        const parts = line.split(/\t+|\s{2,}/);
         if (parts.length >= 2) {
           const nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
           const bank = parts[1].trim().toUpperCase();
@@ -599,40 +592,36 @@
       const totalNominal = parsedData.reduce((s, i) => s + i.nominal, 0);
       const bankCount = Object.keys(bankSummary).length;
 
-      // Update stats
       statCount.textContent = totalCount;
       statTotal.textContent = 'Rp ' + formatNum(totalNominal);
       statBank.textContent = bankCount;
 
-      // Sort by total nominal descending
       const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
 
       let html = '';
       sorted.forEach(([bank, data], idx) => {
-        const style = bankStyles[bank] || { bg: 'linear-gradient(135deg, #3a4a5a, #2a3a4a)', short: bank.substring(0,3) };
+        const style = bankStyles[bank] || { bg: 'linear-gradient(135deg, #3a4a5a, #2a3a4a)', short: bank.substring(0, 3) };
         
         html += `
-          <tr class="row-animate" style="animation-delay: ${idx * 60}ms">
+          <tr class="row-animate" style="animation-delay: ${idx * 50}ms">
             <td>
               <div class="bank-badge">
-                <div class="bank-icon" style="background: ${style.bg}; color: #fff;">
-                  ${style.short}
-                </div>
+                <div class="bank-icon" style="background: ${style.bg}">${style.short}</div>
                 <span>${bank}</span>
               </div>
             </td>
-            <td class="text-center font-display text-lg">${data.count}</td>
-            <td class="text-right font-display text-lg tracking-wide">Rp ${formatNum(data.total)}</td>
+            <td class="cell-count">${data.count}</td>
+            <td class="cell-amount">Rp ${formatNum(data.total)}</td>
           </tr>
         `;
       });
 
-      // Total row
+      // Total Row
       html += `
-        <tr class="total-row row-animate" style="animation-delay: ${sorted.length * 60}ms">
-          <td class="font-display">TOTAL</td>
-          <td class="text-center font-display text-lg">${totalCount}</td>
-          <td class="text-right font-display text-lg total-value">Rp ${formatNum(totalNominal)}</td>
+        <tr class="total-row row-animate" style="animation-delay: ${sorted.length * 50}ms">
+          <td><span class="total-label">TOTAL</span></td>
+          <td class="cell-count" style="font-weight: 700;">${totalCount}</td>
+          <td class="cell-amount total-value">Rp ${formatNum(totalNominal)}</td>
         </tr>
       `;
 
@@ -658,17 +647,17 @@
       const totalNominal = parsedData.reduce((s, i) => s + i.nominal, 0);
       const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
 
-      let txt = '═══════════════════════════\n';
-      txt += '       BANK RECAP SUMMARY\n';
-      txt += '═══════════════════════════\n\n';
+      let txt = '═══════════════════════════════\n';
+      txt += '        REKAP DATA BANK\n';
+      txt += '═══════════════════════════════\n\n';
       
       sorted.forEach(([bank, data]) => {
-        txt += bank.padEnd(12) + ' | ' + data.count.toString().padStart(3) + ' trx | Rp ' + formatNum(data.total) + '\n';
+        txt += bank.padEnd(10) + ' : ' + data.count.toString().padStart(3) + ' trx  |  Rp ' + formatNum(data.total) + '\n';
       });
       
-      txt += '\n───────────────────────────\n';
-      txt += 'TOTAL'.padEnd(12) + ' | ' + parsedData.length.toString().padStart(3) + ' trx | Rp ' + formatNum(totalNominal) + '\n';
-      txt += '═══════════════════════════';
+      txt += '\n───────────────────────────────\n';
+      txt += 'TOTAL'.padEnd(10) + ' : ' + parsedData.length.toString().padStart(3) + ' trx  |  Rp ' + formatNum(totalNominal) + '\n';
+      txt += '═══════════════════════════════';
 
       navigator.clipboard.writeText(txt).then(() => {
         toast.classList.add('show');
@@ -683,16 +672,10 @@
       render();
     }
 
-    // Event Listeners
     dataInput.addEventListener('input', processInput);
+    dataInput.addEventListener('paste', () => setTimeout(processInput, 50));
     clearBtn.addEventListener('click', clearAll);
     copyBtn.addEventListener('click', copySummary);
-    
-    // Auto-paste detection
-    dataInput.addEventListener('paste', () => {
-      // Sedikit delay agar browser sempat memasukkan teks
-      setTimeout(processInput, 50);
-    });
   </script>
 </body>
 </html>
