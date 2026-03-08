@@ -1,1161 +1,664 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Monthly MarkasWd</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-base: #030508;
-      --bg-surface: rgba(10, 15, 26, 0.85);
-      --bg-elevated: rgba(15, 22, 36, 0.9);
-      --border-subtle: rgba(0, 229, 255, 0.1);
-      --border-glow: rgba(0, 229, 255, 0.25);
-      --text-primary: #e8f4f8;
-      --text-secondary: #8ba3b5;
-      --text-muted: #5a7a8a;
-      
-      /* Palette from first request */
-      --accent-cyan: #00e5ff;
-      --accent-magenta: #ff006e;
-      --accent-gold: #ffd700;
-      
-      --glow-cyan: rgba(0, 229, 255, 0.4);
-      --glow-magenta: rgba(255, 0, 110, 0.4);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-base);
-      color: var(--text-primary);
-      min-height: 100vh;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    .font-mono { font-family: 'JetBrains Mono', monospace; }
-    .font-display { font-family: 'Outfit', sans-serif; }
-
-    /* Ambient Background */
-    .bg-ambient {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background: 
-        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(0, 229, 255, 0.07) 0%, transparent 50%),
-        radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 0, 110, 0.05) 0%, transparent 40%),
-        linear-gradient(180deg, #030508 0%, #0a0f1a 50%, #030508 100%);
-    }
-
-    /* Circuit Grid Pattern */
-    .circuit-pattern {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background-image: 
-        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 70%);
-      pointer-events: none;
-    }
-
-    /* Glass Card with Glow Border */
-    .glass-panel {
-      background: var(--bg-surface);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-    }
-
-    .glass-panel::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 24px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), transparent 40%, rgba(255, 0, 110, 0.2));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .glass-panel:hover {
-      border-color: var(--border-glow);
-      box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 255, 0.05);
-    }
-
-    /* Tab System */
-    .tab-nav-wrapper {
-      background: rgba(5, 10, 20, 0.6);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 8px;
-      display: inline-flex;
-      gap: 6px;
-      position: relative;
-    }
-
-    .tab-btn {
-      position: relative;
-      padding: 14px 32px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .tab-btn:hover:not(.active) {
-      color: var(--text-secondary);
-    }
-
-    .tab-btn.active {
-      color: #030508;
-      text-shadow: none;
-    }
-
-    .tab-slider {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      height: calc(100% - 16px);
-      width: calc(50% - 11px);
-      border-radius: 14px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1;
-    }
-
-    .tab-slider.tab-bank {
-      background: linear-gradient(135deg, var(--accent-cyan), #00b8d4);
-      box-shadow: 0 0 25px var(--glow-cyan);
-    }
-
-    .tab-slider.tab-promo {
-      transform: translateX(calc(100% + 6px));
-      background: linear-gradient(135deg, var(--accent-magenta), #c9184a);
-      box-shadow: 0 0 25px var(--glow-magenta);
-    }
-
-    .tab-icon {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-    }
-
-    .tab-btn:first-child .tab-icon {
-      background: var(--accent-cyan);
-      box-shadow: 0 0 10px var(--accent-cyan);
-    }
-
-    .tab-btn:last-child .tab-icon {
-      background: var(--accent-magenta);
-      box-shadow: 0 0 10px var(--accent-magenta);
-    }
-
-    .tab-btn:not(.active) .tab-icon {
-      opacity: 0.5;
-      box-shadow: none;
-    }
-
-    /* Panel Animation */
-    .tab-panel {
-      display: none;
-      animation: panelReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .tab-panel.active { display: block; }
-
-    @keyframes panelReveal {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Stats Grid */
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .stat-card {
-      background: linear-gradient(145deg, rgba(0, 229, 255, 0.03), transparent);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.35s ease;
-    }
-
-    .stat-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 100%;
-      background: linear-gradient(180deg, var(--accent-cyan), transparent);
-      opacity: 0.8;
-    }
-
-    .stat-card.pink::after {
-      background: linear-gradient(180deg, var(--accent-magenta), transparent);
-    }
-
-    .stat-card.gold::after {
-      background: linear-gradient(180deg, var(--accent-gold), transparent);
-    }
-
-    .stat-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-glow);
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.1);
-    }
-
-    .stat-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 28px;
-      font-weight: 600;
-      line-height: 1.2;
-      background: linear-gradient(135deg, #fff, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-card.pink .stat-value {
-      background: linear-gradient(135deg, #fff, var(--accent-magenta));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-card.gold .stat-value {
-      background: linear-gradient(135deg, #fff, var(--accent-gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Input Section */
-    .input-box {
-      background: rgba(0, 5, 15, 0.5);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      position: relative;
-      transition: all 0.4s ease;
-    }
-
-    .input-box:focus-within {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1), 0 0 30px rgba(0, 229, 255, 0.15);
-    }
-
-    .input-box.magenta:focus-within {
-      border-color: var(--accent-magenta);
-      box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.1), 0 0 30px rgba(255, 0, 110, 0.15);
-    }
-
-    .input-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .input-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-    }
-
-    .live-indicator {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-cyan);
-      animation: blink 2s infinite;
-    }
-
-    .magenta .live-indicator {
-      background: var(--accent-magenta);
-      box-shadow: 0 0 8px var(--accent-magenta);
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 130px;
-      padding: 22px;
-      background: transparent;
-      border: none;
-      outline: none;
-      resize: vertical;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--text-primary);
-    }
-
-    textarea::placeholder {
-      color: var(--text-muted);
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 11px 20px;
-      border-radius: 12px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      border: none;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-muted);
-    }
-
-    .btn-ghost:hover {
-      color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-cyan {
-      background: linear-gradient(135deg, var(--accent-cyan), #00b8d4);
-      color: #030508;
-    }
-
-    .btn-cyan:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 229, 255, 0.3);
-    }
-
-    .btn-magenta {
-      background: linear-gradient(135deg, var(--accent-magenta), #c9184a);
-      color: #fff;
-    }
-
-    .btn-magenta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(255, 0, 110, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--accent-cyan);
-      border: 1px solid var(--accent-cyan);
-    }
-
-    .btn-outline:hover {
-      background: rgba(0, 229, 255, 0.1);
-    }
-
-    /* Table Design */
-    .table-box {
-      background: var(--bg-surface);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .table-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-    }
-
-    .scroll-area {
-      max-height: 400px;
-      overflow: auto;
-    }
-
-    .scroll-area::-webkit-scrollbar { width: 5px; height: 5px; }
-    .scroll-area::-webkit-scrollbar-track { background: transparent; }
-    .scroll-area::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
-    .scroll-area::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
-
-    table { width: 100%; border-collapse: collapse; }
-
-    thead { position: sticky; top: 0; z-index: 10; }
-
-    th {
-      background: linear-gradient(180deg, rgba(0, 18, 30, 0.98), rgba(0, 12, 22, 0.98));
-      padding: 16px 22px;
-      text-align: left;
-      font-family: 'Outfit', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--accent-cyan);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    td {
-      padding: 18px 22px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.05);
-      font-size: 13px;
-      vertical-align: middle;
-    }
-
-    tbody tr {
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    tbody tr:hover {
-      background: rgba(0, 229, 255, 0.03);
-    }
-
-    tbody tr:last-child td { border-bottom: none; }
-
-    /* Bank Badge */
-    .bank-badge {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .bank-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Outfit', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      color: white;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-    }
-
-    .bank-logo::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
-    }
-
-    .bank-name { font-weight: 600; font-size: 14px; }
-
-    /* Cell Styles */
-    .cell-center {
-      font-family: 'JetBrains Mono', monospace;
-      text-align: center;
-      font-weight: 500;
-      font-size: 15px;
-    }
-
-    .cell-right {
-      font-family: 'JetBrains Mono', monospace;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .cell-highlight {
-      font-family: 'JetBrains Mono', monospace;
-      text-align: right;
-      font-weight: 600;
-      color: var(--accent-cyan);
-    }
-
-    /* Total Row */
-    .total-row {
-      background: linear-gradient(90deg, rgba(0, 229, 255, 0.08), rgba(255, 0, 110, 0.04));
-    }
-
-    .total-row td {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 12px;
-      border-top: 1px solid var(--border-glow);
-    }
-
-    .total-label {
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent-cyan);
-    }
-
-    .total-value {
-      color: var(--accent-gold);
-      text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-    }
-
-    /* Status Badge */
-    .status-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    .status-ended {
-      background: rgba(239, 68, 68, 0.12);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    .status-running {
-      background: rgba(0, 229, 255, 0.1);
-      color: var(--accent-cyan);
-      border: 1px solid rgba(0, 229, 255, 0.2);
-    }
-
-    .dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    .status-running .dot { animation: blink 1.5s infinite; }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 70px 20px;
-    }
-
-    .empty-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 20px;
-      color: var(--text-muted);
-      opacity: 0.3;
-    }
-
-    .empty-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text-secondary);
-    }
-
-    .empty-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* Summary Footer */
-    .footer-summary {
-      display: flex;
-      justify-content: flex-end;
-      gap: 50px;
-      padding: 24px 28px;
-      background: linear-gradient(180deg, rgba(15, 22, 36, 0.5), var(--bg-elevated));
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .summary-block { text-align: right; }
-
-    .summary-lbl {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .summary-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--accent-magenta);
-      text-shadow: 0 0 15px rgba(255, 0, 110, 0.3);
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%) translateY(120px);
-      background: var(--bg-elevated);
-      border: 1px solid var(--accent-cyan);
-      padding: 16px 28px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      z-index: 1000;
-      opacity: 0;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0, 229, 255, 0.2);
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    .toast-icon { color: var(--accent-cyan); }
-
-    /* Animation */
-    @keyframes rowSlide {
-      from { opacity: 0; transform: translateX(-12px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .anim-row { animation: rowSlide 0.35s ease backwards; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .stats-container { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      .stat-card { padding: 16px; }
-      .stat-value { font-size: 20px; }
-      .stat-label { font-size: 9px; }
-
-      .tab-btn { padding: 12px 20px; font-size: 12px; }
-      .input-header { flex-direction: column; gap: 14px; align-items: flex-start; }
-
-      th, td { padding: 14px 16px; }
-      .bank-logo { width: 36px; height: 36px; font-size: 9px; }
-      .bank-name { font-size: 12px; }
-
-      .footer-summary { flex-direction: column; gap: 20px; align-items: flex-start; }
-      .summary-block { text-align: left; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Processor - Promo & Bank Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables & Base Styles */
+        :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --bg-elevated: #1a2234;
+            --fg: #e8edf5;
+            --muted: #6b7a94;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --accent-glow: rgba(16, 185, 129, 0.25);
+            --accent-dim: rgba(16, 185, 129, 0.1);
+            --border: #1e293b;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Background Effects */
+        .bg-pattern {
+            position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+            background: radial-gradient(ellipse at 20% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        }
+        .grid-lines {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 15%, transparent 70%);
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
+            animation: orbFloat 25s ease-in-out infinite;
+        }
+        .orb-1 { width: 500px; height: 500px; background: var(--accent); top: 5%; right: 5%; animation-delay: -5s; }
+        .orb-2 { width: 350px; height: 350px; background: #3b82f6; bottom: 15%; left: 5%; animation-delay: -12s; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        /* Main Layout */
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        /* Header */
+        .header { text-align: center; margin-bottom: 2.5rem; animation: fadeSlideDown 0.8s ease-out; }
+        .header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .header p { color: var(--muted); font-size: 1rem; }
+
+        /* Tabs */
+        .tab-nav {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem; background: var(--bg-card);
+            padding: 0.5rem; border-radius: 16px; border: 1px solid var(--border);
+        }
+        .tab-btn {
+            flex: 1; padding: 1rem 1.5rem; border: none; background: transparent; color: var(--muted);
+            font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+            border-radius: 12px; transition: all 0.3s ease; display: flex; align-items: center;
+            justify-content: center; gap: 0.75rem; position: relative;
+        }
+        .tab-btn:hover { color: var(--fg); background: var(--bg-elevated); }
+        .tab-btn.active { background: var(--accent); color: var(--bg); box-shadow: 0 4px 20px var(--accent-glow); }
+        .tab-btn svg { width: 20px; height: 20px; }
+        
+        .tab-content { display: none; animation: tabFadeIn 0.4s ease-out; }
+        .tab-content.active { display: block; }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; }
+        .stat-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 1.25rem 1.5rem; position: relative; overflow: hidden; transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .stat-icon {
+            width: 44px; height: 44px; border-radius: 12px; background: var(--bg-elevated);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 0.875rem; color: var(--accent);
+        }
+        .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.375rem; }
+        .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--fg); transition: color 0.3s; line-height: 1.2; }
+        .stat-sub { font-size: 0.8rem; margin-top: 0.375rem; color: var(--muted); display: flex; align-items: center; gap: 0.375rem; }
+        .stat-sub.accent { color: var(--accent); }
+        .stat-sub.warning { color: var(--warning); }
+
+        /* Inputs & Buttons */
+        .input-section {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 1.75rem; margin-bottom: 1.5rem;
+        }
+        .input-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+        .input-title { display: flex; align-items: center; gap: 0.75rem; }
+        .input-title svg { color: var(--accent); }
+        .input-title h2 { font-size: 1.125rem; font-weight: 600; }
+        .btn-group { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+        
+        .btn {
+            padding: 0.625rem 1.25rem; border-radius: 10px; font-family: inherit; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center;
+            gap: 0.5rem; border: none; letter-spacing: 0.02em;
+        }
+        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-primary:hover { background: var(--accent-light); box-shadow: 0 8px 20px var(--accent-glow); }
+        .btn-secondary { background: var(--bg-elevated); color: var(--fg); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
+
+        textarea {
+            width: 100%; min-height: 180px; background: var(--bg); border: 2px dashed var(--border);
+            border-radius: 12px; padding: 1rem 1.25rem; color: var(--fg);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7;
+            resize: vertical; transition: all 0.3s;
+        }
+        textarea:focus { outline: none; border-color: var(--accent); border-style: solid; box-shadow: 0 0 0 4px var(--accent-glow); }
+        textarea::placeholder { color: var(--muted); opacity: 0.7; }
+
+        /* Table Styles */
+        .table-section {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            overflow: hidden;
+        }
+        .table-header { padding: 1.25rem 1.75rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .table-title { display: flex; align-items: center; gap: 0.75rem; }
+        .table-title svg { color: var(--accent); }
+        .record-count { background: var(--bg-elevated); padding: 0.375rem 0.875rem; border-radius: 20px; font-size: 0.8rem; color: var(--muted); }
+        .record-count span { color: var(--accent); font-weight: 600; }
+
+        .table-container { overflow-x: auto; max-height: 450px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        thead { position: sticky; top: 0; z-index: 10; }
+        th { background: var(--bg-elevated); padding: 0.875rem 1.25rem; text-align: left; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        td { padding: 0.875rem 1.25rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr { transition: background 0.2s; }
+        tbody tr:hover { background: rgba(16, 185, 129, 0.03); }
+        tbody tr:last-child td { border-bottom: none; }
+
+        /* Specific Cell Styles */
+        .cell-no { font-weight: 600; color: var(--muted); width: 50px; }
+        .cell-date { white-space: nowrap; color: var(--muted); font-size: 0.8rem; }
+        .cell-id { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); }
+        .cell-name { font-weight: 500; }
+        .cell-nominal { font-family: 'JetBrains Mono', monospace; text-align: right; white-space: nowrap; }
+        .cell-hadiah { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--accent); text-align: right; white-space: nowrap; }
+        
+        /* Bank Badge & Status */
+        .bank-badge { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.9rem; }
+        .bank-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; color: #fff; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        
+        .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.625rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500; }
+        .status-berakhir { background: rgba(239, 68, 68, 0.12); color: #f87171; }
+        .status-berjalan { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .status-berjalan .status-dot { animation: pulse 2s infinite; }
+
+        /* Total Row */
+        .total-row { background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), transparent); }
+        .total-row td { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.8rem; border-top: 2px solid var(--accent); color: var(--accent); }
+
+        /* Table Footer */
+        .table-footer { padding: 1.25rem 1.75rem; background: var(--bg-elevated); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 2.5rem; flex-wrap: wrap; }
+        .summary-item { text-align: right; }
+        .summary-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
+        .summary-value { font-size: 1.25rem; font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+        /* Empty State & Toast */
+        .empty-state { text-align: center; padding: 3.5rem 2rem; color: var(--muted); }
+        .empty-state svg { width: 56px; height: 56px; margin: 0 auto 1.25rem; opacity: 0.4; }
+        .empty-state h3 { font-size: 1.1rem; margin-bottom: 0.375rem; color: var(--fg); }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 1.5rem; border-radius: 12px;
+            font-weight: 500; z-index: 1000; display: flex; align-items: center; gap: 0.75rem;
+            transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent); color: var(--accent); }
+        .toast.warning { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fbbf24; }
+        .toast.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #f87171; }
+
+        @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes tabFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* Responsive adjustments omitted for brevity but present in original thought process */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .tab-nav { flex-direction: column; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg-ambient"></div>
-  <div class="circuit-pattern"></div>
+    <div class="bg-pattern"><div class="grid-lines"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-  <main class="max-w-4xl mx-auto px-5 py-12 md:py-20">
-    <!-- Header -->
-    <header class="text-center mb-12">
-      <h1 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4">
-        <span style="background: linear-gradient(135deg, #fff, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Coin Monthly MarkasWd</span>
-        <span style="background: linear-gradient(135deg, var(--accent-magenta), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"> Suite</span>
-      </h1>
-      <p class="text-sm max-w-lg mx-auto" style="color: var(--text-muted);">
-        Sistem parsing dan kalkulasi data transaksi berkinerja tinggi dengan antarmuka modern
-      </p>
-    </header>
+    <div class="container">
+        <header class="header">
+            <h1>Data Processing Center</h1>
+            <p>Kalkulator promo dan rekap bank dalam satu tempat</p>
+        </header>
 
-    <!-- Tab Navigation -->
-    <nav class="flex justify-center mb-12">
-      <div class="tab-nav-wrapper">
-        <div class="tab-slider tab-bank" id="tabSlider"></div>
-        <button class="tab-btn active" data-tab="bank" onclick="switchTab('bank')">
-          <span class="tab-icon"></span>
-          Bank Recap
-        </button>
-        <button class="tab-btn" data-tab="promo" onclick="switchTab('promo')">
-          <span class="tab-icon"></span>
-          Promo Calculator
-        </button>
-      </div>
-    </nav>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav" role="tablist">
+            <button class="tab-btn active" data-tab="promo" role="tab" aria-selected="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                Promo Calculator
+            </button>
+            <button class="tab-btn" data-tab="bank" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                Bank Recap
+            </button>
+        </nav>
 
-    <!-- ===================== BANK RECAP TAB ===================== -->
-    <div id="panel-bank" class="tab-panel active">
-      <section class="glass-panel mb-8 overflow-hidden">
-        <div class="input-box border-0 rounded-none">
-          <div class="input-header">
-            <div class="input-title">
-              <span class="live-indicator"></span>
-              Bank Transaction Stream
+        <!-- Tab 1: Promo Calculator -->
+        <div id="tab-promo" class="tab-content active" role="tabpanel">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                    <div class="stat-label">Total Record</div>
+                    <div class="stat-value" id="promo-totalRecords">0</div>
+                    <div class="stat-sub accent" id="promo-recordChange"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Menunggu input</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    <div class="stat-label">Total Hadiah Unit</div>
+                    <div class="stat-value" id="promo-totalHadiah">0</div>
+                    <div class="stat-sub warning" id="promo-hadiahChange"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Total nilai hadiah</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+                    <div class="stat-label">Total Deposit</div>
+                    <div class="stat-value" id="promo-totalDeposit">0</div>
+                    <div class="stat-sub accent" id="promo-depositChange"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Nominal deposit</div>
+                </div>
             </div>
-            <div class="flex gap-2">
-              <button class="btn btn-ghost" onclick="clearBankData()">Clear</button>
+
+            <!-- Input -->
+            <div class="input-section">
+                <div class="input-header">
+                    <div class="input-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><h2>Input Data Promo</h2></div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="loadPromoSample()">Sample</button>
+                        <button class="btn btn-danger" onclick="clearPromoData()">Clear</button>
+                        <button class="btn btn-primary" onclick="parsePromoData()">Process</button>
+                    </div>
+                </div>
+                <textarea id="promoDataInput" placeholder="Tempelkan data tab-delimited di sini...&#10;Format: No | Date | Order Id | Tujuan Promosi | ..."></textarea>
             </div>
-          </div>
-          <textarea 
-            id="bankInput"
-            placeholder="Paste data dengan format: Nominal [Tab] Bank&#10;&#10;Contoh:&#10;50000    BCA&#10;100000   DANA&#10;75000    GOPAY"
-            spellcheck="false"
-          ></textarea>
-        </div>
-      </section>
 
-      <section id="bankResults" class="hidden">
-        <div class="stats-container mb-8">
-          <div class="stat-card">
-            <div class="stat-label">Total Transaksi</div>
-            <div class="stat-value" id="bankStatCount">0</div>
-          </div>
-          <div class="stat-card gold">
-            <div class="stat-label">Total Nilai</div>
-            <div class="stat-value" id="bankStatValue">Rp 0</div>
-          </div>
-          <div class="stat-card pink">
-            <div class="stat-label">Jenis Bank</div>
-            <div class="stat-value" id="bankStatTypes">0</div>
-          </div>
+            <!-- Table -->
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-title"><h2>Parsed Data</h2></div>
+                    <div class="record-count">Menampilkan <span id="promo-displayCount">0</span> record</div>
+                </div>
+                <div class="table-container" id="promoTableContainer">
+                    <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg><h3>Belum Ada Data</h3><p>Tempelkan data di atas untuk memulai</p></div>
+                </div>
+                <div class="table-footer" id="promoTableFooter" style="display: none;">
+                    <div class="summary-item"><div class="summary-label">Total Record</div><div class="summary-value" id="promo-footerTotalRecord">0</div></div>
+                    <div class="summary-item"><div class="summary-label">Total Deposit</div><div class="summary-value" id="promo-footerTotalDeposit">Rp 0</div></div>
+                    <div class="summary-item"><div class="summary-label">Total Hadiah Unit</div><div class="summary-value" id="promo-footerTotalHadiah">0</div></div>
+                </div>
+            </div>
         </div>
 
-        <div class="table-box mb-8 relative">
-          <div class="scroll-area">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 45%;">Bank</th>
-                  <th style="width: 20%;" class="text-center">Jumlah</th>
-                  <th style="width: 35%;" class="text-right">Total Nominal</th>
-                </tr>
-              </thead>
-              <tbody id="bankTableBody"></tbody>
-            </table>
-          </div>
-        </div>
+        <!-- Tab 2: Bank Recap -->
+        <div id="tab-bank" class="tab-content" role="tabpanel">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                    <div class="stat-label">Total Transaksi</div>
+                    <div class="stat-value" id="bank-totalTrans">0</div>
+                    <div class="stat-sub accent">Jumlah entry</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    <div class="stat-label">Total Nilai</div>
+                    <div class="stat-value" id="bank-totalNilai">Rp 0</div>
+                    <div class="stat-sub warning">Akumulasi nominal</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
+                    <div class="stat-label">Jenis Bank</div>
+                    <div class="stat-value" id="bank-jenisBank">0</div>
+                    <div class="stat-sub accent">Variasi bank</div>
+                </div>
+            </div>
 
-        <div class="flex justify-center">
-          <button class="btn btn-outline" onclick="copyBankSummary()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy Summary
-          </button>
+            <!-- Input -->
+            <div class="input-section">
+                <div class="input-header">
+                    <div class="input-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><h2>Input Data Bank</h2></div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="loadBankSample()">Sample</button>
+                        <button class="btn btn-danger" onclick="clearBankData()">Clear</button>
+                        <button class="btn btn-primary" onclick="copyBankSummary()">Copy Summary</button>
+                    </div>
+                </div>
+                <textarea id="bankDataInput" placeholder="Paste data disini (Nominal [TAB] Bank)...&#10;Contoh:&#10;50000 [TAB] BCA&#10;100000 [TAB] DANA"></textarea>
+            </div>
+
+            <!-- Table -->
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-title"><h2>Bank Summary</h2></div>
+                    <div class="record-count">Menampilkan <span id="bank-displayCount">0</span> bank</div>
+                </div>
+                <div class="table-container" id="bankTableContainer">
+                    <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg><h3>Belum Ada Data</h3><p>Tempelkan data di atas untuk memulai</p></div>
+                </div>
+            </div>
         </div>
-      </section>
     </div>
 
-    <!-- ===================== PROMO CALCULATOR TAB ===================== -->
-    <div id="panel-promo" class="tab-panel">
-      <div class="stats-container mb-8">
-        <div class="stat-card">
-          <div class="stat-label">Total Record</div>
-          <div class="stat-value" id="promoStatCount">0</div>
-        </div>
-        <div class="stat-card pink">
-          <div class="stat-label">Total Hadiah</div>
-          <div class="stat-value" id="promoStatHadiah">0</div>
-        </div>
-        <div class="stat-card gold">
-          <div class="stat-label">Total Deposit</div>
-          <div class="stat-value" id="promoStatDeposit">Rp 0</div>
-        </div>
-      </div>
+    <div id="toast" class="toast"></div>
 
-      <section class="glass-panel mb-8 overflow-hidden">
-        <div class="input-box magenta border-0 rounded-none">
-          <div class="input-header">
-            <div class="input-title">
-              <span class="live-indicator"></span>
-              Promo Data Stream
-            </div>
-            <div class="flex gap-2">
-              <button class="btn btn-ghost" onclick="loadPromoSample()">Sample</button>
-              <button class="btn btn-ghost" onclick="clearPromoData()">Clear</button>
-              <button class="btn btn-magenta" onclick="parsePromoData()">Process</button>
-            </div>
-          </div>
-          <textarea 
-            id="promoInput"
-            placeholder="Paste data tab-delimited disini..."
-            spellcheck="false"
-          ></textarea>
-        </div>
-      </section>
+    <script>
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        let promoParsedData = [];
+        let bankParsedData = [];
+        let bankSummary = {};
 
-      <div class="table-box relative">
-        <div class="scroll-area" id="promoTableWrap">
-          <div class="empty-state" id="promoEmpty">
-            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="12" y1="18" x2="12" y2="12"></line>
-              <line x1="9" y1="15" x2="15" y2="15"></line>
-            </svg>
-            <div class="empty-title">Belum Ada Data</div>
-            <div class="empty-desc">Tempelkan data di atas atau muat sample untuk memulai</div>
-          </div>
-        </div>
-        <div class="footer-summary hidden" id="promoSummary">
-          <div class="summary-block">
-            <div class="summary-lbl">Total Record</div>
-            <div class="summary-val" id="promoSumRecord">0</div>
-          </div>
-          <div class="summary-block">
-            <div class="summary-lbl">Total Deposit</div>
-            <div class="summary-val" id="promoSumDeposit">Rp 0</div>
-          </div>
-          <div class="summary-block">
-            <div class="summary-lbl">Total Hadiah Unit</div>
-            <div class="summary-val" id="promoSumHadiah">0</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+        const bankStyles = {
+            'BCA': { bg: 'linear-gradient(135deg, #0066b3, #004d8c)', short: 'BCA' },
+            'DANA': { bg: 'linear-gradient(135deg, #108ee9, #0070cc)', short: 'DNA' },
+            'SEABANK': { bg: 'linear-gradient(135deg, #00a86b, #008855)', short: 'SBN' },
+            'GOPAY': { bg: 'linear-gradient(135deg, #00aa13, #008810)', short: 'GPY' },
+            'OVO': { bg: 'linear-gradient(135deg, #4c3494, #382573)', short: 'OVO' },
+            'MANDIRI': { bg: 'linear-gradient(135deg, #003d79, #002d5a)', short: 'MDR' },
+            'BRI': { bg: 'linear-gradient(135deg, #00529c, #003d75)', short: 'BRI' },
+            'BNI': { bg: 'linear-gradient(135deg, #f15a22, #d44a15)', short: 'BNI' },
+            'BSI': { bg: 'linear-gradient(135deg, #00a651, #008040)', short: 'BSI' },
+            'DOKU': { bg: 'linear-gradient(135deg, #484848, #2a2a2a)', short: 'DKU' }
+        };
 
-  <!-- Toast -->
-  <div class="toast" id="toast">
-    <svg class="toast-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-      <polyline points="22 4 12 14.01 9 11.01"></polyline>
-    </svg>
-    <span id="toastMsg" class="text-sm font-medium">Success</span>
-  </div>
+        // ============================================
+        // TAB NAVIGATION
+        // ============================================
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-  <script>
-    // ============ STATE ============
-    let bankData = [];
-    let bankSummary = {};
-    let promoData = [];
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.tab;
+                tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                tabContents.forEach(content => { content.classList.remove('active'); });
+                document.getElementById(`tab-${targetTab}`).classList.add('active');
+            });
+        });
 
-    // ============ UTILITIES ============
-    const formatNum = (n) => new Intl.NumberFormat('id-ID').format(n);
-    const formatNumInt = (n) => n.toLocaleString('en-US', { maximumFractionDigits: 0 });
-    const formatNumDec = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const formatCurrency = (n) => 'Rp ' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
-
-    const parseNum = (str) => {
-      if (!str) return 0;
-      const clean = String(str).replace(/\./g, '').replace(',', '.');
-      const num = parseFloat(clean);
-      return isNaN(num) ? 0 : num;
-    };
-
-    const showToast = (msg) => {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2800);
-    };
-
-    // ============ TAB SWITCH ============
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === tab);
-      });
-      document.querySelectorAll('.tab-panel').forEach(panel => {
-        panel.classList.toggle('active', panel.id === 'panel-' + tab);
-      });
-      
-      const slider = document.getElementById('tabSlider');
-      slider.classList.remove('tab-bank', 'tab-promo');
-      slider.classList.add(tab === 'bank' ? 'tab-bank' : 'tab-promo');
-    }
-
-    // ============ BANK RECAP LOGIC ============
-    const bankStyles = {
-      'BCA': { bg: 'linear-gradient(135deg, #0066b3, #004d8c)', code: 'BCA' },
-      'DANA': { bg: 'linear-gradient(135deg, #108ee9, #0070cc)', code: 'DNA' },
-      'SEABANK': { bg: 'linear-gradient(135deg, #00a86b, #008855)', code: 'SBN' },
-      'GOPAY': { bg: 'linear-gradient(135deg, #00aa13, #008810)', code: 'GPY' },
-      'OVO': { bg: 'linear-gradient(135deg, #4c3494, #382573)', code: 'OVO' },
-      'MANDIRI': { bg: 'linear-gradient(135deg, #003d79, #002d5a)', code: 'MDR' },
-      'BRI': { bg: 'linear-gradient(135deg, #00529c, #003d75)', code: 'BRI' },
-      'BNI': { bg: 'linear-gradient(135deg, #f15a22, #d44a15)', code: 'BNI' },
-      'SHOPEEPAY': { bg: 'linear-gradient(135deg, #ee4d2d, #d73211)', code: 'SPP' }
-    };
-
-    function processBankInput() {
-      const text = document.getElementById('bankInput').value.trim();
-      if (!text) {
-        bankData = [];
-        bankSummary = {};
-        renderBank();
-        return;
-      }
-
-      bankData = [];
-      text.split('\n').forEach(line => {
-        const parts = line.split(/\t+|\s{2,}/);
-        if (parts.length >= 2) {
-          const nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
-          const bank = parts[1].trim().toUpperCase();
-          if (!isNaN(nominal) && nominal > 0 && bank) {
-            bankData.push({ nominal, bank });
-          }
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        // Parse "1.234,56" -> 1234.56
+        function parseIndonesianNumber(str) {
+            if (!str) return 0;
+            const cleanStr = String(str).replace(/\./g, '').replace(',', '.');
+            const num = parseFloat(cleanStr);
+            return isNaN(num) ? 0 : num;
         }
-      });
 
-      bankSummary = {};
-      bankData.forEach(item => {
-        if (!bankSummary[item.bank]) bankSummary[item.bank] = { count: 0, total: 0 };
-        bankSummary[item.bank].count++;
-        bankSummary[item.bank].total += item.nominal;
-      });
-
-      renderBank();
-    }
-
-    function renderBank() {
-      const results = document.getElementById('bankResults');
-      if (bankData.length === 0) {
-        results.classList.add('hidden');
-        return;
-      }
-
-      results.classList.remove('hidden');
-
-      const totalVal = bankData.reduce((s, i) => s + i.nominal, 0);
-      const bankCount = Object.keys(bankSummary).length;
-
-      document.getElementById('bankStatCount').textContent = bankData.length;
-      document.getElementById('bankStatValue').textContent = formatCurrency(totalVal);
-      document.getElementById('bankStatTypes').textContent = bankCount;
-
-      const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
-
-      let html = '';
-      sorted.forEach(([bank, data], i) => {
-        const style = bankStyles[bank] || { bg: 'linear-gradient(135deg, #3a4a5a, #2a3a4a)', code: bank.substring(0, 3).toUpperCase() };
-        html += `
-          <tr class="anim-row" style="animation-delay: ${i * 40}ms">
-            <td>
-              <div class="bank-badge">
-                <div class="bank-logo" style="background: ${style.bg}">${style.code}</div>
-                <span class="bank-name">${bank}</span>
-              </div>
-            </td>
-            <td class="cell-center">${data.count}</td>
-            <td class="cell-right">${formatCurrency(data.total)}</td>
-          </tr>
-        `;
-      });
-
-      html += `
-        <tr class="total-row anim-row" style="animation-delay: ${sorted.length * 40}ms">
-          <td><span class="total-label">Total</span></td>
-          <td class="cell-center">${bankData.length}</td>
-          <td class="cell-right total-value">${formatCurrency(totalVal)}</td>
-        </tr>
-      `;
-
-      document.getElementById('bankTableBody').innerHTML = html;
-    }
-
-    function copyBankSummary() {
-      if (!bankData.length) return;
-      const totalVal = bankData.reduce((s, i) => s + i.nominal, 0);
-      const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
-
-      let txt = '═══════════════════════════════\n        REKAP DATA BANK\n═══════════════════════════════\n\n';
-      sorted.forEach(([bank, d]) => {
-        txt += bank.padEnd(10) + ' : ' + d.count.toString().padStart(3) + ' trx  |  Rp ' + formatNum(d.total) + '\n';
-      });
-      txt += '\n───────────────────────────────\nTOTAL'.padEnd(10) + ' : ' + bankData.length.toString().padStart(3) + ' trx  |  Rp ' + formatNum(totalVal) + '\n═══════════════════════════════';
-
-      navigator.clipboard.writeText(txt).then(() => showToast('Summary berhasil disalin'));
-    }
-
-    function clearBankData() {
-      document.getElementById('bankInput').value = '';
-      bankData = [];
-      bankSummary = {};
-      renderBank();
-    }
-
-    // ============ PROMO CALC LOGIC ============
-    function parsePromoData() {
-      const input = document.getElementById('promoInput').value.trim();
-      if (!input) {
-        showToast('Masukkan data terlebih dahulu');
-        return;
-      }
-
-      const lines = input.split('\n').filter(l => l.trim());
-      promoData = [];
-
-      const startIdx = lines[0].toLowerCase().includes('no') && lines[0].toLowerCase().includes('date') ? 1 : 0;
-
-      for (let i = startIdx; i < lines.length; i++) {
-        const cols = lines[i].split('\t').map(c => c.trim());
-        if (cols.length >= 12) {
-          promoData.push({
-            no: cols[0],
-            date: cols[1],
-            orderId: cols[2],
-            nama: cols[9],
-            jenis: cols[6],
-            status: cols[7],
-            deposit: parseNum(cols[10]),
-            hadiah: parseNum(cols[11])
-          });
+        // Format 1234.56 -> "1,234.56" (US Style for Promo)
+        function formatNumber(num, decimals = 0) {
+            if (isNaN(num) || num === null) return '0';
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
         }
-      }
 
-      if (!promoData.length) {
-        showToast('Format data tidak valid');
-        return;
-      }
+        // Format 123456 -> "Rp 123.456" (ID Style for Bank)
+        function formatRupiah(num) {
+            if (isNaN(num) || num === null) return 'Rp 0';
+            return 'Rp ' + num.toLocaleString('id-ID');
+        }
 
-      renderPromo();
-      showToast(`${promoData.length} record berhasil diproses`);
-    }
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = `toast ${type}`;
+            const icons = {
+                success: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+                warning: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>',
+                error: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+            };
+            toast.innerHTML = `${icons[type] || icons.success}<span>${message}</span>`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
 
-    function renderPromo() {
-      const totalDep = promoData.reduce((s, r) => s + r.deposit, 0);
-      const totalHadiah = promoData.reduce((s, r) => s + r.hadiah, 0);
+        function animateValue(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            element.style.transform = 'scale(1.1)';
+            element.style.color = 'var(--accent)';
+            element.textContent = newValue;
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+                element.style.color = ''; // Revert to CSS default
+            }, 200);
+        }
 
-      document.getElementById('promoStatCount').textContent = promoData.length;
-      document.getElementById('promoStatHadiah').textContent = formatNumDec(totalHadiah);
-      document.getElementById('promoStatDeposit').textContent = formatCurrency(totalDep);
+        // ============================================
+        // PROMO CALCULATOR LOGIC
+        // ============================================
+        
+        function parsePromoData() {
+            const input = document.getElementById('promoDataInput').value.trim();
+            if (!input) { showToast('Masukkan data terlebih dahulu', 'warning'); return; }
 
-      document.getElementById('promoSumRecord').textContent = formatNumInt(promoData.length);
-      document.getElementById('promoSumDeposit').textContent = formatCurrency(totalDep);
-      document.getElementById('promoSumHadiah').textContent = formatNumDec(totalHadiah);
-      document.getElementById('promoSummary').classList.remove('hidden');
+            const lines = input.split('\n').filter(line => line.trim());
+            promoParsedData = [];
+            // Skip header if detected
+            const startIndex = lines[0].toLowerCase().includes('no') && lines[0].toLowerCase().includes('date') ? 1 : 0;
 
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Date</th>
-              <th>Order ID</th>
-              <th>Nama Pemain</th>
-              <th>Jenis Promosi</th>
-              <th>Status</th>
-              <th class="text-right">Deposit</th>
-              <th class="text-right">Hadiah Unit</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
+            for (let i = startIndex; i < lines.length; i++) {
+                const cols = lines[i].trim().split('\t').map(col => col.trim());
+                if (cols.length >= 12) {
+                    promoParsedData.push({
+                        no: cols[0], date: cols[1], orderId: cols[2], tujuanPromosi: cols[3],
+                        kodePromosi: cols[4], batasKlaim: cols[5], jenisPromosi: cols[6],
+                        statusProgress: cols[7], jenisPartisipasi: cols[8], namaPemain: cols[9],
+                        nominalDeposit: parseIndonesianNumber(cols[10]),
+                        hadiahUnit: parseIndonesianNumber(cols[11])
+                    });
+                }
+            }
 
-      promoData.forEach((row, i) => {
-        const statusClass = row.status.toLowerCase() === 'berakhir' ? 'status-ended' : 'status-running';
-        const shortId = row.orderId.length > 16 ? row.orderId.substring(0, 16) + '...' : row.orderId;
+            if (promoParsedData.length === 0) { showToast('Format data tidak dikenali', 'error'); return; }
+            
+            updatePromoDisplay();
+            showToast(`Berhasil memproses ${promoParsedData.length} record`, 'success');
+        }
 
-        html += `
-          <tr class="anim-row" style="animation-delay: ${Math.min(i * 30, 450)}ms">
-            <td style="color: var(--text-muted); width: 50px;">${row.no}</td>
-            <td class="font-mono" style="font-size: 12px; color: var(--text-muted); white-space: nowrap;">${row.date}</td>
-            <td class="font-mono" style="font-size: 11px; color: var(--accent-magenta);">${shortId}</td>
-            <td style="font-weight: 500;">${row.nama}</td>
-            <td>${row.jenis}</td>
-            <td>
-              <span class="status-tag ${statusClass}">
-                <span class="dot"></span>
-                ${row.status}
-              </span>
-            </td>
-            <td class="cell-right">${formatNumInt(row.deposit)}</td>
-            <td class="cell-highlight">${formatNumDec(row.hadiah)}</td>
-          </tr>
-        `;
-      });
+        function updatePromoDisplay() {
+            const totalRecords = promoParsedData.length;
+            const totalHadiah = promoParsedData.reduce((sum, row) => sum + row.hadiahUnit, 0);
+            const totalDeposit = promoParsedData.reduce((sum, row) => sum + row.nominalDeposit, 0);
 
-      html += '</tbody></table>';
-      document.getElementById('promoTableWrap').innerHTML = html;
-    }
+            animateValue('promo-totalRecords', formatNumber(totalRecords));
+            animateValue('promo-totalHadiah', formatNumber(totalHadiah, 2));
+            animateValue('promo-totalDeposit', formatNumber(totalDeposit, 0));
 
-    function clearPromoData() {
-      document.getElementById('promoInput').value = '';
-      promoData = [];
-      document.getElementById('promoStatCount').textContent = '0';
-      document.getElementById('promoStatHadiah').textContent = '0';
-      document.getElementById('promoStatDeposit').textContent = 'Rp 0';
-      document.getElementById('promoSummary').classList.add('hidden');
-      document.getElementById('promoTableWrap').innerHTML = `
-        <div class="empty-state" id="promoEmpty">
-          <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="12" y1="18" x2="12" y2="12"></line>
-            <line x1="9" y1="15" x2="15" y2="15"></line>
-          </svg>
-          <div class="empty-title">Belum Ada Data</div>
-          <div class="empty-desc">Tempelkan data di atas atau muat sample untuk memulai</div>
-        </div>
-      `;
-      showToast('Data dihapus');
-    }
+            renderPromoTable();
 
-    function loadPromoSample() {
-      const sample = `No\tDate\tOrder Id\tTujuan Promosi\tKode Promosi\tBatas Klaim Promo\tJenis Promosi\tStatus Progress\tJenis Partisipasi\tNama Pemain\tNominal Deposit\tHadiah Unit\tTarget Permainan\tTotal Turnover\tTarget Turnover
+            document.getElementById('promo-displayCount').textContent = totalRecords;
+            document.getElementById('promo-footerTotalRecord').textContent = formatNumber(totalRecords);
+            document.getElementById('promo-footerTotalDeposit').textContent = formatRupiah(totalDeposit); // Use Rupiah for footer
+            document.getElementById('promo-footerTotalHadiah').textContent = formatNumber(totalHadiah, 2);
+            document.getElementById('promoTableFooter').style.display = 'flex';
+        }
+
+        function renderPromoTable() {
+            const container = document.getElementById('promoTableContainer');
+            if (promoParsedData.length === 0) {
+                 container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>Belum Ada Data</h3><p>Tempelkan data di atas untuk memulai</p></div>';
+                return;
+            }
+
+            let html = `<table><thead><tr><th>No</th><th>Date</th><th>Order ID</th><th>Nama Pemain</th><th>Jenis Promosi</th><th>Status</th><th style="text-align: right;">Deposit</th><th style="text-align: right;">Hadiah</th></tr></thead><tbody>`;
+            
+            promoParsedData.forEach((row, index) => {
+                const statusClass = row.statusProgress.toLowerCase() === 'berakhir' ? 'status-berakhir' : 'status-berjalan';
+                const delay = Math.min(index * 0.025, 0.4);
+                html += `<tr style="animation-delay: ${delay}s">
+                    <td class="cell-no">${row.no}</td>
+                    <td class="cell-date">${row.date}</td>
+                    <td class="cell-id">${row.orderId.substring(0, 18)}...</td>
+                    <td class="cell-name">${row.namaPemain}</td>
+                    <td>${row.jenisPromosi}</td>
+                    <td class="cell-status"><span class="status-badge ${statusClass}"><span class="status-dot"></span>${row.statusProgress}</span></td>
+                    <td class="cell-nominal">${formatNumber(row.nominalDeposit, 0)}</td>
+                    <td class="cell-hadiah">${formatNumber(row.hadiahUnit, 2)}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function clearPromoData() {
+            document.getElementById('promoDataInput').value = '';
+            promoParsedData = [];
+            
+            document.getElementById('promo-totalRecords').textContent = '0';
+            document.getElementById('promo-totalHadiah').textContent = '0';
+            document.getElementById('promo-totalDeposit').textContent = '0';
+            document.getElementById('promo-displayCount').textContent = '0';
+            document.getElementById('promoTableFooter').style.display = 'none';
+            
+            document.getElementById('promoTableContainer').innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>Belum Ada Data</h3><p>Tempelkan data di atas untuk memulai</p></div>';
+            showToast('Data promo berhasil dihapus', 'success');
+        }
+
+        function loadPromoSample() {
+            const sampleData = `No\tDate\tOrder Id\tTujuan Promosi\tKode Promosi\tBatas Klaim Promo\tJenis Promosi\tStatus Progress\tJenis Partisipasi\tNama Pemain\tNominal Deposit\tHadiah Unit\tTarget Permainan\tTotal Turnover\tTarget Turnover
 1\t2026-03-07 23:02:50\tMinera281700917728993040258\tall\tACTIVITY0000000097\t7\tDEPOSIT ULANG\tBerakhir\tkategori\tnl0212\t50.000\t7.500\t4\t402.600\t402.500
 2\t2026-03-07 22:07:25\tMinera263943217728959939428\tall\tACTIVITY0000000097\t2\tDEPOSIT ULANG\tBerakhir\tkategori\tgardu24\t50.001\t7.500,15\t4\t402.700\t402.508,05
-3\t2026-03-07 21:24:13\tMinera280045117728934042341\tall\tACTIVITY0000000097\t4\tDEPOSIT ULANG\tBerakhir\tkategori\tsmogajp89\t100.000\t15.000\t4\t818.900\t805.000
-4\t2026-03-07 20:15:33\tMinera275632817728900227890\tall\tACTIVITY0000000097\t3\tDEPOSIT ULANG\tBerjalan\tkategori\tplayerX\t250.000\t37.500\t4\t1.250.000\t1.000.000`;
-      document.getElementById('promoInput').value = sample;
-      parsePromoData();
-    }
+3\t2026-03-07 21:24:13\tMinera280045117728934042341\tall\tACTIVITY0000000097\t4\tDEPOSIT ULANG\tBerakhir\tkategori\tsmogajp89\t100.000\t15.000\t4\t818.900\t805.000`;
+            document.getElementById('promoDataInput').value = sampleData;
+            parsePromoData();
+        }
 
-    // ============ EVENT LISTENERS ============
-    document.getElementById('bankInput').addEventListener('input', processBankInput);
-    document.getElementById('bankInput').addEventListener('paste', () => setTimeout(processBankInput, 50));
-    document.getElementById('promoInput').addEventListener('paste', () => setTimeout(parsePromoData, 100));
+        // ============================================
+        // BANK RECAP LOGIC
+        // ============================================
 
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === 'Enter') {
-        if (document.querySelector('.tab-btn.active').dataset.tab === 'promo') parsePromoData();
-      }
-    });
-  </script>
+        function processBankInput() {
+            const text = document.getElementById('bankDataInput').value;
+            if (!text.trim()) {
+                bankParsedData = []; bankSummary = {}; renderBankTable(); return;
+            }
+            
+            const lines = text.trim().split('\n');
+            bankParsedData = [];
+            lines.forEach(line => {
+                const parts = line.split(/\t+|\s{2,}/); // Split by tab or multiple spaces
+                if (parts.length >= 2) {
+                    const nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
+                    const bank = parts[1].trim().toUpperCase();
+                    if (!isNaN(nominal) && nominal > 0 && bank) {
+                        bankParsedData.push({ nominal, bank });
+                    }
+                }
+            });
+
+            // Calculate Summary
+            bankSummary = {};
+            bankParsedData.forEach(item => {
+                if (!bankSummary[item.bank]) bankSummary[item.bank] = { count: 0, total: 0 };
+                bankSummary[item.bank].count++;
+                bankSummary[item.bank].total += item.nominal;
+            });
+            
+            renderBankTable();
+        }
+
+        function renderBankTable() {
+            const container = document.getElementById('bankTableContainer');
+            
+            if (bankParsedData.length === 0) {
+                container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>Belum Ada Data</h3><p>Tempelkan data di atas untuk memulai</p></div>';
+                animateValue('bank-totalTrans', '0');
+                animateValue('bank-totalNilai', 'Rp 0');
+                animateValue('bank-jenisBank', '0');
+                document.getElementById('bank-displayCount').textContent = '0';
+                return;
+            }
+
+            const totalNominal = bankParsedData.reduce((s, i) => s + i.nominal, 0);
+            const bankCount = Object.keys(bankSummary).length;
+            
+            animateValue('bank-totalTrans', formatNumber(bankParsedData.length));
+            animateValue('bank-totalNilai', formatRupiah(totalNominal));
+            animateValue('bank-jenisBank', formatNumber(bankCount));
+            document.getElementById('bank-displayCount').textContent = bankCount;
+
+            const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
+
+            let html = `<table><thead><tr><th>Bank</th><th style="text-align: center;">Jumlah Trx</th><th style="text-align: right;">Total Nominal</th></tr></thead><tbody>`;
+            
+            sorted.forEach(([bank, data], idx) => {
+                const style = bankStyles[bank] || { bg: 'linear-gradient(135deg, #3a4a5a, #2a3a4a)', short: bank.substring(0, 3).toUpperCase() };
+                const delay = Math.min(idx * 0.03, 0.4);
+                html += `<tr style="animation-delay: ${delay}s">
+                    <td><div class="bank-badge"><div class="bank-icon" style="background: ${style.bg}">${style.short}</div><span>${bank}</span></div></td>
+                    <td class="cell-nominal" style="text-align: center;">${formatNumber(data.count)}</td>
+                    <td class="cell-hadiah">${formatRupiah(data.total)}</td>
+                </tr>`;
+            });
+
+            // Total Row
+            html += `<tr class="total-row" style="animation-delay: ${sorted.length * 0.03}s">
+                <td class="cell-name" style="font-weight: 700;">TOTAL</td>
+                <td class="cell-nominal" style="text-align: center; font-weight: 700;">${formatNumber(bankParsedData.length)}</td>
+                <td class="cell-hadiah" style="font-weight: 700;">${formatRupiah(totalNominal)}</td>
+            </tr>`;
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function clearBankData() {
+            document.getElementById('bankDataInput').value = '';
+            bankParsedData = [];
+            bankSummary = {};
+            renderBankTable(); // Will handle reset of stats and empty state
+            showToast('Data bank berhasil dihapus', 'success');
+        }
+
+        function loadBankSample() {
+            const sampleData = `50000\tBCA\n100000\tDANA\n75000\tSEABANK\n50000\tBCA\n25000\tOVO\n150000\tMANDIRI`;
+            document.getElementById('bankDataInput').value = sampleData;
+            processBankInput();
+            showToast('Sample data bank berhasil dimuat', 'success');
+        }
+
+        function copyBankSummary() {
+            if (Object.keys(bankSummary).length === 0) { showToast('Tidak ada data untuk dicopy', 'warning'); return; }
+
+            const totalNominal = bankParsedData.reduce((s, i) => s + i.nominal, 0);
+            const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
+
+            let txt = '═══════════════════════════════\n        REKAP DATA BANK\n═══════════════════════════════\n\n';
+            sorted.forEach(([bank, data]) => {
+                txt += bank.padEnd(10) + ' : ' + data.count.toString().padStart(3) + ' trx  |  Rp ' + data.total.toLocaleString('id-ID') + '\n';
+            });
+            txt += '\n───────────────────────────────\n';
+            txt += 'TOTAL'.padEnd(10) + ' : ' + bankParsedData.length.toString().padStart(3) + ' trx  |  Rp ' + totalNominal.toLocaleString('id-ID') + '\n';
+            txt += '═══════════════════════════════';
+
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast('Summary berhasil dicopy', 'success');
+            }).catch(() => {
+                showToast('Gagal copy ke clipboard', 'error');
+            });
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        document.getElementById('promoDataInput').addEventListener('paste', function() {
+            setTimeout(parsePromoData, 100);
+        });
+
+        document.getElementById('bankDataInput').addEventListener('input', processBankInput);
+        document.getElementById('bankDataInput').addEventListener('paste', function() {
+            setTimeout(processBankInput, 50);
+        });
+
+    </script>
 </body>
 </html>
-
