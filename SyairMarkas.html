@@ -35,7 +35,6 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            /* Background Image - Solid, no transparency overlay */
             background-image: url('https://cdn.areabermain.club/assets/cdn/az5/2026/03/03/20260303/7c64d52609ea9a12b56475a82d6f768d/background-web-markaswd-1.jpg');
             background-size: cover;
             background-position: center;
@@ -43,7 +42,7 @@
             background-repeat: no-repeat;
         }
 
-        /* Cards - Solid tidak transparan */
+        /* Cards Solid */
         .card-solid {
             background: var(--bg-card);
             border: 2px solid var(--border-gold);
@@ -55,56 +54,36 @@
         .card-solid::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 3px;
             background: linear-gradient(90deg, var(--accent-gold-dark), var(--accent-gold), var(--accent-gold-dark));
             border-radius: 10px 10px 0 0;
         }
 
-        .card-solid:hover {
-            border-color: var(--accent-gold-light);
-            box-shadow: 0 0 30px rgba(201, 162, 39, 0.3);
-        }
-
-        /* Logo */
         .logo-img {
             max-height: 70px;
             width: auto;
             filter: drop-shadow(0 0 10px rgba(201, 162, 39, 0.5));
         }
 
-        /* Number Display */
         .number-display {
             font-family: 'Cinzel', serif;
             font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 900;
             color: var(--accent-gold);
-            text-shadow: 
-                0 0 10px rgba(201, 162, 39, 0.5),
-                2px 2px 0 var(--accent-gold-dark);
-            animation: numberGlow 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(201, 162, 39, 0.5), 2px 2px 0 var(--accent-gold-dark);
         }
 
-        @keyframes numberGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(201, 162, 39, 0.5), 2px 2px 0 var(--accent-gold-dark); }
-            50% { text-shadow: 0 0 25px rgba(201, 162, 39, 0.8), 2px 2px 0 var(--accent-gold-dark); }
-        }
-
-        /* Date Badge */
         .date-badge {
             background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 100%);
             color: var(--text-light);
             font-weight: 700;
             padding: 0.75rem 2rem;
             border-radius: 8px;
-            display: inline-block;
             border: 2px solid var(--accent-gold);
             box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
         }
 
-        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-gold-dark) 0%, var(--accent-gold) 50%, var(--accent-gold-dark) 100%);
             color: var(--bg-secondary);
@@ -115,257 +94,116 @@
             cursor: pointer;
             font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
         }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(201, 162, 39, 0.6); }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(-1px);
-        }
-
-        /* Lucky Numbers Grid */
-        .lucky-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
+        .lucky-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .lucky-num {
-            background: var(--bg-secondary);
-            border: 2px solid var(--accent-gold);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--accent-gold);
-            transition: all 0.3s ease;
-            cursor: pointer;
+            background: var(--bg-secondary); border: 2px solid var(--accent-gold); border-radius: 8px;
+            padding: 1rem; text-align: center; font-family: 'Cinzel', serif; font-weight: 700;
+            font-size: 1.5rem; color: var(--accent-gold); transition: all 0.3s ease; cursor: pointer;
         }
+        .lucky-num:hover { background: var(--accent-gold); color: var(--bg-secondary); transform: scale(1.1); }
 
-        .lucky-num:hover {
-            background: var(--accent-gold);
-            color: var(--bg-secondary);
-            transform: scale(1.1);
-        }
-
-        /* BBFS */
         .bbfs-num {
-            background: var(--bg-secondary);
-            border: 2px solid var(--accent-red-light);
-            border-radius: 6px;
-            padding: 0.5rem;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--accent-red-light);
+            background: var(--bg-secondary); border: 2px solid var(--accent-red-light); border-radius: 6px;
+            padding: 0.5rem; text-align: center; font-family: 'Cinzel', serif; font-weight: 700;
+            font-size: 1.2rem; color: var(--accent-red-light);
         }
-
         .bbfs-main-num {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--accent-red-light);
-            text-shadow: 0 0 15px rgba(178, 34, 34, 0.5);
+            font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 900;
+            color: var(--accent-red-light); text-shadow: 0 0 15px rgba(178, 34, 34, 0.5);
         }
 
-        /* Reveal Animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .nav-link { color: var(--text-muted); transition: color 0.3s ease; position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-gold); transition: width 0.3s ease; }
+        .nav-link:hover { color: var(--accent-gold); }
+        .nav-link:hover::after { width: 100%; }
 
-        /* Nav Links */
-        .nav-link {
-            color: var(--text-muted);
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-gold);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Marquee */
         .marquee-container {
             background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--accent-red) 50%, var(--bg-secondary) 100%);
-            border-top: 2px solid var(--accent-gold);
-            border-bottom: 2px solid var(--accent-gold);
-            overflow: hidden;
-            padding: 0.75rem 0;
+            border-top: 2px solid var(--accent-gold); border-bottom: 2px solid var(--accent-gold);
+            overflow: hidden; padding: 0.75rem 0;
         }
+        .marquee-content { display: flex; animation: marquee 25s linear infinite; white-space: nowrap; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee-item { margin: 0 3rem; color: var(--accent-gold); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        .marquee-content {
-            display: flex;
-            animation: marquee 25s linear infinite;
-            white-space: nowrap;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .marquee-item {
-            margin: 0 3rem;
-            color: var(--accent-gold);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* SHIO CARD - SOLID */
+        /* SHIO CARD - ENHANCED */
         .shio-card {
-            background: var(--bg-card);
-            border: 3px solid var(--accent-gold);
-            border-radius: 16px;
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            background: var(--bg-card); border: 3px solid var(--accent-gold); border-radius: 16px;
+            position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
-
         .shio-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
             background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-red));
             border-radius: 12px 12px 0 0;
         }
 
         .shio-frame {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto;
+            position: relative; width: 220px; height: 220px; margin: 0 auto;
         }
-
         .shio-circle-outer {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 4px solid var(--accent-gold);
-            background: var(--bg-secondary);
-            animation: pulseBorder 3s ease-in-out infinite;
+            position: absolute; inset: 0; border-radius: 50%; border: 4px solid var(--accent-gold);
+            background: var(--bg-secondary); animation: pulseBorder 3s ease-in-out infinite;
         }
-
         @keyframes pulseBorder {
             0%, 100% { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(201, 162, 39, 0.3); }
             50% { border-color: var(--accent-gold-light); box-shadow: 0 0 40px rgba(201, 162, 39, 0.6); }
         }
-
         .shio-circle-inner {
-            position: absolute;
-            inset: 10px;
-            border-radius: 50%;
-            background: var(--bg-primary);
+            position: absolute; inset: 8px; border-radius: 50%;
+            background: radial-gradient(circle at center, #2a2a2a 0%, #111 100%);
             border: 2px solid var(--accent-gold-dark);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+
+        /* Realistic Animal Photo Style */
+        .shio-animal {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
-
-        /* Pencil Sketch Style untuk Gambar Shio */
-        .shio-animal {
-            width: 160px;
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .shio-animal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            /* Filter untuk efek foto hitam putih kontras tinggi */
+            filter: grayscale(100%) contrast(120%) brightness(90%) sepia(20%);
+            mix-blend-mode: normal;
+            transition: transform 0.5s ease;
+        }
+        
+        .shio-animal:hover img {
+            transform: scale(1.1);
         }
 
         .shio-name {
-            font-family: 'Cinzel', serif;
-            font-weight: 900;
-            font-size: 1.8rem;
-            color: var(--accent-gold);
-            text-align: center;
-            text-shadow: 2px 2px 0 var(--accent-gold-dark);
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.8rem;
+            color: var(--accent-gold); text-align: center; text-shadow: 2px 2px 0 var(--accent-gold-dark);
         }
-
-        .shio-numbers {
-            position: absolute;
-            inset: 0;
-        }
-
+        .shio-numbers { position: absolute; inset: 0; }
         .shio-number {
-            position: absolute;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 12px;
-            color: var(--accent-gold);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            position: absolute; font-family: 'Cinzel', serif; font-weight: 700; font-size: 12px;
+            color: var(--accent-gold); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
-        .shio-info {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid var(--accent-gold-dark);
-        }
+        .shio-info { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--accent-gold-dark); }
+        .shio-info-item { text-align: center; }
+        .shio-info-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; }
+        .shio-info-value { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--accent-gold); }
 
-        .shio-info-item {
-            text-align: center;
-        }
-
-        .shio-info-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.25rem;
-        }
-
-        .shio-info-value {
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--accent-gold);
-        }
-
-        .element-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: 1px solid;
-        }
-
+        .element-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid; }
         .element-fire { background: #3d1515; color: #ff6b6b; border-color: #ff6b6b; }
         .element-water { background: #15253d; color: #6bb8ff; border-color: #6bb8ff; }
         .element-wood { background: #153d1f; color: #6bff9b; border-color: #6bff9b; }
@@ -373,61 +211,20 @@
         .element-earth { background: #3d2d15; color: #d4a86a; border-color: #d4a86a; }
 
         .shio-lucky-num {
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--accent-red-light);
-            padding: 0.5rem 1rem;
-            background: var(--bg-secondary);
-            border: 2px solid var(--accent-red);
-            border-radius: 8px;
+            font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.5rem;
+            color: var(--accent-red-light); padding: 0.5rem 1rem;
+            background: var(--bg-secondary); border: 2px solid var(--accent-red); border-radius: 8px;
         }
 
-        /* Syair Text */
-        .syair-text {
-            font-size: 1rem;
-            line-height: 2;
-            color: var(--text-light);
-            text-align: center;
-            font-style: italic;
-        }
+        .syair-text { font-size: 1rem; line-height: 2; color: var(--text-light); text-align: center; font-style: italic; }
+        .section-title { font-family: 'Cinzel', serif; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; }
 
-        /* Section Titles */
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 1rem;
-        }
+        .hero-container { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 16px; padding: 2rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .lucky-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .shio-frame {
-                width: 180px;
-                height: 180px;
-            }
-            .shio-animal {
-                width: 130px;
-                height: 130px;
-            }
-            .shio-info {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-
-        /* Hero Container with solid background */
-        .hero-container {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            .lucky-grid { grid-template-columns: repeat(4, 1fr); }
+            .shio-frame { width: 180px; height: 180px; }
+            .shio-info { flex-direction: column; gap: 1rem; }
         }
     </style>
 </head>
@@ -439,12 +236,12 @@
             <span class="marquee-item">SELAMAT DATANG DI MARKASWD</span>
             <span class="marquee-item">SITUS TOGEL TERPERCAYA</span>
             <span class="marquee-item">SYAIR HARIAN AKURAT</span>
-            <span class="marquee-item">BONUS MEMBER BARU 100%</span>
+            <span class="marquee-item">100% AMANAH & RESMI</span>
             <span class="marquee-item">WD PROSES CEPAT 1 MENIT</span>
             <span class="marquee-item">SELAMAT DATANG DI MARKASWD</span>
             <span class="marquee-item">SITUS TOGEL TERPERCAYA</span>
             <span class="marquee-item">SYAIR HARIAN AKURAT</span>
-            <span class="marquee-item">BONUS MEMBER BARU 100%</span>
+            <span class="marquee-item">SEMUA KEMENANGAN TERBAYARKAN</span>
             <span class="marquee-item">WD PROSES CEPAT 1 MENIT</span>
         </div>
     </div>
@@ -454,8 +251,7 @@
         <nav class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="font-bold text-xl" style="font-family: 'Cinzel', serif; color: var(--accent-gold);">
                 <img src="https://cdn.areabermain.club/assets/cdn/az6/2026/02/03/20260203/ef961ffb6336c590760f37cffac2040a/test-logo-markaswd.png" 
-                     alt="MARKASWD Logo" 
-                     class="logo-img"
+                     alt="MARKASWD Logo" class="logo-img"
                      onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='MARKASWD';">
             </div>
             <div class="flex gap-6 text-sm">
@@ -472,12 +268,10 @@
     <main class="px-4 py-10">
         <div class="max-w-6xl mx-auto">
             
-            <!-- Hero Section with Solid Background -->
+            <!-- Hero Section -->
             <section class="text-center mb-12 reveal">
                 <div class="hero-container">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-3" style="font-family: 'Cinzel', serif; color: var(--accent-gold);">
-                        MARKASWD
-                    </h1>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-3" style="font-family: 'Cinzel', serif; color: var(--accent-gold);">MARKASWD</h1>
                     <p class="text-lg mb-6" style="color: var(--text-muted);">Syair Togel Harian Paling Akurat</p>
                     <div class="date-badge" id="dateDisplay"></div>
                 </div>
@@ -492,31 +286,27 @@
                         <h2 class="section-title">SHIO HARI INI</h2>
                     </div>
 
-                    <!-- Shio Frame dengan Gambar Pencil Sketch -->
                     <div class="shio-frame" id="shioFrame">
                         <div class="shio-circle-outer"></div>
                         <div class="shio-circle-inner">
-                            <div class="shio-animal" id="shioAnimal"></div>
+                            <div class="shio-animal" id="shioAnimal">
+                                <!-- Gambar akan dimasukkan di sini oleh JS -->
+                            </div>
                         </div>
                         <div class="shio-numbers" id="shioNumbers"></div>
                     </div>
 
-                    <!-- Shio Name -->
                     <div class="mt-4">
                         <div class="shio-name" id="shioName">SHIO BABI</div>
                         <p class="text-center mt-1" style="color: var(--text-muted); font-size: 0.85rem;" id="shioYears">Tahun: 1959, 1971, 1983, 1995, 2007, 2019</p>
                     </div>
 
-                    <!-- Shio Lucky Numbers -->
                     <div class="flex justify-center gap-3 mt-4" id="shioLuckyNumbers"></div>
 
-                    <!-- Info Shio -->
                     <div class="shio-info">
                         <div class="shio-info-item">
                             <div class="shio-info-label">Elemen</div>
-                            <div class="shio-info-value">
-                                <span class="element-badge element-fire" id="shioElement">Api</span>
-                            </div>
+                            <div class="shio-info-value"><span class="element-badge element-fire" id="shioElement">Api</span></div>
                         </div>
                         <div class="shio-info-item">
                             <div class="shio-info-label">Angka Keberuntungan</div>
@@ -531,7 +321,6 @@
 
                 <!-- Kanan: BBFS dan Angka Main -->
                 <section class="space-y-6">
-                    <!-- BBFS Card -->
                     <div class="card-solid p-6 reveal" style="transition-delay: 0.15s;">
                         <h3 class="section-title text-center mb-4">BBFS (Bolak-Balik)</h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -550,13 +339,11 @@
                         </div>
                     </div>
 
-                    <!-- Angka Main Card -->
                     <div class="card-solid p-6 reveal" style="transition-delay: 0.2s;">
                         <h3 class="section-title text-center mb-2">ANGKA MAIN HARI INI</h3>
                         <div class="number-display text-center" id="mainNumber">--</div>
                     </div>
 
-                    <!-- Lucky Numbers Grid -->
                     <div class="card-solid p-6 reveal" style="transition-delay: 0.25s;">
                         <h3 class="section-title text-center mb-4">ANGKA BERKAT 2D</h3>
                         <div class="lucky-grid" id="luckyGrid"></div>
@@ -568,14 +355,10 @@
             <section class="card-solid p-8 mb-8 reveal" style="transition-delay: 0.3s;">
                 <div class="text-center mb-6">
                     <h3 class="section-title mb-4">SYAIR HARIAN</h3>
-                    <div class="syair-text" id="syairDisplay">
-                        <p>Loading syair...</p>
-                    </div>
+                    <div class="syair-text" id="syairDisplay"><p>Loading syair...</p></div>
                 </div>
                 <div class="flex justify-center">
-                    <button class="btn-primary" id="generateBtn" onclick="generateNewSyair()">
-                        GENERATE SYAIR BARU
-                    </button>
+                    <button class="btn-primary" id="generateBtn" onclick="generateNewSyair()">GENERATE SYAIR BARU</button>
                 </div>
             </section>
 
@@ -615,254 +398,83 @@
     </footer>
 
     <script>
-        // Data Shio dengan gambar pencil sketch hitam putih
+        // Data Shio dengan URL Foto Asli dari Unsplash
         const shioData = [
             { 
                 name: 'TIKUS', 
-                icon: 'fa-rat',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M50 85 C30 85 20 70 20 55 C20 35 35 25 50 25 C65 25 80 35 80 55 C80 70 70 85 50 85"/>
-                    <path class="sketch" d="M25 50 C15 45 10 35 15 30 C20 25 30 30 30 40"/>
-                    <path class="sketch" d="M75 50 C85 45 90 35 85 30 C80 25 70 30 70 40"/>
-                    <circle class="sketch" cx="40" cy="45" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="45" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M45 60 C50 65 55 60 55 60"/>
-                    <path class="sketch" d="M48 50 L48 55 L52 55 L52 50"/>
-                    <path class="sketch" d="M25 55 L5 50 M25 60 L5 60 M25 65 L10 75"/>
-                    <path class="sketch" d="M75 55 L95 50 M75 60 L95 60 M75 65 L90 75"/>
-                </svg>`,
-                years: '1948, 1960, 1972, 1984, 1996, 2008, 2020', 
-                element: 'Air', 
-                elementClass: 'element-water', 
-                lucky: '2, 3, 6', 
-                color: 'Biru, Emas' 
+                // Foto tikus asli
+                imgUrl: 'https://images.unsplash.com/photo-1518467166778-b88f373ffec7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1948, 1960, 1972, 1984, 1996, 2008, 2020', element: 'Air', elementClass: 'element-water', lucky: '2, 3, 6', color: 'Biru, Emas'
             },
             { 
                 name: 'KERBAU', 
-                icon: 'fa-water-buffalo',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M50 80 C25 80 15 65 15 50 C15 35 30 20 50 20 C70 20 85 35 85 50 C85 65 75 80 50 80"/>
-                    <path class="sketch" d="M30 30 C25 20 20 15 15 20"/>
-                    <path class="sketch" d="M70 30 C75 20 80 15 85 20"/>
-                    <path class="sketch" d="M35 25 L30 10 M35 25 L40 10"/>
-                    <path class="sketch" d="M65 25 L60 10 M65 25 L70 10"/>
-                    <circle class="sketch" cx="38" cy="45" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="62" cy="45" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M50 70 L30 72 M50 70 L70 72"/>
-                    <path class="sketch" d="M20 55 L5 60 M80 55 L95 60"/>
-                </svg>`,
-                years: '1949, 1961, 1973, 1985, 1997, 2009, 2021', 
-                element: 'Tanah', 
-                elementClass: 'element-earth', 
-                lucky: '1, 4, 9', 
-                color: 'Coklat, Kuning' 
+                // Foto kerbau/sapi banteng asli
+                imgUrl: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1949, 1961, 1973, 1985, 1997, 2009, 2021', element: 'Tanah', elementClass: 'element-earth', lucky: '1, 4, 9', color: 'Coklat, Kuning'
             },
             { 
                 name: 'MACAN', 
-                icon: 'fa-tiger',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M50 82 C25 82 12 65 12 50 C12 32 28 18 50 18 C72 18 88 32 88 50 C88 65 75 82 50 82"/>
-                    <path class="sketch" d="M20 35 L8 15 L25 28"/>
-                    <path class="sketch" d="M80 35 L92 15 L75 28"/>
-                    <circle class="sketch" cx="38" cy="42" r="4" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="62" cy="42" r="4" fill="#e6e6e6"/>
-                    <path class="sketch" d="M50 55 L45 65 L55 65 Z"/>
-                    <path class="sketch" d="M30 35 L35 38 M40 35 L38 40"/>
-                    <path class="sketch" d="M70 35 L65 38 M60 35 L62 40"/>
-                    <path class="sketch" d="M20 60 L8 58 M80 60 L92 58"/>
-                    <path class="sketch" d="M50 72 L50 78 M45 75 L55 75"/>
-                </svg>`,
-                years: '1950, 1962, 1974, 1986, 1998, 2010, 2022', 
-                element: 'Kayu', 
-                elementClass: 'element-wood', 
-                lucky: '1, 3, 4', 
-                color: 'Hijau, Biru' 
+                // Foto harimau asli
+                imgUrl: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1950, 1962, 1974, 1986, 1998, 2010, 2022', element: 'Kayu', elementClass: 'element-wood', lucky: '1, 3, 4', color: 'Hijau, Biru'
             },
             { 
                 name: 'KELINCI', 
-                icon: 'fa-rabbit',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <ellipse class="sketch" cx="50" cy="65" rx="30" ry="25"/>
-                    <path class="sketch" d="M50 40 C50 40 40 30 35 10 C30 -5 25 15 30 25 C35 35 40 38 45 40"/>
-                    <path class="sketch" d="M50 40 C50 40 60 30 65 10 C70 -5 75 15 70 25 C65 35 60 38 55 40"/>
-                    <circle class="sketch" cx="40" cy="55" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="55" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M50 65 L45 75 L55 75 Z"/>
-                    <path class="sketch" d="M25 70 L10 75 M75 70 L90 75"/>
-                </svg>`,
-                years: '1951, 1963, 1975, 1987, 1999, 2011, 2023', 
-                element: 'Kayu', 
-                elementClass: 'element-wood', 
-                lucky: '3, 4, 6', 
-                color: 'Merah, Pink' 
+                // Foto kelinci asli
+                imgUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1951, 1963, 1975, 1987, 1999, 2011, 2023', element: 'Kayu', elementClass: 'element-wood', lucky: '3, 4, 6', color: 'Merah, Pink'
             },
             { 
                 name: 'NAGA', 
-                icon: 'fa-dragon',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M20 60 C10 50 10 35 25 30 C30 25 40 28 45 35"/>
-                    <path class="sketch" d="M45 35 C50 25 60 20 70 25 C85 30 90 45 85 60"/>
-                    <path class="sketch" d="M20 60 C15 70 20 80 35 85 C50 90 70 90 85 60"/>
-                    <path class="sketch" d="M25 30 L15 15 L30 25"/>
-                    <path class="sketch" d="M35 25 L25 10"/>
-                    <path class="sketch" d="M85 60 L95 50"/>
-                    <path class="sketch" d="M75 70 L90 75"/>
-                    <circle class="sketch" cx="60" cy="40" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M70 55 L80 52 L78 58 L85 55"/>
-                    <path class="sketch" d="M25 45 L35 50 L30 55 L40 52"/>
-                </svg>`,
-                years: '1952, 1964, 1976, 1988, 2000, 2012, 2024', 
-                element: 'Tanah', 
-                elementClass: 'element-earth', 
-                lucky: '1, 6, 7', 
-                color: 'Emas, Perak' 
+                // Karena naga mitos, gunakan Komodo (Naga Modern) atau ilustrasi yang bagus. 
+                // Disini saya pakai Komodo agar "lebih nyata" hewannya.
+                imgUrl: 'https://images.unsplash.com/photo-1577493340887-b7bfff550145?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1952, 1964, 1976, 1988, 2000, 2012, 2024', element: 'Tanah', elementClass: 'element-earth', lucky: '1, 6, 7', color: 'Emas, Perak'
             },
             { 
                 name: 'ULAR', 
-                icon: 'fa-snake',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M30 20 C15 25 10 40 20 55 C30 70 45 80 60 75 C75 70 85 55 80 40"/>
-                    <path class="sketch" d="M80 40 C90 35 95 25 85 20 C75 15 65 25 70 35"/>
-                    <circle class="sketch" cx="78" cy="30" r="2" fill="#e6e6e6"/>
-                    <path class="sketch" d="M85 22 L92 18"/>
-                    <path class="sketch" d="M25 35 L15 30 M30 50 L20 48 M45 70 L40 80 M60 75 L60 85"/>
-                    <path class="sketch" d="M75 35 C78 33 82 34 82 38"/>
-                </svg>`,
-                years: '1953, 1965, 1977, 1989, 2001, 2013, 2025', 
-                element: 'Api', 
-                elementClass: 'element-fire', 
-                lucky: '2, 8, 9', 
-                color: 'Merah, Hitam' 
+                // Foto ular asli
+                imgUrl: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1953, 1965, 1977, 1989, 2001, 2013, 2025', element: 'Api', elementClass: 'element-fire', lucky: '2, 8, 9', color: 'Merah, Hitam'
             },
             { 
                 name: 'KUDA', 
-                icon: 'fa-horse',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M75 50 C80 40 85 25 80 15 C75 5 70 15 68 25"/>
-                    <path class="sketch" d="M68 25 C55 20 40 25 30 40"/>
-                    <ellipse class="sketch" cx="45" cy="60" rx="25" ry="20"/>
-                    <circle class="sketch" cx="75" cy="30" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M25 60 L15 80 M35 75 L30 95 M55 75 L60 95 M65 65 L75 85"/>
-                    <path class="sketch" d="M78 18 L88 12 M80 22 L90 20"/>
-                </svg>`,
-                years: '1954, 1966, 1978, 1990, 2002, 2014, 2026', 
-                element: 'Api', 
-                elementClass: 'element-fire', 
-                lucky: '2, 3, 7', 
-                color: 'Kuning, Hijau' 
+                // Foto kuda asli
+                imgUrl: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1954, 1966, 1978, 1990, 2002, 2014, 2026', element: 'Api', elementClass: 'element-fire', lucky: '2, 3, 7', color: 'Kuning, Hijau'
             },
             { 
                 name: 'KAMBING', 
-                icon: 'fa-goat',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <ellipse class="sketch" cx="50" cy="60" rx="30" ry="25"/>
-                    <path class="sketch" d="M25 45 C15 35 5 40 10 50 C5 45 0 55 10 55"/>
-                    <path class="sketch" d="M75 45 C85 35 95 40 90 50 C95 45 100 55 90 55"/>
-                    <circle class="sketch" cx="40" cy="50" r="2" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="50" r="2" fill="#e6e6e6"/>
-                    <path class="sketch" d="M35 42 L30 25 M40 42 L38 22"/>
-                    <path class="sketch" d="M60 42 L62 22 M65 42 L70 25"/>
-                    <path class="sketch" d="M25 75 L20 90 M40 80 L38 95 M60 80 L62 95 M75 75 L80 90"/>
-                </svg>`,
-                years: '1955, 1967, 1979, 1991, 2003, 2015, 2027', 
-                element: 'Tanah', 
-                elementClass: 'element-earth', 
-                lucky: '3, 4, 9', 
-                color: 'Coklat, Merah' 
+                // Foto kambing asli
+                imgUrl: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1955, 1967, 1979, 1991, 2003, 2015, 2027', element: 'Tanah', elementClass: 'element-earth', lucky: '3, 4, 9', color: 'Coklat, Merah'
             },
             { 
                 name: 'MONYET', 
-                icon: 'fa-monkey',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <circle class="sketch" cx="50" cy="50" r="30"/>
-                    <circle class="sketch" cx="20" cy="45" r="10"/>
-                    <circle class="sketch" cx="80" cy="45" r="10"/>
-                    <circle class="sketch" cx="50" cy="55" r="15"/>
-                    <circle class="sketch" cx="40" cy="42" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="42" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M50 60 L48 65 L52 65 Z"/>
-                    <path class="sketch" d="M30 75 L20 85 M70 75 L80 85"/>
-                </svg>`,
-                years: '1956, 1968, 1980, 1992, 2004, 2016, 2028', 
-                element: 'Logam', 
-                elementClass: 'element-metal', 
-                lucky: '4, 7, 8', 
-                color: 'Putih, Emas' 
+                // Foto monyet asli
+                imgUrl: 'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1956, 1968, 1980, 1992, 2004, 2016, 2028', element: 'Logam', elementClass: 'element-metal', lucky: '4, 7, 8', color: 'Putih, Emas'
             },
             { 
                 name: 'AYAM', 
-                icon: 'fa-rooster',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M50 25 C45 15 40 10 35 15 C30 20 35 25 40 25"/>
-                    <path class="sketch" d="M55 20 C55 10 50 5 45 8"/>
-                    <ellipse class="sketch" cx="55" cy="50" rx="25" ry="30"/>
-                    <path class="sketch" d="M35 35 L25 20"/>
-                    <circle class="sketch" cx="45" cy="42" r="2" fill="#e6e6e6"/>
-                    <path class="sketch" d="M55 50 L65 52 L55 54"/>
-                    <path class="sketch" d="M35 75 L30 90 M45 80 L45 95 M60 80 L60 95 M70 70 L80 85"/>
-                    <path class="sketch" d="M35 45 L25 42 M38 55 L28 55"/>
-                </svg>`,
-                years: '1957, 1969, 1981, 1993, 2005, 2017, 2029', 
-                element: 'Logam', 
-                elementClass: 'element-metal', 
-                lucky: '5, 7, 8', 
-                color: 'Emas, Coklat' 
+                // Foto ayam jantan asli
+                imgUrl: 'https://images.unsplash.com/photo-1559583985-c80d8ad9b29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1957, 1969, 1981, 1993, 2005, 2017, 2029', element: 'Logam', elementClass: 'element-metal', lucky: '5, 7, 8', color: 'Emas, Coklat'
             },
             { 
                 name: 'ANJING', 
-                icon: 'fa-dog',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <path class="sketch" d="M70 45 C80 40 90 45 88 55"/>
-                    <path class="sketch" d="M30 45 C20 40 10 45 12 55"/>
-                    <ellipse class="sketch" cx="50" cy="55" rx="28" ry="25"/>
-                    <circle class="sketch" cx="40" cy="48" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="48" r="3" fill="#e6e6e6"/>
-                    <path class="sketch" d="M50 60 L47 70 L53 70 Z"/>
-                    <path class="sketch" d="M72 45 L82 25 L75 45"/>
-                    <path class="sketch" d="M28 45 L18 25 L25 45"/>
-                    <path class="sketch" d="M30 75 L25 92 M50 80 L50 95 M70 75 L75 92"/>
-                </svg>`,
-                years: '1958, 1970, 1982, 1994, 2006, 2018, 2030', 
-                element: 'Tanah', 
-                elementClass: 'element-earth', 
-                lucky: '3, 4, 9', 
-                color: 'Merah, Hijau' 
+                // Foto anjing asli
+                imgUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1958, 1970, 1982, 1994, 2006, 2018, 2030', element: 'Tanah', elementClass: 'element-earth', lucky: '3, 4, 9', color: 'Merah, Hijau'
             },
             { 
                 name: 'BABI', 
-                icon: 'fa-pig',
-                sketchSvg: `<svg viewBox="0 0 100 100" width="140" height="140">
-                    <style>.sketch{fill:none;stroke:#e6e6e6;stroke-width:1.5;stroke-linecap:round;}</style>
-                    <ellipse class="sketch" cx="50" cy="55" rx="32" ry="28"/>
-                    <circle class="sketch" cx="25" cy="40" r="8"/>
-                    <circle class="sketch" cx="75" cy="40" r="8"/>
-                    <circle class="sketch" cx="40" cy="45" r="3" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="60" cy="45" r="3" fill="#e6e6e6"/>
-                    <ellipse class="sketch" cx="50" cy="60" rx="10" ry="8"/>
-                    <circle class="sketch" cx="46" cy="60" r="2" fill="#e6e6e6"/>
-                    <circle class="sketch" cx="54" cy="60" r="2" fill="#e6e6e6"/>
-                    <path class="sketch" d="M30 78 L25 95 M45 82 L45 98 M55 82 L55 98 M70 78 L75 95"/>
-                </svg>`,
-                years: '1959, 1971, 1983, 1995, 2007, 2019, 2031', 
-                element: 'Air', 
-                elementClass: 'element-water', 
-                lucky: '2, 5, 8', 
-                color: 'Kuning, Abu-abu' 
+                // Foto babi asli
+                imgUrl: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                years: '1959, 1971, 1983, 1995, 2007, 2019, 2031', element: 'Air', elementClass: 'element-water', lucky: '2, 5, 8', color: 'Kuning, Abu-abu'
             }
         ];
 
-        // Data Syair
         const syairData = [
             { text: "Burung elang terbang tinggi<br>Mencari mangsa di kaki langit<br>Angka main jangan ragu<br>Pastikan menang besar hari ini", number: 47 },
             { text: "Harimau lapar mencari makan<br>Menyelusup hutan lebat<br>Hati-hati jangan tergesa<br>Angka ikut menanti kau semua", number: 82 },
@@ -918,8 +530,7 @@
 
         function formatDate() {
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
-                           'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const today = new Date();
             return `${days[today.getDay()]}, ${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
         }
@@ -929,7 +540,8 @@
             const shio = shioData[shioIndex];
 
             const animalContainer = document.getElementById('shioAnimal');
-            animalContainer.innerHTML = shio.sketchSvg;
+            // Menggunakan tag img untuk foto asli
+            animalContainer.innerHTML = `<img src="${shio.imgUrl}" alt="${shio.name}">`;
 
             document.getElementById('shioName').textContent = `SHIO ${shio.name}`;
             document.getElementById('shioYears').textContent = `Tahun: ${shio.years}`;
@@ -974,7 +586,6 @@
             }
 
             document.getElementById('syairShio').innerHTML = shioSyairs[shioIndex];
-
             return shioIndex;
         }
 
@@ -985,9 +596,7 @@
             }
             
             const bbfsGrid = document.getElementById('bbfsGrid');
-            bbfsGrid.innerHTML = bbfsNums.map(num => 
-                `<div class="bbfs-num">${num}</div>`
-            ).join('');
+            bbfsGrid.innerHTML = bbfsNums.map(num => `<div class="bbfs-num">${num}</div>`).join('');
 
             const mainNum = Math.floor(seededRandom(seed + 100) * 10000);
             document.getElementById('bbfsMainNumber').textContent = mainNum.toString().padStart(4, '0');
@@ -997,9 +606,7 @@
                 ikutNums.push(Math.floor(seededRandom(seed + 200 + i) * 10));
             }
             const ikutContainer = document.getElementById('bbfsikut');
-            ikutContainer.innerHTML = ikutNums.map(num => 
-                `<div class="bbfs-num" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">${num}</div>`
-            ).join('');
+            ikutContainer.innerHTML = ikutNums.map(num => `<div class="bbfs-num" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">${num}</div>`).join('');
         }
 
         function generateLuckyNumbers(seed) {
@@ -1029,15 +636,11 @@
 
             const luckyNums = generateLuckyNumbers(seed);
             const luckyGrid = document.getElementById('luckyGrid');
-            luckyGrid.innerHTML = luckyNums.map(num => 
-                `<div class="lucky-num">${num}</div>`
-            ).join('');
+            luckyGrid.innerHTML = luckyNums.map(num => `<div class="lucky-num">${num}</div>`).join('');
 
             const colokNums = generateColokBebas(seed);
             const colokContainer = document.getElementById('colokBebas');
-            colokContainer.innerHTML = colokNums.map(num => 
-                `<div class="lucky-num" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">${num}</div>`
-            ).join('');
+            colokContainer.innerHTML = colokNums.map(num => `<div class="lucky-num" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">${num}</div>`).join('');
 
             const sgIndex = Math.floor(seededRandom(seed + 200) * shortSyairs.length);
             const hkIndex = Math.floor(seededRandom(seed + 300) * shortSyairs.length);
@@ -1063,7 +666,6 @@
 
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
-            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1095,12 +697,6 @@
                     }, 300);
                 }
             });
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && document.activeElement.classList.contains('btn-primary')) {
-                generateNewSyair();
-            }
         });
     </script>
 </body>
