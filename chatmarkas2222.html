@@ -10,28 +10,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a0a0c;
-      --bg-secondary: #111114;
-      --bg-tertiary: #1a1a1f;
-      --bg-hover: #242429;
-      --fg-primary: #f5f5f7;
-      --fg-secondary: #a1a1aa;
-      --fg-muted: #71717a;
-      --accent: #22c55e;
-      --accent-hover: #16a34a;
-      --accent-soft: rgba(34, 197, 94, 0.12);
-      --accent-glow: rgba(34, 197, 94, 0.3);
-      --border: #27272a;
+      --bg-primary: #08080a;
+      --bg-secondary: #0f0f12;
+      --bg-tertiary: #18181d;
+      --bg-hover: #222228;
+      --fg-primary: #f0f0f2;
+      --fg-secondary: #9ca3af;
+      --fg-muted: #6b7280;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --accent-soft: rgba(16, 185, 129, 0.15);
+      --accent-glow: rgba(16, 185, 129, 0.4);
+      --border: #2a2a32;
       --error: #ef4444;
       --warning: #f59e0b;
       --info: #3b82f6;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -41,32 +37,31 @@
       overflow-x: hidden;
     }
 
-    .font-display {
-      font-family: 'Space Grotesk', sans-serif;
-    }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
 
-    .bg-gradient {
+    /* Animated Background */
+    .bg-animated {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
       background: 
-        radial-gradient(ellipse 100% 80% at 50% -30%, rgba(34, 197, 94, 0.1) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 100% 100%, rgba(34, 197, 94, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 120% 80% at 30% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
         var(--bg-primary);
-      min-height: 100vh;
     }
 
-    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
 
     .glass {
-      background: rgba(17, 17, 20, 0.95);
+      background: rgba(15, 15, 18, 0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
 
-    .input-field {
-      transition: all 0.2s ease;
-    }
+    .input-field { transition: all 0.2s ease; }
     .input-field:focus {
       outline: none;
       border-color: var(--accent);
@@ -76,27 +71,23 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
       transition: all 0.2s ease;
-      box-shadow: 0 4px 15px var(--accent-glow);
+      box-shadow: 0 4px 20px var(--accent-glow);
     }
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px var(--accent-glow);
+    .btn-primary:hover:not(:disabled) { 
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 30px var(--accent-glow);
     }
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .login-card {
-      animation: slideUp 0.5s ease;
-    }
+    .login-card { animation: slideUp 0.5s ease; }
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Contact Item */
     .contact-item {
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
       border-left: 3px solid transparent;
     }
     .contact-item:hover { background: var(--bg-hover); }
@@ -105,126 +96,213 @@
       border-left-color: var(--accent);
     }
 
+    /* Message Bubbles */
     .message-bubble {
-      max-width: 70%;
-      animation: messageIn 0.25s ease;
+      max-width: 72%;
+      position: relative;
     }
     .message-sent {
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
       color: #fff;
-      border-radius: 18px 18px 4px 18px;
+      border-radius: 20px 20px 6px 20px;
+      box-shadow: 0 2px 12px rgba(16, 185, 129, 0.2);
     }
     .message-received {
       background: var(--bg-tertiary);
       border: 1px solid var(--border);
-      border-radius: 18px 18px 18px 4px;
+      border-radius: 20px 20px 20px 6px;
     }
 
-    @keyframes messageIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Message Animation */
+    .message-animate {
+      animation: messageSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes messageSlideIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.9);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+      }
     }
 
-    .status-online { background: #22c55e; box-shadow: 0 0 0 2.5px var(--bg-secondary); }
-    .status-offline { background: #71717a; box-shadow: 0 0 0 2.5px var(--bg-secondary); }
-    .status-away { background: #f59e0b; box-shadow: 0 0 0 2.5px var(--bg-secondary); }
+    /* New Message Highlight */
+    .message-new {
+      animation: messageHighlight 2s ease;
+    }
+    @keyframes messageHighlight {
+      0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      50% { box-shadow: 0 0 20px 5px var(--accent-glow); }
+      100% { box-shadow: none; }
+    }
 
+    /* Status Indicators */
+    .status-online { 
+      background: #10b981; 
+      box-shadow: 0 0 0 2.5px var(--bg-secondary), 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+    .status-offline { background: #6b7280; box-shadow: 0 0 0 2.5px var(--bg-secondary); }
+
+    /* Typing Dots */
     .typing-dots span {
       display: inline-block;
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       background: var(--accent);
       border-radius: 50%;
-      margin: 0 1px;
-      animation: typingBounce 1.2s infinite ease-in-out;
+      margin: 0 2px;
+      animation: typingBounce 1.4s infinite ease-in-out;
     }
     .typing-dots span:nth-child(1) { animation-delay: 0s; }
-    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
 
     @keyframes typingBounce {
       0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-4px); }
+      30% { transform: translateY(-6px); }
     }
 
-    .notif-badge {
-      animation: badgePulse 2s infinite;
+    /* Unread Badge */
+    .unread-badge {
+      animation: badgePulse 1.5s infinite;
     }
     @keyframes badgePulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      50% { transform: scale(1.15); }
     }
 
-    .sidebar {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    /* Sidebar */
+    .sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     @media (max-width: 768px) {
       .sidebar-closed { transform: translateX(-100%); }
     }
 
-    .shake {
-      animation: shake 0.4s ease;
-    }
+    /* Shake Animation */
+    .shake { animation: shake 0.5s ease; }
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-8px); }
-      75% { transform: translateX(8px); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-10px); }
+      80% { transform: translateX(10px); }
     }
 
-    .loading-spinner {
+    /* Loading Spinner */
+    .spinner {
       border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       animation: spin 0.8s linear infinite;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      background: var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .toggle::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background: #fff;
+    /* Connection Dot */
+    .conn-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      transition: transform 0.2s;
     }
-    .toggle.active { background: var(--accent); }
-    .toggle.active::after { transform: translateX(20px); }
-
-    .connection-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-    }
-    .connection-status .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    .connection-status.connected .dot { background: var(--accent); }
-    .connection-status.disconnected .dot { background: var(--error); animation: none; }
-    .connection-status.connecting .dot { background: var(--warning); }
+    .conn-dot.connected { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .conn-dot.disconnected { background: var(--error); }
+    .conn-dot.connecting { background: var(--warning); animation: pulse 1s infinite; }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      min-width: 300px;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+    .toast:hover { background: var(--bg-hover); }
+
+    .toast-exit {
+      animation: toastOut 0.3s ease forwards;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(100px) scale(0.8); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes toastOut {
+      to { opacity: 0; transform: translateX(100px) scale(0.8); }
+    }
+
+    /* Scroll to Bottom Button */
+    .scroll-bottom-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      cursor: pointer;
+      animation: fadeIn 0.3s ease;
+      transition: transform 0.2s;
+    }
+    .scroll-bottom-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Unread Divider */
+    .unread-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .unread-divider::before,
+    .unread-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.3;
+    }
+    .unread-divider span {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Avatar Ring for Active Chat */
+    .avatar-ring {
+      box-shadow: 0 0 0 2px var(--accent), 0 0 15px var(--accent-glow);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -236,32 +314,38 @@
   </style>
 </head>
 <body>
+  <div class="bg-animated"></div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
   <!-- LOGIN PAGE -->
-  <div id="loginPage" class="bg-gradient min-h-screen flex items-center justify-center p-4">
-    <div class="login-card glass w-full max-w-md rounded-2xl p-8 border border-[var(--border)]">
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[var(--accent-soft)] flex items-center justify-center">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+  <div id="loginPage" class="relative z-10 min-h-screen flex items-center justify-center p-4">
+    <div class="login-card glass w-full max-w-md rounded-3xl p-8 border border-[var(--border)]">
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[var(--accent-soft)] to-transparent flex items-center justify-center border border-[var(--accent)]/20">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
         </div>
-        <h1 class="font-display text-2xl font-bold mb-1">ChatHub</h1>
-        <p class="text-[var(--fg-muted)] text-sm">Login untuk chat dengan teman</p>
+        <h1 class="font-display text-3xl font-bold mb-1">ChatHub</h1>
+        <p class="text-[var(--fg-muted)] text-sm">Chat real-time dengan teman</p>
       </div>
 
-      <div id="connectionStatus" class="connection-status disconnected mb-4 justify-center">
-        <span class="dot"></span>
-        <span id="connectionText">Menghubungkan ke server...</span>
+      <!-- Connection Status -->
+      <div id="connectionStatus" class="flex items-center justify-center gap-2 mb-5 py-2.5 px-4 rounded-xl bg-[var(--bg-tertiary)] border border-[var(--border)]">
+        <span id="connectionDot" class="conn-dot connecting"></span>
+        <span id="connectionText" class="text-xs text-[var(--fg-muted)]">Menghubungkan ke server...</span>
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-5">
+      <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
           <label class="text-sm text-[var(--fg-secondary)] block mb-2">Email</label>
           <input 
             type="email" 
             id="emailInput"
             placeholder="Masukkan email"
-            class="input-field w-full px-4 py-3 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
+            class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
             required
           >
         </div>
@@ -273,10 +357,10 @@
               type="password" 
               id="passwordInput"
               placeholder="Masukkan password"
-              class="input-field w-full px-4 py-3 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm pr-12"
+              class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm pr-12"
               required
             >
-            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] hover:text-[var(--fg-primary)]">
+            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] hover:text-[var(--fg-primary)] transition-colors">
               <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
@@ -287,78 +371,45 @@
 
         <p id="loginError" class="text-[var(--error)] text-sm hidden"></p>
 
-        <button type="submit" id="loginBtn" class="btn-primary w-full py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2">
+        <button type="submit" id="loginBtn" class="btn-primary w-full py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
           <span>Masuk</span>
         </button>
       </form>
 
-      <div class="mt-6 pt-6 border-t border-[var(--border)]">
+      <!-- Quick Login -->
+      <div class="mt-6 pt-5 border-t border-[var(--border)]">
         <p class="text-xs text-[var(--fg-muted)] text-center mb-3">Quick Login:</p>
-        <div class="grid grid-cols-1 gap-1 max-h-48 overflow-y-auto text-xs">
-          <button onclick="quickLogin('juwan.smb88@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">J</span>
-            juwan.smb88@gmail.com
-          </button>
-          <button onclick="quickLogin('ridwansmb89@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">R</span>
-            ridwansmb89@gmail.com
-          </button>
-          <button onclick="quickLogin('leosanho.888@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">L</span>
-            leosanho.888@gmail.com
-          </button>
-          <button onclick="quickLogin('novalmuttawali354@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">N</span>
-            novalmuttawali354@gmail.com
-          </button>
-          <button onclick="quickLogin('auliaa.putra99@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">A</span>
-            auliaa.putra99@gmail.com
-          </button>
-          <button onclick="quickLogin('saridewisukma6@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">S</span>
-            saridewisukma6@gmail.com
-          </button>
-          <button onclick="quickLogin('faziramuntas@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">F</span>
-            faziramuntas@gmail.com
-          </button>
-          <button onclick="quickLogin('riorichie230@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">R</span>
-            riorichie230@gmail.com
-          </button>
-          <button onclick="quickLogin('retnanovia896@gmail.com')" class="text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)] text-[10px] font-bold">R</span>
-            retnanovia896@gmail.com
-          </button>
-        </div>
+        <div class="grid grid-cols-1 gap-1 max-h-36 overflow-y-auto text-xs" id="quickLoginList"></div>
       </div>
 
-      <div class="mt-6 p-4 bg-[var(--bg-tertiary)] rounded-xl">
-        <p class="text-xs text-[var(--fg-muted)] text-center">
-          <strong>Setup Firebase:</strong> Ganti config di bagian bawah code dengan config Firebase project Anda.
-        </p>
+      <!-- Setup Info -->
+      <div id="setupInstructions" class="mt-5 p-4 bg-[var(--warning)]/10 rounded-xl border border-[var(--warning)]/30">
+        <p class="text-xs text-[var(--warning)] font-medium mb-2">Setup Firebase:</p>
+        <ol class="text-xs text-[var(--fg-muted)] space-y-1 list-decimal list-inside">
+          <li>Buat project di Firebase Console</li>
+          <li>Enable Authentication (Email/Password)</li>
+          <li>Buat user dengan email & password "a1"</li>
+          <li>Create Realtime Database (test mode)</li>
+          <li>Copy config ke code</li>
+        </ol>
       </div>
     </div>
   </div>
 
   <!-- CHAT APP -->
-  <div id="chatApp" class="hidden h-screen">
+  <div id="chatApp" class="hidden h-screen relative z-10">
     <div class="flex h-full">
       <!-- Sidebar -->
       <aside id="sidebar" class="sidebar w-80 h-full flex flex-col border-r border-[var(--border)] bg-[var(--bg-secondary)] fixed md:relative z-30 sidebar-closed md:transform-none">
         <div class="p-4 border-b border-[var(--border)]">
           <div class="flex items-center justify-between mb-4">
-            <h1 class="font-display text-lg font-bold">ChatHub</h1>
+            <div>
+              <h1 class="font-display text-xl font-bold">ChatHub</h1>
+              <p class="text-xs text-[var(--fg-muted)]">9 teman terhubung</p>
+            </div>
             <div class="flex gap-1">
-              <button onclick="openSettings()" class="w-8 h-8 rounded-lg bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--bg-hover)]" aria-label="Settings">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                </svg>
-              </button>
-              <button onclick="logout()" class="w-8 h-8 rounded-lg bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--bg-hover)] text-[var(--error)]" aria-label="Logout">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button onclick="logout()" class="w-9 h-9 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--error)]/20 hover:text-[var(--error)] transition-all" title="Logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                   <polyline points="16 17 21 12 16 7"/>
                   <line x1="21" y1="12" x2="9" y2="12"/>
@@ -376,7 +427,7 @@
               type="text" 
               id="searchInput"
               placeholder="Cari teman..." 
-              class="input-field w-full pl-9 pr-3 py-2.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
+              class="input-field w-full pl-10 pr-3 py-3 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
               oninput="searchFriends()"
             >
           </div>
@@ -384,12 +435,15 @@
 
         <div class="flex-1 overflow-y-auto" id="friendsList"></div>
 
-        <div class="p-3 border-t border-[var(--border)] bg-[var(--bg-tertiary)]">
+        <div class="p-4 border-t border-[var(--border)] bg-[var(--bg-tertiary)]">
           <div class="flex items-center gap-3">
-            <img id="currentUserAvatar" src="" alt="Avatar" class="w-10 h-10 rounded-full bg-[var(--border)]">
+            <img id="currentUserAvatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-[var(--border)]">
             <div class="flex-1 min-w-0">
               <p id="currentUserName" class="font-medium text-sm truncate"></p>
-              <p class="text-xs text-[var(--accent)]">Online</p>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+                <p class="text-xs text-[var(--accent)]">Online</p>
+              </div>
             </div>
           </div>
         </div>
@@ -398,8 +452,8 @@
       <!-- Main Chat Area -->
       <main class="flex-1 flex flex-col h-full bg-[var(--bg-primary)]">
         <header id="chatHeader" class="glass p-4 flex items-center gap-3 border-b border-[var(--border)]">
-          <button onclick="toggleSidebar()" class="md:hidden w-8 h-8 rounded-lg hover:bg-[var(--bg-hover)] flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button onclick="toggleSidebar()" class="md:hidden w-9 h-9 rounded-xl hover:bg-[var(--bg-hover)] flex items-center justify-center transition-colors">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="3" y1="12" x2="21" y2="12"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
               <line x1="3" y1="18" x2="21" y2="18"/>
@@ -408,46 +462,70 @@
           <div id="activeChatInfo" class="flex-1">
             <p class="text-[var(--fg-muted)] text-sm">Pilih teman untuk mulai chat</p>
           </div>
-          <div id="connectionIndicator" class="connection-status connected">
-            <span class="dot"></span>
-            <span>Connected</span>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--bg-tertiary)]">
+            <span id="headerConnDot" class="conn-dot connected"></span>
+            <span class="text-xs text-[var(--fg-muted)]" id="headerConnText">Connected</span>
           </div>
         </header>
 
-        <div id="messagesArea" class="flex-1 overflow-y-auto p-4">
+        <div id="messagesArea" class="flex-1 overflow-y-auto p-4 relative">
           <div id="welcomeScreen" class="flex items-center justify-center h-full">
             <div class="text-center">
-              <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-[var(--accent-soft)] flex items-center justify-center">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[var(--accent-soft)] to-transparent flex items-center justify-center border border-[var(--accent)]/20">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
               </div>
-              <h2 class="font-display text-xl font-bold mb-2">Halo, <span id="welcomeName"></span>!</h2>
+              <h2 class="font-display text-2xl font-bold mb-2">Halo, <span id="welcomeName"></span>!</h2>
               <p class="text-[var(--fg-muted)] text-sm mb-4">Pilih teman untuk mulai chat</p>
-              <p class="text-xs text-[var(--fg-muted)]">Semua pesan tersinkronisasi real-time</p>
+              <div class="flex justify-center gap-4 text-xs">
+                <div class="flex items-center gap-2 text-[var(--fg-muted)]">
+                  <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+                  <span>Real-time sync</span>
+                </div>
+                <div class="flex items-center gap-2 text-[var(--fg-muted)]">
+                  <span class="w-2 h-2 rounded-full bg-[var(--info)]"></span>
+                  <span>Notifikasi push</span>
+                </div>
+              </div>
             </div>
           </div>
           <div id="messagesList" class="space-y-3 hidden"></div>
+          
+          <!-- Scroll to Bottom Button -->
+          <button id="scrollBottomBtn" class="scroll-bottom-btn hidden" onclick="scrollToBottom()" title="Scroll ke bawah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+          </button>
         </div>
 
         <div id="typingIndicator" class="hidden px-4 py-2">
           <div class="flex items-center gap-2">
-            <img id="typingAvatar" src="" class="w-5 h-5 rounded-full">
+            <img id="typingAvatar" src="" class="w-6 h-6 rounded-full">
             <div class="typing-dots"><span></span><span></span><span></span></div>
             <span class="text-xs text-[var(--fg-muted)]" id="typingName"></span>
           </div>
         </div>
 
         <div id="inputArea" class="p-4 border-t border-[var(--border)] bg-[var(--bg-secondary)] hidden">
-          <form onsubmit="sendMessage(event)" class="flex gap-2">
-            <input 
-              type="text" 
-              id="messageInput"
-              placeholder="Ketik pesan..." 
-              class="input-field flex-1 px-4 py-3 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
-              autocomplete="off"
-            >
-            <button type="submit" class="btn-primary px-5 py-3 rounded-xl" aria-label="Kirim">
+          <form onsubmit="sendMessage(event)" class="flex gap-3 items-end">
+            <div class="flex-1 relative">
+              <input 
+                type="text" 
+                id="messageInput"
+                placeholder="Ketik pesan..." 
+                class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm pr-12"
+                autocomplete="off"
+              >
+              <button type="button" onclick="toggleEmoji()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                </svg>
+              </button>
+            </div>
+            <button type="submit" id="sendBtn" class="btn-primary px-6 py-3.5 rounded-xl flex items-center gap-2" aria-label="Kirim">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
                 <line x1="22" y1="2" x2="11" y2="13"/>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -459,43 +537,12 @@
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeSettings()"></div>
-    <div class="glass relative w-full max-w-md rounded-2xl p-6 border border-[var(--border)]">
-      <h2 class="font-display text-lg font-bold mb-5">Pengaturan</h2>
-      <div class="space-y-3">
-        <div class="flex items-center justify-between p-3 bg-[var(--bg-tertiary)] rounded-xl">
-          <div>
-            <p class="font-medium text-sm">Notifikasi Email</p>
-            <p class="text-xs text-[var(--fg-muted)]">Terima notifikasi ke Gmail</p>
-          </div>
-          <div id="emailNotifToggle" class="toggle" onclick="toggleEmailNotification()"></div>
-        </div>
-        <div class="flex items-center justify-between p-3 bg-[var(--bg-tertiary)] rounded-xl">
-          <div>
-            <p class="font-medium text-sm">Suara Notifikasi</p>
-            <p class="text-xs text-[var(--fg-muted)]">Bunyikan saat pesan masuk</p>
-          </div>
-          <div class="toggle active" onclick="this.classList.toggle('active')"></div>
-        </div>
-      </div>
-      <div class="mt-5 p-3 bg-[var(--accent-soft)] rounded-xl">
-        <p class="text-xs text-[var(--accent)]">
-          <strong>Info:</strong> Aktifkan notifikasi email untuk menerima pesan langsung ke Gmail Anda.
-        </p>
-      </div>
-      <button onclick="closeSettings()" class="w-full mt-5 py-3 bg-[var(--bg-tertiary)] rounded-xl text-sm font-medium hover:bg-[var(--bg-hover)]">
-        Tutup
-      </button>
-    </div>
+  <!-- Emoji Picker -->
+  <div id="emojiPicker" class="fixed z-50 hidden glass rounded-2xl p-3 border border-[var(--border)]">
+    <div class="grid grid-cols-6 gap-1" id="emojiGrid"></div>
   </div>
 
-  <!-- Firebase SDKs -->
   <script type="module">
-    // ============================================
-    // FIREBASE CONFIG - GANTI DENGAN CONFIG ANDA
-    // ============================================
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { 
       getAuth, 
@@ -509,16 +556,14 @@
       push, 
       onValue, 
       set, 
-      update, 
-      remove,
       serverTimestamp,
-      onDisconnect 
+      onDisconnect,
+      get
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // ============================================
-    // PASTE FIREBASE CONFIG ANDA DI BAWAH INI
-    // ============================================
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // =============================================
+    // FIREBASE CONFIG - GANTI DENGAN CONFIG ANDA
+    // =============================================
 const firebaseConfig = {
   apiKey: "AIzaSyBJm5riXDquZEIv2MOnBaLRL7Si_5wsreI",
   authDomain: "noval-97191.firebaseapp.com",
@@ -529,13 +574,15 @@ const firebaseConfig = {
   appId: "1:200674844599:web:e7d73c42cf920592381232",
   measurementId: "G-64MWWW059W"
 };
-    // ============================================
+    // =============================================
 
-    // Initialize Firebase
-    let app, auth, database;
-    let currentUser = null;
-    let activeChat = null;
+    // State
+    let app = null, auth = null, database = null;
+    let currentUser = null, activeChat = null;
     let unsubscribers = [];
+    let firebaseReady = false;
+    let lastMessageId = {};
+    let hasNewMessages = {};
 
     // Users data
     const usersData = {
@@ -550,61 +597,130 @@ const firebaseConfig = {
       'retnanovia896@gmail.com': { id: 9, name: 'Retna Novia', avatar: 'retna' },
     };
 
-    // Initialize
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      database = getDatabase(app);
-      updateConnectionStatus('connecting');
-      
-      // Listen for auth state
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          currentUser = user;
-          const userData = usersData[user.email] || { name: user.email.split('@')[0], avatar: user.email };
-          currentUser.displayName = userData.name;
-          currentUser.avatar = userData.avatar;
-          currentUser.dbId = userData.id;
-          
-          // Set online status
-          setUserOnline(true);
-          showChatApp();
-        } else {
-          currentUser = null;
-          showLoginPage();
-        }
-      });
+    const emojis = ['😀', '😂', '🥰', '😎', '🤔', '👍', '❤️', '🔥', '🎉', '👏', '🙏', '💪', '✅', '❌', '⭐', '💡', '☕', '🎮'];
 
-      // Connection listener
-      const connectedRef = ref(database, '.info/connected');
-      onValue(connectedRef, (snap) => {
-        if (snap.val() === true) {
-          updateConnectionStatus('connected');
-        } else {
-          updateConnectionStatus('disconnected');
-        }
-      });
-
-    } catch (error) {
-      console.error('Firebase init error:', error);
-      updateConnectionStatus('disconnected');
+    // Audio for notification
+    let notificationSound = null;
+    function initNotificationSound() {
+      notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleVkBselqsN7jm2ABD2OWrdrquJlkExV7nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhA==');
     }
 
-    function updateConnectionStatus(status) {
-      const el = document.getElementById('connectionStatus');
-      const text = document.getElementById('connectionText');
-      el.className = 'connection-status ' + status + ' mb-4 justify-center';
+    // Toast Notification
+    function showToast(title, message, avatar, onClick) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="flex items-center gap-3">
+          <img src="${avatar}" class="w-12 h-12 rounded-full">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm">${title}</p>
+            <p class="text-xs text-[var(--fg-muted)] truncate">${message}</p>
+          </div>
+        </div>
+      `;
       
-      if (status === 'connected') {
-        text.textContent = 'Terhubung ke server';
-      } else if (status === 'connecting') {
-        text.textContent = 'Menghubungkan...';
-      } else {
-        text.textContent = 'Tidak terhubung - Cek Firebase config';
+      if (onClick) {
+        toast.onclick = onClick;
+      }
+      
+      container.appendChild(toast);
+      
+      // Play sound
+      if (notificationSound) {
+        notificationSound.currentTime = 0;
+        notificationSound.play().catch(() => {});
+      }
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        toast.classList.add('toast-exit');
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+
+    // Render quick login
+    function renderQuickLogin() {
+      const list = document.getElementById('quickLoginList');
+      list.innerHTML = Object.entries(usersData).map(([email, data]) => `
+        <button onclick="quickLogin('${email}')" class="text-left px-3 py-2.5 rounded-xl hover:bg-[var(--bg-tertiary)] flex items-center gap-3 transition-all">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}" class="w-7 h-7 rounded-full">
+          <span class="truncate text-[var(--fg-secondary)]">${email}</span>
+        </button>
+      `).join('');
+    }
+
+    // Render emoji picker
+    function renderEmojiPicker() {
+      const grid = document.getElementById('emojiGrid');
+      grid.innerHTML = emojis.map(e => `
+        <button type="button" onclick="insertEmoji('${e}')" class="text-xl p-2 rounded-lg hover:bg-[var(--bg-hover)] transition-colors">${e}</button>
+      `).join('');
+    }
+
+    // Initialize Firebase
+    async function initializeFirebase() {
+      setConnectionStatus('connecting');
+      
+      try {
+        if (firebaseConfig.apiKey.includes('YOUR') || firebaseConfig.apiKey.includes('Demo')) {
+          throw new Error('Firebase config belum diisi');
+        }
+
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        database = getDatabase(app);
+        firebaseReady = true;
+
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            currentUser = user;
+            const userData = usersData[user.email] || { name: user.email.split('@')[0], avatar: user.email };
+            currentUser.displayName = userData.name;
+            currentUser.avatar = userData.avatar;
+            currentUser.dbId = userData.id;
+            setUserOnline(true);
+            showChatApp();
+          } else {
+            currentUser = null;
+            showLoginPage();
+          }
+        });
+
+        const connectedRef = ref(database, '.info/connected');
+        onValue(connectedRef, (snap) => {
+          setConnectionStatus(snap.val() ? 'connected' : 'disconnected');
+        });
+
+        setConnectionStatus('connected');
+        document.getElementById('setupInstructions').classList.add('hidden');
+
+      } catch (error) {
+        setConnectionStatus('disconnected');
+        firebaseReady = false;
+        const errorEl = document.getElementById('loginError');
+        errorEl.textContent = error.message;
+        errorEl.classList.remove('hidden');
       }
     }
 
-    // Login handler
+    function setConnectionStatus(status) {
+      const dot = document.getElementById('connectionDot');
+      const text = document.getElementById('connectionText');
+      const headerDot = document.getElementById('headerConnDot');
+      const headerText = document.getElementById('headerConnText');
+
+      if (dot) {
+        dot.className = 'conn-dot ' + status;
+        text.textContent = status === 'connected' ? 'Terhubung ke server' : status === 'connecting' ? 'Menghubungkan...' : 'Tidak terhubung';
+      }
+      if (headerDot) {
+        headerDot.className = 'conn-dot ' + status;
+        headerText.textContent = status === 'connected' ? 'Connected' : status === 'connecting' ? 'Connecting...' : 'Disconnected';
+      }
+    }
+
+    // Login handlers
     window.handleLogin = async function(e) {
       e.preventDefault();
       const email = document.getElementById('emailInput').value.trim().toLowerCase();
@@ -612,24 +728,24 @@ const firebaseConfig = {
       const errorEl = document.getElementById('loginError');
       const loginBtn = document.getElementById('loginBtn');
 
+      if (!firebaseReady) {
+        errorEl.textContent = 'Firebase belum siap. Cek config.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
       loginBtn.disabled = true;
-      loginBtn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+      loginBtn.innerHTML = '<div class="spinner mx-auto"></div>';
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
       } catch (error) {
-        let errorMsg = 'Login gagal!';
-        if (error.code === 'auth/user-not-found') {
-          errorMsg = 'Email tidak terdaftar di Firebase. Buat user di Firebase Console.';
-        } else if (error.code === 'auth/wrong-password') {
-          errorMsg = 'Password salah!';
-        } else if (error.code === 'auth/invalid-email') {
-          errorMsg = 'Format email tidak valid!';
-        }
-        errorEl.textContent = errorMsg;
+        let msg = error.code === 'auth/user-not-found' ? 'User tidak ditemukan. Buat di Firebase Console.' :
+                  error.code === 'auth/wrong-password' ? 'Password salah!' : error.message;
+        errorEl.textContent = msg;
         errorEl.classList.remove('hidden');
         document.querySelector('.login-card').classList.add('shake');
-        setTimeout(() => document.querySelector('.login-card').classList.remove('shake'), 400);
+        setTimeout(() => document.querySelector('.login-card').classList.remove('shake'), 500);
       }
 
       loginBtn.disabled = false;
@@ -654,45 +770,27 @@ const firebaseConfig = {
     };
 
     window.logout = async function() {
-      if (currentUser) {
-        await setUserOnline(false);
-      }
+      if (currentUser) await setUserOnline(false);
       await signOut(auth);
     };
 
-    function setUserOnline(isOnline) {
-      if (!currentUser) return;
+    async function setUserOnline(isOnline) {
+      if (!currentUser || !database) return;
       const statusRef = ref(database, `status/${currentUser.dbId}`);
-      if (isOnline) {
-        set(statusRef, {
-          online: true,
-          lastSeen: serverTimestamp(),
-          email: currentUser.email,
-          name: currentUser.displayName
-        });
-        onDisconnect(statusRef).set({
-          online: false,
-          lastSeen: serverTimestamp(),
-          email: currentUser.email,
-          name: currentUser.displayName
-        });
-      } else {
-        set(statusRef, {
-          online: false,
-          lastSeen: serverTimestamp(),
-          email: currentUser.email,
-          name: currentUser.displayName
-        });
-      }
+      const data = {
+        online: isOnline,
+        lastSeen: serverTimestamp(),
+        email: currentUser.email,
+        name: currentUser.displayName
+      };
+      await set(statusRef, data);
+      if (isOnline) onDisconnect(statusRef).set({ ...data, online: false });
     }
 
     function showLoginPage() {
       document.getElementById('chatApp').classList.add('hidden');
       document.getElementById('loginPage').classList.remove('hidden');
-      document.getElementById('loginError').classList.add('hidden');
-      
-      // Cleanup listeners
-      unsubscribers.forEach(unsub => unsub());
+      unsubscribers.forEach(u => typeof u === 'function' && u());
       unsubscribers = [];
     }
 
@@ -704,6 +802,7 @@ const firebaseConfig = {
       document.getElementById('currentUserName').textContent = currentUser.displayName;
       document.getElementById('welcomeName').textContent = currentUser.displayName;
 
+      initNotificationSound();
       renderFriends();
       listenToAllChats();
 
@@ -719,64 +818,46 @@ const firebaseConfig = {
         (data.name.toLowerCase().includes(filter.toLowerCase()) || email.toLowerCase().includes(filter.toLowerCase()))
       );
 
-      let html = '';
-      entries.forEach(([email, data]) => {
-        const chatKey = getChatKey(currentUser.dbId, data.id);
+      friendsList.innerHTML = entries.map(([email, data]) => {
         const isActive = activeChat?.id === data.id;
-        
-        html += `
-          <div 
-            class="contact-item flex items-center gap-3 px-4 py-3 cursor-pointer ${isActive ? 'active' : ''}"
-            onclick="selectFriend('${email}', ${data.id}, '${data.name}', '${data.avatar}')"
-          >
+        return `
+          <div class="contact-item flex items-center gap-3 px-4 py-3 cursor-pointer ${isActive ? 'active' : ''}" onclick="selectFriend('${email}', ${data.id}, '${data.name}', '${data.avatar}')">
             <div class="relative">
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}" 
-                alt="${data.name}" 
-                class="w-11 h-11 rounded-full bg-[var(--border)]"
-              >
-              <span id="status-${data.id}" class="absolute bottom-0 right-0 w-3 h-3 rounded-full status-offline"></span>
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}" alt="${data.name}" class="w-12 h-12 rounded-full bg-[var(--border)] ${isActive ? 'avatar-ring' : ''}">
+              <span id="status-${data.id}" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full status-offline"></span>
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
                 <p class="font-medium text-sm truncate">${data.name}</p>
-                <span class="text-xs text-[var(--fg-muted)] last-msg-time-${data.id}"></span>
+                <span class="text-xs text-[var(--fg-muted)] last-time-${data.id}"></span>
               </div>
-              <div class="flex items-center justify-between mt-0.5">
+              <div class="flex items-center justify-between mt-1">
                 <p class="text-xs text-[var(--fg-muted)] truncate last-msg-${data.id}">Belum ada pesan</p>
-                <span class="notif-badge min-w-5 h-5 px-1 rounded-full bg-[var(--accent)] text-white text-xs items-center justify-center hidden unread-${data.id}"></span>
+                <span class="unread-badge min-w-5 h-5 px-1.5 rounded-full bg-[var(--accent)] text-white text-xs items-center justify-center font-medium hidden unread-${data.id}"></span>
               </div>
             </div>
           </div>
         `;
-      });
-      friendsList.innerHTML = html;
+      }).join('');
 
-      // Listen to friends' online status
+      // Listen to online status
       entries.forEach(([email, data]) => {
-        const statusRef = ref(database, `status/${data.id}`);
-        const unsub = onValue(statusRef, (snap) => {
+        const unsub = onValue(ref(database, `status/${data.id}`), (snap) => {
           const status = snap.val();
-          const statusEl = document.getElementById(`status-${data.id}`);
-          if (statusEl) {
-            if (status?.online) {
-              statusEl.className = 'absolute bottom-0 right-0 w-3 h-3 rounded-full status-online';
-            } else {
-              statusEl.className = 'absolute bottom-0 right-0 w-3 h-3 rounded-full status-offline';
-            }
-          }
+          const el = document.getElementById(`status-${data.id}`);
+          if (el) el.className = 'absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full ' + (status?.online ? 'status-online' : 'status-offline');
         });
         unsubscribers.push(unsub);
       });
     }
 
     window.searchFriends = function() {
-      const query = document.getElementById('searchInput').value;
-      renderFriends(query);
+      renderFriends(document.getElementById('searchInput').value);
     };
 
     window.selectFriend = function(email, id, name, avatar) {
       activeChat = { email, id, name, avatar };
+      hasNewMessages[id] = false;
 
       document.getElementById('activeChatInfo').innerHTML = `
         <div class="flex items-center gap-3">
@@ -792,11 +873,7 @@ const firebaseConfig = {
       document.getElementById('messagesList').classList.remove('hidden');
       document.getElementById('inputArea').classList.remove('hidden');
 
-      // Mark messages as read
-      const chatKey = getChatKey(currentUser.dbId, id);
-      const unreadRef = ref(database, `unread/${currentUser.dbId}/${id}`);
-      set(unreadRef, 0);
-
+      set(ref(database, `unread/${currentUser.dbId}/${id}`), 0);
       renderFriends();
       listenToChat(id);
 
@@ -811,53 +888,46 @@ const firebaseConfig = {
 
     function listenToChat(friendId) {
       const chatKey = getChatKey(currentUser.dbId, friendId);
-      const messagesRef = ref(database, `messages/${chatKey}`);
       
-      // Remove old listener
-      const existingListener = unsubscribers.find(u => u.key === `chat-${friendId}`);
-      if (existingListener) {
-        existingListener.unsub();
-        unsubscribers = unsubscribers.filter(u => u.key !== `chat-${friendId}`);
-      }
-
-      const unsub = onValue(messagesRef, (snap) => {
+      const unsub = onValue(ref(database, `messages/${chatKey}`), (snap) => {
         const data = snap.val();
         renderMessages(data, friendId);
       });
-
-      unsubscribers.push({ key: `chat-${friendId}`, unsub });
-
-      // Listen for typing
-      const typingRef = ref(database, `typing/${friendId}_${currentUser.dbId}`);
-      const typingUnsub = onValue(typingRef, (snap) => {
-        const isTyping = snap.val();
-        if (isTyping && activeChat?.id === friendId) {
-          showTypingIndicator(friendId);
-        } else {
-          hideTypingIndicator();
-        }
-      });
-      unsubscribers.push({ key: `typing-${friendId}`, unsub: typingUnsub });
+      unsubscribers.push(unsub);
     }
 
     function listenToAllChats() {
-      // Listen to all user's chats for last message preview
       Object.entries(usersData).forEach(([email, data]) => {
         if (email === currentUser.email) return;
         
         const chatKey = getChatKey(currentUser.dbId, data.id);
-        const messagesRef = ref(database, `messages/${chatKey}`);
         
-        const unsub = onValue(messagesRef, (snap) => {
+        // Listen for new messages
+        const unsub = onValue(ref(database, `messages/${chatKey}`), (snap) => {
           const messages = snap.val();
           if (messages) {
-            const msgArray = Object.values(messages);
-            const lastMsg = msgArray[msgArray.length - 1];
+            const msgArray = Object.entries(messages);
+            const lastEntry = msgArray[msgArray.length - 1];
+            const [msgId, lastMsg] = lastEntry;
             
+            // Check if this is a new message
+            if (lastMessageId[data.id] && lastMessageId[data.id] !== msgId && lastMsg.from !== currentUser.dbId) {
+              // New message notification
+              if (activeChat?.id !== data.id) {
+                showToast(data.name, lastMsg.text, `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}`, () => {
+                  selectFriend(email, data.id, data.name, data.avatar);
+                });
+              } else {
+                // Message in current chat - highlight
+                hasNewMessages[data.id] = true;
+              }
+            }
+            lastMessageId[data.id] = msgId;
+            
+            // Update last message preview
             const lastMsgEl = document.querySelector(`.last-msg-${data.id}`);
-            const lastTimeEl = document.querySelector(`.last-msg-time-${data.id}`);
-            
-            if (lastMsgEl && lastMsg) {
+            const lastTimeEl = document.querySelector(`.last-time-${data.id}`);
+            if (lastMsgEl) {
               const prefix = lastMsg.from === currentUser.dbId ? 'Anda: ' : '';
               lastMsgEl.textContent = prefix + lastMsg.text.substring(0, 25) + (lastMsg.text.length > 25 ? '...' : '');
               lastTimeEl.textContent = formatTime(lastMsg.timestamp);
@@ -867,8 +937,7 @@ const firebaseConfig = {
         unsubscribers.push(unsub);
 
         // Listen to unread count
-        const unreadRef = ref(database, `unread/${currentUser.dbId}/${data.id}`);
-        const unreadUnsub = onValue(unreadRef, (snap) => {
+        const unreadUnsub = onValue(ref(database, `unread/${currentUser.dbId}/${data.id}`), (snap) => {
           const count = snap.val() || 0;
           const badge = document.querySelector(`.unread-${data.id}`);
           if (badge) {
@@ -887,40 +956,37 @@ const firebaseConfig = {
     }
 
     function renderMessages(messages, friendId) {
-      const messagesList = document.getElementById('messagesList');
+      const list = document.getElementById('messagesList');
       
       if (!messages) {
-        messagesList.innerHTML = `
-          <div class="flex justify-center py-8">
-            <p class="text-[var(--fg-muted)] text-sm">Belum ada pesan. Mulai chat sekarang!</p>
-          </div>
-        `;
+        list.innerHTML = `<div class="flex justify-center py-8"><p class="text-[var(--fg-muted)] text-sm">Belum ada pesan. Mulai chat sekarang!</p></div>`;
         return;
       }
 
       const msgArray = Object.entries(messages).map(([id, msg]) => ({ id, ...msg }));
       const friend = Object.values(usersData).find(u => u.id === friendId);
+      const prevLength = list.children.length;
 
-      messagesList.innerHTML = msgArray.map(msg => {
+      list.innerHTML = msgArray.map((msg, idx) => {
         const isMe = msg.from === currentUser.dbId;
         const sender = isMe ? currentUser : friend;
+        const isNew = hasNewMessages[friendId] && idx === msgArray.length - 1 && !isMe;
 
         return `
-          <div class="flex ${isMe ? 'justify-end' : 'justify-start'} items-end gap-2">
-            ${!isMe ? `
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${sender.avatar}" alt="" class="w-7 h-7 rounded-full flex-shrink-0">
-            ` : ''}
-            <div class="message-bubble ${isMe ? 'message-sent' : 'message-received'} px-4 py-2">
+          <div class="flex ${isMe ? 'justify-end' : 'justify-start'} items-end gap-2 ${isNew ? 'message-new' : ''}">
+            ${!isMe ? `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${sender.avatar}" class="w-8 h-8 rounded-full flex-shrink-0">` : ''}
+            <div class="message-bubble ${isMe ? 'message-sent' : 'message-received'} px-4 py-2.5 ${idx >= prevLength ? 'message-animate' : ''}">
               <p class="text-sm">${escapeHtml(msg.text)}</p>
-              <div class="flex items-center justify-end gap-1 mt-1">
-                <span class="text-xs ${isMe ? 'text-white/70' : 'text-[var(--fg-muted)]'}">${formatTime(msg.timestamp)}</span>
+              <div class="flex items-center justify-end gap-1.5 mt-1">
+                <span class="text-xs ${isMe ? 'text-white/60' : 'text-[var(--fg-muted)]'}">${formatTime(msg.timestamp)}</span>
               </div>
             </div>
           </div>
         `;
       }).join('');
 
-      messagesList.scrollTop = messagesList.scrollHeight;
+      // Auto scroll to bottom
+      scrollToBottom();
     }
 
     function escapeHtml(text) {
@@ -929,122 +995,119 @@ const firebaseConfig = {
       return div.innerHTML;
     }
 
-    function formatTime(timestamp) {
-      if (!timestamp) return '';
-      const date = new Date(timestamp);
+    function formatTime(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
       const now = new Date();
-      const isToday = date.toDateString() === now.toDateString();
+      const time = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+      if (d.toDateString() === now.toDateString()) return time;
+      const yest = new Date(now); yest.setDate(yest.getDate() - 1);
+      if (d.toDateString() === yest.toDateString()) return 'Kemarin ' + time;
+      return d.getDate() + '/' + (d.getMonth() + 1) + ' ' + time;
+    }
+
+    function scrollToBottom() {
+      const area = document.getElementById('messagesArea');
+      const btn = document.getElementById('scrollBottomBtn');
       
-      const time = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+      // Always scroll to bottom
+      area.scrollTop = area.scrollHeight;
       
-      if (isToday) return time;
-      
-      const yesterday = new Date(now);
-      yesterday.setDate(yesterday.getDate() - 1);
-      if (date.toDateString() === yesterday.toDateString()) {
-        return 'Kemarin ' + time;
+      // Hide scroll button after scroll
+      btn.classList.add('hidden');
+    }
+
+    window.scrollToBottom = function() {
+      scrollToBottom();
+    };
+
+    // Show/hide scroll button based on scroll position
+    document.getElementById('messagesArea')?.addEventListener('scroll', function() {
+      const btn = document.getElementById('scrollBottomBtn');
+      const isNearBottom = this.scrollHeight - this.scrollTop - this.clientHeight < 100;
+      if (isNearBottom) {
+        btn.classList.add('hidden');
+      } else {
+        btn.classList.remove('hidden');
       }
-      
-      return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + time;
-    }
-
-    function showTypingIndicator(friendId) {
-      const friend = Object.values(usersData).find(u => u.id === friendId);
-      const el = document.getElementById('typingIndicator');
-      document.getElementById('typingAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${friend.avatar}`;
-      document.getElementById('typingName').textContent = `${friend.name} mengetik...`;
-      el.classList.remove('hidden');
-    }
-
-    function hideTypingIndicator() {
-      document.getElementById('typingIndicator').classList.add('hidden');
-    }
+    });
 
     window.sendMessage = async function(e) {
       e.preventDefault();
       const input = document.getElementById('messageInput');
       const text = input.value.trim();
 
-      if (!text || !activeChat) return;
+      if (!text || !activeChat || !database) return;
 
-      const chatKey = getChatKey(currentUser.dbId, activeChat.id);
-      const messagesRef = ref(database, `messages/${chatKey}`);
-      
-      const newMessage = {
-        from: currentUser.dbId,
-        to: activeChat.id,
-        text: text,
-        timestamp: Date.now()
-      };
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<div class="spinner"></div>';
 
-      await push(messagesRef, newMessage);
+      try {
+        const chatKey = getChatKey(currentUser.dbId, activeChat.id);
+        const newMsg = {
+          from: currentUser.dbId,
+          to: activeChat.id,
+          text: text,
+          timestamp: Date.now()
+        };
 
-      // Update unread count for recipient
-      const unreadRef = ref(database, `unread/${activeChat.id}/${currentUser.dbId}`);
-      const currentUnread = await new Promise(resolve => {
-        onValue(ref(database, `unread/${activeChat.id}/${currentUser.dbId}`), (snap) => {
-          resolve(snap.val() || 0);
-        }, { onlyOnce: true });
-      });
-      await set(unreadRef, currentUnread + 1);
+        await push(ref(database, `messages/${chatKey}`), newMsg);
 
-      input.value = '';
+        // Update unread
+        const unreadRef = ref(database, `unread/${activeChat.id}/${currentUser.dbId}`);
+        const snap = await get(unreadRef);
+        await set(unreadRef, (snap.val() || 0) + 1);
 
-      // Stop typing indicator
-      const typingRef = ref(database, `typing/${currentUser.dbId}_${activeChat.id}`);
-      await set(typingRef, false);
+        input.value = '';
+      } catch (error) {
+        alert('Gagal mengirim: ' + error.message);
+      }
+
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
     };
-
-    // Typing indicator on input
-    document.getElementById('messageInput')?.addEventListener('input', async function() {
-      if (!activeChat) return;
-      const typingRef = ref(database, `typing/${currentUser.dbId}_${activeChat.id}`);
-      await set(typingRef, true);
-      
-      // Clear after 3 seconds
-      setTimeout(async () => {
-        await set(typingRef, false);
-      }, 3000);
-    });
 
     window.toggleSidebar = function() {
       document.getElementById('sidebar').classList.toggle('sidebar-closed');
     };
 
-    window.openSettings = function() {
-      document.getElementById('settingsModal').classList.remove('hidden');
-      document.getElementById('settingsModal').classList.add('flex');
+    window.toggleEmoji = function() {
+      const picker = document.getElementById('emojiPicker');
+      const btn = event.target.closest('button');
+      const rect = btn.getBoundingClientRect();
+      picker.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
+      picker.style.right = (window.innerWidth - rect.right) + 'px';
+      picker.classList.toggle('hidden');
     };
 
-    window.closeSettings = function() {
-      document.getElementById('settingsModal').classList.add('hidden');
-      document.getElementById('settingsModal').classList.remove('flex');
+    window.insertEmoji = function(emoji) {
+      const input = document.getElementById('messageInput');
+      input.value += emoji;
+      input.focus();
+      document.getElementById('emojiPicker').classList.add('hidden');
     };
 
-    window.toggleEmailNotification = function() {
-      const toggle = document.getElementById('emailNotifToggle');
-      toggle.classList.toggle('active');
-      
-      if (toggle.classList.contains('active')) {
-        alert('Notifikasi email akan dikirim ke Gmail Anda saat ada pesan baru.\n\n(Catatan: Butuh Firebase Cloud Functions untuk kirim email)');
-      }
-    };
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        window.closeSettings();
+    // Close emoji picker on click outside
+    document.addEventListener('click', (e) => {
+      const picker = document.getElementById('emojiPicker');
+      if (!picker.contains(e.target) && !e.target.closest('[onclick="toggleEmoji()"]')) {
+        picker.classList.add('hidden');
       }
     });
 
-    // Responsive
+    // Init
+    renderQuickLogin();
+    renderEmojiPicker();
+    initializeFirebase();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') document.getElementById('emojiPicker').classList.add('hidden');
+    });
+
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) {
-        document.getElementById('sidebar')?.classList.remove('sidebar-closed');
-      }
+      if (window.innerWidth >= 768) document.getElementById('sidebar')?.classList.remove('sidebar-closed');
     });
   </script>
 </body>
-
 </html>
-
