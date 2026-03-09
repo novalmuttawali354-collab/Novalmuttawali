@@ -25,6 +25,71 @@
       --error: #ef4444;
       --warning: #f59e0b;
       --info: #3b82f6;
+      --card-bg: rgba(15, 15, 18, 0.9);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f3f5;
+      --bg-hover: #e9ecef;
+      --fg-primary: #212529;
+      --fg-secondary: #495057;
+      --fg-muted: #6c757d;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --accent-soft: rgba(13, 148, 136, 0.15);
+      --accent-glow: rgba(13, 148, 136, 0.3);
+      --border: #dee2e6;
+      --card-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    [data-theme="ocean"] {
+      --bg-primary: #0a1628;
+      --bg-secondary: #0f1f35;
+      --bg-tertiary: #152842;
+      --bg-hover: #1e3a5f;
+      --fg-primary: #e8f4f8;
+      --fg-secondary: #a8c5d8;
+      --fg-muted: #6b8fa8;
+      --accent: #06b6d4;
+      --accent-hover: #0891b2;
+      --accent-soft: rgba(6, 182, 212, 0.15);
+      --accent-glow: rgba(6, 182, 212, 0.4);
+      --border: #1e3a5f;
+      --card-bg: rgba(15, 31, 53, 0.95);
+    }
+
+    [data-theme="sunset"] {
+      --bg-primary: #1a0a0f;
+      --bg-secondary: #2a1218;
+      --bg-tertiary: #3a1a22;
+      --bg-hover: #4a2230;
+      --fg-primary: #fef2f2;
+      --fg-secondary: #fecaca;
+      --fg-muted: #f87171;
+      --accent: #f97316;
+      --accent-hover: #ea580c;
+      --accent-soft: rgba(249, 115, 22, 0.15);
+      --accent-glow: rgba(249, 115, 22, 0.4);
+      --border: #4a2230;
+      --card-bg: rgba(42, 18, 24, 0.95);
+    }
+
+    [data-theme="forest"] {
+      --bg-primary: #0a140a;
+      --bg-secondary: #0f1f0f;
+      --bg-tertiary: #152a15;
+      --bg-hover: #1e3a1e;
+      --fg-primary: #ecfdf5;
+      --fg-secondary: #a7f3d0;
+      --fg-muted: #6ee7b7;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+      --accent-soft: rgba(34, 197, 94, 0.15);
+      --accent-glow: rgba(34, 197, 94, 0.4);
+      --border: #1e3a1e;
+      --card-bg: rgba(15, 31, 15, 0.95);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,6 +100,7 @@
       color: var(--fg-primary);
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     .font-display { font-family: 'Space Grotesk', sans-serif; }
@@ -45,9 +111,10 @@
       inset: 0;
       z-index: 0;
       background: 
-        radial-gradient(ellipse 120% 80% at 30% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 120% 80% at 30% 0%, var(--accent-soft) 0%, transparent 50%),
         radial-gradient(ellipse 80% 60% at 80% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
         var(--bg-primary);
+      transition: background 0.3s ease;
     }
 
     ::-webkit-scrollbar { width: 6px; }
@@ -56,16 +123,25 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
 
     .glass {
-      background: rgba(15, 15, 18, 0.9);
+      background: var(--card-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
     }
 
-    .input-field { transition: all 0.2s ease; }
+    .input-field { 
+      transition: all 0.2s ease;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--fg-primary);
+    }
     .input-field:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .input-field::placeholder {
+      color: var(--fg-muted);
     }
 
     .btn-primary {
@@ -78,6 +154,17 @@
       box-shadow: 0 6px 30px var(--accent-glow);
     }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--fg-primary);
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent);
+    }
 
     .login-card { animation: slideUp 0.5s ease; }
     @keyframes slideUp {
@@ -105,7 +192,7 @@
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
       color: #fff;
       border-radius: 20px 20px 6px 20px;
-      box-shadow: 0 2px 12px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 2px 12px var(--accent-glow);
     }
     .message-received {
       background: var(--bg-tertiary);
@@ -250,6 +337,86 @@
       to { opacity: 0; transform: translateX(100px) scale(0.8); }
     }
 
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.hidden { display: none; }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes modalSlide {
+      from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Avatar Ring for Active Chat */
+    .avatar-ring {
+      box-shadow: 0 0 0 2px var(--accent), 0 0 15px var(--accent-glow);
+    }
+
+    /* Group Avatar */
+    .group-avatar {
+      background: linear-gradient(135deg, var(--accent-soft), transparent);
+      border: 1px solid var(--border);
+    }
+
+    /* Theme Selector */
+    .theme-option {
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+    .theme-option:hover {
+      transform: scale(1.05);
+    }
+    .theme-option.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      transition: all 0.2s ease;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn:hover {
+      color: var(--fg-primary);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Avatar Selector */
+    .avatar-option {
+      transition: all 0.2s ease;
+      border: 3px solid transparent;
+    }
+    .avatar-option:hover {
+      transform: scale(1.1);
+    }
+    .avatar-option.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
     /* Scroll to Bottom Button */
     .scroll-bottom-btn {
       position: absolute;
@@ -277,32 +444,24 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* Unread Divider */
-    .unread-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 16px 0;
+    /* Member Chip */
+    .member-chip {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
     }
-    .unread-divider::before,
-    .unread-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.3;
-    }
-    .unread-divider span {
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .member-chip:hover {
+      background: var(--bg-hover);
+      border-color: var(--error);
     }
 
-    /* Avatar Ring for Active Chat */
-    .avatar-ring {
-      box-shadow: 0 0 0 2px var(--accent), 0 0 15px var(--accent-glow);
+    /* Group Type Badge */
+    .group-badge {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -321,7 +480,7 @@
 
   <!-- LOGIN PAGE -->
   <div id="loginPage" class="relative z-10 min-h-screen flex items-center justify-center p-4">
-    <div class="login-card glass w-full max-w-md rounded-3xl p-8 border border-[var(--border)]">
+    <div class="login-card glass w-full max-w-md rounded-3xl p-8">
       <div class="text-center mb-6">
         <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[var(--accent-soft)] to-transparent flex items-center justify-center border border-[var(--accent)]/20">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
@@ -345,7 +504,7 @@
             type="email" 
             id="emailInput"
             placeholder="Masukkan email"
-            class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
+            class="input-field w-full px-4 py-3.5 rounded-xl text-sm"
             required
           >
         </div>
@@ -357,7 +516,7 @@
               type="password" 
               id="passwordInput"
               placeholder="Masukkan password"
-              class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm pr-12"
+              class="input-field w-full px-4 py-3.5 rounded-xl text-sm pr-12"
               required
             >
             <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] hover:text-[var(--fg-primary)] transition-colors">
@@ -405,9 +564,23 @@
           <div class="flex items-center justify-between mb-4">
             <div>
               <h1 class="font-display text-xl font-bold">ChatHub</h1>
-              <p class="text-xs text-[var(--fg-muted)]">9 teman terhubung</p>
+              <p class="text-xs text-[var(--fg-muted)]" id="sidebarSubtitle">9 teman terhubung</p>
             </div>
             <div class="flex gap-1">
+              <button onclick="openCreateGroupModal()" class="w-9 h-9 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--accent-soft)] hover:text-[var(--accent)] transition-all" title="Buat Grup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </button>
+              <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--accent-soft)] hover:text-[var(--accent)] transition-all" title="Pengaturan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
               <button onclick="logout()" class="w-9 h-9 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center hover:bg-[var(--error)]/20 hover:text-[var(--error)] transition-all" title="Logout">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -418,6 +591,12 @@
             </div>
           </div>
           
+          <!-- Tabs -->
+          <div class="flex gap-4 mb-3 border-b border-[var(--border)]">
+            <button class="tab-btn pb-2 text-sm active" onclick="switchTab('chats')" id="tabChats">Chat</button>
+            <button class="tab-btn pb-2 text-sm text-[var(--fg-muted)]" onclick="switchTab('groups')" id="tabGroups">Grup</button>
+          </div>
+
           <div class="relative">
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"/>
@@ -426,18 +605,23 @@
             <input 
               type="text" 
               id="searchInput"
-              placeholder="Cari teman..." 
-              class="input-field w-full pl-10 pr-3 py-3 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm"
-              oninput="searchFriends()"
+              placeholder="Cari..." 
+              class="input-field w-full pl-10 pr-3 py-3 rounded-xl text-sm"
+              oninput="searchContacts()"
             >
           </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto" id="friendsList"></div>
+        <!-- Contacts List -->
+        <div class="flex-1 overflow-y-auto" id="contactsList"></div>
 
+        <!-- Groups List -->
+        <div class="flex-1 overflow-y-auto hidden" id="groupsList"></div>
+
+        <!-- Current User -->
         <div class="p-4 border-t border-[var(--border)] bg-[var(--bg-tertiary)]">
           <div class="flex items-center gap-3">
-            <img id="currentUserAvatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-[var(--border)]">
+            <img id="currentUserAvatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-[var(--border)] cursor-pointer hover:ring-2 hover:ring-[var(--accent)] transition-all" onclick="openProfileModal()">
             <div class="flex-1 min-w-0">
               <p id="currentUserName" class="font-medium text-sm truncate"></p>
               <div class="flex items-center gap-1.5">
@@ -485,7 +669,7 @@
                 </div>
                 <div class="flex items-center gap-2 text-[var(--fg-muted)]">
                   <span class="w-2 h-2 rounded-full bg-[var(--info)]"></span>
-                  <span>Notifikasi push</span>
+                  <span>Grup chat</span>
                 </div>
               </div>
             </div>
@@ -515,7 +699,7 @@
                 type="text" 
                 id="messageInput"
                 placeholder="Ketik pesan..." 
-                class="input-field w-full px-4 py-3.5 bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl text-sm pr-12"
+                class="input-field w-full px-4 py-3.5 rounded-xl text-sm pr-12"
                 autocomplete="off"
               >
               <button type="button" onclick="toggleEmoji()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors">
@@ -537,8 +721,230 @@
     </div>
   </div>
 
+  <!-- Create Group Modal -->
+  <div id="createGroupModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="p-6 border-b border-[var(--border)]">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">Buat Grup Baru</h3>
+          <button onclick="closeCreateGroupModal()" class="w-8 h-8 rounded-lg hover:bg-[var(--bg-hover)] flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <form onsubmit="createGroup(event)" class="p-6 space-y-5">
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-2">Nama Grup</label>
+          <input 
+            type="text" 
+            id="groupNameInput"
+            placeholder="Masukkan nama grup"
+            class="input-field w-full px-4 py-3 rounded-xl text-sm"
+            required
+          >
+        </div>
+        
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-2">Pilih Anggota</label>
+          <div class="bg-[var(--bg-tertiary)] rounded-xl p-3 max-h-48 overflow-y-auto space-y-2" id="memberSelector"></div>
+        </div>
+
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-2">Anggota Terpilih</label>
+          <div class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-[var(--bg-tertiary)] rounded-xl" id="selectedMembersDisplay">
+            <span class="text-xs text-[var(--fg-muted)]">Belum ada anggota dipilih</span>
+          </div>
+        </div>
+
+        <p id="groupError" class="text-[var(--error)] text-sm hidden"></p>
+
+        <div class="flex gap-3">
+          <button type="button" onclick="closeCreateGroupModal()" class="btn-secondary flex-1 py-3 rounded-xl font-medium text-sm">Batal</button>
+          <button type="submit" id="createGroupBtn" class="btn-primary flex-1 py-3 rounded-xl font-semibold text-sm">Buat Grup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="p-6 border-b border-[var(--border)]">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">Pengaturan</h3>
+          <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-lg hover:bg-[var(--bg-hover)] flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6 space-y-6">
+        <!-- Theme Section -->
+        <div>
+          <h4 class="font-medium text-sm mb-3">Tema Aplikasi</h4>
+          <div class="grid grid-cols-5 gap-3" id="themeSelector">
+            <button type="button" onclick="setTheme('dark')" class="theme-option rounded-xl p-3 active" data-theme="dark">
+              <div class="w-full aspect-square rounded-lg bg-[#08080a] border border-[#2a2a32] mb-2"></div>
+              <span class="text-xs">Dark</span>
+            </button>
+            <button type="button" onclick="setTheme('light')" class="theme-option rounded-xl p-3" data-theme="light">
+              <div class="w-full aspect-square rounded-lg bg-[#f8f9fa] border border-[#dee2e6] mb-2"></div>
+              <span class="text-xs">Light</span>
+            </button>
+            <button type="button" onclick="setTheme('ocean')" class="theme-option rounded-xl p-3" data-theme="ocean">
+              <div class="w-full aspect-square rounded-lg bg-[#0a1628] border border-[#1e3a5f] mb-2"></div>
+              <span class="text-xs">Ocean</span>
+            </button>
+            <button type="button" onclick="setTheme('sunset')" class="theme-option rounded-xl p-3" data-theme="sunset">
+              <div class="w-full aspect-square rounded-lg bg-[#1a0a0f] border border-[#4a2230] mb-2"></div>
+              <span class="text-xs">Sunset</span>
+            </button>
+            <button type="button" onclick="setTheme('forest')" class="theme-option rounded-xl p-3" data-theme="forest">
+              <div class="w-full aspect-square rounded-lg bg-[#0a140a] border border-[#1e3a1e] mb-2"></div>
+              <span class="text-xs">Forest</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Notification Sound -->
+        <div>
+          <h4 class="font-medium text-sm mb-3">Notifikasi</h4>
+          <label class="flex items-center justify-between p-3 bg-[var(--bg-tertiary)] rounded-xl cursor-pointer">
+            <span class="text-sm">Suara Notifikasi</span>
+            <input type="checkbox" id="notificationToggle" checked class="w-5 h-5 accent-[var(--accent)]">
+          </label>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="pt-4 border-t border-[var(--border)]">
+          <h4 class="font-medium text-sm mb-3">Akun</h4>
+          <button onclick="openProfileModal(); closeSettingsModal();" class="w-full p-3 bg-[var(--bg-tertiary)] rounded-xl text-left hover:bg-[var(--bg-hover)] transition-all flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img id="settingsUserAvatar" src="" class="w-10 h-10 rounded-full">
+              <div>
+                <p class="font-medium text-sm" id="settingsUserName"></p>
+                <p class="text-xs text-[var(--fg-muted)]" id="settingsUserEmail"></p>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="p-6 border-b border-[var(--border)]">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">Profil Saya</h3>
+          <button onclick="closeProfileModal()" class="w-8 h-8 rounded-lg hover:bg-[var(--bg-hover)] flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <form onsubmit="updateProfile(event)" class="p-6 space-y-5">
+        <!-- Avatar Selector -->
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-3">Pilih Avatar</label>
+          <div class="grid grid-cols-6 gap-2" id="avatarSelector"></div>
+        </div>
+
+        <!-- Preview -->
+        <div class="flex justify-center">
+          <div class="text-center">
+            <img id="profileAvatarPreview" src="" class="w-24 h-24 rounded-full mx-auto mb-2 border-2 border-[var(--border)]">
+            <p class="text-xs text-[var(--fg-muted)]">Preview Avatar</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-2">Nama Tampilan</label>
+          <input 
+            type="text" 
+            id="profileNameInput"
+            placeholder="Masukkan nama"
+            class="input-field w-full px-4 py-3 rounded-xl text-sm"
+            required
+          >
+        </div>
+
+        <div>
+          <label class="text-sm text-[var(--fg-secondary)] block mb-2">Bio (Opsional)</label>
+          <input 
+            type="text" 
+            id="profileBioInput"
+            placeholder="Tulis bio singkat..."
+            class="input-field w-full px-4 py-3 rounded-xl text-sm"
+            maxlength="100"
+          >
+        </div>
+
+        <div class="flex gap-3">
+          <button type="button" onclick="closeProfileModal()" class="btn-secondary flex-1 py-3 rounded-xl font-medium text-sm">Batal</button>
+          <button type="submit" id="updateProfileBtn" class="btn-primary flex-1 py-3 rounded-xl font-semibold text-sm">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Group Info Modal -->
+  <div id="groupInfoModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="p-6 border-b border-[var(--border)]">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">Info Grup</h3>
+          <button onclick="closeGroupInfoModal()" class="w-8 h-8 rounded-lg hover:bg-[var(--bg-hover)] flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6 space-y-5">
+        <!-- Group Info -->
+        <div class="text-center">
+          <div class="w-20 h-20 mx-auto mb-3 rounded-2xl group-avatar flex items-center justify-center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h4 class="font-display font-bold text-lg" id="groupInfoName"></h4>
+          <p class="text-xs text-[var(--fg-muted)]" id="groupInfoCreated"></p>
+        </div>
+
+        <!-- Members -->
+        <div>
+          <h4 class="font-medium text-sm mb-3">Anggota (<span id="groupMemberCount">0</span>)</h4>
+          <div class="space-y-2 max-h-48 overflow-y-auto" id="groupMembersList"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="pt-4 border-t border-[var(--border)] space-y-2">
+          <button onclick="exitGroup()" class="w-full py-3 rounded-xl bg-[var(--error)]/10 text-[var(--error)] font-medium text-sm hover:bg-[var(--error)]/20 transition-all">
+            Keluar dari Grup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Emoji Picker -->
-  <div id="emojiPicker" class="fixed z-50 hidden glass rounded-2xl p-3 border border-[var(--border)]">
+  <div id="emojiPicker" class="fixed z-50 hidden glass rounded-2xl p-3">
     <div class="grid grid-cols-6 gap-1" id="emojiGrid"></div>
   </div>
 
@@ -558,22 +964,24 @@
       set, 
       serverTimestamp,
       onDisconnect,
-      get
+      get,
+      remove,
+      update
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     // =============================================
     // FIREBASE CONFIG - GANTI DENGAN CONFIG ANDA
     // =============================================
-const firebaseConfig = {
-  apiKey: "AIzaSyBJm5riXDquZEIv2MOnBaLRL7Si_5wsreI",
-  authDomain: "noval-97191.firebaseapp.com",
-  databaseURL: "https://noval-97191-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "noval-97191",
-  storageBucket: "noval-97191.firebasestorage.app",
-  messagingSenderId: "200674844599",
-  appId: "1:200674844599:web:e7d73c42cf920592381232",
-  measurementId: "G-64MWWW059W"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyBJm5riXDquZEIv2MOnBaLRL7Si_5wsreI",
+      authDomain: "noval-97191.firebaseapp.com",
+      databaseURL: "https://noval-97191-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "noval-97191",
+      storageBucket: "noval-97191.firebasestorage.app",
+      messagingSenderId: "200674844599",
+      appId: "1:200674844599:web:e7d73c42cf920592381232",
+      measurementId: "G-64MWWW059W"
+    };
     // =============================================
 
     // State
@@ -583,26 +991,39 @@ const firebaseConfig = {
     let firebaseReady = false;
     let lastMessageId = {};
     let hasNewMessages = {};
+    let selectedMembers = [];
+    let currentTheme = 'dark';
+    let userGroups = [];
+    let currentTab = 'chats';
 
     // Users data
     const usersData = {
-      'juwan.smb88@gmail.com': { id: 1, name: 'Juwan', avatar: 'juwan' },
-      'ridwansmb89@gmail.com': { id: 2, name: 'Ridwan', avatar: 'ridwan' },
-      'leosanho.888@gmail.com': { id: 3, name: 'Leo Sanho', avatar: 'leo' },
-      'novalmuttawali354@gmail.com': { id: 4, name: 'Noval Muttawali', avatar: 'noval' },
-      'auliaa.putra99@gmail.com': { id: 5, name: 'Aulia Putra', avatar: 'aulia' },
-      'saridewisukma6@gmail.com': { id: 6, name: 'Saridewi Sukma', avatar: 'saridewi' },
-      'faziramuntas@gmail.com': { id: 7, name: 'Fazira Muntas', avatar: 'fazira' },
-      'riorichie230@gmail.com': { id: 8, name: 'Rio Richie', avatar: 'rio' },
-      'retnanovia896@gmail.com': { id: 9, name: 'Retna Novia', avatar: 'retna' },
+      'juwan.smb88@gmail.com': { id: 1, name: 'Juwan', avatar: 'juwan', bio: '' },
+      'ridwansmb89@gmail.com': { id: 2, name: 'Ridwan', avatar: 'ridwan', bio: '' },
+      'leosanho.888@gmail.com': { id: 3, name: 'Leo Sanho', avatar: 'leo', bio: '' },
+      'novalmuttawali354@gmail.com': { id: 4, name: 'Noval Muttawali', avatar: 'noval', bio: '' },
+      'auliaa.putra99@gmail.com': { id: 5, name: 'Aulia Putra', avatar: 'aulia', bio: '' },
+      'saridewisukma6@gmail.com': { id: 6, name: 'Saridewi Sukma', avatar: 'saridewi', bio: '' },
+      'faziramuntas@gmail.com': { id: 7, name: 'Fazira Muntas', avatar: 'fazira', bio: '' },
+      'riorichie230@gmail.com': { id: 8, name: 'Rio Richie', avatar: 'rio', bio: '' },
+      'retnanovia896@gmail.com': { id: 9, name: 'Retna Novia', avatar: 'retna', bio: '' },
     };
 
-    const emojis = ['😀', '😂', '🥰', '😎', '🤔', '👍', '❤️', '🔥', '🎉', '👏', '🙏', '💪', '✅', '❌', '⭐', '💡', '☕', '🎮'];
+    // Avatar options
+    const avatarOptions = [
+      'juwan', 'ridwan', 'leo', 'noval', 'aulia', 'saridewi',
+      'fazira', 'rio', 'retna', 'bella', 'dani', 'eka',
+      'fira', 'gilang', 'hana', 'ivan', 'julia', 'kevin'
+    ];
+
+    const emojis = ['😀', '😂', '🥰', '😎', '🤔', '👍', '❤️', '🔥', '🎉', '👏', '🙏', '💪', '✅', '❌', '⭐', '💡', '☕', '🎮', '😊', '🤣', '😍', '🥳', '😇', '🤩'];
 
     // Audio for notification
     let notificationSound = null;
+    let notificationEnabled = true;
+
     function initNotificationSound() {
-      notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleVkBselqsN7jm2ABD2OWrdrquJlkExV7nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhA==');
+      notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleVkBselqsN7jm2ABD2OWrdrquJlkExV7nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhMVfZy22Oy6pmUeExV9nLbY7LqmZR4TFX2cttjsuqZlHhA==');
     }
 
     // Toast Notification
@@ -626,20 +1047,41 @@ const firebaseConfig = {
       
       container.appendChild(toast);
       
-      // Play sound
-      if (notificationSound) {
+      if (notificationSound && notificationEnabled) {
         notificationSound.currentTime = 0;
         notificationSound.play().catch(() => {});
       }
       
-      // Auto remove after 5 seconds
       setTimeout(() => {
         toast.classList.add('toast-exit');
         setTimeout(() => toast.remove(), 300);
       }, 5000);
     }
 
-    // Render quick login
+    // Theme
+    function loadTheme() {
+      const saved = localStorage.getItem('chatHubTheme');
+      if (saved) {
+        currentTheme = saved;
+        document.documentElement.setAttribute('data-theme', saved);
+        updateThemeSelector(saved);
+      }
+    }
+
+    window.setTheme = function(theme) {
+      currentTheme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('chatHubTheme', theme);
+      updateThemeSelector(theme);
+    };
+
+    function updateThemeSelector(theme) {
+      document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === theme);
+      });
+    }
+
+    // Render functions
     function renderQuickLogin() {
       const list = document.getElementById('quickLoginList');
       list.innerHTML = Object.entries(usersData).map(([email, data]) => `
@@ -650,13 +1092,90 @@ const firebaseConfig = {
       `).join('');
     }
 
-    // Render emoji picker
     function renderEmojiPicker() {
       const grid = document.getElementById('emojiGrid');
       grid.innerHTML = emojis.map(e => `
         <button type="button" onclick="insertEmoji('${e}')" class="text-xl p-2 rounded-lg hover:bg-[var(--bg-hover)] transition-colors">${e}</button>
       `).join('');
     }
+
+    function renderAvatarSelector() {
+      const selector = document.getElementById('avatarSelector');
+      selector.innerHTML = avatarOptions.map(av => `
+        <button type="button" onclick="selectAvatar('${av}')" class="avatar-option rounded-full p-1" data-avatar="${av}">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${av}" class="w-10 h-10 rounded-full">
+        </button>
+      `).join('');
+    }
+
+    function renderMemberSelector() {
+      const selector = document.getElementById('memberSelector');
+      selector.innerHTML = Object.entries(usersData)
+        .filter(([email]) => email !== currentUser?.email)
+        .map(([email, data]) => `
+          <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-[var(--bg-hover)] cursor-pointer">
+            <input type="checkbox" class="member-checkbox accent-[var(--accent)]" data-id="${data.id}" data-name="${data.name}" data-avatar="${data.avatar}" onchange="toggleMemberSelection(this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}" class="w-8 h-8 rounded-full">
+            <span class="text-sm">${data.name}</span>
+          </label>
+        `).join('');
+    }
+
+    window.selectAvatar = function(avatar) {
+      const preview = document.getElementById('profileAvatarPreview');
+      preview.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatar}`;
+      
+      document.querySelectorAll('.avatar-option').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.avatar === avatar);
+      });
+      
+      currentUser.selectedAvatar = avatar;
+    };
+
+    window.toggleMemberSelection = function(checkbox) {
+      const id = parseInt(checkbox.dataset.id);
+      const name = checkbox.dataset.name;
+      const avatar = checkbox.dataset.avatar;
+      
+      if (checkbox.checked) {
+        if (!selectedMembers.find(m => m.id === id)) {
+          selectedMembers.push({ id, name, avatar });
+        }
+      } else {
+        selectedMembers = selectedMembers.filter(m => m.id !== id);
+      }
+      
+      renderSelectedMembers();
+    };
+
+    function renderSelectedMembers() {
+      const display = document.getElementById('selectedMembersDisplay');
+      
+      if (selectedMembers.length === 0) {
+        display.innerHTML = '<span class="text-xs text-[var(--fg-muted)]">Belum ada anggota dipilih</span>';
+        return;
+      }
+      
+      display.innerHTML = selectedMembers.map(m => `
+        <div class="member-chip flex items-center gap-2 px-2 py-1 rounded-full">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${m.avatar}" class="w-5 h-5 rounded-full">
+          <span class="text-xs">${m.name}</span>
+          <button type="button" onclick="removeMember(${m.id})" class="text-[var(--fg-muted)] hover:text-[var(--error)]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    window.removeMember = function(id) {
+      selectedMembers = selectedMembers.filter(m => m.id !== id);
+      renderSelectedMembers();
+      
+      const checkbox = document.querySelector(`.member-checkbox[data-id="${id}"]`);
+      if (checkbox) checkbox.checked = false;
+    };
 
     // Initialize Firebase
     async function initializeFirebase() {
@@ -672,15 +1191,26 @@ const firebaseConfig = {
         database = getDatabase(app);
         firebaseReady = true;
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
           if (user) {
             currentUser = user;
-            const userData = usersData[user.email] || { name: user.email.split('@')[0], avatar: user.email };
-            currentUser.displayName = userData.name;
-            currentUser.avatar = userData.avatar;
-            currentUser.dbId = userData.id;
+            
+            // Load custom profile from Firebase
+            const profileRef = ref(database, `profiles/${user.email.replace(/\./g, '_')}`);
+            const profileSnap = await get(profileRef);
+            const customProfile = profileSnap.val();
+            
+            const defaultData = usersData[user.email] || { name: user.email.split('@')[0], avatar: user.email };
+            
+            currentUser.displayName = customProfile?.name || defaultData.name;
+            currentUser.avatar = customProfile?.avatar || defaultData.avatar;
+            currentUser.bio = customProfile?.bio || '';
+            currentUser.dbId = defaultData.id;
+            currentUser.selectedAvatar = currentUser.avatar;
+            
             setUserOnline(true);
             showChatApp();
+            loadUserGroups();
           } else {
             currentUser = null;
             showLoginPage();
@@ -798,12 +1328,11 @@ const firebaseConfig = {
       document.getElementById('loginPage').classList.add('hidden');
       document.getElementById('chatApp').classList.remove('hidden');
 
-      document.getElementById('currentUserAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.avatar}`;
-      document.getElementById('currentUserName').textContent = currentUser.displayName;
-      document.getElementById('welcomeName').textContent = currentUser.displayName;
-
+      updateUIForCurrentUser();
       initNotificationSound();
-      renderFriends();
+      renderContacts();
+      renderMemberSelector();
+      renderAvatarSelector();
       listenToAllChats();
 
       if (window.innerWidth >= 768) {
@@ -811,15 +1340,40 @@ const firebaseConfig = {
       }
     }
 
-    function renderFriends(filter = '') {
-      const friendsList = document.getElementById('friendsList');
+    function updateUIForCurrentUser() {
+      const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.avatar}`;
+      document.getElementById('currentUserAvatar').src = avatarUrl;
+      document.getElementById('currentUserName').textContent = currentUser.displayName;
+      document.getElementById('welcomeName').textContent = currentUser.displayName;
+      document.getElementById('settingsUserAvatar').src = avatarUrl;
+      document.getElementById('settingsUserName').textContent = currentUser.displayName;
+      document.getElementById('settingsUserEmail').textContent = currentUser.email;
+      document.getElementById('profileAvatarPreview').src = avatarUrl;
+      document.getElementById('profileNameInput').value = currentUser.displayName;
+      document.getElementById('profileBioInput').value = currentUser.bio || '';
+    }
+
+    // Tab switching
+    window.switchTab = function(tab) {
+      currentTab = tab;
+      document.getElementById('tabChats').classList.toggle('active', tab === 'chats');
+      document.getElementById('tabGroups').classList.toggle('active', tab === 'groups');
+      document.getElementById('tabChats').classList.toggle('text-[var(--fg-muted)]', tab !== 'chats');
+      document.getElementById('tabGroups').classList.toggle('text-[var(--fg-muted)]', tab !== 'groups');
+      document.getElementById('contactsList').classList.toggle('hidden', tab !== 'chats');
+      document.getElementById('groupsList').classList.toggle('hidden', tab !== 'groups');
+    };
+
+    // Render contacts
+    function renderContacts(filter = '') {
+      const list = document.getElementById('contactsList');
       const entries = Object.entries(usersData).filter(([email, data]) => 
         email !== currentUser.email && 
         (data.name.toLowerCase().includes(filter.toLowerCase()) || email.toLowerCase().includes(filter.toLowerCase()))
       );
 
-      friendsList.innerHTML = entries.map(([email, data]) => {
-        const isActive = activeChat?.id === data.id;
+      list.innerHTML = entries.map(([email, data]) => {
+        const isActive = activeChat?.id === data.id && !activeChat?.isGroup;
         return `
           <div class="contact-item flex items-center gap-3 px-4 py-3 cursor-pointer ${isActive ? 'active' : ''}" onclick="selectFriend('${email}', ${data.id}, '${data.name}', '${data.avatar}')">
             <div class="relative">
@@ -840,7 +1394,6 @@ const firebaseConfig = {
         `;
       }).join('');
 
-      // Listen to online status
       entries.forEach(([email, data]) => {
         const unsub = onValue(ref(database, `status/${data.id}`), (snap) => {
           const status = snap.val();
@@ -851,12 +1404,99 @@ const firebaseConfig = {
       });
     }
 
-    window.searchFriends = function() {
-      renderFriends(document.getElementById('searchInput').value);
+    window.searchContacts = function() {
+      const query = document.getElementById('searchInput').value;
+      if (currentTab === 'chats') {
+        renderContacts(query);
+      } else {
+        renderGroups(query);
+      }
     };
 
+    // Groups
+    function loadUserGroups() {
+      const groupsRef = ref(database, 'groups');
+      const unsub = onValue(groupsRef, (snap) => {
+        const data = snap.val();
+        userGroups = [];
+        
+        if (data) {
+          Object.entries(data).forEach(([groupId, group]) => {
+            if (group.members && group.members[currentUser.dbId]) {
+              userGroups.push({ id: groupId, ...group });
+            }
+          });
+        }
+        
+        renderGroups();
+        updateGroupsCount();
+      });
+      unsubscribers.push(unsub);
+    }
+
+    function updateGroupsCount() {
+      const onlineFriends = Object.keys(usersData).length - 1;
+      document.getElementById('sidebarSubtitle').textContent = `${onlineFriends} teman, ${userGroups.length} grup`;
+    }
+
+    function renderGroups(filter = '') {
+      const list = document.getElementById('groupsList');
+      
+      if (userGroups.length === 0) {
+        list.innerHTML = `
+          <div class="p-6 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl group-avatar flex items-center justify-center">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <p class="text-sm text-[var(--fg-muted)] mb-3">Belum ada grup</p>
+            <button onclick="openCreateGroupModal()" class="text-sm text-[var(--accent)] hover:underline">Buat grup pertama</button>
+          </div>
+        `;
+        return;
+      }
+      
+      const filtered = userGroups.filter(g => 
+        g.name.toLowerCase().includes(filter.toLowerCase())
+      );
+      
+      list.innerHTML = filtered.map(group => {
+        const isActive = activeChat?.id === group.id && activeChat?.isGroup;
+        const memberCount = Object.keys(group.members || {}).length;
+        
+        return `
+          <div class="contact-item flex items-center gap-3 px-4 py-3 cursor-pointer ${isActive ? 'active' : ''}" onclick="selectGroup('${group.id}')">
+            <div class="relative">
+              <div class="w-12 h-12 rounded-full group-avatar flex items-center justify-center ${isActive ? 'avatar-ring' : ''}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <p class="font-medium text-sm truncate">${group.name}</p>
+                <span class="text-xs text-[var(--fg-muted)] last-time-group-${group.id}"></span>
+              </div>
+              <div class="flex items-center justify-between mt-1">
+                <p class="text-xs text-[var(--fg-muted)] truncate last-msg-group-${group.id}">${memberCount} anggota</p>
+                <span class="unread-badge min-w-5 h-5 px-1.5 rounded-full bg-[var(--accent)] text-white text-xs items-center justify-center font-medium hidden unread-group-${group.id}"></span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     window.selectFriend = function(email, id, name, avatar) {
-      activeChat = { email, id, name, avatar };
+      activeChat = { email, id, name, avatar, isGroup: false };
       hasNewMessages[id] = false;
 
       document.getElementById('activeChatInfo').innerHTML = `
@@ -869,40 +1509,84 @@ const firebaseConfig = {
         </div>
       `;
 
+      showChatUI();
+      set(ref(database, `unread/${currentUser.dbId}/${id}`), 0);
+      renderContacts();
+      listenToChat(id);
+    };
+
+    window.selectGroup = function(groupId) {
+      const group = userGroups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      activeChat = { id: groupId, name: group.name, isGroup: true, members: group.members };
+      hasNewMessages[groupId] = false;
+
+      const memberCount = Object.keys(group.members || {}).length;
+      
+      document.getElementById('activeChatInfo').innerHTML = `
+        <div class="flex items-center gap-3 cursor-pointer" onclick="openGroupInfoModal()">
+          <div class="w-10 h-10 rounded-full group-avatar flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-sm">${group.name}</p>
+            <p class="text-xs text-[var(--fg-muted)]">${memberCount} anggota</p>
+          </div>
+        </div>
+      `;
+
+      showChatUI();
+      set(ref(database, `unreadGroup/${currentUser.dbId}/${groupId}`), 0);
+      renderGroups();
+      listenToGroupChat(groupId);
+    };
+
+    function showChatUI() {
       document.getElementById('welcomeScreen').classList.add('hidden');
       document.getElementById('messagesList').classList.remove('hidden');
       document.getElementById('inputArea').classList.remove('hidden');
 
-      set(ref(database, `unread/${currentUser.dbId}/${id}`), 0);
-      renderFriends();
-      listenToChat(id);
-
       if (window.innerWidth < 768) {
         document.getElementById('sidebar').classList.add('sidebar-closed');
       }
-    };
-
-    function getChatKey(id1, id2) {
-      return [id1, id2].sort((a, b) => a - b).join('_');
     }
 
+    // Chat listening
     function listenToChat(friendId) {
       const chatKey = getChatKey(currentUser.dbId, friendId);
       
       const unsub = onValue(ref(database, `messages/${chatKey}`), (snap) => {
         const data = snap.val();
-        renderMessages(data, friendId);
+        renderMessages(data, friendId, false);
       });
       unsubscribers.push(unsub);
     }
 
+    function listenToGroupChat(groupId) {
+      const unsub = onValue(ref(database, `groupMessages/${groupId}`), (snap) => {
+        const data = snap.val();
+        renderMessages(data, groupId, true);
+      });
+      unsubscribers.push(unsub);
+    }
+
+    function getChatKey(id1, id2) {
+      return [id1, id2].sort((a, b) => a - b).join('_');
+    }
+
     function listenToAllChats() {
+      // Listen to direct messages
       Object.entries(usersData).forEach(([email, data]) => {
         if (email === currentUser.email) return;
         
         const chatKey = getChatKey(currentUser.dbId, data.id);
         
-        // Listen for new messages
         const unsub = onValue(ref(database, `messages/${chatKey}`), (snap) => {
           const messages = snap.val();
           if (messages) {
@@ -910,21 +1594,17 @@ const firebaseConfig = {
             const lastEntry = msgArray[msgArray.length - 1];
             const [msgId, lastMsg] = lastEntry;
             
-            // Check if this is a new message
             if (lastMessageId[data.id] && lastMessageId[data.id] !== msgId && lastMsg.from !== currentUser.dbId) {
-              // New message notification
-              if (activeChat?.id !== data.id) {
+              if (activeChat?.id !== data.id || activeChat?.isGroup) {
                 showToast(data.name, lastMsg.text, `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatar}`, () => {
                   selectFriend(email, data.id, data.name, data.avatar);
                 });
               } else {
-                // Message in current chat - highlight
                 hasNewMessages[data.id] = true;
               }
             }
             lastMessageId[data.id] = msgId;
             
-            // Update last message preview
             const lastMsgEl = document.querySelector(`.last-msg-${data.id}`);
             const lastTimeEl = document.querySelector(`.last-time-${data.id}`);
             if (lastMsgEl) {
@@ -936,7 +1616,6 @@ const firebaseConfig = {
         });
         unsubscribers.push(unsub);
 
-        // Listen to unread count
         const unreadUnsub = onValue(ref(database, `unread/${currentUser.dbId}/${data.id}`), (snap) => {
           const count = snap.val() || 0;
           const badge = document.querySelector(`.unread-${data.id}`);
@@ -953,9 +1632,72 @@ const firebaseConfig = {
         });
         unsubscribers.push(unreadUnsub);
       });
+
+      // Listen to group messages
+      const groupsUnsub = onValue(ref(database, 'groups'), (snap) => {
+        const groups = snap.val();
+        if (groups) {
+          Object.entries(groups).forEach(([groupId, group]) => {
+            if (group.members && group.members[currentUser.dbId]) {
+              const msgUnsub = onValue(ref(database, `groupMessages/${groupId}`), (msgSnap) => {
+                const messages = msgSnap.val();
+                if (messages) {
+                  const msgArray = Object.entries(messages);
+                  const lastEntry = msgArray[msgArray.length - 1];
+                  const [msgId, lastMsg] = lastEntry;
+                  
+                  const lastKey = `group-${groupId}`;
+                  if (lastMessageId[lastKey] && lastMessageId[lastKey] !== msgId && lastMsg.from !== currentUser.dbId) {
+                    if (activeChat?.id !== groupId || !activeChat?.isGroup) {
+                      const senderData = findUserData(lastMsg.from);
+                      showToast(group.name, `${senderData?.name || 'User'}: ${lastMsg.text}`, `https://api.dicebear.com/7.x/avataaars/svg?seed=${group.name}`, () => {
+                        selectGroup(groupId);
+                      });
+                    } else {
+                      hasNewMessages[groupId] = true;
+                    }
+                  }
+                  lastMessageId[lastKey] = msgId;
+                  
+                  const lastMsgEl = document.querySelector(`.last-msg-group-${groupId}`);
+                  const lastTimeEl = document.querySelector(`.last-time-group-${groupId}`);
+                  if (lastMsgEl) {
+                    const senderData = findUserData(lastMsg.from);
+                    const prefix = lastMsg.from === currentUser.dbId ? 'Anda: ' : `${senderData?.name || 'User'}: `;
+                    lastMsgEl.textContent = prefix + lastMsg.text.substring(0, 20) + (lastMsg.text.length > 20 ? '...' : '');
+                    lastTimeEl.textContent = formatTime(lastMsg.timestamp);
+                  }
+                }
+              });
+              unsubscribers.push(msgUnsub);
+              
+              const unreadUnsub = onValue(ref(database, `unreadGroup/${currentUser.dbId}/${groupId}`), (snap) => {
+                const count = snap.val() || 0;
+                const badge = document.querySelector(`.unread-group-${groupId}`);
+                if (badge) {
+                  if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('hidden');
+                    badge.classList.add('flex');
+                  } else {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('flex');
+                  }
+                }
+              });
+              unsubscribers.push(unreadUnsub);
+            }
+          });
+        }
+      });
+      unsubscribers.push(groupsUnsub);
     }
 
-    function renderMessages(messages, friendId) {
+    function findUserData(id) {
+      return Object.values(usersData).find(u => u.id === id);
+    }
+
+    function renderMessages(messages, entityId, isGroup) {
       const list = document.getElementById('messagesList');
       
       if (!messages) {
@@ -964,18 +1706,27 @@ const firebaseConfig = {
       }
 
       const msgArray = Object.entries(messages).map(([id, msg]) => ({ id, ...msg }));
-      const friend = Object.values(usersData).find(u => u.id === friendId);
       const prevLength = list.children.length;
 
       list.innerHTML = msgArray.map((msg, idx) => {
         const isMe = msg.from === currentUser.dbId;
-        const sender = isMe ? currentUser : friend;
-        const isNew = hasNewMessages[friendId] && idx === msgArray.length - 1 && !isMe;
+        let sender;
+        
+        if (isMe) {
+          sender = currentUser;
+        } else if (isGroup) {
+          sender = findUserData(msg.from) || { name: 'Unknown', avatar: 'unknown' };
+        } else {
+          sender = findUserData(entityId) || { name: 'Unknown', avatar: 'unknown' };
+        }
+        
+        const isNew = hasNewMessages[entityId] && idx === msgArray.length - 1 && !isMe;
 
         return `
           <div class="flex ${isMe ? 'justify-end' : 'justify-start'} items-end gap-2 ${isNew ? 'message-new' : ''}">
-            ${!isMe ? `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${sender.avatar}" class="w-8 h-8 rounded-full flex-shrink-0">` : ''}
+            ${!isMe ? `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${sender.avatar || sender.selectedAvatar}" class="w-8 h-8 rounded-full flex-shrink-0">` : ''}
             <div class="message-bubble ${isMe ? 'message-sent' : 'message-received'} px-4 py-2.5 ${idx >= prevLength ? 'message-animate' : ''}">
+              ${isGroup && !isMe ? `<p class="text-xs font-medium text-[var(--accent)] mb-1">${sender.name}</p>` : ''}
               <p class="text-sm">${escapeHtml(msg.text)}</p>
               <div class="flex items-center justify-end gap-1.5 mt-1">
                 <span class="text-xs ${isMe ? 'text-white/60' : 'text-[var(--fg-muted)]'}">${formatTime(msg.timestamp)}</span>
@@ -985,7 +1736,6 @@ const firebaseConfig = {
         `;
       }).join('');
 
-      // Auto scroll to bottom
       scrollToBottom();
     }
 
@@ -1008,29 +1758,13 @@ const firebaseConfig = {
 
     function scrollToBottom() {
       const area = document.getElementById('messagesArea');
-      const btn = document.getElementById('scrollBottomBtn');
-      
-      // Always scroll to bottom
       area.scrollTop = area.scrollHeight;
-      
-      // Hide scroll button after scroll
-      btn.classList.add('hidden');
+      document.getElementById('scrollBottomBtn').classList.add('hidden');
     }
 
     window.scrollToBottom = function() {
       scrollToBottom();
     };
-
-    // Show/hide scroll button based on scroll position
-    document.getElementById('messagesArea')?.addEventListener('scroll', function() {
-      const btn = document.getElementById('scrollBottomBtn');
-      const isNearBottom = this.scrollHeight - this.scrollTop - this.clientHeight < 100;
-      if (isNearBottom) {
-        btn.classList.add('hidden');
-      } else {
-        btn.classList.remove('hidden');
-      }
-    });
 
     window.sendMessage = async function(e) {
       e.preventDefault();
@@ -1044,20 +1778,35 @@ const firebaseConfig = {
       sendBtn.innerHTML = '<div class="spinner"></div>';
 
       try {
-        const chatKey = getChatKey(currentUser.dbId, activeChat.id);
         const newMsg = {
           from: currentUser.dbId,
-          to: activeChat.id,
           text: text,
           timestamp: Date.now()
         };
 
-        await push(ref(database, `messages/${chatKey}`), newMsg);
+        if (activeChat.isGroup) {
+          await push(ref(database, `groupMessages/${activeChat.id}`), newMsg);
+          
+          // Update unread for all group members except sender
+          if (activeChat.members) {
+            Object.keys(activeChat.members).forEach(memberId => {
+              if (parseInt(memberId) !== currentUser.dbId) {
+                const unreadRef = ref(database, `unreadGroup/${memberId}/${activeChat.id}`);
+                get(unreadRef).then(snap => {
+                  set(unreadRef, (snap.val() || 0) + 1);
+                });
+              }
+            });
+          }
+        } else {
+          const chatKey = getChatKey(currentUser.dbId, activeChat.id);
+          newMsg.to = activeChat.id;
+          await push(ref(database, `messages/${chatKey}`), newMsg);
 
-        // Update unread
-        const unreadRef = ref(database, `unread/${activeChat.id}/${currentUser.dbId}`);
-        const snap = await get(unreadRef);
-        await set(unreadRef, (snap.val() || 0) + 1);
+          const unreadRef = ref(database, `unread/${activeChat.id}/${currentUser.dbId}`);
+          const snap = await get(unreadRef);
+          await set(unreadRef, (snap.val() || 0) + 1);
+        }
 
         input.value = '';
       } catch (error) {
@@ -1068,6 +1817,7 @@ const firebaseConfig = {
       sendBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
     };
 
+    // Modal handlers
     window.toggleSidebar = function() {
       document.getElementById('sidebar').classList.toggle('sidebar-closed');
     };
@@ -1088,26 +1838,245 @@ const firebaseConfig = {
       document.getElementById('emojiPicker').classList.add('hidden');
     };
 
-    // Close emoji picker on click outside
+    // Create Group Modal
+    window.openCreateGroupModal = function() {
+      selectedMembers = [];
+      renderSelectedMembers();
+      document.querySelectorAll('.member-checkbox').forEach(cb => cb.checked = false);
+      document.getElementById('groupNameInput').value = '';
+      document.getElementById('groupError').classList.add('hidden');
+      document.getElementById('createGroupModal').classList.remove('hidden');
+    };
+
+    window.closeCreateGroupModal = function() {
+      document.getElementById('createGroupModal').classList.add('hidden');
+    };
+
+    window.createGroup = async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('groupNameInput').value.trim();
+      const errorEl = document.getElementById('groupError');
+      const btn = document.getElementById('createGroupBtn');
+      
+      if (selectedMembers.length === 0) {
+        errorEl.textContent = 'Pilih minimal 1 anggota';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner mx-auto"></div>';
+      
+      try {
+        const groupRef = push(ref(database, 'groups'));
+        const groupId = groupRef.key;
+        
+        const members = { [currentUser.dbId]: true };
+        selectedMembers.forEach(m => {
+          members[m.id] = true;
+        });
+        
+        await set(groupRef, {
+          name: name,
+          createdBy: currentUser.dbId,
+          createdAt: Date.now(),
+          members: members
+        });
+        
+        closeCreateGroupModal();
+        showToast('Grup Dibuat', `Grup "${name}" berhasil dibuat`, `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`, () => {
+          selectGroup(groupId);
+        });
+        
+      } catch (error) {
+        errorEl.textContent = error.message;
+        errorEl.classList.remove('hidden');
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = 'Buat Grup';
+    };
+
+    // Settings Modal
+    window.openSettingsModal = function() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+      updateThemeSelector(currentTheme);
+    };
+
+    window.closeSettingsModal = function() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    };
+
+    // Profile Modal
+    window.openProfileModal = function() {
+      document.getElementById('profileNameInput').value = currentUser.displayName;
+      document.getElementById('profileBioInput').value = currentUser.bio || '';
+      currentUser.selectedAvatar = currentUser.avatar;
+      
+      document.querySelectorAll('.avatar-option').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.avatar === currentUser.avatar);
+      });
+      
+      document.getElementById('profileAvatarPreview').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.avatar}`;
+      document.getElementById('profileModal').classList.remove('hidden');
+    };
+
+    window.closeProfileModal = function() {
+      document.getElementById('profileModal').classList.add('hidden');
+    };
+
+    window.updateProfile = async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('profileNameInput').value.trim();
+      const bio = document.getElementById('profileBioInput').value.trim();
+      const avatar = currentUser.selectedAvatar || currentUser.avatar;
+      const btn = document.getElementById('updateProfileBtn');
+      
+      if (!name) return;
+      
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner mx-auto"></div>';
+      
+      try {
+        const profileRef = ref(database, `profiles/${currentUser.email.replace(/\./g, '_')}`);
+        await set(profileRef, {
+          name: name,
+          bio: bio,
+          avatar: avatar,
+          updatedAt: Date.now()
+        });
+        
+        currentUser.displayName = name;
+        currentUser.bio = bio;
+        currentUser.avatar = avatar;
+        
+        updateUIForCurrentUser();
+        closeProfileModal();
+        showToast('Profil Diperbarui', 'Profil berhasil disimpan', `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatar}`);
+        
+      } catch (error) {
+        alert('Gagal menyimpan: ' + error.message);
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = 'Simpan';
+    };
+
+    // Group Info Modal
+    window.openGroupInfoModal = function() {
+      if (!activeChat?.isGroup) return;
+      
+      const group = userGroups.find(g => g.id === activeChat.id);
+      if (!group) return;
+      
+      document.getElementById('groupInfoName').textContent = group.name;
+      document.getElementById('groupInfoCreated').textContent = `Dibuat pada ${formatTime(group.createdAt)}`;
+      
+      const membersList = document.getElementById('groupMembersList');
+      const memberIds = Object.keys(group.members || {});
+      
+      document.getElementById('groupMemberCount').textContent = memberIds.length;
+      
+      membersList.innerHTML = memberIds.map(id => {
+        const userData = findUserData(parseInt(id));
+        const isCreator = id == group.createdBy;
+        
+        return `
+          <div class="flex items-center gap-3 p-2 rounded-lg bg-[var(--bg-tertiary)]">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${userData?.avatar || 'unknown'}" class="w-8 h-8 rounded-full">
+            <span class="text-sm flex-1">${userData?.name || 'Unknown'}</span>
+            ${isCreator ? '<span class="group-badge">Admin</span>' : ''}
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('groupInfoModal').classList.remove('hidden');
+    };
+
+    window.closeGroupInfoModal = function() {
+      document.getElementById('groupInfoModal').classList.add('hidden');
+    };
+
+    window.exitGroup = async function() {
+      if (!activeChat?.isGroup) return;
+      
+      try {
+        const memberRef = ref(database, `groups/${activeChat.id}/members/${currentUser.dbId}`);
+        await remove(memberRef);
+        
+        closeGroupInfoModal();
+        
+        // Reset chat view
+        activeChat = null;
+        document.getElementById('welcomeScreen').classList.remove('hidden');
+        document.getElementById('messagesList').classList.add('hidden');
+        document.getElementById('inputArea').classList.add('hidden');
+        document.getElementById('activeChatInfo').innerHTML = '<p class="text-[var(--fg-muted)] text-sm">Pilih teman untuk mulai chat</p>';
+        
+        showToast('Keluar Grup', 'Anda telah keluar dari grup', '');
+        
+      } catch (error) {
+        alert('Gagal keluar: ' + error.message);
+      }
+    };
+
+    // Notification toggle
+    document.getElementById('notificationToggle')?.addEventListener('change', function() {
+      notificationEnabled = this.checked;
+      localStorage.setItem('chatHubNotifications', notificationEnabled);
+    });
+
+    // Load saved preferences
+    function loadPreferences() {
+      const savedNotifications = localStorage.getItem('chatHubNotifications');
+      if (savedNotifications !== null) {
+        notificationEnabled = savedNotifications === 'true';
+        const toggle = document.getElementById('notificationToggle');
+        if (toggle) toggle.checked = notificationEnabled;
+      }
+    }
+
+    // Close handlers
     document.addEventListener('click', (e) => {
       const picker = document.getElementById('emojiPicker');
-      if (!picker.contains(e.target) && !e.target.closest('[onclick="toggleEmoji()"]')) {
+      if (picker && !picker.contains(e.target) && !e.target.closest('[onclick="toggleEmoji()"]')) {
         picker.classList.add('hidden');
       }
     });
 
-    // Init
-    renderQuickLogin();
-    renderEmojiPicker();
-    initializeFirebase();
-
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') document.getElementById('emojiPicker').classList.add('hidden');
+      if (e.key === 'Escape') {
+        document.getElementById('emojiPicker')?.classList.add('hidden');
+        closeCreateGroupModal();
+        closeSettingsModal();
+        closeProfileModal();
+        closeGroupInfoModal();
+      }
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) document.getElementById('sidebar')?.classList.remove('sidebar-closed');
+      if (window.innerWidth >= 768) {
+        document.getElementById('sidebar')?.classList.remove('sidebar-closed');
+      }
     });
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+    });
+
+    // Init
+    loadTheme();
+    loadPreferences();
+    renderQuickLogin();
+    renderEmojiPicker();
+    initializeFirebase();
   </script>
 </body>
 </html>
