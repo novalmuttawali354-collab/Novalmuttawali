@@ -322,7 +322,7 @@
                         <button class="btn btn-primary" onclick="copyBankSummary()">Copy Summary</button>
                     </div>
                 </div>
-                <textarea id="bankDataInput" placeholder="Paste data disini (Nominal [TAB] Bank)...&#10;Contoh:&#10;50000 [TAB] BCA&#10;100000 [TAB] DANA"></textarea>
+                <textarea id="bankDataInput" placeholder="Paste data disini (Nominal [TAB] Bank)...&#10;Atau tempel data tabel transaksi lengkap."></textarea>
             </div>
 
             <!-- Table -->
@@ -389,7 +389,6 @@
         // UTILITY FUNCTIONS
         // ============================================
         
-        // Parse "1.234,56" or "1,234.56" -> 1234.56
         function parseIndonesianNumber(str) {
             if (!str) return 0;
             let cleanStr = String(str).replace(/\./g, '').replace(',', '.');
@@ -400,7 +399,6 @@
             return isNaN(num) ? 0 : num;
         }
 
-        // Format 1234.56 -> "1,234.56"
         function formatNumber(num, decimals = 0) {
             if (isNaN(num) || num === null) return '0';
             return num.toLocaleString('en-US', {
@@ -409,7 +407,6 @@
             });
         }
 
-        // Format 123456 -> "Rp 123,456"
         function formatRupiah(num) {
             if (isNaN(num) || num === null) return 'Rp 0';
             return 'Rp ' + num.toLocaleString('en-US');
@@ -551,17 +548,49 @@
             
             const lines = text.trim().split('\n');
             bankParsedData = [];
+            
             lines.forEach(line => {
-                const parts = line.split(/\t+|\s{2,}/);
-                if (parts.length >= 2) {
-                    const nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
-                    const bank = parts[1].trim().toUpperCase();
-                    if (!isNaN(nominal) && nominal > 0 && bank) {
-                        bankParsedData.push({ nominal, bank });
+                // Split by tab to check structure
+                const parts = line.split('\t');
+                
+                let nominal = 0;
+                let bank = "";
+
+                // Parser for Detailed Table Format (User pasted full table)
+                // Structure: Index 0:No, 1:Date, 2:User, 3:Type, 4:UserDetail, 5:AdminDetail, 6:Amount
+                if (parts.length >= 7) {
+                    // Try parsing as detailed table
+                    // Extract Nominal from Index 6
+                    const rawNominal = parts[6].trim();
+                    nominal = parseInt(rawNominal.replace(/[^\d]/g, ''), 10);
+                    
+                    // Extract Bank from Index 5 (Admin Detail)
+                    // Format: "BANK_NAME,AccountNo,Name"
+                    const adminInfo = parts[5].split(',');
+                    if (adminInfo.length > 0) {
+                        bank = adminInfo[0].trim().toUpperCase();
                     }
+                } 
+                // Parser for Simple Format "Nominal [TAB] Bank"
+                else if (parts.length === 2) {
+                    nominal = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
+                    bank = parts[1].trim().toUpperCase();
+                }
+                // Fallback for space separated simple format
+                else if (parts.length === 1) {
+                    const spaceParts = line.split(/\s{2,}/);
+                    if (spaceParts.length >= 2) {
+                        nominal = parseInt(spaceParts[0].replace(/[^\d]/g, ''), 10);
+                        bank = spaceParts[1].trim().toUpperCase();
+                    }
+                }
+
+                if (!isNaN(nominal) && nominal > 0 && bank) {
+                    bankParsedData.push({ nominal, bank });
                 }
             });
 
+            // Calculate Summary
             bankSummary = {};
             bankParsedData.forEach(item => {
                 if (!bankSummary[item.bank]) bankSummary[item.bank] = { count: 0, total: 0 };
@@ -625,41 +654,39 @@
         }
 
         function loadBankSample() {
-            const sampleData = `50000\tBCA\n100000\tDANA\n75000\tSEABANK\n50000\tBCA\n25000\tOVO\n150000\tMANDIRI`;
+            // Updated Sample to match the new detailed format requested
+            const sampleData = `1\t2026-03-16 23:24:54\tfaturr1\tDeposit\tfatchurrohman ,082322818749,DANA\tDANA,087731191453,Tiraman Batu Bara\t100,000\tAccept\tSEJATIWIN_deposi
+2\t2026-03-16 22:55:43\tpuhin55\tDeposit\tSri patemi ,085800806586,DANA\tDANA,087731191453,Tiraman Batu Bara\t48,500\tAccept\tSEJATIWIN_deposi
+3\t2026-03-16 22:43:54\tfaturr1\tDeposit\tfatchurrohman ,082322818749,DANA\tDANA,087731191453,Tiraman Batu Bara\t99,500\tAccept\tSEJATIWIN_deposi
+4\t2026-03-16 22:07:06\tpuhin55\tDeposit\tSri patemi ,085800806586,DANA\tDANA,087731191453,Tiraman Batu Bara\t98,500\tAccept\tSEJATIWIN_deposi
+5\t2026-03-16 22:03:54\t123ahmad\tDeposit\tAhmad Karnain ,081272215180,DANA\tBCA,7402544671,UMI SALAMAH\t32,000\tAccept\tSEJATIWIN_deposi`;
             document.getElementById('bankDataInput').value = sampleData;
             processBankInput();
-            showToast('Sample data bank berhasil dimuat', 'success');
+            showToast('Sample data bank (Format Baru) berhasil dimuat', 'success');
         }
 
         function copyBankSummary() {
             if (Object.keys(bankSummary).length === 0) { showToast('Tidak ada data untuk dicopy', 'warning'); return; }
 
-            const rowHeaders = []; // Baris 1: Nama Header (Bank Trx, Bank Total)
-            const rowValues = [];  // Baris 2: Nilai (Count, Total)
+            const rowHeaders = []; 
+            const rowValues = [];  
 
-            // Iterasi berdasarkan urutan BANK_COPY_ORDER
             BANK_COPY_ORDER.forEach(bankName => {
                 const key = bankName.toUpperCase();
                 const data = bankSummary[key];
 
-                // Tambahkan Header Kolom Trx
                 rowHeaders.push(`${bankName} (Trx)`);
-                // Tambahkan Header Kolom Total
                 rowHeaders.push(`${bankName} (Total)`);
 
                 if (data) {
-                    // Nilai Trx (di kiri)
                     rowValues.push(formatNumber(data.count));
-                    // Nilai Total (di kanan)
                     rowValues.push(formatNumber(data.total));
                 } else {
-                    // Jika tidak ada data
                     rowValues.push("0");
                     rowValues.push("0");
                 }
             });
 
-            // Gabungkan dengan Tab
             const text = rowHeaders.join('\t') + '\n' + rowValues.join('\t');
 
             navigator.clipboard.writeText(text).then(() => {
