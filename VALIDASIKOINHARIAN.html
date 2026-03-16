@@ -361,6 +361,13 @@
             'DOKU': { bg: 'linear-gradient(135deg, #484848, #2a2a2a)', short: 'DKU' }
         };
 
+        // Urutan bank yang diinginkan untuk copy
+        const BANK_COPY_ORDER = [
+            "BCA", "MANDIRI", "BNI", "BRI", "Danamon", "CIMB", "BSI", "MAYBANK", 
+            "DANA", "OVO", "GOPAY", "LINK AJA", "BANK JAGO", "SEABANK", 
+            "USDT / dan lain lain", "QRIS"
+        ];
+
         // ============================================
         // TAB NAVIGATION
         // ============================================
@@ -393,7 +400,7 @@
             return isNaN(num) ? 0 : num;
         }
 
-        // Format 1234.56 -> "1,234.56" (Comma for thousands, dot for decimal)
+        // Format 1234.56 -> "1,234.56"
         function formatNumber(num, decimals = 0) {
             if (isNaN(num) || num === null) return '0';
             return num.toLocaleString('en-US', {
@@ -627,24 +634,36 @@
         function copyBankSummary() {
             if (Object.keys(bankSummary).length === 0) { showToast('Tidak ada data untuk dicopy', 'warning'); return; }
 
-            const sorted = Object.entries(bankSummary).sort((a, b) => b[1].total - a[1].total);
+            const rowHeaders = []; // Baris 1: Nama Header (Bank Trx, Bank Total)
+            const rowValues = [];  // Baris 2: Nilai (Count, Total)
 
-            // Buat array untuk baris 1 (Nama Bank) dan baris 2 (Total Nominal)
-            const rowBanks = [];
-            const rowTotals = [];
+            // Iterasi berdasarkan urutan BANK_COPY_ORDER
+            BANK_COPY_ORDER.forEach(bankName => {
+                const key = bankName.toUpperCase();
+                const data = bankSummary[key];
 
-            sorted.forEach(([bank, data]) => {
-                rowBanks.push(bank);
-                // Menggunakan formatNumber untuk memastikan format koma (ex: 1,000)
-                rowTotals.push(formatNumber(data.total));
+                // Tambahkan Header Kolom Trx
+                rowHeaders.push(`${bankName} (Trx)`);
+                // Tambahkan Header Kolom Total
+                rowHeaders.push(`${bankName} (Total)`);
+
+                if (data) {
+                    // Nilai Trx (di kiri)
+                    rowValues.push(formatNumber(data.count));
+                    // Nilai Total (di kanan)
+                    rowValues.push(formatNumber(data.total));
+                } else {
+                    // Jika tidak ada data
+                    rowValues.push("0");
+                    rowValues.push("0");
+                }
             });
 
-            // Gabungkan dengan TAB (\t) agar berderet kesamping (horizontal)
-            // Saat di-paste ke Excel/Notepad, akan terbentuk 2 baris dengan kolom rapi
-            const text = rowBanks.join('\t') + '\n' + rowTotals.join('\t');
+            // Gabungkan dengan Tab
+            const text = rowHeaders.join('\t') + '\n' + rowValues.join('\t');
 
             navigator.clipboard.writeText(text).then(() => {
-                showToast('Summary berhasil dicopy (Format Horizontal)', 'success');
+                showToast('Summary berhasil dicopy (Trx & Total)', 'success');
             }).catch(() => {
                 showToast('Gagal copy ke clipboard', 'error');
             });
