@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HD Screen Recorder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>REKORD — HD Screen Recorder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #0a0a0f;
-            --bg-elevated: #12121a;
-            --card: #1a1a26;
-            --card-hover: #22222f;
-            --border: #2a2a3a;
-            --fg: #e8e8f0;
-            --fg-muted: #8888a0;
-            --accent: #ff3c5f;
-            --accent-glow: rgba(255, 60, 95, 0.3);
-            --accent-soft: rgba(255, 60, 95, 0.1);
-            --green: #00e87b;
-            --green-glow: rgba(0, 232, 123, 0.3);
-            --green-soft: rgba(0, 232, 123, 0.08);
-            --amber: #ffb830;
-            --amber-glow: rgba(255, 184, 48, 0.3);
+            --bg: #05060e;
+            --bg-card: rgba(10, 14, 28, 0.7);
+            --bg-glass: rgba(10, 14, 28, 0.45);
+            --border: rgba(0, 240, 255, 0.08);
+            --border-hover: rgba(0, 240, 255, 0.2);
+            --fg: #e0e8f8;
+            --fg-dim: #7a8ba8;
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.25);
+            --cyan-soft: rgba(0, 240, 255, 0.06);
+            --magenta: #ff00aa;
+            --magenta-glow: rgba(255, 0, 170, 0.25);
+            --magenta-soft: rgba(255, 0, 170, 0.06);
+            --green: #00ff88;
+            --green-glow: rgba(0, 255, 136, 0.25);
+            --green-soft: rgba(0, 255, 136, 0.06);
+            --amber: #ffaa00;
+            --amber-glow: rgba(255, 170, 0, 0.25);
+            --red: #ff2255;
+            --red-glow: rgba(255, 34, 85, 0.3);
             --radius: 16px;
             --radius-sm: 10px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -41,306 +42,376 @@
             overflow-x: hidden;
         }
 
-        /* === Animated background === */
-        .bg-layer {
+        /* ===== SCANLINES ===== */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+        }
+
+        /* ===== BG SCENE ===== */
+        .bg-scene {
             position: fixed;
             inset: 0;
             z-index: 0;
             overflow: hidden;
-            pointer-events: none;
         }
 
-        .bg-layer .orb {
+        .bg-scene .mesh-gradient {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            animation: orbFloat 12s ease-in-out infinite alternate;
+            inset: -40%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0,240,255,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,0,170,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,255,136,0.03) 0%, transparent 40%);
+            animation: meshRotate 30s linear infinite;
         }
 
-        .bg-layer .orb-1 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            top: -15%; left: -10%;
-            animation-delay: 0s;
+        @keyframes meshRotate {
+            to { transform: rotate(360deg); }
         }
 
-        .bg-layer .orb-2 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, #6c2bd9 0%, transparent 70%);
-            bottom: -10%; right: -5%;
-            animation-delay: -4s;
-        }
-
-        .bg-layer .orb-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, #0ea5e9 0%, transparent 70%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -8s;
-            opacity: 0.2;
-        }
-
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -30px) scale(1.1); }
-            100% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        .grid-overlay {
-            position: fixed;
+        .bg-scene .hex-grid {
+            position: absolute;
             inset: 0;
-            z-index: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2300f0ff' fill-opacity='1'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        /* === Layout === */
-        .app-container {
+        .bg-scene .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(5,6,14,0.8) 100%);
+        }
+
+        canvas#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+        /* ===== LAYOUT ===== */
+        .app {
             position: relative;
             z-index: 1;
             max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 24px 80px;
+            padding: 32px 20px 100px;
         }
 
-        /* === Header === */
+        /* ===== HEADER ===== */
         .app-header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        .app-header .badge {
+        .logo-mark {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: var(--accent-soft);
-            border: 1px solid rgba(255,60,95,0.2);
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--cyan-soft), var(--magenta-soft));
+            border: 1px solid var(--border);
             margin-bottom: 20px;
-        }
-
-        .app-header .badge i {
-            font-size: 10px;
-        }
-
-        .app-header h1 {
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -1.5px;
-            margin-bottom: 14px;
-        }
-
-        .app-header h1 .highlight {
-            background: linear-gradient(135deg, var(--accent), #ff8a5c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .app-header p {
-            font-size: 17px;
-            color: var(--fg-muted);
-            max-width: 520px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* === Mode Selection === */
-        .mode-section {
-            margin-bottom: 36px;
-        }
-
-        .mode-section .section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--fg-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-            padding-left: 4px;
-        }
-
-        .mode-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        @media (max-width: 640px) {
-            .mode-cards { grid-template-columns: 1fr; }
-        }
-
-        .mode-card {
             position: relative;
-            padding: 24px;
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
 
-        .mode-card::before {
+        .logo-mark::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, var(--accent-soft), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            opacity: 0.15;
+            animation: logoPulse 3s ease-in-out infinite;
         }
 
-        .mode-card:hover {
-            border-color: rgba(255,60,95,0.3);
-            transform: translateY(-2px);
+        @keyframes logoPulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.25; }
         }
 
-        .mode-card:hover::before { opacity: 1; }
-
-        .mode-card.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow), inset 0 0 30px var(--accent-soft);
-        }
-
-        .mode-card.active::before { opacity: 1; }
-
-        .mode-card .card-inner {
+        .logo-mark i {
+            font-size: 26px;
+            color: var(--cyan);
             position: relative;
             z-index: 1;
         }
 
-        .mode-card .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-bottom: 16px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            transition: all 0.3s;
+        .app-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--cyan), #fff, var(--magenta));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 4s linear infinite;
         }
 
-        .mode-card.active .card-icon {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 4px 20px var(--accent-glow);
+        @keyframes textShine {
+            to { background-position: 200% center; }
         }
 
-        .mode-card .card-title {
-            font-size: 18px;
+        .app-header .tagline {
+            font-size: 15px;
+            color: var(--fg-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .app-header .tagline span {
+            color: var(--cyan);
             font-weight: 600;
-            margin-bottom: 6px;
         }
 
-        .mode-card .card-desc {
-            font-size: 13px;
-            color: var(--fg-muted);
-            line-height: 1.5;
+        /* ===== TABS ===== */
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 36px;
+            backdrop-filter: blur(20px);
         }
 
-        .mode-card .check-badge {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
+        .tab-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 11px;
+            background: transparent;
+            color: var(--fg-dim);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.3s;
-            z-index: 2;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        .mode-card.active .check-badge {
+        .tab-btn:hover {
+            color: var(--fg);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(255,0,170,0.08));
+            color: var(--cyan);
+            box-shadow: 0 0 20px var(--cyan-glow), inset 0 0 20px var(--cyan-soft);
+            border: 1px solid rgba(0,240,255,0.15);
+        }
+
+        .tab-btn i { font-size: 16px; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: panelIn 0.4s ease; }
+
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== GLASS CARD ===== */
+        .g-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(24px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .g-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3), rgba(255,0,170,0.3), transparent);
+        }
+
+        /* ===== MODE CARDS ===== */
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--fg-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+            padding-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            border-radius: 2px;
+            background: var(--cyan);
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 640px) { .mode-grid { grid-template-columns: 1fr; } }
+
+        .mode-card {
+            padding: 22px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(10, 14, 28, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mode-card:hover {
+            border-color: var(--border-hover);
+            background: rgba(10, 14, 28, 0.7);
+        }
+
+        .mode-card.active {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 30px var(--cyan-soft);
+            background: rgba(0, 240, 255, 0.03);
+        }
+
+        .mode-card .mc-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+            background: var(--cyan-soft);
+            color: var(--cyan);
+            transition: all 0.3s;
+        }
+
+        .mode-card.active .mc-icon {
+            background: var(--cyan);
+            color: var(--bg);
+            box-shadow: 0 4px 20px var(--cyan-glow);
+        }
+
+        .mode-card .mc-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .mode-card .mc-desc {
+            font-size: 12.5px;
+            color: var(--fg-dim);
+            line-height: 1.55;
+        }
+
+        .mode-card .mc-check {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--cyan);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            opacity: 0;
+            transform: scale(0.4);
+            transition: all 0.3s;
+        }
+
+        .mode-card.active .mc-check {
             opacity: 1;
             transform: scale(1);
         }
 
-        /* === Settings Row === */
-        .settings-row {
+        /* ===== SETTINGS ===== */
+        .settings-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 36px;
+            gap: 14px;
+            margin-bottom: 28px;
         }
 
-        @media (max-width: 768px) {
-            .settings-row { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px) { .settings-grid { grid-template-columns: 1fr; } }
 
-        .setting-item {
-            padding: 18px 20px;
-            background: var(--card);
-            border: 1px solid var(--border);
+        .s-item {
+            padding: 16px 18px;
             border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(10, 14, 28, 0.5);
         }
 
-        .setting-item label {
+        .s-item label {
             display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--fg-muted);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--fg-dim);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 10px;
         }
 
-        .setting-item select,
-        .setting-item input[type="checkbox"] {
+        .sel-wrap {
+            position: relative;
+        }
+
+        .sel-wrap::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--fg-dim);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .s-item select {
             width: 100%;
-            background: var(--bg-elevated);
+            background: rgba(5, 6, 14, 0.6);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 10px 14px;
+            padding: 10px 32px 10px 12px;
             color: var(--fg);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
             outline: none;
             transition: border-color 0.2s;
             appearance: none;
             cursor: pointer;
         }
 
-        .setting-item select:focus {
-            border-color: var(--accent);
-        }
-
-        .select-wrapper {
-            position: relative;
-        }
-
-        .select-wrapper::after {
-            content: '\f107';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--fg-muted);
-            font-size: 12px;
-            pointer-events: none;
-        }
+        .s-item select:focus { border-color: var(--cyan); }
 
         .toggle-row {
             display: flex;
@@ -349,416 +420,593 @@
         }
 
         .toggle-row span {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--fg);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .toggle-switch {
+        .tog {
             position: relative;
-            width: 44px;
-            height: 24px;
+            width: 42px;
+            height: 22px;
             flex-shrink: 0;
         }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .tog input { opacity: 0; width: 0; height: 0; position: absolute; }
 
-        .toggle-slider {
+        .tog-s {
             position: absolute;
             cursor: pointer;
             inset: 0;
-            background: var(--border);
+            background: rgba(255,255,255,0.08);
             border-radius: 100px;
             transition: 0.3s;
         }
 
-        .toggle-slider::before {
+        .tog-s::before {
             content: '';
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             left: 3px;
             bottom: 3px;
-            background: #fff;
+            background: var(--fg-dim);
             border-radius: 50%;
             transition: 0.3s;
         }
 
-        .toggle-switch input:checked + .toggle-slider {
-            background: var(--accent);
+        .tog input:checked + .tog-s {
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan-glow);
         }
 
-        .toggle-switch input:checked + .toggle-slider::before {
+        .tog input:checked + .tog-s::before {
             transform: translateX(20px);
+            background: var(--bg);
         }
 
-        /* === Preview Area === */
-        .preview-section {
-            margin-bottom: 36px;
-        }
-
-        .preview-container {
+        /* ===== PREVIEW ===== */
+        .preview-wrap {
             position: relative;
             width: 100%;
             aspect-ratio: 16/9;
-            background: var(--bg-elevated);
-            border: 2px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(5,6,14,0.8);
+            border: 1px solid var(--border);
+            margin-bottom: 28px;
         }
 
-        .preview-container video {
+        .preview-wrap video {
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: none;
         }
 
-        .preview-container video.visible {
-            display: block;
-        }
+        .preview-wrap video.vis { display: block; }
 
-        .preview-placeholder {
-            text-align: center;
-            color: var(--fg-muted);
-            padding: 20px;
-        }
-
-        .preview-placeholder.hidden { display: none; }
-
-        .preview-placeholder i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.3;
-        }
-
-        .preview-placeholder p {
-            font-size: 15px;
-        }
-
-        /* Indikator rekaman di atas preview */
-        .rec-indicator {
+        .preview-ph {
             position: absolute;
-            top: 16px;
-            left: 16px;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--fg-dim);
+            gap: 14px;
+        }
+
+        .preview-ph.hide { display: none; }
+
+        .preview-ph .ph-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0,240,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: rgba(0,240,255,0.25);
+            animation: phPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes phPulse {
+            0%, 100% { transform: scale(1); border-color: rgba(0,240,255,0.15); }
+            50% { transform: scale(1.05); border-color: rgba(0,240,255,0.3); }
+        }
+
+        .preview-ph p { font-size: 14px; }
+
+        /* Overlay rekaman */
+        .rec-ov {
+            position: absolute;
+            top: 14px;
+            left: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
             padding: 6px 14px;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border-radius: 100px;
+            border: 1px solid rgba(255,34,85,0.2);
             opacity: 0;
             transform: translateY(-8px);
             transition: all 0.3s;
             z-index: 5;
         }
 
-        .rec-indicator.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .rec-ov.vis { opacity: 1; transform: translateY(0); }
 
-        .rec-indicator .rec-dot {
+        .rec-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: var(--accent);
-            animation: recPulse 1s ease-in-out infinite;
+            background: var(--red);
+            animation: rPulse 1s ease-in-out infinite;
         }
 
-        .rec-indicator .rec-dot.paused {
-            background: var(--amber);
-            animation: none;
+        .rec-dot.paused { background: var(--amber); animation: none; }
+
+        @keyframes rPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--red-glow); }
+            50% { opacity: 0.3; box-shadow: none; }
         }
 
-        @keyframes recPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
-        }
-
-        .rec-indicator span {
+        .rec-ov .r-time {
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             font-weight: 700;
             color: #fff;
         }
 
-        .rec-indicator .status-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 500;
-            font-size: 11px;
+        .rec-ov .r-status {
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--fg-muted);
+            letter-spacing: 1.5px;
+            color: var(--red);
         }
 
-        /* Resolusi badge */
-        .res-badge {
+        .rec-ov .r-status.paused { color: var(--amber); }
+
+        .res-tag {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 14px;
+            right: 14px;
             padding: 5px 12px;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border-radius: 8px;
+            border: 1px solid rgba(0,255,136,0.2);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--green);
             opacity: 0;
-            transition: all 0.3s;
+            transition: 0.3s;
             z-index: 5;
         }
 
-        .res-badge.visible { opacity: 1; }
+        .res-tag.vis { opacity: 1; }
 
-        /* === Controls === */
-        .controls-bar {
+        /* ===== CONTROLS ===== */
+        .ctrl-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            padding: 24px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-bottom: 36px;
+            gap: 14px;
+            padding: 20px;
+            margin-bottom: 32px;
         }
 
-        .ctrl-btn {
+        .c-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 14px 28px;
+            gap: 9px;
+            padding: 13px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: 11px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3px;
+        }
+
+        .c-btn:active { transform: scale(0.96) !important; }
+        .c-btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none !important; }
+
+        .c-btn-rec {
+            background: linear-gradient(135deg, var(--red), #cc0033);
+            color: #fff;
+            box-shadow: 0 4px 24px var(--red-glow);
+        }
+
+        .c-btn-rec:hover:not(:disabled) {
+            box-shadow: 0 6px 36px rgba(255,34,85,0.5);
+            transform: translateY(-2px);
+        }
+
+        .c-btn-pause {
+            background: rgba(255,170,0,0.1);
+            color: var(--amber);
+            border: 1px solid rgba(255,170,0,0.2);
+        }
+
+        .c-btn-pause:hover:not(:disabled) {
+            background: rgba(255,170,0,0.18);
+            transform: translateY(-2px);
+        }
+
+        .c-btn-stop {
+            background: rgba(255,0,170,0.1);
+            color: var(--magenta);
+            border: 1px solid rgba(255,0,170,0.2);
+        }
+
+        .c-btn-stop:hover:not(:disabled) {
+            background: rgba(255,0,170,0.18);
+            transform: translateY(-2px);
+        }
+
+        .timer-mono {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            min-width: 130px;
+            text-align: center;
+            letter-spacing: 3px;
+            color: var(--fg-dim);
+            transition: all 0.3s;
+        }
+
+        .timer-mono.rec {
+            color: var(--red);
+            text-shadow: 0 0 20px var(--red-glow);
+        }
+
+        .timer-mono.pau {
+            color: var(--amber);
+            text-shadow: 0 0 20px var(--amber-glow);
+        }
+
+        /* ===== RECORDINGS LIST ===== */
+        .recs-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .recs-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--fg-dim);
+            background: rgba(0,240,255,0.06);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .recs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rec-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(10, 14, 28, 0.5);
+            transition: all 0.2s;
+        }
+
+        .rec-item:hover {
+            border-color: var(--border-hover);
+            background: rgba(10, 14, 28, 0.7);
+        }
+
+        .rec-thumb {
+            width: 72px;
+            height: 40px;
+            border-radius: 7px;
+            background: rgba(5,6,14,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+
+        .rec-thumb i { color: var(--cyan); font-size: 16px; opacity: 0.4; }
+
+        .rec-info { flex: 1; min-width: 0; }
+
+        .rec-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .rec-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--fg-dim);
+            font-family: 'JetBrains Mono', monospace;
+            flex-wrap: wrap;
+        }
+
+        .rec-meta span { display: flex; align-items: center; gap: 4px; }
+        .rec-meta i { font-size: 9px; }
+
+        .rec-acts {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .ra-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(5,6,14,0.5);
+            color: var(--fg-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ra-btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: var(--cyan-soft);
+        }
+
+        .ra-btn.del:hover {
+            border-color: var(--red);
+            color: var(--red);
+            background: rgba(255,34,85,0.08);
+        }
+
+        .empty-st {
+            text-align: center;
+            padding: 36px 20px;
+            color: var(--fg-dim);
+        }
+
+        .empty-st i { font-size: 32px; margin-bottom: 10px; opacity: 0.2; display: block; }
+        .empty-st p { font-size: 13px; }
+
+        /* ===== TAB 2: SHARE ===== */
+        .share-empty {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .share-empty .se-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255,0,170,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: rgba(255,0,170,0.2);
+            margin: 0 auto 20px;
+        }
+
+        .share-empty h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .share-empty p {
+            font-size: 14px;
+            color: var(--fg-dim);
+        }
+
+        .share-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .share-card {
+            padding: 22px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: rgba(10, 14, 28, 0.5);
             position: relative;
             overflow: hidden;
         }
 
-        .ctrl-btn:active {
-            transform: scale(0.96);
+        .share-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--magenta), transparent);
+            opacity: 0.4;
         }
 
-        .ctrl-btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .ctrl-btn-start {
-            background: linear-gradient(135deg, var(--accent), #e02050);
-            color: #fff;
-            box-shadow: 0 4px 24px var(--accent-glow);
-        }
-
-        .ctrl-btn-start:hover:not(:disabled) {
-            box-shadow: 0 6px 36px rgba(255,60,95,0.5);
-            transform: translateY(-2px);
-        }
-
-        .ctrl-btn-pause {
-            background: rgba(255,184,48,0.12);
-            color: var(--amber);
-            border: 1px solid rgba(255,184,48,0.25);
-        }
-
-        .ctrl-btn-pause:hover:not(:disabled) {
-            background: rgba(255,184,48,0.2);
-            transform: translateY(-2px);
-        }
-
-        .ctrl-btn-stop {
-            background: rgba(255,60,95,0.12);
-            color: var(--accent);
-            border: 1px solid rgba(255,60,95,0.25);
-        }
-
-        .ctrl-btn-stop:hover:not(:disabled) {
-            background: rgba(255,60,95,0.2);
-            transform: translateY(-2px);
-        }
-
-        .ctrl-btn-download {
-            background: linear-gradient(135deg, var(--green), #00c060);
-            color: #0a0a0f;
-            box-shadow: 0 4px 24px var(--green-glow);
-        }
-
-        .ctrl-btn-download:hover:not(:disabled) {
-            box-shadow: 0 6px 36px rgba(0,232,123,0.5);
-            transform: translateY(-2px);
-        }
-
-        /* === Recordings List === */
-        .recordings-section {
-            margin-top: 20px;
-        }
-
-        .recordings-section .section-header {
+        .share-card .sc-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
         }
 
-        .recordings-section .section-label {
+        .share-card .sc-name {
             font-size: 13px;
             font-weight: 600;
-            color: var(--fg-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .recordings-section .rec-count {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--fg-muted);
-            background: var(--card);
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .recordings-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .recording-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 20px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            transition: all 0.2s;
-        }
-
-        .recording-item:hover {
-            background: var(--card-hover);
-            border-color: rgba(255,255,255,0.08);
-        }
-
-        .recording-item .rec-thumb {
-            width: 80px;
-            height: 45px;
-            border-radius: 8px;
-            background: var(--bg);
-            overflow: hidden;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .recording-item .rec-thumb i {
-            color: var(--fg-muted);
-            font-size: 18px;
-            opacity: 0.5;
-        }
-
-        .recording-item .rec-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .recording-item .rec-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .recording-item .rec-meta {
-            display: flex;
-            gap: 14px;
-            font-size: 12px;
-            color: var(--fg-muted);
             font-family: 'JetBrains Mono', monospace;
         }
 
-        .recording-item .rec-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .recording-item .rec-meta i {
+        .share-card .sc-badge {
             font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: var(--green-soft);
+            color: var(--green);
+            border: 1px solid rgba(0,255,136,0.15);
         }
 
-        .recording-item .rec-actions {
+        .share-card .sc-badge.pending {
+            background: var(--amber-soft);
+            color: var(--amber);
+            border-color: rgba(255,170,0,0.15);
+        }
+
+        .link-box {
             display: flex;
             gap: 8px;
-            flex-shrink: 0;
+            margin-bottom: 14px;
         }
 
-        .rec-action-btn {
-            width: 36px;
-            height: 36px;
+        .link-input {
+            flex: 1;
+            background: rgba(5,6,14,0.8);
             border: 1px solid var(--border);
             border-radius: 8px;
-            background: var(--bg-elevated);
-            color: var(--fg-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 11px 14px;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .link-input:focus { border-color: var(--cyan); }
+
+        .link-btn {
+            padding: 11px 18px;
+            border: 1px solid var(--cyan);
+            border-radius: 8px;
+            background: var(--cyan-soft);
+            color: var(--cyan);
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .rec-action-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-soft);
+        .link-btn:hover {
+            background: rgba(0,240,255,0.15);
+            box-shadow: 0 0 16px var(--cyan-glow);
         }
 
-        .rec-action-btn.delete:hover {
-            border-color: #ff4444;
-            color: #ff4444;
-            background: rgba(255,68,68,0.1);
+        .link-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .sc-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--fg-muted);
+        .sc-a-btn {
+            padding: 9px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(5,6,14,0.4);
+            color: var(--fg-dim);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .empty-state i {
-            font-size: 36px;
-            margin-bottom: 12px;
-            opacity: 0.3;
+        .sc-a-btn:hover {
+            border-color: var(--border-hover);
+            color: var(--fg);
+            background: rgba(5,6,14,0.7);
         }
 
-        .empty-state p {
-            font-size: 14px;
+        .sc-a-btn.primary {
+            border-color: var(--magenta);
+            color: var(--magenta);
+            background: var(--magenta-soft);
         }
 
-        /* === Toast === */
-        .toast-container {
+        .sc-a-btn.primary:hover {
+            background: rgba(255,0,170,0.15);
+            box-shadow: 0 0 16px var(--magenta-glow);
+        }
+
+        .sc-meta {
+            display: flex;
+            gap: 14px;
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--fg-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .sc-meta span { display: flex; align-items: center; gap: 4px; }
+        .sc-meta i { font-size: 9px; }
+
+        /* Generating animation */
+        .gen-anim {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(255,0,170,0.04);
+            border: 1px solid rgba(255,0,170,0.1);
+            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+
+        .gen-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,0,170,0.15);
+            border-top-color: var(--magenta);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .gen-anim span {
+            font-size: 13px;
+            color: var(--magenta);
+            font-weight: 500;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-box {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
+            bottom: 28px;
+            right: 28px;
+            z-index: 10000;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -768,708 +1016,726 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 14px 20px;
-            background: var(--card);
+            padding: 13px 18px;
+            background: rgba(10, 14, 28, 0.9);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
+            border-radius: 11px;
+            font-size: 13px;
             color: var(--fg);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
             backdrop-filter: blur(20px);
-            animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            max-width: 360px;
+            animation: tIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 340px;
         }
 
-        .toast.toast-out {
-            animation: toastOut 0.3s ease forwards;
-        }
+        .toast.out { animation: tOut 0.25s ease forwards; }
+        .toast i { font-size: 15px; flex-shrink: 0; }
+        .toast.ok i { color: var(--green); }
+        .toast.err i { color: var(--red); }
+        .toast.inf i { color: var(--cyan); }
 
-        .toast i {
-            font-size: 16px;
-        }
-
-        .toast.success i { color: var(--green); }
-        .toast.error i { color: var(--accent); }
-        .toast.info i { color: #0ea5e9; }
-
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(40px) scale(0.95); }
+        @keyframes tIn {
+            from { opacity: 0; transform: translateX(30px) scale(0.95); }
             to { opacity: 1; transform: translateX(0) scale(1); }
         }
 
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateX(0) scale(1); }
-            to { opacity: 0; transform: translateX(40px) scale(0.95); }
+        @keyframes tOut {
+            to { opacity: 0; transform: translateX(30px) scale(0.95); }
         }
 
-        /* === Timer di controls === */
-        .timer-display {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--fg);
-            min-width: 120px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .timer-display.recording {
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .timer-display.paused {
-            color: var(--amber);
-            text-shadow: 0 0 20px var(--amber-glow);
-        }
-
-        /* === Responsive === */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
-            .app-container { padding: 24px 16px 60px; }
-            .controls-bar {
-                flex-wrap: wrap;
-                gap: 10px;
-                padding: 16px;
-            }
-            .ctrl-btn {
-                padding: 12px 18px;
-                font-size: 13px;
-            }
-            .timer-display {
-                font-size: 22px;
-                width: 100%;
-                order: -1;
-            }
-            .recording-item {
-                flex-wrap: wrap;
-            }
-            .recording-item .rec-thumb {
-                width: 100%;
-                height: 60px;
-            }
+            .app { padding: 20px 14px 80px; }
+            .ctrl-bar { flex-wrap: wrap; gap: 10px; padding: 16px; }
+            .c-btn { padding: 11px 16px; font-size: 13px; }
+            .timer-mono { font-size: 20px; width: 100%; order: -1; letter-spacing: 2px; }
+            .rec-item { flex-wrap: wrap; }
+            .rec-thumb { width: 100%; height: 50px; }
+            .link-box { flex-direction: column; }
         }
 
-        /* === Animasi masuk === */
-        .fade-up {
+        /* ===== FADE UP ===== */
+        .fu {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform: translateY(16px);
+            animation: fuAnim 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .fade-up:nth-child(2) { animation-delay: 0.08s; }
-        .fade-up:nth-child(3) { animation-delay: 0.16s; }
-        .fade-up:nth-child(4) { animation-delay: 0.24s; }
-        .fade-up:nth-child(5) { animation-delay: 0.32s; }
+        .fu:nth-child(2) { animation-delay: 0.06s; }
+        .fu:nth-child(3) { animation-delay: 0.12s; }
+        .fu:nth-child(4) { animation-delay: 0.18s; }
+        .fu:nth-child(5) { animation-delay: 0.24s; }
 
-        @keyframes fadeUp {
+        @keyframes fuAnim {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Particle canvas */
-        #particles {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
+        /* Glitch line di header */
+        .glitch-line {
+            width: 120px;
+            height: 2px;
+            margin: 16px auto 0;
+            background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glitch-line::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: rgba(255,255,255,0.6);
+            animation: glitchSlide 2.5s ease-in-out infinite;
+        }
+
+        @keyframes glitchSlide {
+            0%, 100% { left: -40px; }
+            50% { left: 120px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background layers -->
-    <div class="bg-layer">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+    <div class="bg-scene">
+        <div class="mesh-gradient"></div>
+        <div class="hex-grid"></div>
+        <div class="vignette"></div>
     </div>
-    <div class="grid-overlay"></div>
     <canvas id="particles"></canvas>
+    <div class="toast-box" id="toastBox"></div>
 
-    <!-- Toast container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- App -->
-    <div class="app-container">
+    <div class="app">
 
         <!-- Header -->
-        <header class="app-header fade-up">
-            <div class="badge">
-                <i class="fas fa-circle"></i>
-                Screen Capture Pro
-            </div>
-            <h1>Rekam Layar <span class="highlight">HD</span></h1>
-            <p>Pilih mode rekaman layar penuh atau fokus tab browser. Hasil rekaman berkualitas tinggi hingga 1080p.</p>
+        <header class="app-header fu">
+            <div class="logo-mark"><i class="fas fa-video"></i></div>
+            <h1>REKORD</h1>
+            <p class="tagline">Screen Recorder <span>HD</span> — Rekam, Bagikan, Sebar</p>
+            <div class="glitch-line"></div>
         </header>
 
-        <!-- Mode Selection -->
-        <section class="mode-section fade-up">
-            <div class="section-label">Pilih Mode Rekam</div>
-            <div class="mode-cards">
-                <div class="mode-card active" data-mode="screen" id="modeScreen" onclick="selectMode('screen')">
-                    <div class="check-badge"><i class="fas fa-check"></i></div>
-                    <div class="card-inner">
-                        <div class="card-icon"><i class="fas fa-desktop"></i></div>
-                        <div class="card-title">Layar Penuh</div>
-                        <div class="card-desc">Rekam seluruh layar monitor. Pilih layar mana yang ingin direkam jika memiliki multi-monitor.</div>
-                    </div>
-                </div>
-                <div class="mode-card" data-mode="tab" id="modeTab" onclick="selectMode('tab')">
-                    <div class="check-badge"><i class="fas fa-check"></i></div>
-                    <div class="card-inner">
-                        <div class="card-icon"><i class="fab fa-chrome"></i></div>
-                        <div class="card-title">Tab Browser</div>
-                        <div class="card-desc">Rekam hanya tab browser ini saja. Cocok untuk merekam presentasi atau demo tanpa gangguan layar lain.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav fu" role="tablist">
+            <button class="tab-btn active" data-tab="recorder" onclick="switchTab('recorder')" role="tab" aria-selected="true">
+                <i class="fas fa-circle-dot"></i> Rekam Layar
+            </button>
+            <button class="tab-btn" data-tab="share" onclick="switchTab('share')" role="tab" aria-selected="false">
+                <i class="fas fa-link"></i> Bagikan Link
+            </button>
+        </nav>
 
-        <!-- Settings -->
-        <section class="settings-row fade-up">
-            <div class="setting-item">
-                <label>Kualitas Video</label>
-                <div class="select-wrapper">
-                    <select id="qualitySelect">
-                        <option value="1080">Full HD (1080p)</option>
-                        <option value="720">HD (720p)</option>
-                        <option value="1440">QHD (1440p)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="setting-item">
-                <label>Frame Rate</label>
-                <div class="select-wrapper">
-                    <select id="fpsSelect">
-                        <option value="60">60 FPS</option>
-                        <option value="30" selected>30 FPS</option>
-                        <option value="24">24 FPS</option>
-                    </select>
-                </div>
-            </div>
-            <div class="setting-item">
-                <label>Sertakan Audio</label>
-                <div class="toggle-row">
-                    <span id="audioLabel">Sistem Aktif</span>
-                    <div class="toggle-switch">
-                        <input type="checkbox" id="audioToggle" checked>
-                        <span class="toggle-slider" onclick="toggleAudioLabel()"></span>
+        <!-- ===== TAB 1: RECORDER ===== -->
+        <div class="tab-panel active" id="panelRecorder">
+
+            <!-- Mode -->
+            <div class="fu">
+                <div class="section-label">Mode Rekam</div>
+                <div class="mode-grid">
+                    <div class="mode-card active" id="modeScreen" onclick="selectMode('screen')">
+                        <div class="mc-check"><i class="fas fa-check"></i></div>
+                        <div class="mc-icon"><i class="fas fa-display"></i></div>
+                        <div class="mc-title">Layar Penuh</div>
+                        <div class="mc-desc">Rekam seluruh layar monitor. Pilih layar yang ingin direkam pada multi-monitor.</div>
+                    </div>
+                    <div class="mode-card" id="modeTab" onclick="selectMode('tab')">
+                        <div class="mc-check"><i class="fas fa-check"></i></div>
+                        <div class="mc-icon"><i class="fab fa-chrome"></i></div>
+                        <div class="mc-title">Tab Browser</div>
+                        <div class="mc-desc">Rekam hanya tab ini. Cocok untuk presentasi atau demo tanpa gangguan layar lain.</div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Preview -->
-        <section class="preview-section fade-up">
-            <div class="preview-container" id="previewContainer">
-                <div class="rec-indicator" id="recIndicator">
+            <!-- Settings -->
+            <div class="settings-grid fu">
+                <div class="s-item">
+                    <label>Kualitas</label>
+                    <div class="sel-wrap">
+                        <select id="qualitySel">
+                            <option value="1080">Full HD 1080p</option>
+                            <option value="720">HD 720p</option>
+                            <option value="1440">QHD 1440p</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="s-item">
+                    <label>Frame Rate</label>
+                    <div class="sel-wrap">
+                        <select id="fpsSel">
+                            <option value="60">60 FPS</option>
+                            <option value="30" selected>30 FPS</option>
+                            <option value="24">24 FPS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="s-item">
+                    <label>Audio</label>
+                    <div class="toggle-row">
+                        <span id="audioLbl">Aktif</span>
+                        <div class="tog">
+                            <input type="checkbox" id="audioTog" checked>
+                            <span class="tog-s" onclick="this.previousElementSibling.click(); updateAudioLbl()"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-wrap fu" id="previewWrap">
+                <div class="rec-ov" id="recOv">
                     <div class="rec-dot" id="recDot"></div>
-                    <span id="recTimer">00:00:00</span>
-                    <span class="status-text" id="recStatus">REC</span>
+                    <span class="r-time" id="recTime">00:00:00</span>
+                    <span class="r-status" id="recStat">REC</span>
                 </div>
-                <div class="res-badge" id="resBadge">--</div>
-                <video id="previewVideo" autoplay muted playsinline></video>
-                <div class="preview-placeholder" id="previewPlaceholder">
-                    <i class="fas fa-film"></i>
-                    <p>Preview akan muncul di sini saat merekam</p>
+                <div class="res-tag" id="resTag">--</div>
+                <video id="prevVid" autoplay muted playsinline></video>
+                <div class="preview-ph" id="prevPh">
+                    <div class="ph-icon"><i class="fas fa-film"></i></div>
+                    <p>Preview tampil di sini saat merekam</p>
                 </div>
             </div>
-        </section>
 
-        <!-- Controls -->
-        <section class="controls-bar fade-up">
-            <button class="ctrl-btn ctrl-btn-start" id="btnStart" onclick="startRecording()">
-                <i class="fas fa-circle"></i> Mulai Rekam
-            </button>
-            <div class="timer-display" id="timerDisplay">00:00:00</div>
-            <button class="ctrl-btn ctrl-btn-pause" id="btnPause" onclick="pauseRecording()" disabled>
-                <i class="fas fa-pause"></i> Jeda
-            </button>
-            <button class="ctrl-btn ctrl-btn-stop" id="btnStop" onclick="stopRecording()" disabled>
-                <i class="fas fa-stop"></i> Berhenti
-            </button>
-        </section>
-
-        <!-- Recordings List -->
-        <section class="recordings-section fade-up" id="recordingsSection" style="display:none;">
-            <div class="section-header">
-                <div class="section-label">Hasil Rekam</div>
-                <div class="rec-count" id="recCount">0 file</div>
+            <!-- Controls -->
+            <div class="g-card fu">
+                <div class="ctrl-bar">
+                    <button class="c-btn c-btn-rec" id="btnStart" onclick="startRec()">
+                        <i class="fas fa-circle"></i> Mulai Rekam
+                    </button>
+                    <div class="timer-mono" id="timerDisp">00:00:00</div>
+                    <button class="c-btn c-btn-pause" id="btnPause" onclick="pauseRec()" disabled>
+                        <i class="fas fa-pause" id="pauseIcon"></i> <span id="pauseText">Jeda</span>
+                    </button>
+                    <button class="c-btn c-btn-stop" id="btnStop" onclick="stopRec()" disabled>
+                        <i class="fas fa-stop"></i> Berhenti
+                    </button>
+                </div>
             </div>
-            <div class="recordings-list" id="recordingsList"></div>
-        </section>
+
+            <!-- Recordings -->
+            <div id="recsSection" style="display:none;">
+                <div class="recs-head">
+                    <div class="section-label">Hasil Rekam</div>
+                    <div class="recs-count" id="recsCount">0 file</div>
+                </div>
+                <div class="recs-list" id="recsList"></div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 2: SHARE ===== -->
+        <div class="tab-panel" id="panelShare">
+            <div id="shareEmpty" class="share-empty">
+                <div class="se-icon"><i class="fas fa-link-slash"></i></div>
+                <h3>Belum Ada Video</h3>
+                <p>Rekam layar terlebih dahulu, lalu hasilnya bisa diubah menjadi link yang bisa dibagikan.</p>
+            </div>
+            <div class="share-list" id="shareList"></div>
+        </div>
     </div>
 
     <script>
         // ===== State =====
-        let selectedMode = 'screen';
-        let mediaStream = null;
-        let mediaRecorder = null;
-        let recordedChunks = [];
+        let mode = 'screen';
+        let stream = null;
+        let recorder = null;
+        let chunks = [];
         let recordings = [];
-        let isRecording = false;
-        let isPaused = false;
-        let timerInterval = null;
-        let startTime = 0;
-        let elapsedBeforePause = 0;
+        let shareLinks = {};
+        let isRec = false;
+        let isPau = false;
+        let timerInt = null;
+        let tStart = 0;
+        let tBeforePause = 0;
 
-        // ===== DOM References =====
-        const previewVideo = document.getElementById('previewVideo');
-        const previewPlaceholder = document.getElementById('previewPlaceholder');
-        const recIndicator = document.getElementById('recIndicator');
+        // ===== DOM =====
+        const prevVid = document.getElementById('prevVid');
+        const prevPh = document.getElementById('prevPh');
+        const recOv = document.getElementById('recOv');
         const recDot = document.getElementById('recDot');
-        const recTimer = document.getElementById('recTimer');
-        const recStatus = document.getElementById('recStatus');
-        const resBadge = document.getElementById('resBadge');
-        const timerDisplay = document.getElementById('timerDisplay');
+        const recTime = document.getElementById('recTime');
+        const recStat = document.getElementById('recStat');
+        const resTag = document.getElementById('resTag');
+        const timerDisp = document.getElementById('timerDisp');
         const btnStart = document.getElementById('btnStart');
         const btnPause = document.getElementById('btnPause');
         const btnStop = document.getElementById('btnStop');
-        const qualitySelect = document.getElementById('qualitySelect');
-        const fpsSelect = document.getElementById('fpsSelect');
-        const audioToggle = document.getElementById('audioToggle');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const pauseText = document.getElementById('pauseText');
 
-        // ===== Mode Selection =====
-        function selectMode(mode) {
-            selectedMode = mode;
-            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(mode === 'screen' ? 'modeScreen' : 'modeTab').classList.add('active');
+        // ===== Tab Switching =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === tab);
+                b.setAttribute('aria-selected', b.dataset.tab === tab);
+            });
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(tab === 'recorder' ? 'panelRecorder' : 'panelShare').classList.add('active');
+
+            if (tab === 'share') renderShareTab();
         }
 
-        // ===== Audio Toggle Label =====
-        function toggleAudioLabel() {
-            const cb = document.getElementById('audioToggle');
-            // toggle sudah otomatis karena diklik lewat slider
+        // ===== Mode =====
+        function selectMode(m) {
+            mode = m;
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(m === 'screen' ? 'modeScreen' : 'modeTab').classList.add('active');
+        }
+
+        // ===== Audio Label =====
+        function updateAudioLbl() {
             setTimeout(() => {
-                document.getElementById('audioLabel').textContent = cb.checked ? 'Sistem Aktif' : 'Tanpa Audio';
+                document.getElementById('audioLbl').textContent = document.getElementById('audioTog').checked ? 'Aktif' : 'Mati';
             }, 0);
         }
 
-        // ===== Format Timer =====
-        function formatTime(ms) {
-            const totalSec = Math.floor(ms / 1000);
-            const h = String(Math.floor(totalSec / 3600)).padStart(2, '0');
-            const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
-            const s = String(totalSec % 60).padStart(2, '0');
-            return `${h}:${m}:${s}`;
+        // ===== Format Helpers =====
+        function fmtTime(ms) {
+            const s = Math.floor(ms / 1000);
+            return `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
         }
 
-        function formatFileSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-            if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-            return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+        function fmtSize(b) {
+            if (b < 1024) return b + ' B';
+            if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+            if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
+            return (b/1073741824).toFixed(2) + ' GB';
         }
 
         // ===== Timer =====
         function startTimer() {
-            startTime = Date.now();
-            timerInterval = setInterval(() => {
-                if (!isPaused) {
-                    const elapsed = elapsedBeforePause + (Date.now() - startTime);
-                    const text = formatTime(elapsed);
-                    timerDisplay.textContent = text;
-                    recTimer.textContent = text;
+            tStart = Date.now();
+            timerInt = setInterval(() => {
+                if (!isPau) {
+                    const t = fmtTime(tBeforePause + (Date.now() - tStart));
+                    timerDisp.textContent = t;
+                    recTime.textContent = t;
                 }
-            }, 100);
+            }, 200);
         }
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-            timerInterval = null;
+        function stopTimer() { clearInterval(timerInt); timerInt = null; }
+
+        function getElapsed() { return tBeforePause + (Date.now() - tStart); }
+
+        // ===== Mime & Bitrate =====
+        function getMime() {
+            for (const t of ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm']) {
+                if (MediaRecorder.isTypeSupported(t)) return t;
+            }
+            return 'video/webm';
         }
 
-        function getElapsedMs() {
-            return elapsedBeforePause + (Date.now() - startTime);
+        function calcBitrate(w, h, fps) {
+            const px = w * h;
+            const base = 8_000_000;
+            const scale = (px / (1920*1080)) * (fps / 30);
+            return Math.min(30_000_000, Math.max(2_000_000, Math.round(base * scale)));
         }
 
         // ===== Start Recording =====
-        async function startRecording() {
-            if (isRecording) return;
-
+        async function startRec() {
+            if (isRec) return;
             try {
-                const quality = parseInt(qualitySelect.value);
-                const fps = parseInt(fpsSelect.value);
-                const includeAudio = audioToggle.checked;
+                const q = parseInt(document.getElementById('qualitySel').value);
+                const fps = parseInt(document.getElementById('fpsSel').value);
+                const audio = document.getElementById('audioTog').checked;
 
-                // Bangun constraints berdasarkan mode
-                let displayMediaOptions;
+                const opts = mode === 'tab' ? {
+                    video: {
+                        frameRate: fps,
+                        width: { ideal: q === 1440 ? 2560 : q === 1080 ? 1920 : 1280 },
+                        height: { ideal: q === 1440 ? 1440 : q === 1080 ? 1080 : 720 },
+                    },
+                    audio,
+                    preferCurrentTab: true,
+                    selfBrowserSurface: 'include',
+                    systemAudio: audio ? 'include' : 'exclude',
+                } : {
+                    video: {
+                        frameRate: fps,
+                        width: { ideal: q === 1440 ? 2560 : q === 1080 ? 1920 : 1280 },
+                        height: { ideal: q === 1440 ? 1440 : q === 1080 ? 1080 : 720 },
+                    },
+                    audio,
+                };
 
-                if (selectedMode === 'tab') {
-                    // Mode tab browser saja
-                    displayMediaOptions = {
-                        video: {
-                            frameRate: fps,
-                            width: { ideal: quality === 1440 ? 2560 : quality === 1080 ? 1920 : 1280 },
-                            height: { ideal: quality === 1440 ? 1440 : quality === 1080 ? 1080 : 720 },
-                        },
-                        audio: includeAudio,
-                        preferCurrentTab: true,
-                        selfBrowserSurface: 'include',
-                        systemAudio: includeAudio ? 'include' : 'exclude',
-                    };
-                } else {
-                    // Mode layar penuh
-                    displayMediaOptions = {
-                        video: {
-                            frameRate: fps,
-                            width: { ideal: quality === 1440 ? 2560 : quality === 1080 ? 1920 : 1280 },
-                            height: { ideal: quality === 1440 ? 1440 : quality === 1080 ? 1080 : 720 },
-                        },
-                        audio: includeAudio,
-                    };
-                }
+                stream = await navigator.mediaDevices.getDisplayMedia(opts);
 
-                mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+                const vt = stream.getVideoTracks()[0];
+                const vs = vt.getSettings();
+                const aw = vs.width || 0, ah = vs.height || 0;
 
-                // Cek track video untuk info resolusi
-                const videoTrack = mediaStream.getVideoTracks()[0];
-                const settings = videoTrack.getSettings();
-                const actualWidth = settings.width || 0;
-                const actualHeight = settings.height || 0;
+                resTag.textContent = `${aw}x${ah}`;
+                resTag.classList.add('vis');
 
-                // Update badge resolusi
-                resBadge.textContent = `${actualWidth}x${actualHeight}`;
-                resBadge.classList.add('visible');
+                prevVid.srcObject = stream;
+                prevVid.classList.add('vis');
+                prevPh.classList.add('hide');
+                prevVid.controls = false;
+                prevVid.muted = true;
 
-                // Tampilkan preview
-                previewVideo.srcObject = mediaStream;
-                previewVideo.classList.add('visible');
-                previewPlaceholder.classList.add('hidden');
-
-                // Deteksi kalau user stop sharing dari browser native
-                videoTrack.addEventListener('ended', () => {
-                    if (isRecording) {
-                        stopRecording();
-                        showToast('Sharing layar dihentikan dari browser', 'info');
-                    }
+                vt.addEventListener('ended', () => {
+                    if (isRec) { stopRec(); toast('Sharing layar dihentikan', 'inf'); }
                 });
 
-                // Setup MediaRecorder dengan bitrate tinggi untuk HD
-                const mimeType = getSupportedMimeType();
-                const bitrate = calculateBitrate(actualWidth, actualHeight, fps);
+                recorder = new MediaRecorder(stream, {
+                    mimeType: getMime(),
+                    videoBitsPerSecond: calcBitrate(aw, ah, fps),
+                });
 
-                const recorderOptions = {
-                    mimeType: mimeType,
-                    videoBitsPerSecond: bitrate,
-                };
+                chunks = [];
+                isPau = false;
+                tBeforePause = 0;
 
-                mediaRecorder = new MediaRecorder(mediaStream, recorderOptions);
-                recordedChunks = [];
-                isPaused = false;
-                elapsedBeforePause = 0;
+                recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+                recorder.onstop = () => saveRec(aw, ah);
 
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data && e.data.size > 0) {
-                        recordedChunks.push(e.data);
-                    }
-                };
+                recorder.start(1000);
+                isRec = true;
 
-                mediaRecorder.onstop = () => {
-                    saveRecording(actualWidth, actualHeight);
-                };
-
-                mediaRecorder.start(1000); // kumpulkan data tiap 1 detik
-
-                // Update UI state
-                isRecording = true;
                 btnStart.disabled = true;
                 btnPause.disabled = false;
                 btnStop.disabled = false;
-                recIndicator.classList.add('visible');
+                recOv.classList.add('vis');
                 recDot.classList.remove('paused');
-                recStatus.textContent = 'REC';
-                timerDisplay.className = 'timer-display recording';
+                recStat.textContent = 'REC';
+                recStat.classList.remove('paused');
+                timerDisp.className = 'timer-mono rec';
 
                 startTimer();
-                showToast('Rekaman dimulai', 'success');
-
+                toast('Rekaman dimulai', 'ok');
             } catch (err) {
-                if (err.name === 'NotAllowedError') {
-                    showToast('Izin rekam layar ditolak', 'error');
-                } else if (err.name === 'NotFoundError') {
-                    showToast('Tidak ditemukan layar untuk direkam', 'error');
-                } else {
-                    showToast('Gagal memulai rekaman: ' + err.message, 'error');
-                }
-                console.error(err);
+                if (err.name === 'NotAllowedError') toast('Izin rekam ditolak', 'err');
+                else if (err.name === 'NotFoundError') toast('Tidak ada layar untuk direkam', 'err');
+                else toast('Gagal: ' + err.message, 'err');
             }
         }
 
-        // ===== Pause / Resume =====
-        function pauseRecording() {
-            if (!isRecording || !mediaRecorder) return;
-
-            if (!isPaused) {
-                mediaRecorder.pause();
-                isPaused = true;
-                elapsedBeforePause += (Date.now() - startTime);
-                btnPause.innerHTML = '<i class="fas fa-play"></i> Lanjut';
+        // ===== Pause =====
+        function pauseRec() {
+            if (!isRec || !recorder) return;
+            if (!isPau) {
+                recorder.pause();
+                isPau = true;
+                tBeforePause += (Date.now() - tStart);
+                pauseIcon.className = 'fas fa-play';
+                pauseText.textContent = 'Lanjut';
                 recDot.classList.add('paused');
-                recStatus.textContent = 'JEDA';
-                timerDisplay.className = 'timer-display paused';
-                showToast('Rekaman dijeda', 'info');
+                recStat.textContent = 'JEDA';
+                recStat.classList.add('paused');
+                timerDisp.className = 'timer-mono pau';
+                toast('Dijeda', 'inf');
             } else {
-                mediaRecorder.resume();
-                isPaused = false;
-                startTime = Date.now();
-                btnPause.innerHTML = '<i class="fas fa-pause"></i> Jeda';
+                recorder.resume();
+                isPau = false;
+                tStart = Date.now();
+                pauseIcon.className = 'fas fa-pause';
+                pauseText.textContent = 'Jeda';
                 recDot.classList.remove('paused');
-                recStatus.textContent = 'REC';
-                timerDisplay.className = 'timer-display recording';
-                showToast('Rekaman dilanjutkan', 'success');
+                recStat.textContent = 'REC';
+                recStat.classList.remove('paused');
+                timerDisp.className = 'timer-mono rec';
+                toast('Dilanjutkan', 'ok');
             }
         }
 
-        // ===== Stop Recording =====
-        function stopRecording() {
-            if (!isRecording || !mediaRecorder) return;
-
-            mediaRecorder.stop();
-            isRecording = false;
-            isPaused = false;
+        // ===== Stop =====
+        function stopRec() {
+            if (!isRec || !recorder) return;
+            recorder.stop();
+            isRec = false;
+            isPau = false;
             stopTimer();
 
-            // Hentikan semua track
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(t => t.stop());
-                mediaStream = null;
-            }
+            if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
 
-            // Reset UI
-            previewVideo.srcObject = null;
-            previewVideo.classList.remove('visible');
-            previewPlaceholder.classList.remove('hidden');
-            recIndicator.classList.remove('visible');
-            resBadge.classList.remove('visible');
-            timerDisplay.textContent = '00:00:00';
-            timerDisplay.className = 'timer-display';
+            prevVid.srcObject = null;
+            prevVid.classList.remove('vis');
+            prevPh.classList.remove('hide');
+            recOv.classList.remove('vis');
+            resTag.classList.remove('vis');
+            timerDisp.textContent = '00:00:00';
+            timerDisp.className = 'timer-mono';
             btnStart.disabled = false;
             btnPause.disabled = true;
             btnStop.disabled = true;
-            btnPause.innerHTML = '<i class="fas fa-pause"></i> Jeda';
+            pauseIcon.className = 'fas fa-pause';
+            pauseText.textContent = 'Jeda';
         }
 
         // ===== Save Recording =====
-        function saveRecording(width, height) {
-            const mimeType = getSupportedMimeType();
-            const blob = new Blob(recordedChunks, { type: mimeType });
+        function saveRec(w, h) {
+            const mime = getMime();
+            const blob = new Blob(chunks, { type: mime });
             const url = URL.createObjectURL(blob);
-            const duration = getElapsedMs();
-
+            const dur = getElapsed();
             const now = new Date();
-            const dateStr = now.toLocaleDateString('id-ID', {
-                day: '2-digit', month: 'short', year: 'numeric'
-            });
-            const timeStr = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit', minute: '2-digit', second: '2-digit'
-            });
 
-            const recording = {
-                id: Date.now(),
-                name: `Rekaman_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}${String(now.getSeconds()).padStart(2,'0')}`,
-                url: url,
-                blob: blob,
-                size: blob.size,
-                width: width,
-                height: height,
-                duration: duration,
-                date: dateStr,
-                time: timeStr,
-            };
+            const id = Date.now();
+            const dateStr = now.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+            const timeStr = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+            const name = `REC_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}${String(now.getSeconds()).padStart(2,'0')}`;
 
-            recordings.unshift(recording);
-            renderRecordings();
-            showToast('Rekaman berhasil disimpan', 'success');
+            recordings.unshift({ id, name, url, blob, size: blob.size, width: w, height: h, duration: dur, date: dateStr, time: timeStr });
+            renderRecs();
+            toast('Rekaman tersimpan', 'ok');
         }
 
         // ===== Render Recordings =====
-        function renderRecordings() {
-            const section = document.getElementById('recordingsSection');
-            const list = document.getElementById('recordingsList');
-            const count = document.getElementById('recCount');
+        function renderRecs() {
+            const sec = document.getElementById('recsSection');
+            const list = document.getElementById('recsList');
+            const cnt = document.getElementById('recsCount');
 
-            if (recordings.length === 0) {
-                section.style.display = 'none';
-                return;
-            }
+            if (!recordings.length) { sec.style.display = 'none'; return; }
 
-            section.style.display = 'block';
-            count.textContent = recordings.length + ' file';
+            sec.style.display = 'block';
+            cnt.textContent = recordings.length + ' file';
 
             list.innerHTML = recordings.map(r => `
-                <div class="recording-item" id="rec-${r.id}">
+                <div class="rec-item">
                     <div class="rec-thumb"><i class="fas fa-play-circle"></i></div>
                     <div class="rec-info">
                         <div class="rec-name">${r.name}.webm</div>
                         <div class="rec-meta">
-                            <span><i class="fas fa-clock"></i> ${formatTime(r.duration)}</span>
+                            <span><i class="fas fa-clock"></i> ${fmtTime(r.duration)}</span>
                             <span><i class="fas fa-expand"></i> ${r.width}x${r.height}</span>
-                            <span><i class="fas fa-hdd"></i> ${formatFileSize(r.size)}</span>
-                            <span><i class="fas fa-calendar"></i> ${r.date} ${r.time}</span>
+                            <span><i class="fas fa-hdd"></i> ${fmtSize(r.size)}</span>
+                            <span><i class="fas fa-calendar-day"></i> ${r.date} ${r.time}</span>
                         </div>
                     </div>
-                    <div class="rec-actions">
-                        <button class="rec-action-btn" title="Putar" onclick="playRecording('${r.id}')">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="rec-action-btn" title="Unduh" onclick="downloadRecording('${r.id}')">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <button class="rec-action-btn delete" title="Hapus" onclick="deleteRecording('${r.id}')">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+                    <div class="rec-acts">
+                        <button class="ra-btn" title="Putar" onclick="playRec('${r.id}')"><i class="fas fa-play"></i></button>
+                        <button class="ra-btn" title="Unduh" onclick="dlRec('${r.id}')"><i class="fas fa-download"></i></button>
+                        <button class="ra-btn del" title="Hapus" onclick="delRec('${r.id}')"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ===== Play Recording =====
-        function playRecording(id) {
-            const rec = recordings.find(r => r.id === parseInt(id));
-            if (!rec) return;
-
-            previewVideo.srcObject = null;
-            previewVideo.src = rec.url;
-            previewVideo.classList.add('visible');
-            previewPlaceholder.classList.add('hidden');
-            previewVideo.muted = false;
-            previewVideo.controls = true;
-
-            // Scroll ke preview
-            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // ===== Play / Download / Delete =====
+        function playRec(id) {
+            const r = recordings.find(x => x.id === parseInt(id));
+            if (!r) return;
+            prevVid.srcObject = null;
+            prevVid.src = r.url;
+            prevVid.classList.add('vis');
+            prevPh.classList.add('hide');
+            prevVid.muted = false;
+            prevVid.controls = true;
+            document.getElementById('previewWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // ===== Download Recording =====
-        function downloadRecording(id) {
-            const rec = recordings.find(r => r.id === parseInt(id));
-            if (!rec) return;
-
+        function dlRec(id) {
+            const r = recordings.find(x => x.id === parseInt(id));
+            if (!r) return;
             const a = document.createElement('a');
-            a.href = rec.url;
-            a.download = rec.name + '.webm';
+            a.href = r.url;
+            a.download = r.name + '.webm';
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
-
-            showToast('Mengunduh ' + rec.name + '.webm', 'success');
+            a.remove();
+            toast('Mengunduh ' + r.name + '.webm', 'ok');
         }
 
-        // ===== Delete Recording =====
-        function deleteRecording(id) {
-            const idx = recordings.findIndex(r => r.id === parseInt(id));
+        function delRec(id) {
+            const idx = recordings.findIndex(x => x.id === parseInt(id));
             if (idx === -1) return;
-
             URL.revokeObjectURL(recordings[idx].url);
+            // Hapus juga share link jika ada
+            if (shareLinks[recordings[idx].id]) {
+                URL.revokeObjectURL(shareLinks[recordings[idx].id]);
+                delete shareLinks[recordings[idx].id];
+            }
             recordings.splice(idx, 1);
-            renderRecordings();
-
-            // Reset preview jika sedang memutar file yang dihapus
-            if (previewVideo.src) {
-                const currentUrl = previewVideo.src;
-                if (!recordings.some(r => r.url === currentUrl)) {
-                    previewVideo.src = '';
-                    previewVideo.controls = false;
-                    previewVideo.muted = true;
-                    previewVideo.classList.remove('visible');
-                    previewPlaceholder.classList.remove('hidden');
-                }
-            }
-
-            showToast('Rekaman dihapus', 'info');
+            renderRecs();
+            toast('Rekaman dihapus', 'inf');
         }
 
-        // ===== Helper: Mime Type =====
-        function getSupportedMimeType() {
-            const types = [
-                'video/webm;codecs=vp9,opus',
-                'video/webm;codecs=vp8,opus',
-                'video/webm;codecs=vp9',
-                'video/webm;codecs=vp8',
-                'video/webm',
-            ];
-            for (const type of types) {
-                if (MediaRecorder.isTypeSupported(type)) return type;
+        // ===== SHARE TAB =====
+        function renderShareTab() {
+            const empty = document.getElementById('shareEmpty');
+            const list = document.getElementById('shareList');
+
+            if (!recordings.length) {
+                empty.style.display = 'block';
+                list.innerHTML = '';
+                return;
             }
-            return 'video/webm';
+
+            empty.style.display = 'none';
+
+            list.innerHTML = recordings.map(r => {
+                const hasLink = !!shareLinks[r.id];
+                const linkUrl = hasLink ? shareLinks[r.id] : '';
+
+                return `
+                <div class="share-card" id="sc-${r.id}">
+                    <div class="sc-head">
+                        <div class="sc-name">${r.name}.webm</div>
+                        <div class="sc-badge ${hasLink ? '' : 'pending'}">${hasLink ? 'Link Aktif' : 'Belum Dibuat'}</div>
+                    </div>
+                    ${hasLink ? `
+                        <div class="link-box">
+                            <input class="link-input" id="linkIn-${r.id}" value="${linkUrl}" readonly onclick="this.select()">
+                            <button class="link-btn" onclick="copyLink('${r.id}')">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </div>
+                        <div class="sc-actions">
+                            <button class="sc-a-btn primary" onclick="openLink('${r.id}')">
+                                <i class="fas fa-external-link-alt"></i> Buka di Tab Baru
+                            </button>
+                            <button class="sc-a-btn" onclick="removeLink('${r.id}')">
+                                <i class="fas fa-unlink"></i> Hapus Link
+                            </button>
+                        </div>
+                    ` : `
+                        <button class="link-btn" style="width:100%; justify-content:center; padding:14px;" onclick="generateLink('${r.id}')">
+                            <i class="fas fa-wand-magic-sparkles"></i> Buat Link Video
+                        </button>
+                    `}
+                    <div class="sc-meta">
+                        <span><i class="fas fa-clock"></i> ${fmtTime(r.duration)}</span>
+                        <span><i class="fas fa-expand"></i> ${r.width}x${r.height}</span>
+                        <span><i class="fas fa-hdd"></i> ${fmtSize(r.size)}</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
         }
 
-        // ===== Helper: Bitrate =====
-        function calculateBitrate(width, height, fps) {
-            // Kalkulasi bitrate berdasarkan resolusi untuk kualitas HD
-            // Target ~8-12 Mbps untuk 1080p@30fps, scale sesuai
-            const pixels = width * height;
-            const basePixels = 1920 * 1080;
-            const baseBitrate = 8_000_000; // 8 Mbps untuk 1080p@30fps
-            const scaleFactor = pixels / basePixels;
-            const fpsScale = fps / 30;
-            // Clamp antara 2 Mbps - 30 Mbps
-            const bitrate = Math.min(30_000_000, Math.max(2_000_000, Math.round(baseBitrate * scaleFactor * fpsScale)));
-            return bitrate;
+        // ===== Generate Link =====
+        function generateLink(id) {
+            const r = recordings.find(x => x.id === parseInt(id));
+            if (!r) return;
+
+            const card = document.getElementById('sc-' + id);
+
+            // Tampilkan animasi generating
+            const genHtml = `
+                <div class="gen-anim">
+                    <div class="gen-spinner"></div>
+                    <span>Membuat link video...</span>
+                </div>
+            `;
+
+            // Ganti isi card body (antara sc-head dan sc-meta)
+            const head = card.querySelector('.sc-head');
+            const meta = card.querySelector('.sc-meta');
+            const existingGen = card.querySelector('.gen-anim');
+            const existingLinkBox = card.querySelector('.link-box');
+            const existingActions = card.querySelector('.sc-actions');
+            const existingBtn = card.querySelector('.link-btn');
+
+            if (existingLinkBox) existingLinkBox.remove();
+            if (existingActions) existingActions.remove();
+            if (existingBtn) existingBtn.remove();
+            if (existingGen) existingGen.remove();
+
+            const genDiv = document.createElement('div');
+            genDiv.innerHTML = genHtml;
+            head.after(genDiv.firstElementChild);
+
+            // Simulasi proses (blob URL sebenarnya instan, tapi animasi membuatnya terasa keren)
+            setTimeout(() => {
+                // Buat blob URL yang bisa dibuka di tab baru
+                // Kita buat URL khusus dari blob yang sama
+                const blobUrl = URL.createObjectURL(r.blob);
+                shareLinks[r.id] = blobUrl;
+
+                // Re-render share tab
+                renderShareTab();
+                toast('Link video berhasil dibuat', 'ok');
+            }, 1500);
+        }
+
+        // ===== Copy Link =====
+        function copyLink(id) {
+            const input = document.getElementById('linkIn-' + id);
+            if (!input) return;
+
+            navigator.clipboard.writeText(input.value).then(() => {
+                toast('Link disalin ke clipboard', 'ok');
+            }).catch(() => {
+                // Fallback
+                input.select();
+                document.execCommand('copy');
+                toast('Link disalin', 'ok');
+            });
+        }
+
+        // ===== Open Link =====
+        function openLink(id) {
+            const url = shareLinks[parseInt(id)];
+            if (!url) return;
+            window.open(url, '_blank');
+        }
+
+        // ===== Remove Link =====
+        function removeLink(id) {
+            const numId = parseInt(id);
+            if (shareLinks[numId]) {
+                URL.revokeObjectURL(shareLinks[numId]);
+                delete shareLinks[numId];
+            }
+            renderShareTab();
+            toast('Link dihapus', 'inf');
         }
 
         // ===== Toast =====
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-
-            const iconMap = {
-                success: 'fa-circle-check',
-                error: 'fa-circle-xmark',
-                info: 'fa-circle-info',
-            };
-
-            toast.innerHTML = `<i class="fas ${iconMap[type]}"></i><span>${message}</span>`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.add('toast-out');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+        function toast(msg, type = 'inf') {
+            const box = document.getElementById('toastBox');
+            const el = document.createElement('div');
+            el.className = 'toast ' + type;
+            const icons = { ok: 'fa-circle-check', err: 'fa-circle-xmark', inf: 'fa-circle-info' };
+            el.innerHTML = `<i class="fas ${icons[type]}"></i><span>${msg}</span>`;
+            box.appendChild(el);
+            setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 250); }, 3000);
         }
 
-        // ===== Particles =====
-        (function initParticles() {
+        // ===== PARTICLES =====
+        (function() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
             const canvas = document.getElementById('particles');
             const ctx = canvas.getContext('2d');
             let w, h;
-            let particles = [];
-            const PARTICLE_COUNT = 50;
+            const pts = [];
+            const N = 60;
+            let mouse = { x: -999, y: -999 };
 
-            // Cek preferensi reduced motion
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefersReducedMotion) return;
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 
-            function resize() {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
-            }
-
-            function createParticle() {
+            function mkPt() {
                 return {
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    r: Math.random() * 2 + 0.5,
-                    alpha: Math.random() * 0.3 + 0.05,
-                    color: Math.random() > 0.5 ? '255,60,95' : '0,232,123',
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 1.8 + 0.4,
+                    a: Math.random() * 0.25 + 0.05,
+                    c: ['0,240,255','255,0,170','0,255,136'][Math.floor(Math.random()*3)],
                 };
             }
 
-            function init() {
-                resize();
-                particles = [];
-                for (let i = 0; i < PARTICLE_COUNT; i++) {
-                    particles.push(createParticle());
-                }
-            }
+            function init() { resize(); for (let i = 0; i < N; i++) pts.push(mkPt()); }
 
             function draw() {
                 ctx.clearRect(0, 0, w, h);
-                for (const p of particles) {
+
+                for (const p of pts) {
+                    // Sedikit tertarik ke mouse
+                    const dx = mouse.x - p.x, dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 200 && dist > 1) {
+                        p.vx += dx / dist * 0.008;
+                        p.vy += dy / dist * 0.008;
+                    }
+
                     p.x += p.vx;
                     p.y += p.vy;
+                    p.vx *= 0.998;
+                    p.vy *= 0.998;
 
                     if (p.x < 0) p.x = w;
                     if (p.x > w) p.x = 0;
@@ -1478,22 +1744,21 @@
 
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+                    ctx.fillStyle = `rgba(${p.c},${p.a})`;
                     ctx.fill();
                 }
 
-                // Garis koneksi antar partikel yang dekat
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 120) {
-                            const alpha = (1 - dist / 120) * 0.06;
+                // Koneksi
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const dx = pts[i].x - pts[j].x;
+                        const dy = pts[i].y - pts[j].y;
+                        const d = Math.sqrt(dx*dx + dy*dy);
+                        if (d < 130) {
                             ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+                            ctx.moveTo(pts[i].x, pts[i].y);
+                            ctx.lineTo(pts[j].x, pts[j].y);
+                            ctx.strokeStyle = `rgba(0,240,255,${(1 - d/130) * 0.06})`;
                             ctx.lineWidth = 0.5;
                             ctx.stroke();
                         }
@@ -1504,6 +1769,8 @@
             }
 
             window.addEventListener('resize', resize);
+            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            window.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
             init();
             draw();
         })();
