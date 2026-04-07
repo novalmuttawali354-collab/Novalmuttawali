@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Zeus's Fortune - Slot Demo Gratis</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#080810;--card:rgba(15,15,30,0.85);--gold:#FFD700;--gold-dim:#B8860B;
+  --accent:#FF6B2B;--fg:#f0e6d3;--muted:#7a7068;--cell-size:clamp(52px,11vmin,82px);
+  --gap:clamp(3px,0.7vmin,7px);--radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Outfit',sans-serif;color:var(--fg);background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;
+}
+/* Latar belakang */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%,rgba(255,165,0,0.06),transparent),
+    radial-gradient(ellipse 80% 60% at 30% 70%,rgba(120,40,200,0.05),transparent),
+    radial-gradient(ellipse 50% 40% at 80% 30%,rgba(255,100,0,0.04),transparent),
+    var(--bg);
+}
+/* Bintang berkedip */
+.star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;z-index:0;animation:twinkle var(--d,3s) ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:0.1}100%{opacity:var(--o,0.7)}}
+
+#app{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.5vmin,14px);width:100%;max-width:600px;padding:8px}
+
+/* Header */
+.header{
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+  padding:8px 14px;background:var(--card);border:1px solid rgba(255,215,0,0.15);
+  border-radius:var(--radius);backdrop-filter:blur(8px);
+}
+.logo{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(14px,3.2vmin,22px);
+  background:linear-gradient(135deg,#FFD700,#FF8C00,#FFD700);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;letter-spacing:1px;
+}
+.balance-box{text-align:right}
+.balance-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.balance-val{font-size:clamp(16px,3.5vmin,24px);font-weight:700;color:var(--gold)}
+
+/* Info bar */
+.info-bar{
+  display:flex;gap:12px;align-items:center;justify-content:center;width:100%;
+  min-height:28px;font-size:clamp(11px,2.2vmin,14px);font-weight:600;
+  transition:all .3s;
+}
+.info-bar .fs-badge{
+  background:linear-gradient(135deg,#7B2FFF,#C850C0);padding:3px 14px;
+  border-radius:20px;color:#fff;display:none;animation:pulse-badge 1s ease-in-out infinite alternate;
+}
+.info-bar .fs-badge.show{display:inline-flex;align-items:center;gap:6px}
+.info-bar .mult-badge{
+  background:linear-gradient(135deg,#FFD700,#FF6B00);padding:3px 14px;
+  border-radius:20px;color:#000;display:none;font-weight:700;
+}
+.info-bar .mult-badge.show{display:inline-flex;align-items:center;gap:4px}
+@keyframes pulse-badge{0%{transform:scale(1)}100%{transform:scale(1.05)}}
+
+/* Slot grid */
+.slot-wrapper{position:relative;padding:6px;
+  background:linear-gradient(145deg,rgba(255,215,0,0.12),rgba(255,215,0,0.03));
+  border:2px solid rgba(255,215,0,0.2);border-radius:14px;
+  box-shadow:0 0 40px rgba(255,165,0,0.08),inset 0 0 30px rgba(0,0,0,0.5);
+}
+.slot-grid{
+  display:grid;grid-template-columns:repeat(6,var(--cell-size));grid-template-rows:repeat(5,var(--cell-size));
+  gap:var(--gap);position:relative;
+}
+.cell{
+  width:var(--cell-size);height:var(--cell-size);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:linear-gradient(145deg,rgba(30,25,50,0.9),rgba(15,12,30,0.95));
+  border:1px solid rgba(255,255,255,0.05);font-size:clamp(22px,5vmin,36px);
+  transition:transform .15s,opacity .15s,box-shadow .15s;overflow:hidden;
+}
+.cell i{position:relative;z-index:1;filter:drop-shadow(0 0 4px currentColor);transition:transform .2s}
+.cell::after{
+  content:'';position:absolute;inset:0;border-radius:8px;opacity:0;transition:opacity .3s;
+  background:radial-gradient(circle,rgba(255,215,0,0.3),transparent 70%);
+}
+
+/* Animasi simbol */
+.cell.spinning{animation:cellSpin .08s linear infinite}
+@keyframes cellSpin{
+  0%{transform:translateY(-8%) scaleY(0.9)}50%{transform:translateY(8%) scaleY(0.9)}100%{transform:translateY(-8%) scaleY(0.9)}
+}
+.cell.spinning i{filter:blur(1px)}
+
+.cell.win-highlight{animation:winPulse .5s ease-in-out infinite alternate;z-index:2}
+.cell.win-highlight::after{opacity:1}
+.cell.win-highlight i{transform:scale(1.15)}
+@keyframes winPulse{
+  0%{box-shadow:0 0 8px rgba(255,215,0,0.4);transform:scale(1)}
+  100%{box-shadow:0 0 20px rgba(255,215,0,0.7),0 0 40px rgba(255,165,0,0.3);transform:scale(1.06)}
+}
+.cell.scatter-highlight{animation:scatterPulse .4s ease-in-out infinite alternate}
+@keyframes scatterPulse{
+  0%{box-shadow:0 0 10px rgba(255,255,255,0.3)}100%{box-shadow:0 0 25px rgba(255,255,255,0.7),0 0 50px rgba(200,200,255,0.3)}
+}
+.cell.win-exit{transform:scale(0) rotate(20deg);opacity:0;transition:all .35s ease-in}
+
+.cell.tumble-in{animation:tumbleDrop .35s ease-out}
+@keyframes tumbleDrop{from{transform:translateY(calc(var(--cell-size) * -1.5));opacity:0}to{transform:translateY(0);opacity:1}}
+.cell.multiplier-cell{
+  background:linear-gradient(145deg,rgba(60,20,10,0.9),rgba(30,10,5,0.95));
+  border-color:rgba(255,150,0,0.3);
+}
+.cell.multiplier-cell .mult-val{
+  font-family:'Cinzel',serif;font-weight:900;font-size:clamp(12px,2.8vmin,18px);
+  color:#FFD700;text-shadow:0 0 8px rgba(255,165,0,0.8);
+}
+
+/* Win overlay */
+.win-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:10;
+}
+.win-text{
+  font-family:'Cinzel',serif;font-weight:900;font-size:clamp(28px,7vmin,56px);
+  color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.6),0 2px 8px rgba(0,0,0,0.8);
+  opacity:0;transform:scale(0.5);transition:all .5s cubic-bezier(.17,.67,.35,1.2);
+}
+.win-text.show{opacity:1;transform:scale(1)}
+.win-text.mega{font-size:clamp(36px,10vmin,72px);color:#fff;text-shadow:0 0 30px var(--gold),0 0 60px rgba(255,100,0,0.5)}
+
+/* Big win particles */
+.particle{
+  position:absolute;width:6px;height:6px;border-radius:50%;z-index:11;pointer-events:none;
+  animation:particleBurst 1s ease-out forwards;
+}
+@keyframes particleBurst{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--px),var(--py)) scale(0);opacity:0}
+}
+
+/* Controls */
+.controls{
+  display:flex;align-items:center;gap:clamp(6px,1.5vmin,12px);width:100%;
+  padding:6px 10px;background:var(--card);border:1px solid rgba(255,215,0,0.1);
+  border-radius:var(--radius);backdrop-filter:blur(8px);
+}
+.bet-section{display:flex;align-items:center;gap:4px;flex:1}
+.bet-btn{
+  width:clamp(32px,7vmin,44px);height:clamp(32px,7vmin,44px);border-radius:8px;border:1px solid rgba(255,215,0,0.2);
+  background:rgba(255,215,0,0.08);color:var(--gold);font-size:18px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.bet-btn:hover{background:rgba(255,215,0,0.18)}
+.bet-btn:active{transform:scale(0.92)}
+.bet-display{text-align:center;flex:1}
+.bet-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.bet-val{font-size:clamp(14px,3vmin,20px);font-weight:700;color:var(--fg)}
+
+.spin-btn{
+  width:clamp(64px,16vmin,90px);height:clamp(64px,16vmin,90px);border-radius:50%;border:3px solid var(--gold);
+  background:linear-gradient(145deg,#FF8C00,#FF4500);color:#fff;font-family:'Cinzel',serif;
+  font-weight:900;font-size:clamp(11px,2.5vmin,15px);cursor:pointer;letter-spacing:1px;
+  box-shadow:0 0 20px rgba(255,100,0,0.3),inset 0 2px 4px rgba(255,255,255,0.2);
+  transition:all .15s;flex-shrink:0;
+}
+.spin-btn:hover:not(:disabled){transform:scale(1.05);box-shadow:0 0 30px rgba(255,100,0,0.5)}
+.spin-btn:active:not(:disabled){transform:scale(0.95)}
+.spin-btn:disabled{opacity:0.4;cursor:not-allowed;filter:grayscale(0.5)}
+.spin-btn.free-mode{
+  background:linear-gradient(145deg,#9B30FF,#6A0DAD);border-color:#C77DFF;
+  box-shadow:0 0 20px rgba(155,48,255,0.4);
+}
+
+.side-btns{display:flex;gap:4px;flex:1;justify-content:flex-end}
+.icon-btn{
+  width:clamp(32px,7vmin,44px);height:clamp(32px,7vmin,44px);border-radius:8px;
+  border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
+  color:var(--muted);font-size:14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all .15s;
+}
+.icon-btn:hover{background:rgba(255,255,255,0.1);color:var(--fg)}
+.icon-btn:active{transform:scale(0.9)}
+.icon-btn.active{color:var(--gold);border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.08)}
+
+/* Last win display */
+.last-win{
+  font-size:clamp(11px,2.2vmin,14px);text-align:center;min-height:20px;color:var(--muted);
+  transition:color .3s;
+}
+.last-win.has-win{color:var(--gold);font-weight:600}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:none;
+  align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:linear-gradient(145deg,#1a1528,#0d0b15);border:1px solid rgba(255,215,0,0.15);
+  border-radius:16px;padding:24px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.modal h2{font-family:'Cinzel',serif;font-size:20px;color:var(--gold);margin-bottom:16px;text-align:center}
+.modal-close{
+  float:right;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;
+  transition:color .2s;
+}
+.modal-close:hover{color:var(--fg)}
+.pay-row{
+  display:flex;align-items:center;gap:12px;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.pay-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;flex-shrink:0;
+  background:linear-gradient(145deg,rgba(30,25,50,0.9),rgba(15,12,30,0.95));
+}
+.pay-name{font-size:13px;font-weight:600;flex:1}
+.pay-vals{display:flex;gap:6px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.pay-vals span{background:rgba(255,215,0,0.08);padding:2px 6px;border-radius:4px;color:var(--gold-dim)}
+.pay-section{margin-top:16px}
+.pay-section h3{font-size:13px;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.pay-section p{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* Toast */
+.toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{
+  background:linear-gradient(135deg,rgba(20,15,35,0.95),rgba(10,8,20,0.95));
+  border:1px solid rgba(255,215,0,0.2);padding:10px 20px;border-radius:10px;
+  font-size:13px;font-weight:600;color:var(--gold);backdrop-filter:blur(8px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);animation:toastIn .3s ease-out;
+  white-space:nowrap;
+}
+.toast.out{animation:toastOut .3s ease-in forwards}
+@keyframes toastIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes toastOut{to{transform:translateY(-20px);opacity:0}}
+
+/* Free spin mode body */
+body.free-spin-mode::before{
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%,rgba(120,40,255,0.1),transparent),
+    radial-gradient(ellipse 80% 60% at 30% 70%,rgba(60,20,180,0.08),transparent),
+    radial-gradient(ellipse 50% 40% at 80% 30%,rgba(200,50,255,0.06),transparent),
+    var(--bg);
+}
+body.free-spin-mode .slot-wrapper{
+  border-color:rgba(155,48,255,0.3);
+  box-shadow:0 0 50px rgba(155,48,255,0.12),inset 0 0 30px rgba(0,0,0,0.5);
+  background:linear-gradient(145deg,rgba(120,40,255,0.12),rgba(120,40,255,0.03));
+}
+
+/* Lightning flash */
+.lightning{position:fixed;inset:0;background:rgba(200,180,255,0.15);z-index:0;pointer-events:none;animation:lightningFlash .15s ease-out forwards}
+@keyframes lightningFlash{0%{opacity:1}100%{opacity:0}}
+
+/* Scrollbar */
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-track{background:transparent}
+.modal::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.2);border-radius:4px}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">ZEUS'S FORTUNE</div>
+    <div class="balance-box">
+      <div class="balance-label">Saldo Demo</div>
+      <div class="balance-val" id="balanceDisplay">10.000</div>
+    </div>
+  </header>
+
+  <!-- Info bar (free spin / multiplier) -->
+  <div class="info-bar">
+    <span class="fs-badge" id="fsBadge"><i class="fa-solid fa-bolt"></i> FREE SPIN: <b id="fsCount">0</b></span>
+    <span class="mult-badge" id="multBadge"><i class="fa-solid fa-xmark"></i><span id="multVal">1</span></span>
+  </div>
+
+  <!-- Slot grid -->
+  <div class="slot-wrapper">
+    <div class="slot-grid" id="slotGrid"></div>
+    <div class="win-overlay"><div class="win-text" id="winText"></div></div>
+  </div>
+
+  <!-- Last win -->
+  <div class="last-win" id="lastWin"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="bet-section">
+      <button class="bet-btn" id="betDown">−</button>
+      <div class="bet-display">
+        <div class="bet-label">Total Taruhan</div>
+        <div class="bet-val" id="betDisplay">500</div>
+      </div>
+      <button class="bet-btn" id="betUp">+</button>
+    </div>
+    <button class="spin-btn" id="spinBtn">SPIN</button>
+    <div class="side-btns">
+      <button class="icon-btn" id="infoBtn" title="Paytable"><i class="fa-solid fa-circle-info"></i></button>
+      <button class="icon-btn" id="autoBtn" title="Auto Spin"><i class="fa-solid fa-rotate"></i></button>
+      <button class="icon-btn active" id="soundBtn" title="Suara"><i class="fa-solid fa-volume-high"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Paytable Modal -->
+<div class="modal-overlay" id="paytableModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+    <h2>TABEL PEMBAYARAN</h2>
+    <div id="paytableContent"></div>
+    <div class="pay-section">
+      <h3>Fitur Game</h3>
+      <p><b style="color:var(--gold)">Pay Anywhere:</b> 8 simbol atau lebih yang sama di mana saja pada gulungan memberikan kemenangan.</p>
+      <p><b style="color:var(--gold)">Tumble:</b> Simbol pemenang hilang dan simbol baru jatuh mengisi kekosongan. Tumble berlanjut selama ada kemenangan.</p>
+      <p><b style="color:var(--gold)">Scatter (Petir):</b> 4+ scatter di mana saja memicu 15 Free Spin. Selama Free Spin, 3+ scatter tambah 5 spin.</p>
+      <p><b style="color:var(--gold)">Multiplier:</b> Simbol pengali muncul selama Free Spin. Total pengali dikalikan ke kemenangan akhir tumble.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ============================================
+   KONSTANTA & DEFINISI SIMBOL
+   ============================================ */
+const ROWS = 5, COLS = 6;
+const BET_LEVELS = [100, 200, 500, 1000, 2000, 5000];
+
+const SYMBOLS = [
+  { id:'crown', name:'Mahkota Zeus', icon:'fa-crown', color:'#FFD700',
+    payouts:{8:5,9:12,10:30,11:60,12:150}, weight:2 },
+  { id:'diamond', name:'Berlian Suci', icon:'fa-gem', color:'#00E5FF',
+    payouts:{8:4,9:10,10:20,11:50,12:100}, weight:3 },
+  { id:'hourglass', name:'Pasir Waktu', icon:'fa-hourglass-half', color:'#FF6EC7',
+    payouts:{8:2,9:6,10:12,11:25,12:60}, weight:5 },
+  { id:'goblet', name:'Piala Dewa', icon:'fa-wine-glass', color:'#7B68EE',
+    payouts:{8:1.5,9:4,10:10,11:20,12:50}, weight:6 },
+  { id:'gem_red', name:'Permata Merah', icon:'fa-gem', color:'#FF4444',
+    payouts:{8:1,9:3,10:6,11:12,12:30}, weight:12 },
+  { id:'gem_green', name:'Permata Hijau', icon:'fa-gem', color:'#44DD44',
+    payouts:{8:1,9:3,10:6,11:12,12:30}, weight:12 },
+  { id:'gem_blue', name:'Permata Biru', icon:'fa-gem', color:'#4488FF',
+    payouts:{8:0.8,9:2,10:5,11:10,12:25}, weight:14 },
+  { id:'gem_purple', name:'Permata Ungu', icon:'fa-gem', color:'#CC44FF',
+    payouts:{8:0.8,9:2,10:5,11:10,12:25}, weight:14 },
+];
+
+const SCATTER_DEF = { id:'scatter', name:'Petir Zeus', icon:'fa-bolt', color:'#FFFFFF' };
+const SCATTER_WEIGHT = 4;
+
+// Pengali untuk free spin
+const MULT_VALUES = [2,3,5,10,15,25,50,100,250,500];
+const MULT_WEIGHTS = [30,25,20,10,5,4,3,2,0.8,0.2];
+const TOTAL_WEIGHT = SYMBOLS.reduce((s,sym)=>s+sym.weight,0) + SCATTER_WEIGHT;
+const MULT_TOTAL_WEIGHT = MULT_WEIGHTS.reduce((s,w)=>s+w,0);
+
+/* ============================================
+   STATE GAME
+   ============================================ */
+let balance = 10000;
+let betIndex = 2; // mulai dari 500
+let bet = BET_LEVELS[betIndex];
+let grid = []; // grid[row][col] = {type,id,value?}
+let isSpinning = false;
+let isFreeSpin = false;
+let freeSpinsLeft = 0;
+let totalFreeSpinWin = 0;
+let soundEnabled = true;
+let autoSpin = false;
+let currentWinAmount = 0;
+
+/* ============================================
+   AUDIO (Web Audio API)
+   ============================================ */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+function ensureAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); }
+
+function playTone(freq, dur, type='sine', vol=0.08){
+  if(!soundEnabled||!audioCtx) return;
+  try{
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type; o.frequency.value=freq;
+    g.gain.setValueAtTime(vol,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+function sfxSpin(){ for(let i=0;i<6;i++) setTimeout(()=>playTone(180+i*25,0.04,'square',0.03),i*50); }
+function sfxStop(){ playTone(300,0.08,'sine',0.04); }
+function sfxWin(){
+  [523,659,784,1047].forEach((n,i)=>setTimeout(()=>playTone(n,0.18,'sine',0.07),i*80));
+}
+function sfxBigWin(){
+  [523,659,784,1047,1319,1568].forEach((n,i)=>setTimeout(()=>playTone(n,0.25,'sine',0.09),i*100));
+}
+function sfxScatter(){
+  playTone(80,0.4,'sawtooth',0.04);
+  setTimeout(()=>playTone(120,0.3,'sawtooth',0.04),80);
+  setTimeout(()=>playTone(160,0.2,'sawtooth',0.03),160);
+}
+function sfxTumble(){ playTone(500,0.08,'sine',0.03); }
+function sfxFreeSpin(){
+  [440,554,659,880].forEach((n,i)=>setTimeout(()=>playTone(n,0.3,'triangle',0.06),i*150));
+}
+
+/* ============================================
+   UTILITAS
+   ============================================ */
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function pickWeighted(items,weights,total){
+  let r=Math.random()*total, acc=0;
+  for(let i=0;i<items.length;i++){ acc+=weights[i]; if(r<=acc) return items[i]; }
+  return items[items.length-1];
+}
+function formatNum(n){ return Math.floor(n).toLocaleString('id-ID'); }
+
+/* ============================================
+   GRID - GENERATE & RENDER
+   ============================================ */
+function generateSymbol(forFreeSpin=false){
+  // Selama free spin, ada kesempatan simbol multiplier muncul (~8%)
+  if(forFreeSpin && Math.random()<0.08){
+    return { type:'multiplier', value:pickWeighted(MULT_VALUES,MULT_WEIGHTS,MULT_TOTAL_WEIGHT) };
+  }
+  let r = Math.random()*TOTAL_WEIGHT;
+  let acc = 0;
+  for(const sym of SYMBOLS){ acc+=sym.weight; if(r<=acc) return { type:'symbol', id:sym.id }; }
+  // Scatter
+  return { type:'scatter' };
+}
+
+function initGrid(){
+  grid = [];
+  for(let r=0;r<ROWS;r++){
+    grid[r]=[];
+    for(let c=0;c<COLS;c++) grid[r][c]=generateSymbol(false);
+  }
+}
+
+function getSymbolDef(id){ return SYMBOLS.find(s=>s.id===id)||SCATTER_DEF; }
+
+function createCellEl(r,c){
+  const div=document.createElement('div');
+  div.className='cell';
+  div.id=`cell-${r}-${c}`;
+  return div;
+}
+
+function renderGrid(animateNew=false){
+  const container=document.getElementById('slotGrid');
+  if(!container.children.length){
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) container.appendChild(createCellEl(r,c));
+  }
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell=grid[r][c];
+      const el=document.getElementById(`cell-${r}-${c}`);
+      el.className='cell'+(animateNew?' tumble-in':'')+(cell.type==='multiplier'?' multiplier-cell':'');
+      if(cell.type==='symbol'){
+        const def=getSymbolDef(cell.id);
+        el.innerHTML=`<i class="fa-solid ${def.icon}" style="color:${def.color}"></i>`;
+      } else if(cell.type==='scatter'){
+        el.innerHTML=`<i class="fa-solid ${SCATTER_DEF.icon}" style="color:${SCATTER_DEF.color};filter:drop-shadow(0 0 6px rgba(255,255,255,0.6))"></i>`;
+      } else if(cell.type==='multiplier'){
+        el.innerHTML=`<span class="mult-val">${cell.value}x</span>`;
+      }
+      // Hapus animasi setelah selesai
+      if(animateNew) setTimeout(()=>el.classList.remove('tumble-in'),400);
+    }
+  }
+}
+
+/* ============================================
+   DETEKSI KEMENANGAN
+   ============================================ */
+function analyzeGrid(){
+  let symbolCounts={}, scatterCount=0, multiplierSum=0;
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell=grid[r][c];
+      if(cell.type==='symbol'){
+        if(!symbolCounts[cell.id]) symbolCounts[cell.id]=[];
+        symbolCounts[cell.id].push({r,c});
+      } else if(cell.type==='scatter'){
+        scatterCount++;
+      } else if(cell.type==='multiplier'){
+        multiplierSum+=cell.value;
+      }
+    }
+  }
+
+  let winningCells=[], winMultiplier=0;
+  for(const [id,cells] of Object.entries(symbolCounts)){
+    if(cells.length>=8){
+      winningCells.push(...cells);
+      const def=getSymbolDef(id);
+      const count=Math.min(cells.length,12);
+      const payout=def.payouts[count]||def.payouts[12];
+      winMultiplier+=payout;
+    }
+  }
+
+  // Scatter cells untuk highlight
+  let scatterCells=[];
+  if(scatterCount>0){
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      if(grid[r][c].type==='scatter') scatterCells.push({r,c});
+    }
+  }
+
+  // Terapkan pengali (hanya di free spin)
+  const finalMult = (isFreeSpin && multiplierSum>0) ? multiplierSum : 1;
+
+  return { winningCells, scatterCells, scatterCount, winMultiplier, finalMult, multiplierSum };
+}
+
+/* ============================================
+   LOGIKA SPIN
+   ============================================ */
+async function doSpin(){
+  if(isSpinning) return;
+  ensureAudio();
+
+  // Cek saldo (hanya di mode normal)
+  if(!isFreeSpin && balance<bet){
+    showToast('Saldo tidak cukup!');
+    autoSpin=false;
+    updateAutoBtn();
+    return;
+  }
+
+  isSpinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('lastWin').className='last-win';
+  document.getElementById('lastWin').textContent='';
+  hideWinText();
+
+  // Kurangi saldo
+  if(!isFreeSpin) balance-=bet;
+  updateBalance();
+
+  // Generate grid baru
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) grid[r][c]=generateSymbol(isFreeSpin);
+
+  // Animasi spin
+  const cells=document.querySelectorAll('.cell');
+  cells.forEach(el=>el.classList.add('spinning'));
+  sfxSpin();
+
+  // Berhenti per kolom
+  for(let c=0;c<COLS;c++){
+    await delay(100+Math.random()*40);
+    for(let r=0;r<ROWS;r++){
+      const el=document.getElementById(`cell-${r}-${c}`);
+      el.classList.remove('spinning');
+      const cell=grid[r][c];
+      if(cell.type==='symbol'){
+        const def=getSymbolDef(cell.id);
+        el.innerHTML=`<i class="fa-solid ${def.icon}" style="color:${def.color}"></i>`;
+      } else if(cell.type==='scatter'){
+        el.innerHTML=`<i class="fa-solid ${SCATTER_DEF.icon}" style="color:${SCATTER_DEF.color};filter:drop-shadow(0 0 6px rgba(255,255,255,0.6))"></i>`;
+      } else if(cell.type==='multiplier'){
+        el.className='cell multiplier-cell';
+        el.innerHTML=`<span class="mult-val">${cell.value}x</span>`;
+      }
+    }
+    sfxStop();
+  }
+
+  await delay(150);
+
+  // Analisis kemenangan
+  const result = analyzeGrid();
+  currentWinAmount = result.winMultiplier * bet * result.finalMult;
+
+  // Proses tumble
+  let totalWin = currentWinAmount;
+  if(result.winningCells.length>0 || result.scatterCount>=4){
+    await processWinSequence(result, totalWin);
+  }
+
+  // Cek trigger free spin
+  if(result.scatterCount>=4 && !isFreeSpin){
+    await triggerFreeSpins(result.scatterCount);
+  } else if(result.scatterCount>=3 && isFreeSpin){
+    // Tambah free spin
+    freeSpinsLeft+=5;
+    updateFreeSpinUI();
+    showToast(`+5 Free Spin! Sisa: ${freeSpinsLeft}`);
+    sfxScatter();
+  }
+
+  // Tambahkan kemenangan ke saldo
+  if(totalWin>0){
+    balance+=totalWin;
+    updateBalance();
+    document.getElementById('lastWin').className='last-win has-win';
+    document.getElementById('lastWin').textContent=`Menang: ${formatNum(totalWin)}`;
+  }
+
+  // Free spin logic
+  if(isFreeSpin){
+    totalFreeSpinWin+=totalWin;
+    freeSpinsLeft--;
+    updateFreeSpinUI();
+    if(freeSpinsLeft<=0){
+      await endFreeSpins();
+    }
+  }
+
+  isSpinning=false;
+  document.getElementById('spinBtn').disabled=false;
+
+  // Auto spin
+  if(autoSpin && !isFreeSpin && balance>=bet){
+    setTimeout(()=>doSpin(), 600);
+  } else if(autoSpin && isFreeSpin){
+    setTimeout(()=>doSpin(), 400);
+  } else if(!isFreeSpin){
+    autoSpin=false;
+    updateAutoBtn();
+  }
+}
+
+async function processWinSequence(result, baseWin){
+  // Highlight simbol menang
+  result.winningCells.forEach(({r,c})=>{
+    const el=document.getElementById(`cell-${r}-${c}`);
+    el.classList.add('win-highlight');
+  });
+  result.scatterCells.forEach(({r,c})=>{
+    const el=document.getElementById(`cell-${r}-${c}`);
+    el.classList.add('scatter-highlight');
+  });
+
+  // Tampilkan kemenangan
+  if(baseWin>0){
+    sfxWin();
+    if(baseWin>=bet*20) sfxBigWin();
+    await showWinText(baseWin, baseWin>=bet*20);
+  }
+
+  await delay(700);
+
+  // Tumble loop
+  let tumbleCount=0;
+  let runningWin=baseWin;
+  while(true){
+    // Hapus simbol menang
+    result.winningCells.forEach(({r,c})=> grid[r][c]=null);
+
+    // Simbol jatuh ke bawah
+    for(let c=0;c<COLS;c++){
+      let writeRow=ROWS-1;
+      for(let r=ROWS-1;r>=0;r--){
+        if(grid[r][c]!==null){
+          if(r!==writeRow){
+            grid[writeRow][c]=grid[r][c];
+            grid[r][c]=null;
+          }
+          writeRow--;
+        }
+      }
+      // Isi kekosongan dari atas
+      for(let r=writeRow;r>=0;r--){
+        grid[r][c]=generateSymbol(isFreeSpin);
+      }
+    }
+
+    sfxTumble();
+    renderGrid(true);
+    await delay(450);
+
+    // Analisis ulang
+    result = analyzeGrid();
+    currentWinAmount = result.winMultiplier * bet * result.finalMult;
+
+    if(result.winningCells.length===0) break;
+
+    runningWin+=currentWinAmount;
+    tumbleCount++;
+
+    // Update tampilan kemenangan
+    result.winningCells.forEach(({r,c})=>{
+      document.getElementById(`cell-${r}-${c}`).classList.add('win-highlight');
+    });
+    result.scatterCells.forEach(({r,c})=>{
+      document.getElementById(`cell-${r}-${c}`).classList.add('scatter-highlight');
+    });
+
+    if(currentWinAmount>0){
+      if(currentWinAmount>=bet*15) sfxBigWin(); else sfxWin();
+      showWinText(runningWin, runningWin>=bet*20);
+    }
+
+    // Update pengali display
+    if(isFreeSpin && result.multiplierSum>0){
+      document.getElementById('multVal').textContent=result.multiplierSum+'x';
+    }
+
+    await delay(600);
+
+    // Cek scatter tambahan di free spin
+    if(isFreeSpin && result.scatterCount>=3){
+      freeSpinsLeft+=5;
+      updateFreeSpinUI();
+      showToast(`+5 Free Spin! Sisa: ${freeSpinsLeft}`);
+      sfxScatter();
+    }
+  }
+
+  // Update last win dengan total running
+  if(runningWin!==baseWin){
+    document.getElementById('lastWin').textContent=`Menang: ${formatNum(runningWin)}`;
+  }
+  return runningWin;
+}
+
+/* ============================================
+   FREE SPIN
+   ============================================ */
+async function triggerFreeSpins(scatterCount){
+  sfxScatter();
+  await delay(300);
+  sfxFreeSpin();
+
+  isFreeSpin=true;
+  freeSpinsLeft=15;
+  totalFreeSpinWin=0;
+  document.body.classList.add('free-spin-mode');
+  document.getElementById('spinBtn').classList.add('free-mode');
+  document.getElementById('spinBtn').textContent='FREE';
+  updateFreeSpinUI();
+
+  // Kilat
+  triggerLightning();
+  setTimeout(triggerLightning,200);
+  setTimeout(triggerLightning,500);
+
+  showToast(`${scatterCount} Petir! 15 Free Spin Dimulai!`);
+  await delay(800);
+
+  // Mulai free spin otomatis
+  doSpin();
+}
+
+async function endFreeSpins(){
+  await delay(500);
+  isFreeSpin=false;
+  document.body.classList.remove('free-spin-mode');
+  document.getElementById('spinBtn').classList.remove('free-mode');
+  document.getElementById('spinBtn').textContent='SPIN';
+  document.getElementById('fsBadge').classList.remove('show');
+  document.getElementById('multBadge').classList.remove('show');
+
+  if(totalFreeSpinWin>0){
+    showToast(`Free Spin Selesai! Total: ${formatNum(totalFreeSpinWin)}`);
+    await showWinText(totalFreeSpinWin, totalFreeSpinWin>=bet*20);
+    await delay(2000);
+  } else {
+    showToast('Free Spin Selesai!');
+  }
+  hideWinText();
+  totalFreeSpinWin=0;
+}
+
+function updateFreeSpinUI(){
+  const badge=document.getElementById('fsBadge');
+  if(isFreeSpin){
+    badge.classList.add('show');
+    document.getElementById('fsCount').textContent=freeSpinsLeft;
+    document.getElementById('multBadge').classList.add('show');
+    document.getElementById('multVal').textContent='1x';
+  } else {
+    badge.classList.remove('show');
+    document.getElementById('multBadge').classList.remove('show');
+  }
+}
+
+function triggerLightning(){
+  const el=document.createElement('div');
+  el.className='lightning';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),200);
+}
+
+/* ============================================
+   TAMPILAN KEMENANGAN
+   ============================================ */
+function showWinText(amount, isMega=false){
+  const el=document.getElementById('winText');
+  el.textContent=formatNum(amount);
+  el.className='win-text show'+(isMega?' mega':'');
+  if(isMega) spawnParticles();
+}
+function hideWinText(){
+  document.getElementById('winText').className='win-text';
+}
+
+function spawnParticles(){
+  const wrapper=document.querySelector('.slot-wrapper');
+  const rect=wrapper.getBoundingClientRect();
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const angle=Math.random()*Math.PI*2;
+    const dist=rand(60,180);
+    p.style.cssText=`
+      left:${rect.width/2}px;top:${rect.height/2}px;
+      --px:${Math.cos(angle)*dist}px;--py:${Math.sin(angle)*dist}px;
+      background:${['#FFD700','#FF8C00','#FF4444','#FFFFFF','#00E5FF'][Math.floor(Math.random()*5)]};
+      width:${rand(4,8)}px;height:${rand(4,8)}px;
+    `;
+    wrapper.appendChild(p);
+    setTimeout(()=>p.remove(),1100);
+  }
+}
+
+/* ============================================
+   UI UPDATE
+   ============================================ */
+function updateBalance(){
+  document.getElementById('balanceDisplay').textContent=formatNum(balance);
+}
+function updateBet(){
+  document.getElementById('betDisplay').textContent=formatNum(bet);
+}
+function updateAutoBtn(){
+  document.getElementById('autoBtn').classList.toggle('active',autoSpin);
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+function showToast(msg){
+  const container=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  container.appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300);},2500);
+}
+
+/* ============================================
+   PAYTABLE
+   ============================================ */
+function buildPaytable(){
+  const container=document.getElementById('paytableContent');
+  let html='';
+  // Simbol regular
+  SYMBOLS.forEach(sym=>{
+    const payStrs=Object.entries(sym.payouts).map(([count,val])=>`<span>${count}: ${val}x</span>`).join('');
+    html+=`<div class="pay-row">
+      <div class="pay-icon"><i class="fa-solid ${sym.icon}" style="color:${sym.color}"></i></div>
+      <div class="pay-name">${sym.name}</div>
+      <div class="pay-vals">${payStrs}</div>
+    </div>`;
+  });
+  // Scatter
+  html+=`<div class="pay-row">
+    <div class="pay-icon"><i class="fa-solid fa-bolt" style="color:#fff;filter:drop-shadow(0 0 4px rgba(255,255,255,0.6))"></i></div>
+    <div class="pay-name">Petir Zeus (Scatter)</div>
+    <div class="pay-vals"><span>4: 15 FS</span><span>5: 15 FS</span><span>6: 15 FS</span></div>
+  </div>`;
+  // Multiplier
+  html+=`<div class="pay-row">
+    <div class="pay-icon" style="font-family:Cinzel,serif;font-weight:900;color:#FFD700;font-size:14px">5x</div>
+    <div class="pay-name">Simbol Pengali</div>
+    <div class="pay-vals"><span>Hanya di FS</span><span>2x-500x</span></div>
+  </div>`;
+  container.innerHTML=html;
+}
+
+/* ============================================
+   BINTANG LATAR BELAKANG
+   ============================================ */
+function createStars(){
+  for(let i=0;i<40;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${rand(2,5).toFixed(1)}s;--o:${rand(0.3,0.8).toFixed(1)}`;
+    document.body.appendChild(s);
+  }
+}
+
+/* ============================================
+   DELAY HELPER
+   ============================================ */
+function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+/* ============================================
+   EVENT HANDLERS
+   ============================================ */
+document.getElementById('spinBtn').addEventListener('click',()=>{
+  ensureAudio();
+  if(!isFreeSpin && autoSpin){
+    autoSpin=false;
+    updateAutoBtn();
+  }
+  doSpin();
+});
+
+document.getElementById('betDown').addEventListener('click',()=>{
+  if(isSpinning||isFreeSpin) return;
+  if(betIndex>0){ betIndex--; bet=BET_LEVELS[betIndex]; updateBet(); }
+});
+
+document.getElementById('betUp').addEventListener('click',()=>{
+  if(isSpinning||isFreeSpin) return;
+  if(betIndex<BET_LEVELS.length-1){ betIndex++; bet=BET_LEVELS[betIndex]; updateBet(); }
+});
+
+document.getElementById('autoBtn').addEventListener('click',()=>{
+  if(isFreeSpin) return;
+  autoSpin=!autoSpin;
+  updateAutoBtn();
+  if(autoSpin) showToast('Auto Spin Aktif');
+  if(autoSpin && !isSpinning) doSpin();
+});
+
+document.getElementById('soundBtn').addEventListener('click',()=>{
+  soundEnabled=!soundEnabled;
+  const btn=document.getElementById('soundBtn');
+  btn.classList.toggle('active',soundEnabled);
+  btn.innerHTML=soundEnabled?'<i class="fa-solid fa-volume-high"></i>':'<i class="fa-solid fa-volume-xmark"></i>';
+  if(soundEnabled) ensureAudio();
+});
+
+document.getElementById('infoBtn').addEventListener('click',()=>{
+  document.getElementById('paytableModal').classList.add('show');
+});
+document.getElementById('modalClose').addEventListener('click',()=>{
+  document.getElementById('paytableModal').classList.remove('show');
+});
+document.getElementById('paytableModal').addEventListener('click',(e)=>{
+  if(e.target===e.currentTarget) e.currentTarget.classList.remove('show');
+});
+
+// Keyboard: Space untuk spin
+document.addEventListener('keydown',(e)=>{
+  if(e.code==='Space'&&!isSpinning){
+    e.preventDefault();
+    ensureAudio();
+    if(!isFreeSpin && autoSpin){ autoSpin=false; updateAutoBtn(); }
+    doSpin();
+  }
+});
+
+/* ============================================
+   INISIALISASI
+   ============================================ */
+function init(){
+  createStars();
+  buildPaytable();
+  initGrid();
+  renderGrid(false);
+  updateBalance();
+  updateBet();
+  updateAutoBtn();
+}
+
+init();
+</script>
+</body>
+</html>
