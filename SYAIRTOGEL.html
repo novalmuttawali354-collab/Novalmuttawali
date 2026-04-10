@@ -272,7 +272,7 @@
       margin-top: 8px;
     }
 
-    /* SYAIR AREA */
+    /* SYAIR AREA - Updated Layout */
     .syair-container {
       flex: 1.8;
       border-radius: 2rem;
@@ -286,16 +286,40 @@
       margin-left: 0.5rem;
       border: 1px solid;
       border-left-width: 8px;
+      position: relative; /* Context for absolute if needed, though we use flex */
     }
+
+    /* HEADER BARU DI SYAIR */
+    .syair-header {
+      display: flex;
+      justify-content: space-between; /* Label kiri, Logo kanan */
+      align-items: center;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    
     .syair-label {
       font-size: 0.85rem;
       text-transform: uppercase;
       font-weight: 700;
       color: #f5bc70;
       letter-spacing: 3px;
-      margin-bottom: 1.2rem;
-      text-align: center;
+      text-align: left; /* Geser ke kiri */
+      margin: 0;
+      flex: 1;
     }
+
+    /* Style Logo Pasaran */
+    .pasaran-logo {
+      height: 50px;
+      width: auto;
+      max-width: 130px;
+      object-fit: contain;
+      margin-left: 1rem;
+      filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+      transition: opacity 0.3s ease;
+    }
+
     .bait-text {
       font-family: 'Playfair Display', 'Inter', serif;
       font-size: 1.45rem;
@@ -303,9 +327,11 @@
       font-weight: 500;
       color: #faf0e1;
       white-space: pre-line;
-      text-align: center;
+      text-align: center; /* Puisi tetap rapi di tengah */
       text-shadow: 0 1px 2px rgba(0,0,0,0.5);
       letter-spacing: 0.5px;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.05); /* Pemisah halus */
     }
 
     /* ANGKA DARK DENGAN 2 PILIHAN */
@@ -407,6 +433,8 @@
       .animal-name { font-size: 1.6rem; }
       .title-section h1 { font-size: 1.5rem; }
       .double-numbers strong { font-size: 1.5rem; }
+      .syair-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .pasaran-logo { max-width: 100px; height: 40px; margin-left: 0; }
     }
   </style>
 </head>
@@ -414,7 +442,7 @@
 
 <div class="mystic-card dark-blood" id="mysticCard">
   <div class="title-section">
-    <h1><i class="fas fa-skull"></i> SYAIR SHIO TOGEL <i class="fas fa-dragon"></i></h1>
+    <h1><i class="fas fa-skull"></i> SYAIR TOGEL MARKASWD <i class="fas fa-dragon"></i></h1>
     <div class="pasaran-area" id="pasaranTogel">
       <i class="fas fa-globe-asia"></i> PASARAN: <span id="namaPasaran">HONGKONG</span>
     </div>
@@ -428,7 +456,12 @@
     </div>
 
     <div class="syair-container" id="syairContainer">
-      <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
+      <!-- HEADER SYAIR: Label Kiri, Logo Kanan -->
+      <div class="syair-header">
+        <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
+        <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran">
+      </div>
+      
       <div class="bait-text" id="syair4Bait">
         Tikus kecil berlari sunyi,<br>
         Membawa mimpi tanpa arti.<br>
@@ -540,12 +573,42 @@
     ]
   };
 
-  // ======================= PASARAN =======================
+  // ======================= PASARAN & LOGO =======================
+  // Menggunakan nama pasaran sesuai permintaan untuk mapping logo
   const daftarPasaran = [
-    "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK", "KENTUCKY", "CAROLINA",
-    "CAMBODIA", "CHELSEA", "POIPET", "TOTO MACAU", "BULLSEYE", "SYDNEY", "BRUNEI", "TOTOMALI",
-    "HUAHIN", "KINGKONG", "PCSO", "NEVADA", "HONGKONG", "SINGAPORE", "MAGNUM"
+    "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK", 
+    "KENTUCKY", "NORTH CAROLINA DAY", "CAROLINA EVENING", "CAMBODIA", 
+    "CHELSEA", "POIPET", "TOTO MACAU", "BULLSEYE", "SYDNEY", "BRUNEI", 
+    "TOTOMALI", "HUAHIN", "KINGKONG", "PCSO", "NEVADA", "HONGKONG", 
+    "SINGAPORE", "MAGNUM"
   ];
+
+  const mapLogoPasaran = {
+    "HOKIDRAW": "https://i.postimg.cc/Bnx5VNwH/hokidraw.jpg",
+    "CALIFORNIA": "https://i.postimg.cc/HsMbrBm6/california.png",
+    "FLORIDA": "https://i.postimg.cc/wjdLLLTy/florida.png",
+    "OREGON": "https://i.postimg.cc/8PkV5nL8/oregon.png",
+    "BANGKOK": "https://i.postimg.cc/Y9jWMx84/bangkok.png",
+    "NEW YORK": "https://i.postimg.cc/9MSqMqNx/newyork.png",
+    "KENTUCKY": "https://i.postimg.cc/nrD9Qcyx/kentucky.png",
+    "NORTH CAROLINA DAY": "https://i.postimg.cc/qB3L98q4/north-carolina.png",
+    "CAROLINA EVENING": "https://i.postimg.cc/RV1T04cm/carolina2.png",
+    "CAMBODIA": "https://i.postimg.cc/xd8GgmhP/cambodia.png",
+    "CHELSEA": "https://i.postimg.cc/DZbr3T2Y/chelsea.png",
+    "POIPET": "https://i.postimg.cc/T1VnhJ5K/poipet.png",
+    "TOTO MACAU": "https://i.postimg.cc/nhcqc7Fs/totomacu.png",
+    "BULLSEYE": "https://i.postimg.cc/jSgPW52G/bullseye.png",
+    "SYDNEY": "https://i.postimg.cc/nLX7qJQr/sydney.png",
+    "BRUNEI": "https://i.postimg.cc/JnJkd5qQ/brunei.png",
+    "TOTOMALI": "https://i.postimg.cc/tTPxmNkj/totomali.png",
+    "HUAHIN": "https://i.postimg.cc/T1JWT2Bh/huahin.png",
+    "KINGKONG": "https://i.postimg.cc/RC7t7GqH/hongkong.png",
+    "PCSO": "https://i.postimg.cc/wTFsPvXj/pcso.png",
+    "NEVADA": "https://i.postimg.cc/pd5hpJ3g/nevada.png",
+    "HONGKONG": "https://i.postimg.cc/RC7t7GqH/hongkong.png",
+    "SINGAPORE": "https://i.postimg.cc/j2cCGgJ6/singapore.png",
+    "MAGNUM": "https://i.postimg.cc/ncVXvJ6g/magnum.png"
+  };
 
   // ======================= FUNGSI ANGKA ACAK (DUA PILIHAN) =======================
   function getRandomTwoMain() {
@@ -595,7 +658,7 @@
     card.classList.add(randomTheme);
   }
 
-  // ======================= UPDATE SEMUA RAMALAN + WARNA SERASI =======================
+  // ======================= UPDATE SEMUA RAMALAN + WARNA SERASI + LOGO =======================
   function updateAllRamalan() {
     // 1. Ganti warna tema (setiap klik beda)
     applyRandomTheme();
@@ -616,11 +679,26 @@
     syairElement.classList.add('animate-pop');
     syairElement.innerHTML = newSyair;
     
-    // 4. Pasaran acak
+    // 4. Pasaran acak & Update Logo
     const pasaranNow = getRandomPasaran();
     const pasaranSpan = document.getElementById('namaPasaran');
+    const logoImg = document.getElementById('pasaranLogo');
+    
     pasaranSpan.classList.add('animate-pop');
     pasaranSpan.innerText = pasaranNow;
+
+    // Set Logo berdasarkan mapping
+    const logoUrl = mapLogoPasaran[pasaranNow];
+    if (logoUrl) {
+      logoImg.style.opacity = '0'; // Fade out effect transition
+      setTimeout(() => {
+        logoImg.src = logoUrl;
+        logoImg.style.opacity = '1'; // Fade in
+      }, 200);
+    } else {
+      logoImg.src = ""; // Clear jika tidak ada
+      logoImg.style.opacity = '0';
+    }
     
     // 5. Angka-angka (2 pilihan setiap kategori)
     const [main1, main2] = getRandomTwoMain();
@@ -643,6 +721,7 @@
     jituDiv.classList.add('animate-pop');
     jituDiv.innerHTML = `<strong>${jitu1}</strong><span class="separator-dot">•</span><strong>${jitu2}</strong>`;
     
+    // Cleanup animation classes
     setTimeout(() => {
       animalImg.classList.remove('animate-pop');
       shioNameSpan.classList.remove('animate-pop');
@@ -668,6 +747,7 @@
     setTimeout(() => { btnAcak.style.transform = ""; }, 120);
   });
   
+  // Initial load
   updateAllRamalan();
 </script>
 </body>
