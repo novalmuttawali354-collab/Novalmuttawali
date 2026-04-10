@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>🌑 Shio Misteri | Warna Selaras Setiap Ramalan</title>
+  <!-- Google Fonts + Font Awesome 6 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0a0705, #030201);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+    /* efek bintang gelap */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(1.5px 1.5px at 15px 40px, #ffdd99, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 70px 120px, #ffb347, rgba(0,0,0,0));
+      background-size: 180px 180px, 130px 130px;
+      background-repeat: repeat;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* KARTU UTAMA - Base style */
+    .mystic-card {
+      position: relative;
+      z-index: 2;
+      max-width: 1450px;
+      width: 100%;
+      background: rgba(18, 14, 12, 0.94);
+      backdrop-filter: blur(6px);
+      border-radius: 2.5rem;
+      box-shadow: 0 30px 45px -15px rgba(0,0,0,0.8);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      overflow: hidden;
+      padding: 2rem 2rem 2rem;
+      border: 1px solid rgba(230, 170, 70, 0.5);
+    }
+
+    /* TEMA DARK YANG AKAN BERUBAH (WARNA KOMPONEN INTERNAL) */
+    /* darah merah */
+    .mystic-card.dark-blood {
+      background: rgba(30, 10, 12, 0.96);
+      border-color: #8b2c2c;
+      box-shadow: 0 0 20px rgba(139, 44, 44, 0.3);
+    }
+    .mystic-card.dark-blood .shio-container,
+    .mystic-card.dark-blood .syair-container,
+    .mystic-card.dark-blood .angka-card,
+    .mystic-card.dark-blood .pasaran-area,
+    .mystic-card.dark-blood .btn-acak {
+      border-color: #8b2c2c;
+      box-shadow: inset 0 0 0 1px rgba(139, 44, 44, 0.3), 0 6px 14px rgba(0,0,0,0.5);
+    }
+    .mystic-card.dark-blood .shio-container { background: linear-gradient(145deg, #2a1215, #180a0c); }
+    .mystic-card.dark-blood .syair-container { background: #1f0e10; border-left-color: #c23b3b; }
+    .mystic-card.dark-blood .angka-card { background: #241114; }
+    .mystic-card.dark-blood .pasaran-area { background: #2a1315; border-color: #a13a3a; color: #f0b3a0; }
+    .mystic-card.dark-blood .btn-acak { background: linear-gradient(115deg, #5a2a2a, #2f1414); border-color: #c95a5a; }
+
+    /* ungu gelap */
+    .mystic-card.dark-purple {
+      background: rgba(25, 10, 35, 0.96);
+      border-color: #6a2c8a;
+      box-shadow: 0 0 20px rgba(106, 44, 138, 0.3);
+    }
+    .mystic-card.dark-purple .shio-container,
+    .mystic-card.dark-purple .syair-container,
+    .mystic-card.dark-purple .angka-card,
+    .mystic-card.dark-purple .pasaran-area,
+    .mystic-card.dark-purple .btn-acak { border-color: #6a2c8a; }
+    .mystic-card.dark-purple .shio-container { background: linear-gradient(145deg, #241530, #150b1f); }
+    .mystic-card.dark-purple .syair-container { background: #1c1028; border-left-color: #9b4dca; }
+    .mystic-card.dark-purple .angka-card { background: #1f132c; }
+    .mystic-card.dark-purple .pasaran-area { background: #23153a; border-color: #8b3dc0; color: #ddb5ff; }
+    .mystic-card.dark-purple .btn-acak { background: linear-gradient(115deg, #3d2257, #24143a); border-color: #aa66ff; }
+
+    /* hijau tua */
+    .mystic-card.dark-green {
+      background: rgba(10, 25, 15, 0.96);
+      border-color: #2c6e3c;
+      box-shadow: 0 0 20px rgba(44, 110, 60, 0.3);
+    }
+    .mystic-card.dark-green .shio-container,
+    .mystic-card.dark-green .syair-container,
+    .mystic-card.dark-green .angka-card,
+    .mystic-card.dark-green .pasaran-area,
+    .mystic-card.dark-green .btn-acak { border-color: #2c6e3c; }
+    .mystic-card.dark-green .shio-container { background: linear-gradient(145deg, #1a2a1a, #0e1a0e); }
+    .mystic-card.dark-green .syair-container { background: #132013; border-left-color: #3f9e55; }
+    .mystic-card.dark-green .angka-card { background: #172518; }
+    .mystic-card.dark-green .pasaran-area { background: #1e2e1a; border-color: #3f8a4a; color: #c8f0b0; }
+    .mystic-card.dark-green .btn-acak { background: linear-gradient(115deg, #2a4a2a, #142813); border-color: #5fb86f; }
+
+    /* biru dongker */
+    .mystic-card.dark-blue {
+      background: rgba(8, 18, 35, 0.96);
+      border-color: #2c5282;
+      box-shadow: 0 0 20px rgba(44, 82, 130, 0.3);
+    }
+    .mystic-card.dark-blue .shio-container,
+    .mystic-card.dark-blue .syair-container,
+    .mystic-card.dark-blue .angka-card,
+    .mystic-card.dark-blue .pasaran-area,
+    .mystic-card.dark-blue .btn-acak { border-color: #2c5282; }
+    .mystic-card.dark-blue .shio-container { background: linear-gradient(145deg, #121f30, #0a1420); }
+    .mystic-card.dark-blue .syair-container { background: #0f1b2b; border-left-color: #3b82c4; }
+    .mystic-card.dark-blue .angka-card { background: #111f2e; }
+    .mystic-card.dark-blue .pasaran-area { background: #17263b; border-color: #3a7ab3; color: #b8d9ff; }
+    .mystic-card.dark-blue .btn-acak { background: linear-gradient(115deg, #1e3a5f, #0f2338); border-color: #5c9fd9; }
+
+    /* abu-abu gelap */
+    .mystic-card.dark-charcoal {
+      background: rgba(20, 20, 25, 0.96);
+      border-color: #5a5a6e;
+      box-shadow: 0 0 20px rgba(90, 90, 110, 0.3);
+    }
+    .mystic-card.dark-charcoal .shio-container,
+    .mystic-card.dark-charcoal .syair-container,
+    .mystic-card.dark-charcoal .angka-card,
+    .mystic-card.dark-charcoal .pasaran-area,
+    .mystic-card.dark-charcoal .btn-acak { border-color: #5a5a6e; }
+    .mystic-card.dark-charcoal .shio-container { background: linear-gradient(145deg, #25252c, #15151a); }
+    .mystic-card.dark-charcoal .syair-container { background: #1c1c24; border-left-color: #8f8fa8; }
+    .mystic-card.dark-charcoal .angka-card { background: #202028; }
+    .mystic-card.dark-charcoal .pasaran-area { background: #2a2a33; border-color: #7a7a94; color: #e0e0f0; }
+    .mystic-card.dark-charcoal .btn-acak { background: linear-gradient(115deg, #3a3a48, #22222c); border-color: #9b9bb8; }
+
+    /* oranye gelap */
+    .mystic-card.dark-orange {
+      background: rgba(35, 20, 8, 0.96);
+      border-color: #b45f1b;
+      box-shadow: 0 0 20px rgba(180, 95, 27, 0.3);
+    }
+    .mystic-card.dark-orange .shio-container,
+    .mystic-card.dark-orange .syair-container,
+    .mystic-card.dark-orange .angka-card,
+    .mystic-card.dark-orange .pasaran-area,
+    .mystic-card.dark-orange .btn-acak { border-color: #b45f1b; }
+    .mystic-card.dark-orange .shio-container { background: linear-gradient(145deg, #2e1f10, #1c1209); }
+    .mystic-card.dark-orange .syair-container { background: #241a0f; border-left-color: #d97a2b; }
+    .mystic-card.dark-orange .angka-card { background: #291e12; }
+    .mystic-card.dark-orange .pasaran-area { background: #332413; border-color: #c97a33; color: #ffdbb5; }
+    .mystic-card.dark-orange .btn-acak { background: linear-gradient(115deg, #59371b, #301f0f); border-color: #f0913a; }
+
+    /* tinta hitam kebiruan */
+    .mystic-card.dark-inky {
+      background: rgba(10, 8, 20, 0.96);
+      border-color: #3b2e6b;
+      box-shadow: 0 0 20px rgba(59, 46, 107, 0.4);
+    }
+    .mystic-card.dark-inky .shio-container,
+    .mystic-card.dark-inky .syair-container,
+    .mystic-card.dark-inky .angka-card,
+    .mystic-card.dark-inky .pasaran-area,
+    .mystic-card.dark-inky .btn-acak { border-color: #3b2e6b; }
+    .mystic-card.dark-inky .shio-container { background: linear-gradient(145deg, #1c1830, #0e0c1c); }
+    .mystic-card.dark-inky .syair-container { background: #14122a; border-left-color: #6b56b0; }
+    .mystic-card.dark-inky .angka-card { background: #18162e; }
+    .mystic-card.dark-inky .pasaran-area { background: #1f1c38; border-color: #6a54b8; color: #cfc4ff; }
+    .mystic-card.dark-inky .btn-acak { background: linear-gradient(115deg, #332b5a, #1d1738); border-color: #9a82e0; }
+
+    /* style umum komponen agar transisi halus */
+    .shio-container, .syair-container, .angka-card, .pasaran-area, .btn-acak {
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* HEADER + PASARAN base */
+    .title-section {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+    .title-section h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f9c45a, #d98f2b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .title-section h1 i {
+      color: #e2a13f;
+      text-shadow: 0 0 3px #ffcc77;
+    }
+    .pasaran-area {
+      display: inline-block;
+      padding: 0.4rem 1.8rem;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-top: 14px;
+      letter-spacing: 1px;
+      box-shadow: inset 0 1px 0 rgba(255,215,130,0.1), 0 2px 6px rgba(0,0,0,0.5);
+      border: 1px solid;
+    }
+
+    /* LAYOUT: GAMBAR + SYAIR */
+    .hero-split {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .shio-container {
+      flex: 0.9;
+      min-width: 260px;
+      border-radius: 2rem;
+      padding: 1.8rem 1.2rem;
+      text-align: center;
+      box-shadow: 0 12px 22px -8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,200,100,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid;
+    }
+    .animal-img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      min-height: 220px;
+      object-fit: contain;
+      border-radius: 28px;
+      box-shadow: 0 15px 28px -5px black;
+      border: 2px solid #ffcf7a;
+      background: #0f0c09;
+      transition: transform 0.25s ease;
+    }
+    .animal-img:hover {
+      transform: scale(1.02);
+      filter: drop-shadow(0 0 8px #ffbb44);
+    }
+    .animal-name {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-top: 20px;
+      background: linear-gradient(145deg, #ffdfa5, #dd942e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1.5px;
+    }
+    .shio-sub {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e7b062;
+      margin-top: 8px;
+    }
+
+    /* SYAIR AREA */
+    .syair-container {
+      flex: 1.8;
+      border-radius: 2rem;
+      padding: 2rem 2.5rem;
+      border-left-width: 8px;
+      border-left-style: solid;
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 0.5rem;
+      border: 1px solid;
+      border-left-width: 8px;
+    }
+    .syair-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #f5bc70;
+      letter-spacing: 3px;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .bait-text {
+      font-family: 'Playfair Display', 'Inter', serif;
+      font-size: 1.45rem;
+      line-height: 1.75;
+      font-weight: 500;
+      color: #faf0e1;
+      white-space: pre-line;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      letter-spacing: 0.5px;
+    }
+
+    /* ANGKA DARK DENGAN 2 PILIHAN */
+    .angka-dua-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin: 2rem 0 1.8rem;
+    }
+    .angka-card {
+      border-radius: 1.6rem;
+      padding: 1.2rem 0.5rem;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+      border: 1px solid;
+      transition: all 0.2s;
+    }
+    .angka-card span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #f5bc70;
+      display: block;
+      margin-bottom: 12px;
+      letter-spacing: 1.5px;
+    }
+    .double-numbers {
+      display: flex;
+      justify-content: center;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+    .double-numbers strong {
+      font-size: 2rem;
+      font-family: monospace;
+      background: linear-gradient(145deg, #ffdd99, #ffaa33);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 800;
+      text-shadow: 0 0 2px #ffb347;
+    }
+    .separator-dot {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #d4973b;
+    }
+
+    /* TOMBOL ACAK */
+    .btn-acak {
+      width: 100%;
+      padding: 1.1rem;
+      border-radius: 3rem;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #ffddb0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: 0 7px 0 #281f15;
+      transition: 0.08s linear;
+      border: 1px solid;
+    }
+    .btn-acak:active {
+      transform: translateY(4px);
+      box-shadow: 0 3px 0 #281f15;
+    }
+    .btn-acak i {
+      color: #f5bc70;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      margin-top: 1.8rem;
+      color: #b87e48;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes darkPop {
+      0% { opacity: 0.6; transform: scale(0.96); filter: blur(0.3px);}
+      100% { opacity: 1; transform: scale(1); filter: blur(0);}
+    }
+    .animate-pop {
+      animation: darkPop 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+
+    @media (max-width: 1000px) {
+      .hero-split { flex-direction: column; }
+      .syair-container { margin-left: 0; }
+      .bait-text { font-size: 1.2rem; }
+    }
+    @media (max-width: 650px) {
+      .mystic-card { padding: 1.5rem; }
+      .angka-dua-grid { grid-template-columns: 1fr; }
+      .bait-text { font-size: 1rem; }
+      .animal-name { font-size: 1.6rem; }
+      .title-section h1 { font-size: 1.5rem; }
+      .double-numbers strong { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mystic-card dark-blood" id="mysticCard">
+  <div class="title-section">
+    <h1><i class="fas fa-skull"></i> SYAIR SHIO TOGEL <i class="fas fa-dragon"></i></h1>
+    <div class="pasaran-area" id="pasaranTogel">
+      <i class="fas fa-globe-asia"></i> PASARAN: <span id="namaPasaran">HONGKONG</span>
+    </div>
+  </div>
+
+  <div class="hero-split">
+    <div class="shio-container">
+      <img id="realAnimalImg" class="animal-img" src="https://i.ibb.co/V04jhbBS/TIKUS.png" alt="Shio">
+      <div class="animal-name" id="realShioName">TIKUS</div>
+      <div class="shio-sub"><i class="fas fa-moon"></i> penunggu mimpi malam ini</div>
+    </div>
+
+    <div class="syair-container" id="syairContainer">
+      <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
+      <div class="bait-text" id="syair4Bait">
+        Tikus kecil berlari sunyi,<br>
+        Membawa mimpi tanpa arti.<br>
+        Embun pagi basahi bumi,<br>
+        Hati tenang, rezeki pasti.
+      </div>
+    </div>
+  </div>
+
+  <div class="angka-dua-grid">
+    <div class="angka-card">
+      <span><i class="fas fa-chart-simple"></i> ANGKA MAIN</span>
+      <div class="double-numbers" id="angkaMainDual">
+        <strong>12</strong><span class="separator-dot">•</span><strong>34</strong>
+      </div>
+    </div>
+    <div class="angka-card">
+      <span><i class="fas fa-hand-peace"></i> COLOK BEBAS</span>
+      <div class="double-numbers" id="colokDual">
+        <strong>7</strong><span class="separator-dot">•</span><strong>2</strong>
+      </div>
+    </div>
+    <div class="angka-card">
+      <span><i class="fas fa-ticket"></i> 4D VIP</span>
+      <div class="double-numbers" id="empatDDual">
+        <strong>1234</strong><span class="separator-dot">•</span><strong>5678</strong>
+      </div>
+    </div>
+    <div class="angka-card">
+      <span><i class="fas fa-gem"></i> ANGKA JITU</span>
+      <div class="double-numbers" id="jituDual">
+        <strong>789</strong><span class="separator-dot">•</span><strong>456</strong>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-acak" id="btnRamalAcak">
+    <i class="fas fa-dice-d6"></i> PUTAR RAMALAN <i class="fas fa-dice-d6"></i>
+  </button>
+  <footer>⚡ setiap acak · shio, syair puitis, angka, dan warna serasi berganti ⚡</footer>
+</div>
+
+<script>
+  // ======================= DATA SHIO & GAMBAR =======================
+  const shioRealList = [
+    { nama: "TIKUS", img: "https://i.ibb.co/6Ry2qmbL/TIKUS22.jpg" },
+    { nama: "KERBAU", img: "https://i.ibb.co/0bMPXNS/image.jpg" },
+    { nama: "HARIMAU", img: "https://i.ibb.co/ycM35dty/harimau.png" },
+    { nama: "KELINCI", img: "https://i.ibb.co/svm7LKTJ/kelinci21340.jpg" },
+    { nama: "NAGA", img: "https://i.ibb.co/h307dz1/NAGA.jpg" },
+    { nama: "ULAR", img: "https://i.ibb.co/nqsJwytV/ULAR.jpg" },
+    { nama: "KUDA", img: "https://i.ibb.co/LDMYSTyZ/KUDA.jpg" },
+    { nama: "KAMBING", img: "https://i.ibb.co/zTwsMM2Q/kambing.jpg" },
+    { nama: "MONYET", img: "https://i.ibb.co/SwjpqGVb/monyeyt.jpg" },
+    { nama: "AYAM", img: "https://i.ibb.co/WvtNH58f/AYAMMM.jpg" },
+    { nama: "ANJING", img: "https://i.ibb.co/84f3hcs8/anjing.jpg" },
+    { nama: "BABI", img: "https://i.ibb.co/84DQ78yH/babbi.jpg" }
+  ];
+
+  // ======================= SYAIR PUISI SESUAI SHIO =======================
+  const syairPerShio = {
+    "TIKUS": [
+      "Tikus kecil meniti rembulan,<br>Melintas mimpi di ujung senja.<br>Bulan purnama jadi saksi bisu,<br>Hati tenang, badai pun berlalu.",
+      "Tikus berlari di lorong gelap,<br>Membawa doa tanpa lelah.<br>Embun jatuh membasahi tanah,<br>Semoga esok lebih cerah."
+    ],
+    "KERBAU": [
+      "Kerbau membajak sawah sunyi,<br>Peluh jadi mutiara hati.<br>Di ujung senja burung bermain,<br>Rasa syukur mengalir tanpa henti.",
+      "Gembala bernyanyi di tepi kali,<br>Kerbau merunduk, air mengalir jernih.<br>Bumi subur anugerah ilahi,<br>Rezeki melimpah tanpa terduga."
+    ],
+    "HARIMAU": [
+      "Harimau mengaum di rimba raya,<br>Gelap malam jadi saksi berani.<br>Bintang timur bersinar nyata,<br>Keberanian membawa sejuta arti.",
+      "Belang emas di balik dedaunan,<br>Harimau menjaga hutan senyap.<br>Jejak kaki penuh kewibawaan,<br>Langkah mantap, takkan tersesat."
+    ],
+    "KELINCI": [
+      "Kelinci lincah melompat riang,<br>Di padang ilalang yang membentang.<br>Bulan tersenyum, embun bercahaya,<br>Kebahagiaan datang tanpa dusta.",
+      "Telinga panjang mendengar bisik angin,<br>Kelinci berlari mengejar mimpi.<br>Di bawah pohon tua yang rindang,<br>Harapan baru akan bersemi."
+    ],
+    "NAGA": [
+      "Naga berkilau di langit kelam,<br>Sisiknya bercahaya seperti intan.<br>Api suci menjaga alam,<br>Kekuatan datang dalam ketenangan.",
+      "Naga terbang di atas awan,<br>Memandang dunia dengan bijaksana.<br>Hujan turun membawa kehidupan,<br>Misteri malam jadi cerita."
+    ],
+    "ULAR": [
+      "Ular melingkar di akar pohon,<br>Mata berbinar bagai batu mulia.<br>Diam membawa berjuta tafsir,<br>Kesabaran mengukir makna.",
+      "Sesosok ular berwarna zamrud,<br>Melintasi rerumputan basah.<br>Angin malam berbisik lembut,<br>Perubahan besar akan menjelang."
+    ],
+    "KUDA": [
+      "Kuda berlari di padang mimpi,<br>Surai terbang diterpa embun.<br>Langit ungu, senja menyepi,<br>Kebebasan adalah nyanyian sunyi.",
+      "Kuda putih berlari kencang,<br>Menembus kabut pagi buta.<br>Semangat membara takkan hilang,<br>Taklukan rintangan dengan cinta."
+    ],
+    "KAMBING": [
+      "Kambing mendaki bukit batu,<br>Tanduknya kokoh penuh wibawa.<br>Angin pegunungan membawa teduh,<br>Ketenangan jiwa yang sempurna.",
+      "Di lereng hijau kambing merumput,<br>Bersama embun pagi yang menyejuk.<br>Alam memberi tanpa pamrih,<br>Rasa syukur dalam setiap langkah."
+    ],
+    "MONYET": [
+      "Monyet bergelayut di dahan tinggi,<br>Pandangan lucu penuh arti.<br>Buah jatuh tak pernah jauh,<br>Tawa riang menghiasi hari.",
+      "Ekor panjang melilit ranting,<br>Monyet ceria di tengah rimba.<br>Pelangi muncul selepas hujan,<br>Kebahagiaan adalah pilihan."
+    ],
+    "AYAM": [
+      "Ayam jantan berkokok merdu,<br>Menyambut fajar yang perlahan datang.<br>Embun pagi jadi saksi bisu,<br>Hari baru penuh harapan.",
+      "Bulu indah berwarna perunggu,<br>Ayam berlari di halaman rumah.<br>Kicauan riang memecah sunyi,<br>Semangat pagi tak terkalahkan."
+    ],
+    "ANJING": [
+      "Anjing setia menggonggong riang,<br>Menjaga rumah dari kejahatan.<br>Bintang malam bersinar terang,<br>Kesetiaan adalah mahkota kehidupan.",
+      "Ekor bergoyang tanda bahagia,<br>Anjing menemani langkah sendu.<br>Di bawah sinar rembulan pucat,<br>Cinta tulus tak pernah kabur."
+    ],
+    "BABI": [
+      "Babi berguling di lumpur basah,<br>Nikmati hidup tanpa beban.<br>Gemintang malam jatuh berderai,<br>Kebahagiaan dari hal-hal sederhana.",
+      "Hidung pesek mengendus tanah,<br>Babi berjalan perlahan tenang.<br>Alam memberkahi rezeki melimpah,<br>Bersyukur dalam setiap karunia."
+    ]
+  };
+
+  // ======================= PASARAN =======================
+  const daftarPasaran = [
+    "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK", "KENTUCKY", "CAROLINA",
+    "CAMBODIA", "CHELSEA", "POIPET", "TOTO MACAU", "BULLSEYE", "SYDNEY", "BRUNEI", "TOTOMALI",
+    "HUAHIN", "KINGKONG", "PCSO", "NEVADA", "HONGKONG", "SINGAPORE", "MAGNUM"
+  ];
+
+  // ======================= FUNGSI ANGKA ACAK (DUA PILIHAN) =======================
+  function getRandomTwoMain() {
+    let a = Math.floor(Math.random() * 100);
+    let b = Math.floor(Math.random() * 100);
+    while(a === b) b = Math.floor(Math.random() * 100);
+    return [a.toString().padStart(2,'0'), b.toString().padStart(2,'0')];
+  }
+  function getRandomTwoColok() {
+    let a = Math.floor(Math.random() * 10);
+    let b = Math.floor(Math.random() * 10);
+    while(a === b) b = Math.floor(Math.random() * 10);
+    return [a.toString(), b.toString()];
+  }
+  function getRandomTwo4D() {
+    let a = Math.floor(Math.random() * 10000);
+    let b = Math.floor(Math.random() * 10000);
+    while(a === b) b = Math.floor(Math.random() * 10000);
+    return [a.toString().padStart(4,'0'), b.toString().padStart(4,'0')];
+  }
+  function getRandomTwoJitu() {
+    let a = Math.floor(Math.random() * 1000);
+    let b = Math.floor(Math.random() * 1000);
+    while(a === b) b = Math.floor(Math.random() * 1000);
+    return [a.toString().padStart(3,'0'), b.toString().padStart(3,'0')];
+  }
+
+  function getRandomShioReal() {
+    return shioRealList[Math.floor(Math.random() * shioRealList.length)];
+  }
+  function getRandomSyairForShio(shioName) {
+    const options = syairPerShio[shioName] || ["Bersemilah harapan di malam sepi,<br>Bulan mengantar mimpi-mimpi suci.<br>Pelangi datang usai hujan reda,<br>Damai menyapa dalam jiwa."];
+    return options[Math.floor(Math.random() * options.length)];
+  }
+  function getRandomPasaran() {
+    return daftarPasaran[Math.floor(Math.random() * daftarPasaran.length)];
+  }
+
+  // ======================= FUNGSI WARNA ACAK (TEMA) =======================
+  const warnaThemes = [
+    "dark-blood", "dark-purple", "dark-green", "dark-blue", "dark-charcoal", "dark-orange", "dark-inky"
+  ];
+  function applyRandomTheme() {
+    const card = document.getElementById('mysticCard');
+    warnaThemes.forEach(theme => card.classList.remove(theme));
+    const randomTheme = warnaThemes[Math.floor(Math.random() * warnaThemes.length)];
+    card.classList.add(randomTheme);
+  }
+
+  // ======================= UPDATE SEMUA RAMALAN + WARNA SERASI =======================
+  function updateAllRamalan() {
+    // 1. Ganti warna tema (setiap klik beda)
+    applyRandomTheme();
+    
+    // 2. Shio & gambar
+    const shioNow = getRandomShioReal();
+    const animalImg = document.getElementById('realAnimalImg');
+    const shioNameSpan = document.getElementById('realShioName');
+    animalImg.classList.add('animate-pop');
+    shioNameSpan.classList.add('animate-pop');
+    animalImg.src = shioNow.img;
+    animalImg.alt = shioNow.nama;
+    shioNameSpan.innerText = shioNow.nama;
+    
+    // 3. Syair sesuai shio
+    const syairElement = document.getElementById('syair4Bait');
+    const newSyair = getRandomSyairForShio(shioNow.nama);
+    syairElement.classList.add('animate-pop');
+    syairElement.innerHTML = newSyair;
+    
+    // 4. Pasaran acak
+    const pasaranNow = getRandomPasaran();
+    const pasaranSpan = document.getElementById('namaPasaran');
+    pasaranSpan.classList.add('animate-pop');
+    pasaranSpan.innerText = pasaranNow;
+    
+    // 5. Angka-angka (2 pilihan setiap kategori)
+    const [main1, main2] = getRandomTwoMain();
+    const mainDualDiv = document.getElementById('angkaMainDual');
+    mainDualDiv.classList.add('animate-pop');
+    mainDualDiv.innerHTML = `<strong>${main1}</strong><span class="separator-dot">•</span><strong>${main2}</strong>`;
+    
+    const [colok1, colok2] = getRandomTwoColok();
+    const colokDiv = document.getElementById('colokDual');
+    colokDiv.classList.add('animate-pop');
+    colokDiv.innerHTML = `<strong>${colok1}</strong><span class="separator-dot">•</span><strong>${colok2}</strong>`;
+    
+    const [four1, four2] = getRandomTwo4D();
+    const empatDDiv = document.getElementById('empatDDual');
+    empatDDiv.classList.add('animate-pop');
+    empatDDiv.innerHTML = `<strong>${four1}</strong><span class="separator-dot">•</span><strong>${four2}</strong>`;
+    
+    const [jitu1, jitu2] = getRandomTwoJitu();
+    const jituDiv = document.getElementById('jituDual');
+    jituDiv.classList.add('animate-pop');
+    jituDiv.innerHTML = `<strong>${jitu1}</strong><span class="separator-dot">•</span><strong>${jitu2}</strong>`;
+    
+    setTimeout(() => {
+      animalImg.classList.remove('animate-pop');
+      shioNameSpan.classList.remove('animate-pop');
+      syairElement.classList.remove('animate-pop');
+      pasaranSpan.classList.remove('animate-pop');
+      mainDualDiv.classList.remove('animate-pop');
+      colokDiv.classList.remove('animate-pop');
+      empatDDiv.classList.remove('animate-pop');
+      jituDiv.classList.remove('animate-pop');
+    }, 250);
+    
+    // fallback gambar
+    animalImg.onerror = function() {
+      if (this.src !== shioRealList[0].img) this.src = shioRealList[0].img;
+    };
+  }
+
+  // ======================= EVENT + INIT =======================
+  const btnAcak = document.getElementById('btnRamalAcak');
+  btnAcak.addEventListener('click', () => {
+    updateAllRamalan();
+    btnAcak.style.transform = "scale(0.97)";
+    setTimeout(() => { btnAcak.style.transform = ""; }, 120);
+  });
+  
+  updateAllRamalan();
+</script>
+</body>
+</html>
