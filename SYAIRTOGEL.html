@@ -8,6 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- HTML2CANVAS Library untuk Fitur Foto HD -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -20,8 +24,9 @@
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start; /* Start from top to accommodate controls */
       padding: 2rem;
       position: relative;
       transition: background 0.3s ease;
@@ -41,6 +46,68 @@
       opacity: 0.2;
       pointer-events: none;
       z-index: 0;
+    }
+
+    /* ================= CONTROLS WRAPPER (BARU) ================= */
+    .controls-wrapper {
+      width: 100%;
+      max-width: 1450px;
+      display: flex;
+      justify-content: flex-end; /* Posisikan di Kanan */
+      gap: 1rem; /* Jarak antar tombol */
+      margin-bottom: 1.5rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Style Tombol Standalone (Rapih & Profesional) */
+    .btn-action {
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Tombol Putar (Aksen Emas/Oranye) */
+    .btn-putar {
+      background: linear-gradient(135deg, #d98f2b, #b36b18);
+      border-color: #ffcf7a;
+    }
+    .btn-putar:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .btn-putar:active {
+      transform: translateY(1px);
+    }
+    .btn-putar i {
+      color: #fff;
+    }
+
+    /* Tombol Foto (Aksen Biru/Cyan) */
+    .btn-foto {
+      background: linear-gradient(135deg, #1a2a3a, #0f1f2e);
+      border-color: #4a9eff;
+    }
+    .btn-foto:hover {
+      filter: brightness(1.2);
+      transform: translateY(-2px);
+    }
+    .btn-foto:active {
+      transform: translateY(1px);
+    }
+    .btn-foto i {
+      color: #4a9eff;
     }
 
     /* KARTU UTAMA - Base style */
@@ -69,8 +136,7 @@
     .mystic-card.dark-blood .shio-container,
     .mystic-card.dark-blood .syair-container,
     .mystic-card.dark-blood .angka-card,
-    .mystic-card.dark-blood .pasaran-area,
-    .mystic-card.dark-blood .btn-acak {
+    .mystic-card.dark-blood .pasaran-area {
       border-color: #8b2c2c;
       box-shadow: inset 0 0 0 1px rgba(139, 44, 44, 0.3), 0 6px 14px rgba(0,0,0,0.5);
     }
@@ -78,7 +144,6 @@
     .mystic-card.dark-blood .syair-container { background: #1f0e10; border-left-color: #c23b3b; }
     .mystic-card.dark-blood .angka-card { background: #241114; }
     .mystic-card.dark-blood .pasaran-area { background: #2a1315; border-color: #a13a3a; color: #f0b3a0; }
-    .mystic-card.dark-blood .btn-acak { background: linear-gradient(115deg, #5a2a2a, #2f1414); border-color: #c95a5a; }
 
     /* ungu gelap */
     .mystic-card.dark-purple {
@@ -89,13 +154,11 @@
     .mystic-card.dark-purple .shio-container,
     .mystic-card.dark-purple .syair-container,
     .mystic-card.dark-purple .angka-card,
-    .mystic-card.dark-purple .pasaran-area,
-    .mystic-card.dark-purple .btn-acak { border-color: #6a2c8a; }
+    .mystic-card.dark-purple .pasaran-area { border-color: #6a2c8a; }
     .mystic-card.dark-purple .shio-container { background: linear-gradient(145deg, #241530, #150b1f); }
     .mystic-card.dark-purple .syair-container { background: #1c1028; border-left-color: #9b4dca; }
     .mystic-card.dark-purple .angka-card { background: #1f132c; }
     .mystic-card.dark-purple .pasaran-area { background: #23153a; border-color: #8b3dc0; color: #ddb5ff; }
-    .mystic-card.dark-purple .btn-acak { background: linear-gradient(115deg, #3d2257, #24143a); border-color: #aa66ff; }
 
     /* hijau tua */
     .mystic-card.dark-green {
@@ -106,13 +169,11 @@
     .mystic-card.dark-green .shio-container,
     .mystic-card.dark-green .syair-container,
     .mystic-card.dark-green .angka-card,
-    .mystic-card.dark-green .pasaran-area,
-    .mystic-card.dark-green .btn-acak { border-color: #2c6e3c; }
+    .mystic-card.dark-green .pasaran-area { border-color: #2c6e3c; }
     .mystic-card.dark-green .shio-container { background: linear-gradient(145deg, #1a2a1a, #0e1a0e); }
     .mystic-card.dark-green .syair-container { background: #132013; border-left-color: #3f9e55; }
     .mystic-card.dark-green .angka-card { background: #172518; }
     .mystic-card.dark-green .pasaran-area { background: #1e2e1a; border-color: #3f8a4a; color: #c8f0b0; }
-    .mystic-card.dark-green .btn-acak { background: linear-gradient(115deg, #2a4a2a, #142813); border-color: #5fb86f; }
 
     /* biru dongker */
     .mystic-card.dark-blue {
@@ -123,13 +184,11 @@
     .mystic-card.dark-blue .shio-container,
     .mystic-card.dark-blue .syair-container,
     .mystic-card.dark-blue .angka-card,
-    .mystic-card.dark-blue .pasaran-area,
-    .mystic-card.dark-blue .btn-acak { border-color: #2c5282; }
+    .mystic-card.dark-blue .pasaran-area { border-color: #2c5282; }
     .mystic-card.dark-blue .shio-container { background: linear-gradient(145deg, #121f30, #0a1420); }
     .mystic-card.dark-blue .syair-container { background: #0f1b2b; border-left-color: #3b82c4; }
     .mystic-card.dark-blue .angka-card { background: #111f2e; }
     .mystic-card.dark-blue .pasaran-area { background: #17263b; border-color: #3a7ab3; color: #b8d9ff; }
-    .mystic-card.dark-blue .btn-acak { background: linear-gradient(115deg, #1e3a5f, #0f2338); border-color: #5c9fd9; }
 
     /* abu-abu gelap */
     .mystic-card.dark-charcoal {
@@ -140,13 +199,11 @@
     .mystic-card.dark-charcoal .shio-container,
     .mystic-card.dark-charcoal .syair-container,
     .mystic-card.dark-charcoal .angka-card,
-    .mystic-card.dark-charcoal .pasaran-area,
-    .mystic-card.dark-charcoal .btn-acak { border-color: #5a5a6e; }
+    .mystic-card.dark-charcoal .pasaran-area { border-color: #5a5a6e; }
     .mystic-card.dark-charcoal .shio-container { background: linear-gradient(145deg, #25252c, #15151a); }
     .mystic-card.dark-charcoal .syair-container { background: #1c1c24; border-left-color: #8f8fa8; }
     .mystic-card.dark-charcoal .angka-card { background: #202028; }
     .mystic-card.dark-charcoal .pasaran-area { background: #2a2a33; border-color: #7a7a94; color: #e0e0f0; }
-    .mystic-card.dark-charcoal .btn-acak { background: linear-gradient(115deg, #3a3a48, #22222c); border-color: #9b9bb8; }
 
     /* oranye gelap */
     .mystic-card.dark-orange {
@@ -157,13 +214,11 @@
     .mystic-card.dark-orange .shio-container,
     .mystic-card.dark-orange .syair-container,
     .mystic-card.dark-orange .angka-card,
-    .mystic-card.dark-orange .pasaran-area,
-    .mystic-card.dark-orange .btn-acak { border-color: #b45f1b; }
+    .mystic-card.dark-orange .pasaran-area { border-color: #b45f1b; }
     .mystic-card.dark-orange .shio-container { background: linear-gradient(145deg, #2e1f10, #1c1209); }
     .mystic-card.dark-orange .syair-container { background: #241a0f; border-left-color: #d97a2b; }
     .mystic-card.dark-orange .angka-card { background: #291e12; }
     .mystic-card.dark-orange .pasaran-area { background: #332413; border-color: #c97a33; color: #ffdbb5; }
-    .mystic-card.dark-orange .btn-acak { background: linear-gradient(115deg, #59371b, #301f0f); border-color: #f0913a; }
 
     /* tinta hitam kebiruan */
     .mystic-card.dark-inky {
@@ -174,16 +229,14 @@
     .mystic-card.dark-inky .shio-container,
     .mystic-card.dark-inky .syair-container,
     .mystic-card.dark-inky .angka-card,
-    .mystic-card.dark-inky .pasaran-area,
-    .mystic-card.dark-inky .btn-acak { border-color: #3b2e6b; }
+    .mystic-card.dark-inky .pasaran-area { border-color: #3b2e6b; }
     .mystic-card.dark-inky .shio-container { background: linear-gradient(145deg, #1c1830, #0e0c1c); }
     .mystic-card.dark-inky .syair-container { background: #14122a; border-left-color: #6b56b0; }
     .mystic-card.dark-inky .angka-card { background: #18162e; }
     .mystic-card.dark-inky .pasaran-area { background: #1f1c38; border-color: #6a54b8; color: #cfc4ff; }
-    .mystic-card.dark-inky .btn-acak { background: linear-gradient(115deg, #332b5a, #1d1738); border-color: #9a82e0; }
 
     /* style umum komponen agar transisi halus */
-    .shio-container, .syair-container, .angka-card, .pasaran-area, .btn-acak {
+    .shio-container, .syair-container, .angka-card, .pasaran-area {
       transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -381,30 +434,6 @@
       color: #d4973b;
     }
 
-    /* TOMBOL ACAK */
-    .btn-acak {
-      width: 100%;
-      padding: 1.1rem;
-      border-radius: 3rem;
-      font-weight: 800;
-      font-size: 1.3rem;
-      color: #ffddb0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      cursor: pointer;
-      box-shadow: 0 7px 0 #281f15;
-      transition: 0.08s linear;
-      border: 1px solid;
-    }
-    .btn-acak:active {
-      transform: translateY(4px);
-      box-shadow: 0 3px 0 #281f15;
-    }
-    .btn-acak i {
-      color: #f5bc70;
-    }
     footer {
       text-align: center;
       font-size: 0.7rem;
@@ -427,6 +456,9 @@
       .bait-text { font-size: 1.2rem; }
     }
     @media (max-width: 650px) {
+      .controls-wrapper { justify-content: center; } /* Center tombol di mobile biar rapi */
+      .btn-action { width: 100%; }
+      
       .mystic-card { padding: 1.5rem; }
       .angka-dua-grid { grid-template-columns: 1fr; }
       .bait-text { font-size: 1rem; }
@@ -445,73 +477,81 @@
 </head>
 <body>
 
-<div class="mystic-card dark-blood" id="mysticCard">
-  <div class="title-section">
-    <h1><i class=""></i> SYAIR TOGEL MARKASWD <i class="fas fa-dragon"></i></h1>
-    <div class="pasaran-area" id="pasaranTogel">
-      <i class="fas fa-globe-asia"></i> PASARAN: <span id="namaPasaran">HONGKONG</span>
-    </div>
+  <!-- PANEL KONTROL (DI LUAR KARTU) -->
+  <div class="controls-wrapper">
+    <button class="btn-action btn-putar" id="btnRamalAcak">
+      <i class="fas fa-dice-d6"></i> PUTAR RAMALAN
+    </button>
+    <button class="btn-action btn-foto" id="btnPhoto">
+      <i class="fas fa-camera"></i> SIMPAN HASIL (HD)
+    </button>
   </div>
 
-  <div class="hero-split">
-    <div class="shio-container">
-      <img id="realAnimalImg" class="animal-img" src="https://i.ibb.co/V04jhbBS/TIKUS.png" alt="Shio">
-      <div class="animal-name" id="realShioName">TIKUS</div>
-      <div class="shio-sub"><i class="fas fa-moon"></i> penunggu mimpi malam ini</div>
+  <!-- KARTU UTAMA (YANG AKAN DIFOTO) -->
+  <div class="mystic-card dark-blood" id="mysticCard">
+    <div class="title-section">
+      <h1><i class=></i> SYAIR TOGEL MARKASWD<i class="fas fa-dragon"></i></h1>
+      <div class="pasaran-area" id="pasaranTogel">
+        <i class="fas fa-globe-asia"></i> PASARAN: <span id="namaPasaran">HONGKONG</span>
+      </div>
     </div>
 
-    <div class="syair-container" id="syairContainer">
-      <!-- HEADER SYAIR: Label Kiri, Logo Kanan -->
-      <div class="syair-header">
-        <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
-        <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran">
+    <div class="hero-split">
+      <div class="shio-container">
+        <img id="realAnimalImg" class="animal-img" src="" alt="Shio" crossorigin="anonymous">
+        <div class="animal-name" id="realShioName">TIKUS</div>
+        <div class="shio-sub"><i class="fas fa-moon"></i> penunggu mimpi malam ini</div>
       </div>
-      
-      <div class="bait-text" id="syair4Bait">
-        Tikus kecil berlari sunyi,<br>
-        Membawa mimpi tanpa arti.<br>
-        Embun pagi basahi bumi,<br>
-        Hati tenang, rezeki pasti.
+
+      <div class="syair-container" id="syairContainer">
+        <!-- HEADER SYAIR: Label Kiri, Logo Kanan -->
+        <div class="syair-header">
+          <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
+          <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran" crossorigin="anonymous">
+        </div>
+        
+        <div class="bait-text" id="syair4Bait">
+          Tikus kecil berlari sunyi,<br>
+          Membawa mimpi tanpa arti.<br>
+          Embun pagi basahi bumi,<br>
+          Hati tenang, rezeki pasti.
+        </div>
       </div>
     </div>
+
+    <div class="angka-dua-grid">
+      <div class="angka-card">
+        <span><i class="fas fa-chart-simple"></i> ANGKA MAIN</span>
+        <div class="double-numbers" id="angkaMainDual">
+          <strong>12</strong><span class="separator-dot">•</span><strong>34</strong>
+        </div>
+      </div>
+      <div class="angka-card">
+        <span><i class="fas fa-hand-peace"></i> COLOK BEBAS</span>
+        <div class="double-numbers" id="colokDual">
+          <strong>7</strong><span class="separator-dot">•</span><strong>2</strong>
+        </div>
+      </div>
+      <div class="angka-card">
+        <span><i class="fas fa-ticket"></i> 4D </span>
+        <div class="double-numbers" id="empatDDual">
+          <strong>1234</strong><span class="separator-dot">•</span><strong>5678</strong>
+        </div>
+      </div>
+      <div class="angka-card">
+        <span><i class="fas fa-gem"></i> ANGKA JITU</span>
+        <div class="double-numbers" id="jituDual">
+          <strong>789</strong><span class="separator-dot">•</span><strong>456</strong>
+        </div>
+      </div>
+    </div>
+
+    <footer>⚡ Cek sekarang, jangan sampai ketinggalan! ⚡</footer>
   </div>
-
-  <div class="angka-dua-grid">
-    <div class="angka-card">
-      <span><i class="fas fa-chart-simple"></i> ANGKA MAIN</span>
-      <div class="double-numbers" id="angkaMainDual">
-        <strong>12</strong><span class="separator-dot">•</span><strong>34</strong>
-      </div>
-    </div>
-    <div class="angka-card">
-      <span><i class="fas fa-hand-peace"></i> COLOK BEBAS</span>
-      <div class="double-numbers" id="colokDual">
-        <strong>7</strong><span class="separator-dot">•</span><strong>2</strong>
-      </div>
-    </div>
-    <div class="angka-card">
-      <span><i class="fas fa-ticket"></i> 4D </span>
-      <div class="double-numbers" id="empatDDual">
-        <strong>1234</strong><span class="separator-dot">•</span><strong>5678</strong>
-      </div>
-    </div>
-    <div class="angka-card">
-      <span><i class="fas fa-gem"></i> ANGKA JITU</span>
-      <div class="double-numbers" id="jituDual">
-        <strong>789</strong><span class="separator-dot">•</span><strong>456</strong>
-      </div>
-    </div>
-  </div>
-
-  <button class="btn-acak" id="btnRamalAcak">
-    <i class="fas fa-dice-d6"></i> PUTAR RAMALAN <i class="fas fa-dice-d6"></i>
-  </button>
-  <footer>⚡ setiap acak · shio, syair puitis, angka, dan warna serasi berganti ⚡</footer>
-</div>
 
 <script>
   // ======================= DATA SHIO & GAMBAR =======================
-    const shioRealList = [
+  const shioRealList = [
     { nama: "TIKUS", img: "https://i.postimg.cc/qqSgJVg7/TIKUS22.jpg" },
     { nama: "KERBAU", img: "https://i.postimg.cc/DZcqwZKS/kerbau44.jpg" },
     { nama: "HARIMAU", img: "https://i.postimg.cc/wxG1cJ2b/harimau.png" },
@@ -673,6 +713,9 @@
     const shioNameSpan = document.getElementById('realShioName');
     animalImg.classList.add('animate-pop');
     shioNameSpan.classList.add('animate-pop');
+    
+    // Set CrossOrigin untuk foto
+    animalImg.crossOrigin = "Anonymous"; 
     animalImg.src = shioNow.img;
     animalImg.alt = shioNow.nama;
     shioNameSpan.innerText = shioNow.nama;
@@ -695,6 +738,7 @@
     const logoUrl = mapLogoPasaran[pasaranNow];
     if (logoUrl) {
       logoImg.style.opacity = '0'; // Fade out effect transition
+      logoImg.crossOrigin = "Anonymous"; // Set CrossOrigin untuk foto
       setTimeout(() => {
         logoImg.src = logoUrl;
         logoImg.style.opacity = '1'; // Fade in
@@ -743,12 +787,63 @@
     };
   }
 
+  // ======================= FITUR FOTO ULTRA HD (ROBUST) =======================
+  document.getElementById('btnPhoto').addEventListener('click', async () => {
+    const element = document.getElementById('mysticCard');
+    const pasaran = document.getElementById('namaPasaran').innerText;
+    const btn = document.getElementById('btnPhoto');
+    const originalText = btn.innerHTML;
+
+    // Efek Loading Tombol
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES ULTRA HD...';
+    btn.style.cursor = 'wait';
+
+    try {
+      // 1. Tunggu Font dimuat (Mencegah kotak kosong pada teks)
+      await document.fonts.ready;
+
+      // 2. Tunggu Semua Gambar dimuat (Mencegah gambar kosong/disensor)
+      const images = element.getElementsByTagName('img');
+      const imagePromises = Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve; // Resolve tetap dijalankan jika error agar tidak hang
+        });
+      });
+      await Promise.all(imagePromises);
+
+      // 3. Konfigurasi Tangkapan Layar
+      const canvas = await html2canvas(element, {
+        scale: 4, // ULTRA HIGH DEFINITION (4x skala layar)
+        useCORS: true, // Wajib untuk gambar eksternal
+        backgroundColor: '#0a0705', // Paksa background solid
+        logging: false,
+        imageTimeout: 5000 // Tunggu gambar maks 5 detik
+      });
+
+      // 4. Download Gambar
+      const link = document.createElement('a');
+      link.download = `SYAIR-${pasaran}-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png", 1.0); // Kualitas maksimal PNG
+      link.click();
+
+    } catch (err) {
+      console.error("Gagal memotret:", err);
+      alert("Gagal mengambil foto. Pastikan koneksi internet stabil.");
+    } finally {
+      // Kembalikan tombol
+      btn.innerHTML = originalText;
+      btn.style.cursor = 'pointer';
+    }
+  });
+
   // ======================= EVENT + INIT =======================
   const btnAcak = document.getElementById('btnRamalAcak');
   btnAcak.addEventListener('click', () => {
     updateAllRamalan();
-    btnAcak.style.transform = "scale(0.97)";
-    setTimeout(() => { btnAcak.style.transform = ""; }, 120);
+    btnAcak.style.transform = "scale(0.95)";
+    setTimeout(() => { btnAcak.style.transform = ""; }, 100);
   });
   
   // Initial load
