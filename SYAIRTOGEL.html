@@ -9,533 +9,250 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <!-- HTML2CANVAS Library untuk Fitur Foto HD -->
+  <!-- HTML2CANVAS Library -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <style>
-    /* ================= RESET & BODY (ORIGINAL) ================= */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* ================= RESET & BODY ================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background-color: #030201;
       background-image: 
         radial-gradient(circle at 20% 30%, rgba(10, 7, 5, 0.4), rgba(3, 2, 1, 0.9)), 
         url('https://cdn.areabermain.club/assets/cdn/az6/2026/02/06/20260206/89d78f13c77c4e01fd4c07b0e9f8a498/background-web-markaswd.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 2rem;
-      position: relative;
-      transition: background 0.3s ease;
+      background-size: cover; background-position: center; background-attachment: fixed;
+      font-family: 'Inter', sans-serif; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 2rem; position: relative; transition: background 0.3s ease;
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background-image: radial-gradient(1.5px 1.5px at 15px 40px, #ffdd99, rgba(0,0,0,0)),
                         radial-gradient(1px 1px at 70px 120px, #ffb347, rgba(0,0,0,0));
-      background-size: 180px 180px, 130px 130px;
-      background-repeat: repeat;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: 1;
+      background-size: 180px 180px, 130px 130px; background-repeat: repeat;
+      opacity: 0.3; pointer-events: none; z-index: 1;
     }
 
     /* ================= CONTROLS WRAPPER ================= */
     .controls-wrapper {
-      width: 100%;
-      max-width: 1450px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      z-index: 10;
-      position: relative;
+      width: 100%; max-width: 1450px;
+      display: flex; justify-content: flex-end; gap: 1rem;
+      margin-bottom: 1.5rem; z-index: 10; position: relative;
     }
 
     .btn-action {
-      padding: 0.8rem 1.5rem;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      transition: all 0.2s ease;
-      backdrop-filter: blur(5px);
+      padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 700; font-size: 1rem;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      gap: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.2s ease; backdrop-filter: blur(5px);
     }
-
-    .btn-putar {
-      background: linear-gradient(135deg, #d98f2b, #b36b18);
-      border-color: #ffcf7a;
-    }
+    .btn-putar { background: linear-gradient(135deg, #d98f2b, #b36b18); border-color: #ffcf7a; }
     .btn-putar:hover { filter: brightness(1.1); transform: translateY(-2px); }
-    .btn-putar:active { transform: translateY(1px); }
-    .btn-putar i { color: #fff; }
-
-    .btn-foto {
-      background: linear-gradient(135deg, #1a2a3a, #0f1f2e);
-      border-color: #4a9eff;
-    }
+    .btn-foto { background: linear-gradient(135deg, #1a2a3a, #0f1f2e); border-color: #4a9eff; }
     .btn-foto:hover { filter: brightness(1.2); transform: translateY(-2px); }
-    .btn-foto:active { transform: translateY(1px); }
-    .btn-foto i { color: #4a9eff; }
 
-    /* ================= KARTU UTAMA (ORIGINAL STYLE) ================= */
+    /* ================= KARTU UTAMA ================= */
     .mystic-card {
-      position: relative;
-      z-index: 2;
-      max-width: 1450px;
-      width: 100%;
-      background: rgba(18, 14, 12, 0.94);
-      backdrop-filter: blur(6px);
-      border-radius: 2.5rem;
-      box-shadow: 0 30px 45px -15px rgba(0,0,0,0.8);
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      overflow: hidden;
-      /* Padding dihapus karena akan dihandle inner content/tab */
-      border: 1px solid rgba(230, 170, 70, 0.5);
+      position: relative; z-index: 2; max-width: 1450px; width: 100%;
+      background: rgba(18, 14, 12, 0.94); backdrop-filter: blur(6px);
+      border-radius: 2.5rem; box-shadow: 0 30px 45px -15px rgba(0,0,0,0.8);
+      overflow: hidden; border: 1px solid rgba(230, 170, 70, 0.5);
     }
 
-    /* ================= THEMES (ORIGINAL) ================= */
-    .mystic-card.dark-blood {
-      background: rgba(30, 10, 12, 0.96);
-      border-color: #8b2c2c;
-      box-shadow: 0 0 20px rgba(139, 44, 44, 0.3);
-    }
-    .mystic-card.dark-blood .shio-container,
-    .mystic-card.dark-blood .syair-container,
-    .mystic-card.dark-blood .angka-card,
-    .mystic-card.dark-blood .pasaran-area {
-      border-color: #8b2c2c;
-      box-shadow: inset 0 0 0 1px rgba(139, 44, 44, 0.3), 0 6px 14px rgba(0,0,0,0.5);
+    /* ================= THEMES (ORIGINAL COMPLETE) ================= */
+    .mystic-card.dark-blood { background: rgba(30, 10, 12, 0.96); border-color: #8b2c2c; }
+    .mystic-card.dark-blood .shio-container, .mystic-card.dark-blood .syair-container,
+    .mystic-card.dark-blood .angka-card, .mystic-card.dark-blood .pasaran-area {
+      border-color: #8b2c2c; box-shadow: inset 0 0 0 1px rgba(139, 44, 44, 0.3), 0 6px 14px rgba(0,0,0,0.5);
     }
     .mystic-card.dark-blood .shio-container { background: linear-gradient(145deg, #2a1215, #180a0c); }
     .mystic-card.dark-blood .syair-container { background: #1f0e10; border-left-color: #c23b3b; }
     .mystic-card.dark-blood .angka-card { background: #241114; }
     .mystic-card.dark-blood .pasaran-area { background: #2a1315; border-color: #a13a3a; color: #f0b3a0; }
 
-    .mystic-card.dark-purple {
-      background: rgba(25, 10, 35, 0.96);
-      border-color: #6a2c8a;
-      box-shadow: 0 0 20px rgba(106, 44, 138, 0.3);
-    }
-    .mystic-card.dark-purple .shio-container,
-    .mystic-card.dark-purple .syair-container,
-    .mystic-card.dark-purple .angka-card,
-    .mystic-card.dark-purple .pasaran-area { border-color: #6a2c8a; }
+    .mystic-card.dark-purple { background: rgba(25, 10, 35, 0.96); border-color: #6a2c8a; }
+    .mystic-card.dark-purple .shio-container, .mystic-card.dark-purple .syair-container,
+    .mystic-card.dark-purple .angka-card, .mystic-card.dark-purple .pasaran-area { border-color: #6a2c8a; }
     .mystic-card.dark-purple .shio-container { background: linear-gradient(145deg, #241530, #150b1f); }
     .mystic-card.dark-purple .syair-container { background: #1c1028; border-left-color: #9b4dca; }
     .mystic-card.dark-purple .angka-card { background: #1f132c; }
     .mystic-card.dark-purple .pasaran-area { background: #23153a; border-color: #8b3dc0; color: #ddb5ff; }
 
-    .mystic-card.dark-green {
-      background: rgba(10, 25, 15, 0.96);
-      border-color: #2c6e3c;
-      box-shadow: 0 0 20px rgba(44, 110, 60, 0.3);
-    }
-    .mystic-card.dark-green .shio-container,
-    .mystic-card.dark-green .syair-container,
-    .mystic-card.dark-green .angka-card,
-    .mystic-card.dark-green .pasaran-area { border-color: #2c6e3c; }
+    .mystic-card.dark-green { background: rgba(10, 25, 15, 0.96); border-color: #2c6e3c; }
+    .mystic-card.dark-green .shio-container, .mystic-card.dark-green .syair-container,
+    .mystic-card.dark-green .angka-card, .mystic-card.dark-green .pasaran-area { border-color: #2c6e3c; }
     .mystic-card.dark-green .shio-container { background: linear-gradient(145deg, #1a2a1a, #0e1a0e); }
     .mystic-card.dark-green .syair-container { background: #132013; border-left-color: #3f9e55; }
     .mystic-card.dark-green .angka-card { background: #172518; }
     .mystic-card.dark-green .pasaran-area { background: #1e2e1a; border-color: #3f8a4a; color: #c8f0b0; }
 
-    .mystic-card.dark-blue {
-      background: rgba(8, 18, 35, 0.96);
-      border-color: #2c5282;
-      box-shadow: 0 0 20px rgba(44, 82, 130, 0.3);
-    }
-    .mystic-card.dark-blue .shio-container,
-    .mystic-card.dark-blue .syair-container,
-    .mystic-card.dark-blue .angka-card,
-    .mystic-card.dark-blue .pasaran-area { border-color: #2c5282; }
+    .mystic-card.dark-blue { background: rgba(8, 18, 35, 0.96); border-color: #2c5282; }
+    .mystic-card.dark-blue .shio-container, .mystic-card.dark-blue .syair-container,
+    .mystic-card.dark-blue .angka-card, .mystic-card.dark-blue .pasaran-area { border-color: #2c5282; }
     .mystic-card.dark-blue .shio-container { background: linear-gradient(145deg, #121f30, #0a1420); }
     .mystic-card.dark-blue .syair-container { background: #0f1b2b; border-left-color: #3b82c4; }
     .mystic-card.dark-blue .angka-card { background: #111f2e; }
     .mystic-card.dark-blue .pasaran-area { background: #17263b; border-color: #3a7ab3; color: #b8d9ff; }
 
-    .mystic-card.dark-charcoal {
-      background: rgba(20, 20, 25, 0.96);
-      border-color: #5a5a6e;
-      box-shadow: 0 0 20px rgba(90, 90, 110, 0.3);
-    }
-    .mystic-card.dark-charcoal .shio-container,
-    .mystic-card.dark-charcoal .syair-container,
-    .mystic-card.dark-charcoal .angka-card,
-    .mystic-card.dark-charcoal .pasaran-area { border-color: #5a5a6e; }
+    .mystic-card.dark-charcoal { background: rgba(20, 20, 25, 0.96); border-color: #5a5a6e; }
+    .mystic-card.dark-charcoal .shio-container, .mystic-card.dark-charcoal .syair-container,
+    .mystic-card.dark-charcoal .angka-card, .mystic-card.dark-charcoal .pasaran-area { border-color: #5a5a6e; }
     .mystic-card.dark-charcoal .shio-container { background: linear-gradient(145deg, #25252c, #15151a); }
     .mystic-card.dark-charcoal .syair-container { background: #1c1c24; border-left-color: #8f8fa8; }
     .mystic-card.dark-charcoal .angka-card { background: #202028; }
     .mystic-card.dark-charcoal .pasaran-area { background: #2a2a33; border-color: #7a7a94; color: #e0e0f0; }
 
-    .mystic-card.dark-orange {
-      background: rgba(35, 20, 8, 0.96);
-      border-color: #b45f1b;
-      box-shadow: 0 0 20px rgba(180, 95, 27, 0.3);
-    }
-    .mystic-card.dark-orange .shio-container,
-    .mystic-card.dark-orange .syair-container,
-    .mystic-card.dark-orange .angka-card,
-    .mystic-card.dark-orange .pasaran-area { border-color: #b45f1b; }
+    .mystic-card.dark-orange { background: rgba(35, 20, 8, 0.96); border-color: #b45f1b; }
+    .mystic-card.dark-orange .shio-container, .mystic-card.dark-orange .syair-container,
+    .mystic-card.dark-orange .angka-card, .mystic-card.dark-orange .pasaran-area { border-color: #b45f1b; }
     .mystic-card.dark-orange .shio-container { background: linear-gradient(145deg, #2e1f10, #1c1209); }
     .mystic-card.dark-orange .syair-container { background: #241a0f; border-left-color: #d97a2b; }
     .mystic-card.dark-orange .angka-card { background: #291e12; }
     .mystic-card.dark-orange .pasaran-area { background: #332413; border-color: #c97a33; color: #ffdbb5; }
 
-    .mystic-card.dark-inky {
-      background: rgba(10, 8, 20, 0.96);
-      border-color: #3b2e6b;
-      box-shadow: 0 0 20px rgba(59, 46, 107, 0.4);
-    }
-    .mystic-card.dark-inky .shio-container,
-    .mystic-card.dark-inky .syair-container,
-    .mystic-card.dark-inky .angka-card,
-    .mystic-card.dark-inky .pasaran-area { border-color: #3b2e6b; }
+    .mystic-card.dark-inky { background: rgba(10, 8, 20, 0.96); border-color: #3b2e6b; }
+    .mystic-card.dark-inky .shio-container, .mystic-card.dark-inky .syair-container,
+    .mystic-card.dark-inky .angka-card, .mystic-card.dark-inky .pasaran-area { border-color: #3b2e6b; }
     .mystic-card.dark-inky .shio-container { background: linear-gradient(145deg, #1c1830, #0e0c1c); }
     .mystic-card.dark-inky .syair-container { background: #14122a; border-left-color: #6b56b0; }
     .mystic-card.dark-inky .angka-card { background: #18162e; }
     .mystic-card.dark-inky .pasaran-area { background: #1f1c38; border-color: #6a54b8; color: #cfc4ff; }
 
-    .shio-container, .syair-container, .angka-card, .pasaran-area {
-      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    /* ================= TAB NAVIGATION (NEW) ================= */
-    .tab-nav {
-      display: flex;
-      width: 100%;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-      background: rgba(0,0,0,0.3);
-    }
+    /* ================= TAB NAVIGATION ================= */
+    .tab-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); }
     .tab-btn {
-      flex: 1;
-      padding: 1.2rem;
-      background: transparent;
-      border: none;
-      color: #888;
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
+      flex: 1; padding: 1.2rem; background: transparent; border: none; color: #888;
+      font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; text-transform: uppercase;
+      letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; position: relative;
     }
     .tab-btn:hover { color: #ddd; background: rgba(255,255,255,0.03); }
-    .tab-btn.active {
-      color: #ffcf7a;
-      background: linear-gradient(to top, rgba(255, 207, 122, 0.08), transparent);
-    }
+    .tab-btn.active { color: #ffcf7a; background: linear-gradient(to top, rgba(255, 207, 122, 0.08), transparent); }
     .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; width: 100%; height: 3px;
-      background: #ffcf7a;
-      box-shadow: 0 -2px 10px #ffcf7a;
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+      background: #ffcf7a; box-shadow: 0 -2px 10px #ffcf7a;
     }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.4s ease;
-    }
+    .tab-content { display: none; animation: fadeIn 0.4s ease; }
     .tab-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ================= ORIGINAL SYAIR COMPONENTS ================= */
-    .card-padding { padding: 2rem 2rem 1rem; } /* Padding untuk konten di dalam tab */
-
-    .title-section {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
+    /* ================= SYAIR COMPONENTS (ORIGINAL) ================= */
+    .card-padding { padding: 2rem 2rem 1rem; }
+    .title-section { text-align: center; margin-bottom: 1.8rem; }
     .title-section h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #f9c45a, #d98f2b);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
+      font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, #f9c45a, #d98f2b); background-clip: text; -webkit-background-clip: text; color: transparent;
+      display: inline-flex; align-items: center; gap: 12px;
     }
-    .title-section h1 i {
-      color: #e2a13f;
-      text-shadow: 0 0 3px #ffcc77;
-    }
+    .title-section h1 i { color: #e2a13f; text-shadow: 0 0 3px #ffcc77; }
     .pasaran-area {
-      display: inline-block;
-      padding: 0.4rem 1.8rem;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-top: 14px;
-      letter-spacing: 1px;
-      box-shadow: inset 0 1px 0 rgba(255,215,130,0.1), 0 2px 6px rgba(0,0,0,0.5);
-      border: 1px solid;
+      display: inline-block; padding: 0.4rem 1.8rem; border-radius: 60px; font-size: 0.9rem;
+      font-weight: 700; margin-top: 14px; letter-spacing: 1px;
+      box-shadow: inset 0 1px 0 rgba(255,215,130,0.1), 0 2px 6px rgba(0,0,0,0.5); border: 1px solid;
     }
 
-    .hero-split {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin: 1.5rem 0 2rem;
-    }
+    .hero-split { display: flex; flex-wrap: wrap; gap: 2rem; margin: 1.5rem 0 2rem; }
     .shio-container {
-      flex: 0.9;
-      min-width: 260px;
-      border-radius: 2rem;
-      padding: 1.8rem 1.2rem;
-      text-align: center;
+      flex: 0.9; min-width: 260px; border-radius: 2rem; padding: 1.8rem 1.2rem; text-align: center;
       box-shadow: 0 12px 22px -8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,200,100,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid;
     }
     .animal-img {
-      width: 100%;
-      max-width: 280px;
-      height: auto;
-      min-height: 220px;
-      object-fit: contain;
-      border-radius: 28px;
-      box-shadow: 0 15px 28px -5px black;
-      border: 2px solid #ffcf7a;
-      background: #0f0c09;
-      transition: transform 0.25s ease;
-    }
-    .animal-img:hover {
-      transform: scale(1.02);
-      filter: drop-shadow(0 0 8px #ffbb44);
+      width: 100%; max-width: 280px; height: auto; min-height: 220px; object-fit: contain;
+      border-radius: 28px; box-shadow: 0 15px 28px -5px black; border: 2px solid #ffcf7a; background: #0f0c09;
     }
     .animal-name {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-top: 20px;
-      background: linear-gradient(145deg, #ffdfa5, #dd942e);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      letter-spacing: 1.5px;
+      font-size: 2rem; font-weight: 800; margin-top: 20px;
+      background: linear-gradient(145deg, #ffdfa5, #dd942e); background-clip: text; -webkit-background-clip: text; color: transparent; letter-spacing: 1.5px;
     }
-    .shio-sub {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #e7b062;
-      margin-top: 8px;
-    }
+    .shio-sub { font-size: 0.8rem; font-weight: 600; color: #e7b062; margin-top: 8px; }
 
     .syair-container {
-      flex: 1.8;
-      border-radius: 2rem;
-      padding: 2rem 2.5rem;
-      border-left-width: 8px;
-      border-left-style: solid;
-      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.6);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-left: 0.5rem;
-      border: 1px solid;
-      border-left-width: 8px;
-      position: relative;
+      flex: 1.8; border-radius: 2rem; padding: 2rem 2.5rem; border-left-width: 8px; border-left-style: solid;
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center;
+      margin-left: 0.5rem; border: 1px solid; border-left-width: 8px; position: relative;
     }
-    .syair-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin-bottom: 1.5rem;
-    }
-    .syair-label {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #f5bc70;
-      letter-spacing: 3px;
-      text-align: left;
-      margin: 0;
-      flex: 1;
-    }
-    .pasaran-logo {
-      height: 75px;
-      width: auto;
-      max-width: 180px;
-      object-fit: contain;
-      margin-left: 1.5rem;
-      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.4));
-      transition: opacity 0.3s ease;
-    }
+    .syair-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 1.5rem; }
+    .syair-label { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: #f5bc70; letter-spacing: 3px; text-align: left; margin: 0; flex: 1; }
+    .pasaran-logo { height: 75px; width: auto; max-width: 180px; object-fit: contain; margin-left: 1.5rem; filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.4)); }
     .bait-text {
-      font-family: 'Playfair Display', 'Inter', serif;
-      font-size: 1.45rem;
-      line-height: 1.75;
-      font-weight: 500;
-      color: #faf0e1;
-      white-space: pre-line;
-      text-align: center;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-      letter-spacing: 0.5px;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Playfair Display', 'Inter', serif; font-size: 1.45rem; line-height: 1.75; font-weight: 500;
+      color: #faf0e1; white-space: pre-line; text-align: center; letter-spacing: 0.5px;
+      padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);
     }
 
-    .angka-dua-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      margin: 2rem 0 1.8rem;
-    }
+    .angka-dua-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0 1.8rem; }
     .angka-card {
-      border-radius: 1.6rem;
-      padding: 1.2rem 0.5rem;
-      text-align: center;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
-      border: 1px solid;
-      transition: all 0.2s;
+      border-radius: 1.6rem; padding: 1.2rem 0.5rem; text-align: center; box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+      border: 1px solid; transition: all 0.2s;
     }
     .angka-card span {
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #f5bc70;
-      display: block;
-      margin-bottom: 12px;
-      letter-spacing: 1.5px;
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #f5bc70;
+      display: block; margin-bottom: 12px; letter-spacing: 1.5px;
     }
-    .double-numbers {
-      display: flex;
-      justify-content: center;
-      gap: 1.8rem;
-      flex-wrap: wrap;
-      align-items: baseline;
-    }
+    .double-numbers { display: flex; justify-content: center; gap: 1.8rem; flex-wrap: wrap; align-items: baseline; }
     .double-numbers strong {
-      font-size: 2rem;
-      font-family: monospace;
-      background: linear-gradient(145deg, #ffdd99, #ffaa33);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      font-weight: 800;
-      text-shadow: 0 0 2px #ffb347;
+      font-size: 2rem; font-family: monospace; background: linear-gradient(145deg, #ffdd99, #ffaa33);
+      background-clip: text; -webkit-background-clip: text; color: transparent; font-weight: 800; text-shadow: 0 0 2px #ffb347;
     }
-    .separator-dot {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #d4973b;
-    }
+    .separator-dot { font-size: 1.5rem; font-weight: 700; color: #d4973b; }
 
-    /* ================= NEW PREDIKSI COMPONENTS (Tab 2) ================= */
-    .prediksi-wrapper {
-      padding: 2rem 2rem 1rem;
-    }
-    .prediksi-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-      position: relative;
-    }
-    .prediksi-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .prediksi-date {
-      font-size: 1rem;
-      color: #ccc;
-      font-weight: 500;
-      margin-bottom: 15px;
-    }
-    .prediksi-logo-img {
-      height: 70px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-    }
+    /* ================= PREDIKSI COMPONENTS (NEW LAYOUT) ================= */
+    .prediksi-wrapper { padding: 2rem 2rem 1rem; }
+    .prediksi-header { text-align: center; margin-bottom: 2rem; position: relative; }
+    .prediksi-title { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
+    .prediksi-date { font-size: 1rem; color: #ccc; font-weight: 500; margin-bottom: 15px; }
+    .prediksi-logo-img { height: 70px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
     
-    .prediksi-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 12px;
-    }
-    .prediksi-row {
-      background: rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-    }
+    .prediksi-body-split { display: flex; gap: 2rem; align-items: flex-start; }
+
+    .prediksi-left { flex: 1.5; }
+    .table-container { background: transparent; }
+    .prediksi-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+    .prediksi-row { background: rgba(0,0,0,0.2); transition: transform 0.2s; }
     .prediksi-row:hover { transform: scale(1.01); background: rgba(255,255,255,0.05); }
-    
-    .prediksi-cell {
-      padding: 1rem 1.5rem;
-      font-size: 1.1rem;
-    }
+    .prediksi-cell { padding: 1rem 1.5rem; font-size: 1.1rem; }
     .p-label {
-      width: 35%;
-      color: #aaa;
-      font-weight: 700;
-      text-transform: uppercase;
+      width: 35%; color: #aaa; font-weight: 700; text-transform: uppercase;
       border-right: 1px solid rgba(255,255,255,0.1);
     }
     .p-value {
-      width: 65%;
-      color: #f9c45a;
-      font-family: monospace;
-      text-align: right;
-      letter-spacing: 1px;
-      font-size: 1.2rem;
-      font-weight: 700;
+      width: 65%; color: #f9c45a; font-family: monospace; text-align: left;
+      letter-spacing: 1px; font-size: 1.2rem; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
-    .p-value.long-text {
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      color: #fff;
-      line-height: 1.4;
-    }
+    .p-value.long-text { font-family: 'Inter', sans-serif; font-size: 1rem; color: #fff; line-height: 1.4; }
 
-    footer {
-      text-align: center;
-      font-size: 0.7rem;
-      margin-top: 1.8rem;
-      color: #b87e48;
-      letter-spacing: 0.5px;
+    .prediksi-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px; }
+    
+    /* STYLE GAMBAR BARU: MENYATU & TANPA BINGKAI */
+    .prediksi-random-img {
+      width: 100%;
+      max-width: 350px; 
+      height: auto; 
+      object-fit: contain;
+      
+      /* Hapus Bingkai & Padding */
+      border: none; /* Tidak ada garis tepi */
+      padding: 0; /* Tidak ada ruang dalam */
+      background: transparent; /* Latar transparan */
+      border-radius: 15px; /* Lengkungan halus, bukan kotak tajam */
+      
+      /* Efek Menyatu dengan Tema (Gold Glow) */
+      filter: drop-shadow(0 0 20px rgba(255, 207, 122, 0.5)); 
+      /* Menggantikan border kasar dengan cahaya emas yang lembut */
+      
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-    @keyframes darkPop {
-      0% { opacity: 0.6; transform: scale(0.96); filter: blur(0.3px);}
-      100% { opacity: 1; transform: scale(1); filter: blur(0);}
-    }
-    .animate-pop { animation: darkPop 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
+    footer { text-align: center; font-size: 0.7rem; margin-top: 1.8rem; color: #b87e48; letter-spacing: 0.5px; }
 
     @media (max-width: 1000px) {
       .hero-split { flex-direction: column; }
-      .syair-container { margin-left: 0; }
-      .bait-text { font-size: 1.2rem; }
+      .prediksi-body-split { flex-direction: column-reverse; }
+      .prediksi-right { width: 100%; min-height: auto; margin-bottom: 1rem; }
+      .prediksi-random-img { max-width: 250px; }
     }
     @media (max-width: 650px) {
       .controls-wrapper { justify-content: center; }
@@ -549,8 +266,6 @@
       .double-numbers strong { font-size: 1.5rem; }
       .syair-header { flex-direction: column; align-items: flex-start; gap: 12px; }
       .pasaran-logo { max-width: 140px; height: 55px; margin-left: 0; }
-      
-      /* Mobile Prediksi */
       .p-label { width: 40%; font-size: 0.8rem; }
       .p-value { width: 60%; font-size: 1rem; }
       .prediksi-title { font-size: 1.4rem; }
@@ -559,7 +274,7 @@
 </head>
 <body>
 
-  <!-- PANEL KONTROL (DI LUAR KARTU) -->
+  <!-- PANEL KONTROL -->
   <div class="controls-wrapper">
     <button class="btn-action btn-putar" id="btnRamalAcak">
       <i class="fas fa-dice-d6"></i> PUTAR RAMALAN
@@ -596,17 +311,12 @@
           </div>
 
           <div class="syair-container" id="syairContainer">
-            <!-- HEADER SYAIR -->
             <div class="syair-header">
               <div class="syair-label"><i class="fas fa-feather-alt"></i> SYAIR BERTUAH · BERSEMI</div>
               <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran" crossorigin="anonymous">
             </div>
-            
             <div class="bait-text" id="syair4Bait">
-              Tikus kecil berlari sunyi,<br>
-              Membawa mimpi tanpa arti.<br>
-              Embun pagi basahi bumi,<br>
-              Hati tenang, rezeki pasti.
+              Tikus kecil berlari sunyi,<br>Membawa mimpi tanpa arti.<br>Embun pagi basahi bumi,<br>Hati tenang, rezeki pasti.
             </div>
           </div>
         </div>
@@ -642,55 +352,67 @@
       </div>
     </div>
 
-    <!-- TAB 2: PREDIKSI TOGEL (NEW LAYOUT) -->
+    <!-- TAB 2: PREDIKSI TOGEL (NEW SPLIT LAYOUT) -->
     <div id="tab-prediksi" class="tab-content">
       <div class="prediksi-wrapper">
         <div class="prediksi-header">
-          <div class="prediksi-title">Prediksi <span id="predPasaranName">HUAHIN</span> <span style="font-size:0.6em; opacity:0.7"></span></div>
+          <div class="prediksi-title">Prediksi <span id="predPasaranName">HUAHIN</span> <span style="font-size:0.6em; opacity:0.7">0100</span></div>
           <div class="prediksi-date" id="predDateDisplay">Hari Sabtu, 11 April 2026</div>
           <img id="predLogo" class="prediksi-logo-img" src="" alt="Logo Pasaran" crossorigin="anonymous">
         </div>
 
-        <table class="prediksi-table">
-          <tbody>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">BBFS</td>
-              <td class="prediksi-cell p-value" id="valBBFS">3243836</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">AM/AI/CK</td>
-              <td class="prediksi-cell p-value" id="valAMAI">38768</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">4D</td>
-              <td class="prediksi-cell p-value" id="val4D">3107 8339 1334 8509</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">3D</td>
-              <td class="prediksi-cell p-value" id="val3D">382 860 994 479</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">2D (BB)</td>
-              <td class="prediksi-cell p-value long-text" id="val2D">10 82 43 45 36 44 44 06 58 93</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">COLOK BEBAS</td>
-              <td class="prediksi-cell p-value" id="valCB">3 / 9</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">COLOK 2D</td>
-              <td class="prediksi-cell p-value" id="valCB2D">99 / 64 / 50</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">TWIN</td>
-              <td class="prediksi-cell p-value" id="valTwin">77 / 77 / 77</td>
-            </tr>
-            <tr class="prediksi-row">
-              <td class="prediksi-cell p-label">SHIO</td>
-              <td class="prediksi-cell p-value long-text" id="valShio">KERBAU / TIKUS / NAGA</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="prediksi-body-split">
+          <!-- KIRI: TABEL -->
+          <div class="prediksi-left">
+            <div class="table-container">
+              <table class="prediksi-table">
+                <tbody>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">BBFS</td>
+                    <td class="prediksi-cell p-value" id="valBBFS">3243836</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">AM/AI/CK</td>
+                    <td class="prediksi-cell p-value" id="valAMAI">38768</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">4D</td>
+                    <td class="prediksi-cell p-value" id="val4D">3107 8339 1334 8509</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">3D</td>
+                    <td class="prediksi-cell p-value" id="val3D">382 860 994 479</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">2D (BB)</td>
+                    <td class="prediksi-cell p-value long-text" id="val2D">10 82 43 45 36 44 44 06 58 93</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">COLOK BEBAS</td>
+                    <td class="prediksi-cell p-value" id="valCB">3 / 9</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">COLOK 2D</td>
+                    <td class="prediksi-cell p-value" id="valCB2D">99 / 64 / 50</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">TWIN</td>
+                    <td class="prediksi-cell p-value" id="valTwin">77 / 77 / 77</td>
+                  </tr>
+                  <tr class="prediksi-row">
+                    <td class="prediksi-cell p-label">SHIO</td>
+                    <td class="prediksi-cell p-value long-text" id="valShio">KERBAU / TIKUS / NAGA</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- KANAN: GAMBAR ACAK (SEAMLESS) -->
+          <div class="prediksi-right">
+            <img id="predRandomImg" class="prediksi-random-img" src="" alt="Karakter Acak" crossorigin="anonymous">
+          </div>
+        </div>
 
         <footer style="margin-top:3rem;">Selalu Utamakan Prediksi Sendiri</footer>
       </div>
@@ -698,7 +420,17 @@
   </div>
 
 <script>
-  // ======================= DATA SHIO & GAMBAR (ORIGINAL) =======================
+  // ======================= DATA GAMBAR ACAK BARU =======================
+  const randomPrediksiImages = [
+    "https://i.postimg.cc/28Z7XKYP/sssssss.png",
+    "https://i.postimg.cc/y6wbd98D/nengnge.png",
+    "https://i.postimg.cc/0yvXGsSW/acvnadvadv.png",
+    "https://i.postimg.cc/t4zS2Mt3/sscscsc.png",
+    "https://i.postimg.cc/mDPmZ2xN/scsssscs.png",
+    "https://i.postimg.cc/zBhTPLZ0/scsc.png"
+  ];
+
+  // ======================= DATA SHIO & LAINNYA (ORIGINAL DATA) =======================
   const shioRealList = [
     { nama: "TIKUS", img: "https://i.postimg.cc/qqSgJVg7/TIKUS22.jpg" },
     { nama: "KERBAU", img: "https://i.postimg.cc/DZcqwZKS/kerbau44.jpg" },
@@ -714,7 +446,6 @@
     { nama: "BABI", img: "https://i.postimg.cc/0jwPC62R/babbi.jpg" }
   ];
 
-  // ======================= SYAIR PUISI (ORIGINAL) =======================
   const syairPerShio = {
     "TIKUS": [
       "Tikus kecil meniti rembulan,<br>Melintas mimpi di ujung senja.<br>Bulan purnama jadi saksi bisu,<br>Hati tenang, badai pun berlalu.",
@@ -766,7 +497,6 @@
     ]
   };
 
-  // ======================= PASARAN & LOGO (SHARED) =======================
   const daftarPasaran = [
     "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK", 
     "KENTUCKY", "NORTH CAROLINA DAY", "CAROLINA EVENING", "CAMBODIA", 
@@ -802,39 +532,9 @@
     "MAGNUM": "https://i.postimg.cc/ncVXvJ6g/magnum.png"
   };
 
-  // ======================= FUNGSI ANGKA ACAK (ORIGINAL) =======================
-  function getRandomTwoMain() {
-    let a = Math.floor(Math.random() * 100);
-    let b = Math.floor(Math.random() * 100);
-    while(a === b) b = Math.floor(Math.random() * 100);
-    return [a.toString().padStart(2,'0'), b.toString().padStart(2,'0')];
-  }
-  function getRandomTwoColok() {
-    let a = Math.floor(Math.random() * 10);
-    let b = Math.floor(Math.random() * 10);
-    while(a === b) b = Math.floor(Math.random() * 10);
-    return [a.toString(), b.toString()];
-  }
-  function getRandomTwo4D() {
-    let a = Math.floor(Math.random() * 10000);
-    let b = Math.floor(Math.random() * 10000);
-    while(a === b) b = Math.floor(Math.random() * 10000);
-    return [a.toString().padStart(4,'0'), b.toString().padStart(4,'0')];
-  }
-  function getRandomTwoJitu() {
-    let a = Math.floor(Math.random() * 1000);
-    let b = Math.floor(Math.random() * 1000);
-    while(a === b) b = Math.floor(Math.random() * 1000);
-    return [a.toString().padStart(3,'0'), b.toString().padStart(3,'0')];
-  }
-
-  // ======================= FUNGSI ANGKA ACAK (NEW PREDIKSI) =======================
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  function getRandomItem(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+  // ======================= FUNGSI UMUM =======================
+  function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function generateSet(digit, count) {
     let set = [];
     for(let i=0; i<count; i++) {
@@ -843,19 +543,13 @@
     }
     return set.join(' ');
   }
-
-  // ======================= FUNGSI TANGGAL (PERBAIKAN: HARI INI) =======================
   function getCurrentDateIndo() {
     const today = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    // Mengembalikan format: "Hari Senin, 12 Oktober 2023"
     return "Hari " + today.toLocaleDateString('id-ID', options);
   }
 
-  // ======================= FUNGSI WARNA (SHARED) =======================
-  const warnaThemes = [
-    "dark-blood", "dark-purple", "dark-green", "dark-blue", "dark-charcoal", "dark-orange", "dark-inky"
-  ];
+  const warnaThemes = ["dark-blood", "dark-purple", "dark-green", "dark-blue", "dark-charcoal", "dark-orange", "dark-inky"];
   function applyRandomTheme() {
     const card = document.getElementById('mysticCard');
     warnaThemes.forEach(theme => card.classList.remove(theme));
@@ -866,53 +560,36 @@
   // ======================= UPDATE SYAIR (ORIGINAL LOGIC) =======================
   function updateSyairRamalan() {
     applyRandomTheme();
-    
-    // Shio & gambar
     const shioNow = getRandomItem(shioRealList);
     const animalImg = document.getElementById('realAnimalImg');
     const shioNameSpan = document.getElementById('realShioName');
-    
     animalImg.crossOrigin = "Anonymous"; 
     animalImg.src = shioNow.img;
-    animalImg.alt = shioNow.nama;
     shioNameSpan.innerText = shioNow.nama;
     
-    // Syair sesuai shio
     const syairElement = document.getElementById('syair4Bait');
-    const options = syairPerShio[shioNow.nama] || ["Bersemilah harapan di malam sepi,<br>Bulan mengantar mimpi-mimpi suci."];
+    const options = syairPerShio[shioNow.nama] || ["Syair belum tersedia."];
     syairElement.innerHTML = getRandomItem(options);
     
-    // Pasaran acak & Update Logo
     const pasaranNow = getRandomItem(daftarPasaran);
-    const pasaranSpan = document.getElementById('namaPasaran');
+    document.getElementById('namaPasaran').innerText = pasaranNow;
     const logoImg = document.getElementById('pasaranLogo');
-    
-    pasaranSpan.innerText = pasaranNow;
-
     const logoUrl = mapLogoPasaran[pasaranNow];
     if (logoUrl) {
-      logoImg.style.opacity = '0';
-      logoImg.crossOrigin = "Anonymous";
-      setTimeout(() => {
-        logoImg.src = logoUrl;
-        logoImg.style.opacity = '1';
-      }, 200);
-    } else {
-      logoImg.src = "";
-      logoImg.style.opacity = '0';
+      logoImg.style.opacity = '0'; logoImg.crossOrigin = "Anonymous";
+      setTimeout(() => { logoImg.src = logoUrl; logoImg.style.opacity = '1'; }, 200);
     }
     
-    // Angka-angka (2 pilihan setiap kategori)
-    const [main1, main2] = getRandomTwoMain();
+    const [main1, main2] = [getRandomInt(10,99), getRandomInt(10,99)];
     document.getElementById('angkaMainDual').innerHTML = `<strong>${main1}</strong><span class="separator-dot">•</span><strong>${main2}</strong>`;
     
-    const [colok1, colok2] = getRandomTwoColok();
+    const [colok1, colok2] = [getRandomInt(0,9), getRandomInt(0,9)];
     document.getElementById('colokDual').innerHTML = `<strong>${colok1}</strong><span class="separator-dot">•</span><strong>${colok2}</strong>`;
     
-    const [four1, four2] = getRandomTwo4D();
+    const [four1, four2] = [getRandomInt(1000,9999), getRandomInt(1000,9999)];
     document.getElementById('empatDDual').innerHTML = `<strong>${four1}</strong><span class="separator-dot">•</span><strong>${four2}</strong>`;
     
-    const [jitu1, jitu2] = getRandomTwoJitu();
+    const [jitu1, jitu2] = [getRandomInt(100,999), getRandomInt(100,999)];
     document.getElementById('jituDual').innerHTML = `<strong>${jitu1}</strong><span class="separator-dot">•</span><strong>${jitu2}</strong>`;
   }
 
@@ -920,58 +597,52 @@
   function updatePrediksiRamalan() {
     applyRandomTheme();
 
-    // Pasaran & Logo
+    // 1. Pasaran & Logo
     const pasaranNow = getRandomItem(daftarPasaran);
     document.getElementById('predPasaranName').innerText = pasaranNow;
-    
     const logoUrl = mapLogoPasaran[pasaranNow];
     const logoImg = document.getElementById('predLogo');
     logoImg.crossOrigin = "Anonymous";
     logoImg.src = logoUrl || "";
 
-    // Tanggal: Menggunakan fungsi tanggal hari ini
+    // 2. Tanggal
     document.getElementById('predDateDisplay').innerText = getCurrentDateIndo();
 
-    // Angka
+    // 3. Angka
     let bbfs = ""; for(let i=0; i<7; i++) bbfs += getRandomInt(0,9);
     document.getElementById('valBBFS').innerText = bbfs;
-
     let amai = ""; for(let i=0; i<5; i++) amai += getRandomInt(0,9);
     document.getElementById('valAMAI').innerText = amai;
-
     document.getElementById('val4D').innerText = generateSet(4, 4);
     document.getElementById('val3D').innerText = generateSet(3, 4);
     document.getElementById('val2D').innerText = generateSet(2, 10);
-
     document.getElementById('valCB').innerText = `${getRandomInt(0,9)} / ${getRandomInt(0,9)}`;
     document.getElementById('valCB2D').innerText = generateSet(2, 3).replace(/ /g, ' / ');
-
     let twinNum = getRandomInt(0,9);
     document.getElementById('valTwin').innerText = `${twinNum}${twinNum} / ${twinNum}${twinNum} / ${twinNum}${twinNum}`;
-
+    
     let shios = [];
     while(shios.length < 3) {
       let s = getRandomItem(shioRealList).nama;
       if(!shios.includes(s)) shios.push(s);
     }
     document.getElementById('valShio').innerText = shios.join(' / ');
+
+    // 4. GAMBAR ACAK (SEAMLESS)
+    const randomImgUrl = randomPrediksiImages[Math.floor(Math.random() * randomPrediksiImages.length)];
+    const randomImg = document.getElementById('predRandomImg');
+    randomImg.crossOrigin = "Anonymous";
+    randomImg.src = randomImgUrl;
   }
 
   // ======================= TAB SWITCHING =======================
   let currentTab = 'syair';
-
   function switchTab(tabName) {
     currentTab = tabName;
-    
-    // Update Buttons
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-
-    // Update Content
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
     document.getElementById(`tab-${tabName}`).classList.add('active');
-
-    // Auto update saat pindah tab
     if(tabName === 'syair') updateSyairRamalan();
     else updatePrediksiRamalan();
   }
@@ -981,7 +652,6 @@
   btnAcak.addEventListener('click', () => {
     btnAcak.style.transform = "scale(0.95)";
     setTimeout(() => { btnAcak.style.transform = ""; }, 100);
-
     if(currentTab === 'syair') updateSyairRamalan();
     else updatePrediksiRamalan();
   });
