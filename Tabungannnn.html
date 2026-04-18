@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg:#070b09;--bg2:#0d1410;--card:#121d17;--card-h:#182a21;
+            --border:#1e3329;--fg:#e4f2ea;--muted:#5e8a74;
+            --accent:#00e68a;--accent-d:rgba(0,230,138,.1);
+            --red:#ff5c6a;--red-d:rgba(255,92,106,.1);
+            --gold:#ffd166;--gold-d:rgba(255,209,102,.1);
+            --cyan:#00d4ff;--cyan-d:rgba(0,212,255,.1);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+        /* BG */
+        .bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+        .bg-glow .orb{position:absolute;border-radius:50%;filter:blur(130px);animation:orbF 16s ease-in-out infinite alternate}
+        .bg-glow .orb:nth-child(1){width:520px;height:520px;background:var(--accent);top:-14%;left:-8%;opacity:.14}
+        .bg-glow .orb:nth-child(2){width:400px;height:400px;background:#005e3a;bottom:-12%;right:-6%;opacity:.18;animation-delay:-6s;animation-duration:20s}
+        .bg-glow .orb:nth-child(3){width:260px;height:260px;background:var(--gold);top:50%;left:60%;opacity:.04;animation-delay:-10s}
+        @keyframes orbF{0%{transform:translate(0,0) scale(1)}50%{transform:translate(35px,-25px) scale(1.08)}100%{transform:translate(-20px,15px) scale(.94)}}
+
+        .app{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:16px 14px 110px}
+
+        /* Header */
+        .hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 0 16px}
+        .hdr-left{display:flex;align-items:center;gap:12px}
+        .hdr-icon{width:46px;height:46px;border-radius:13px;background:var(--accent-d);border:1px solid rgba(0,230,138,.18);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);animation:ip 3s ease-in-out infinite}
+        @keyframes ip{0%,100%{box-shadow:0 0 0 0 rgba(0,230,138,.12)}50%{box-shadow:0 0 0 12px rgba(0,230,138,0)}}
+        .hdr h1{font-size:20px;font-weight:700;letter-spacing:-.4px;line-height:1.2}
+        .hdr h1 small{display:block;font-size:11px;font-weight:400;color:var(--muted);letter-spacing:.5px;margin-top:2px}
+        .user-badge{display:flex;align-items:center;gap:6px;background:var(--accent-d);border:1px solid rgba(0,230,138,.15);border-radius:20px;padding:5px 12px 5px 8px;font-size:11px;color:var(--accent);font-weight:500;cursor:pointer;transition:all .2s}
+        .user-badge:hover{background:rgba(0,230,138,.18);border-color:rgba(0,230,138,.3)}
+        .user-badge i{font-size:10px}
+
+        /* Conn */
+        .conn{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:7px 12px;margin-bottom:14px;font-size:10px;color:var(--muted);transition:all .3s}
+        .conn .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:all .3s}
+        .conn .dot.on{background:var(--accent);box-shadow:0 0 7px rgba(0,230,138,.5)}
+        .conn .dot.off{background:var(--red);box-shadow:0 0 7px rgba(255,92,106,.5)}
+        .conn .dot.ld{background:var(--gold);animation:bk 1s infinite}
+        @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+        .conn.ok{border-color:rgba(0,230,138,.15)}.conn.no{border-color:rgba(255,92,106,.15)}
+
+        /* Balance */
+        .bal{background:linear-gradient(135deg,#0b2e22,#13302580,#0e2a1f);border:1px solid var(--border);border-radius:18px;padding:22px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+        .bal::before{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;background:radial-gradient(circle,rgba(0,230,138,.07) 0%,transparent 70%);border-radius:50%}
+        .bal::after{content:'';position:absolute;bottom:-30%;left:-10%;width:120px;height:120px;background:radial-gradient(circle,rgba(255,209,102,.04) 0%,transparent 70%);border-radius:50%}
+        .bal .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;font-weight:500;margin-bottom:4px}
+        .bal .amt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;transition:color .4s,text-shadow .4s;position:relative;z-index:1}
+        .bal .amt.fu{color:var(--accent);text-shadow:0 0 25px rgba(0,230,138,.35)}
+        .bal .amt.fd{color:var(--red);text-shadow:0 0 25px rgba(255,92,106,.35)}
+        .bal .sub{display:flex;gap:18px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05);position:relative;z-index:1}
+        .bal .sub .it{display:flex;align-items:center;gap:6px;font-size:11px}
+        .bal .sub .it .d{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+        .bal .sub .it .d.g{background:var(--accent)}.bal .sub .it .d.r{background:var(--red)}
+        .bal .sub .it span{color:var(--muted)}.bal .sub .it strong{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11px}
+
+        /* Stats Grid */
+        .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+        .st{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;transition:all .25s;position:relative;overflow:hidden}
+        .st:hover{background:var(--card-h);border-color:rgba(255,255,255,.06)}
+        .st .st-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+        .st .st-lbl i{font-size:11px}
+        .st .st-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+        .st .st-sub{font-size:10px;color:var(--muted);margin-top:3px}
+        .st.green .st-val{color:var(--accent)}.st.red .st-val{color:var(--red)}
+        .st.gold .st-val{color:var(--gold)}.st.cyan .st-val{color:var(--cyan)}
+        .st .ring-wrap{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:44px;height:44px}
+        .ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+
+        /* Chart Section */
+        .chart-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;overflow:hidden}
+        .chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .chart-hdr h3{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
+        .chart-hdr h3 i{font-size:12px;opacity:.6}
+        .chart-legend{display:flex;gap:12px;font-size:10px;color:var(--muted)}
+        .chart-legend span{display:flex;align-items:center;gap:4px}
+        .chart-legend .ld{width:8px;height:3px;border-radius:2px}
+        .chart-wrap{position:relative;height:200px}
+        .chart-wrap canvas{width:100%!important;height:100%!important}
+
+        /* Candlestick */
+        .candle-wrap{position:relative;height:240px;cursor:crosshair}
+        #candleCanvas{width:100%;height:100%;display:block}
+
+        /* Candle Tooltip */
+        .c-tip{position:fixed;background:rgba(13,20,16,.94);border:1px solid var(--border);border-radius:10px;padding:10px 13px;font-size:10px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:200;backdrop-filter:blur(10px);min-width:150px}
+        .c-tip.show{opacity:1}
+        .c-tip .ct-date{font-weight:600;margin-bottom:6px;color:var(--fg);font-size:11px}
+        .c-tip .ct-row{display:flex;justify-content:space-between;gap:16px;padding:2px 0;color:var(--muted)}
+        .c-tip .ct-row strong{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--fg);font-size:10px}
+        .c-tip .ct-row.up strong{color:var(--accent)}.c-tip .ct-row.dn strong{color:var(--red)}
+
+        /* Input */
+        .inp-sec{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+        .inp-g{position:relative}
+        .inp-g .pfx{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--muted);pointer-events:none}
+        .inp-g input,.inp-g textarea{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:12px 13px 12px 35px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--fg);outline:none;transition:border-color .25s,box-shadow .25s}
+        .inp-g input::placeholder{color:rgba(94,138,116,.5);font-weight:400}
+        .inp-g input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-d)}
+        .inp-g textarea{padding-left:13px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:400;resize:none;min-height:40px;border-radius:12px}
+        .inp-g textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-d)}
+        .inp-g textarea::placeholder{color:rgba(94,138,116,.5)}
+
+        .btn-row{display:flex;gap:8px;margin-bottom:16px}
+        .btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 14px;border:none;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+        .btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .2s}
+        .btn:active::after{background:rgba(255,255,255,.08)}
+        .btn:disabled{opacity:.45;cursor:not-allowed}
+        .btn:disabled:hover{transform:none!important;box-shadow:none!important}
+        .btn-in{background:var(--accent);color:#052e1a}
+        .btn-in:hover:not(:disabled){box-shadow:0 4px 22px rgba(0,230,138,.28);transform:translateY(-1px)}
+        .btn-out{background:var(--red);color:#2a0a0e}
+        .btn-out:hover:not(:disabled){box-shadow:0 4px 22px rgba(255,92,106,.28);transform:translateY(-1px)}
+
+        .toolbar{display:flex;gap:6px;margin-bottom:16px}
+        .tb{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 6px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .25s}
+        .tb:hover{background:var(--card-h);color:var(--fg);border-color:rgba(255,255,255,.08)}
+        .tb.te:hover{border-color:rgba(0,230,138,.25);color:var(--accent)}
+        .tb.ti:hover{border-color:rgba(255,209,102,.25);color:var(--gold)}
+        .tb.td:hover{border-color:rgba(255,92,106,.25);color:var(--red)}
+        .tb.tu:hover{border-color:rgba(0,230,138,.25);color:var(--accent)}
+
+        /* History */
+        .hist-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+        .hist-hdr h2{font-size:15px;font-weight:600}
+        .hist-hdr .tc{font-size:11px;color:var(--muted);font-weight:400}
+        .hist{display:flex;flex-direction:column;gap:5px}
+        .tx{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:all .25s;animation:si .3s ease-out}
+        @keyframes si{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .tx:hover{background:var(--card-h);border-color:rgba(255,255,255,.06)}
+        .tx-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+        .tx-i.in{background:var(--accent-d);color:var(--accent)}.tx-i.out{background:var(--red-d);color:var(--red)}
+        .tx-d{flex:1;min-width:0}
+        .tx-n{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .tx-dt{font-size:10px;color:var(--muted);margin-top:1px}
+        .tx-a{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0}
+        .tx-a.in{color:var(--accent)}.tx-a.out{color:var(--red)}
+        .tx-x{width:28px;height:28px;border-radius:7px;background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s;flex-shrink:0;opacity:0}
+        .tx:hover .tx-x{opacity:1}.tx-x:hover{background:var(--red-d);color:var(--red)}
+        .empty{text-align:center;padding:36px 20px;color:var(--muted)}
+        .empty i{font-size:40px;margin-bottom:12px;opacity:.2;display:block}
+        .empty p{font-size:12px;line-height:1.6}
+
+        /* Toast */
+        .toast-c{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:calc(100% - 28px);max-width:460px}
+        .toast{background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:11px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:tI .3s ease,tO .3s ease 2.3s forwards;pointer-events:auto}
+        .toast.s{border-color:rgba(0,230,138,.25)}.toast.s i{color:var(--accent)}
+        .toast.e{border-color:rgba(255,92,106,.25)}.toast.e i{color:var(--red)}
+        .toast.w{border-color:rgba(255,209,102,.25)}.toast.w i{color:var(--gold)}
+        @keyframes tI{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes tO{from{opacity:1}to{opacity:0;transform:translateY(-12px)}}
+
+        /* Modal */
+        .mo{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(5px);z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+        .mo.show{opacity:1;pointer-events:auto}
+        .mo-b{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:24px 20px;max-width:360px;width:100%;text-align:center;transform:scale(.92);transition:transform .3s}
+        .mo.show .mo-b{transform:scale(1)}
+        .mo-b h3{font-size:16px;font-weight:600;margin-bottom:7px}
+        .mo-b p{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+        .mo-inp{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;color:var(--fg);outline:none;margin-bottom:18px;text-align:center;transition:border-color .25s,box-shadow .25s}
+        .mo-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-d)}
+        .mo-inp::placeholder{color:var(--muted);font-weight:400}
+        .mo-btns{display:flex;gap:9px}
+        .mo-btns button{flex:1;padding:10px;border-radius:11px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+        .mo-btns .mc{background:var(--card);color:var(--muted);border:1px solid var(--border)}.mo-btns .mc:hover{background:var(--card-h);color:var(--fg)}
+        .mo-btns .mp{background:var(--accent);color:#052e1a}.mo-btns .mp:hover{box-shadow:0 4px 18px rgba(0,230,138,.28)}
+        .mo-btns .md{background:var(--red);color:#2a0a0e}.mo-btns .md:hover{box-shadow:0 4px 18px rgba(255,92,106,.28)}
+
+        #importFile{display:none}
+        @media(max-width:420px){.bal .amt{font-size:24px}.hdr h1{font-size:17px}.st .st-val{font-size:15px}.stats{gap:6px}}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+</head>
+<body>
+
+<div class="bg-glow"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="toast-c" id="toastC"></div>
+<div class="c-tip" id="cTip"></div>
+
+<!-- Modal User -->
+<div class="mo" id="userMo">
+    <div class="mo-b">
+        <h3><i class="fa-solid fa-user-pen" style="color:var(--accent);margin-right:5px"></i>Nama Pengguna</h3>
+        <p>Masukkan nama untuk mengelola data tabunganmu. Data tersimpan di cloud Firebase.</p>
+        <input type="text" class="mo-inp" id="uInp" placeholder="Contoh: Budi" maxlength="30" autocomplete="off">
+        <div class="mo-btns"><button class="mp" onclick="window._saveUser()">Lanjutkan</button></div>
+    </div>
+</div>
+
+<!-- Modal Hapus -->
+<div class="mo" id="clrMo">
+    <div class="mo-b">
+        <h3>Hapus Semua Mutasi</h3>
+        <p>Semua data transaksi akan dihapus permanen dari Firebase. Pastikan sudah <strong>export backup</strong> sebelum melanjutkan.</p>
+        <div class="mo-btns"><button class="mc" onclick="window._clrClose()">Batal</button><button class="md" onclick="window._clrOk()">Hapus Semua</button></div>
+    </div>
+</div>
+
+<input type="file" id="importFile" accept=".json">
+
+<div class="app">
+    <header class="hdr">
+        <div class="hdr-left">
+            <div class="hdr-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h1>Financial<small>Dashboard Tabungan</small></h1>
+        </div>
+        <div class="user-badge" id="uBadge" onclick="window._showUser()" style="display:none"><i class="fa-solid fa-user"></i><span id="uName"></span></div>
+    </header>
+
+    <div class="conn" id="connSt">
+        <div class="dot ld" id="cDot"></div>
+        <span id="cTxt">Menghubungkan ke Firebase...</span>
+    </div>
+
+    <!-- Saldo -->
+    <section class="bal">
+        <div class="lbl">Total Saldo</div>
+        <div class="amt" id="balDisp">Rp 0</div>
+        <div class="sub">
+            <div class="it"><div class="d g"></div><span>Masuk:</span><strong id="tIn">Rp 0</strong></div>
+            <div class="it"><div class="d r"></div><span>Keluar:</span><strong id="tOut">Rp 0</strong></div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="st cyan">
+            <div class="st-lbl"><i class="fa-solid fa-arrow-right-arrow-left"></i>Total Mutasi</div>
+            <div class="st-val" id="sCount">0</div>
+            <div class="st-sub">transaksi tercatat</div>
+        </div>
+        <div class="st gold">
+            <div class="st-lbl"><i class="fa-solid fa-calculator"></i>Rata-rata</div>
+            <div class="st-val" id="sAvg">Rp 0</div>
+            <div class="st-sub">per transaksi</div>
+        </div>
+        <div class="st green">
+            <div class="st-lbl"><i class="fa-solid fa-arrow-trend-up"></i>Tertinggi</div>
+            <div class="st-val" id="sMax">Rp 0</div>
+            <div class="st-sub">mutasi masuk</div>
+        </div>
+        <div class="st red" style="padding-right:70px">
+            <div class="st-lbl"><i class="fa-solid fa-piggy-bank"></i>Rasio Tabungan</div>
+            <div class="st-val" id="sRate">0%</div>
+            <div class="st-sub">dari total masuk</div>
+            <div class="ring-wrap"><svg viewBox="0 0 36 36"><path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="2.8"/><path id="ringPath" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="var(--red)" stroke-width="2.8" stroke-dasharray="0,100" stroke-linecap="round"/></svg></div>
+        </div>
+    </section>
+
+    <!-- Line Chart -->
+    <section class="chart-section">
+        <div class="chart-hdr">
+            <h3><i class="fa-solid fa-chart-area"></i>Tren Saldo</h3>
+            <div class="chart-legend"><span><span class="ld" style="background:var(--accent)"></span>Saldo</span></div>
+        </div>
+        <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+    </section>
+
+    <!-- Candlestick -->
+    <section class="chart-section">
+        <div class="chart-hdr">
+            <h3><i class="fa-solid fa-chart-bar"></i>Indeks Perbankan</h3>
+            <div class="chart-legend">
+                <span><span class="ld" style="background:var(--gold)"></span>MA5</span>
+                <span><span class="ld" style="background:var(--cyan)"></span>MA20</span>
+            </div>
+        </div>
+        <div class="candle-wrap"><canvas id="candleCanvas"></canvas></div>
+    </section>
+
+    <!-- Input -->
+    <section class="inp-sec">
+        <div class="inp-g"><span class="pfx">Rp</span><input type="text" id="nomInp" placeholder="Masukkan nominal..." inputmode="numeric" autocomplete="off" disabled></div>
+        <div class="inp-g"><textarea id="noteInp" placeholder="Catatan (opsional)" rows="1" disabled></textarea></div>
+    </section>
+    <div class="btn-row">
+        <button class="btn btn-in" id="bIn" onclick="window._addTx('in')" disabled><i class="fa-solid fa-arrow-down"></i>Uang Masuk</button>
+        <button class="btn btn-out" id="bOut" onclick="window._addTx('out')" disabled><i class="fa-solid fa-arrow-up"></i>Uang Keluar</button>
+    </div>
+
+    <div class="toolbar">
+        <button class="tb te" onclick="window._export()"><i class="fa-solid fa-download"></i>Export</button>
+        <button class="tb ti" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i>Import</button>
+        <button class="tb tu" onclick="window._showUser()"><i class="fa-solid fa-user-gear"></i>User</button>
+        <button class="tb td" id="bClr" onclick="window._clrShow()" style="display:none"><i class="fa-solid fa-trash-can"></i>Hapus</button>
+    </div>
+
+    <section>
+        <div class="hist-hdr"><h2>Mutasi Bank <span class="tc" id="txC"></span></h2></div>
+        <div class="hist" id="histList"><div class="empty" id="empSt"><i class="fa-solid fa-receipt"></i><p>Belum ada mutasi.<br>Mulai catat uang masuk atau keluar.</p></div></div>
+    </section>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import{getDatabase,ref,push,set,remove,onValue}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+const firebaseConfig={apiKey:"AIzaSyDmorgTsaxoF7BdQblGY7w9h6WpD6tvACM",authDomain:"tabungansaya.firebaseapp.com",databaseURL:"https://tabungansaya-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"tabungansaya",storageBucket:"tabungansaya.firebasestorage.app",messagingSenderId:"667193996078",appId:"1:667193996078:web:3af18e68574436350e80bf",measurementId:"G-07SMVT7445"};
+const app=initializeApp(firebaseConfig),db=getDatabase(app);
+
+/* ========== STATE ========== */
+const UK='tabungan_firebase_uid';let userId=null,userRef=null,txs=[],isW=false;
+const $=id=>document.getElementById(id);
+const nomInp=$('nomInp'),noteInp=$('noteInp'),bIn=$('bIn'),bOut=$('bOut'),balDisp=$('balDisp'),
+      tInEl=$('tIn'),tOutEl=$('tOut'),histList=$('histList'),empSt=$('empSt'),bClr=$('bClr'),
+      clrMo=$('clrMo'),userMo=$('userMo'),uInp=$('uInp'),impF=$('importFile'),
+      toastC=$('toastC'),txC=$('txC'),connSt=$('connSt'),cDot=$('cDot'),cTxt=$('cTxt'),
+      uBadge=$('uBadge'),uNameEl=$('uName'),cTip=$('cTip');
+
+/* ========== UTIL ========== */
+const slugify=n=>n.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/[\s-]+/g,'_').replace(/^_|_$/g,'');
+const fmtRp=n=>'Rp '+Math.abs(n).toLocaleString('id-ID');
+const fmtDate=ts=>{const d=new Date(ts),h=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],b=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];return`${h[d.getDay()]}, ${d.getDate()} ${b[d.getMonth()]} ${d.getFullYear()} \u00B7 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+const esc=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const fmtShort=ts=>{const d=new Date(ts);return`${d.getDate()}/${d.getMonth()+1}`};
+const getUser=()=>{try{return localStorage.getItem(UK)||''}catch(e){return''}};
+const setUser=n=>{try{localStorage.setItem(UK,n)}catch(e){}};
+const clrUser=()=>{try{localStorage.removeItem(UK)}catch(e){}};
+
+/* ========== CONN ========== */
+function setConn(s){cDot.className='dot '+s;connSt.classList.remove('ok','no');if(s==='on'){connSt.classList.add('ok');cTxt.textContent='Terhubung ke Firebase'}else if(s==='off'){connSt.classList.add('no');cTxt.textContent='Koneksi terputus'}else{cTxt.textContent='Menghubungkan ke Firebase...'}}
+
+/* ========== USER ========== */
+window._showUser=()=>{uInp.value=getUser();userMo.classList.add('show');setTimeout(()=>uInp.focus(),300)};
+window._saveUser=()=>{const n=uInp.value.trim();if(!n){toast('Masukkan nama pengguna','e');uInp.focus();return}const uid=slugify(n);if(!uid){toast('Nama tidak valid','e');return}setUser(n);userMo.classList.remove('show');startListen(uid);enableInp(true);uBadge.style.display='';uNameEl.textContent=n;toast(`Selamat datang, ${esc(n)}!`,'s')};
+
+/* ========== FIREBASE ========== */
+function startListen(uid){
+    userId=uid;userRef=ref(db,'users/'+uid);
+    onValue(userRef,snap=>{
+        setConn('on');if(isW)return;
+        const d=snap.val();
+        if(d){txs=Object.entries(d).map(([k,v])=>({id:k,type:v.type,amount:v.amount,note:v.note||'',ts:v.ts}))}else{txs=[]}
+        renderAll();
+    },err=>{setConn('off');console.error(err);toast('Gagal membaca data Firebase','e')});
+}
+
+/* ========== CALC ========== */
+function calc(){let i=0,o=0;txs.forEach(t=>{if(t.type==='in')i+=t.amount;else o+=t.amount});return{i,o,bal:i-o}}
+
+function updateUI(){
+    const{i,o,bal}=calc();
+    balDisp.textContent=(bal<0?'-':'')+fmtRp(bal);
+    tInEl.textContent=fmtRp(i);tOutEl.textContent=fmtRp(o);
+    txC.textContent=txs.length>0?`(${txs.length})`:'';
+    // Stats
+    $('sCount').textContent=txs.length;
+    const avg=txs.length?txs.reduce((s,t)=>s+t.amount,0)/txs.length:0;
+    $('sAvg').textContent=fmtRp(Math.round(avg));
+    const inTxs=txs.filter(t=>t.type==='in');
+    $('sMax').textContent=inTxs.length?fmtRp(Math.max(...inTxs.map(t=>t.amount))):'Rp 0';
+    const rate=i>0?Math.round(((i-o)/i)*100):0;
+    $('sRate').textContent=rate+'%';
+    const ring=$('ringPath');
+    ring.setAttribute('stroke-dasharray',`${Math.max(0,Math.min(100,rate))}, 100`);
+    ring.setAttribute('stroke',rate>=50?'var(--accent)':rate>=25?'var(--gold)':'var(--red)');
+}
+
+function flashBal(type){balDisp.classList.remove('fu','fd');void balDisp.offsetWidth;balDisp.classList.add(type==='in'?'fu':'fd');setTimeout(()=>balDisp.classList.remove('fu','fd'),600)}
+
+/* ========== RENDER ========== */
+function renderAll(){updateUI();renderHist();updateLineChart()}
+
+function renderHist(){
+    const sorted=[...txs].sort((a,b)=>b.ts-a.ts);
+    if(!sorted.length){histList.innerHTML='';histList.appendChild(empSt);empSt.style.display='';bClr.style.display='none';return}
+    empSt.style.display='none';bClr.style.display='';
+    histList.innerHTML=sorted.map(t=>{const isIn=t.type==='in';return`<div class="tx" data-id="${t.id}"><div class="tx-i ${t.type}"><i class="fa-solid ${isIn?'fa-arrow-down':'fa-arrow-up'}"></i></div><div class="tx-d"><div class="tx-n">${esc(t.note||(isIn?'Uang masuk':'Uang keluar'))}</div><div class="tx-dt">${fmtDate(t.ts)}</div></div><div class="tx-a ${t.type}">${isIn?'+':'-'}${fmtRp(t.amount)}</div><button class="tx-x" onclick="window._delTx('${t.id}')" aria-label="Hapus"><i class="fa-solid fa-xmark"></i></button></div>`}).join('');
+}
+
+/* ========== INPUT ========== */
+nomInp.addEventListener('input',function(){const c=this.value.replace(/[^0-9]/g,'');this.value=c?parseInt(c,10).toLocaleString('id-ID'):''});
+noteInp.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,70)+'px'});
+function enableInp(e){nomInp.disabled=!e;noteInp.disabled=!e;bIn.disabled=!e;bOut.disabled=!e}
+
+/* ========== ADD TX ========== */
+window._addTx=async function(type){
+    const raw=nomInp.value.replace(/[^0-9]/g,''),amt=parseInt(raw,10);
+    if(!amt||amt<=0){toast('Masukkan nominal valid','e');nomInp.focus();return}
+    if(type==='out'){const{bal}=calc();if(amt>bal){toast('Saldo tidak mencukupi','e');return}}
+    enableInp(false);isW=true;
+    try{
+        const nr=push(userRef),d={type,amount:amt,note:noteInp.value.trim(),ts:Date.now()};
+        await set(nr,d);txs.push({id:nr.key,...d});isW=false;flashBal(type);renderAll();
+        nomInp.value='';noteInp.value='';noteInp.style.height='auto';nomInp.focus();
+        toast(`${type==='in'?'Uang masuk':'Uang keluar'} ${fmtRp(amt)} dicatat`,'s');
+    }catch(err){isW=false;setConn('off');console.error(err);toast('Gagal menyimpan. Cek koneksi.','e')}
+    enableInp(true);
+};
+
+/* ========== DEL TX ========== */
+window._delTx=async function(id){
+    enableInp(false);isW=true;
+    try{await remove(ref(db,'users/'+userId+'/'+id));const idx=txs.findIndex(t=>t.id===id);if(idx!==-1)txs.splice(idx,1);isW=false;renderAll();toast('Mutasi dihapus','w')}
+    catch(err){isW=false;setConn('off');console.error(err);toast('Gagal menghapus','e')}
+    enableInp(true);
+};
+
+/* ========== CLEAR ALL ========== */
+window._clrShow=()=>clrMo.classList.add('show');
+window._clrClose=()=>clrMo.classList.remove('show');
+window._clrOk=async function(){
+    enableInp(false);isW=true;
+    try{await remove(userRef);txs=[];isW=false;renderAll();clrMo.classList.remove('show');toast('Semua mutasi dihapus','w')}
+    catch(err){isW=false;setConn('off');console.error(err);toast('Gagal menghapus','e')}
+    enableInp(true);
+};
+clrMo.addEventListener('click',e=>{if(e.target===clrMo)window._clrClose()});
+userMo.addEventListener('click',e=>{if(e.target===userMo)userMo.classList.remove('show')});
+
+/* ========== EXPORT/IMPORT ========== */
+window._export=function(){
+    if(!txs.length){toast('Tidak ada data','w');return}
+    const{i,o,bal}=calc(),bk={app:'Tabungan Saya',version:'firebase',exported:new Date().toISOString(),user:getUser(),summary:{total_masuk:i,total_keluar:o,saldo:bal,jumlah:txs.length},transactions:txs};
+    const bl=new Blob([JSON.stringify(bk,null,2)],{type:'application/json'}),u=URL.createObjectURL(bl),a=document.createElement('a');
+    const d=new Date(),fn=`tabungan_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.json`;
+    a.href=u;a.download=fn;a.click();URL.revokeObjectURL(u);toast(`"${fn}" diunduh`,'s');
+};
+
+impF.addEventListener('change',async function(e){
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=async function(ev){
+        try{
+            const d=JSON.parse(ev.target.result);let arr=null;
+            if(Array.isArray(d))arr=d;else if(d&&Array.isArray(d.transactions))arr=d.transactions;
+            else{toast('Format tidak dikenali','e');return}
+            const v=arr.filter(t=>t&&(t.type==='in'||t.type==='out')&&typeof t.amount==='number'&&t.amount>0&&typeof t.ts==='number');
+            if(!v.length){toast('Tidak ada data valid','e');return}
+            enableInp(false);isW=true;let n=0;
+            for(const t of v){const nr=push(userRef);await set(nr,{type:t.type,amount:t.amount,note:t.note||'',ts:t.ts});n++}
+            isW=false;enableInp(true);renderAll();toast(`${n} mutasi diimport`,'s');
+        }catch(err){isW=false;enableInp(true);console.error(err);toast('Gagal membaca file','e')}
+    };r.readAsText(f);this.value='';
+});
+
+/* ========== TOAST ========== */
+function toast(msg,type){
+    const ic={s:'fa-circle-check',e:'fa-circle-exclamation',w:'fa-triangle-exclamation'};
+    const t=document.createElement('div');t.className=`toast ${type||'s'}`;
+    t.innerHTML=`<i class="fa-solid ${ic[type]||ic.s}"></i>${esc(msg)}`;toastC.appendChild(t);
+    setTimeout(()=>{if(t.parentNode)t.remove()},2700);
+}
+
+/* ========== KEYBOARD ========== */
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){window._clrClose();userMo.classList.remove('show')}
+    if(e.key==='Enter'&&!e.shiftKey&&document.activeElement===nomInp){e.preventDefault();if(!nomInp.disabled)window._addTx('in')}
+    if(e.key==='Enter'&&!e.shiftKey&&document.activeElement===uInp){e.preventDefault();window._saveUser()}
+});
+
+/* ============================================= */
+/* ========== LINE CHART (Chart.js) ============ */
+/* ============================================= */
+let lineChart=null;
+function updateLineChart(){
+    const sorted=[...txs].sort((a,b)=>a.ts-b.ts);
+    let labels=[],data=[],runBal=0;
+    sorted.forEach(t=>{runBal+=t.type==='in'?t.amount:-t.amount;labels.push(fmtShort(t.ts));data.push(runBal)});
+
+    // Jika tidak ada data, tambah satu titik nol
+    if(!labels.length){labels=['Mulai'];data=[0]}
+
+    const ctx=$('lineChart').getContext('2d');
+    const grad=ctx.createLinearGradient(0,0,0,200);
+    grad.addColorStop(0,'rgba(0,230,138,0.25)');grad.addColorStop(1,'rgba(0,230,138,0.0)');
+
+    if(lineChart){
+        lineChart.data.labels=labels;lineChart.data.datasets[0].data=data;
+        lineChart.data.datasets[0].backgroundColor=grad;lineChart.update('none');return;
+    }
+    lineChart=new Chart(ctx,{
+        type:'line',
+        data:{labels,datasets:[{data,borderColor:'#00e68a',backgroundColor:grad,fill:true,tension:.35,pointRadius:3,pointBackgroundColor:'#00e68a',pointBorderColor:'#00e68a',pointHoverRadius:5,borderWidth:2}]},
+        options:{responsive:true,maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(13,20,16,.92)',borderColor:'rgba(30,51,41,.8)',borderWidth:1,titleColor:'#e4f2ea',bodyColor:'#e4f2ea',titleFont:{family:'Space Grotesk',size:11},bodyFont:{family:'JetBrains Mono',size:11},padding:10,cornerRadius:8,displayColors:false,callbacks:{label:c=>`Saldo: ${fmtRp(c.parsed.y)}`}}},
+        scales:{x:{grid:{color:'rgba(255,255,255,.03)',drawBorder:false},ticks:{color:'#5e8a74',font:{size:9,family:'Space Grotesk'},maxTicksLimit:8}},y:{grid:{color:'rgba(255,255,255,.04)',drawBorder:false},ticks:{color:'#5e8a74',font:{size:9,family:'JetBrains Mono'},callback:v=>v>=1e6?(v/1e6).toFixed(1)+'jt':v>=1e3?(v/1e3).toFixed(0)+'rb':v}}}}
+    });
+}
+
+/* ============================================= */
+/* ====== CANDLESTICK CHART (Custom Canvas) ==== */
+/* ============================================= */
+// Generate data indeks perbankan simulasi 40 hari
+function genCandleData(days=40){
+    const d=[];let base=5200+Math.random()*200;
+    const now=new Date();
+    for(let i=days;i>=0;i--){
+        const dt=new Date(now);dt.setDate(dt.getDate()-i);
+        const chg=(Math.random()-.47)*75;const op=base;const cl=op+chg;
+        const hi=Math.max(op,cl)+Math.random()*35;const lo=Math.min(op,cl)-Math.random()*35;
+        const vol=Math.floor(Math.random()*800000+300000);
+        d.push({date:dt,open:+op.toFixed(2),high:+hi.toFixed(2),low:+lo.toFixed(2),close:+cl.toFixed(2),volume:vol});
+        base=cl;
+    }return d;
+}
+
+const candleData=genCandleData();
+let candleHover=-1;
+
+// Hitung MA
+function calcMA(data,period){
+    const r=[];for(let i=0;i<data.length;i++){
+        if(i<period-1){r.push(null);continue}
+        let s=0;for(let j=i-period+1;j<=i;j++)s+=data[j].close;
+        r.push(+(s/period).toFixed(2));
+    }return r;
+}
+const ma5=calcMA(candleData,5),ma20=calcMA(candleData,20);
+
+function drawCandlestick(){
+    const canvas=$('candleCanvas'),ctx=canvas.getContext('2d');
+    const dpr=window.devicePixelRatio||1,rect=canvas.getBoundingClientRect();
+    canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);
+    const W=rect.width,H=rect.height;
+    const pad={t:16,r:52,b:26,l:8};
+    const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+    // Area volume: 20% bawah, area candle: 80% atas
+    const volH=cH*.18,candleH=cH-volH-4;
+
+    const data=candleData;
+    let minP=Infinity,maxP=-Infinity,maxV=0;
+    data.forEach(d=>{if(d.low<minP)minP=d.low;if(d.high>maxP)maxP=d.high;if(d.volume>maxV)maxV=d.volume});
+    const rP=maxP-minP||1;minP-=rP*.08;maxP+=rP*.08;
+    const toY=p=>pad.t+(1-(p-minP)/(maxP-minP))*candleH;
+    const gap=cW/data.length,candleW=Math.max(2,gap*.65);
+
+    // Grid
+    ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;
+    const steps=5;for(let i=0;i<=steps;i++){const y=pad.t+(candleH/steps)*i;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+        const val=maxP-(maxP-minP)*(i/steps);ctx.fillStyle='#4a7560';ctx.font='9px JetBrains Mono';ctx.textAlign='left';ctx.fillText(val.toFixed(0),W-pad.r+6,y+3);}
+
+    // Volume bars
+    data.forEach((d,i)=>{const x=pad.l+i*gap+gap/2;const h=Math.max(1,(d.volume/maxV)*volH);const y=pad.t+candleH+4+volH-h;
+        const isUp=d.close>=d.open;ctx.fillStyle=isUp?'rgba(0,230,138,.15)':'rgba(255,92,106,.15)';ctx.fillRect(x-candleW/2,y,candleW,h)});
+
+    // MA20 line
+    ctx.beginPath();ctx.strokeStyle='rgba(0,212,255,.5)';ctx.lineWidth=1.2;let started=false;
+    ma20.forEach((v,i)=>{if(v===null)return;const x=pad.l+i*gap+gap/2,y=toY(v);if(!started){ctx.moveTo(x,y);started=true}else ctx.lineTo(x,y)});ctx.stroke();
+
+    // MA5 line
+    ctx.beginPath();ctx.strokeStyle='rgba(255,209,102,.6)';ctx.lineWidth=1.2;started=false;
+    ma5.forEach((v,i)=>{if(v===null)return;const x=pad.l+i*gap+gap/2,y=toY(v);if(!started){ctx.moveTo(x,y);started=true}else ctx.lineTo(x,y)});ctx.stroke();
+
+    // Candle bodies + wicks
+    data.forEach((d,i)=>{
+        const x=pad.l+i*gap+gap/2;const isUp=d.close>=d.open;
+        const col=isUp?'#00e68a':'#ff5c6a';
+        const isHov=i===candleHover;
+
+        // Wick
+        ctx.beginPath();ctx.moveTo(x,toY(d.high));ctx.lineTo(x,toY(d.low));
+        ctx.strokeStyle=isHov?'#ffffff':col;ctx.lineWidth=isHov?1.5:1;ctx.stroke();
+
+        // Body
+        const bTop=toY(Math.max(d.open,d.close)),bBot=toY(Math.min(d.open,d.close));
+        const bH=Math.max(1,bBot-bTop);
+        if(isUp){
+            ctx.fillStyle=isHov?'rgba(0,230,138,.35)':col;
+            ctx.fillRect(x-candleW/2,bTop,candleW,bH);
+        }else{
+            ctx.fillStyle=isHov?'rgba(255,92,106,.35)':col;
+            ctx.fillRect(x-candleW/2,bTop,candleW,bH);
+        }
+
+        // Hover highlight bar
+        if(isHov){ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(pad.l+i*gap,pad.t,gap,cH)}
+    });
+
+    // X-axis labels
+    ctx.fillStyle='#4a7560';ctx.font='8px Space Grotesk';ctx.textAlign='center';
+    const step=Math.max(1,Math.floor(data.length/6));
+    for(let i=0;i<data.length;i+=step){const x=pad.l+i*gap+gap/2;const dt=data[i].date;ctx.fillText(`${dt.getDate()}/${dt.getMonth()+1}`,x,H-pad.b+14)}
+}
+
+// Candlestick hover tooltip
+ $('candleCanvas').addEventListener('mousemove',function(e){
+    const rect=this.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    const pad={l:8,r:52},cW=rect.width-pad.l-pad.r,gap=cW/candleData.length;
+    const idx=Math.floor((mx-pad.l)/gap);
+    if(idx<0||idx>=candleData.length){candleHover=-1;cTip.classList.remove('show');drawCandlestick();return}
+    candleHover=idx;drawCandlestick();
+    const d=candleData[idx],isUp=d.close>=d.open;
+    const b=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+    cTip.innerHTML=`<div class="ct-date">${d.date.getDate()} ${b[d.date.getMonth()]} ${d.date.getFullYear()}</div>
+        <div class="ct-row ${isUp?'up':'dn'}"><span>Open</span><strong>${d.open.toFixed(2)}</strong></div>
+        <div class="ct-row ${isUp?'up':'dn'}"><span>High</span><strong>${d.high.toFixed(2)}</strong></div>
+        <div class="ct-row ${isUp?'up':'dn'}"><span>Low</span><strong>${d.low.toFixed(2)}</strong></div>
+        <div class="ct-row ${isUp?'up':'dn'}"><span>Close</span><strong>${d.close.toFixed(2)}</strong></div>
+        <div class="ct-row"><span>Vol</span><strong>${(d.volume/1e6).toFixed(2)}M</strong></div>`;
+    cTip.classList.add('show');
+    let tx=e.clientX+14,ty=e.clientY-10;
+    if(tx+170>window.innerWidth)tx=e.clientX-170;
+    if(ty+130>window.innerHeight)ty=e.clientY-130;
+    cTip.style.left=tx+'px';cTip.style.top=ty+'px';
+});
+ $('candleCanvas').addEventListener('mouseleave',()=>{candleHover=-1;cTip.classList.remove('show');drawCandlestick()});
+
+// ResizeObserver untuk redraw candlestick
+const ro=new ResizeObserver(()=>drawCandlestick());
+ro.observe($('candleCanvas').parentElement);
+
+// Inisialisasi candlestick setelah DOM siap
+requestAnimationFrame(drawCandlestick);
+
+/* ========== INIT ========== */
+(function(){
+    const saved=getUser();
+    if(saved){const uid=slugify(saved);if(uid){startListen(uid);enableInp(true);uBadge.style.display='';uNameEl.textContent=saved}else{clrUser();userMo.classList.add('show');setTimeout(()=>uInp.focus(),300)}}
+    else{userMo.classList.add('show');setTimeout(()=>uInp.focus(),300)}
+})();
+</script>
+</body>
+</html>
