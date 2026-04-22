@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Saham, Coin & Candlestick</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#07090f;color:#c8cdd8;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0d1117}
+::-webkit-scrollbar-thumb{background:#1e293b;border-radius:99px}
+
+/* ═══════════════════════════════════════
+   NAVBAR
+   ═══════════════════════════════════════ */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(51,65,85,.25);
+}
+.nav-inner{
+  max-width:960px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;gap:6px;
+  height:56px;
+}
+.nav-logo{
+  font-size:14px;font-weight:800;color:#f1f5f9;
+  display:flex;align-items:center;gap:8px;
+  margin-right:auto;
+  flex-shrink:0;
+}
+.nav-logo svg{width:20px;height:20px;flex-shrink:0}
+.nav-logo span{
+  background:linear-gradient(135deg,#4ade80,#3b82f6);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-btn{
+  padding:8px 18px;border:none;
+  background:transparent;color:#64748b;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:600;
+  border-radius:10px;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+  position:relative;
+}
+.nav-btn:hover{color:#94a3b8;background:rgba(30,41,59,.4)}
+.nav-btn.active{color:#f1f5f9;background:rgba(30,41,59,.7)}
+.nav-btn .nav-ico{font-size:16px}
+.nav-btn .nav-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 6px #4ade80;
+  animation:livePulse 1.5s ease infinite;
+  display:none;
+}
+.nav-btn.active .nav-dot{display:block}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ═══════════════════════════════════════
+   PAGES
+   ═══════════════════════════════════════ */
+.page{display:none;animation:pageFade .35s ease}
+.page.active{display:block}
+@keyframes pageFade{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════
+   HERO (page 1 only)
+   ═══════════════════════════════════════ */
+.hero{position:relative;padding:50px 20px 40px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(34,197,94,.08) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:clamp(26px,5vw,44px);font-weight:800;color:#f1f5f9;line-height:1.15;margin-bottom:12px;animation:fadeUp .6s ease .1s both}
+.hero h1 span{background:linear-gradient(135deg,#4ade80,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:#64748b;font-size:15px;max-width:500px;margin:0 auto;animation:fadeUp .6s ease .2s both}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 60px}
+
+/* ═══════════════════════════════════════
+   TRADING VIEW PAGE
+   ═══════════════════════════════════════ */
+.tv-page-head{
+  text-align:center;padding:36px 20px 8px;
+}
+.tv-page-head h1{
+  font-size:clamp(22px,4vw,32px);font-weight:800;color:#f1f5f9;margin-bottom:6px;
+}
+.tv-page-head h1 span{background:linear-gradient(135deg,#4ade80,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tv-page-head p{color:#475569;font-size:14px}
+.tv-page-wrap{max-width:1060px;margin:0 auto;padding:0 16px 60px}
+
+.sym-selector{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;justify-content:center}
+.sym-btn{
+  padding:8px 14px;border:1px solid rgba(51,65,85,.3);
+  background:rgba(15,23,42,.5);color:#64748b;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  border-radius:10px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:7px;
+}
+.sym-btn:hover{border-color:rgba(71,85,105,.5);color:#94a3b8}
+.sym-btn.active{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.06);color:#4ade80}
+.sym-btn .sym-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sym-btn.active .sym-dot{box-shadow:0 0 6px currentColor}
+
+.tv-frame{
+  position:relative;background:#0a0d14;border-radius:20px;overflow:hidden;
+  border:3px solid #1a1f2e;
+  box-shadow:0 0 0 1px rgba(51,65,85,.3),0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(34,197,94,.03),inset 0 1px 0 rgba(255,255,255,.03);
+}
+.tv-frame::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 10%,rgba(34,197,94,.15) 50%,transparent 90%);z-index:2;
+}
+.tv-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:rgba(10,13,20,.9);
+  border-bottom:1px solid rgba(51,65,85,.2);position:relative;z-index:3;
+}
+.tv-dots{display:flex;gap:6px}
+.tv-dot{width:10px;height:10px;border-radius:50%}
+.tv-dot.r{background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,.4)}
+.tv-dot.y{background:#f59e0b;box-shadow:0 0 6px rgba(245,158,11,.4)}
+.tv-dot.g{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.4)}
+.tv-url{
+  font-size:11px;color:#475569;font-weight:500;
+  background:rgba(15,23,42,.6);padding:4px 14px;border-radius:6px;
+  border:1px solid rgba(51,65,85,.15);letter-spacing:.3px;
+}
+.tv-badge{
+  font-size:9px;font-weight:700;letter-spacing:1px;color:#4ade80;
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.12);
+  padding:3px 10px;border-radius:4px;display:flex;align-items:center;gap:4px;
+}
+.tv-badge .live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:livePulse 1.5s ease infinite}
+
+.tv-screen{width:100%;aspect-ratio:16/10;position:relative;overflow:hidden}
+.tv-screen iframe{width:100%;height:100%;border:none;position:absolute;top:0;left:0}
+.tv-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:#0a0d14;z-index:5;transition:opacity .5s;
+}
+.tv-loading.hidden{opacity:0;pointer-events:none}
+.tv-spinner{
+  width:36px;height:36px;border:3px solid rgba(51,65,85,.3);
+  border-top-color:#4ade80;border-radius:50%;
+  animation:spin .8s linear infinite;margin-bottom:12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tv-loading-text{font-size:12px;color:#475569;font-weight:500}
+
+.tv-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;background:rgba(10,13,20,.9);
+  border-top:1px solid rgba(51,65,85,.15);position:relative;z-index:3;
+}
+.tv-footer-left{font-size:10px;color:#334155;font-weight:500;letter-spacing:.5px}
+.tv-open-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;color:#60a5fa;
+  background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);
+  padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s;
+  text-decoration:none;
+}
+.tv-open-btn:hover{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.25)}
+.tv-reflection{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(165deg,rgba(255,255,255,.012) 0%,transparent 40%);pointer-events:none;z-index:2;border-radius:16px}
+.tv-brand{position:absolute;bottom:22px;right:18px;z-index:4;font-size:8px;font-weight:700;letter-spacing:2px;color:rgba(51,65,85,.35);text-transform:uppercase}
+.tv-stand{display:flex;justify-content:center;margin-top:-2px}
+.tv-stand-bar{width:120px;height:18px;background:linear-gradient(180deg,#1a1f2e,#0f1420);border-radius:0 0 8px 8px;border:1px solid rgba(51,65,85,.2);border-top:none}
+.tv-stand-base{width:180px;height:6px;background:linear-gradient(180deg,#1a1f2e,#0d1117);border-radius:0 0 10px 10px;border:1px solid rgba(51,65,85,.15);border-top:none;margin-top:-1px}
+
+/* ═══════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════ */
+.card{background:linear-gradient(145deg,#0d1220,#0f1628);border:1px solid rgba(51,65,85,.4);border-radius:20px;padding:28px;margin-bottom:24px;position:relative;overflow:hidden;transition:border-color .3s}
+.card:hover{border-color:rgba(51,65,85,.7)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.card-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.num-1{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.num-2{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.num-3{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.num-4{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.num-5{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.num-6{background:linear-gradient(135deg,#ec4899,#db2777)}
+.num-7{background:linear-gradient(135deg,#06b6d4,#0891b2)}
+.num-8{background:linear-gradient(135deg,#f97316,#ea580c)}
+.num-9{background:linear-gradient(135deg,#6366f1,#4f46e5)}
+.card-title{font-size:17px;font-weight:700;color:#e2e8f0}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+.gbox{background:rgba(15,23,42,.6);border:1px solid rgba(51,65,85,.3);border-radius:14px;padding:20px}
+.gbox h3{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.gbox h3 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gbox ul{list-style:none;padding:0}
+.gbox li{position:relative;padding:5px 0 5px 18px;font-size:13.5px;color:#94a3b8}
+.gbox li::before{content:'→';position:absolute;left:0;color:#475569;font-size:11px}
+
+.slider-wrap{position:relative;margin-bottom:8px}
+.slider{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 2px}
+.slider::-webkit-scrollbar{display:none}
+.slider img{flex:0 0 calc(100% - 8px);max-width:calc(100% - 8px);height:auto;border-radius:14px;border:1px solid rgba(51,65,85,.3);scroll-snap-align:center;object-fit:contain;background:#0a0f1a;display:block}
+.slider-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px}
+.slider-btn{width:36px;height:36px;border-radius:10px;border:1px solid rgba(51,65,85,.5);background:rgba(15,23,42,.8);color:#94a3b8;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:16px;user-select:none}
+.slider-btn:hover{background:rgba(30,41,59,.9);color:#e2e8f0;border-color:rgba(71,85,105,.6)}
+.slider-btn:active{transform:scale(.92)}
+.slider-dots{display:flex;gap:6px}
+.slider-dot{width:8px;height:8px;border-radius:99px;background:rgba(51,65,85,.6);cursor:pointer;transition:all .3s;border:none}
+.slider-dot.active{background:#4ade80;width:24px}
+
+.green{color:#4ade80}.red{color:#f87171}.gold{color:#fbbf24}
+.tag-g{display:inline-block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.15);color:#4ade80;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.tag-r{display:inline-block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.15);color:#f87171;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:600}
+
+.styled-list{list-style:none;padding:0}
+.styled-list li{position:relative;padding:8px 0 8px 28px;font-size:14px;color:#94a3b8}
+.styled-list li::before{content:'';position:absolute;left:6px;top:16px;width:7px;height:7px;border-radius:50%;border:2px solid #334155}
+.styled-list li b{color:#cbd5e1}
+.ordered{list-style:none;padding:0;counter-reset:step}
+.ordered li{position:relative;padding:10px 0 10px 40px;font-size:14px;color:#94a3b8;counter-increment:step}
+.ordered li::before{content:counter(step);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.15);color:#4ade80;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ordered li b{color:#cbd5e1}
+
+.formula{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(59,130,246,.06));border:1px solid rgba(34,197,94,.12);border-radius:14px;padding:24px;text-align:center}
+.formula p{font-size:clamp(14px,2.5vw,17px);font-weight:600;color:#e2e8f0;line-height:1.8}
+.formula .hl-green{color:#4ade80;font-weight:700}
+.formula .hl-blue{color:#60a5fa;font-weight:700}
+.formula .hl-gold{color:#fbbf24;font-weight:700}
+.formula .eq{color:#64748b;font-weight:400;margin:0 4px}
+
+.coin-tags{display:flex;flex-wrap:wrap;gap:10px}
+.coin-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(15,23,42,.6);border:1px solid rgba(51,65,85,.3);border-radius:12px;padding:12px 20px;font-size:14px;font-weight:600;color:#e2e8f0;transition:all .2s}
+.coin-tag:hover{border-color:rgba(71,85,105,.6);transform:translateY(-2px)}
+.coin-tag .sym{font-size:11px;color:#64748b;font-weight:500}
+.coin-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff}
+.ic-btc{background:linear-gradient(135deg,#f7931a,#e2820e)}
+.ic-eth{background:linear-gradient(135deg,#627eea,#4a67d6)}
+.ic-sol{background:linear-gradient(135deg,#9945ff,#14f195)}
+.ic-bnb{background:linear-gradient(135deg,#f3ba2f,#d4a429)}
+
+.tf-row{display:flex;flex-direction:column;gap:10px}
+.tf-item{display:flex;align-items:center;gap:16px;background:rgba(15,23,42,.6);border:1px solid rgba(51,65,85,.3);border-radius:12px;padding:14px 18px;transition:all .2s}
+.tf-item:hover{border-color:rgba(71,85,105,.6)}
+.tf-label{font-size:20px;font-weight:800;color:#e2e8f0;min-width:70px}
+.tf-desc{font-size:13px;color:#64748b}
+.tf-bar{flex:1;height:4px;background:rgba(30,41,59,.8);border-radius:99px;overflow:hidden}
+.tf-fill{height:100%;border-radius:99px}
+.fill-1h{width:30%;background:linear-gradient(90deg,#f87171,#fb923c)}
+.fill-4h{width:65%;background:linear-gradient(90deg,#60a5fa,#818cf8)}
+.fill-d{width:100%;background:linear-gradient(90deg,#4ade80,#22d3ee)}
+
+.example{background:rgba(15,23,42,.6);border:1px solid rgba(51,65,85,.3);border-radius:14px;padding:20px;display:flex;align-items:flex-start;gap:14px}
+.example-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.example p{font-size:14px;color:#94a3b8;line-height:1.8}
+.example b{color:#4ade80}
+
+.dont-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.dont-grid{grid-template-columns:1fr}}
+.dont-item{display:flex;align-items:center;gap:10px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.1);border-radius:12px;padding:14px 16px}
+.dont-icon{color:#f87171;font-size:18px;flex-shrink:0}
+.dont-item span{font-size:13px;color:#f87171;font-weight:500}
+
+.footer{text-align:center;padding:40px 20px;color:#334155;font-size:13px;border-top:1px solid rgba(51,65,85,.2)}
+.footer svg{margin-bottom:8px;opacity:.3}
+
+@keyframes fadeUp{0%{opacity:0;transform:translateY(18px)}100%{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .5s ease both}
+.slide-counter{text-align:center;font-size:12px;color:#475569;margin-top:8px;font-weight:500}
+
+/* ═══════════════════════════════════════
+   TAB SYSTEM (inside page 1)
+   ═══════════════════════════════════════ */
+.tab-card{padding:0;overflow:visible}
+.tab-card .card::before{display:none}
+.tab-header{display:flex;gap:3px;padding:6px;background:rgba(15,23,42,.5);border-radius:16px;margin:6px 6px 0 6px;border:1px solid rgba(51,65,85,.2)}
+.tab-btn{flex:1;padding:12px 8px;border:none;background:transparent;color:#64748b;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;border-radius:12px;cursor:pointer;transition:all .25s;white-space:nowrap;text-align:center;line-height:1.3}
+.tab-btn:hover{color:#94a3b8;background:rgba(30,41,59,.4)}
+.tab-btn.active{color:#f1f5f9;background:rgba(30,41,59,.8);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.tab-btn .tab-icon{display:block;font-size:20px;margin-bottom:3px}
+.tab-btn .tab-sub{display:block;font-size:9.5px;color:#475569;font-weight:400;margin-top:2px;letter-spacing:.3px}
+.tab-btn.active .tab-sub{color:#64748b}
+.tab-body{padding:24px 28px 28px}
+.tab-panel{display:none;animation:tabFade .35s ease}
+.tab-panel.active{display:block}
+@keyframes tabFade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+
+.sub-section{margin-bottom:28px}
+.sub-section:last-child{margin-bottom:0}
+.sub-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;padding:5px 12px;border-radius:8px}
+.sub-label.sl-struktur{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.15);color:#a78bfa}
+.sub-label.sl-area{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.15);color:#60a5fa}
+.sub-label.sl-entry{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.15);color:#4ade80}
+.sub-label.sl-tools{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.15);color:#fbbf24}
+.sub-label.sl-fundamental{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.15);color:#22d3ee}
+.sub-label.sl-onchain{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.15);color:#c084fc}
+.sub-label.sl-technical{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.15);color:#4ade80}
+.sub-label.sl-warning{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.15);color:#f87171}
+
+.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.k-grid{grid-template-columns:1fr}}
+.k-card{background:rgba(15,23,42,.5);border:1px solid rgba(51,65,85,.25);border-radius:12px;padding:16px;transition:all .2s}
+.k-card:hover{border-color:rgba(71,85,105,.5);transform:translateY(-1px)}
+.k-card-title{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.k-card-title .k-icon{font-size:14px}
+.k-card p{font-size:12.5px;color:#64748b;line-height:1.6}
+
+.chk-list{list-style:none;padding:0}
+.chk-list li{position:relative;padding:9px 0 9px 30px;font-size:13.5px;color:#94a3b8}
+.chk-list li::before{content:'✓';position:absolute;left:4px;top:9px;color:#4ade80;font-size:12px;font-weight:700;width:18px;height:18px;border-radius:6px;background:rgba(34,197,94,.1);display:flex;align-items:center;justify-content:center}
+.chk-list li b{color:#cbd5e1}
+.chk-list.blue li::before{color:#60a5fa;background:rgba(59,130,246,.1)}
+
+.flow{display:flex;flex-direction:column;gap:8px}
+.flow-step{display:flex;align-items:flex-start;gap:14px;background:rgba(15,23,42,.5);border:1px solid rgba(51,65,85,.25);border-radius:12px;padding:14px 16px;position:relative}
+.flow-step:not(:last-child)::after{content:'';position:absolute;bottom:-9px;left:23px;width:2px;height:10px;background:rgba(51,65,85,.4)}
+.flow-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.fn-1{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.fn-2{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.fn-3{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.fn-4{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.flow-text{font-size:13.5px;color:#94a3b8;line-height:1.6;padding-top:2px}
+.flow-text b{color:#e2e8f0}
+
+.rr-box{background:linear-gradient(135deg,rgba(34,197,94,.05),rgba(59,130,246,.05));border:1px solid rgba(34,197,94,.1);border-radius:14px;padding:20px;display:flex;align-items:center;gap:16px;margin-top:12px}
+.rr-ratio{font-size:clamp(28px,5vw,42px);font-weight:900;background:linear-gradient(135deg,#4ade80,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.rr-desc{font-size:13px;color:#64748b;line-height:1.6}
+.rr-desc b{color:#94a3b8}
+
+.warn-box{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:14px;padding:20px;display:flex;align-items:flex-start;gap:14px;margin-top:16px}
+.warn-icon{width:40px;height:40px;border-radius:10px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.warn-text{font-size:14px;color:#f87171;font-weight:500;line-height:1.7}
+.warn-text span{color:#fca5a5;font-weight:400}
+
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:550px){.tool-grid{grid-template-columns:1fr}}
+.tool-card{background:rgba(15,23,42,.5);border:1px solid rgba(51,65,85,.25);border-radius:12px;padding:16px}
+.tool-name{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:4px}
+.tool-sub{font-size:11px;color:#fbbf24;font-weight:600;margin-bottom:8px}
+.tool-desc{font-size:12.5px;color:#64748b;line-height:1.6}
+
+.tab-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(51,65,85,.3),transparent);margin:24px 0}
+
+.tab-card-outer{position:relative}
+.tab-card-outer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.2),rgba(59,130,246,.2),transparent)}
+
+@media(max-width:600px){
+  .nav-inner{gap:4px}
+  .nav-btn{padding:7px 12px;font-size:12px}
+  .nav-btn .nav-ico{font-size:14px}
+  .nav-logo span{display:none}
+  .tv-header{padding:8px 10px}
+  .tv-url{font-size:9px;padding:3px 8px}
+  .tv-badge{font-size:8px;padding:2px 7px}
+  .tv-footer{padding:6px 10px}
+  .tv-screen{aspect-ratio:4/3}
+  .tv-stand-bar{width:80px;height:14px}
+  .tv-stand-base{width:120px;height:5px}
+  .tv-brand{display:none}
+  .sym-btn{padding:6px 10px;font-size:11px}
+  .tab-body{padding:16px 14px 20px}
+  .tv-page-wrap{padding:0 10px 40px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAVBAR
+     ═══════════════════════════════════════ -->
+<nav class="navbar">
+<div class="nav-inner">
+<div class="nav-logo">
+<svg viewBox="0 0 24 24" fill="none" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+<span>TradingGuide</span>
+</div>
+<button class="nav-btn active" onclick="goPage('page-guide',this)">
+<span class="nav-ico">📖</span> Panduan
+</button>
+<button class="nav-btn" onclick="goPage('page-tv',this)">
+<span class="nav-ico">📺</span> Trading View
+<span class="nav-dot"></span>
+</button>
+</div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1: PANDUAN
+     ═══════════════════════════════════════ -->
+<div class="page active" id="page-guide">
+
+<div class="hero">
+<h1>Panduan Lengkap<br><span>Saham, Coin & Candlestick</span></h1>
+<p>Belajar dari dasar hingga tahu momen entry yang bagus — semua dalam satu halaman.</p>
+</div>
+
+<div class="wrap">
+
+<!-- 1 -->
+<div class="card">
+<div class="card-head"><div class="card-num num-1">1</div><div class="card-title">Cara Membeli</div></div>
+<div class="grid2">
+<div class="gbox"><h3><span class="dot" style="background:#3b82f6"></span> Saham</h3><ul><li>Buka akun sekuritas</li><li>Deposit dana (bank transfer)</li><li>Pilih kode saham (BBRI, TLKM)</li><li>Tentukan harga & lot</li><li>Klik Buy → tunggu matched</li></ul></div>
+<div class="gbox"><h3><span class="dot" style="background:#f59e0b"></span> Coin / Crypto</h3><ul><li>Buka akun exchange (Binance)</li><li>Verifikasi KYC (KTP/Selfie)</li><li>Deposit dana (fiat/crypto)</li><li>Pilih coin (BTC/ETH/SOL)</li><li>Klik Buy → masuk wallet</li></ul></div>
+</div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<div class="card-head"><div class="card-num num-2">2</div><div class="card-title">Membaca Candlestick</div></div>
+<div class="slider-wrap"><div class="slider" id="slider1">
+<img src="https://i.postimg.cc/wTdd7rz7/c1.jpg" alt="Candlestick 1"><img src="https://i.postimg.cc/W4zBBLGB/c2.jpg" alt="Candlestick 2"><img src="https://i.postimg.cc/63GDQrmx/c3.jpg" alt="Candlestick 3"><img src="https://i.postimg.cc/L4LcKVPH/c4.jpg" alt="Candlestick 4"><img src="https://i.postimg.cc/VLw3YbBy/c5.jpg" alt="Candlestick 5"><img src="https://i.postimg.cc/MpKNB2Fj/c6.jpg" alt="Candlestick 6">
+</div></div>
+<div class="slide-counter" id="counter1">1 / 6</div>
+<div class="slider-nav"><button class="slider-btn" onclick="slideMove('slider1',-1)">‹</button><div class="slider-dots" id="dots1"></div><button class="slider-btn" onclick="slideMove('slider1',1)">›</button></div>
+<div style="margin-top:18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center"><span class="tag-g">● Hijau = Harga Naik</span><span class="tag-r">● Merah = Harga Turun</span></div>
+<ul class="styled-list" style="margin-top:14px"><li><b>Body</b> = jarak harga open ke close</li><li><b>Wick atas</b> = harga tertinggi sesi</li><li><b>Wick bawah</b> = harga terendah sesi</li></ul>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<div class="card-head"><div class="card-num num-3">3</div><div class="card-title">Struktur Candle Penting</div></div>
+<div class="slider-wrap"><div class="slider" id="slider2">
+<img src="https://i.postimg.cc/FKwBwfsZ/s1.jpg" alt="Pattern 1"><img src="https://i.postimg.cc/1XvchTrm/s2.jpg" alt="Pattern 2"><img src="https://i.postimg.cc/kX5vFJqZ/s3.jpg" alt="Pattern 3"><img src="https://i.postimg.cc/KvYDrGmz/s4.jpg" alt="Pattern 4"><img src="https://i.postimg.cc/DyYdx9zs/s5.jpg" alt="Pattern 5"><img src="https://i.postimg.cc/fRt7p83C/s6.jpg" alt="Pattern 6">
+</div></div>
+<div class="slide-counter" id="counter2">1 / 6</div>
+<div class="slider-nav"><button class="slider-btn" onclick="slideMove('slider2',-1)">‹</button><div class="slider-dots" id="dots2"></div><button class="slider-btn" onclick="slideMove('slider2',1)">›</button></div>
+<div class="grid2" style="margin-top:18px">
+<div class="gbox"><h3 class="green"><span class="dot" style="background:#4ade80"></span> Bullish (Naik)</h3><ul><li>Hammer</li><li>Bullish Engulfing</li><li>Morning Star</li></ul></div>
+<div class="gbox"><h3 class="red"><span class="dot" style="background:#f87171"></span> Bearish (Turun)</h3><ul><li>Shooting Star</li><li>Bearish Engulfing</li><li>Evening Star</li></ul></div>
+</div>
+</div>
+
+<!-- TAB: 2 tabs -->
+<div class="tab-card-outer">
+<div class="card tab-card">
+<div class="tab-header">
+<button class="tab-btn active" onclick="switchTab('tab-chart',this)"><span class="tab-icon">📊</span>Membaca Chart<span class="tab-sub">XAUUSD / Bitcoin</span></button>
+<button class="tab-btn" onclick="switchTab('tab-coin',this)"><span class="tab-icon">🚀</span>Cari Coin Potensial<span class="tab-sub">Sebelum Meledak</span></button>
+</div>
+<div class="tab-body">
+
+<div class="tab-panel active" id="tab-chart">
+<div class="sub-section"><div class="sub-label sl-struktur">◆ Struktur Market</div>
+<div class="k-grid">
+<div class="k-card"><div class="k-card-title"><span class="k-icon">📈</span> Trend Naik (Uptrend)</div><p>Harga membuat <b style="color:#4ade80">Higher High</b> dan <b style="color:#4ade80">Higher Low</b>. Buyer menguasai market.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">📉</span> Trend Turun (Downtrend)</div><p>Harga membuat <b style="color:#f87171">Lower High</b> dan <b style="color:#f87171">Lower Low</b>. Seller mendominasi.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">↔️</span> Sideways (Ranging)</div><p>Harga terjebak antara support & resistance. <b style="color:#fbbf24">Hindari entry</b> sebelum break.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">⚡</span> BOS & CHOCH</div><p><b style="color:#60a5fa">BOS</b> = trend lanjut. <b style="color:#c084fc">CHOCH</b> = tanda awal pembalikan.</p></div>
+</div></div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-area">◆ Area Penting</div>
+<div class="k-grid">
+<div class="k-card"><div class="k-card-title"><span class="k-icon">🟢</span> Support</div><p>Area bawah harga <b style="color:#4ade80">memantul naik</b>. Break = bisa jadi resistance baru.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">🔴</span> Resistance</div><p>Area atas harga <b style="color:#f87171">tertahan turun</b>. Break + volume = bullish kuat.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">📦</span> Supply & Demand</div><p><b style="color:#f87171">Supply</b> = jualan besar. <b style="color:#4ade80">Demand</b> = belian besar.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">💧</span> Liquidity & Fakeout</div><p><b style="color:#60a5fa">Liquidity</b> = area stop loss kumpul. <b style="color:#fbbf24">Fakeout</b> = break palsu.</p></div>
+</div></div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-entry">◆ Entry Profesional</div>
+<div class="flow">
+<div class="flow-step"><div class="flow-num fn-1">1</div><div class="flow-text"><b>Identifikasi trend</b> — Pastikan trend jelas naik/turun.</div></div>
+<div class="flow-step"><div class="flow-num fn-2">2</div><div class="flow-text"><b>Tunggu retest</b> — Jangan kejar, tunggu harga test ulang area break.</div></div>
+<div class="flow-step"><div class="flow-num fn-3">3</div><div class="flow-text"><b>Konfirmasi candle</b> — Candle bullish/bearish valid di area retest.</div></div>
+<div class="flow-step"><div class="flow-num fn-4">4</div><div class="flow-text"><b>Eksekusi + RR 1:2</b> — Stop loss logis, target minimal 2x risk.</div></div>
+</div>
+<div class="rr-box"><div class="rr-ratio">1 : 2</div><div class="rr-desc"><b>Risk : Reward minimum</b><br>Rugi Rp100rb → target Rp200rb. Win rate 50% = masih profit.</div></div>
+</div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-tools">◆ Tools Penting</div>
+<div class="tool-grid">
+<div class="tool-card"><div class="tool-name">Moving Average</div><div class="tool-sub">EMA 20 / 50 / 200</div><div class="tool-desc">Harga di atas EMA = bullish. EMA 200 = trend besar.</div></div>
+<div class="tool-card"><div class="tool-name">RSI</div><div class="tool-sub">Momentum oscillator</div><div class="tool-desc">>70 = <b style="color:#f87171">overbought</b>. <30 = <b style="color:#4ade80">oversold</b>.</div></div>
+<div class="tool-card"><div class="tool-name">Volume</div><div class="tool-sub">Konfirmasi pergerakan</div><div class="tool-desc">Breakout + volume besar = valid. Kecil = rawan fakeout.</div></div>
+<div class="tool-card"><div class="tool-name">Fibonacci</div><div class="tool-sub">Level reversal</div><div class="tool-desc">Level <b style="color:#fbbf24">0.5 & 0.618</b> sering jadi retest ideal.</div></div>
+</div></div>
+</div>
+
+<div class="tab-panel" id="tab-coin">
+<div style="background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.1);border-radius:12px;padding:16px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px">
+<div style="font-size:22px;flex-shrink:0;margin-top:1px">💡</div>
+<div style="font-size:13px;color:#94a3b8;line-height:1.7"><b style="color:#e2e8f0">Tidak ada cara pasti</b> menemukan coin bakal meledak. Tapi metode ini <b style="color:#60a5fa">meningkatkan peluang</b> signifikan.</div>
+</div>
+<div class="sub-section"><div class="sub-label sl-fundamental">◆ Analisis Fundamental</div>
+<ul class="chk-list blue"><li>Project punya <b>utilitas nyata</b>?</li><li>Tim <b>jelas & terverifikasi</b>?</li><li><b>Investor besar</b> sudah masuk?</li><li>Listing di <b>exchange besar</b>?</li><li>Tokenomics sehat & <b>tidak terkonsentrasi</b></li></ul></div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-onchain">◆ On-Chain & Sentimen</div>
+<div class="k-grid">
+<div class="k-card"><div class="k-card-title"><span class="k-icon">📊</span> Volume Naik</div><p>Volume <b style="color:#c084fc">meningkat konsisten</b> — tanda akumulasi.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">👥</span> Holder Bertambah</div><p>Wallet <b style="color:#c084fc">terus naik</b> = fundamental kuat.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">🔥</span> Trending Komunitas</div><p>Ramai di <b style="color:#c084fc">X, Telegram, Reddit</b>.</p></div>
+<div class="k-card"><div class="k-card-title"><span class="k-icon">🎯</span> Narasi Kuat</div><p>Masuk <b style="color:#c084fc">narasi panas</b>: AI, Gaming, RWA, DePIN.</p></div>
+</div></div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-technical">◆ Konfirmasi Technical</div>
+<ul class="chk-list"><li><b>Breakout akumulasi panjang</b></li><li><b>Volume meledak</b> saat breakout</li><li><b>Higher low terbentuk</b></li><li><b>BTC sehat/bullish</b></li></ul></div>
+<div class="tab-divider"></div>
+<div class="sub-section"><div class="sub-label sl-warning">◆ Peringatan</div>
+<div class="warn-box"><div class="warn-icon">⚠</div><div class="warn-text">Jangan kejar coin naik <b>300%+</b> tanpa pullback.<br><span>Kamu masuk di top — yang untung sudah exit duluan.</span></div></div>
+<div class="warn-box" style="margin-top:10px;border-color:rgba(245,158,11,.15)"><div class="warn-icon" style="background:rgba(245,158,11,.1);color:#fbbf24">⚡</div><div class="warn-text" style="color:#fbbf24"><span style="color:#fcd34d">Selalu pakai stop loss.</span> Coin bisa turun 80-90%. <span style="color:#fcd34d">Protect capital > chase profit.</span></div></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- 4-9 -->
+<div class="card"><div class="card-head"><div class="card-num num-4">4</div><div class="card-title">Momen Terbaik Membeli</div></div>
+<ol class="ordered"><li>Harga menyentuh <b>Support</b> lalu memantul</li><li><b>Breakout Resistance</b> disertai volume besar</li><li>Trend naik terjadi <b>pullback</b> ke area sehat</li><li>Muncul candle <b>bullish konfirmasi</b></li></ol></div>
+
+<div class="card"><div class="card-head"><div class="card-num num-5">5</div><div class="card-title">Jangan Beli Saat...</div></div>
+<div class="dont-grid">
+<div class="dont-item"><span class="dont-icon">✕</span><span>Harga sudah naik terlalu tinggi</span></div>
+<div class="dont-item"><span class="dont-icon">✕</span><span>FOMO ikut-ikutan orang lain</span></div>
+<div class="dont-item"><span class="dont-icon">✕</span><span>Market sedang panik / chaos</span></div>
+<div class="dont-item"><span class="dont-icon">✕</span><span>Tidak pasang stop loss</span></div>
+</div></div>
+
+<div class="card"><div class="card-head"><div class="card-num num-6">6</div><div class="card-title">Rumus Entry Simpel</div></div>
+<div class="formula"><p><span class="hl-green">Trend Naik</span><span class="eq">+</span><span class="hl-blue">Support</span><span class="eq">+</span><span class="hl-green">Candle Bullish</span><span class="eq">+</span><span class="hl-gold">Volume Naik</span><br><span class="eq">=</span><span style="color:#f1f5f9;font-size:clamp(16px,3vw,20px)">Peluang Bagus ✦</span></p></div></div>
+
+<div class="card"><div class="card-head"><div class="card-num num-7">7</div><div class="card-title">Coin Cocok untuk Pemula</div></div>
+<div class="coin-tags">
+<div class="coin-tag"><div class="coin-icon ic-btc">₿</div>BTC<span class="sym">Bitcoin</span></div>
+<div class="coin-tag"><div class="coin-icon ic-eth">Ξ</div>ETH<span class="sym">Ethereum</span></div>
+<div class="coin-tag"><div class="coin-icon ic-sol">◎</div>SOL<span class="sym">Solana</span></div>
+<div class="coin-tag"><div class="coin-icon ic-bnb">B</div>BNB<span class="sym">BNB Chain</span></div>
+</div></div>
+
+<div class="card"><div class="card-head"><div class="card-num num-8">8</div><div class="card-title">Timeframe yang Tepat</div></div>
+<div class="tf-row">
+<div class="tf-item"><div class="tf-label">1H</div><div class="tf-desc">Cepat, scalping</div><div class="tf-bar"><div class="tf-fill fill-1h"></div></div></div>
+<div class="tf-item"><div class="tf-label">4H</div><div class="tf-desc">Terbaik swing trade</div><div class="tf-bar"><div class="tf-fill fill-4h"></div></div></div>
+<div class="tf-item"><div class="tf-label">Daily</div><div class="tf-desc">Lihat trend utama</div><div class="tf-bar"><div class="tf-fill fill-d"></div></div></div>
+</div></div>
+
+<div class="card"><div class="card-head"><div class="card-num num-9">9</div><div class="card-title">Contoh Entry Nyata</div></div>
+<div class="example"><div class="example-icon">↗</div><p>BTC turun menyentuh <b>support</b> → muncul pola <b>Hammer</b> → <b>volume</b> mulai naik → candle <b>hijau</b> konfirmasi → <b>entry</b> di close candle hijau dengan stop loss di bawah wick Hammer.</p></div></div>
+
+</div>
+</div>
+<!-- end page-guide -->
+
+<!-- ═══════════════════════════════════════
+     PAGE 2: TRADING VIEW
+     ═══════════════════════════════════════ -->
+<div class="page" id="page-tv">
+
+<div class="tv-page-head">
+<h1>📺 Trading <span>View</span></h1>
+<p>Chart profesional real-time — pilih pair untuk analisa</p>
+</div>
+
+<div class="tv-page-wrap">
+
+<div class="sym-selector" id="symSelector">
+<button class="sym-btn active" onclick="changeSymbol('BINANCE:BTCUSDT',this)"><span class="sym-dot" style="background:#f7931a"></span>BTC/USDT</button>
+<button class="sym-btn" onclick="changeSymbol('BINANCE:ETHUSDT',this)"><span class="sym-dot" style="background:#627eea"></span>ETH/USDT</button>
+<button class="sym-btn" onclick="changeSymbol('BINANCE:SOLUSDT',this)"><span class="sym-dot" style="background:#9945ff"></span>SOL/USDT</button>
+<button class="sym-btn" onclick="changeSymbol('BINANCE:BNBUSDT',this)"><span class="sym-dot" style="background:#f3ba2f"></span>BNB/USDT</button>
+<button class="sym-btn" onclick="changeSymbol('OANDA:XAUUSD',this)"><span class="sym-dot" style="background:#fbbf24"></span>XAU/USD</button>
+<button class="sym-btn" onclick="changeSymbol('NASDAQ:AAPL',this)"><span class="sym-dot" style="background:#94a3b8"></span>AAPL</button>
+<button class="sym-btn" onclick="changeSymbol('IDX:BBRI',this)"><span class="sym-dot" style="background:#3b82f6"></span>BBRI</button>
+<button class="sym-btn" onclick="changeSymbol('IDX:TLKM',this)"><span class="sym-dot" style="background:#ef4444"></span>TLKM</button>
+</div>
+
+<div class="tv-frame">
+<div class="tv-header">
+<div class="tv-dots"><div class="tv-dot r"></div><div class="tv-dot y"></div><div class="tv-dot g"></div></div>
+<div class="tv-url" id="tvUrlLabel">BINANCE:BTCUSDT</div>
+<div class="tv-badge"><span class="live-dot"></span> LIVE</div>
+</div>
+<div class="tv-screen">
+<div class="tv-loading" id="tvLoading">
+<div class="tv-spinner"></div>
+<div class="tv-loading-text">Memuat chart Trading View...</div>
+</div>
+<div class="tv-reflection"></div>
+<iframe id="tvIframe" title="Trading View Chart"></iframe>
+</div>
+<div class="tv-footer">
+<div class="tv-footer-left">TRADINGVIEW • ADVANCED CHART</div>
+<a class="tv-open-btn" href="https://www.tradingview.com/chart/" target="_blank" rel="noopener">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+Buka di tab baru
+</a>
+</div>
+<div class="tv-brand">TradingView Widget</div>
+</div>
+
+<div class="tv-stand"><div><div class="tv-stand-bar"></div><div class="tv-stand-base"></div></div></div>
+
+</div>
+</div>
+<!-- end page-tv -->
+
+<div class="footer">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+<p>Dibuat khusus untuk belajar trading dengan tampilan modern.</p>
+</div>
+
+<script>
+// ── Page Navigation ──
+let tvLoaded = false;
+
+function goPage(pageId, btn){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // Lazy load TradingView only on first visit
+  if(pageId === 'page-tv' && !tvLoaded){
+    tvLoaded = true;
+    loadChart('BINANCE:BTCUSDT');
+  }
+}
+
+// ── Slider ──
+function initSlider(id){
+  const s=document.getElementById(id),imgs=s.querySelectorAll('img'),total=imgs.length,
+  dotsId='dots'+id.replace('slider',''),counterId='counter'+id.replace('slider',''),
+  dotsEl=document.getElementById(dotsId),counterEl=document.getElementById(counterId);
+  for(let i=0;i<total;i++){const d=document.createElement('button');d.className='slider-dot'+(i===0?' active':'');d.onclick=()=>goTo(id,i);dotsEl.appendChild(d)}
+  let sx=0,down=false;
+  s.addEventListener('pointerdown',e=>{sx=e.clientX;down=true;s.setPointerCapture(e.pointerId)});
+  s.addEventListener('pointerup',e=>{if(!down)return;down=false;const d=sx-e.clientX;if(Math.abs(d)>50)slideMove(id,d>0?1:-1)});
+  s.addEventListener('scroll',()=>updateDots(id));
+  updateDots(id);
+}
+function goTo(id,i){const s=document.getElementById(id),imgs=s.querySelectorAll('img'),w=imgs[0].offsetWidth+12;s.scrollTo({left:w*i,behavior:'smooth'})}
+function slideMove(id,dir){const s=document.getElementById(id),imgs=s.querySelectorAll('img'),t=imgs.length,w=imgs[0].offsetWidth+12,c=Math.round(s.scrollLeft/w);let n=c+dir;if(n<0)n=0;if(n>=t)n=t-1;s.scrollTo({left:w*n,behavior:'smooth'})}
+function updateDots(id){const s=document.getElementById(id),imgs=s.querySelectorAll('img'),t=imgs.length,dotsId='dots'+id.replace('slider',''),counterId='counter'+id.replace('slider',''),dotsEl=document.getElementById(dotsId),counterEl=document.getElementById(counterId),w=imgs[0].offsetWidth+12,c=Math.round(s.scrollLeft/w);dotsEl.querySelectorAll('.slider-dot').forEach((d,i)=>d.classList.toggle('active',i===c));counterEl.textContent=(c+1)+' / '+t}
+initSlider('slider1');initSlider('slider2');
+window.addEventListener('resize',()=>{updateDots('slider1');updateDots('slider2')});
+
+// ── Tab ──
+function switchTab(tabId,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ── TradingView Widget ──
+function buildWidgetUrl(symbol){
+  return 'https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol='
+    + encodeURIComponent(symbol)
+    + '&interval=15&theme=dark&style=1&locale=id_ID'
+    + '&toolbar_bg=%2307090f&enable_publishing=false'
+    + '&hide_side_toolbar=0&allow_symbol_change=true'
+    + '&withdateranges=true&details=true&hotlist=true'
+    + '&calendar=true&show_popup_button=true'
+    + '&popup_width=1000&popup_height=650'
+    + '&studies=%5B%5D';
+}
+
+function loadChart(symbol){
+  const iframe=document.getElementById('tvIframe');
+  const loading=document.getElementById('tvLoading');
+  const urlLabel=document.getElementById('tvUrlLabel');
+  urlLabel.textContent=symbol;
+  loading.classList.remove('hidden');
+  iframe.src=buildWidgetUrl(symbol);
+  iframe.onload=function(){setTimeout(()=>{loading.classList.add('hidden')},600)};
+  setTimeout(()=>{loading.classList.add('hidden')},5000);
+}
+
+function changeSymbol(symbol,btn){
+  document.querySelectorAll('.sym-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadChart(symbol);
+}
+</script>
+</body>
+</html>
