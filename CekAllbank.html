@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crosscheck Rekening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #040806;
+            --bg-raised: rgba(8, 18, 14, 0.75);
+            --card: rgba(10, 22, 16, 0.65);
+            --card-solid: #0a1610;
+            --card-hover: rgba(18, 38, 28, 0.7);
+            --border: rgba(0, 230, 138, 0.1);
+            --border-light: rgba(0, 230, 138, 0.2);
+            --fg: #eaf6f0;
+            --fg-dim: #b8d4c6;
+            --fg-muted: #6ea88e;
+            --accent: #00e68a;
+            --accent-glow: rgba(0, 230, 138, 0.1);
+            --danger: #ff5c5c;
+            --danger-glow: rgba(255, 92, 92, 0.08);
+            --gold: #ffd966;
+            --gold-dim: rgba(255, 217, 102, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === VIDEO BACKGROUND === */
+        .video-bg {
+            position: fixed; inset: 0; z-index: 0;
+            overflow: hidden;
+        }
+
+        .video-bg video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Multi-layer overlay untuk readability */
+        .video-overlay {
+            position: fixed; inset: 0; z-index: 1;
+            background:
+                linear-gradient(180deg, rgba(4, 8, 6, 0.85) 0%, rgba(4, 8, 6, 0.7) 40%, rgba(4, 8, 6, 0.8) 100%),
+                radial-gradient(ellipse at 30% 20%, rgba(0, 230, 138, 0.04), transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 180, 110, 0.03), transparent 60%);
+            pointer-events: none;
+        }
+
+        .video-noise {
+            position: fixed; inset: 0; z-index: 1;
+            opacity: 0.03; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
+        }
+
+        .video-vignette {
+            position: fixed; inset: 0; z-index: 1;
+            background: radial-gradient(ellipse 70% 65% at 50% 45%, transparent, rgba(4, 8, 6, 0.6));
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative; z-index: 2;
+            max-width: 1380px; margin: 0 auto;
+            padding: 36px 24px 90px;
+        }
+
+        /* === HEADER === */
+        header {
+            text-align: center; margin-bottom: 40px;
+            animation: headerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes headerIn {
+            from { opacity: 0; transform: translateY(-50px) scale(0.92); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .header-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(0, 230, 138, 0.08);
+            border: 1px solid rgba(0, 230, 138, 0.15);
+            color: var(--accent); font-size: 0.7rem; font-weight: 600;
+            padding: 6px 16px; border-radius: 20px; margin-bottom: 20px;
+            letter-spacing: 0.6px; text-transform: uppercase;
+            backdrop-filter: blur(12px);
+        }
+        .header-badge .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); animation: blink 2s ease-in-out infinite;
+            box-shadow: 0 0 8px var(--accent);
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700; letter-spacing: -0.8px; margin-bottom: 10px;
+        }
+        header h1 .gt {
+            background: linear-gradient(135deg, var(--fg) 20%, var(--accent) 80%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        header p {
+            color: var(--fg-muted); font-size: 0.95rem;
+            max-width: 460px; margin: 0 auto; line-height: 1.65;
+        }
+
+        /* === DUA KOLOM === */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .col-left { display: flex; flex-direction: column; gap: 22px; }
+
+        /* === GLASS PANEL BASE === */
+        .glass {
+            background: rgba(8, 18, 14, 0.6);
+            backdrop-filter: blur(24px) saturate(1.2);
+            -webkit-backdrop-filter: blur(24px) saturate(1.2);
+            border: 1px solid rgba(0, 230, 138, 0.08);
+            border-radius: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* === SEARCH PANEL === */
+        .search-panel {
+            padding: 28px;
+            animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+        .search-panel .accent-line {
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
+        }
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-top {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+        }
+        .search-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.88rem; font-weight: 600; color: var(--fg-dim);
+        }
+        .search-title i {
+            width: 32px; height: 32px; border-radius: 10px;
+            background: rgba(0, 230, 138, 0.1); color: var(--accent);
+            display: flex; align-items: center; justify-content: center; font-size: 0.82rem;
+            border: 1px solid rgba(0, 230, 138, 0.08);
+        }
+        .auto-tag {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 0.68rem; font-weight: 500; color: var(--gold-dim);
+            background: rgba(255, 217, 102, 0.06);
+            border: 1px solid rgba(255, 217, 102, 0.08);
+            padding: 4px 12px; border-radius: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .auto-tag i { font-size: 0.6rem; }
+
+        .textarea-wrap textarea {
+            width: 100%; min-height: 100px;
+            background: rgba(4, 10, 8, 0.6);
+            border: 1.5px solid rgba(0, 230, 138, 0.08);
+            border-radius: 14px; padding: 16px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem; color: var(--fg);
+            resize: vertical; transition: all 0.3s ease; line-height: 1.8;
+            backdrop-filter: blur(8px);
+        }
+        .textarea-wrap textarea::placeholder { color: rgba(110, 168, 142, 0.4); font-size: 0.8rem; }
+        .textarea-wrap textarea:focus {
+            outline: none; border-color: rgba(0, 230, 138, 0.3);
+            box-shadow: 0 0 0 4px rgba(0, 230, 138, 0.06), 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-meta {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 8px; min-height: 20px;
+        }
+        .meta-left { font-size: 0.66rem; color: rgba(110, 168, 142, 0.5); font-family: 'JetBrains Mono', monospace; }
+        .meta-right {
+            font-size: 0.74rem; font-family: 'JetBrains Mono', monospace;
+            display: flex; align-items: center; gap: 6px;
+            opacity: 0; transform: translateY(4px); transition: all 0.3s ease;
+        }
+        .meta-right.visible { opacity: 1; transform: translateY(0); }
+        .meta-right .num { color: var(--accent); font-weight: 600; }
+        .meta-right .label { color: var(--fg-muted); }
+
+        .btn-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 11px 22px; border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.84rem; font-weight: 600; border: none;
+            cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .btn::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .btn:hover::after { opacity: 1; }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--accent), #00b36b);
+            color: var(--bg);
+            box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0, 230, 138, 0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+        .btn-main:active { transform: translateY(0); }
+
+        .btn-ghost {
+            background: rgba(0, 230, 138, 0.04);
+            color: var(--fg-muted); border: 1px solid rgba(0, 230, 138, 0.1);
+        }
+        .btn-ghost:hover { border-color: rgba(0, 230, 138, 0.2); color: var(--fg-dim); background: rgba(0, 230, 138, 0.08); }
+        .btn-sm { padding: 9px 16px; font-size: 0.8rem; }
+
+        /* === STATS ROW === */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+            animation: statsIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes statsIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .stat-box {
+            background: rgba(8, 18, 14, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 230, 138, 0.06);
+            border-radius: 18px; padding: 22px 16px;
+            text-align: center; overflow: hidden;
+            transition: all 0.3s ease; position: relative;
+        }
+        .stat-box:hover { transform: translateY(-3px); border-color: rgba(0, 230, 138, 0.12); }
+
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+        .stat-box.total::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+        .stat-box.found::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+        .stat-box.missing::before { background: linear-gradient(90deg, transparent, var(--danger), transparent); }
+
+        .stat-box::after {
+            content: ''; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 60px; pointer-events: none;
+        }
+        .stat-box.total::after { background: radial-gradient(ellipse, rgba(255, 217, 102, 0.05), transparent); }
+        .stat-box.found::after { background: radial-gradient(ellipse, rgba(0, 230, 138, 0.05), transparent); }
+        .stat-box.missing::after { background: radial-gradient(ellipse, rgba(255, 92, 92, 0.05), transparent); }
+
+        .stat-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 8px;
+        }
+        .stat-box.total .stat-val { color: var(--gold); text-shadow: 0 0 30px rgba(255, 217, 102, 0.15); }
+        .stat-box.found .stat-val { color: var(--accent); text-shadow: 0 0 30px rgba(0, 230, 138, 0.15); }
+        .stat-box.missing .stat-val { color: var(--danger); text-shadow: 0 0 30px rgba(255, 92, 92, 0.15); }
+
+        .stat-label {
+            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+            text-transform: uppercase; letter-spacing: 1.5px;
+        }
+
+        .stat-icon {
+            position: absolute; top: 16px; right: 14px;
+            font-size: 0.8rem; opacity: 0.15;
+        }
+        .stat-box.total .stat-icon { color: var(--gold); }
+        .stat-box.found .stat-icon { color: var(--accent); }
+        .stat-box.missing .stat-icon { color: var(--danger); }
+
+        /* === BANNER === */
+        .result-banner {
+            background: rgba(0, 230, 138, 0.05);
+            border: 1px solid rgba(0, 230, 138, 0.1);
+            border-radius: 16px; padding: 18px 22px; margin-bottom: 16px;
+            overflow: hidden; position: relative;
+            animation: bannerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+            backdrop-filter: blur(16px);
+        }
+        .result-banner::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 0% 50%, rgba(0, 230, 138, 0.04), transparent 60%);
+            pointer-events: none;
+        }
+        @keyframes bannerIn {
+            from { opacity: 0; transform: scale(0.97) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .banner-content { position: relative; display: flex; align-items: center; gap: 14px; }
+        .banner-icon {
+            width: 44px; height: 44px; border-radius: 13px;
+            background: linear-gradient(135deg, var(--accent), #00b36b);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.05rem; color: var(--bg); flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 230, 138, 0.25);
+        }
+        .banner-text { flex: 1; }
+        .banner-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); margin-bottom: 2px; }
+        .banner-title .hl { color: var(--accent); }
+        .banner-sub { font-size: 0.8rem; color: var(--fg-muted); }
+
+        /* === LIST HEADER === */
+        .result-list-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 12px; animation: fadeIn 0.5s ease 0.2s both;
+        }
+        .result-list-header .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,230,138,0.08), transparent); }
+        .result-list-header span {
+            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .result-list { display: flex; flex-direction: column; gap: 8px; }
+
+        /* === KARTU REKENING === */
+        .rek-card {
+            background: rgba(8, 18, 14, 0.55);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 230, 138, 0.06);
+            border-radius: 16px; overflow: hidden;
+            animation: cardReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            transition: all 0.3s ease;
+        }
+        .rek-card:hover {
+            border-color: rgba(0, 230, 138, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 230, 138, 0.05);
+        }
+        @keyframes cardReveal {
+            from { opacity: 0; transform: translateY(14px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .rek-card-inner { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
+
+        .rek-card .bank-icon {
+            width: 46px; height: 46px; border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0; position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .bank-bca .bank-icon { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
+        .bank-bri .bank-icon { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
+        .bank-mandiri .bank-icon { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
+        .bank-bni .bank-icon { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
+        .bank-danamon .bank-icon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
+        .bank-cimb .bank-icon { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
+        .bank-maybank .bank-icon { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
+
+        .rek-info { flex: 1; min-width: 0; }
+        .rek-no {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem; font-weight: 600; color: var(--fg);
+            letter-spacing: 0.5px; margin-bottom: 4px;
+        }
+        .rek-name { font-size: 0.86rem; color: var(--fg-dim); margin-bottom: 2px; font-weight: 500; }
+        .rek-bank-label {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.68rem; color: var(--fg-muted); font-weight: 500;
+        }
+        .rek-bank-label .ds { width: 3px; height: 3px; border-radius: 50%; background: var(--fg-muted); opacity: 0.5; }
+
+        .rek-badge { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+        .rek-status {
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(0, 230, 138, 0.08); border: 1px solid rgba(0, 230, 138, 0.12);
+            color: var(--accent); font-size: 0.68rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 7px; text-transform: uppercase; letter-spacing: 0.7px;
+        }
+        .rek-status i { font-size: 0.6rem; }
+        .rek-index { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: rgba(110, 168, 142, 0.35); }
+
+        /* === IDLE / NONE === */
+        .result-idle { text-align: center; padding: 44px 20px; animation: fadeIn 0.5s ease; }
+        .result-idle .idle-icon {
+            width: 64px; height: 64px; border-radius: 18px;
+            background: rgba(0, 230, 138, 0.04); border: 1px solid rgba(0, 230, 138, 0.06);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px; font-size: 1.4rem; color: var(--fg-muted); opacity: 0.4;
+        }
+        .result-idle p { color: var(--fg-muted); font-size: 0.88rem; }
+        .result-idle p span { color: var(--fg-dim); font-weight: 500; }
+
+        .result-none { text-align: center; padding: 36px 20px; animation: fadeIn 0.5s ease; }
+        .result-none .none-icon {
+            width: 56px; height: 56px; border-radius: 16px;
+            background: var(--danger-glow); border: 1px solid rgba(255, 92, 92, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px; font-size: 1.2rem; color: var(--danger);
+        }
+        .result-none .none-title { font-size: 0.95rem; font-weight: 600; color: var(--fg-dim); margin-bottom: 6px; }
+        .result-none .none-sub { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.5; }
+
+        /* === KOLOM KANAN === */
+        .col-right {
+            display: flex; flex-direction: column; gap: 20px;
+            position: sticky; top: 20px;
+            animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+        }
+
+        .db-panel { overflow: hidden; }
+        .db-panel .gold-line {
+            display: block; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.3;
+        }
+
+        .db-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 20px 14px; border-bottom: 1px solid rgba(0, 230, 138, 0.06);
+        }
+        .db-head h2 {
+            font-size: 0.88rem; font-weight: 600; color: var(--fg-muted);
+            display: flex; align-items: center; gap: 9px;
+        }
+        .db-head h2 i { color: var(--gold); font-size: 0.85rem; }
+        .db-badge {
+            background: rgba(255, 217, 102, 0.06); border: 1px solid rgba(255, 217, 102, 0.08);
+            color: var(--gold-dim); font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 3px 10px; border-radius: 20px; font-weight: 600;
+        }
+
+        .db-list {
+            max-height: calc(100vh - 400px);
+            min-height: 180px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 230, 138, 0.1) transparent;
+        }
+        .db-list::-webkit-scrollbar { width: 3px; }
+        .db-list::-webkit-scrollbar-track { background: transparent; }
+        .db-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.1); border-radius: 4px; }
+
+        .db-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; border-bottom: 1px solid rgba(0, 230, 138, 0.04);
+            transition: background 0.2s;
+        }
+        .db-item:last-child { border-bottom: none; }
+        .db-item:hover { background: rgba(0, 230, 138, 0.03); }
+
+        .dbi-icon {
+            width: 34px; height: 34px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .dbi-bca { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
+        .dbi-bri { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
+        .dbi-mandiri { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
+        .dbi-bni { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
+        .dbi-danamon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
+        .dbi-cimb { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
+        .dbi-maybank { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
+
+        .dbi-info { flex: 1; min-width: 0; }
+        .dbi-name { font-size: 0.8rem; color: var(--fg-dim); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dbi-rek { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg-muted); margin-top: 1px; }
+        .dbi-bank { font-size: 0.6rem; color: rgba(110, 168, 142, 0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        .dbi-del {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 7px;
+            background: transparent; border: 1px solid transparent;
+            color: rgba(255, 92, 92, 0.25); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.68rem; transition: all 0.2s; opacity: 0;
+        }
+        .db-item:hover .dbi-del { opacity: 1; }
+        .dbi-del:hover { background: rgba(255, 92, 92, 0.06); border-color: rgba(255, 92, 92, 0.1); color: var(--danger); }
+
+        /* === FORM TAMBAH === */
+        .add-panel { padding: 22px; }
+        .add-panel .accent-line {
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.4;
+        }
+        .add-panel h3 {
+            font-size: 0.84rem; font-weight: 600; color: var(--fg-dim);
+            display: flex; align-items: center; gap: 9px; margin-bottom: 16px;
+        }
+        .add-panel h3 i {
+            width: 30px; height: 30px; border-radius: 9px;
+            background: rgba(0, 230, 138, 0.08); color: var(--accent);
+            display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+            border: 1px solid rgba(0, 230, 138, 0.06);
+        }
+
+        .add-form { display: flex; flex-direction: column; gap: 10px; }
+        .add-row { display: flex; gap: 8px; }
+        .add-row.half { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+        .add-field { display: flex; flex-direction: column; gap: 4px; }
+        .add-field label {
+            font-size: 0.66rem; font-weight: 600; color: var(--fg-muted);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .add-field select, .add-field input {
+            width: 100%; background: rgba(4, 10, 8, 0.5);
+            border: 1.5px solid rgba(0, 230, 138, 0.06); border-radius: 10px;
+            padding: 10px 14px; font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.82rem; color: var(--fg); transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+        .add-field select {
+            cursor: pointer; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236ea88e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+        }
+        .add-field select option { background: #0a1610; color: var(--fg); }
+        .add-field input::placeholder { color: rgba(110, 168, 142, 0.35); font-size: 0.78rem; }
+        .add-field input.font-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.3px; }
+        .add-field select:focus, .add-field input:focus {
+            outline: none; border-color: rgba(0, 230, 138, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 230, 138, 0.04);
+        }
+
+        .add-error {
+            font-size: 0.72rem; color: var(--danger); display: none;
+            padding: 8px 12px; background: rgba(255, 92, 92, 0.05);
+            border: 1px solid rgba(255, 92, 92, 0.08);
+            border-radius: 8px; margin-top: -2px;
+        }
+        .add-error.show { display: flex; align-items: center; gap: 6px; }
+        .add-error i { font-size: 0.66rem; flex-shrink: 0; }
+
+        /* === TOAST === */
+        .toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast {
+            padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; font-weight: 500;
+            display: flex; align-items: center; gap: 9px;
+            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+        }
+        .toast-err { background: rgba(30, 10, 10, 0.85); border: 1px solid rgba(255, 92, 92, 0.15); color: var(--danger); }
+        .toast-ok { background: rgba(10, 30, 18, 0.85); border: 1px solid rgba(0, 230, 138, 0.15); color: var(--accent); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(50px); } }
+
+        .searching .btn-main { animation: pulse 1s ease infinite; }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15); }
+            50% { box-shadow: 0 4px 40px rgba(0, 230, 138, 0.4); }
+        }
+
+        footer {
+            text-align: center; padding: 32px 20px 16px;
+            color: rgba(110, 168, 142, 0.25); font-size: 0.68rem;
+            position: relative; z-index: 2;
+        }
+
+        @media (max-width: 960px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .col-right { position: static; }
+            .db-list { max-height: 320px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 12px 60px; }
+            .search-panel { padding: 20px 16px; }
+            .stats-row { gap: 8px; }
+            .stat-box { padding: 16px 10px; border-radius: 14px; }
+            .stat-val { font-size: 1.5rem; }
+            .stat-label { font-size: 0.6rem; letter-spacing: 1px; }
+            .stat-icon { display: none; }
+            .rek-card-inner { padding: 14px 16px; gap: 12px; }
+            .rek-badge { flex-direction: row; align-items: center; }
+            .add-row.half { grid-template-columns: 1fr; }
+            .db-item .dbi-del { opacity: 0.5; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="video-bg">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="https://v1.pinimg.com/videos/iht/expMp4/e9/c2/61/e9c261e918070db580a52b0519e3887b_720w.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    <div class="video-noise"></div>
+    <div class="video-vignette"></div>
+
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <div class="container">
+
+        <header>
+            <div class="header-badge"><span class="dot"></span> Live Matching</div>
+            <h1><span class="gt">Crosscheck Rekening</span></h1>
+            <p>Tempelkan nomor rekening — hasil langsung muncul otomatis</p>
+        </header>
+
+        <div class="main-grid">
+
+            <!-- KOLOM KIRI -->
+            <div class="col-left">
+
+                <section class="search-panel glass" id="searchPanel" aria-label="Form pencarian">
+                    <div class="accent-line"></div>
+                    <div class="search-top">
+                        <div class="search-title"><i class="fas fa-keyboard"></i><span>Tempel Nomor Rekening</span></div>
+                        <div class="auto-tag"><i class="fas fa-bolt"></i> Auto-detect</div>
+                    </div>
+                    <div class="textarea-wrap">
+                        <textarea id="searchInput" placeholder="Langsung tempel (Ctrl+V) nomor rekening di sini...&#10;Bisa dipisahkan baris baru, koma, tab, atau spasi." aria-label="Masukkan nomor rekening" spellcheck="false" autocomplete="off"></textarea>
+                    </div>
+                    <div class="input-meta">
+                        <span class="meta-left" id="metaLeft">0 karakter</span>
+                        <span class="meta-right" id="metaRight"><span class="num" id="metaNum">0</span><span class="label">terdeteksi</span></span>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-main" id="btnSearch"><i class="fas fa-search"></i> Cek Sekarang</button>
+                        <button class="btn btn-ghost btn-sm" id="btnClear"><i class="fas fa-eraser"></i> Bersihkan</button>
+                    </div>
+                </section>
+
+                <section class="result-area" id="resultArea" aria-live="polite">
+                    <div class="result-idle">
+                        <div class="idle-icon"><i class="fas fa-inbox"></i></div>
+                        <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- KOLOM KANAN -->
+            <div class="col-right">
+
+                <div class="db-panel glass">
+                    <div class="gold-line"></div>
+                    <div class="db-head">
+                        <h2><i class="fas fa-database"></i> Database Rekening</h2>
+                        <span class="db-badge" id="dbBadge">0 data</span>
+                    </div>
+                    <div class="db-list" id="dbList"></div>
+                </div>
+
+                <div class="add-panel glass">
+                    <div class="accent-line"></div>
+                    <h3><i class="fas fa-plus"></i> Tambah Rekening</h3>
+                    <div class="add-form" id="addForm">
+                        <div class="add-row half">
+                            <div class="add-field">
+                                <label>Bank</label>
+                                <select id="addBank">
+                                    <option value="">Pilih Bank</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="BRI">BRI</option>
+                                    <option value="MANDIRI">Mandiri</option>
+                                    <option value="BNI">BNI</option>
+                                    <option value="DANAMON">Danamon</option>
+                                    <option value="CIMB">CIMB</option>
+                                    <option value="MAYBANK">Maybank</option>
+                                </select>
+                            </div>
+                            <div class="add-field">
+                                <label>Nomor Rekening</label>
+                                <input type="text" id="addRek" class="font-mono" placeholder="1234567890" maxlength="20" inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="add-field">
+                            <label>Nama Rekening</label>
+                            <input type="text" id="addName" placeholder="NAMA PEMILIK REKENING" style="text-transform:uppercase;">
+                        </div>
+                        <div class="add-error" id="addError"><i class="fas fa-circle-exclamation"></i><span id="addErrorText"></span></div>
+                        <div class="btn-row">
+                            <button class="btn btn-main btn-sm" id="btnAdd" style="flex:1;justify-content:center;">
+                                <i class="fas fa-plus"></i> Simpan ke Database
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>Data tersimpan di browser (localStorage) — tidak dikirim ke server manapun</footer>
+    </div>
+
+    <script>
+        // =====================================================
+        // DEFAULT DATABASE
+        // =====================================================
+        const DEFAULT_DB = [
+            { bank: "BCA",      nama: "UMI SALAMAH",             noRek: "7402544671" },
+            { bank: "BCA",      nama: "ANGGITA PUTRI VERATAMI",  noRek: "0155152627" },
+            { bank: "MANDIRI",  nama: "USNA",                    noRek: "1550015288148" },
+            { bank: "BNI",      nama: "HAN SETIAWAN",            noRek: "2011951619" },
+            { bank: "BRI",      nama: "DARILAH",                 noRek: "330901004735507" },
+            { bank: "BRI",      nama: "CUHAYA",                  noRek: "158101005978500" },
+            { bank: "DANAMON",  nama: "RAKA WIBOWO",             noRek: "003704972490" },
+            { bank: "MAYBANK",  nama: "AHMAD TAOFIK KAMIL",      noRek: "8743986194" },
+            { bank: "BCA",      nama: "KRISNA DWI PANGESTU",     noRek: "1680440715" },
+            { bank: "BCA",      nama: "M RIZAL THAMRIN",         noRek: "0520496114" },
+            { bank: "BCA",      nama: "KIKY SYAH PUTRA",         noRek: "1751296890" },
+            { bank: "BCA",      nama: "RIZKY PANGESTU",          noRek: "7940429522" },
+            { bank: "BNI",      nama: "RANI",                    noRek: "1958323775" },
+            { bank: "MANDIRI",  nama: "DIKI LESMANA",            noRek: "1630014487014" },
+            { bank: "BRI",      nama: "HENDRA PURNOMO",          noRek: "385401006492508" },
+            { bank: "CIMB",     nama: "MARINI",                  noRek: "708657192700" },
+            { bank: "DANAMON",  nama: "SESA",                    noRek: "003704636707" },
+            { bank: "MAYBANK",  nama: "MUHAMMAD FARDHAN",        noRek: "8789988009" },
+            { bank: "BCA",      nama: "Arie Puspitasari",        noRek: "1652887125" },
+            { bank: "DANAMON",  nama: "MUHAMAD YUNUS",           noRek: "003703528574" },
+        ];
+
+        const STORAGE_KEY = 'crosscheck_rekening_db';
+
+        function loadDB() {
+            try {
+                const s = localStorage.getItem(STORAGE_KEY);
+                if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length > 0) return p; }
+            } catch (e) {}
+            return JSON.parse(JSON.stringify(DEFAULT_DB));
+        }
+
+        function saveDB() {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); } catch (e) {}
+        }
+
+        let DB = loadDB();
+
+        function rebuildMap() {
+            dbMap = {};
+            DB.forEach(item => { dbMap[item.noRek] = item; });
+        }
+
+        let dbMap = {};
+        rebuildMap();
+
+        // =====================================================
+        // DOM
+        // =====================================================
+        const searchInput = document.getElementById('searchInput');
+        const metaLeft    = document.getElementById('metaLeft');
+        const metaRight   = document.getElementById('metaRight');
+        const metaNum     = document.getElementById('metaNum');
+        const btnSearch   = document.getElementById('btnSearch');
+        const btnClear    = document.getElementById('btnClear');
+        const searchPanel = document.getElementById('searchPanel');
+        const resultArea  = document.getElementById('resultArea');
+        const dbList      = document.getElementById('dbList');
+        const dbBadge     = document.getElementById('dbBadge');
+        const toastWrap   = document.getElementById('toastWrap');
+        const addBank     = document.getElementById('addBank');
+        const addRek      = document.getElementById('addRek');
+        const addName     = document.getElementById('addName');
+        const btnAdd      = document.getElementById('btnAdd');
+        const addError    = document.getElementById('addError');
+        const addErrorText= document.getElementById('addErrorText');
+
+        let debounceTimer = null;
+
+        // =====================================================
+        // UTILITAS BANK
+        // =====================================================
+        function bk(b) { return b.toLowerCase().replace(/\s+/g, ''); }
+        const knownBanks = ['bca', 'bri', 'mandiri', 'bni', 'danamon', 'cimb', 'maybank'];
+        function bankClass(b) { const k = bk(b); return knownBanks.includes(k) ? k : 'default'; }
+        function bankIcon(b) {
+            const m = { bca:'fa-building-columns', bri:'fa-landmark', mandiri:'fa-shield-halved',
+                        bni:'fa-landmark-dome', danamon:'fa-coins', cimb:'fa-umbrella', maybank:'fa-building' };
+            return m[bk(b)] || 'fa-building';
+        }
+        function dbiClass(b) { const k = bk(b); return knownBanks.includes(k) ? `dbi-${k}` : 'dbi-bca'; }
+
+        // =====================================================
+        // TOAST
+        // =====================================================
+        function toast(msg, ok = false) {
+            const el = document.createElement('div');
+            el.className = `toast ${ok ? 'toast-ok' : 'toast-err'}`;
+            el.innerHTML = `<i class="fas ${ok ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i><span>${msg}</span>`;
+            toastWrap.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        }
+
+        // =====================================================
+        // RENDER DATABASE
+        // =====================================================
+        function renderDB() {
+            dbBadge.textContent = `${DB.length} data`;
+            if (DB.length === 0) {
+                dbList.innerHTML = `
+                    <div style="text-align:center;padding:40px 20px;color:var(--fg-muted);font-size:0.82rem;">
+                        <i class="fas fa-folder-open" style="font-size:1.6rem;opacity:0.3;display:block;margin-bottom:12px;"></i>
+                        Database kosong
+                    </div>`;
+                return;
+            }
+            dbList.innerHTML = DB.map((d, i) => `
+                <div class="db-item" data-idx="${i}">
+                    <div class="dbi-icon ${dbiClass(d.bank)}"><i class="fas ${bankIcon(d.bank)}"></i></div>
+                    <div class="dbi-info">
+                        <div class="dbi-name">${d.nama}</div>
+                        <div class="dbi-rek">${d.noRek}</div>
+                        <div class="dbi-bank">${d.bank}</div>
+                    </div>
+                    <button class="dbi-del" onclick="deleteRek(${i})" title="Hapus" aria-label="Hapus ${d.nama}">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // =====================================================
+        // HAPUS
+        // =====================================================
+        function deleteRek(idx) {
+            if (idx < 0 || idx >= DB.length) return;
+            const removed = DB.splice(idx, 1)[0];
+            saveDB(); rebuildMap(); renderDB();
+            const current = parse(searchInput.value);
+            if (current.length > 0) {
+                const found = [];
+                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+                renderResult(found, current.length);
+            }
+            toast(`"${removed.nama}" dihapus`, true);
+        }
+
+        // =====================================================
+        // TAMBAH
+        // =====================================================
+        function showAddError(msg) { addErrorText.textContent = msg; addError.classList.add('show'); }
+        function hideAddError() { addError.classList.remove('show'); }
+
+        function addRekening() {
+            hideAddError();
+            const bank = addBank.value.trim().toUpperCase();
+            const rek  = addRek.value.replace(/\D/g, '');
+            const nama = addName.value.trim().toUpperCase();
+            if (!bank) { showAddError('Pilih bank terlebih dahulu'); addBank.focus(); return; }
+            if (!rek || rek.length < 4) { showAddError('Nomor rekening minimal 4 digit'); addRek.focus(); return; }
+            if (!nama) { showAddError('Nama rekening tidak boleh kosong'); addName.focus(); return; }
+            if (dbMap[rek]) { showAddError(`Nomor ${rek} sudah terdaftar atas nama "${dbMap[rek].nama}"`); addRek.focus(); addRek.select(); return; }
+            DB.push({ bank, nama, noRek: rek });
+            saveDB(); rebuildMap(); renderDB();
+            addBank.value = ''; addRek.value = ''; addName.value = '';
+            const current = parse(searchInput.value);
+            if (current.length > 0) {
+                const found = [];
+                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+                renderResult(found, current.length);
+            }
+            toast(`"${nama}" berhasil ditambahkan`, true);
+            dbList.scrollTop = dbList.scrollHeight;
+        }
+
+        // =====================================================
+        // PARSER
+        // =====================================================
+        function parse(raw) {
+            if (!raw.trim()) return [];
+            let s = raw.replace(/\t/g, '\n').replace(/\r/g, '\n').replace(/[,;|]+/g, '\n');
+            return [...new Set(s.split('\n').map(l => l.replace(/\D/g, '')).filter(d => d.length >= 4))];
+        }
+
+        // =====================================================
+        // META
+        // =====================================================
+        function updateMeta() {
+            metaLeft.textContent = `${searchInput.value.length} karakter`;
+            const n = parse(searchInput.value).length;
+            metaNum.textContent = n;
+            metaRight.classList.toggle('visible', n > 0);
+        }
+
+        // =====================================================
+        // AUTO-CHECK
+        // =====================================================
+        function scheduleCheck() {
+            updateMeta();
+            clearTimeout(debounceTimer);
+            const list = parse(searchInput.value);
+            if (list.length === 0) {
+                resultArea.innerHTML = `
+                    <div class="result-idle">
+                        <div class="idle-icon"><i class="fas fa-inbox"></i></div>
+                        <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+                    </div>`;
+                return;
+            }
+            debounceTimer = setTimeout(() => runCheck(list), 700);
+        }
+
+        function manualCheck() {
+            const list = parse(searchInput.value);
+            if (!searchInput.value.trim()) { toast('Masukkan nomor rekening dulu'); return; }
+            if (list.length === 0) { toast('Tidak ada nomor valid (min. 4 digit)'); return; }
+            clearTimeout(debounceTimer);
+            searchPanel.classList.add('searching');
+            btnSearch.disabled = true;
+            setTimeout(() => { searchPanel.classList.remove('searching'); btnSearch.disabled = false; runCheck(list); }, 300);
+        }
+
+        function runCheck(searchList) {
+            const found = [];
+            searchList.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+            renderResult(found, searchList.length);
+        }
+
+        // =====================================================
+        // RENDER HASIL
+        // =====================================================
+        function renderResult(found, total) {
+            const missing = total - found.length;
+            let html = `
+                <div class="stats-row">
+                    <div class="stat-box total">
+                        <i class="fas fa-layer-group stat-icon"></i>
+                        <div class="stat-val">${total}</div>
+                        <div class="stat-label">Diperiksa</div>
+                    </div>
+                    <div class="stat-box found">
+                        <i class="fas fa-circle-check stat-icon"></i>
+                        <div class="stat-val">${found.length}</div>
+                        <div class="stat-label">Ditemukan</div>
+                    </div>
+                    <div class="stat-box missing">
+                        <i class="fas fa-circle-xmark stat-icon"></i>
+                        <div class="stat-val">${missing}</div>
+                        <div class="stat-label">Tidak Ada</div>
+                    </div>
+                </div>`;
+
+            if (found.length === 0) {
+                html += `
+                    <div class="result-none">
+                        <div class="none-icon"><i class="fas fa-magnifying-glass"></i></div>
+                        <div class="none-title">Tidak ada rekening yang cocok</div>
+                        <div class="none-sub">Dari <strong style="color:var(--gold)">${total}</strong> nomor yang diperiksa, tidak ada yang terdaftar.</div>
+                    </div>`;
+            } else {
+                html += `
+                    <div class="result-banner">
+                        <div class="banner-content">
+                            <div class="banner-icon"><i class="fas fa-check-double"></i></div>
+                            <div class="banner-text">
+                                <div class="banner-title"><span class="hl">${found.length}</span> Rekening Ditemukan</div>
+                                <div class="banner-sub">Berikut daftar rekening yang terdaftar:</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-list-header"><span>Daftar Rekening</span><div class="line"></div></div>
+                    <div class="result-list">`;
+
+                found.forEach((item, idx) => {
+                    html += `
+                        <div class="rek-card bank-${bankClass(item.bank)}" style="animation-delay:${idx * 0.06}s">
+                            <div class="rek-card-inner">
+                                <div class="bank-icon"><i class="fas ${bankIcon(item.bank)}"></i></div>
+                                <div class="rek-info">
+                                    <div class="rek-no">${item.noRek}</div>
+                                    <div class="rek-name">${item.nama}</div>
+                                    <div class="rek-bank-label">
+                                        <i class="fas ${bankIcon(item.bank)}" style="font-size:0.58rem;"></i>
+                                        ${item.bank} <span class="ds"></span> Terdaftar
+                                    </div>
+                                </div>
+                                <div class="rek-badge">
+                                    <div class="rek-status"><i class="fas fa-check"></i> Ada</div>
+                                    <div class="rek-index">#${idx + 1}</div>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                html += `</div>`;
+
+                if (found.length === total) {
+                    html += `
+                        <div style="background:rgba(0,230,138,0.04);border:1px solid rgba(0,230,138,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;animation:fadeIn 0.4s ease 0.3s both;backdrop-filter:blur(12px);">
+                            <i class="fas fa-shield-check" style="color:var(--accent);font-size:1rem;flex-shrink:0;"></i>
+                            <span style="font-size:0.84rem;color:var(--fg-muted);line-height:1.5;"><strong style="color:var(--accent);">Semua cocok!</strong> Seluruh ${found.length} rekening terdaftar.</span>
+                        </div>`;
+                }
+            }
+            resultArea.innerHTML = html;
+        }
+
+        // =====================================================
+        // BERSIHKAN
+        // =====================================================
+        function doClear() {
+            clearTimeout(debounceTimer);
+            searchInput.value = '';
+            metaLeft.textContent = '0 karakter';
+            metaRight.classList.remove('visible');
+            resultArea.innerHTML = `
+                <div class="result-idle">
+                    <div class="idle-icon"><i class="fas fa-inbox"></i></div>
+                    <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+                </div>`;
+            searchInput.focus();
+        }
+
+        // =====================================================
+        // EVENTS
+        // =====================================================
+        searchInput.addEventListener('input', scheduleCheck);
+        btnSearch.addEventListener('click', manualCheck);
+        btnClear.addEventListener('click', doClear);
+        searchInput.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); clearTimeout(debounceTimer); manualCheck(); }
+        });
+        btnAdd.addEventListener('click', addRekening);
+        [addBank, addRek, addName].forEach(el => {
+            el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addRekening(); } });
+        });
+        addRek.addEventListener('input', () => { addRek.value = addRek.value.replace(/\D/g, ''); hideAddError(); });
+        addBank.addEventListener('change', hideAddError);
+        addName.addEventListener('input', hideAddError);
+
+        // =====================================================
+        // INIT
+        // =====================================================
+        renderDB();
+    </script>
+</body>
+</html>
