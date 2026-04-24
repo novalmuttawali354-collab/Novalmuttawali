@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS MarkasWd Access</title>
+    <title>CS MarkasWd Access Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0b;
-            --bg-secondary: #121214;
-            --fg: #f5f5f5;
-            --muted: #71717a;
-            --accent: #d4a853;
-            --accent-glow: rgba(212, 168, 83, 0.3);
-            --card: #18181b;
-            --border: #27272a;
+            --bg: #050505;
+            --bg-secondary: #0f0f11;
+            --fg: #ffffff;
+            --muted: #a1a1aa;
+            --accent: #d4a853; /* Gold */
+            --accent-glow: rgba(212, 168, 83, 0.15);
+            --card-bg: rgba(24, 24, 27, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -28,487 +28,408 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--fg);
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .font-display {
             font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
         }
 
-        /* Background Effects */
+        /* --- Background Effects --- */
         .bg-grid {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(212, 168, 83, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(212, 168, 83, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(212, 168, 83, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 168, 83, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        .bg-glow {
+        .ambient-light {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: 0;
+            animation: breathe 10s ease-in-out infinite;
         }
 
-        .glow-1 {
-            top: -200px;
-            right: -100px;
-            background: var(--accent);
-            animation: float 20s ease-in-out infinite;
+        @keyframes breathe {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        .glow-2 {
-            bottom: -300px;
-            left: -200px;
-            background: #8b5cf6;
-            animation: float 25s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 20px) scale(1.1); }
-        }
-
-        /* Floating Particles */
+        /* --- Particle System --- */
         .particle {
             position: fixed;
-            width: 4px;
-            height: 4px;
+            width: 2px;
+            height: 2px;
             background: var(--accent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1;
             opacity: 0;
-            animation: particleFloat 8s ease-in-out infinite;
+            animation: rise 10s linear infinite;
         }
 
-        @keyframes particleFloat {
-            0%, 100% { 
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { 
-                transform: translateY(-100px) scale(1);
-                opacity: 0;
-            }
+        @keyframes rise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        /* Header Animation */
-        .header-title {
-            opacity: 0;
-            transform: translateY(-30px);
-            animation: slideDown 0.8s ease-out forwards;
-        }
-
-        .header-subtitle {
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: slideDown 0.8s ease-out 0.2s forwards;
-        }
-
-        @keyframes slideDown {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Card Styles */
-        .menu-card {
-            background: linear-gradient(135deg, var(--card) 0%, rgba(24, 24, 27, 0.8) 100%);
+        /* --- Card Styles & Spotlight Effect --- */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
             position: relative;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .menu-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .menu-card::before {
-            content: '';
+        /* The magic spotlight gradient */
+        .glass-card::before {
+            content: "";
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%);
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-radius: inherit;
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(255, 255, 255, 0.06),
+                transparent 40%
+            );
+            z-index: 1;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
         }
 
-        .menu-card:hover::before {
+        .glass-card:hover::before {
             opacity: 1;
         }
 
-        .menu-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-8px);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 60px var(--accent-glow);
+        .glass-card:hover {
+            border-color: rgba(212, 168, 83, 0.3);
+            transform: translateY(-5px);
         }
 
-        .card-header {
-            padding: 24px 28px;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-        }
-
-        .card-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 28px;
-            right: 28px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .menu-card:hover .card-header::after {
-            opacity: 1;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent), #b8943f);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .menu-card:hover .card-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .card-icon svg {
-            width: 24px;
-            height: 24px;
-            color: var(--bg);
-        }
-
-        /* Menu Items */
-        .menu-item {
+        /* --- Menu Items --- */
+        .menu-link {
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 18px 28px;
+            padding: 16px 20px;
             text-decoration: none;
             color: var(--fg);
+            border-radius: 12px;
+            transition: all 0.2s ease;
             position: relative;
+            z-index: 2; /* Above the spotlight gradient */
+        }
+
+        .menu-link:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .menu-link .icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(39, 39, 42, 0.5);
         }
 
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
+        .menu-link:hover .icon-box {
             background: var(--accent);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .menu-item:hover::before {
-            transform: scaleY(1);
+        .menu-content {
+            flex: 1;
         }
 
-        .menu-item:hover {
-            background: rgba(212, 168, 83, 0.05);
-            padding-left: 36px;
+        .menu-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: block;
         }
 
-        .menu-item:active {
-            background: rgba(212, 168, 83, 0.1);
+        .menu-desc {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: block;
+            margin-top: 2px;
         }
 
-        .menu-arrow {
-            margin-left: auto;
+        /* Entrance Animations */
+        .reveal {
             opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.3s ease;
+            transform: translateY(30px);
+            animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        .menu-item:hover .menu-arrow {
-            opacity: 1;
-            transform: translateX(0);
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Status Indicator */
+        /* Status Pulse */
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #22c55e;
+            background: #10b981;
             border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-        }
-
-        /* Footer */
-        .footer-text {
-            opacity: 0;
-            animation: fadeIn 1s ease-out 1.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            .card-header {
-                padding: 20px 20px;
-            }
-            .menu-item {
-                padding: 16px 20px;
-            }
-            .menu-item:hover {
-                padding-left: 28px;
-            }
-        }
-
-        /* Reduced Motion */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Focus States */
-        .menu-item:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: -2px;
-            background: rgba(212, 168, 83, 0.1);
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
     </style>
 </head>
 <body>
-    <!-- Background Effects -->
+    <!-- Background Layers -->
     <div class="bg-grid"></div>
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
+    <div class="ambient-light"></div>
     <div id="particles"></div>
 
     <main class="relative z-10 min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="pt-12 pb-8 px-6 text-center">
-            <div class="header-title">
-                <h1 class="font-display text-5xl sm:text-7xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-200">
-                    CS MarkasWd Access
+        
+        <!-- Header Section -->
+        <header class="pt-16 pb-10 px-6 text-center">
+            <div class="reveal" style="animation-delay: 0.1s;">
+                <h1 class="font-display text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 drop-shadow-sm">
+                    CS MarkasWd
                 </h1>
             </div>
-            <div class="header-subtitle mt-4 flex items-center justify-center gap-3">
+            <div class="reveal mt-6 flex items-center justify-center gap-3" style="animation-delay: 0.2s;">
                 <span class="status-dot"></span>
-                <p class="text-sm sm:text-base text-zinc-400 tracking-wide">
-                    Customer Service Portal - Online 24/7
+                <p class="text-sm md:text-base text-zinc-400 font-medium tracking-wide uppercase">
+                    System Portal • Access Granted
                 </p>
+                <span class="status-dot"></span>
             </div>
         </header>
 
-        <!-- Menu Section -->
-        <section class="flex-1 px-4 sm:px-6 pb-12 max-w-4xl mx-auto w-full">
-            <div class="grid gap-6 sm:gap-8">
-                
-                <!-- Card 1: Monthly MarkasWd -->
-                <article class="menu-card" data-delay="0">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <!-- Main Content Grid -->
+        <section class="flex-1 px-4 md:px-6 pb-12 max-w-6xl mx-auto w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- CARD 1: Finance & Validasi -->
+                <article class="glass-card p-6 reveal flex flex-col h-full" style="animation-delay: 0.3s;">
+                    <div class="mb-6 border-b border-white/10 pb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 flex items-center justify-center mb-3">
+                            <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h2 class="font-display text-2xl sm:text-3xl tracking-wide text-zinc-100">Monthly MarkasWd</h2>
-                        <p class="text-sm text-zinc-500 mt-1">Akses data bulanan dan validasi</p>
+                        <h2 class="font-display text-2xl text-white">Finance & Data</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Validasi keuangan & bonus harian</p>
                     </div>
-                    <nav class="flex flex-col">
-                        <a href="https://novalmuttawali-ym2l.vercel.app/VALIDASIKOINHARIAN.html" 
-                           class="menu-item" 
-                           target="_blank"
-                           aria-label="Buka Validasi Koin Harian">
-                            <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    
+                    <div class="space-y-2 flex-1">
+                        <a href="https://novalmuttawali-ym2l.vercel.app/VALIDASIKOINHARIAN.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <div class="flex flex-col">
-                                <span class="font-medium text-zinc-200">Validasi Koin Harian</span>
-                                <span class="text-xs text-zinc-500">Cek dan validasi koin harian</span>
+                            <div class="menu-content">
+                                <span class="menu-title">Validasi Koin Harian</span>
+                                <span class="menu-desc">Cek mutasi dan saldo koin</span>
                             </div>
-                            <span class="menu-arrow">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </span>
                         </a>
-                        <a href="https://novalmuttawali-ym2l.vercel.app/Bonusdeposit.html" 
-                           class="menu-item" 
-                           target="_blank"
-                           aria-label="Buka Bonus Deposit">
-                            <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                        <a href="https://novalmuttawali-ym2l.vercel.app/Bonusdeposit.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                             </div>
-                            <div class="flex flex-col">
-                                <span class="font-medium text-zinc-200">Bonus Deposit</span>
-                                <span class="text-xs text-zinc-500">Informasi bonus dan promosi</span>
+                            <div class="menu-content">
+                                <span class="menu-title">Info Bonus Deposit</span>
+                                <span class="menu-desc">Klaim promo & cashback</span>
                             </div>
-                            <span class="menu-arrow">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </span>
                         </a>
-                    </nav>
+
+                        <!-- NEW MENU ITEM -->
+                        <a href="https://novalmuttawali-ym2l.vercel.app/CekAllbank.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <div class="menu-content">
+                                <span class="menu-title">Cek All About Bank</span>
+                                <span class="menu-desc">Status jadwal & bank offline</span>
+                            </div>
+                        </a>
+                    </div>
                 </article>
 
-                <!-- Card 2: Cek-LiinkMarkasWd -->
-                <article class="menu-card" data-delay="200">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                <!-- CARD 2: Info & Prediksi (New Category) -->
+                <article class="glass-card p-6 reveal flex flex-col h-full" style="animation-delay: 0.4s;">
+                    <div class="mb-6 border-b border-white/10 pb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center mb-3">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                             </svg>
                         </div>
-                        <h2 class="font-display text-2xl sm:text-3xl tracking-wide text-zinc-100">Cek-Link MarkasWd</h2>
-                        <p class="text-sm text-zinc-500 mt-1">Verifikasi link situs resmi</p>
+                        <h2 class="font-display text-2xl text-white">Game & Prediction</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Tools analisis & informasi pemain</p>
                     </div>
-                    <nav class="flex flex-col">
-                        <a href="https://novalmuttawali-ym2l.vercel.app/CeklinksitusMarkas.html" 
-                           class="menu-item" 
-                           target="_blank"
-                           aria-label="Buka Cek Link Situs Markas">
-                            <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    
+                    <div class="space-y-2 flex-1">
+                        <!-- NEW MENU ITEM -->
+                        <a href="https://novalmuttawali-ym2l.vercel.app/SYAIRTOGEL.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                 </svg>
                             </div>
-                            <div class="flex flex-col">
-                                <span class="font-medium text-zinc-200">Cek Link Situs Markas</span>
-                                <span class="text-xs text-zinc-500">Validasi link alternatif resmi</span>
+                            <div class="menu-content">
+                                <span class="menu-title">Shio & Prediksi</span>
+                                <span class="menu-desc">Analisis syair & angka jitu</span>
                             </div>
-                            <span class="menu-arrow">
-                                <svg class="w-5 h-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </span>
                         </a>
-                    </nav>
+
+                        <!-- NEW MENU ITEM -->
+                        <a href="https://novalmuttawali-ym2l.vercel.app/MEMOLINE.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                </svg>
+                            </div>
+                            <div class="menu-content">
+                                <span class="menu-title">All Memo Line</span>
+                                <span class="menu-desc">Pesan prioritas member</span>
+                            </div>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- CARD 3: Access Link -->
+                <article class="glass-card p-6 reveal flex flex-col h-full md:col-span-2 lg:col-span-1" style="animation-delay: 0.5s;">
+                    <div class="mb-6 border-b border-white/10 pb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center mb-3">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                        </div>
+                        <h2 class="font-display text-2xl text-white">Server Access</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Koneksi aman ke situs utama</p>
+                    </div>
+                    
+                    <div class="space-y-2 flex-1">
+                        <a href="https://novalmuttawali-ym2l.vercel.app/CeklinksitusMarkas.html" target="_blank" class="menu-link group">
+                            <div class="icon-box">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                            </div>
+                            <div class="menu-content">
+                                <span class="menu-title">Cek Link Situs Markas</span>
+                                <span class="menu-desc">Dapatkan link alternatif terbaru</span>
+                            </div>
+                        </a>
+                        
+                        <!-- Placeholder to align design or future link -->
+                        <div class="p-4 rounded-lg border border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-50">
+                            <svg class="w-8 h-8 mb-2 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <span class="text-xs text-zinc-500">Area Aman</span>
+                        </div>
+                    </div>
                 </article>
 
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="py-8 text-center footer-text">
-            <div class="flex items-center justify-center gap-2 mb-3">
-                <div class="w-12 h-px bg-gradient-to-r from-transparent to-zinc-700"></div>
-                <svg class="w-4 h-4 text-zinc-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <div class="w-12 h-px bg-gradient-to-l from-transparent to-zinc-700"></div>
+        <footer class="py-8 text-center relative z-10">
+            <div class="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/5 bg-black/20 backdrop-blur-sm">
+                <div class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+                <p class="text-xs text-zinc-500 font-mono tracking-widest uppercase">
+                    &copy; 2024 MarkasWd Official Portal
+                </p>
+                <div class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
             </div>
-            <p class="text-xs text-zinc-600 tracking-wide">
-                MarkasWd Official Portal - Secure Access
-            </p>
         </footer>
     </main>
 
     <script>
-        // Initialize particles
-        function createParticles() {
+        // 1. Particle System Generator
+        function initParticles() {
             const container = document.getElementById('particles');
-            if (!container) return;
-            
-            const particleCount = 15;
-            
+            const particleCount = 20; // Jumlah partikel
+
             for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 8 + 's';
-                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
-                container.appendChild(particle);
+                const p = document.createElement('div');
+                p.className = 'particle';
+                
+                // Random positioning
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 10 + 5) + 's'; // 5-15s
+                p.style.animationDelay = (Math.random() * 5) + 's';
+                
+                // Random size variance
+                const size = Math.random() * 3 + 1;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                
+                container.appendChild(p);
             }
         }
 
-        // Intersection Observer for card animations
-        function initScrollAnimations() {
-            const cards = document.querySelectorAll('.menu-card');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const delay = parseInt(entry.target.dataset.delay) || 0;
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, delay);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            cards.forEach(card => observer.observe(card));
-        }
-
-        // Mouse tracking for glow effect
-        function initMouseTracking() {
-            const cards = document.querySelectorAll('.menu-card');
+        // 2. Mouse Spotlight Effect Logic
+        function initSpotlight() {
+            const cards = document.querySelectorAll('.glass-card');
             
             cards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
                     
-                    card.style.setProperty('--mouse-x', x + '%');
-                    card.style.setProperty('--mouse-y', y + '%');
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
                 });
             });
         }
 
-        // Initialize everything
+        // Initialize on Load
         document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            initScrollAnimations();
-            initMouseTracking();
+            initParticles();
+            initSpotlight();
         });
     </script>
 </body>
