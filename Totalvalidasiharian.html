@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekap Total Per Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --bg-card-hover: #1a2332;
+            --fg: #e8edf5;
+            --fg-muted: #7a8ba7;
+            --accent: #00e89d;
+            --accent-dim: rgba(0, 232, 157, 0.12);
+            --accent-glow: rgba(0, 232, 157, 0.25);
+            --border: #1e2d42;
+            --danger: #ff4d6a;
+            --warning: #ffb443;
+            --info: #38bdf8;
+            --card-radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-atmosphere {
+            position: fixed; inset: 0; z-index: 0;
+            pointer-events: none; overflow: hidden;
+        }
+        .bg-atmosphere .orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(120px);
+            animation: orbFloat 20s ease-in-out infinite alternate;
+        }
+        .bg-atmosphere .orb:nth-child(1) {
+            width: 500px; height: 500px; background: var(--accent);
+            top: -15%; left: -10%; opacity: 0.08;
+        }
+        .bg-atmosphere .orb:nth-child(2) {
+            width: 400px; height: 400px; background: #ff4d6a;
+            bottom: -10%; right: -5%; opacity: 0.06; animation-delay: -7s;
+        }
+        .bg-atmosphere .orb:nth-child(3) {
+            width: 300px; height: 300px; background: #38bdf8;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0.04; animation-delay: -14s;
+        }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.1); }
+            100% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        .grid-pattern {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 232, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 232, 157, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .container {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .header-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; background: var(--accent-dim);
+            border: 1px solid rgba(0, 232, 157, 0.2);
+            border-radius: 100px; font-size: 12px; font-weight: 600;
+            color: var(--accent); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 20px;
+        }
+        .header-badge i { font-size: 10px; }
+        .header h1 {
+            font-size: clamp(28px, 5vw, 48px); font-weight: 700; line-height: 1.1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .header p {
+            font-size: 15px; color: var(--fg-muted);
+            max-width: 580px; margin: 0 auto; line-height: 1.6;
+        }
+        .header p strong { color: var(--accent); font-weight: 600; }
+
+        .info-banner {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 16px 20px; margin-bottom: 32px;
+            background: rgba(0, 232, 157, 0.05);
+            border: 1px solid rgba(0, 232, 157, 0.12);
+            border-radius: 12px; font-size: 13px; color: var(--fg-muted); line-height: 1.7;
+        }
+        .info-banner i { margin-top: 3px; flex-shrink: 0; color: var(--accent); }
+        .info-banner .ex {
+            display: inline-block; padding: 1px 8px; border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+        }
+        .info-banner .ex.yes { background: rgba(0,232,157,0.12); color: var(--accent); }
+        .info-banner .ex.no { background: rgba(255,77,106,0.12); color: var(--danger); }
+
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 16px; margin-bottom: 32px;
+            opacity: 0; transform: translateY(12px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .stats-bar.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 600px) { .stats-bar { grid-template-columns: 1fr; } }
+        .stat-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px; text-align: center;
+            transition: border-color 0.3s;
+        }
+        .stat-card:hover { border-color: rgba(0, 232, 157, 0.2); }
+        .stat-value {
+            font-size: 32px; font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1; margin-bottom: 6px;
+        }
+        .stat-value.accent { color: var(--accent); }
+        .stat-value.info { color: var(--info); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-label { font-size: 12px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .main-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 24px; margin-bottom: 32px;
+        }
+        @media (max-width: 860px) { .main-grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--card-radius); overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: rgba(0, 232, 157, 0.2); }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+        }
+        .card-header-left { display: flex; align-items: center; gap: 12px; }
+        .card-header-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        .card-header-icon.green { background: var(--accent-dim); color: var(--accent); }
+        .card-header-icon.blue { background: rgba(56, 189, 248, 0.12); color: var(--info); }
+        .card-title { font-size: 15px; font-weight: 600; }
+        .card-subtitle { font-size: 12px; color: var(--fg-muted); margin-top: 2px; }
+        .card-body { padding: 24px; }
+
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea {
+            width: 100%; height: 340px;
+            background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px;
+            color: var(--fg); font-family: 'JetBrains Mono', monospace;
+            font-size: 13px; line-height: 1.7; resize: vertical;
+            transition: border-color 0.3s, box-shadow 0.3s; outline: none;
+        }
+        .textarea-wrap textarea::placeholder { color: var(--fg-muted); opacity: 0.4; }
+        .textarea-wrap textarea:focus {
+            border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+        .textarea-line-count {
+            position: absolute; bottom: 12px; right: 16px;
+            font-size: 11px; color: var(--fg-muted);
+            font-family: 'JetBrains Mono', monospace; pointer-events: none;
+        }
+
+        .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border: none; border-radius: 10px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+            font-weight: 600; cursor: pointer; transition: all 0.25s; outline: none;
+        }
+        .btn:focus-visible { box-shadow: 0 0 0 3px var(--accent-dim); }
+        .btn-primary { background: var(--accent); color: #0a0f1a; }
+        .btn-primary:hover {
+            background: #00ffad; box-shadow: 0 4px 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06); color: var(--fg);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.15); }
+        .btn-danger {
+            background: rgba(255, 77, 106, 0.1); color: var(--danger);
+            border: 1px solid rgba(255, 77, 106, 0.2);
+        }
+        .btn-danger:hover { background: rgba(255, 77, 106, 0.2); }
+
+        .results-empty {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: 340px;
+            color: var(--fg-muted); text-align: center; gap: 12px;
+        }
+        .results-empty i { font-size: 40px; opacity: 0.3; }
+        .results-empty p { font-size: 14px; opacity: 0.6; }
+
+        .result-scroll { max-height: 440px; overflow-y: auto; }
+        .result-scroll::-webkit-scrollbar { width: 6px; }
+        .result-scroll::-webkit-scrollbar-track { background: transparent; }
+        .result-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
+
+        .table-wrap { overflow-x: auto; }
+        .result-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .result-table thead th {
+            padding: 12px 16px; text-align: left; font-size: 11px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px;
+            color: var(--fg-muted); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; background: var(--bg-card); z-index: 2;
+        }
+        .result-table thead th:last-child { text-align: right; }
+        .result-table tbody tr { transition: background 0.2s; animation: rowSlideIn 0.4s ease both; }
+        .result-table tbody tr:hover { background: var(--bg-card-hover); }
+        .result-table tbody td {
+            padding: 14px 16px; font-size: 14px;
+            border-bottom: 1px solid rgba(30, 45, 66, 0.5); vertical-align: middle;
+        }
+        .result-table tbody td:last-child { text-align: right; }
+        @keyframes rowSlideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .bank-name-cell { display: flex; align-items: center; gap: 12px; }
+        .bank-avatar {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .bank-label { font-weight: 600; }
+        .bank-category { font-size: 11px; color: var(--fg-muted); margin-top: 1px; }
+        .count-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 44px; padding: 6px 14px;
+            background: var(--accent-dim); border: 1px solid rgba(0, 232, 157, 0.2);
+            border-radius: 8px; font-family: 'JetBrains Mono', monospace;
+            font-size: 15px; font-weight: 700; color: var(--accent);
+        }
+
+        .bar-cell { width: 160px; }
+        .bar-track {
+            width: 100%; height: 8px; background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px; overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%; border-radius: 100px;
+            background: linear-gradient(90deg, var(--accent), #38bdf8);
+            transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); width: 0;
+        }
+
+        .result-table tfoot td {
+            padding: 14px 16px; font-weight: 700; font-size: 14px;
+            border-top: 2px solid var(--border); border-bottom: none;
+        }
+        .result-table tfoot td:last-child { text-align: right; }
+
+        /* === COPY PREVIEW === */
+        .copy-preview {
+            margin-top: 20px; padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .copy-preview-label {
+            font-size: 11px; color: var(--fg-muted); text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 10px; font-weight: 600;
+        }
+        .copy-preview-label i { margin-right: 6px; color: var(--accent); }
+        .copy-preview-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; line-height: 2;
+            color: var(--fg); white-space: pre;
+            overflow-x: auto;
+        }
+        .copy-preview-box::-webkit-scrollbar { height: 4px; }
+        .copy-preview-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
+        .cp-label { color: var(--info); font-weight: 600; }
+        .cp-val { color: var(--accent); font-weight: 700; }
+        .cp-zero { color: var(--fg-muted); opacity: 0.4; }
+
+        .toast-container {
+            position: fixed; top: 24px; right: 24px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 20px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 12px;
+            font-size: 13px; font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: toastIn 0.4s ease, toastOut 0.3s ease 2.5s forwards;
+            min-width: 260px;
+        }
+        .toast.success { border-color: rgba(0, 232, 157, 0.3); }
+        .toast.success i { color: var(--accent); }
+        .toast.error { border-color: rgba(255, 77, 106, 0.3); }
+        .toast.error i { color: var(--danger); }
+        .toast.warn { border-color: rgba(255, 180, 67, 0.3); }
+        .toast.warn i { color: var(--warning); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
+
+        .highlight-tags {
+            display: flex; flex-wrap: wrap; gap: 6px;
+            margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
+        }
+        .highlight-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border); border-radius: 6px;
+            font-size: 11px; color: var(--fg-muted);
+        }
+        .highlight-tag .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+        @media (max-width: 860px) {
+            .container { padding: 24px 16px 60px; }
+            .header { margin-bottom: 32px; }
+            .bar-cell { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-atmosphere">
+        <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+    </div>
+    <div class="grid-pattern"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="header-badge"><i class="fas fa-bolt"></i> Auto Rekap Bank</div>
+            <h1>Rekap Total Per Bank</h1>
+            <p>Tempel data, sistem otomatis menghitung jumlah per bank — hanya mencocokkan <strong>nama bank yang persis</strong>.</p>
+        </header>
+
+        <div class="info-banner">
+            <i class="fas fa-shield-halved"></i>
+            <div>
+                Matching presisi word boundary.
+                <span class="ex yes">DANA</span> terbaca,
+                <span class="ex no">DANACUY</span> ditolak.
+                <span class="ex yes">BRI</span> terbaca,
+                <span class="ex no">BRIBRO</span> ditolak.
+                Hasil salin otomatis berderet sesuai urutan: BCA, MANDIRI, BNI, BRI, DANAMON, CIMB, BSI, MAYBANK, DANA, OVO, GOPAY, LINKAJA, JAGO, SEABANK.
+            </div>
+        </div>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="stat-value accent" id="statTotal">0</div>
+                <div class="stat-label">Total Terdeteksi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value info" id="statBanks">0</div>
+                <div class="stat-label">Jenis Bank/E-Wallet</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value warning" id="statLines">0</div>
+                <div class="stat-label">Total Baris Data</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="card-header-icon green"><i class="fas fa-paste"></i></div>
+                        <div>
+                            <div class="card-title">Data Input</div>
+                            <div class="card-subtitle">Tempel data di sini</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="textarea-wrap">
+                        <textarea id="dataInput" spellcheck="false" aria-label="Area tempel data"
+                            placeholder="Tempel data di sini...&#10;&#10;Contoh:&#10;Transfer BRI ke John 50000&#10;Top up DANA 100000&#10;Bayar DANACUY 75000  ← tidak terbaca&#10;Pembayaran BRI 200000&#10;Kirim DANAI 50000     ← tidak terbaca&#10;Beli OVO pulsa 25000&#10;Bayar DANA merchant 150000&#10;Transfer MANDIRIX 300000 ← tidak terbaca&#10;Bayar MANDIRI 300000&#10;..."></textarea>
+                        <div class="textarea-line-count" id="lineCount">0 baris</div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" id="btnProcess"><i class="fas fa-play"></i> Proses Data</button>
+                        <button class="btn btn-secondary" id="btnSample"><i class="fas fa-flask"></i> Contoh Data</button>
+                        <button class="btn btn-danger" id="btnClear"><i class="fas fa-trash-alt"></i> Bersihkan</button>
+                    </div>
+                    <div class="highlight-tags" id="bankTags" style="display:none;">
+                        <span style="font-size:11px; color:var(--fg-muted); width:100%; margin-bottom:2px;">Bank/E-Wallet terdeteksi:</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="card-header-icon blue"><i class="fas fa-chart-bar"></i></div>
+                        <div>
+                            <div class="card-title">Hasil Rekap</div>
+                            <div class="card-subtitle" id="resultSubtitle">Belum ada data</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" id="btnCopy" style="display:none; padding:6px 14px; font-size:12px;">
+                        <i class="fas fa-copy"></i> Salin Deret
+                    </button>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <div class="results-empty" id="resultsEmpty">
+                        <i class="fas fa-inbox"></i>
+                        <p>Tempel data dan klik "Proses Data"<br>untuk melihat hasil rekap</p>
+                    </div>
+                    <div class="result-scroll" id="resultsContent" style="display:none;">
+                        <div class="table-wrap">
+                            <table class="result-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bank / E-Wallet</th>
+                                        <th class="bar-cell">Distribusi</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultBody"></tbody>
+                                <tfoot id="resultFoot" style="display:none;">
+                                    <tr>
+                                        <td colspan="2" style="color:var(--fg);">GRAND TOTAL</td>
+                                        <td><span class="count-badge" id="grandTotal">0</span></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Preview Hasil Salin -->
+                        <div class="copy-preview" id="copyPreview">
+                            <div class="copy-preview-label"><i class="fas fa-clipboard-list"></i> Preview Hasil Salin (Tab-separated)</div>
+                            <div class="copy-preview-box" id="copyPreviewBox"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATABASE BANK & E-WALLET INDONESIA
+        // ============================================
+        const BANK_DB = [
+            { name: 'Bank Syariah Indonesia', keywords: ['bank syariah indonesia'], category: 'Bank Syariah', color: '#00A650' },
+            { name: 'ShopeePay',              keywords: ['shopeepay', 'shopee pay'],   category: 'E-Wallet',     color: '#EE4D2D' },
+            { name: 'SeaBank',                keywords: ['seabank', 'sea bank'],       category: 'Bank Digital', color: '#FF6154' },
+            { name: 'Allo Bank',              keywords: ['allo bank', 'allo'],          category: 'Bank Digital', color: '#7C3AED' },
+            { name: 'Bank Jago',              keywords: ['bank jago', 'jago'],          category: 'Bank Digital', color: '#6145FF' },
+            { name: 'Neo Commerce',           keywords: ['neo commerce', 'neo'],        category: 'Bank Digital', color: '#FF6B35' },
+            { name: 'KB Bukopin',             keywords: ['kb bukopin', 'bukopin'],      category: 'Bank',         color: '#FFB81C' },
+            { name: 'Bank Nobu',              keywords: ['bank nobu', 'nobu'],          category: 'Bank',         color: '#1B4F72' },
+            { name: 'Bank Rakyat',            keywords: ['bank rakyat'],                category: 'Bank',         color: '#2D8C3C' },
+            { name: 'LinkAja',                keywords: ['link aja', 'linkaja'],        category: 'E-Wallet',     color: '#E8292D' },
+            { name: 'Go Pay',                 keywords: ['go pay', 'gopay'],            category: 'E-Wallet',     color: '#00AED6' },
+            { name: 'Blu BCA',                keywords: ['blu bca', 'blu'],             category: 'Bank Digital', color: '#06B6D4' },
+            { name: 'Mandiri',                keywords: ['mandiri'],                    category: 'Bank',         color: '#003366' },
+            { name: 'Sinarmas',               keywords: ['sinarmas'],                   category: 'Bank',         color: '#E4002B' },
+            { name: 'Danamon',                keywords: ['danamon'],                    category: 'Bank',         color: '#FFD100' },
+            { name: 'Permata',                keywords: ['permata'],                    category: 'Bank',         color: '#006B3F' },
+            { name: 'Maybank',                keywords: ['maybank'],                    category: 'Bank',         color: '#003B71' },
+            { name: 'Jenius',                 keywords: ['jenius', 'btpn'],             category: 'Bank Digital', color: '#00B4D8' },
+            { name: 'Sakuku',                 keywords: ['sakuku'],                     category: 'E-Wallet',     color: '#003D79' },
+            { name: 'DANA',                   keywords: ['dana'],                       category: 'E-Wallet',     color: '#108EE9' },
+            { name: 'OVO',                    keywords: ['ovo'],                        category: 'E-Wallet',     color: '#4C3494' },
+            { name: 'BCA',                    keywords: ['bca'],                        category: 'Bank',         color: '#003D79' },
+            { name: 'BRI',                    keywords: ['bri'],                        category: 'Bank',         color: '#00529C' },
+            { name: 'BNI',                    keywords: ['bni'],                        category: 'Bank',         color: '#F15A22' },
+            { name: 'BTN',                    keywords: ['btn'],                        category: 'Bank',         color: '#F7941D' },
+            { name: 'CIMB',                   keywords: ['cimb'],                       category: 'Bank',         color: '#7B0E24' },
+            { name: 'Panin',                  keywords: ['panin'],                      category: 'Bank',         color: '#003876' },
+            { name: 'OCBC',                   keywords: ['ocbc'],                       category: 'Bank',         color: '#E31837' },
+            { name: 'Mega',                   keywords: ['mega'],                       category: 'Bank',         color: '#00468B' },
+            { name: 'BSI',                    keywords: ['bsi'],                        category: 'Bank Syariah', color: '#00A650' },
+            { name: 'DOKU',                   keywords: ['doku'],                       category: 'E-Wallet',     color: '#FF6600' },
+            { name: 'Flip',                   keywords: ['flip'],                       category: 'E-Wallet',     color: '#FFB800' },
+            { name: 'QRIS',                   keywords: ['qris'],                       category: 'Pembayaran',   color: '#FF6B35' },
+        ];
+
+        // ============================================
+        // URUTAN SALIN — sesuai permintaan user
+        // label = tulisan yang muncul di hasil salin
+        // dbName = nama yang cocok di BANK_DB
+        // ============================================
+        const COPY_ORDER = [
+            { label: 'BCA',      dbName: 'BCA' },
+            { label: 'MANDIRI',  dbName: 'Mandiri' },
+            { label: 'BNI',      dbName: 'BNI' },
+            { label: 'BRI',      dbName: 'BRI' },
+            { label: 'DANAMON',  dbName: 'Danamon' },
+            { label: 'CIMB',     dbName: 'CIMB' },
+            { label: 'BSI',      dbName: 'BSI' },
+            { label: 'MAYBANK',  dbName: 'Maybank' },
+            { label: 'DANA',     dbName: 'DANA' },
+            { label: 'OVO',      dbName: 'OVO' },
+            { label: 'GOPAY',    dbName: 'Go Pay' },
+            { label: 'LINKAJA',  dbName: 'LinkAja' },
+            { label: 'JAGO',     dbName: 'Bank Jago' },
+            { label: 'SEABANK',  dbName: 'SeaBank' },
+        ];
+
+        // ============================================
+        // BUAT REGEX WORD BOUNDARY
+        // ============================================
+        function buildBankRegex() {
+            BANK_DB.forEach(bank => {
+                bank.patterns = bank.keywords.map(kw => {
+                    const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    return new RegExp('\\b' + escaped + '\\b', 'i');
+                });
+            });
+        }
+        buildBankRegex();
+
+        // ============================================
+        // DOM
+        // ============================================
+        const dataInput      = document.getElementById('dataInput');
+        const lineCount      = document.getElementById('lineCount');
+        const btnProcess     = document.getElementById('btnProcess');
+        const btnSample      = document.getElementById('btnSample');
+        const btnClear       = document.getElementById('btnClear');
+        const btnCopy        = document.getElementById('btnCopy');
+        const resultsEmpty   = document.getElementById('resultsEmpty');
+        const resultsContent = document.getElementById('resultsContent');
+        const resultBody     = document.getElementById('resultBody');
+        const resultFoot     = document.getElementById('resultFoot');
+        const grandTotal     = document.getElementById('grandTotal');
+        const resultSubtitle = document.getElementById('resultSubtitle');
+        const statsBar       = document.getElementById('statsBar');
+        const statTotal      = document.getElementById('statTotal');
+        const statBanks      = document.getElementById('statBanks');
+        const statLines      = document.getElementById('statLines');
+        const bankTags       = document.getElementById('bankTags');
+        const toastContainer = document.getElementById('toastContainer');
+        const copyPreviewBox = document.getElementById('copyPreviewBox');
+
+        // Simpan counts global untuk fungsi salin
+        let globalCounts = {};
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warn: 'fa-exclamation-triangle' };
+            toast.innerHTML = `<i class="fas ${icons[type] || icons.success}"></i> ${message}`;
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ============================================
+        // PROSES DATA
+        // ============================================
+        function processBankData() {
+            const text = dataInput.value.trim();
+            if (!text) {
+                showToast('Tidak ada data untuk diproses', 'error');
+                return;
+            }
+
+            const lines = text.split('\n').filter(l => l.trim() !== '');
+            const counts = {};
+            let totalDetected = 0;
+
+            lines.forEach(line => {
+                for (const bank of BANK_DB) {
+                    for (const pattern of bank.patterns) {
+                        if (pattern.test(line)) {
+                            counts[bank.name] = (counts[bank.name] || 0) + 1;
+                            totalDetected++;
+                            break;
+                        }
+                    }
+                }
+            });
+
+            globalCounts = counts;
+
+            const sorted = Object.entries(counts)
+                .map(([name, count]) => {
+                    const info = BANK_DB.find(b => b.name === name);
+                    return { name, count, category: info ? info.category : 'Lainnya', color: info ? info.color : '#666' };
+                })
+                .sort((a, b) => b.count - a.count);
+
+            const maxCount = sorted.length > 0 ? sorted[0].count : 1;
+
+            statTotal.textContent = totalDetected;
+            statBanks.textContent = sorted.length;
+            statLines.textContent = lines.length;
+            statsBar.classList.add('visible');
+
+            resultSubtitle.textContent = `${totalDetected} terdeteksi dari ${lines.length} baris · ${sorted.length} bank/e-wallet`;
+
+            if (sorted.length === 0) {
+                showToast('Tidak ada nama bank yang terdeteksi pada data', 'warn');
+            }
+
+            // Render Tabel
+            resultBody.innerHTML = '';
+            sorted.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.style.animationDelay = `${idx * 0.05}s`;
+                const pct = Math.max(5, (item.count / maxCount) * 100);
+                const initials = item.name.substring(0, 2).toUpperCase();
+                tr.innerHTML = `
+                    <td>
+                        <div class="bank-name-cell">
+                            <div class="bank-avatar" style="background:${item.color}20; color:${item.color};">${initials}</div>
+                            <div>
+                                <div class="bank-label">${item.name}</div>
+                                <div class="bank-category">${item.category}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="bar-cell">
+                        <div class="bar-track"><div class="bar-fill" data-width="${pct}"></div></div>
+                    </td>
+                    <td><span class="count-badge">${item.count}</span></td>
+                `;
+                resultBody.appendChild(tr);
+            });
+
+            grandTotal.textContent = totalDetected;
+            resultFoot.style.display = sorted.length > 1 ? '' : 'none';
+
+            resultsEmpty.style.display = 'none';
+            resultsContent.style.display = '';
+            btnCopy.style.display = '';
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.querySelectorAll('.bar-fill').forEach(bar => {
+                        bar.style.width = bar.dataset.width + '%';
+                    });
+                });
+            });
+
+            renderBankTags(sorted);
+            renderCopyPreview();
+
+            if (totalDetected > 0) {
+                showToast(`Berhasil merekap ${totalDetected} transaksi dari ${sorted.length} bank`);
+            }
+        }
+
+        // ============================================
+        // PREVIEW HASIL SALIN
+        // ============================================
+        function renderCopyPreview() {
+            let labelLine = '';
+            let valueLine = '';
+
+            COPY_ORDER.forEach((item, i) => {
+                const count = globalCounts[item.dbName] || 0;
+                const sep = (i < COPY_ORDER.length - 1) ? '\t' : '';
+                labelLine += item.label + sep;
+                valueLine += count + sep;
+            });
+
+            // Render preview dengan warna
+            let htmlLabel = '';
+            let htmlValue = '';
+
+            COPY_ORDER.forEach((item, i) => {
+                const count = globalCounts[item.dbName] || 0;
+                const sep = (i < COPY_ORDER.length - 1) ? '\t' : '';
+                htmlLabel += `<span class="cp-label">${item.label}</span>${sep}`;
+                if (count > 0) {
+                    htmlValue += `<span class="cp-val">${count}</span>${sep}`;
+                } else {
+                    htmlValue += `<span class="cp-zero">0</span>${sep}`;
+                }
+            });
+
+            copyPreviewBox.innerHTML = htmlLabel + '\n' + htmlValue;
+        }
+
+        // ============================================
+        // BANK TAGS
+        // ============================================
+        function renderBankTags(sorted) {
+            bankTags.style.display = 'flex';
+            bankTags.innerHTML = '<span style="font-size:11px; color:var(--fg-muted); width:100%; margin-bottom:2px;">Bank/E-Wallet terdeteksi:</span>';
+            sorted.forEach(item => {
+                const tag = document.createElement('span');
+                tag.className = 'highlight-tag';
+                tag.innerHTML = `<span class="dot" style="background:${item.color};"></span> ${item.name} (${item.count})`;
+                bankTags.appendChild(tag);
+            });
+        }
+
+        // ============================================
+        // CONTOH DATA
+        // ============================================
+        function loadSampleData() {
+            const sample = `Transfer BRI ke John 150000
+Top up DANA 200000
+Bayar BCA listrik 350000
+Kirim BRI ke Rina 75000
+Bayar DANACUY merchant 45000
+Beli OVO pulsa 50000
+Transfer DANA ke Budi 100000
+Bayar MANDIRI KPR 2500000
+Bayar BRI BPJS 180000
+Transfer BCA ke Sari 300000
+Bayar Go Pay grab food 85000
+Bayar ShopeePay belanja 120000
+Token DANA listrik 50000
+Gaji BNI karyawan 5000000
+Internet BRI Indihome 450000
+Bayar OVO parkir 10000
+Transfer DANA ke Dewi 200000
+Asuransi MANDIRI 750000
+Transfer BCA ke Doni 150000
+Tol LinkAja 35000
+Warung QRIS 25000
+Zakat BSI 500000
+Spotify DANA 55000
+Transfer BRI ke Eka 90000
+Tarik SeaBank tunai 500000
+Transfer Jago antar bank 250000
+GOPAY grab car 65000
+Isi ShopeePay saldo 300000
+Game DANA 89000
+PDAM BCA 125000
+Transfer DANAI ke teman 99999
+Bayar MANDIRIX asuransi 88888
+Top up DANACUY 77777
+Kirim BRIBRO 66666
+Bayar OVOCUY 55555
+Bayar GoPayCuy 44444
+Bayar ShopeePayCuy 33333
+Transfer BCA lagi 200000
+DANA beli makan 60000
+BRI bayar pajak 150000
+OVO isi saldo 80000
+Mandiri transfer 400000
+DANA kirim uang 120000
+BRI bayar cicilan 300000
+BCA bayar token 75000`;
+
+            dataInput.value = sample;
+            const lines = sample.split('\n').filter(l => l.trim() !== '');
+            lineCount.textContent = `${lines.length} baris`;
+            showToast('Contoh data dimuat — ada kasus negatif (DANACUY, DANAI, MANDIRIX, dll)');
+        }
+
+        // ============================================
+        // BERSIHKAN
+        // ============================================
+        function clearAll() {
+            dataInput.value = '';
+            lineCount.textContent = '0 baris';
+            resultsEmpty.style.display = '';
+            resultsContent.style.display = 'none';
+            btnCopy.style.display = 'none';
+            resultFoot.style.display = 'none';
+            resultSubtitle.textContent = 'Belum ada data';
+            statsBar.classList.remove('visible');
+            bankTags.style.display = 'none';
+            bankTags.innerHTML = '';
+            copyPreviewBox.innerHTML = '';
+            globalCounts = {};
+            showToast('Data berhasil dibersihkan');
+        }
+
+        // ============================================
+        // SALIN — deret kesamping TAB-separated
+        // Baris 1: nama bank
+        // Baris 2: angka total
+        // ============================================
+        function copyResults() {
+            if (Object.keys(globalCounts).length === 0 && COPY_ORDER.length > 0) {
+                // Biarkan salin meski 0 semua
+            }
+
+            let labelLine = '';
+            let valueLine = '';
+
+            COPY_ORDER.forEach((item, i) => {
+                const count = globalCounts[item.dbName] || 0;
+                const sep = (i < COPY_ORDER.length - 1) ? '\t' : '';
+                labelLine += item.label + sep;
+                valueLine += count + sep;
+            });
+
+            const text = labelLine + '\n' + valueLine;
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Deret bank & total berhasil disalin (Tab-separated)');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Deret bank & total berhasil disalin (Tab-separated)');
+            });
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        btnProcess.addEventListener('click', processBankData);
+        btnSample.addEventListener('click', loadSampleData);
+        btnClear.addEventListener('click', clearAll);
+        btnCopy.addEventListener('click', copyResults);
+
+        dataInput.addEventListener('input', () => {
+            const lines = dataInput.value.split('\n').filter(l => l.trim() !== '');
+            lineCount.textContent = `${lines.length} baris`;
+        });
+
+        dataInput.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                processBankData();
+            }
+        });
+
+        dataInput.addEventListener('paste', () => {
+            setTimeout(() => {
+                const lines = dataInput.value.split('\n').filter(l => l.trim() !== '');
+                lineCount.textContent = `${lines.length} baris`;
+                if (lines.length > 0) {
+                    setTimeout(processBankData, 300);
+                }
+            }, 50);
+        });
+    </script>
+</body>
+</html>
