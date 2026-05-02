@@ -36,12 +36,10 @@
             overflow-x: hidden;
         }
 
-        /* === VIDEO BACKGROUND === */
         .video-bg {
             position: fixed; inset: 0; z-index: 0;
             overflow: hidden;
         }
-
         .video-bg video {
             position: absolute;
             top: 50%; left: 50%;
@@ -49,8 +47,6 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
         }
-
-        /* Multi-layer overlay untuk readability */
         .video-overlay {
             position: fixed; inset: 0; z-index: 1;
             background:
@@ -59,14 +55,12 @@
                 radial-gradient(ellipse at 70% 80%, rgba(0, 180, 110, 0.03), transparent 60%);
             pointer-events: none;
         }
-
         .video-noise {
             position: fixed; inset: 0; z-index: 1;
             opacity: 0.03; pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             background-size: 128px 128px;
         }
-
         .video-vignette {
             position: fixed; inset: 0; z-index: 1;
             background: radial-gradient(ellipse 70% 65% at 50% 45%, transparent, rgba(4, 8, 6, 0.6));
@@ -79,7 +73,6 @@
             padding: 36px 24px 90px;
         }
 
-        /* === HEADER === */
         header {
             text-align: center; margin-bottom: 40px;
             animation: headerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -118,17 +111,14 @@
             max-width: 460px; margin: 0 auto; line-height: 1.65;
         }
 
-        /* === DUA KOLOM === */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 420px;
             gap: 24px;
             align-items: start;
         }
-
         .col-left { display: flex; flex-direction: column; gap: 22px; }
 
-        /* === GLASS PANEL BASE === */
         .glass {
             background: rgba(8, 18, 14, 0.6);
             backdrop-filter: blur(24px) saturate(1.2);
@@ -138,19 +128,18 @@
             position: relative;
             overflow: hidden;
         }
-
         .glass::before {
             content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
             pointer-events: none;
         }
 
-        /* === SEARCH PANEL === */
         .search-panel {
             padding: 28px;
             animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
         }
-        .search-panel .accent-line {
+        .search-panel .accent-line,
+        .add-panel .accent-line {
             position: absolute; top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
             opacity: 0.5;
@@ -213,6 +202,8 @@
         .meta-right.visible { opacity: 1; transform: translateY(0); }
         .meta-right .num { color: var(--accent); font-weight: 600; }
         .meta-right .label { color: var(--fg-muted); }
+        .meta-right.warn .num { color: var(--gold); }
+        .meta-right.err .num { color: var(--danger); }
 
         .btn-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
 
@@ -245,6 +236,101 @@
         .btn-ghost:hover { border-color: rgba(0, 230, 138, 0.2); color: var(--fg-dim); background: rgba(0, 230, 138, 0.08); }
         .btn-sm { padding: 9px 16px; font-size: 0.8rem; }
 
+        /* === FORMAT HINT === */
+        .format-hint {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 14px; margin-bottom: 12px;
+            background: rgba(255, 217, 102, 0.03);
+            border: 1px solid rgba(255, 217, 102, 0.06);
+            border-radius: 10px;
+            font-size: 0.72rem; color: var(--gold-dim); line-height: 1.6;
+        }
+        .format-hint i { font-size: 0.7rem; flex-shrink: 0; opacity: 0.7; }
+        .format-hint code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 217, 102, 0.06);
+            padding: 1px 6px; border-radius: 4px;
+            font-size: 0.68rem; color: var(--gold);
+        }
+
+        /* === ADD PREVIEW === */
+        .add-preview {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0; margin-top: 0;
+        }
+        .add-preview.open { max-height: 400px; opacity: 1; margin-top: 12px; }
+
+        .add-preview-inner {
+            background: rgba(4, 10, 8, 0.4);
+            border: 1px solid rgba(0, 230, 138, 0.06);
+            border-radius: 12px; overflow: hidden;
+        }
+        .add-preview-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(0, 230, 138, 0.03);
+            border-bottom: 1px solid rgba(0, 230, 138, 0.04);
+            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .add-preview-head .count-ok { color: var(--accent); }
+        .add-preview-head .count-dup { color: var(--gold); }
+        .add-preview-head .count-err { color: var(--danger); }
+
+        .add-preview-list {
+            max-height: 200px; overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 230, 138, 0.08) transparent;
+        }
+        .add-preview-list::-webkit-scrollbar { width: 3px; }
+        .add-preview-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.08); border-radius: 4px; }
+
+        .apv-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(0, 230, 138, 0.03);
+            font-size: 0.78rem;
+            animation: fadeIn 0.3s ease both;
+        }
+        .apv-item:last-child { border-bottom: none; }
+        .apv-item.ok { color: var(--fg-dim); }
+        .apv-item.dup { color: var(--gold-dim); background: rgba(255, 217, 102, 0.02); }
+        .apv-item.bad { color: rgba(255, 92, 92, 0.6); background: rgba(255, 92, 92, 0.015); }
+
+        .apv-icon {
+            width: 22px; height: 22px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.58rem; flex-shrink: 0;
+        }
+        .apv-item.ok .apv-icon { background: rgba(0, 230, 138, 0.1); color: var(--accent); }
+        .apv-item.dup .apv-icon { background: rgba(255, 217, 102, 0.1); color: var(--gold); }
+        .apv-item.bad .apv-icon { background: rgba(255, 92, 92, 0.08); color: var(--danger); }
+
+        .apv-info { flex: 1; min-width: 0; }
+        .apv-rek { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.76rem; }
+        .apv-name { font-size: 0.68rem; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .apv-bank {
+            font-size: 0.58rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; opacity: 0.5; flex-shrink: 0;
+        }
+        .apv-status {
+            font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; flex-shrink: 0; padding: 2px 8px; border-radius: 4px;
+        }
+        .apv-item.ok .apv-status { background: rgba(0, 230, 138, 0.08); color: var(--accent); }
+        .apv-item.dup .apv-status { background: rgba(255, 217, 102, 0.08); color: var(--gold); }
+        .apv-item.bad .apv-status { background: rgba(255, 92, 92, 0.06); color: var(--danger); }
+
+        .add-error {
+            font-size: 0.72rem; color: var(--danger); display: none;
+            padding: 8px 12px; background: rgba(255, 92, 92, 0.05);
+            border: 1px solid rgba(255, 92, 92, 0.08);
+            border-radius: 8px; margin-top: 8px;
+        }
+        .add-error.show { display: flex; align-items: center; gap: 6px; }
+        .add-error i { font-size: 0.66rem; flex-shrink: 0; }
+
         /* === STATS ROW === */
         .stats-row {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
@@ -264,12 +350,10 @@
             transition: all 0.3s ease; position: relative;
         }
         .stat-box:hover { transform: translateY(-3px); border-color: rgba(0, 230, 138, 0.12); }
-
         .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
         .stat-box.total::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
         .stat-box.found::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
         .stat-box.missing::before { background: linear-gradient(90deg, transparent, var(--danger), transparent); }
-
         .stat-box::after {
             content: ''; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
             width: 100px; height: 60px; pointer-events: none;
@@ -290,7 +374,6 @@
             font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
             text-transform: uppercase; letter-spacing: 1.5px;
         }
-
         .stat-icon {
             position: absolute; top: 16px; right: 14px;
             font-size: 0.8rem; opacity: 0.15;
@@ -299,7 +382,6 @@
         .stat-box.found .stat-icon { color: var(--accent); }
         .stat-box.missing .stat-icon { color: var(--danger); }
 
-        /* === BANNER === */
         .result-banner {
             background: rgba(0, 230, 138, 0.05);
             border: 1px solid rgba(0, 230, 138, 0.1);
@@ -330,7 +412,6 @@
         .banner-title .hl { color: var(--accent); }
         .banner-sub { font-size: 0.8rem; color: var(--fg-muted); }
 
-        /* === LIST HEADER === */
         .result-list-header {
             display: flex; align-items: center; gap: 10px;
             margin-bottom: 12px; animation: fadeIn 0.5s ease 0.2s both;
@@ -344,7 +425,6 @@
 
         .result-list { display: flex; flex-direction: column; gap: 8px; }
 
-        /* === KARTU REKENING === */
         .rek-card {
             background: rgba(8, 18, 14, 0.55);
             backdrop-filter: blur(16px);
@@ -403,7 +483,6 @@
         .rek-status i { font-size: 0.6rem; }
         .rek-index { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: rgba(110, 168, 142, 0.35); }
 
-        /* === IDLE / NONE === */
         .result-idle { text-align: center; padding: 44px 20px; animation: fadeIn 0.5s ease; }
         .result-idle .idle-icon {
             width: 64px; height: 64px; border-radius: 18px;
@@ -455,7 +534,7 @@
         }
 
         .db-list {
-            max-height: calc(100vh - 400px);
+            max-height: calc(100vh - 480px);
             min-height: 180px;
             overflow-y: auto;
             scrollbar-width: thin;
@@ -502,63 +581,8 @@
         .db-item:hover .dbi-del { opacity: 1; }
         .dbi-del:hover { background: rgba(255, 92, 92, 0.06); border-color: rgba(255, 92, 92, 0.1); color: var(--danger); }
 
-        /* === FORM TAMBAH === */
         .add-panel { padding: 22px; }
-        .add-panel .accent-line {
-            position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.4;
-        }
-        .add-panel h3 {
-            font-size: 0.84rem; font-weight: 600; color: var(--fg-dim);
-            display: flex; align-items: center; gap: 9px; margin-bottom: 16px;
-        }
-        .add-panel h3 i {
-            width: 30px; height: 30px; border-radius: 9px;
-            background: rgba(0, 230, 138, 0.08); color: var(--accent);
-            display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
-            border: 1px solid rgba(0, 230, 138, 0.06);
-        }
 
-        .add-form { display: flex; flex-direction: column; gap: 10px; }
-        .add-row { display: flex; gap: 8px; }
-        .add-row.half { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-        .add-field { display: flex; flex-direction: column; gap: 4px; }
-        .add-field label {
-            font-size: 0.66rem; font-weight: 600; color: var(--fg-muted);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .add-field select, .add-field input {
-            width: 100%; background: rgba(4, 10, 8, 0.5);
-            border: 1.5px solid rgba(0, 230, 138, 0.06); border-radius: 10px;
-            padding: 10px 14px; font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.82rem; color: var(--fg); transition: all 0.2s;
-            backdrop-filter: blur(8px);
-        }
-        .add-field select {
-            cursor: pointer; appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236ea88e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
-        }
-        .add-field select option { background: #0a1610; color: var(--fg); }
-        .add-field input::placeholder { color: rgba(110, 168, 142, 0.35); font-size: 0.78rem; }
-        .add-field input.font-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.3px; }
-        .add-field select:focus, .add-field input:focus {
-            outline: none; border-color: rgba(0, 230, 138, 0.25);
-            box-shadow: 0 0 0 3px rgba(0, 230, 138, 0.04);
-        }
-
-        .add-error {
-            font-size: 0.72rem; color: var(--danger); display: none;
-            padding: 8px 12px; background: rgba(255, 92, 92, 0.05);
-            border: 1px solid rgba(255, 92, 92, 0.08);
-            border-radius: 8px; margin-top: -2px;
-        }
-        .add-error.show { display: flex; align-items: center; gap: 6px; }
-        .add-error i { font-size: 0.66rem; flex-shrink: 0; }
-
-        /* === TOAST === */
         .toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
         .toast {
             padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; font-weight: 500;
@@ -569,6 +593,7 @@
         }
         .toast-err { background: rgba(30, 10, 10, 0.85); border: 1px solid rgba(255, 92, 92, 0.15); color: var(--danger); }
         .toast-ok { background: rgba(10, 30, 18, 0.85); border: 1px solid rgba(0, 230, 138, 0.15); color: var(--accent); }
+        .toast-warn { background: rgba(30, 24, 10, 0.85); border: 1px solid rgba(255, 217, 102, 0.15); color: var(--gold); }
         @keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(50px); } }
 
@@ -592,7 +617,7 @@
 
         @media (max-width: 640px) {
             .container { padding: 20px 12px 60px; }
-            .search-panel { padding: 20px 16px; }
+            .search-panel, .add-panel { padding: 20px 16px; }
             .stats-row { gap: 8px; }
             .stat-box { padding: 16px 10px; border-radius: 14px; }
             .stat-val { font-size: 1.5rem; }
@@ -600,8 +625,8 @@
             .stat-icon { display: none; }
             .rek-card-inner { padding: 14px 16px; gap: 12px; }
             .rek-badge { flex-direction: row; align-items: center; }
-            .add-row.half { grid-template-columns: 1fr; }
             .db-item .dbi-del { opacity: 0.5; }
+            .format-hint { font-size: 0.66rem; padding: 8px 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -611,7 +636,6 @@
 </head>
 <body>
 
-    <!-- VIDEO BACKGROUND -->
     <div class="video-bg">
         <video autoplay muted loop playsinline preload="auto">
             <source src="https://v1.pinimg.com/videos/iht/expMp4/e9/c2/61/e9c261e918070db580a52b0519e3887b_720w.mp4" type="video/mp4">
@@ -633,7 +657,6 @@
 
         <div class="main-grid">
 
-            <!-- KOLOM KIRI -->
             <div class="col-left">
 
                 <section class="search-panel glass" id="searchPanel" aria-label="Form pencarian">
@@ -664,7 +687,6 @@
 
             </div>
 
-            <!-- KOLOM KANAN -->
             <div class="col-right">
 
                 <div class="db-panel glass">
@@ -678,37 +700,45 @@
 
                 <div class="add-panel glass">
                     <div class="accent-line"></div>
-                    <h3><i class="fas fa-plus"></i> Tambah Rekening</h3>
-                    <div class="add-form" id="addForm">
-                        <div class="add-row half">
-                            <div class="add-field">
-                                <label>Bank</label>
-                                <select id="addBank">
-                                    <option value="">Pilih Bank</option>
-                                    <option value="BCA">BCA</option>
-                                    <option value="BRI">BRI</option>
-                                    <option value="MANDIRI">Mandiri</option>
-                                    <option value="BNI">BNI</option>
-                                    <option value="DANAMON">Danamon</option>
-                                    <option value="CIMB">CIMB</option>
-                                    <option value="MAYBANK">Maybank</option>
-                                </select>
-                            </div>
-                            <div class="add-field">
-                                <label>Nomor Rekening</label>
-                                <input type="text" id="addRek" class="font-mono" placeholder="1234567890" maxlength="20" inputmode="numeric">
-                            </div>
+                    <div class="search-top" style="margin-bottom:14px;">
+                        <div class="search-title" style="font-size:0.85rem;">
+                            <i class="fas fa-file-import"></i>
+                            <span>Tambah Rekening</span>
                         </div>
-                        <div class="add-field">
-                            <label>Nama Rekening</label>
-                            <input type="text" id="addName" placeholder="NAMA PEMILIK REKENING" style="text-transform:uppercase;">
+                        <div class="auto-tag"><i class="fas fa-layer-group"></i> Multi-add</div>
+                    </div>
+
+                    <div class="format-hint">
+                        <i class="fas fa-circle-info"></i>
+                        <span>Format per baris: <code>Bank</code> dipisah <code>|</code> lalu <code>NoRek</code> dipisah <code>|</code> lalu <code>Nama</code>. Bisa juga pakai <code>Tab</code> dari Excel/Spreadsheet.</span>
+                    </div>
+
+                    <div class="textarea-wrap">
+                        <textarea id="addInput" placeholder="BCA|7402544671|UMI SALAMAH&#10;MANDIRI|1550015288148|USNA&#10;BNI|2011951619|HAN SETIAWAN&#10;BRI|330901004735507|DARILAH&#10;DANAMON|003704972490|RAKA WIBOWO" aria-label="Masukkan data rekening" spellcheck="false" autocomplete="off" style="min-height:130px;"></textarea>
+                    </div>
+
+                    <div class="input-meta">
+                        <span class="meta-left" id="addMetaLeft">0 karakter</span>
+                        <span class="meta-right" id="addMetaRight">
+                            <span class="num" id="addMetaNum">0</span>
+                            <span class="label">terdeteksi</span>
+                        </span>
+                    </div>
+
+                    <div class="add-preview" id="addPreview">
+                        <div class="add-preview-inner">
+                            <div class="add-preview-head" id="addPreviewHead"></div>
+                            <div class="add-preview-list" id="addPreviewList"></div>
                         </div>
-                        <div class="add-error" id="addError"><i class="fas fa-circle-exclamation"></i><span id="addErrorText"></span></div>
-                        <div class="btn-row">
-                            <button class="btn btn-main btn-sm" id="btnAdd" style="flex:1;justify-content:center;">
-                                <i class="fas fa-plus"></i> Simpan ke Database
-                            </button>
-                        </div>
+                    </div>
+
+                    <div class="add-error" id="addError"><i class="fas fa-circle-exclamation"></i><span id="addErrorText"></span></div>
+
+                    <div class="btn-row" style="margin-top:4px;">
+                        <button class="btn btn-main btn-sm" id="btnAdd" style="flex:1;justify-content:center;">
+                            <i class="fas fa-plus"></i> Simpan Semua ke Database
+                        </button>
+                        <button class="btn btn-ghost btn-sm" id="btnAddClear" title="Bersihkan"><i class="fas fa-eraser"></i></button>
                     </div>
                 </div>
 
@@ -772,46 +802,57 @@
         // =====================================================
         // DOM
         // =====================================================
-        const searchInput = document.getElementById('searchInput');
-        const metaLeft    = document.getElementById('metaLeft');
-        const metaRight   = document.getElementById('metaRight');
-        const metaNum     = document.getElementById('metaNum');
-        const btnSearch   = document.getElementById('btnSearch');
-        const btnClear    = document.getElementById('btnClear');
-        const searchPanel = document.getElementById('searchPanel');
-        const resultArea  = document.getElementById('resultArea');
-        const dbList      = document.getElementById('dbList');
-        const dbBadge     = document.getElementById('dbBadge');
-        const toastWrap   = document.getElementById('toastWrap');
-        const addBank     = document.getElementById('addBank');
-        const addRek      = document.getElementById('addRek');
-        const addName     = document.getElementById('addName');
-        const btnAdd      = document.getElementById('btnAdd');
-        const addError    = document.getElementById('addError');
-        const addErrorText= document.getElementById('addErrorText');
+        const searchInput   = document.getElementById('searchInput');
+        const metaLeft      = document.getElementById('metaLeft');
+        const metaRight     = document.getElementById('metaRight');
+        const metaNum       = document.getElementById('metaNum');
+        const btnSearch     = document.getElementById('btnSearch');
+        const btnClear      = document.getElementById('btnClear');
+        const searchPanel   = document.getElementById('searchPanel');
+        const resultArea    = document.getElementById('resultArea');
+        const dbList        = document.getElementById('dbList');
+        const dbBadge       = document.getElementById('dbBadge');
+        const toastWrap     = document.getElementById('toastWrap');
+
+        const addInput      = document.getElementById('addInput');
+        const addMetaLeft   = document.getElementById('addMetaLeft');
+        const addMetaRight  = document.getElementById('addMetaRight');
+        const addMetaNum    = document.getElementById('addMetaNum');
+        const addPreview    = document.getElementById('addPreview');
+        const addPreviewHead= document.getElementById('addPreviewHead');
+        const addPreviewList= document.getElementById('addPreviewList');
+        const btnAdd        = document.getElementById('btnAdd');
+        const btnAddClear   = document.getElementById('btnAddClear');
+        const addError      = document.getElementById('addError');
+        const addErrorText  = document.getElementById('addErrorText');
 
         let debounceTimer = null;
+        let addDebounceTimer = null;
 
         // =====================================================
         // UTILITAS BANK
         // =====================================================
         function bk(b) { return b.toLowerCase().replace(/\s+/g, ''); }
-        const knownBanks = ['bca', 'bri', 'mandiri', 'bni', 'danamon', 'cimb', 'maybank'];
-        function bankClass(b) { const k = bk(b); return knownBanks.includes(k) ? k : 'default'; }
+        const KNOWN_BANKS = ['bca', 'bri', 'mandiri', 'bni', 'danamon', 'cimb', 'maybank'];
+        const KNOWN_BANKS_UPPER = ['BCA', 'BRI', 'MANDIRI', 'BNI', 'DANAMON', 'CIMB', 'MAYBANK'];
+
+        function bankClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? k : 'default'; }
         function bankIcon(b) {
             const m = { bca:'fa-building-columns', bri:'fa-landmark', mandiri:'fa-shield-halved',
                         bni:'fa-landmark-dome', danamon:'fa-coins', cimb:'fa-umbrella', maybank:'fa-building' };
             return m[bk(b)] || 'fa-building';
         }
-        function dbiClass(b) { const k = bk(b); return knownBanks.includes(k) ? `dbi-${k}` : 'dbi-bca'; }
+        function dbiClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? `dbi-${k}` : 'dbi-bca'; }
 
         // =====================================================
         // TOAST
         // =====================================================
-        function toast(msg, ok = false) {
+        function toast(msg, type = 'ok') {
             const el = document.createElement('div');
-            el.className = `toast ${ok ? 'toast-ok' : 'toast-err'}`;
-            el.innerHTML = `<i class="fas ${ok ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i><span>${msg}</span>`;
+            const cls = type === 'ok' ? 'toast-ok' : type === 'warn' ? 'toast-warn' : 'toast-err';
+            const ico = type === 'ok' ? 'fa-circle-check' : type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-exclamation';
+            el.className = `toast ${cls}`;
+            el.innerHTML = `<i class="fas ${ico}"></i><span>${msg}</span>`;
             toastWrap.appendChild(el);
             setTimeout(() => el.remove(), 3000);
         }
@@ -851,7 +892,7 @@
             if (idx < 0 || idx >= DB.length) return;
             const removed = DB.splice(idx, 1)[0];
             saveDB(); rebuildMap(); renderDB();
-            const current = parse(searchInput.value);
+            const current = parseSearch(searchInput.value);
             if (current.length > 0) {
                 const found = [];
                 current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
@@ -861,59 +902,167 @@
         }
 
         // =====================================================
-        // TAMBAH
+        // PARSER — PENCARIAN (hanya nomor rekening)
         // =====================================================
-        function showAddError(msg) { addErrorText.textContent = msg; addError.classList.add('show'); }
-        function hideAddError() { addError.classList.remove('show'); }
-
-        function addRekening() {
-            hideAddError();
-            const bank = addBank.value.trim().toUpperCase();
-            const rek  = addRek.value.replace(/\D/g, '');
-            const nama = addName.value.trim().toUpperCase();
-            if (!bank) { showAddError('Pilih bank terlebih dahulu'); addBank.focus(); return; }
-            if (!rek || rek.length < 4) { showAddError('Nomor rekening minimal 4 digit'); addRek.focus(); return; }
-            if (!nama) { showAddError('Nama rekening tidak boleh kosong'); addName.focus(); return; }
-            if (dbMap[rek]) { showAddError(`Nomor ${rek} sudah terdaftar atas nama "${dbMap[rek].nama}"`); addRek.focus(); addRek.select(); return; }
-            DB.push({ bank, nama, noRek: rek });
-            saveDB(); rebuildMap(); renderDB();
-            addBank.value = ''; addRek.value = ''; addName.value = '';
-            const current = parse(searchInput.value);
-            if (current.length > 0) {
-                const found = [];
-                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
-                renderResult(found, current.length);
-            }
-            toast(`"${nama}" berhasil ditambahkan`, true);
-            dbList.scrollTop = dbList.scrollHeight;
-        }
-
-        // =====================================================
-        // PARSER
-        // =====================================================
-        function parse(raw) {
+        function parseSearch(raw) {
             if (!raw.trim()) return [];
             let s = raw.replace(/\t/g, '\n').replace(/\r/g, '\n').replace(/[,;|]+/g, '\n');
             return [...new Set(s.split('\n').map(l => l.replace(/\D/g, '')).filter(d => d.length >= 4))];
         }
 
         // =====================================================
-        // META
+        // PARSER — TAMBAH REKENING (Bank|NoRek|Nama)
         // =====================================================
-        function updateMeta() {
-            metaLeft.textContent = `${searchInput.value.length} karakter`;
-            const n = parse(searchInput.value).length;
-            metaNum.textContent = n;
-            metaRight.classList.toggle('visible', n > 0);
+        function parseAddInput(raw) {
+            if (!raw.trim()) return { ok: [], dup: [], bad: [] };
+
+            const lines = raw.replace(/\r/g, '\n').split('\n').filter(l => l.trim());
+            const ok = [], dup = [], bad = [];
+
+            lines.forEach(line => {
+                // Coba pisah dengan | dulu, lalu tab
+                let parts = line.split('|').map(s => s.trim()).filter(s => s);
+                if (parts.length < 3) {
+                    parts = line.split('\t').map(s => s.trim()).filter(s => s);
+                }
+
+                if (parts.length < 3) {
+                    bad.push({ line: line.trim(), reason: 'Format salah — butuh 3 kolom' });
+                    return;
+                }
+
+                const bank = parts[0].toUpperCase().replace(/\s+/g, '');
+                const rek  = parts[1].replace(/\D/g, '');
+                const nama = parts.slice(2).join(' ').trim().toUpperCase();
+
+                if (!KNOWN_BANKS_UPPER.includes(bank)) {
+                    bad.push({ line: line.trim(), reason: `Bank "${parts[0].trim()}" tidak dikenali` });
+                    return;
+                }
+                if (rek.length < 4) {
+                    bad.push({ line: line.trim(), reason: 'Nomor rekening terlalu pendek (min 4 digit)' });
+                    return;
+                }
+                if (!nama) {
+                    bad.push({ line: line.trim(), reason: 'Nama rekening kosong' });
+                    return;
+                }
+                if (dbMap[rek]) {
+                    dup.push({ bank: bank, noRek: rek, nama: nama, existingName: dbMap[rek].nama, line: line.trim() });
+                    return;
+                }
+
+                ok.push({ bank: bank, noRek: rek, nama: nama, line: line.trim() });
+            });
+
+            return { ok, dup, bad };
         }
 
         // =====================================================
-        // AUTO-CHECK
+        // META PENCARIAN
+        // =====================================================
+        function updateSearchMeta() {
+            metaLeft.textContent = `${searchInput.value.length} karakter`;
+            const n = parseSearch(searchInput.value).length;
+            metaNum.textContent = n;
+            metaRight.classList.toggle('visible', n > 0);
+            metaRight.classList.remove('warn', 'err');
+        }
+
+        // =====================================================
+        // META TAMBAH
+        // =====================================================
+        function updateAddMeta() {
+            addMetaLeft.textContent = `${addInput.value.length} karakter`;
+            const parsed = parseAddInput(addInput.value);
+            const total = parsed.ok.length + parsed.dup.length + parsed.bad.length;
+            addMetaNum.textContent = total;
+            addMetaRight.classList.toggle('visible', total > 0);
+
+            // Warna berdasarkan status
+            addMetaRight.classList.remove('warn', 'err');
+            if (parsed.bad.length > 0) {
+                addMetaRight.classList.add('err');
+            } else if (parsed.dup.length > 0) {
+                addMetaRight.classList.add('warn');
+            }
+
+            // Render preview
+            renderAddPreview(parsed);
+        }
+
+        // =====================================================
+        // PREVIEW TAMBAH
+        // =====================================================
+        function renderAddPreview(parsed) {
+            const { ok, dup, bad } = parsed;
+            const total = ok.length + dup.length + bad.length;
+
+            if (total === 0) {
+                addPreview.classList.remove('open');
+                return;
+            }
+
+            addPreview.classList.add('open');
+
+            // Header
+            let headParts = [];
+            if (ok.length > 0) headParts.push(`<span class="count-ok">${ok.length} baru</span>`);
+            if (dup.length > 0) headParts.push(`<span class="count-dup">${dup.length} duplikat</span>`);
+            if (bad.length > 0) headParts.push(`<span class="count-err">${bad.length} error</span>`);
+            addPreviewHead.innerHTML = headParts.join(' <span style="color:rgba(110,168,142,0.3);margin:0 2px;">/</span> ');
+
+            // List
+            let html = '';
+
+            ok.forEach((item, i) => {
+                html += `
+                    <div class="apv-item ok" style="animation-delay:${i * 0.04}s">
+                        <div class="apv-icon"><i class="fas fa-plus"></i></div>
+                        <div class="apv-info">
+                            <div class="apv-rek">${item.noRek}</div>
+                            <div class="apv-name">${item.nama}</div>
+                        </div>
+                        <div class="apv-bank">${item.bank}</div>
+                        <div class="apv-status">Baru</div>
+                    </div>`;
+            });
+
+            dup.forEach((item, i) => {
+                html += `
+                    <div class="apv-item dup" style="animation-delay:${(ok.length + i) * 0.04}s">
+                        <div class="apv-icon"><i class="fas fa-copy"></i></div>
+                        <div class="apv-info">
+                            <div class="apv-rek">${item.noRek}</div>
+                            <div class="apv-name">${item.nama} <span style="opacity:0.5;">→ ${item.existingName}</span></div>
+                        </div>
+                        <div class="apv-bank">${item.bank}</div>
+                        <div class="apv-status">Duplikat</div>
+                    </div>`;
+            });
+
+            bad.forEach((item, i) => {
+                html += `
+                    <div class="apv-item bad" style="animation-delay:${(ok.length + dup.length + i) * 0.04}s">
+                        <div class="apv-icon"><i class="fas fa-xmark"></i></div>
+                        <div class="apv-info">
+                            <div class="apv-rek" style="opacity:0.5;">${item.line}</div>
+                            <div class="apv-name">${item.reason}</div>
+                        </div>
+                        <div class="apv-status">Error</div>
+                    </div>`;
+            });
+
+            addPreviewList.innerHTML = html;
+        }
+
+        // =====================================================
+        // AUTO-CHECK PENCARIAN
         // =====================================================
         function scheduleCheck() {
-            updateMeta();
+            updateSearchMeta();
             clearTimeout(debounceTimer);
-            const list = parse(searchInput.value);
+            const list = parseSearch(searchInput.value);
             if (list.length === 0) {
                 resultArea.innerHTML = `
                     <div class="result-idle">
@@ -926,9 +1075,9 @@
         }
 
         function manualCheck() {
-            const list = parse(searchInput.value);
-            if (!searchInput.value.trim()) { toast('Masukkan nomor rekening dulu'); return; }
-            if (list.length === 0) { toast('Tidak ada nomor valid (min. 4 digit)'); return; }
+            const list = parseSearch(searchInput.value);
+            if (!searchInput.value.trim()) { toast('Masukkan nomor rekening dulu', 'err'); return; }
+            if (list.length === 0) { toast('Tidak ada nomor valid (min. 4 digit)', 'err'); return; }
             clearTimeout(debounceTimer);
             searchPanel.classList.add('searching');
             btnSearch.disabled = true;
@@ -942,7 +1091,78 @@
         }
 
         // =====================================================
-        // RENDER HASIL
+        // TAMBAH REKENING SEKALIGUS
+        // =====================================================
+        function doAddAll() {
+            hideAddError();
+            const raw = addInput.value.trim();
+            if (!raw) { showAddError('Masukkan data rekening terlebih dahulu'); addInput.focus(); return; }
+
+            const { ok, dup, bad } = parseAddInput(raw);
+
+            if (ok.length === 0 && dup.length === 0) {
+                showAddError('Tidak ada data valid untuk disimpan. Periksa format: Bank|NoRek|Nama');
+                return;
+            }
+
+            if (ok.length === 0) {
+                if (dup.length > 0) {
+                    showAddError(`Semua ${dup.length} data sudah terdaftar (duplikat). Tidak ada data baru.`);
+                } else {
+                    showAddError('Tidak ada data valid. Periksa format: Bank|NoRek|Nama');
+                }
+                return;
+            }
+
+            // Simpan yang valid
+            ok.forEach(item => {
+                DB.push({ bank: item.bank, nama: item.nama, noRek: item.noRek });
+            });
+            saveDB();
+            rebuildMap();
+            renderDB();
+
+            // Bersihkan input & preview
+            addInput.value = '';
+            addMetaLeft.textContent = '0 karakter';
+            addMetaRight.classList.remove('visible', 'warn', 'err');
+            addPreview.classList.remove('open');
+
+            // Toast summary
+            let msg = `${ok.length} rekening berhasil ditambahkan`;
+            if (dup.length > 0) msg += ` · ${dup.length} duplikat dilewati`;
+            if (bad.length > 0) msg += ` · ${bad.length} error`;
+            toast(msg, ok.length > 0 ? 'ok' : 'warn');
+
+            if (dup.length > 0) {
+                setTimeout(() => toast(`${dup.length} nomor sudah ada di database`, 'warn'), 400);
+            }
+
+            // Re-check pencarian jika ada
+            const current = parseSearch(searchInput.value);
+            if (current.length > 0) {
+                const found = [];
+                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+                renderResult(found, current.length);
+            }
+
+            dbList.scrollTop = dbList.scrollHeight;
+        }
+
+        function clearAddInput() {
+            addInput.value = '';
+            addMetaLeft.textContent = '0 karakter';
+            addMetaRight.classList.remove('visible', 'warn', 'err');
+            addPreview.classList.remove('open');
+            hideAddError();
+            addInput.focus();
+        }
+
+        function showAddError(msg) { addErrorText.textContent = msg; addError.classList.add('show'); }
+        function hideAddError() { addError.classList.remove('show'); }
+
+        // =====================================================
+        // RENDER HASIL PENCARIAN
         // =====================================================
         function renderResult(found, total) {
             const missing = total - found.length;
@@ -1020,7 +1240,7 @@
         }
 
         // =====================================================
-        // BERSIHKAN
+        // BERSIHKAN PENCARIAN
         // =====================================================
         function doClear() {
             clearTimeout(debounceTimer);
@@ -1044,13 +1264,20 @@
         searchInput.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); clearTimeout(debounceTimer); manualCheck(); }
         });
-        btnAdd.addEventListener('click', addRekening);
-        [addBank, addRek, addName].forEach(el => {
-            el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addRekening(); } });
+
+        // Events panel tambah
+        addInput.addEventListener('input', () => {
+            hideAddError();
+            clearTimeout(addDebounceTimer);
+            updateAddMeta();
         });
-        addRek.addEventListener('input', () => { addRek.value = addRek.value.replace(/\D/g, ''); hideAddError(); });
-        addBank.addEventListener('change', hideAddError);
-        addName.addEventListener('input', hideAddError);
+
+        btnAdd.addEventListener('click', doAddAll);
+        btnAddClear.addEventListener('click', clearAddInput);
+
+        addInput.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); doAddAll(); }
+        });
 
         // =====================================================
         // INIT
