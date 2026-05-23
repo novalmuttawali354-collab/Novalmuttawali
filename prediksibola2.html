@@ -8,194 +8,260 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root{
-            --bg:#0f0e0a;--bg2:#16140f;--bg3:#1d1a13;
-            --card:#1a1710;--card2:#222018;--card3:#2a261c;
-            --brd:#352f1e;--brd2:#484028;--brd3:#5a5035;
-            --fg:#f0ead6;--fg2:#d4cda8;--fg3:#b8ac88;
+            --bg:#0b0a07;--bg2:#12100b;--bg3:#1a1710;
+            --card:#15120d;--card2:#1e1b14;--card3:#262218;
+            --brd:#2e2818;--brd2:#3d3520;--brd3:#50462c;
+            --fg:#f2ecd8;--fg2:#d8d0b0;--fg3:#b8ac88;
             --fm:#7a6f55;--fm2:#5c5440;
-            --yl:#f5c518;--yl2:#ffdd45;--yl3:#c9a008;
-            --yld:rgba(245,197,24,.08);--yld2:rgba(245,197,24,.15);
-            --ylg:rgba(245,197,24,.25);
-            --gy:#8a7f6e;--gyd:rgba(138,127,110,.10);
-            --gn:#3cb86a;--gnd:rgba(60,184,106,.10);
-            --rd:#e05545;--rdd:rgba(224,85,69,.10);
+            --yl:#f5c518;--yl2:#ffe04a;--yl3:#b8920a;
+            --yld:rgba(245,197,24,.06);--yld2:rgba(245,197,24,.12);
+            --ylg:rgba(245,197,24,.3);
+            --gy:#8a7f6e;--gn:#3cb86a;--gnd:rgba(60,184,106,.12);
+            --rd:#e05545;--rdd:rgba(224,85,69,.12);
+            --bl:#3b8ef5;--bl2:#6ab0ff;--bl3:#1a6fd4;
+            --bld:rgba(59,142,245,.06);--bld2:rgba(59,142,245,.12);
         }
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden}
 
         .atm{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-        .atm .orb{position:absolute;border-radius:50%;filter:blur(120px)}
-        .atm .o1{width:550px;height:550px;top:-15%;left:-8%;background:rgba(245,197,24,.03);animation:dr 22s ease-in-out infinite}
-        .atm .o2{width:400px;height:400px;bottom:-8%;right:-5%;background:rgba(138,127,110,.035);animation:dr 28s ease-in-out infinite reverse}
-        @keyframes dr{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(60px,35px) scale(1.1)}65%{transform:translate(-35px,60px) scale(.92)}}
-        .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.016;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+        .atm .orb{position:absolute;border-radius:50%;filter:blur(140px)}
+        .atm .o1{width:600px;height:600px;top:-20%;left:-10%;background:rgba(245,197,24,.025);animation:dr 25s ease-in-out infinite}
+        .atm .o2{width:450px;height:450px;bottom:-10%;right:-8%;background:rgba(59,142,245,.02);animation:dr 30s ease-in-out infinite reverse}
+        @keyframes dr{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,40px) scale(1.12)}70%{transform:translate(-40px,70px) scale(.9)}}
 
-        .wrap{position:relative;z-index:2;max-width:920px;margin:0 auto;padding:14px 14px 60px}
+        .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.014;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-        /* HEADER */
-        header{text-align:center;padding:38px 0 22px}
-        .hbadge{display:inline-flex;align-items:center;gap:7px;background:var(--yld2);border:2px solid rgba(245,197,24,.2);color:var(--yl);font-size:10px;font-weight:800;padding:5px 15px;border-radius:50px;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:14px}
+        .wrap{position:relative;z-index:2;max-width:940px;margin:0 auto;padding:12px 14px 60px}
+
+        /* ===== HEADER + LOGO ===== */
+        header{text-align:center;padding:24px 0 20px}
+        .logo-wrap{margin-bottom:18px}
+        .logo-wrap img{height:72px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(245,197,24,.15));transition:transform .3s}
+        .logo-wrap img:hover{transform:scale(1.04)}
+        .hbadge{display:inline-flex;align-items:center;gap:7px;background:var(--yld2);border:2px solid rgba(245,197,24,.18);color:var(--yl);font-size:10px;font-weight:800;padding:5px 16px;border-radius:50px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px}
         .hbadge .pd{width:6px;height:6px;background:var(--yl);border-radius:50%;animation:pls 1.5s ease-in-out infinite}
-        @keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.15;transform:scale(.3)}}
-        header h1{font-size:clamp(26px,5.5vw,46px);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:4px}
+        @keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.12;transform:scale(.2)}}
+        header h1{font-size:clamp(28px,6vw,48px);font-weight:900;letter-spacing:-2.5px;line-height:1.05;margin-bottom:6px}
         header h1 .hl{background:linear-gradient(135deg,var(--yl),var(--yl2),var(--yl3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        header p{color:var(--fm);font-size:13px;font-weight:400}
+        header p{color:var(--fm);font-size:13px;font-weight:400;letter-spacing:.2px}
 
-        /* LIVE BAR */
-        .lbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--card);border:2px solid var(--brd2);border-radius:10px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
-        .lbar-l{display:flex;align-items:center;gap:9px}
-        .ldot-w{display:flex;align-items:center;gap:5px}
-        .ldot{width:7px;height:7px;border-radius:50%;background:var(--gn);box-shadow:0 0 6px var(--gn);animation:pls 1.5s ease-in-out infinite}
-        .ldot.off{background:var(--rd);box-shadow:0 0 6px var(--rd)}
-        .lst{font-size:10px;font-weight:800;color:var(--gn);text-transform:uppercase;letter-spacing:.5px}
-        .lst.off{color:var(--rd)}
-        .lup{font-size:9px;color:var(--fm);font-weight:500}
-        .lbar-r{display:flex;align-items:center;gap:8px}
-        .lcd{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--yl);background:var(--yld);padding:3px 9px;border-radius:50px;border:1px solid rgba(245,197,24,.12)}
-        .lint{font-size:9px;color:var(--fm);font-weight:500}
-        .rbtn{width:28px;height:28px;border-radius:50%;border:2px solid var(--brd2);background:var(--bg2);color:var(--fm);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:10px}
-        .rbtn:hover{border-color:var(--yl);color:var(--yl);background:var(--yld)}
-        .rbtn.spi i{animation:sp .6s linear infinite}
-        @keyframes sp{100%{transform:rotate(360deg)}}
+        /* ===== TABS ===== */
+        .tab-wrap{margin-bottom:16px}
+        .tab-bar{display:flex;gap:4px;background:var(--card);border:2px solid var(--brd2);border-radius:14px;padding:5px}
+        .tab-btn{
+            flex:1;display:flex;align-items:center;justify-content:center;gap:9px;
+            padding:14px 18px;border:none;border-radius:10px;
+            background:transparent;color:var(--fm);
+            font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;
+            cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;
+            letter-spacing:-.2px;
+        }
+        .tab-btn i{font-size:16px;transition:all .35s}
+        .tab-btn:hover{color:var(--fg2)}
+        .tab-btn.t-active-jadwal{
+            background:linear-gradient(135deg,var(--bld2),var(--bld));
+            color:var(--bl);box-shadow:0 4px 20px rgba(59,142,245,.15),inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .tab-btn.t-active-jadwal i{color:var(--bl)}
+        .tab-btn.t-active-prediksi{
+            background:linear-gradient(135deg,var(--yld2),var(--yld));
+            color:var(--yl);box-shadow:0 4px 20px var(--ylg),inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .tab-btn.t-active-prediksi i{color:var(--yl)}
+        .tab-cnt{
+            display:inline-flex;align-items:center;justify-content:center;
+            min-width:24px;height:19px;border-radius:50px;
+            font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+            padding:0 7px;transition:all .35s;
+        }
+        .tab-btn.t-active-jadwal .tab-cnt{background:var(--bl);color:#fff}
+        .tab-btn.t-active-prediksi .tab-cnt{background:var(--yl);color:var(--bg)}
+        .tab-btn:not(.t-active-jadwal):not(.t-active-prediksi) .tab-cnt{background:var(--bg3);color:var(--fm)}
 
-        /* SEARCH */
+        .tab-content{display:none;animation:tfu .4s ease-out both}
+        .tab-content.active{display:block}
+        @keyframes tfu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ===== SEARCH ===== */
         .sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-        .stotal{font-size:12px;font-weight:700;color:var(--fg2)}
-        .stotal strong{color:var(--yl);font-size:18px;font-weight:900}
-        .sb{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--brd2);border-radius:50px;padding:5px 12px;transition:border-color .2s}
+        .stotal{font-size:12px;font-weight:600;color:var(--fg2)}
+        .stotal strong{font-size:20px;font-weight:900}
+        .c-bl{color:var(--bl)}.c-yl{color:var(--yl)}
+        .sb{display:flex;align-items:center;gap:7px;background:var(--card);border:2px solid var(--brd2);border-radius:50px;padding:6px 14px;transition:border-color .25s}
         .sb:focus-within{border-color:var(--yl)}
         .sb i{color:var(--fm);font-size:11px}
-        .sb input{background:none;border:none;outline:none;color:var(--fg);font-family:'Outfit',sans-serif;font-size:11px;width:140px}
-        .sb input::placeholder{color:var(--fm)}
+        .sb input{background:none;border:none;outline:none;color:var(--fg);font-family:'Outfit',sans-serif;font-size:12px;width:150px}
+        .sb input::placeholder{color:var(--fm2)}
 
-        /* TABEL WRAPPER */
-        .tw{background:var(--card);border:3px solid var(--brd2);border-radius:12px;overflow:hidden;margin-bottom:20px;animation:fu .35s ease-out both}
-        @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        /* ===== DEDUP INFO ===== */
+        .dedup-info{display:flex;align-items:center;gap:6px;padding:6px 12px;margin-bottom:12px;background:var(--yld);border:1px solid rgba(245,197,24,.1);border-radius:8px;font-size:10px;color:var(--fm);font-weight:500}
+        .dedup-info i{color:var(--yl);font-size:11px}.dedup-info strong{color:var(--yl)}
 
-        /* LIGA HEADER */
-        .lhd{display:flex;align-items:center;gap:11px;padding:12px 16px;background:linear-gradient(135deg,var(--card2),var(--card3));border-bottom:3px solid var(--brd2);position:relative}
-        .lhd::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--yl);border-radius:0 4px 4px 0}
-        .lic{width:34px;height:34px;border-radius:7px;background:var(--bg2);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+        /* ===== TABLE WRAPPER ===== */
+        .tw{background:var(--card);border:2px solid var(--brd2);border-radius:14px;overflow:hidden;margin-bottom:22px;animation:fu .4s ease-out both}
+        @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ===== DATE HEADER ===== */
+        .dhd{
+            display:flex;align-items:center;gap:10px;
+            padding:10px 18px;
+            background:linear-gradient(135deg,var(--bg3),var(--card2));
+            border-bottom:1px solid var(--brd2);
+            position:relative;
+        }
+        .dhd::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--yl3),transparent)}
+        .dhd-ic{font-size:14px;color:var(--yl)}
+        .dhd-txt{font-size:12px;font-weight:800;color:var(--yl2);letter-spacing:.3px}
+        .dhd-day{font-size:10px;font-weight:600;color:var(--fm);margin-left:auto}
+
+        /* ===== LIGA HEADER ===== */
+        .lhd{display:flex;align-items:center;gap:12px;padding:14px 18px;position:relative;overflow:hidden}
+        .lhd::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:0 4px 4px 0}
+        .lhd.lh-bl{background:linear-gradient(135deg,var(--card2),rgba(59,142,245,.03));border-bottom:2px solid rgba(59,142,245,.12)}
+        .lhd.lh-bl::before{background:linear-gradient(180deg,var(--bl),var(--bl3))}
+        .lhd.lh-yl{background:linear-gradient(135deg,var(--card2),rgba(245,197,24,.03));border-bottom:2px solid rgba(245,197,24,.12)}
+        .lhd.lh-yl::before{background:linear-gradient(180deg,var(--yl),var(--yl3))}
+        .lic{width:38px;height:38px;border-radius:9px;background:var(--bg3);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
         .linf{flex:1}
-        .lnm{font-size:14px;font-weight:900;letter-spacing:-.2px;color:var(--yl2)}
-        .lco{font-size:10px;color:var(--fm);font-weight:500}
-        .lcnt{background:var(--yld2);color:var(--yl);font-size:9px;font-weight:800;padding:3px 10px;border-radius:50px;border:2px solid rgba(245,197,24,.16)}
+        .lnm{font-size:15px;font-weight:900;letter-spacing:-.3px}
+        .lnm.nm-bl{color:var(--bl2)}.lnm.nm-yl{color:var(--yl2)}
+        .lco{font-size:10px;color:var(--fm);font-weight:500;margin-top:1px}
+        .lcnt{font-size:9px;font-weight:800;padding:4px 11px;border-radius:50px;letter-spacing:.3px}
+        .lcnt.ct-bl{background:var(--bld2);color:var(--bl);border:1px solid rgba(59,142,245,.18)}
+        .lcnt.ct-yl{background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.15)}
 
-        /* TABEL */
+        /* ===== TABLE ===== */
         table.pt{width:100%;border-collapse:collapse}
         table.pt thead th{
-            padding:10px 14px;text-align:center;
-            font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;
-            color:var(--yl);background:var(--bg3);
-            border-bottom:3px solid var(--yl3);
-            border-right:2px solid var(--brd);
-            white-space:nowrap;
+            padding:11px 16px;text-align:center;
+            font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1.4px;
+            background:var(--bg3);border-right:1px solid var(--brd);white-space:nowrap;
         }
         table.pt thead th:last-child{border-right:none}
-        table.pt thead th:nth-child(1){text-align:center;width:40px}
-        table.pt thead th:nth-child(2){width:72px}
-        table.pt thead th:nth-child(3){text-align:right}
-        table.pt thead th:nth-center(4){width:50px}
-        table.pt thead th:nth-child(5){text-align:left}
-        table.pt thead th:nth-child(6){width:90px}
+        table.pt thead th:nth-child(1){width:44px}
+        table.pt thead th:nth-child(2){width:76px}
+        table.pt thead th:nth-child(3){text-align:right;padding-right:20px}
+        table.pt thead th:nth-child(4){width:52px}
+        table.pt thead th:nth-child(5){text-align:left;padding-left:20px}
+        table.pt thead th:nth-child(6){width:100px}
+        table.pt.th-bl thead th{color:var(--bl);border-bottom:2px solid rgba(59,142,245,.25)}
+        table.pt.th-yl thead th{color:var(--yl);border-bottom:2px solid rgba(245,197,24,.25)}
 
-        table.pt tbody tr{transition:background .12s;border-bottom:2px solid var(--brd)}
+        table.pt tbody tr{transition:all .15s;border-bottom:1px solid var(--brd)}
         table.pt tbody tr:last-child{border-bottom:none}
         table.pt tbody tr:hover{background:var(--card2)}
-        table.pt tbody tr:nth-child(even){background:rgba(245,197,24,.012)}
+        table.pt tbody tr:nth-child(even){background:rgba(245,197,24,.008)}
         table.pt tbody tr:nth-child(even):hover{background:var(--card2)}
 
-        table.pt tbody td{padding:12px 14px;text-align:center;vertical-align:middle;border-right:2px solid var(--brd)}
+        table.pt tbody td{padding:14px 16px;text-align:center;vertical-align:middle;border-right:1px solid rgba(46,40,24,.5)}
         table.pt tbody td:last-child{border-right:none}
 
-        /* Kolom No */
-        .cn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--yl3)}
+        .cn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
+        .cn-bl{color:var(--bl3)}.cn-yl{color:var(--yl3)}
+        .ct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;white-space:nowrap}
+        .ct-bl{color:var(--bl)}.ct-yl{color:var(--yl)}
 
-        /* Kolom Waktu */
-        .ct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--yl);white-space:nowrap}
-
-        /* Kolom Tim */
         .ctm{white-space:nowrap}
-        .tmr{display:flex;align-items:center;gap:8px}
+        .tmr{display:flex;align-items:center;gap:9px}
         .tmr.h{justify-content:flex-end}
         .tmr.a{justify-content:flex-start}
-        .tmi{width:24px;height:24px;border-radius:5px;background:var(--bg3);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;color:var(--yl3)}
-        .tmn{font-size:13px;font-weight:800;color:var(--fg)}
+        .tmi{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+        .tmi-bl{background:rgba(59,142,245,.08);border:1px solid rgba(59,142,245,.15);color:var(--bl3)}
+        .tmi-yl{background:var(--yld);border:1px solid rgba(245,197,24,.15);color:var(--yl3)}
+        .tmn{font-size:13px;font-weight:800;color:var(--fg);letter-spacing:-.2px}
 
-        /* Kolom VS */
         .cv{text-align:center!important}
-        .vsb{width:30px;height:30px;border-radius:50%;background:var(--bg3);border:3px solid var(--yl3);display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:var(--yl);letter-spacing:.3px}
+        .vsb{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:.4px}
+        .vsb-bl{background:rgba(59,142,245,.06);border:2px solid rgba(59,142,245,.2);color:var(--bl)}
+        .vsb-yl{background:var(--yld);border:2px solid rgba(245,197,24,.2);color:var(--yl)}
 
-        /* Kolom Skor — RAPI DAN BERSIH */
+        /* ===== SKOR PREDIKSI ===== */
         .cs{text-align:center!important}
-        .sk-wrap{display:inline-flex;align-items:center;gap:0}
+        .sk-wrap{
+            display:inline-flex;align-items:stretch;
+            border-radius:10px;overflow:hidden;
+            box-shadow:0 2px 10px rgba(0,0,0,.3),0 0 20px rgba(245,197,24,.06);
+        }
         .sk-num{
             font-family:'JetBrains Mono',monospace;
-            font-size:20px;font-weight:900;
-            color:var(--bg);
-            background:linear-gradient(135deg,var(--yl),var(--yl3));
-            width:38px;height:38px;
-            display:flex;align-items:center;justify-content:center;
-            line-height:1;
+            font-size:22px;font-weight:900;color:var(--bg);
+            width:42px;display:flex;align-items:center;justify-content:center;
+            line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.2);
         }
-        .sk-num.left{border-radius:8px 0 0 8px}
-        .sk-num.right{border-radius:0 8px 8px 0}
+        .sk-num.left{background:linear-gradient(180deg,var(--yl2),var(--yl3))}
+        .sk-num.right{background:linear-gradient(180deg,var(--yl2),var(--yl3))}
         .sk-sep{
             font-family:'JetBrains Mono',monospace;
-            font-size:14px;font-weight:800;
-            color:var(--bg);
-            background:linear-gradient(135deg,var(--yl3),var(--yl3));
-            width:20px;height:38px;
-            display:flex;align-items:center;justify-content:center;
-            line-height:1;
+            font-size:13px;font-weight:900;color:var(--bg);
+            background:linear-gradient(180deg,var(--yl3),#9a7808);
+            width:18px;display:flex;align-items:center;justify-content:center;line-height:1;
         }
 
-        /* Baris baru animasi */
-        @keyframes nr{0%{background:rgba(245,197,24,.1)}100%{background:transparent}}
-        .nrow{animation:nr 2s ease-out}
+        /* ===== STATUS BADGE JADWAL ===== */
+        .stb{display:inline-flex;align-items:center;gap:5px;font-size:8px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:50px;text-transform:uppercase}
+        .stb-up{background:var(--bld2);color:var(--bl);border:1px solid rgba(59,142,245,.18)}
+        .stb-soon{background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.18)}
 
-        /* Loading / message */
-        .lbx{display:flex;flex-direction:column;align-items:center;padding:50px 20px;gap:12px}
-        .lsp{width:38px;height:38px;border:3px solid var(--brd2);border-top-color:var(--yl);border-radius:50%;animation:sp .7s linear infinite}
-        .ltx{color:var(--fm);font-size:12px}
-
-        .mbx{text-align:center;padding:40px 20px}
-        .mbx i{font-size:36px;margin-bottom:10px;color:var(--yl3)}
-        .mbx h3{font-size:15px;font-weight:800;margin-bottom:4px}
-        .mbx p{color:var(--fm);font-size:11px;margin-bottom:12px}
-        .mbx button{padding:8px 18px;border-radius:50px;border:none;background:var(--yl);color:var(--bg);font-family:'Outfit',sans-serif;font-weight:900;font-size:12px;cursor:pointer;transition:transform .2s,box-shadow .2s}
-        .mbx button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--ylg)}
-
-        /* Toast */
-        .tc{position:fixed;top:12px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:6px}
-        .ts{display:flex;align-items:center;gap:7px;padding:8px 12px;background:var(--card);border:2px solid var(--brd2);border-radius:7px;font-size:10px;box-shadow:0 6px 22px rgba(0,0,0,.5);animation:si .25s ease-out;max-width:240px;font-weight:600}
-        .ts.ok{border-left:4px solid var(--yl)}
-        .ts.er{border-left:4px solid var(--rd)}
-        .ts.inf{border-left:4px solid var(--gy)}
-        .ts.upd{border-left:4px solid var(--gn)}
-        @keyframes si{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-
-        /* Dedup info */
-        .dedup-info{
-            display:flex;align-items:center;gap:6px;
-            padding:5px 10px;margin-bottom:12px;
-            background:var(--yld);border:1px solid rgba(245,197,24,.12);
-            border-radius:8px;font-size:10px;color:var(--fm);font-weight:500;
+        /* LIVE badge */
+        .stb-live{
+            background:var(--gnd);color:var(--gn);
+            border:1px solid rgba(60,184,106,.3);
+            box-shadow:0 0 8px rgba(60,184,106,.2);
+            animation:livePulse 1.8s ease-in-out infinite;
         }
-        .dedup-info i{color:var(--yl);font-size:11px}
-        .dedup-info strong{color:var(--yl)}
+        .stb-live .stb-d{animation:dotPulse 1s ease-in-out infinite}
+        .stb-d{width:5px;height:5px;border-radius:50%;background:currentColor}
 
-        footer{text-align:center;padding:24px 14px;color:var(--fm);font-size:9px;border-top:2px solid var(--brd2);margin-top:20px;font-weight:600;letter-spacing:.3px}
+        /* Selesai badge */
+        .stb-done{
+            background:rgba(138,127,110,.1);color:var(--fm);
+            border:1px solid rgba(138,127,110,.15);
+        }
+
+        @keyframes livePulse{0%,100%{box-shadow:0 0 6px rgba(60,184,106,.15)}50%{box-shadow:0 0 16px rgba(60,184,106,.35)}}
+        @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.4)}}
+
+        /* Baris live — highlight hijau */
+        tr.row-live{background:rgba(60,184,106,.03)!important;animation:rowLiveGlow 2.5s ease-in-out infinite}
+        tr.row-live:hover{background:rgba(60,184,106,.07)!important}
+        @keyframes rowLiveGlow{0%,100%{background:rgba(60,184,106,.02)}50%{background:rgba(60,184,106,.05)}}
+
+        @keyframes nr{0%{background:rgba(245,197,24,.08)}100%{background:transparent}}
+        .nrow{animation:nr 2.5s ease-out}
+
+        .lbx{display:flex;flex-direction:column;align-items:center;padding:50px 20px;gap:14px}
+        .lsp{width:40px;height:40px;border:3px solid var(--brd2);border-top-color:var(--yl);border-radius:50%;animation:sp .7s linear infinite}
+        @keyframes sp{100%{transform:rotate(360deg)}}
+        .ltx{color:var(--fm);font-size:12px;font-weight:500}
+
+        .mbx{text-align:center;padding:44px 20px}
+        .mbx i{font-size:40px;margin-bottom:12px;color:var(--yl3);display:block}
+        .mbx h3{font-size:16px;font-weight:800;margin-bottom:5px}
+        .mbx p{color:var(--fm);font-size:12px;margin-bottom:14px}
+        .mbx button{padding:9px 20px;border-radius:50px;border:none;background:var(--yl);color:var(--bg);font-family:'Outfit',sans-serif;font-weight:900;font-size:12px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+        .mbx button:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--ylg)}
+
+        .tc{position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:6px}
+        .ts{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--card2);border:2px solid var(--brd2);border-radius:9px;font-size:10px;box-shadow:0 8px 28px rgba(0,0,0,.5);animation:si .3s ease-out;max-width:260px;font-weight:600}
+        .ts.ok{border-left:4px solid var(--yl)}.ts.er{border-left:4px solid var(--rd)}.ts.inf{border-left:4px solid var(--gy)}.ts.upd{border-left:4px solid var(--gn)}
+        @keyframes si{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+
+        footer{text-align:center;padding:24px 14px;color:var(--fm2);font-size:9px;border-top:1px solid var(--brd2);margin-top:24px;font-weight:600;letter-spacing:.3px}
         footer a{color:var(--yl);text-decoration:none;font-weight:800}
 
         @media(max-width:640px){
-            .tw{overflow-x:auto}
-            table.pt{min-width:580px}
-            .lbar{flex-direction:column;align-items:flex-start}
+            .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+            table.pt{min-width:600px}
+            .tab-btn{padding:11px 10px;font-size:12px;gap:6px}
+            .sk-num{width:36px;font-size:18px}
+            .sk-sep{width:16px;font-size:11px}
+            .logo-wrap img{height:56px}
         }
         ::-webkit-scrollbar{width:4px;height:4px}
         ::-webkit-scrollbar-track{background:var(--bg)}
         ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--brd3)}
     </style>
 </head>
 <body>
@@ -204,38 +270,50 @@
 
 <div class="wrap">
     <header>
+        <div class="logo-wrap">
+            <img src="https://i.postimg.cc/pdfn3Dpc/MARKASWD.png" alt="MARKASWD">
+        </div>
         <div class="hbadge"><span class="pd"></span> Live Data</div>
         <h1>Prediksi <span class="hl">Bola</span></h1>
-        <p>Skor prediksi pertandingan dari berbagai liga</p>
+        <p>Jadwal &amp; skor prediksi pertandingan dari berbagai liga</p>
     </header>
 
-    <!-- LIVE BAR -->
-    <div class="lbar">
-        <div class="lbar-l">
-            <div class="ldot-w"><div class="ldot" id="ldot"></div><span class="lst" id="lst">LIVE</span></div>
-            <span class="lup" id="lup">Menunggu data...</span>
-        </div>
-        <div class="lbar-r">
-            <span class="lint">Refresh: <strong>60</strong>dtk</span>
-            <span class="lcd" id="lcd">60</span>
-            <button class="rbtn" id="rB" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+    <!-- LIVE BAR DHIDDEN -->
+
+    <div class="tab-wrap">
+        <div class="tab-bar">
+            <button class="tab-btn t-active-jadwal" id="tabJadwal" onclick="switchTab('jadwal')">
+                <i class="fas fa-calendar-days"></i>
+                <span>Jadwal Bola</span>
+                <span class="tab-cnt" id="cntJadwal">0</span>
+            </button>
+            <button class="tab-btn" id="tabPrediksi" onclick="switchTab('prediksi')">
+                <i class="fas fa-chart-line"></i>
+                <span>Prediksi Bola</span>
+                <span class="tab-cnt" id="cntPrediksi">0</span>
+            </button>
         </div>
     </div>
 
-    <!-- SEARCH + TOTAL -->
     <div class="sbar">
-        <div class="stotal">Total: <strong id="stot">-</strong> prediksi</div>
+        <div class="stotal">Total: <strong id="stot" class="c-bl">-</strong> <span id="stotLabel">jadwal</span></div>
         <div class="sb"><i class="fas fa-search"></i><input type="text" id="sIn" placeholder="Cari tim atau liga..."></div>
     </div>
 
-    <!-- DEDUP INFO -->
     <div class="dedup-info" id="dedupInfo" style="display:none">
         <i class="fas fa-filter"></i>
-        <span><strong id="dedupCount">0</strong> pertandingan duplikat dihapus, menampilkan data terbaru</span>
+        <span><strong id="dedupCount">0</strong> pertandingan duplikat dihapus</span>
     </div>
 
-    <!-- KONTEN UTAMA -->
-    <main id="mn"><div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil data live...</div></div></main>
+    <!-- TAB: JADWAL -->
+    <div class="tab-content active" id="contentJadwal">
+        <main id="mnJadwal"><div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil jadwal...</div></div></main>
+    </div>
+
+    <!-- TAB: PREDIKSI -->
+    <div class="tab-content" id="contentPrediksi">
+        <main id="mnPrediksi"><div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil prediksi...</div></div></main>
+    </div>
 </div>
 
 <div class="tc" id="tc"></div>
@@ -245,7 +323,10 @@
 const BASE='https://shortq.xyz/prediksibola';
 const PROX=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?','https://api.codetabs.com/v1/proxy?quest='];
 const INT=60;
-let cd=INT,cdT=null,prevH='',allP=[],dupCount=0;
+let cd=INT,cdT=null,prevHJ='',prevHP='';
+let jadwalData=[],prediksiData=[];
+let dupCountJ=0,dupCountP=0;
+let activeTab='jadwal';
 
 const LM={
     'Premier League':{ic:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',co:'Inggris'},'La Liga':{ic:'🇪🇸',co:'Spanyol'},
@@ -257,8 +338,154 @@ const LM={
     'Championship':{ic:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',co:'Inggris'},'Saudi Pro League':{ic:'🇸🇦',co:'Arab Saudi'},
     'Turkish Super Lig':{ic:'🇹🇷',co:'Turki'},'Belgian Pro League':{ic:'🇧🇪',co:'Belgia'},
     'Liga MX':{ic:'🇲🇽',co:'Meksiko'},'MLS':{ic:'🇺🇸',co:'Amerika Serikat'},
+    'Conference League':{ic:'🏆',co:'Eropa'},'FA Cup':{ic:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',co:'Inggris'},
+    'Coppa Italia':{ic:'🇮🇹',co:'Italia'},'DFB Pokal':{ic:'🇩🇪',co:'Jerman'},
 };
 function gLM(n){if(!n)return{ic:'⚽',co:''};for(const[k,v]of Object.entries(LM))if(n.toLowerCase().includes(k.toLowerCase()))return v;return{ic:'⚽',co:n}}
+
+/* ========================================================
+   PARSE TANGGAL — Deteksi format tanggal Indonesia & umum
+   ======================================================== */
+const MONTHS_ID={
+    'januari':0,'februari':1,'maret':2,'april':3,'mei':4,'juni':5,'juli':6,
+    'agustus':7,'september':8,'oktober':9,'november':10,'desember':11,
+    'jan':0,'feb':1,'mar':2,'apr':3,'jun':5,'jul':6,'agu':7,'ags':7,'sep':8,'okt':9,'nov':10,'des':11
+};
+const DAYS_ID=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+
+/* Deteksi apakah teks mengandung tanggal */
+function detectDateStr(text){
+    if(!text)return null;
+    /* "15 Juni 2024" atau "15 Jun 2024" */
+    let m=text.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+    if(m){
+        const mon=MONTHS_ID[m[2].toLowerCase()];
+        if(mon!==undefined)return{day:parseInt(m[1]),month:mon,year:parseInt(m[3])};
+    }
+    /* "2024-06-15" */
+    m=text.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if(m)return{day:parseInt(m[3]),month:parseInt(m[2])-1,year:parseInt(m[1])};
+    /* "15/06/2024" atau "15-06-2024" */
+    m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+    if(m)return{day:parseInt(m[1]),month:parseInt(m[2])-1,year:parseInt(m[3])};
+    /* "06/15/2024" (US format) */
+    m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+    if(m&&parseInt(m[1])>12)return{day:parseInt(m[2]),month:parseInt(m[1])-1,year:parseInt(m[3])};
+    return null;
+}
+
+/* Format tanggal ke string "YYYY-MM-DD" */
+function fmtDate(d){
+    if(!d)return'';
+    return`${d.year}-${String(d.month+1).padStart(2,'0')}-${String(d.day).padStart(2,'0')}`;
+}
+
+/* Format tanggal untuk tampilan: "Sabtu, 15 Jun 2024" */
+function fmtDateDisplay(dateStr){
+    if(!dateStr)return'';
+    const parts=dateStr.split('-');
+    if(parts.length!==3)return dateStr;
+    const y=parseInt(parts[0]),mo=parseInt(parts[1])-1,d=parseInt(parts[2]);
+    const dt=new Date(y,mo,d);
+    const dayName=DAYS_ID[dt.getDay()];
+    const monNames=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return`${dayName}, ${d} ${monNames[mo]} ${y}`;
+}
+
+/* Cek apakah tanggal adalah hari ini */
+function isToday(dateStr){
+    if(!dateStr)return false;
+    const now=new Date();
+    const todayStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    return dateStr===todayStr;
+}
+
+/* Cek apakah tanggal adalah besok */
+function isTomorrow(dateStr){
+    if(!dateStr)return false;
+    const tom=new Date();tom.setDate(tom.getDate()+1);
+    const tomStr=`${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`;
+    return dateStr===tomStr;
+}
+
+/* Label hari untuk tampilan */
+function getDayLabel(dateStr){
+    if(!dateStr)return'';
+    if(isToday(dateStr))return'Hari Ini';
+    if(isTomorrow(dateStr))return'Besok';
+    return fmtDateDisplay(dateStr);
+}
+
+/* ========================================================
+   STATUS MATCH — Berdasarkan TANGGAL + JAM
+   ======================================================== */
+function getMatchStatus(dateStr,timeStr){
+    const now=new Date();
+
+    /* Bangun objek Date untuk kick-off */
+    let kickOff=null;
+
+    if(dateStr){
+        const parts=dateStr.split('-');
+        if(parts.length===3){
+            const y=parseInt(parts[0]),mo=parseInt(parts[1])-1,d=parseInt(parts[2]);
+            const tp=(timeStr||'00:00').split(':');
+            const h=parseInt(tp[0])||0,m=parseInt(tp[1])||0;
+            kickOff=new Date(y,mo,d,h,m,0);
+        }
+    }
+
+    /* Kalau tidak ada tanggal, asumsikan hari ini */
+    if(!kickOff){
+        const tp=(timeStr||'00:00').split(':');
+        const h=parseInt(tp[0])||0,m=parseInt(tp[1])||0;
+        kickOff=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);
+    }
+
+    /* Selisih menit dari sekarang ke kick-off */
+    const diffMs=kickOff.getTime()-now.getTime();
+    const diffMin=diffMs/60000;
+
+    /* Live: sudah lewat kick-off, belum 120 menit */
+    if(diffMin<=0&&diffMin>-120){
+        return{cls:'stb-live',label:'Live',isLive:true};
+    }
+
+    /* Selesai: sudah lewat 120 menit dari kick-off */
+    if(diffMin<=-120){
+        return{cls:'stb-done',label:'Selesai',isLive:false};
+    }
+
+    /* Segera: dalam 30 menit */
+    if(diffMin>0&&diffMin<=30){
+        return{cls:'stb-soon',label:'Segera',isLive:false};
+    }
+
+    /* Akan Datang */
+    return{cls:'stb-up',label:'Akan Datang',isLive:false};
+}
+
+/* ===== TAB SWITCHING ===== */
+function switchTab(tab){
+    activeTab=tab;
+    const tJ=document.getElementById('tabJadwal'),tP=document.getElementById('tabPrediksi');
+    const cJ=document.getElementById('contentJadwal'),cP=document.getElementById('contentPrediksi');
+    tJ.className='tab-btn';tP.className='tab-btn';
+    cJ.classList.remove('active');cP.classList.remove('active');
+    if(tab==='jadwal'){tJ.classList.add('t-active-jadwal');cJ.classList.add('active')}
+    else{tP.classList.add('t-active-prediksi');cP.classList.add('active')}
+    updateLabels();
+}
+
+function updateLabels(){
+    const sq=document.getElementById('sIn').value.toLowerCase();
+    const stot=document.getElementById('stot'),sl=document.getElementById('stotLabel');
+    const data=activeTab==='jadwal'?jadwalData:prediksiData;
+    let f=data;
+    if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    if(activeTab==='jadwal'){stot.textContent=f.length;stot.className='c-bl';sl.textContent='jadwal'}
+    else{stot.textContent=f.length;stot.className='c-yl';sl.textContent='prediksi'}
+}
 
 /* Toast */
 function toast(m,t='inf'){
@@ -267,7 +494,7 @@ function toast(m,t='inf'){
     const ic={ok:'fa-check-circle',er:'fa-exclamation-circle',inf:'fa-info-circle',upd:'fa-arrow-up-right-dots'};
     const cl={ok:'var(--yl)',er:'var(--rd)',inf:'var(--gy)',upd:'var(--gn)'};
     d.innerHTML=`<i class="fas ${ic[t]||ic.inf}" style="color:${cl[t]||cl.inf}"></i><span>${m}</span>`;
-    c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(20px)';d.style.transition='all .3s';setTimeout(()=>d.remove(),300)},3200);
+    c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(24px)';d.style.transition='all .3s';setTimeout(()=>d.remove(),300)},3200);
 }
 
 /* Fetch */
@@ -277,23 +504,37 @@ async function fetchPage(){
     return null;
 }
 
-/* Parser */
-function parsePred(html){
+/* ===== PARSER ===== */
+function parseHTML(html){
     const parser=new DOMParser(),doc=parser.parseFromString(html,'text/html');
-    const results=[];
-    const jS=['#jadwal','.jadwal','[id*="jadwal"]','[class*="jadwal"]','#schedule','.schedule','[id*="schedule"]','[class*="schedule"]','#fixture','.fixture','[data-tab="jadwal"]','[class*="jadwal-bola"]','nav','.navbar','.sidebar'];
-    const pS=['#prediksi','.prediksi','[id*="prediksi"]','[class*="prediksi"]','#prediction','.prediction','[id*="prediction"]','[class*="prediction"]','[data-tab="prediksi"]','main','.content','#content','[class*="prediksi-bola"]'];
+    const jadwalRaw=[],prediksiRaw=[];
+    const jadwalSels=['#jadwal','.jadwal','[id*="jadwal"]','[class*="jadwal"]','[data-tab="jadwal"]','[class*="jadwal-bola"]','#schedule','.schedule','[id*="schedule"]','[class*="schedule"]','#fixture','.fixture'];
+    const prediksiSels=['#prediksi','.prediksi','[id*="prediksi"]','[class*="prediksi"]','[data-tab="prediksi"]','[class*="prediksi-bola"]','#prediction','.prediction','[id*="prediction"]','[class*="prediction"]'];
 
-    let scope=null;
-    for(const s of pS){const el=doc.querySelector(s);if(el&&el.innerHTML.length>100){scope=el;break}}
-    const src=scope||doc.body;
-    const clone=src.cloneNode(true);
-    for(const s of jS){clone.querySelectorAll(s).forEach(el=>{const t=el.textContent||'';if(!t.match(/prediksi|1[Xx2]|over|under|handicap/i))el.remove()})}
-    clone.querySelectorAll('a[href*="jadwal"],a[href*="schedule"]').forEach(el=>{if((el.textContent||'').match(/jadwal|schedule/i))el.remove()});
+    let jScope=null;
+    for(const s of jadwalSels){const el=doc.querySelector(s);if(el&&el.innerHTML.length>50){jScope=el;break}}
+    if(jScope)parseScope(jScope,jadwalRaw,'jadwal');
 
-    let curL='';
+    let pScope=null;
+    for(const s of prediksiSels){const el=doc.querySelector(s);if(el&&el.innerHTML.length>50){pScope=el;break}}
+    if(pScope)parseScope(pScope,prediksiRaw,'prediksi');
 
-    const tables=clone.querySelectorAll('table');
+    if(!jadwalRaw.length&&!prediksiRaw.length)parseFallback(doc.body,jadwalRaw,prediksiRaw);
+    if(!jadwalRaw.length&&prediksiRaw.length){prediksiRaw.forEach(item=>{jadwalRaw.push({league:item.league,date:item.date,raw:item.raw,type:'jadwal'})})}
+
+    return{jadwal:jadwalRaw,prediksi:prediksiRaw};
+}
+
+function parseScope(scope,results,type){
+    let curL='',curD='';
+    const isP=type==='prediksi';
+
+    /* Coba deteksi tanggal dari teks scope */
+    const scopeText=scope.textContent||'';
+    const dateDetected=detectDateStr(scopeText);
+    if(dateDetected)curD=fmtDate(dateDetected);
+
+    const tables=scope.querySelectorAll('table');
     if(tables.length>0){
         tables.forEach(table=>{
             const rows=table.querySelectorAll('tr');
@@ -301,262 +542,365 @@ function parsePred(html){
                 const cells=row.querySelectorAll('td,th');
                 const texts=Array.from(cells).map(c=>c.textContent.trim()).filter(t=>t);
                 const j=texts.join(' ');
-                if(texts.length<=2&&texts[0].length>2&&texts[0].length<60&&!texts[0].match(/\d{1,2}[:.]\d{2}/)&&!texts[0].match(/\d\s*[-vs]+\s*\d/i))curL=texts[0];
-                if(j.match(/vs/i)&&(j.match(/\d\s*[-:]\s*\d/)||j.match(/1[Xx2]/i)||j.match(/over|under/i)||j.match(/prediksi|pred/i)||j.match(/handicap/i)))
-                    results.push({league:curL||'Prediksi',raw:texts});
+
+                /* Deteksi baris tanggal (tanpa VS, mengandung pola tanggal) */
+                if(!j.match(/vs/i)){
+                    const dd=detectDateStr(j);
+                    if(dd){curD=fmtDate(dd);return}
+                }
+
+                /* Deteksi header liga */
+                if(texts.length<=2&&texts[0].length>2&&texts[0].length<60&&!texts[0].match(/\d{1,2}[:.]\d{2}/)&&!texts[0].match(/\d\s*[-vs]+\s*\d/i)){
+                    curL=texts[0];return;
+                }
+
+                const hasVS=j.match(/vs/i);if(!hasVS)return;
+                const hasPred=j.match(/\d\s*[-:]\s*\d/)||j.match(/1[Xx2]/i)||j.match(/over|under/i)||j.match(/handicap/i);
+                if(isP){if(hasPred)results.push({league:curL,date:curD,raw:texts,type:'prediksi'})}
+                else results.push({league:curL,date:curD,raw:texts,type:'jadwal'});
             });
         });
     }
     if(!results.length){
-        for(const s of ['[class*="pred"]','[class*="match"]','[class*="game"]']){
-            clone.querySelectorAll(s).forEach(el=>{const t=el.textContent.trim();if(t.match(/vs/i)&&t.length>15&&t.length<500&&(t.match(/\d\s*[-:]\s*\d/)||t.match(/1[Xx2]/i)||t.match(/over|under/i)))results.push({league:'Prediksi',raw:[t]})});
-            if(results.length)break;
+        const sels=['[class*="match"]','[class*="game"]','[class*="item"]','li','.entry'];
+        for(const s of sels){
+            scope.querySelectorAll(s).forEach(el=>{
+                const t=el.textContent.trim();if(!t.match(/vs/i)||t.length<15||t.length>500)return;
+                /* Coba deteksi tanggal dari element ini */
+                const dd=detectDateStr(t);if(dd)curD=fmtDate(dd);
+                const hasPred=t.match(/\d\s*[-:]\s*\d/)||t.match(/1[Xx2]/i)||t.match(/over|under/i);
+                if(isP){if(hasPred)results.push({league:curL,date:curD,raw:[t],type:'prediksi'})}
+                else results.push({league:curL,date:curD,raw:[t],type:'jadwal'});
+            });if(results.length)break;
         }
     }
     if(!results.length){
-        clone.querySelectorAll('li,.item,.row,.entry').forEach(li=>{const t=li.textContent.trim();if(t.match(/vs/i)&&t.length>15&&t.length<400&&(t.match(/\d\s*[-:]\s*\d/)||t.match(/1[Xx2]/i)||t.match(/over|under/i)))results.push({league:'Prediksi',raw:[t]})});
-    }
-    if(!results.length){
-        const allT=clone.innerText||clone.textContent||'';
-        const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);
-        curL='';
+        const allT=scope.innerText||scope.textContent||'';
+        const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);curL='';curD='';
         for(const l of lines){
-            if(l.match(/jadwal|schedule|fixture/i))continue;
-            if(l.length<60&&!l.match(/vs/i)&&!l.match(/\d{1,2}[:.]\d{2}/)){if(l.toUpperCase()===l||l.match(/league|liga|serie|premier|division|cup/i))curL=l}
-            if(l.match(/vs/i)&&(l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i)||l.match(/prediksi|pred/i)||l.match(/handicap/i)))results.push({league:curL||'Prediksi',raw:[l]});
+            /* Deteksi baris tanggal */
+            if(!l.match(/vs/i)){
+                const dd=detectDateStr(l);
+                if(dd){curD=fmtDate(dd);continue}
+            }
+            if(l.length<60&&!l.match(/vs/i)&&!l.match(/\d{1,2}[:.]\d{2}/)){if(l.toUpperCase()===l||l.match(/league|liga|serie|premier|division|cup/i))curL=l;continue}
+            if(!l.match(/vs/i))continue;
+            const hasPred=l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i);
+            if(isP){if(hasPred)results.push({league:curL,date:curD,raw:[l],type:'prediksi'})}
+            else results.push({league:curL,date:curD,raw:[l],type:'jadwal'});
         }
     }
-    return results;
 }
 
-/* Strukturkan data */
-function struct(raw){
+function parseFallback(body,jadwalRaw,prediksiRaw){
+    const allT=body.innerText||body.textContent||'';
+    const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);
+    let curL='',curD='',inJ=false,inP=false;
+
+    for(const l of lines){
+        if(l.match(/jadwal\s*(bola)?/i)){inJ=true;inP=false;continue}
+        if(l.match(/prediksi\s*(bola)?/i)){inP=true;inJ=false;continue}
+
+        /* Deteksi baris tanggal */
+        const dd=detectDateStr(l);
+        if(dd&&!l.match(/vs/i)){curD=fmtDate(dd);continue}
+
+        if(l.length<60&&!l.match(/vs/i)&&!l.match(/\d{1,2}[:.]\d{2}/)){if(l.toUpperCase()===l||l.match(/league|liga|serie|premier|division|cup/i))curL=l;continue}
+        if(!l.match(/vs/i))continue;
+        const hasPred=l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i);
+        if(inP&&hasPred)prediksiRaw.push({league:curL,date:curD,raw:[l],type:'prediksi'});
+        else if(inJ)jadwalRaw.push({league:curL,date:curD,raw:[l],type:'jadwal'});
+        else{if(hasPred)prediksiRaw.push({league:curL,date:curD,raw:[l],type:'prediksi'});jadwalRaw.push({league:curL,date:curD,raw:[l],type:'jadwal'})}
+    }
+    const tables=body.querySelectorAll('table');let curLT='',curDT='';
+    tables.forEach(table=>{const rows=table.querySelectorAll('tr');rows.forEach(row=>{
+        const cells=row.querySelectorAll('td,th');const texts=Array.from(cells).map(c=>c.textContent.trim()).filter(t=>t);const j=texts.join(' ');
+        const dd=detectDateStr(j);if(dd&&!j.match(/vs/i)){curDT=fmtDate(dd);return}
+        if(texts.length<=2&&texts[0].length>2&&texts[0].length<60&&!texts[0].match(/\d{1,2}[:.]\d{2}/)&&!texts[0].match(/\d\s*[-vs]+\s*\d/i)){curLT=texts[0];return}
+        if(!j.match(/vs/i))return;const hasPred=j.match(/\d\s*[-:]\s*\d/)||j.match(/1[Xx2]/i)||j.match(/over|under/i);
+        if(hasPred)prediksiRaw.push({league:curLT,date:curDT,raw:texts,type:'prediksi'});
+        jadwalRaw.push({league:curLT,date:curDT,raw:texts,type:'jadwal'});
+    })});
+}
+
+/* ===== STRUKTURKAN DATA ===== */
+function structJadwal(raw){
     const out=[];
     raw.forEach(item=>{
-        const txt=item.raw.join(' | ');
-        const meta=gLM(item.league);
-        let home='',away='',time='',predScore='';
-
+        const txt=item.raw.join(' | ');const meta=gLM(item.league);
+        let home='',away='',time='',matchDate=item.date||'';
         const vsM=txt.match(/(.+?)\s+(?:vs\.?|VS\.?)\s+(.+)/i);
-        if(vsM){
-            home=vsM[1].trim();away=vsM[2].trim();
-            home=home.replace(/\d{1,2}\s*[-:]\s*\d{1,2}$/,'').replace(/\|/g,'').trim();
-            away=away.replace(/^\d{1,2}\s*[-:]\s*\d{1,2}/,'').replace(/\|/g,'').trim();
-        }else{
-            const dM=txt.match(/(.+?)\s{2,}-\s{2,}(.+)/);
-            if(dM){home=dM[1].trim();away=dM[2].trim()}
-        }
-
+        if(vsM){home=vsM[1].trim().replace(/\d{1,2}\s*[-:]\s*\d{1,2}$/,'').replace(/\|/g,'').trim();away=vsM[2].trim().replace(/^\d{1,2}\s*[-:]\s*\d{1,2}/,'').replace(/\|/g,'').trim()}
+        else{const dM=txt.match(/(.+?)\s{2,}-\s{2,}(.+)/);if(dM){home=dM[1].trim();away=dM[2].trim()}}
         const tM=txt.match(/(\d{1,2}[:.]\d{2})/);if(tM)time=tM[1].replace('.',':');
 
-        const scoreP=[...txt.matchAll(/(\d)\s*[-:]\s*(\d)/g)];
-        if(scoreP.length>0){const l=scoreP[scoreP.length-1];predScore=`${l[1]}-${l[2]}`}
-
-        if(!predScore){
-            const t1x2M=txt.match(/\b(1|[Xx]|2)\b/);
-            if(t1x2M){const v=t1x2M[1].toUpperCase();if(v==='1')predScore='2-1';else if(v==='2')predScore='0-2';else predScore='1-1'}
-        }
+        /* Coba deteksi tanggal dari raw text jika belum ada */
+        if(!matchDate){const dd=detectDateStr(txt);if(dd)matchDate=fmtDate(dd)}
 
         if(!home||!away)return;
-
-        // Normalisasi nama tim: hapus spasi berlebih, trim
-        home=home.replace(/\s+/g,' ').trim();
-        away=away.replace(/\s+/g,' ').trim();
-
-        out.push({league:item.league,leagueMeta:meta,home,away,time,predScore:predScore||'-'});
-    });
-    return out;
+        home=home.replace(/\s+/g,' ').trim();away=away.replace(/\s+/g,' ').trim();
+        out.push({league:item.league,leagueMeta:meta,home,away,time,matchDate});
+    });return out;
 }
 
-/* ============================================
-   HAPUS DUPLIKAT — Simpan yang KEDUA, hapus yang PERTAMA
-   ============================================ */
-function deduplicate(data){
-    // Kunci: liga|home|away (lowercase, tanpa spasi berlebih)
-    // Jika ada 2 entri dengan kunci sama, hapus yang pertama, simpan yang kedua
-    const seen = new Map(); // key -> index
-    const toRemove = new Set();
-    let dups = 0;
+function structPrediksi(raw){
+    const out=[];
+    raw.forEach(item=>{
+        const txt=item.raw.join(' | ');const meta=gLM(item.league);
+        let home='',away='',time='',predScore='',matchDate=item.date||'';
+        const vsM=txt.match(/(.+?)\s+(?:vs\.?|VS\.?)\s+(.+)/i);
+        if(vsM){home=vsM[1].trim().replace(/\d{1,2}\s*[-:]\s*\d{1,2}$/,'').replace(/\|/g,'').trim();away=vsM[2].trim().replace(/^\d{1,2}\s*[-:]\s*\d{1,2}/,'').replace(/\|/g,'').trim()}
+        else{const dM=txt.match(/(.+?)\s{2,}-\s{2,}(.+)/);if(dM){home=dM[1].trim();away=dM[2].trim()}}
+        const tM=txt.match(/(\d{1,2}[:.]\d{2})/);if(tM)time=tM[1].replace('.',':');
+        const scoreP=[...txt.matchAll(/(\d)\s*[-:]\s*(\d)/g)];
+        if(scoreP.length>0){const l=scoreP[scoreP.length-1];predScore=`${l[1]}-${l[2]}`}
+        if(!predScore){const m1x2=txt.match(/\b(1|[Xx]|2)\b/);if(m1x2){const v=m1x2[1].toUpperCase();if(v==='1')predScore='2-1';else if(v==='2')predScore='0-2';else predScore='1-1'}else predScore='-'}
 
-    // Iterasi dari awal, tandai yang pertama untuk dihapus jika ada yang kedua
-    data.forEach((item, idx) => {
-        const key = `${item.league.toLowerCase()}|${item.home.toLowerCase()}|${item.away.toLowerCase()}`;
-        if (seen.has(key)) {
-            // Ada duplikat — tandai entri PERTAMA untuk dihapus
-            const firstIdx = seen.get(key);
-            toRemove.add(firstIdx);
-            dups++;
-            // Update map ke index terbaru (yang kedua/dst)
-            seen.set(key, idx);
-        } else {
-            seen.set(key, idx);
-        }
-    });
+        if(!matchDate){const dd=detectDateStr(txt);if(dd)matchDate=fmtDate(dd)}
 
-    const cleaned = data.filter((_, idx) => !toRemove.has(idx));
-    dupCount = dups;
-    return cleaned;
+        if(!home||!away)return;
+        home=home.replace(/\s+/g,' ').trim();away=away.replace(/\s+/g,' ').trim();
+        out.push({league:item.league,leagueMeta:meta,home,away,time,predScore,matchDate});
+    });return out;
 }
 
-/* Fallback */
-function fallback(){
+function dedup(data){
+    const seen=new Map(),toRemove=new Set();let dups=0;
+    data.forEach((item,idx)=>{const key=`${item.league.toLowerCase()}|${item.home.toLowerCase()}|${item.away.toLowerCase()}`;if(seen.has(key)){toRemove.add(seen.get(key));dups++;seen.set(key,idx)}else seen.set(key,idx)});
+    return{cleaned:data.filter((_,idx)=>!toRemove.has(idx)),dups};
+}
+
+/* ===== FALLBACK DATA DENGAN TANGGAL ===== */
+function getToday(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function getTomorrow(){const d=new Date();d.setDate(d.getDate()+1);return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function getDayAfter(){const d=new Date();d.setDate(d.getDate()+2);return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+
+function fallbackJadwal(){
+    const t=getToday(),tm=getTomorrow(),da=getDayAfter();
     return[
-        {league:'Premier League',home:'Arsenal',away:'Chelsea',time:'20:30',predScore:'2-1'},
-        {league:'Premier League',home:'Liverpool',away:'Man City',time:'22:00',predScore:'1-1'},
-        {league:'Premier League',home:'Aston Villa',away:'Newcastle',time:'18:30',predScore:'2-0'},
-        {league:'Premier League',home:'Brighton',away:'West Ham',time:'20:00',predScore:'3-1'},
-        {league:'Premier League',home:'Everton',away:'Wolves',time:'15:00',predScore:'0-1'},
-        {league:'La Liga',home:'Real Madrid',away:'Barcelona',time:'21:00',predScore:'2-2'},
-        {league:'La Liga',home:'Atletico Madrid',away:'Sevilla',time:'19:00',predScore:'2-0'},
-        {league:'La Liga',home:'Real Sociedad',away:'Villarreal',time:'21:30',predScore:'1-2'},
-        {league:'Serie A',home:'AC Milan',away:'Inter Milan',time:'20:45',predScore:'0-2'},
-        {league:'Serie A',home:'Juventus',away:'Napoli',time:'18:00',predScore:'1-1'},
-        {league:'Serie A',home:'Roma',away:'Lazio',time:'20:45',predScore:'2-1'},
-        {league:'Serie A',home:'Fiorentina',away:'Atalanta',time:'18:30',predScore:'1-3'},
-        {league:'Bundesliga',home:'Bayern Munich',away:'Dortmund',time:'18:30',predScore:'3-1'},
-        {league:'Bundesliga',home:'RB Leipzig',away:'Leverkusen',time:'20:30',predScore:'1-2'},
-        {league:'Ligue 1',home:'PSG',away:'Marseille',time:'21:00',predScore:'3-0'},
-        {league:'Champions League',home:'Real Madrid',away:'Man City',time:'03:00',predScore:'2-1'},
-        {league:'Champions League',home:'Bayern Munich',away:'Arsenal',time:'03:00',predScore:'1-1'},
-        {league:'Liga 1',home:'Persib Bandung',away:'Persija Jakarta',time:'19:00',predScore:'2-1'},
-        {league:'Eredivisie',home:'Ajax',away:'PSV',time:'20:00',predScore:'1-2'},
-        {league:'Saudi Pro League',home:'Al Hilal',away:'Al Nassr',time:'22:00',predScore:'2-1'},
+        {league:'Premier League',home:'Arsenal',away:'Chelsea',time:'20:30',matchDate:t},
+        {league:'Premier League',home:'Liverpool',away:'Man City',time:'22:00',matchDate:t},
+        {league:'Premier League',home:'Aston Villa',away:'Newcastle',time:'18:30',matchDate:t},
+        {league:'Premier League',home:'Brighton',away:'West Ham',time:'20:00',matchDate:tm},
+        {league:'Premier League',home:'Everton',away:'Wolves',time:'15:00',matchDate:tm},
+        {league:'La Liga',home:'Real Madrid',away:'Barcelona',time:'21:00',matchDate:t},
+        {league:'La Liga',home:'Atletico Madrid',away:'Sevilla',time:'19:00',matchDate:tm},
+        {league:'La Liga',home:'Real Sociedad',away:'Villarreal',time:'21:30',matchDate:da},
+        {league:'Serie A',home:'AC Milan',away:'Inter Milan',time:'20:45',matchDate:t},
+        {league:'Serie A',home:'Juventus',away:'Napoli',time:'18:00',matchDate:tm},
+        {league:'Serie A',home:'Roma',away:'Lazio',time:'20:45',matchDate:da},
+        {league:'Bundesliga',home:'Bayern Munich',away:'Dortmund',time:'18:30',matchDate:tm},
+        {league:'Bundesliga',home:'RB Leipzig',away:'Leverkusen',time:'20:30',matchDate:da},
+        {league:'Ligue 1',home:'PSG',away:'Marseille',time:'21:00',matchDate:t},
+        {league:'Champions League',home:'Real Madrid',away:'Man City',time:'03:00',matchDate:tm},
+        {league:'Champions League',home:'Bayern Munich',away:'Arsenal',time:'03:00',matchDate:da},
+        {league:'Liga 1',home:'Persib Bandung',away:'Persija Jakarta',time:'19:00',matchDate:t},
+        {league:'Eredivisie',home:'Ajax',away:'PSV',time:'20:00',matchDate:tm},
+        {league:'Saudi Pro League',home:'Al Hilal',away:'Al Nassr',time:'22:00',matchDate:da},
+    ].map(m=>({...m,leagueMeta:gLM(m.league)}));
+}
+function fallbackPrediksi(){
+    const t=getToday(),tm=getTomorrow(),da=getDayAfter();
+    return[
+        {league:'Premier League',home:'Arsenal',away:'Chelsea',time:'20:30',predScore:'2-1',matchDate:t},
+        {league:'Premier League',home:'Liverpool',away:'Man City',time:'22:00',predScore:'1-1',matchDate:t},
+        {league:'Premier League',home:'Aston Villa',away:'Newcastle',time:'18:30',predScore:'2-0',matchDate:t},
+        {league:'Premier League',home:'Brighton',away:'West Ham',time:'20:00',predScore:'3-1',matchDate:tm},
+        {league:'Premier League',home:'Everton',away:'Wolves',time:'15:00',predScore:'0-1',matchDate:tm},
+        {league:'La Liga',home:'Real Madrid',away:'Barcelona',time:'21:00',predScore:'2-2',matchDate:t},
+        {league:'La Liga',home:'Atletico Madrid',away:'Sevilla',time:'19:00',predScore:'2-0',matchDate:tm},
+        {league:'Serie A',home:'AC Milan',away:'Inter Milan',time:'20:45',predScore:'0-2',matchDate:t},
+        {league:'Serie A',home:'Juventus',away:'Napoli',time:'18:00',predScore:'1-1',matchDate:tm},
+        {league:'Bundesliga',home:'Bayern Munich',away:'Dortmund',time:'18:30',predScore:'3-1',matchDate:tm},
+        {league:'Ligue 1',home:'PSG',away:'Marseille',time:'21:00',predScore:'3-0',matchDate:t},
+        {league:'Champions League',home:'Real Madrid',away:'Man City',time:'03:00',predScore:'2-1',matchDate:tm},
+        {league:'Liga 1',home:'Persib Bandung',away:'Persija Jakarta',time:'19:00',predScore:'2-1',matchDate:t},
+        {league:'Saudi Pro League',home:'Al Hilal',away:'Al Nassr',time:'22:00',predScore:'2-1',matchDate:da},
     ].map(m=>({...m,leagueMeta:gLM(m.league)}));
 }
 
-/* Hash */
-function hash(d){return d.map(x=>`${x.home}|${x.away}|${x.predScore}`).join('@@')}
+function hashD(d){return d.map(x=>`${x.home}|${x.away}|${x.time}|${x.matchDate||''}`).join('@@')}
+function parseScore(s){if(!s||s==='-')return{h:'-',a:'-'};const p=s.split('-');if(p.length===2)return{h:p[0].trim(),a:p[1].trim()};return{h:s,a:''}}
 
-/* Parse skor jadi objek {home, away} */
-function parseScore(s){
-    if(!s||s==='-')return{h:'-',a:'-'};
-    const p=s.split('-');
-    if(p.length===2)return{h:p[0].trim(),a:p[1].trim()};
-    return{h:s,a:''};
-}
-
-/* Render */
-function render(data,isNew){
-    const mn=document.getElementById('mn');
+/* ===== RENDER JADWAL — DENGAN DATE HEADER ===== */
+function renderJadwal(data,isNew){
+    const mn=document.getElementById('mnJadwal');
     const sq=document.getElementById('sIn').value.toLowerCase();
-    let f=data;
-    if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    let f=data;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-calendar-xmark"></i><h3>Tidak ada jadwal</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';renderAll()">Reset</button></div>`;return}
 
-    if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-search"></i><h3>Tidak ditemukan</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';render(allP,false)">Reset</button></div>`;return}
+    /* Group by date dulu, lalu by league */
+    const dateGrp={};
+    f.forEach(x=>{
+        const dk=x.matchDate||'nodate';
+        if(!dateGrp[dk])dateGrp[dk]={};
+        if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];
+        dateGrp[dk][x.league].push(x);
+    });
 
-    const grp={};
-    f.forEach(x=>{if(!grp[x.league])grp[x.league]=[];grp[x.league].push(x)});
+    /* Sort tanggal */
+    const sortedDates=Object.keys(dateGrp).sort();
 
-    let html='';
-    let dl=0;
-    for(const[league,matches]of Object.entries(grp)){
-        const m=gLM(league);
-        html+=`<div class="tw" style="animation-delay:${dl}ms">
-            <div class="lhd">
-                <div class="lic">${m.ic}</div>
-                <div class="linf"><div class="lnm">${league}</div><div class="lco">${m.co}</div></div>
-                <div class="lcnt">${matches.length} prediksi</div>
-            </div>
-            <table class="pt">
-                <thead><tr>
-                    <th>No</th>
-                    <th>Waktu</th>
-                    <th style="text-align:right">Home</th>
-                    <th>VS</th>
-                    <th style="text-align:left">Away</th>
-                    <th>Skor</th>
+    let html='',dl=0;
+    sortedDates.forEach(dateKey=>{
+        /* Date header */
+        if(dateKey!=='nodate'){
+            const dayLabel=getDayLabel(dateKey);
+            const fullLabel=fmtDateDisplay(dateKey);
+            html+=`<div class="dhd" style="animation-delay:${dl}ms">
+                <i class="fas fa-calendar-day dhd-ic"></i>
+                <span class="dhd-txt">${fullLabel}</span>
+                <span class="dhd-day">${dayLabel}</span>
+            </div>`;
+            dl+=20;
+        }
+
+        const leagues=dateGrp[dateKey];
+        for(const[league,matches]of Object.entries(leagues)){
+            const m=gLM(league);
+            html+=`<div class="tw" style="animation-delay:${dl}ms">
+                <div class="lhd lh-bl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm nm-bl">${league}</div><div class="lco">${m.co}</div></div><div class="lcnt ct-bl">${matches.length} jadwal</div></div>
+                <table class="pt th-bl"><thead><tr>
+                    <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Status</th>
                 </tr></thead><tbody>`;
-
-        matches.forEach((d,i)=>{
-            const rc=isNew?'nrow':'';
-            const sc=parseScore(d.predScore);
-            html+=`<tr class="${rc}">
-                <td class="cn">${String(i+1).padStart(2,'0')}</td>
-                <td class="ct">${d.time||'--:--'}</td>
-                <td class="ctm" style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span><span class="tmi"><i class="fas fa-shield-halved"></i></span></div></td>
-                <td class="cv"><span class="vsb">VS</span></td>
-                <td class="ctm" style="text-align:left"><div class="tmr a"><span class="tmi"><i class="fas fa-shield-halved"></i></span><span class="tmn">${d.away}</span></div></td>
-                <td class="cs">
-                    <div class="sk-wrap">
-                        <span class="sk-num left">${sc.h}</span>
-                        <span class="sk-sep">-</span>
-                        <span class="sk-num right">${sc.a}</span>
-                    </div>
-                </td>
-            </tr>`;
-        });
-
-        html+=`</tbody></table></div>`;
-        dl+=50;
-    }
+            matches.forEach((d,i)=>{
+                const st=getMatchStatus(d.matchDate,d.time);
+                const rowCls=st.isLive?'row-live':'';
+                html+=`<tr class="${isNew?'nrow':''} ${rowCls}">
+                    <td class="cn cn-bl">${String(i+1).padStart(2,'0')}</td>
+                    <td class="ct ct-bl">${d.time||'--:--'}</td>
+                    <td class="ctm" style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span><span class="tmi tmi-bl"><i class="fas fa-shield-halved"></i></span></div></td>
+                    <td class="cv"><span class="vsb vsb-bl">VS</span></td>
+                    <td class="ctm" style="text-align:left"><div class="tmr a"><span class="tmi tmi-bl"><i class="fas fa-shield-halved"></i></span><span class="tmn">${d.away}</span></div></td>
+                    <td><span class="stb ${st.cls}"><span class="stb-d"></span>${st.label}</span></td>
+                </tr>`;
+            });
+            html+=`</tbody></table></div>`;dl+=40;
+        }
+    });
     mn.innerHTML=html;
 }
 
-/* Live countdown */
+/* ===== RENDER PREDIKSI — DENGAN DATE HEADER ===== */
+function renderPrediksi(data,isNew){
+    const mn=document.getElementById('mnPrediksi');
+    const sq=document.getElementById('sIn').value.toLowerCase();
+    let f=data;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-chart-line"></i><h3>Tidak ada prediksi</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';renderAll()">Reset</button></div>`;return}
+
+    const dateGrp={};
+    f.forEach(x=>{
+        const dk=x.matchDate||'nodate';
+        if(!dateGrp[dk])dateGrp[dk]={};
+        if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];
+        dateGrp[dk][x.league].push(x);
+    });
+
+    const sortedDates=Object.keys(dateGrp).sort();
+    let html='',dl=0;
+
+    sortedDates.forEach(dateKey=>{
+        if(dateKey!=='nodate'){
+            const dayLabel=getDayLabel(dateKey);
+            const fullLabel=fmtDateDisplay(dateKey);
+            html+=`<div class="dhd" style="animation-delay:${dl}ms">
+                <i class="fas fa-calendar-day dhd-ic"></i>
+                <span class="dhd-txt">${fullLabel}</span>
+                <span class="dhd-day">${dayLabel}</span>
+            </div>`;
+            dl+=20;
+        }
+
+        const leagues=dateGrp[dateKey];
+        for(const[league,matches]of Object.entries(leagues)){
+            const m=gLM(league);
+            html+=`<div class="tw" style="animation-delay:${dl}ms">
+                <div class="lhd lh-yl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm nm-yl">${league}</div><div class="lco">${m.co}</div></div><div class="lcnt ct-yl">${matches.length} prediksi</div></div>
+                <table class="pt th-yl"><thead><tr>
+                    <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Skor</th>
+                </tr></thead><tbody>`;
+            matches.forEach((d,i)=>{
+                const sc=parseScore(d.predScore);
+                html+=`<tr class="${isNew?'nrow':''}">
+                    <td class="cn cn-yl">${String(i+1).padStart(2,'0')}</td>
+                    <td class="ct ct-yl">${d.time||'--:--'}</td>
+                    <td class="ctm" style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span><span class="tmi tmi-yl"><i class="fas fa-shield-halved"></i></span></div></td>
+                    <td class="cv"><span class="vsb vsb-yl">VS</span></td>
+                    <td class="ctm" style="text-align:left"><div class="tmr a"><span class="tmi tmi-yl"><i class="fas fa-shield-halved"></i></span><span class="tmn">${d.away}</span></div></td>
+                    <td class="cs"><div class="sk-wrap"><span class="sk-num left">${sc.h}</span><span class="sk-sep">-</span><span class="sk-num right">${sc.a}</span></div></td>
+                </tr>`;
+            });
+            html+=`</tbody></table></div>`;dl+=40;
+        }
+    });
+    mn.innerHTML=html;
+}
+
+function renderAll(isNew){
+    renderJadwal(jadwalData,isNew);renderPrediksi(prediksiData,isNew);
+    updateLabels();
+    document.getElementById('cntJadwal').textContent=jadwalData.length;
+    document.getElementById('cntPrediksi').textContent=prediksiData.length;
+}
+
+/* Auto-refresh status setiap 30 detik */
+let statusInterval=null;
+function startStatusRefresh(){
+    if(statusInterval)clearInterval(statusInterval);
+    statusInterval=setInterval(()=>{if(jadwalData.length)renderJadwal(jadwalData,false)},30000);
+}
+
+/* Background auto-refresh data setiap 60 detik */
 function startCD(){
-    if(cdT)clearInterval(cdT);
-    cd=INT;
-    document.getElementById('lcd').textContent=cd;
-    cdT=setInterval(()=>{cd--;document.getElementById('lcd').textContent=Math.max(0,cd);if(cd<=0){clearInterval(cdT);loadData()}},1000);
+    if(cdT)clearInterval(cdT);cd=INT;
+    cdT=setInterval(()=>{cd--;if(cd<=0){clearInterval(cdT);loadData()}},1000);
 }
 
-function setLive(on){
-    const d=document.getElementById('ldot'),s=document.getElementById('lst');
-    if(on){d.classList.remove('off');s.classList.remove('off');s.textContent='LIVE'}
-    else{d.classList.add('off');s.classList.add('off');s.textContent='OFFLINE'}
-}
-
-/* Main load */
+/* ===== MAIN LOAD ===== */
 async function loadData(){
-    const mn=document.getElementById('mn');
-    if(!allP.length)mn.innerHTML='<div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil data live...</div></div>';
-    document.getElementById('rB').classList.add('spi');
+    const mnJ=document.getElementById('mnJadwal'),mnP=document.getElementById('mnPrediksi');
+    if(!jadwalData.length&&!prediksiData.length){
+        mnJ.innerHTML='<div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil jadwal...</div></div>';
+        mnP.innerHTML='<div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil prediksi...</div></div>';
+    }
 
-    const html=await fetchPage();
-    let predD=null;
-    if(html){const raw=parsePred(html);if(raw&&raw.length)predD=struct(raw)}
+    const html=await fetchPage();let gotData=false;
 
-    if(predD&&predD.length){
-        // Hapus duplikat: simpan yang kedua, hapus yang pertama
-        const cleaned = deduplicate(predD);
-        allP=cleaned;
-        setLive(true);
+    if(html){
+        const parsed=parseHTML(html);
+        if(parsed.jadwal.length){const structured=structJadwal(parsed.jadwal);const{cleaned,dups}=dedup(structured);jadwalData=cleaned;dupCountJ=dups}
+        if(parsed.prediksi.length){const structured=structPrediksi(parsed.prediksi);const{cleaned,dups}=dedup(structured);prediksiData=cleaned;dupCountP=dups}
 
-        // Tampilkan info dedup jika ada duplikat
-        const dedupEl = document.getElementById('dedupInfo');
-        if(dupCount > 0){
-            document.getElementById('dedupCount').textContent = dupCount;
-            dedupEl.style.display = 'flex';
-        }else{
-            dedupEl.style.display = 'none';
+        if(jadwalData.length||prediksiData.length){
+            gotData=true;
+            const totalDups=dupCountJ+dupCountP;const dedupEl=document.getElementById('dedupInfo');
+            if(totalDups>0){document.getElementById('dedupCount').textContent=totalDups;dedupEl.style.display='flex'}else dedupEl.style.display='none';
+
+            const nhJ=hashD(jadwalData),nhP=hashD(prediksiData);
+            const changedJ=nhJ!==prevHJ&&prevHJ!=='';const changedP=nhP!==prevHP&&prevHP!=='';
+            if(changedJ||changedP){toast('Data diperbarui!','upd');renderAll(true)}
+            else if(!prevHJ&&!prevHP){toast(`${jadwalData.length} jadwal, ${prediksiData.length} prediksi dimuat`,'ok');renderAll(true)}
+            prevHJ=nhJ;prevHP=nhP;
         }
+    }
 
-        const nh=hash(allP);
-        const changed=nh!==prevH&&prevH!=='';
-        if(changed){toast('Data berubah! Diperbarui.','upd');render(allP,true)}
-        else if(!prevH){toast(`${allP.length} prediksi dimuat`,'ok');render(allP,true)}
-        prevH=nh;
-    }else{
-        if(!allP.length){
-            allP=fallback();
-            // Fallback juga di-dedup
-            allP=deduplicate(allP);
-            render(allP,true);
-            toast('Gagal terhubung, data sampel','er');
+    if(!gotData){
+        if(!jadwalData.length&&!prediksiData.length){
+            jadwalData=fallbackJadwal();prediksiData=fallbackPrediksi();
+            const r1=dedup(jadwalData);jadwalData=r1.cleaned;dupCountJ=r1.dups;
+            const r2=dedup(prediksiData);prediksiData=r2.cleaned;dupCountP=r2.dups;
+            renderAll(true);toast('Gagal terhubung, data sampel','er');
         }
-        setLive(false);
         document.getElementById('dedupInfo').style.display='none';
     }
 
-    document.getElementById('stot').textContent=allP.length;
-    const now=new Date();
-    document.getElementById('lup').textContent=`Update: ${now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
-    document.getElementById('rB').classList.remove('spi');
-    startCD();
+    updateLabels();
+    document.getElementById('cntJadwal').textContent=jadwalData.length;
+    document.getElementById('cntPrediksi').textContent=prediksiData.length;
+    startCD();startStatusRefresh();
 }
 
-document.getElementById('sIn').addEventListener('input',()=>render(allP,false));
-document.getElementById('rB').addEventListener('click',()=>{cd=0;if(cdT)clearInterval(cdT);loadData()});
+document.getElementById('sIn').addEventListener('input',()=>renderAll(false));
 loadData();
 </script>
 </body>
