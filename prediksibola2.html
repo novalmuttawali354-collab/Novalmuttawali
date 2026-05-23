@@ -30,11 +30,14 @@
         .atm .o2{width:450px;height:450px;bottom:-10%;right:-8%;background:rgba(59,142,245,.02);animation:dr 30s ease-in-out infinite reverse}
         @keyframes dr{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,40px) scale(1.12)}70%{transform:translate(-40px,70px) scale(.9)}}
 
+        /* Bola jatuh canvas */
+        #ballCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
         .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.014;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
         .wrap{position:relative;z-index:2;max-width:940px;margin:0 auto;padding:12px 14px 60px}
 
-        /* ===== HEADER + LOGO ===== */
+        /* ===== HEADER ===== */
         header{text-align:center;padding:24px 0 20px}
         .logo-wrap{margin-bottom:18px}
         .logo-wrap img{height:72px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(245,197,24,.15));transition:transform .3s}
@@ -136,17 +139,25 @@
         table.pt thead th{
             padding:11px 16px;text-align:center;
             font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1.4px;
-            background:var(--bg3);border-right:1px solid var(--brd);white-space:nowrap;
+            background:var(--bg3);white-space:nowrap;
         }
-        table.pt thead th:last-child{border-right:none}
-        table.pt thead th:nth-child(1){width:44px}
-        table.pt thead th:nth-child(2){width:76px}
-        table.pt thead th:nth-child(3){text-align:right;padding-right:20px}
-        table.pt thead th:nth-child(4){width:52px}
-        table.pt thead th:nth-child(5){text-align:left;padding-left:20px}
-        table.pt thead th:nth-child(6){width:100px}
         table.pt.th-bl thead th{color:var(--bl);border-bottom:2px solid rgba(59,142,245,.25)}
         table.pt.th-yl thead th{color:var(--yl);border-bottom:2px solid rgba(245,197,24,.25)}
+
+        /* Jadwal: 5 kolom */
+        table.pt.jadwal thead th:nth-child(1){width:48px}
+        table.pt.jadwal thead th:nth-child(2){width:84px}
+        table.pt.jadwal thead th:nth-child(3){text-align:right;padding-right:24px}
+        table.pt.jadwal thead th:nth-child(4){width:56px}
+        table.pt.jadwal thead th:nth-child(5){text-align:left;padding-left:24px}
+
+        /* Prediksi: 6 kolom */
+        table.pt.prediksi thead th:nth-child(1){width:48px}
+        table.pt.prediksi thead th:nth-child(2){width:84px}
+        table.pt.prediksi thead th:nth-child(3){text-align:right;padding-right:24px}
+        table.pt.prediksi thead th:nth-child(4){width:56px}
+        table.pt.prediksi thead th:nth-child(5){text-align:left;padding-left:24px}
+        table.pt.prediksi thead th:nth-child(6){width:110px}
 
         table.pt tbody tr{transition:all .15s;border-bottom:1px solid var(--brd)}
         table.pt tbody tr:last-child{border-bottom:none}
@@ -154,8 +165,7 @@
         table.pt tbody tr:nth-child(even){background:rgba(245,197,24,.008)}
         table.pt tbody tr:nth-child(even):hover{background:var(--card2)}
 
-        table.pt tbody td{padding:14px 16px;text-align:center;vertical-align:middle;border-right:1px solid rgba(46,40,24,.5)}
-        table.pt tbody td:last-child{border-right:none}
+        table.pt tbody td{padding:13px 16px;text-align:center;vertical-align:middle}
 
         .cn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
         .cn-bl{color:var(--bl3)}.cn-yl{color:var(--yl3)}
@@ -172,7 +182,7 @@
         .tmn{font-size:13px;font-weight:800;color:var(--fg);letter-spacing:-.2px}
 
         .cv{text-align:center!important}
-        .vsb{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:.4px}
+        .vsb{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:.4px}
         .vsb-bl{background:rgba(59,142,245,.06);border:2px solid rgba(59,142,245,.2);color:var(--bl)}
         .vsb-yl{background:var(--yld);border:2px solid rgba(245,197,24,.2);color:var(--yl)}
 
@@ -197,35 +207,6 @@
             background:linear-gradient(180deg,var(--yl3),#9a7808);
             width:18px;display:flex;align-items:center;justify-content:center;line-height:1;
         }
-
-        /* ===== STATUS BADGE JADWAL ===== */
-        .stb{display:inline-flex;align-items:center;gap:5px;font-size:8px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:50px;text-transform:uppercase}
-        .stb-up{background:var(--bld2);color:var(--bl);border:1px solid rgba(59,142,245,.18)}
-        .stb-soon{background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.18)}
-
-        /* LIVE badge */
-        .stb-live{
-            background:var(--gnd);color:var(--gn);
-            border:1px solid rgba(60,184,106,.3);
-            box-shadow:0 0 8px rgba(60,184,106,.2);
-            animation:livePulse 1.8s ease-in-out infinite;
-        }
-        .stb-live .stb-d{animation:dotPulse 1s ease-in-out infinite}
-        .stb-d{width:5px;height:5px;border-radius:50%;background:currentColor}
-
-        /* Selesai badge */
-        .stb-done{
-            background:rgba(138,127,110,.1);color:var(--fm);
-            border:1px solid rgba(138,127,110,.15);
-        }
-
-        @keyframes livePulse{0%,100%{box-shadow:0 0 6px rgba(60,184,106,.15)}50%{box-shadow:0 0 16px rgba(60,184,106,.35)}}
-        @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.4)}}
-
-        /* Baris live — highlight hijau */
-        tr.row-live{background:rgba(60,184,106,.03)!important;animation:rowLiveGlow 2.5s ease-in-out infinite}
-        tr.row-live:hover{background:rgba(60,184,106,.07)!important}
-        @keyframes rowLiveGlow{0%,100%{background:rgba(60,184,106,.02)}50%{background:rgba(60,184,106,.05)}}
 
         @keyframes nr{0%{background:rgba(245,197,24,.08)}100%{background:transparent}}
         .nrow{animation:nr 2.5s ease-out}
@@ -252,7 +233,7 @@
 
         @media(max-width:640px){
             .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-            table.pt{min-width:600px}
+            table.pt{min-width:560px}
             .tab-btn{padding:11px 10px;font-size:12px;gap:6px}
             .sk-num{width:36px;font-size:18px}
             .sk-sep{width:16px;font-size:11px}
@@ -266,6 +247,7 @@
 </head>
 <body>
 <div class="atm"><div class="orb o1"></div><div class="orb o2"></div></div>
+<canvas id="ballCanvas"></canvas>
 <div class="grain"></div>
 
 <div class="wrap">
@@ -277,8 +259,6 @@
         <h1>Prediksi <span class="hl">Bola</span></h1>
         <p>Jadwal &amp; skor prediksi pertandingan dari berbagai liga</p>
     </header>
-
-    <!-- LIVE BAR DHIDDEN -->
 
     <div class="tab-wrap">
         <div class="tab-bar">
@@ -320,6 +300,96 @@
 <footer><p>Data dari <a href="https://shortq.xyz/prediksibola" target="_blank">shortq.xyz/prediksibola</a> &mdash; Hanya Prediksi Bola</p></footer>
 
 <script>
+/* ===== EFEK BOLA JATUH ===== */
+(function(){
+    const canvas=document.getElementById('ballCanvas');
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+
+    function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+    resize();
+    window.addEventListener('resize',resize);
+
+    /* Pre-render tekstur bola ke offscreen canvas */
+    const BS=64;
+    const offC=document.createElement('canvas');
+    offC.width=BS;offC.height=BS;
+    const oCtx=offC.getContext('2d');
+
+    (function drawBallTexture(){
+        const cx=BS/2,cy=BS/2,r=BS*.4;
+        /* Body bola dengan gradient emas */
+        const grad=oCtx.createRadialGradient(cx-r*.3,cy-r*.3,0,cx,cy,r);
+        grad.addColorStop(0,'#f0e4b8');
+        grad.addColorStop(0.5,'#c8b070');
+        grad.addColorStop(1,'#7a6838');
+        oCtx.beginPath();oCtx.arc(cx,cy,r,0,Math.PI*2);
+        oCtx.fillStyle=grad;oCtx.fill();
+        oCtx.strokeStyle='#5a4a28';oCtx.lineWidth=1;oCtx.stroke();
+
+        /* Pentagon tengah */
+        const pr=r*.32;
+        oCtx.beginPath();
+        for(let i=0;i<5;i++){const a=(i*Math.PI*2/5)-Math.PI/2;const px=cx+Math.cos(a)*pr,py=cy+Math.sin(a)*pr;i===0?oCtx.moveTo(px,py):oCtx.lineTo(px,py)}
+        oCtx.closePath();oCtx.fillStyle='#302818';oCtx.fill();
+
+        /* Garis dari pentagon ke tepi */
+        oCtx.strokeStyle='rgba(90,74,40,0.6)';oCtx.lineWidth=.8;
+        for(let i=0;i<5;i++){const a=(i*Math.PI*2/5)-Math.PI/2;oCtx.beginPath();oCtx.moveTo(cx+Math.cos(a)*pr,cy+Math.sin(a)*pr);oCtx.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r*.85);oCtx.stroke()}
+
+        /* Highlight atas */
+        const hg=oCtx.createRadialGradient(cx-r*.2,cy-r*.25,0,cx-r*.2,cy-r*.25,r*.35);
+        hg.addColorStop(0,'rgba(255,255,240,0.25)');hg.addColorStop(1,'rgba(255,255,240,0)');
+        oCtx.beginPath();oCtx.arc(cx,cy,r,0,Math.PI*2);oCtx.fillStyle=hg;oCtx.fill();
+    })();
+
+    /* Partikel bola */
+    const balls=[];
+    const COUNT=24;
+    const prefersReduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    class SoccerBall{
+        constructor(init){this.reset(init)}
+        reset(init){
+            this.x=Math.random()*(canvas.width||window.innerWidth);
+            this.y=init?Math.random()*(canvas.height||window.innerHeight):-(20+Math.random()*60);
+            this.size=10+Math.random()*18;
+            this.vy=.25+Math.random()*1.1;
+            this.swayAmp=.15+Math.random()*.55;
+            this.swayFreq=.002+Math.random()*.007;
+            this.rot=Math.random()*Math.PI*2;
+            this.rotSpd=(Math.random()-.5)*.014;
+            this.opacity=.04+Math.random()*.11;
+            this.phase=Math.random()*Math.PI*2;
+        }
+        update(){
+            this.y+=this.vy;
+            this.phase+=this.swayFreq;
+            this.x+=Math.sin(this.phase)*this.swayAmp;
+            this.rot+=this.rotSpd;
+            if(this.y>(canvas.height||window.innerHeight)+40)this.reset(false);
+        }
+        draw(c){
+            c.save();
+            c.globalAlpha=this.opacity;
+            c.translate(this.x,this.y);
+            c.rotate(this.rot);
+            c.drawImage(offC,-this.size/2,-this.size/2,this.size,this.size);
+            c.restore();
+        }
+    }
+
+    for(let i=0;i<COUNT;i++)balls.push(new SoccerBall(true));
+
+    function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        if(!prefersReduced){balls.forEach(b=>{b.update();b.draw(ctx)})}
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+
+/* ===== DATA LOGIC ===== */
 const BASE='https://shortq.xyz/prediksibola';
 const PROX=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?','https://api.codetabs.com/v1/proxy?quest='];
 const INT=60;
@@ -343,9 +413,6 @@ const LM={
 };
 function gLM(n){if(!n)return{ic:'⚽',co:''};for(const[k,v]of Object.entries(LM))if(n.toLowerCase().includes(k.toLowerCase()))return v;return{ic:'⚽',co:n}}
 
-/* ========================================================
-   PARSE TANGGAL — Deteksi format tanggal Indonesia & umum
-   ======================================================== */
 const MONTHS_ID={
     'januari':0,'februari':1,'maret':2,'april':3,'mei':4,'juni':5,'juli':6,
     'agustus':7,'september':8,'oktober':9,'november':10,'desember':11,
@@ -353,117 +420,29 @@ const MONTHS_ID={
 };
 const DAYS_ID=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
-/* Deteksi apakah teks mengandung tanggal */
 function detectDateStr(text){
     if(!text)return null;
-    /* "15 Juni 2024" atau "15 Jun 2024" */
     let m=text.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
-    if(m){
-        const mon=MONTHS_ID[m[2].toLowerCase()];
-        if(mon!==undefined)return{day:parseInt(m[1]),month:mon,year:parseInt(m[3])};
-    }
-    /* "2024-06-15" */
+    if(m){const mon=MONTHS_ID[m[2].toLowerCase()];if(mon!==undefined)return{day:parseInt(m[1]),month:mon,year:parseInt(m[3])}}
     m=text.match(/(\d{4})-(\d{2})-(\d{2})/);
     if(m)return{day:parseInt(m[3]),month:parseInt(m[2])-1,year:parseInt(m[1])};
-    /* "15/06/2024" atau "15-06-2024" */
     m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
     if(m)return{day:parseInt(m[1]),month:parseInt(m[2])-1,year:parseInt(m[3])};
-    /* "06/15/2024" (US format) */
     m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
     if(m&&parseInt(m[1])>12)return{day:parseInt(m[2]),month:parseInt(m[1])-1,year:parseInt(m[3])};
     return null;
 }
-
-/* Format tanggal ke string "YYYY-MM-DD" */
-function fmtDate(d){
-    if(!d)return'';
-    return`${d.year}-${String(d.month+1).padStart(2,'0')}-${String(d.day).padStart(2,'0')}`;
-}
-
-/* Format tanggal untuk tampilan: "Sabtu, 15 Jun 2024" */
+function fmtDate(d){if(!d)return'';return`${d.year}-${String(d.month+1).padStart(2,'0')}-${String(d.day).padStart(2,'0')}`}
 function fmtDateDisplay(dateStr){
-    if(!dateStr)return'';
-    const parts=dateStr.split('-');
-    if(parts.length!==3)return dateStr;
+    if(!dateStr)return'';const parts=dateStr.split('-');if(parts.length!==3)return dateStr;
     const y=parseInt(parts[0]),mo=parseInt(parts[1])-1,d=parseInt(parts[2]);
-    const dt=new Date(y,mo,d);
-    const dayName=DAYS_ID[dt.getDay()];
+    const dt=new Date(y,mo,d);const dayName=DAYS_ID[dt.getDay()];
     const monNames=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
     return`${dayName}, ${d} ${monNames[mo]} ${y}`;
 }
-
-/* Cek apakah tanggal adalah hari ini */
-function isToday(dateStr){
-    if(!dateStr)return false;
-    const now=new Date();
-    const todayStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-    return dateStr===todayStr;
-}
-
-/* Cek apakah tanggal adalah besok */
-function isTomorrow(dateStr){
-    if(!dateStr)return false;
-    const tom=new Date();tom.setDate(tom.getDate()+1);
-    const tomStr=`${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`;
-    return dateStr===tomStr;
-}
-
-/* Label hari untuk tampilan */
-function getDayLabel(dateStr){
-    if(!dateStr)return'';
-    if(isToday(dateStr))return'Hari Ini';
-    if(isTomorrow(dateStr))return'Besok';
-    return fmtDateDisplay(dateStr);
-}
-
-/* ========================================================
-   STATUS MATCH — Berdasarkan TANGGAL + JAM
-   ======================================================== */
-function getMatchStatus(dateStr,timeStr){
-    const now=new Date();
-
-    /* Bangun objek Date untuk kick-off */
-    let kickOff=null;
-
-    if(dateStr){
-        const parts=dateStr.split('-');
-        if(parts.length===3){
-            const y=parseInt(parts[0]),mo=parseInt(parts[1])-1,d=parseInt(parts[2]);
-            const tp=(timeStr||'00:00').split(':');
-            const h=parseInt(tp[0])||0,m=parseInt(tp[1])||0;
-            kickOff=new Date(y,mo,d,h,m,0);
-        }
-    }
-
-    /* Kalau tidak ada tanggal, asumsikan hari ini */
-    if(!kickOff){
-        const tp=(timeStr||'00:00').split(':');
-        const h=parseInt(tp[0])||0,m=parseInt(tp[1])||0;
-        kickOff=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);
-    }
-
-    /* Selisih menit dari sekarang ke kick-off */
-    const diffMs=kickOff.getTime()-now.getTime();
-    const diffMin=diffMs/60000;
-
-    /* Live: sudah lewat kick-off, belum 120 menit */
-    if(diffMin<=0&&diffMin>-120){
-        return{cls:'stb-live',label:'Live',isLive:true};
-    }
-
-    /* Selesai: sudah lewat 120 menit dari kick-off */
-    if(diffMin<=-120){
-        return{cls:'stb-done',label:'Selesai',isLive:false};
-    }
-
-    /* Segera: dalam 30 menit */
-    if(diffMin>0&&diffMin<=30){
-        return{cls:'stb-soon',label:'Segera',isLive:false};
-    }
-
-    /* Akan Datang */
-    return{cls:'stb-up',label:'Akan Datang',isLive:false};
-}
+function isToday(dateStr){if(!dateStr)return false;const now=new Date();const todayStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;return dateStr===todayStr}
+function isTomorrow(dateStr){if(!dateStr)return false;const tom=new Date();tom.setDate(tom.getDate()+1);const tomStr=`${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`;return dateStr===tomStr}
+function getDayLabel(dateStr){if(!dateStr)return'';if(isToday(dateStr))return'Hari Ini';if(isTomorrow(dateStr))return'Besok';return fmtDateDisplay(dateStr)}
 
 /* ===== TAB SWITCHING ===== */
 function switchTab(tab){
@@ -476,13 +455,11 @@ function switchTab(tab){
     else{tP.classList.add('t-active-prediksi');cP.classList.add('active')}
     updateLabels();
 }
-
 function updateLabels(){
     const sq=document.getElementById('sIn').value.toLowerCase();
     const stot=document.getElementById('stot'),sl=document.getElementById('stotLabel');
     const data=activeTab==='jadwal'?jadwalData:prediksiData;
-    let f=data;
-    if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    let f=data;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
     if(activeTab==='jadwal'){stot.textContent=f.length;stot.className='c-bl';sl.textContent='jadwal'}
     else{stot.textContent=f.length;stot.className='c-yl';sl.textContent='prediksi'}
 }
@@ -526,34 +503,18 @@ function parseHTML(html){
 }
 
 function parseScope(scope,results,type){
-    let curL='',curD='';
-    const isP=type==='prediksi';
-
-    /* Coba deteksi tanggal dari teks scope */
+    let curL='',curD='';const isP=type==='prediksi';
     const scopeText=scope.textContent||'';
-    const dateDetected=detectDateStr(scopeText);
-    if(dateDetected)curD=fmtDate(dateDetected);
+    const dateDetected=detectDateStr(scopeText);if(dateDetected)curD=fmtDate(dateDetected);
 
     const tables=scope.querySelectorAll('table');
     if(tables.length>0){
         tables.forEach(table=>{
             const rows=table.querySelectorAll('tr');
             rows.forEach(row=>{
-                const cells=row.querySelectorAll('td,th');
-                const texts=Array.from(cells).map(c=>c.textContent.trim()).filter(t=>t);
-                const j=texts.join(' ');
-
-                /* Deteksi baris tanggal (tanpa VS, mengandung pola tanggal) */
-                if(!j.match(/vs/i)){
-                    const dd=detectDateStr(j);
-                    if(dd){curD=fmtDate(dd);return}
-                }
-
-                /* Deteksi header liga */
-                if(texts.length<=2&&texts[0].length>2&&texts[0].length<60&&!texts[0].match(/\d{1,2}[:.]\d{2}/)&&!texts[0].match(/\d\s*[-vs]+\s*\d/i)){
-                    curL=texts[0];return;
-                }
-
+                const cells=row.querySelectorAll('td,th');const texts=Array.from(cells).map(c=>c.textContent.trim()).filter(t=>t);const j=texts.join(' ');
+                if(!j.match(/vs/i)){const dd=detectDateStr(j);if(dd){curD=fmtDate(dd);return}}
+                if(texts.length<=2&&texts[0].length>2&&texts[0].length<60&&!texts[0].match(/\d{1,2}[:.]\d{2}/)&&!texts[0].match(/\d\s*[-vs]+\s*\d/i)){curL=texts[0];return}
                 const hasVS=j.match(/vs/i);if(!hasVS)return;
                 const hasPred=j.match(/\d\s*[-:]\s*\d/)||j.match(/1[Xx2]/i)||j.match(/over|under/i)||j.match(/handicap/i);
                 if(isP){if(hasPred)results.push({league:curL,date:curD,raw:texts,type:'prediksi'})}
@@ -566,7 +527,6 @@ function parseScope(scope,results,type){
         for(const s of sels){
             scope.querySelectorAll(s).forEach(el=>{
                 const t=el.textContent.trim();if(!t.match(/vs/i)||t.length<15||t.length>500)return;
-                /* Coba deteksi tanggal dari element ini */
                 const dd=detectDateStr(t);if(dd)curD=fmtDate(dd);
                 const hasPred=t.match(/\d\s*[-:]\s*\d/)||t.match(/1[Xx2]/i)||t.match(/over|under/i);
                 if(isP){if(hasPred)results.push({league:curL,date:curD,raw:[t],type:'prediksi'})}
@@ -575,14 +535,9 @@ function parseScope(scope,results,type){
         }
     }
     if(!results.length){
-        const allT=scope.innerText||scope.textContent||'';
-        const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);curL='';curD='';
+        const allT=scope.innerText||scope.textContent||'';const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);curL='';curD='';
         for(const l of lines){
-            /* Deteksi baris tanggal */
-            if(!l.match(/vs/i)){
-                const dd=detectDateStr(l);
-                if(dd){curD=fmtDate(dd);continue}
-            }
+            if(!l.match(/vs/i)){const dd=detectDateStr(l);if(dd){curD=fmtDate(dd);continue}}
             if(l.length<60&&!l.match(/vs/i)&&!l.match(/\d{1,2}[:.]\d{2}/)){if(l.toUpperCase()===l||l.match(/league|liga|serie|premier|division|cup/i))curL=l;continue}
             if(!l.match(/vs/i))continue;
             const hasPred=l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i);
@@ -593,21 +548,14 @@ function parseScope(scope,results,type){
 }
 
 function parseFallback(body,jadwalRaw,prediksiRaw){
-    const allT=body.innerText||body.textContent||'';
-    const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);
+    const allT=body.innerText||body.textContent||'';const lines=allT.split('\n').map(l=>l.trim()).filter(l=>l.length>8);
     let curL='',curD='',inJ=false,inP=false;
-
     for(const l of lines){
         if(l.match(/jadwal\s*(bola)?/i)){inJ=true;inP=false;continue}
         if(l.match(/prediksi\s*(bola)?/i)){inP=true;inJ=false;continue}
-
-        /* Deteksi baris tanggal */
-        const dd=detectDateStr(l);
-        if(dd&&!l.match(/vs/i)){curD=fmtDate(dd);continue}
-
+        const dd=detectDateStr(l);if(dd&&!l.match(/vs/i)){curD=fmtDate(dd);continue}
         if(l.length<60&&!l.match(/vs/i)&&!l.match(/\d{1,2}[:.]\d{2}/)){if(l.toUpperCase()===l||l.match(/league|liga|serie|premier|division|cup/i))curL=l;continue}
-        if(!l.match(/vs/i))continue;
-        const hasPred=l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i);
+        if(!l.match(/vs/i))continue;const hasPred=l.match(/\d\s*[-:]\s*\d/)||l.match(/1[Xx2]/i)||l.match(/over|under/i);
         if(inP&&hasPred)prediksiRaw.push({league:curL,date:curD,raw:[l],type:'prediksi'});
         else if(inJ)jadwalRaw.push({league:curL,date:curD,raw:[l],type:'jadwal'});
         else{if(hasPred)prediksiRaw.push({league:curL,date:curD,raw:[l],type:'prediksi'});jadwalRaw.push({league:curL,date:curD,raw:[l],type:'jadwal'})}
@@ -633,10 +581,7 @@ function structJadwal(raw){
         if(vsM){home=vsM[1].trim().replace(/\d{1,2}\s*[-:]\s*\d{1,2}$/,'').replace(/\|/g,'').trim();away=vsM[2].trim().replace(/^\d{1,2}\s*[-:]\s*\d{1,2}/,'').replace(/\|/g,'').trim()}
         else{const dM=txt.match(/(.+?)\s{2,}-\s{2,}(.+)/);if(dM){home=dM[1].trim();away=dM[2].trim()}}
         const tM=txt.match(/(\d{1,2}[:.]\d{2})/);if(tM)time=tM[1].replace('.',':');
-
-        /* Coba deteksi tanggal dari raw text jika belum ada */
         if(!matchDate){const dd=detectDateStr(txt);if(dd)matchDate=fmtDate(dd)}
-
         if(!home||!away)return;
         home=home.replace(/\s+/g,' ').trim();away=away.replace(/\s+/g,' ').trim();
         out.push({league:item.league,leagueMeta:meta,home,away,time,matchDate});
@@ -655,9 +600,7 @@ function structPrediksi(raw){
         const scoreP=[...txt.matchAll(/(\d)\s*[-:]\s*(\d)/g)];
         if(scoreP.length>0){const l=scoreP[scoreP.length-1];predScore=`${l[1]}-${l[2]}`}
         if(!predScore){const m1x2=txt.match(/\b(1|[Xx]|2)\b/);if(m1x2){const v=m1x2[1].toUpperCase();if(v==='1')predScore='2-1';else if(v==='2')predScore='0-2';else predScore='1-1'}else predScore='-'}
-
         if(!matchDate){const dd=detectDateStr(txt);if(dd)matchDate=fmtDate(dd)}
-
         if(!home||!away)return;
         home=home.replace(/\s+/g,' ').trim();away=away.replace(/\s+/g,' ').trim();
         out.push({league:item.league,leagueMeta:meta,home,away,time,predScore,matchDate});
@@ -670,7 +613,7 @@ function dedup(data){
     return{cleaned:data.filter((_,idx)=>!toRemove.has(idx)),dups};
 }
 
-/* ===== FALLBACK DATA DENGAN TANGGAL ===== */
+/* ===== FALLBACK DATA ===== */
 function getToday(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function getTomorrow(){const d=new Date();d.setDate(d.getDate()+1);return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function getDayAfter(){const d=new Date();d.setDate(d.getDate()+2);return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
@@ -722,57 +665,39 @@ function fallbackPrediksi(){
 function hashD(d){return d.map(x=>`${x.home}|${x.away}|${x.time}|${x.matchDate||''}`).join('@@')}
 function parseScore(s){if(!s||s==='-')return{h:'-',a:'-'};const p=s.split('-');if(p.length===2)return{h:p[0].trim(),a:p[1].trim()};return{h:s,a:''}}
 
-/* ===== RENDER JADWAL — DENGAN DATE HEADER ===== */
+/* ===== RENDER JADWAL ===== */
 function renderJadwal(data,isNew){
     const mn=document.getElementById('mnJadwal');
     const sq=document.getElementById('sIn').value.toLowerCase();
     let f=data;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
     if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-calendar-xmark"></i><h3>Tidak ada jadwal</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';renderAll()">Reset</button></div>`;return}
 
-    /* Group by date dulu, lalu by league */
     const dateGrp={};
-    f.forEach(x=>{
-        const dk=x.matchDate||'nodate';
-        if(!dateGrp[dk])dateGrp[dk]={};
-        if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];
-        dateGrp[dk][x.league].push(x);
-    });
-
-    /* Sort tanggal */
+    f.forEach(x=>{const dk=x.matchDate||'nodate';if(!dateGrp[dk])dateGrp[dk]={};if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];dateGrp[dk][x.league].push(x)});
     const sortedDates=Object.keys(dateGrp).sort();
 
     let html='',dl=0;
     sortedDates.forEach(dateKey=>{
-        /* Date header */
         if(dateKey!=='nodate'){
-            const dayLabel=getDayLabel(dateKey);
-            const fullLabel=fmtDateDisplay(dateKey);
-            html+=`<div class="dhd" style="animation-delay:${dl}ms">
-                <i class="fas fa-calendar-day dhd-ic"></i>
-                <span class="dhd-txt">${fullLabel}</span>
-                <span class="dhd-day">${dayLabel}</span>
-            </div>`;
+            const dayLabel=getDayLabel(dateKey);const fullLabel=fmtDateDisplay(dateKey);
+            html+=`<div class="dhd" style="animation-delay:${dl}ms"><i class="fas fa-calendar-day dhd-ic"></i><span class="dhd-txt">${fullLabel}</span><span class="dhd-day">${dayLabel}</span></div>`;
             dl+=20;
         }
-
         const leagues=dateGrp[dateKey];
         for(const[league,matches]of Object.entries(leagues)){
             const m=gLM(league);
             html+=`<div class="tw" style="animation-delay:${dl}ms">
                 <div class="lhd lh-bl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm nm-bl">${league}</div><div class="lco">${m.co}</div></div><div class="lcnt ct-bl">${matches.length} jadwal</div></div>
-                <table class="pt th-bl"><thead><tr>
-                    <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Status</th>
+                <table class="pt th-bl jadwal"><thead><tr>
+                    <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th>
                 </tr></thead><tbody>`;
             matches.forEach((d,i)=>{
-                const st=getMatchStatus(d.matchDate,d.time);
-                const rowCls=st.isLive?'row-live':'';
-                html+=`<tr class="${isNew?'nrow':''} ${rowCls}">
+                html+=`<tr class="${isNew?'nrow':''}">
                     <td class="cn cn-bl">${String(i+1).padStart(2,'0')}</td>
                     <td class="ct ct-bl">${d.time||'--:--'}</td>
                     <td class="ctm" style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span><span class="tmi tmi-bl"><i class="fas fa-shield-halved"></i></span></div></td>
                     <td class="cv"><span class="vsb vsb-bl">VS</span></td>
                     <td class="ctm" style="text-align:left"><div class="tmr a"><span class="tmi tmi-bl"><i class="fas fa-shield-halved"></i></span><span class="tmn">${d.away}</span></div></td>
-                    <td><span class="stb ${st.cls}"><span class="stb-d"></span>${st.label}</span></td>
                 </tr>`;
             });
             html+=`</tbody></table></div>`;dl+=40;
@@ -781,7 +706,7 @@ function renderJadwal(data,isNew){
     mn.innerHTML=html;
 }
 
-/* ===== RENDER PREDIKSI — DENGAN DATE HEADER ===== */
+/* ===== RENDER PREDIKSI ===== */
 function renderPrediksi(data,isNew){
     const mn=document.getElementById('mnPrediksi');
     const sq=document.getElementById('sIn').value.toLowerCase();
@@ -789,34 +714,22 @@ function renderPrediksi(data,isNew){
     if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-chart-line"></i><h3>Tidak ada prediksi</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';renderAll()">Reset</button></div>`;return}
 
     const dateGrp={};
-    f.forEach(x=>{
-        const dk=x.matchDate||'nodate';
-        if(!dateGrp[dk])dateGrp[dk]={};
-        if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];
-        dateGrp[dk][x.league].push(x);
-    });
-
+    f.forEach(x=>{const dk=x.matchDate||'nodate';if(!dateGrp[dk])dateGrp[dk]={};if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];dateGrp[dk][x.league].push(x)});
     const sortedDates=Object.keys(dateGrp).sort();
-    let html='',dl=0;
 
+    let html='',dl=0;
     sortedDates.forEach(dateKey=>{
         if(dateKey!=='nodate'){
-            const dayLabel=getDayLabel(dateKey);
-            const fullLabel=fmtDateDisplay(dateKey);
-            html+=`<div class="dhd" style="animation-delay:${dl}ms">
-                <i class="fas fa-calendar-day dhd-ic"></i>
-                <span class="dhd-txt">${fullLabel}</span>
-                <span class="dhd-day">${dayLabel}</span>
-            </div>`;
+            const dayLabel=getDayLabel(dateKey);const fullLabel=fmtDateDisplay(dateKey);
+            html+=`<div class="dhd" style="animation-delay:${dl}ms"><i class="fas fa-calendar-day dhd-ic"></i><span class="dhd-txt">${fullLabel}</span><span class="dhd-day">${dayLabel}</span></div>`;
             dl+=20;
         }
-
         const leagues=dateGrp[dateKey];
         for(const[league,matches]of Object.entries(leagues)){
             const m=gLM(league);
             html+=`<div class="tw" style="animation-delay:${dl}ms">
                 <div class="lhd lh-yl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm nm-yl">${league}</div><div class="lco">${m.co}</div></div><div class="lcnt ct-yl">${matches.length} prediksi</div></div>
-                <table class="pt th-yl"><thead><tr>
+                <table class="pt th-yl prediksi"><thead><tr>
                     <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Skor</th>
                 </tr></thead><tbody>`;
             matches.forEach((d,i)=>{
@@ -843,18 +756,8 @@ function renderAll(isNew){
     document.getElementById('cntPrediksi').textContent=prediksiData.length;
 }
 
-/* Auto-refresh status setiap 30 detik */
-let statusInterval=null;
-function startStatusRefresh(){
-    if(statusInterval)clearInterval(statusInterval);
-    statusInterval=setInterval(()=>{if(jadwalData.length)renderJadwal(jadwalData,false)},30000);
-}
-
-/* Background auto-refresh data setiap 60 detik */
-function startCD(){
-    if(cdT)clearInterval(cdT);cd=INT;
-    cdT=setInterval(()=>{cd--;if(cd<=0){clearInterval(cdT);loadData()}},1000);
-}
+/* Auto-refresh */
+function startCD(){if(cdT)clearInterval(cdT);cd=INT;cdT=setInterval(()=>{cd--;if(cd<=0){clearInterval(cdT);loadData()}},1000)}
 
 /* ===== MAIN LOAD ===== */
 async function loadData(){
@@ -897,7 +800,7 @@ async function loadData(){
     updateLabels();
     document.getElementById('cntJadwal').textContent=jadwalData.length;
     document.getElementById('cntPrediksi').textContent=prediksiData.length;
-    startCD();startStatusRefresh();
+    startCD();
 }
 
 document.getElementById('sIn').addEventListener('input',()=>renderAll(false));
