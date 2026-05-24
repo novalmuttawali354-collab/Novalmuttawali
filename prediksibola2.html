@@ -40,7 +40,7 @@
     tr:nth-child(even){background-color:rgba(0,0,0,.18)}
     tr:hover{background-color:rgba(255,255,255,.07)}
     @media(max-width:768px){.container{padding:10px}th,td{padding:7px 5px;font-size:11px}.league-title{font-size:13px}}
-    
+
     body{background:linear-gradient(145deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 45%,rgba(0,0,0,0.97) 100%) !important;background-attachment:fixed!important}
     .container{background:rgba(0,0,0,0.38)!important;border:1px solid rgba(0,0,0,0.22)!important;box-shadow:0 0 60px rgba(0,0,0,0.12),0 20px 60px rgba(0,0,0,.55)!important}
     .header{border-bottom:2px solid rgba(0,0,0,0.55)!important;position:relative}
@@ -58,7 +58,24 @@
         .atm .o2{width:450px;height:450px;bottom:-10%;right:-8%;background:rgba(150,126,8,.03);animation:dr 30s ease-in-out infinite reverse}
         @keyframes dr{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,40px) scale(1.12)}70%{transform:translate(-40px,70px) scale(.9)}}
 
-        #ballCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+        /* ===== EFEK BOLA JATUH CSS (NORMAL & SUBTLE) ===== */
+        .falling-ball{
+            position:fixed;
+            top:-100px;
+            border-radius:50%;
+            animation:ballfall linear infinite;
+            opacity:0.35; /* Diturunkan agar lebih subtle */
+            pointer-events:none;
+            z-index:1;
+            box-shadow:
+                inset -4px -6px 10px rgba(0,0,0,0.2),   /* Bayangan dalam gelap dikurangi */
+                inset 2px 2px 6px rgba(255,255,255,0.15), /* Bayangan dalam terang dikurangi */
+                0 0 6px rgba(255,255,255,0.05);           /* Glow luar dikurangi */
+        }
+        @keyframes ballfall{
+            0%{transform:translateY(-120px) rotate(0deg)}
+            100%{transform:translateY(120vh) rotate(360deg)} /* Putaran dikurangi dari 720 ke 360 agar lebih natural */
+        }
 
         .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
@@ -122,6 +139,7 @@
             padding:10px 18px;
             background:linear-gradient(135deg,var(--bg3),var(--card2));
             border-bottom:1px solid var(--brd2);
+            border-radius:14px 14px 0 0;
             position:relative;
         }
         .dhd::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--hd),transparent)}
@@ -133,7 +151,7 @@
         .lhd{display:flex;align-items:center;gap:12px;padding:14px 18px;position:relative;overflow:hidden}
         .lhd::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:0 4px 4px 0}
         .lhd.lh-yl{
-            background:#000000; /* Background hitam untuk judul liga */
+            background:#000000;
             border-bottom:2px solid rgba(245,197,24,.2);
         }
         .lhd.lh-yl::before{background:linear-gradient(180deg,var(--yl),var(--yl3))}
@@ -241,7 +259,6 @@
 </head>
 <body>
 <div class="atm"><div class="orb o1"></div><div class="orb o2"></div></div>
-<canvas id="ballCanvas"></canvas>
 <div class="grain"></div>
 
 <div class="wrap">
@@ -283,50 +300,33 @@
 <footer><p>SELAMAT BERMAIN DAN SEMOGA BERUNTUNG</p></footer>
 
 <script>
-/* ===== EFEK BOLA JATUH ===== */
+/* ===== EFEK BOLA JATUH (NORMAL & SUBTLE) ===== */
 (function(){
-    const canvas=document.getElementById('ballCanvas');
-    if(!canvas)return;
-    const ctx=canvas.getContext('2d');
-    function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
-    resize();window.addEventListener('resize',resize);
+    const totalBalls = 18; // Jumlah dikurangi dari 35 ke 18
+    for(let i = 0; i < totalBalls; i++){
+        const ball = document.createElement("div");
+        ball.classList.add("falling-ball");
 
-    const BS=64;const offC=document.createElement('canvas');offC.width=BS;offC.height=BS;
-    const oCtx=offC.getContext('2d');
-    (function drawBallTexture(){
-        const cx=BS/2,cy=BS/2,r=BS*.4;
-        const grad=oCtx.createRadialGradient(cx-r*.3,cy-r*.3,0,cx,cy,r);
-        grad.addColorStop(0,'#f0e4b8');grad.addColorStop(0.5,'#c8b070');grad.addColorStop(1,'#7a6838');
-        oCtx.beginPath();oCtx.arc(cx,cy,r,0,Math.PI*2);oCtx.fillStyle=grad;oCtx.fill();
-        oCtx.strokeStyle='#5a4a28';oCtx.lineWidth=1;oCtx.stroke();
-        const pr=r*.32;oCtx.beginPath();
-        for(let i=0;i<5;i++){const a=(i*Math.PI*2/5)-Math.PI/2;const px=cx+Math.cos(a)*pr,py=cy+Math.sin(a)*pr;i===0?oCtx.moveTo(px,py):oCtx.lineTo(px,py)}
-        oCtx.closePath();oCtx.fillStyle='#302818';oCtx.fill();
-        oCtx.strokeStyle='rgba(90,74,40,0.6)';oCtx.lineWidth=.8;
-        for(let i=0;i<5;i++){const a=(i*Math.PI*2/5)-Math.PI/2;oCtx.beginPath();oCtx.moveTo(cx+Math.cos(a)*pr,cy+Math.sin(a)*pr);oCtx.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r*.85);oCtx.stroke()}
-        const hg=oCtx.createRadialGradient(cx-r*.2,cy-r*.25,0,cx-r*.2,cy-r*.25,r*.35);
-        hg.addColorStop(0,'rgba(255,255,240,0.25)');hg.addColorStop(1,'rgba(255,255,240,0)');
-        oCtx.beginPath();oCtx.arc(cx,cy,r,0,Math.PI*2);oCtx.fillStyle=hg;oCtx.fill();
-    })();
+        // Ukuran dibuat lebih kecil (12px - 28px)
+        let size = Math.random() * 16 + 12;
+        ball.style.width = size + "px";
+        ball.style.height = size + "px";
 
-    const balls=[];const COUNT=20;
-    const prefersReduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-    class SoccerBall{
-        constructor(init){this.reset(init)}
-        reset(init){
-            this.x=Math.random()*(canvas.width||window.innerWidth);
-            this.y=init?Math.random()*(canvas.height||window.innerHeight):-(20+Math.random()*60);
-            this.size=10+Math.random()*16;this.vy=.2+Math.random()*.9;
-            this.swayAmp=.12+Math.random()*.45;this.swayFreq=.002+Math.random()*.006;
-            this.rot=Math.random()*Math.PI*2;this.rotSpd=(Math.random()-.5)*.012;
-            this.opacity=.03+Math.random()*.08;this.phase=Math.random()*Math.PI*2;
-        }
-        update(){this.y+=this.vy;this.phase+=this.swayFreq;this.x+=Math.sin(this.phase)*this.swayAmp;this.rot+=this.rotSpd;if(this.y>(canvas.height||window.innerHeight)+40)this.reset(false)}
-        draw(c){c.save();c.globalAlpha=this.opacity;c.translate(this.x,this.y);c.rotate(this.rot);c.drawImage(offC,-this.size/2,-this.size/2,this.size,this.size);c.restore()}
+        ball.style.left = Math.random() * 100 + "vw";
+        
+        // Durasi dilamain (9s - 18s) supaya jatuhnya normal/gak terlalu cepat
+        ball.style.animationDuration = (Math.random() * 9 + 9) + "s";
+        
+        // Delay diacak lebih lama supaya sebaran lebih natural
+        ball.style.animationDelay = Math.random() * 12 + "s";
+
+        ball.style.backgroundImage =
+            "url('https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg')";
+        ball.style.backgroundSize = "cover";
+        ball.style.backgroundPosition = "center";
+
+        document.body.appendChild(ball);
     }
-    for(let i=0;i<COUNT;i++)balls.push(new SoccerBall(true));
-    function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);if(!prefersReduced){balls.forEach(b=>{b.update();b.draw(ctx)})}requestAnimationFrame(animate)}
-    animate();
 })();
 
 /* ===== DATA LOGIC ===== */
@@ -564,12 +564,12 @@ async function loadData(){
     if(html){
         const parsed=parseHTML(html);
         if(parsed.prediksi.length){const structured=structPrediksi(parsed.prediksi);const{cleaned,dups}=dedup(structured);prediksiData=cleaned;dupCountP=dups}
-        
+
         if(prediksiData.length){
             gotData=true;
             const dedupEl=document.getElementById('dedupInfo');
             if(dupCountP>0){document.getElementById('dedupCount').textContent=dupCountP;dedupEl.style.display='flex'}else dedupEl.style.display='none';
-            
+
             const nhP=hashD(prediksiData);
             const changedP=nhP!==prevHP&&prevHP!=='';
             if(changedP){toast('Data prediksi diperbarui!','upd');renderAll(true)}
