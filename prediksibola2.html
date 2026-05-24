@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediksi Bola - MARKASWD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
+<p></p>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" /><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<style>
         :root{
             --bg:#3d2200;--bg2:#4a2a00;--bg3:#553200;
             --card:#000000;--card2:#452800;--card3:#503000;
@@ -64,17 +58,17 @@
             top:-100px;
             border-radius:50%;
             animation:ballfall linear infinite;
-            opacity:0.35; /* Diturunkan agar lebih subtle */
+            opacity:0.35; 
             pointer-events:none;
             z-index:1;
             box-shadow:
-                inset -4px -6px 10px rgba(0,0,0,0.2),   /* Bayangan dalam gelap dikurangi */
-                inset 2px 2px 6px rgba(255,255,255,0.15), /* Bayangan dalam terang dikurangi */
-                0 0 6px rgba(255,255,255,0.05);           /* Glow luar dikurangi */
+                inset -4px -6px 10px rgba(0,0,0,0.2),   
+                inset 2px 2px 6px rgba(255,255,255,0.15), 
+                0 0 6px rgba(255,255,255,0.05);           
         }
         @keyframes ballfall{
             0%{transform:translateY(-120px) rotate(0deg)}
-            100%{transform:translateY(120vh) rotate(360deg)} /* Putaran dikurangi dari 720 ke 360 agar lebih natural */
+            100%{transform:translateY(120vh) rotate(360deg)} 
         }
 
         .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -158,7 +152,7 @@
         .lic{width:38px;height:38px;border-radius:9px;background:var(--bg3);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
         .linf{flex:1}
         .lnm{font-size:15px;font-weight:900;letter-spacing:-.3px;color:var(--yl2)}
-        .lco{font-size:10px;color:var(--fm);font-weight:500;margin-top:1px}
+        /* .lco DIHAPUS karena tidak diperlukan lagi */
         .lcnt{font-size:9px;font-weight:800;padding:4px 11px;border-radius:50px;letter-spacing:.3px;background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.18)}
 
         /* ===== TABLE ===== */
@@ -256,75 +250,55 @@
         ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px}
         ::-webkit-scrollbar-thumb:hover{background:var(--brd3)}
     </style>
-</head>
-<body>
-<div class="atm"><div class="orb o1"></div><div class="orb o2"></div></div>
-<div class="grain"></div>
-
-<div class="wrap">
-    <header>
-        <div class="logo-wrap">
-            <img src="https://i.postimg.cc/pdfn3Dpc/MARKASWD.png" alt="MARKASWD">
-        </div>
-        <div class="hbadge"><span class="pd"></span> Live Data</div>
-        <h1>Prediksi <span class="hl">Bola</span></h1>
-        <p>Jadwal &amp; skor prediksi pertandingan dari berbagai liga</p>
-    </header>
-
-    <!-- ===== MARQUEE ===== -->
-    <div class="marquee-bar">
-        <div class="marquee-track">
-            <span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span>
-            <span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span>
-        </div>
-    </div>
-
-    <!-- TAB JADWAL DIHAPUS, LANGSUNG TAMPILKAN PREDIKSI -->
-    <div class="sbar">
-        <div class="stotal">Total: <strong id="stot">-</strong> <span id="stotLabel">prediksi</span></div>
-        <div class="sb"><i class="fas fa-search"></i><input type="text" id="sIn" placeholder="Cari tim atau liga..."></div>
-    </div>
-
-    <div class="dedup-info" id="dedupInfo" style="display:none">
-        <i class="fas fa-filter"></i>
-        <span><strong id="dedupCount">0</strong> pertandingan duplikat dihapus</span>
-    </div>
-
-    <!-- LANGSUNG TAB PREDIKSI ACTIVE -->
-    <div class="tab-content active" id="contentPrediksi">
-        <main id="mnPrediksi"><div class="lbx"><div class="lsp"></div><div class="ltx">Mengambil prediksi...</div></div></main>
-    </div>
+<div class="atm">
+<div class="orb o1"></div>
+<div class="orb o2"></div>
 </div>
-
+<div class="grain"></div>
+<div class="wrap"><header>
+<div class="logo-wrap"><img src="https://i.postimg.cc/pdfn3Dpc/MARKASWD.png" alt="MARKASWD" /></div>
+<div class="hbadge"><span class="pd"></span> Live Data</div>
+<h1>Prediksi <span class="hl">Bola</span></h1>
+<p>Jadwal &amp; skor prediksi pertandingan dari berbagai liga</p>
+</header><!-- ===== MARQUEE ===== -->
+<div class="marquee-bar">
+<div class="marquee-track"><span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span> <span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span></div>
+</div>
+<!-- TAB JADWAL DIHAPUS, LANGSUNG TAMPILKAN PREDIKSI -->
+<div class="sbar">
+<div class="stotal">Total: <strong id="stot">-</strong> <span id="stotLabel">prediksi</span></div>
+<div class="sb"><i class="fas fa-search"></i><input type="text" id="sIn" placeholder="Cari tim atau liga..." /></div>
+</div>
+<div class="dedup-info" id="dedupInfo" style="display: none;"><i class="fas fa-filter"></i> <span><strong id="dedupCount">0</strong> pertandingan duplikat dihapus</span></div>
+<!-- LANGSUNG TAB PREDIKSI ACTIVE -->
+<div class="tab-content active" id="contentPrediksi"><main id="mnPrediksi">
+<div class="lbx">
+<div class="lsp"></div>
+<div class="ltx">Mengambil prediksi...</div>
+</div>
+</main></div>
+</div>
 <div class="tc" id="tc"></div>
-<footer><p>SELAMAT BERMAIN DAN SEMOGA BERUNTUNG</p></footer>
-
+<footer>
+<p>SELAMAT BERMAIN DAN SEMOGA BERUNTUNG</p>
+</footer>
 <script>
 /* ===== EFEK BOLA JATUH (NORMAL & SUBTLE) ===== */
 (function(){
-    const totalBalls = 18; // Jumlah dikurangi dari 35 ke 18
+    const totalBalls = 18; 
     for(let i = 0; i < totalBalls; i++){
         const ball = document.createElement("div");
         ball.classList.add("falling-ball");
-
-        // Ukuran dibuat lebih kecil (12px - 28px)
         let size = Math.random() * 16 + 12;
         ball.style.width = size + "px";
         ball.style.height = size + "px";
-
         ball.style.left = Math.random() * 100 + "vw";
-        
-        // Durasi dilamain (9s - 18s) supaya jatuhnya normal/gak terlalu cepat
         ball.style.animationDuration = (Math.random() * 9 + 9) + "s";
-        
-        // Delay diacak lebih lama supaya sebaran lebih natural
         ball.style.animationDelay = Math.random() * 12 + "s";
-
         ball.style.backgroundImage =
             "url('https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg')";
         ball.style.backgroundSize = "cover";
         ball.style.backgroundPosition = "center";
-
         document.body.appendChild(ball);
     }
 })();
@@ -527,8 +501,9 @@ function renderPrediksi(data,isNew){
         const leagues=dateGrp[dateKey];
         for(const[league,matches]of Object.entries(leagues)){
             const m=gLM(league);
+            /* === .lco (negara) DIHAPUS dari render === */
             html+=`<div class="tw" style="animation-delay:${dl}ms">
-                <div class="lhd lh-yl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm">${league}</div><div class="lco">${m.co}</div></div><div class="lcnt">${matches.length} prediksi</div></div>
+                <div class="lhd lh-yl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm">${league}</div></div><div class="lcnt">${matches.length} prediksi</div></div>
                 <table class="pt prediksi"><thead><tr>
                     <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Skor</th>
                 </tr></thead><tbody>`;
@@ -591,5 +566,3 @@ async function loadData(){
 document.getElementById('sIn').addEventListener('input',()=>renderAll(false));
 loadData();
 </script>
-</body>
-</html>
