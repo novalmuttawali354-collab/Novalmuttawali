@@ -1,5 +1,6 @@
 <p></p>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" /><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 <style>
         :root{
             --bg:#3d2200;--bg2:#4a2a00;--bg3:#553200;
@@ -18,7 +19,7 @@
             --mq:#261400;
         }
         *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Poppins',sans-serif;background-color:#000000;color:#ffffff;padding:0;line-height:1.6;min-height:100vh}
+    body{font-family:'Outfit',sans-serif;background-color:#000000;color:#ffffff;padding:0;line-height:1.6;min-height:100vh}
     .container{max-width:1000px;margin:0 auto;background:rgba(0,0,0,.32);border-radius:14px;padding:20px;box-shadow:0 0 24px rgba(0,0,0,.5);position:relative;z-index:1}
     .header{text-align:center;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid rgba(255,255,255,0.25)}
     .header img{max-width:200px;margin-bottom:8px}
@@ -52,30 +53,18 @@
         .atm .o2{width:450px;height:450px;bottom:-10%;right:-8%;background:rgba(150,126,8,.03);animation:dr 30s ease-in-out infinite reverse}
         @keyframes dr{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,40px) scale(1.12)}70%{transform:translate(-40px,70px) scale(.9)}}
 
-        /* ===== EFEK BOLA JATUH CSS (NORMAL & SUBTLE) ===== */
         .falling-ball{
-            position:fixed;
-            top:-100px;
-            border-radius:50%;
-            animation:ballfall linear infinite;
-            opacity:0.35; 
-            pointer-events:none;
-            z-index:1;
-            box-shadow:
-                inset -4px -6px 10px rgba(0,0,0,0.2),   
-                inset 2px 2px 6px rgba(255,255,255,0.15), 
-                0 0 6px rgba(255,255,255,0.05);           
+            position:fixed;top:-100px;border-radius:50%;
+            animation:ballfall linear infinite;opacity:0.35;
+            pointer-events:none;z-index:1;
+            box-shadow:inset -4px -6px 10px rgba(0,0,0,0.2),inset 2px 2px 6px rgba(255,255,255,0.15),0 0 6px rgba(255,255,255,0.05);
         }
-        @keyframes ballfall{
-            0%{transform:translateY(-120px) rotate(0deg)}
-            100%{transform:translateY(120vh) rotate(360deg)} 
-        }
+        @keyframes ballfall{0%{transform:translateY(-120px) rotate(0deg)}100%{transform:translateY(120vh) rotate(360deg)}}
 
         .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
         .wrap{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:12px 14px 60px}
 
-        /* ===== HEADER ===== */
         header{text-align:center;padding:28px 0 18px;background:linear-gradient(180deg,rgba(150,126,8,.15),transparent);border-radius:0 0 20px 20px;margin-bottom:6px}
         .logo-wrap{margin-bottom:14px}
         .logo-wrap img{height:72px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 16px rgba(150,126,8,.3));transition:transform .3s}
@@ -87,135 +76,168 @@
         header h1 .hl{color:var(--hd);text-shadow:0 0 30px rgba(150,126,8,.3)}
         header p{color:var(--fm);font-size:13px;font-weight:400;letter-spacing:.2px}
 
-        /* ===== MARQUEE ===== */
         .marquee-bar{
             background:var(--mq);border:2px solid var(--brd);border-radius:12px;
             padding:10px 0;margin-bottom:16px;overflow:hidden;position:relative;
         }
-        .marquee-bar::before,.marquee-bar::after{
-            content:'';position:absolute;top:0;width:40px;height:100%;z-index:2;pointer-events:none;
-        }
+        .marquee-bar::before,.marquee-bar::after{content:'';position:absolute;top:0;width:40px;height:100%;z-index:2;pointer-events:none}
         .marquee-bar::before{left:0;background:linear-gradient(90deg,var(--mq),transparent)}
         .marquee-bar::after{right:0;background:linear-gradient(270deg,var(--mq),transparent)}
-        .marquee-track{
-            display:flex;width:max-content;
-            animation:mqscroll 22s linear infinite;
-        }
+        .marquee-track{display:flex;width:max-content;animation:mqscroll 22s linear infinite}
         .marquee-track:hover{animation-play-state:paused}
-        .marquee-item{
-            white-space:nowrap;font-size:13px;font-weight:800;letter-spacing:1px;
-            color:var(--yl);padding:0 40px;
-            text-shadow:0 0 10px rgba(245,197,24,.2);
-        }
+        .marquee-item{white-space:nowrap;font-size:13px;font-weight:800;letter-spacing:1px;color:var(--yl);padding:0 40px;text-shadow:0 0 10px rgba(245,197,24,.2)}
         .marquee-item .sep{color:var(--hd);margin:0 8px;font-weight:900}
         @keyframes mqscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-        /* ===== SEARCH ===== */
-        .sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-        .stotal{font-size:12px;font-weight:600;color:var(--fg2)}
-        .stotal strong{font-size:20px;font-weight:900;color:var(--hd)}
-        .sb{display:flex;align-items:center;gap:7px;background:var(--card);border:2px solid var(--brd2);border-radius:50px;padding:6px 14px;transition:border-color .25s}
-        .sb:focus-within{border-color:var(--yl)}
-        .sb i{color:var(--fm);font-size:11px}
-        .sb input{background:none;border:none;outline:none;color:var(--fg);font-family:'Outfit',sans-serif;font-size:12px;width:150px}
-        .sb input::placeholder{color:var(--fm2)}
+        /* ===== FILTER SECTION (DROPDOWN LIGA) ===== */
+        .filter-section{
+            display:flex;flex-direction:column;align-items:center;gap:14px;
+            margin-bottom:18px;
+        }
+        .stotal-wrap{text-align:center}
+        .stotal{font-size:13px;font-weight:700;color:var(--fg2)}
+        .stotal strong{font-size:22px;font-weight:900;color:var(--yl);margin:0 2px}
+        .stotal-label{font-size:11px;color:var(--fm);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
 
-        .dedup-info{display:flex;align-items:center;gap:6px;padding:6px 12px;margin-bottom:12px;background:var(--yld);border:1px solid rgba(245,197,24,.12);border-radius:8px;font-size:10px;color:var(--fm);font-weight:500}
+        .liga-select-wrap{
+            position:relative;display:inline-flex;align-items:center;
+        }
+        .liga-select{
+            appearance:none;-webkit-appearance:none;-moz-appearance:none;
+            background:linear-gradient(135deg,rgba(0,0,0,.85),rgba(30,18,0,.92));
+            border:2px solid var(--brd2);
+            color:var(--yl2);
+            font-family:'Outfit',sans-serif;
+            font-size:15px;font-weight:800;
+            padding:14px 56px 14px 24px;
+            border-radius:50px;
+            cursor:pointer;
+            min-width:320px;
+            text-align:center;text-align-last:center;
+            transition:all .3s;
+            box-shadow:0 4px 24px rgba(0,0,0,.5),0 0 0 0 transparent;
+            letter-spacing:.3px;
+        }
+        .liga-select:hover{
+            border-color:var(--yl3);
+            box-shadow:0 4px 28px rgba(0,0,0,.5),0 0 20px rgba(245,197,24,.08);
+        }
+        .liga-select:focus{
+            outline:none;
+            border-color:var(--yl);
+            box-shadow:0 4px 28px rgba(0,0,0,.5),0 0 28px rgba(245,197,24,.18);
+        }
+        .liga-select option{
+            background:#1a0e00;color:var(--yl2);font-weight:700;padding:10px 14px;
+        }
+        .liga-select-wrap::after{
+            content:'\f107';font-family:'Font Awesome 6 Free';font-weight:900;
+            position:absolute;right:22px;top:50%;transform:translateY(-50%);
+            color:var(--yl);font-size:16px;pointer-events:none;
+            transition:transform .3s;
+        }
+        .liga-select:focus~.liga-arrow,
+        .liga-select-wrap:focus-within::after{
+            transform:translateY(-50%) rotate(180deg);
+        }
+
+        .dedup-info{display:flex;align-items:center;gap:6px;padding:6px 12px;margin-bottom:12px;background:var(--yld);border:1px solid rgba(245,197,24,.12);border-radius:8px;font-size:10px;color:var(--fm);font-weight:500;justify-content:center}
         .dedup-info i{color:var(--yl);font-size:11px}.dedup-info strong{color:var(--yl)}
 
         /* ===== TABLE WRAPPER ===== */
-        .tw{background:var(--card);border:2px solid var(--brd2);border-radius:14px;overflow:hidden;margin-bottom:22px;animation:fu .4s ease-out both}
+        .tw{background:var(--card);border:2px solid var(--brd2);border-radius:14px;overflow:hidden;margin-bottom:22px;animation:fu .4s ease-out both;box-shadow:0 6px 32px rgba(0,0,0,.45),0 0 0 1px rgba(245,197,24,.04)}
         @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
         /* ===== DATE HEADER ===== */
         .dhd{
             display:flex;align-items:center;gap:10px;
-            padding:10px 18px;
+            padding:12px 18px;
             background:linear-gradient(135deg,var(--bg3),var(--card2));
-            border-bottom:1px solid var(--brd2);
+            border-bottom:2px solid rgba(245,197,24,.15);
             border-radius:14px 14px 0 0;
             position:relative;
         }
-        .dhd::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--hd),transparent)}
-        .dhd-ic{font-size:14px;color:var(--yl)}
-        .dhd-txt{font-size:12px;font-weight:800;color:var(--yl2);letter-spacing:.3px}
-        .dhd-day{font-size:10px;font-weight:700;color:var(--hd);margin-left:auto;background:var(--yld);padding:3px 10px;border-radius:50px;border:1px solid rgba(245,197,24,.15)}
+        .dhd::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--yl),transparent)}
+        .dhd-ic{font-size:16px;color:var(--yl)}
+        .dhd-txt{font-size:14px;font-weight:900;color:var(--yl2);letter-spacing:.5px}
+        .dhd-day{font-size:11px;font-weight:800;color:var(--yl);margin-left:auto;background:var(--yld2);padding:4px 14px;border-radius:50px;border:1px solid rgba(245,197,24,.2);text-transform:uppercase;letter-spacing:.5px}
 
         /* ===== LIGA HEADER ===== */
         .lhd{display:flex;align-items:center;gap:12px;padding:14px 18px;position:relative;overflow:hidden}
-        .lhd::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:0 4px 4px 0}
+        .lhd::before{content:'';position:absolute;top:0;left:0;width:5px;height:100%;border-radius:0 4px 4px 0}
         .lhd.lh-yl{
-            background:#000000;
-            border-bottom:2px solid rgba(245,197,24,.2);
+            background:linear-gradient(135deg,rgba(0,0,0,.95),rgba(30,18,0,.9));
+            border-bottom:3px solid rgba(245,197,24,.2);
         }
         .lhd.lh-yl::before{background:linear-gradient(180deg,var(--yl),var(--yl3))}
-        .lic{width:38px;height:38px;border-radius:9px;background:var(--bg3);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+        .lic{width:38px;height:38px;border-radius:10px;background:var(--yld2);border:2px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
         .linf{flex:1}
-        .lnm{font-size:15px;font-weight:900;letter-spacing:-.3px;color:var(--yl2)}
-        /* .lco DIHAPUS karena tidak diperlukan lagi */
-        .lcnt{font-size:9px;font-weight:800;padding:4px 11px;border-radius:50px;letter-spacing:.3px;background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.18)}
+        .lnm{font-size:16px;font-weight:900;letter-spacing:-.3px;color:var(--yl2);text-shadow:0 0 12px rgba(245,197,24,.1)}
+        .lcnt{font-size:10px;font-weight:900;padding:5px 14px;border-radius:50px;letter-spacing:.5px;background:var(--yld2);color:var(--yl);border:1px solid rgba(245,197,24,.2)}
 
         /* ===== TABLE ===== */
         table.pt{width:100%;border-collapse:collapse;table-layout:fixed}
         table.pt thead th{
             padding:12px 8px;text-align:center;
-            font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;
-            background:var(--bg3);white-space:nowrap;color:var(--hd);
-            border-bottom:2px solid rgba(150,126,8,.3);
+            font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;
+            background:linear-gradient(180deg,rgba(255,200,0,.92),rgba(255,200,0,.65))!important;
+            white-space:nowrap;color:#1a0e00;
+            border-bottom:2px solid rgba(150,126,8,.5);
+            text-shadow:0 1px 0 rgba(255,255,255,.15);
         }
 
         /* Kolom widths - Prediksi */
         table.pt.prediksi thead th:nth-child(1){width:40px}
-        table.pt.prediksi thead th:nth-child(2){width:68px}
-        table.pt.prediksi thead th:nth-child(3){width:auto;text-align:right;padding-right:8px}
-        table.pt.prediksi thead th:nth-child(4){width:48px}
-        table.pt.prediksi thead th:nth-child(5){width:auto;text-align:left;padding-left:8px}
+        table.pt.prediksi thead th:nth-child(2){width:70px}
+        table.pt.prediksi thead th:nth-child(3){width:auto;text-align:right;padding-right:12px}
+        table.pt.prediksi thead th:nth-child(4){width:50px}
+        table.pt.prediksi thead th:nth-child(5){width:auto;text-align:left;padding-left:12px}
         table.pt.prediksi thead th:nth-child(6){width:100px}
 
-        table.pt tbody tr{transition:all .15s;border-bottom:1px solid var(--brd)}
+        table.pt tbody tr{transition:all .2s;border-bottom:1px solid var(--brd)}
         table.pt tbody tr:last-child{border-bottom:none}
-        table.pt tbody tr:hover{background:var(--card2)}
+        table.pt tbody tr:hover{background:rgba(245,197,24,.06)!important;box-shadow:inset 0 0 30px rgba(245,197,24,.03)}
         table.pt tbody tr:nth-child(even){background:rgba(150,126,8,.04)}
-        table.pt tbody tr:nth-child(even):hover{background:var(--card2)}
+        table.pt tbody tr:nth-child(even):hover{background:rgba(245,197,24,.06)!important}
 
-        table.pt tbody td{padding:13px 8px;text-align:center;vertical-align:middle;}
+        table.pt tbody td{padding:12px 8px;text-align:center;vertical-align:middle}
 
-        .cn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--hd);white-space:nowrap}
-        .ct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;white-space:nowrap;color:var(--yl)}
+        .cn{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--yl);white-space:nowrap;text-shadow:0 0 8px rgba(245,197,24,.15)}
+        .ct{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;white-space:nowrap;color:var(--yl2);text-shadow:0 0 10px rgba(245,197,24,.15)}
 
-        /* Perbaikan Nama Tim Tidak Terpotong */
         .ctm{white-space:normal;word-break:break-word;line-height:1.3;text-align:inherit}
-        .tmr{display:flex;align-items:center;gap:8px}
+        .tmr{display:flex;align-items:center}
         .tmr.h{justify-content:flex-end}
         .tmr.a{justify-content:flex-start}
-        .tmi{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;background:var(--yld);border:1px solid rgba(245,197,24,.18);color:var(--yl3)}
-        .tmn{font-size:13px;font-weight:800;color:var(--fg);letter-spacing:-.2px;white-space:normal;word-break:break-word;line-height:1.3;}
+        /* .tmi DIHAPUS karena ikon shield dihapus */
+        .tmn{font-size:15px;font-weight:800;color:var(--fg);letter-spacing:-.2px;white-space:normal;word-break:break-word;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.3)}
 
         .cv{text-align:center!important}
-        .vsb{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:.4px;background:var(--yld);border:2px solid rgba(245,197,24,.2);color:var(--yl);flex-shrink:0;}
+        .vsb{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;letter-spacing:.5px;background:linear-gradient(135deg,var(--yld2),var(--yld));border:2px solid rgba(245,197,24,.3);color:var(--yl);flex-shrink:0;text-shadow:0 0 8px rgba(245,197,24,.2);box-shadow:0 0 14px rgba(245,197,24,.08)}
 
         /* ===== SKOR PREDIKSI ===== */
         .cs{text-align:center!important}
         .sk-wrap{
             display:inline-flex;align-items:stretch;
             border-radius:8px;overflow:hidden;
-            box-shadow:0 2px 10px rgba(0,0,0,.3),0 0 16px rgba(245,197,24,.08);
+            box-shadow:0 3px 14px rgba(0,0,0,.4),0 0 20px rgba(245,197,24,.1);
+            border:1px solid rgba(245,197,24,.15);
         }
         .sk-num{
             font-family:'JetBrains Mono',monospace;
-            font-size:18px;font-weight:900;color:var(--bg);
-            width:36px;display:flex;align-items:center;justify-content:center;
-            line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.2);
+            font-size:20px;font-weight:900;color:var(--bg);
+            width:38px;display:flex;align-items:center;justify-content:center;
+            line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.25);
             background:linear-gradient(180deg,var(--yl2),var(--yl3));
         }
         .sk-sep{
             font-family:'JetBrains Mono',monospace;
-            font-size:12px;font-weight:900;color:var(--bg);
+            font-size:14px;font-weight:900;color:var(--bg);
             background:linear-gradient(180deg,var(--yl3),#9a7808);
             width:16px;display:flex;align-items:center;justify-content:center;line-height:1;
         }
 
-        @keyframes nr{0%{background:rgba(245,197,24,.08)}100%{background:transparent}}
+        @keyframes nr{0%{background:rgba(245,197,24,.1)}100%{background:transparent}}
         .nrow{animation:nr 2.5s ease-out}
 
         .lbx{display:flex;flex-direction:column;align-items:center;padding:50px 20px;gap:14px}
@@ -224,7 +246,7 @@
         .ltx{color:var(--fm);font-size:12px;font-weight:500}
 
         .mbx{text-align:center;padding:44px 20px}
-        .mbx i{font-size:40px;margin-bottom:12px;color:var(--hd);display:block}
+        .mbx i{font-size:40px;margin-bottom:12px;color:var(--yl);display:block}
         .mbx h3{font-size:16px;font-weight:800;margin-bottom:5px;color:var(--fg)}
         .mbx p{color:var(--fm);font-size:12px;margin-bottom:14px}
         .mbx button{padding:9px 20px;border-radius:50px;border:none;background:var(--yl);color:var(--bg);font-family:'Outfit',sans-serif;font-weight:900;font-size:12px;cursor:pointer;transition:transform .2s,box-shadow .2s}
@@ -241,15 +263,19 @@
         @media(max-width:640px){
             .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
             table.pt{min-width:580px}
-            .sk-num{width:30px;font-size:15px}
-            .sk-sep{width:14px;font-size:10px}
+            .sk-num{width:32px;font-size:17px}
+            .sk-sep{width:14px;font-size:12px}
             .logo-wrap img{height:56px}
+            .liga-select{min-width:260px;font-size:13px;padding:12px 48px 12px 18px}
+            .lnm{font-size:14px}
+            .tmn{font-size:13px}
+            .vsb{width:30px;height:30px;font-size:8px}
         }
         ::-webkit-scrollbar{width:4px;height:4px}
         ::-webkit-scrollbar-track{background:var(--bg)}
         ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px}
         ::-webkit-scrollbar-thumb:hover{background:var(--brd3)}
-    </style>
+</style>
 <div class="atm">
 <div class="orb o1"></div>
 <div class="orb o2"></div>
@@ -260,16 +286,27 @@
 <div class="hbadge"><span class="pd"></span> Live Data</div>
 <h1>Prediksi <span class="hl">Bola</span></h1>
 <p>Jadwal &amp; skor prediksi pertandingan dari berbagai liga</p>
-</header><!-- ===== MARQUEE ===== -->
+</header>
+<!-- ===== MARQUEE ===== -->
 <div class="marquee-bar">
 <div class="marquee-track"><span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span> <span class="marquee-item">SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span> SELAMAT DATANG DI PREDIKSI BOLA MARKASWD <span class="sep">|</span> PREDIKSI MARKASWD <span class="sep">|</span></span></div>
 </div>
-<!-- TAB JADWAL DIHAPUS, LANGSUNG TAMPILKAN PREDIKSI -->
-<div class="sbar">
-<div class="stotal">Total: <strong id="stot">-</strong> <span id="stotLabel">prediksi</span></div>
-<div class="sb"><i class="fas fa-search"></i><input type="text" id="sIn" placeholder="Cari tim atau liga..." /></div>
+
+<!-- ===== FILTER DROPDOWN LIGA ===== -->
+<div class="filter-section">
+    <div class="stotal-wrap">
+        <div class="stotal">Total: <strong id="stot">-</strong></div>
+        <div class="stotal-label" id="stotLabel">prediksi</div>
+    </div>
+    <div class="liga-select-wrap">
+        <select id="ligaFilter" class="liga-select">
+            <option value="">⚽ Semua Liga</option>
+        </select>
+    </div>
 </div>
+
 <div class="dedup-info" id="dedupInfo" style="display: none;"><i class="fas fa-filter"></i> <span><strong id="dedupCount">0</strong> pertandingan duplikat dihapus</span></div>
+
 <!-- LANGSUNG TAB PREDIKSI ACTIVE -->
 <div class="tab-content active" id="contentPrediksi"><main id="mnPrediksi">
 <div class="lbx">
@@ -283,9 +320,9 @@
 <p>SELAMAT BERMAIN DAN SEMOGA BERUNTUNG</p>
 </footer>
 <script>
-/* ===== EFEK BOLA JATUH (NORMAL & SUBTLE) ===== */
+/* ===== EFEK BOLA JATUH ===== */
 (function(){
-    const totalBalls = 18; 
+    const totalBalls = 18;
     for(let i = 0; i < totalBalls; i++){
         const ball = document.createElement("div");
         ball.classList.add("falling-ball");
@@ -346,10 +383,31 @@ function isToday(dateStr){if(!dateStr)return false;const now=new Date();const to
 function isTomorrow(dateStr){if(!dateStr)return false;const tom=new Date();tom.setDate(tom.getDate()+1);const tomStr=`${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`;return dateStr===tomStr}
 function getDayLabel(dateStr){if(!dateStr)return'';if(isToday(dateStr))return'Hari Ini';if(isTomorrow(dateStr))return'Besok';return fmtDateDisplay(dateStr)}
 
+/* ===== POPULATE DROPDOWN LIGA ===== */
+function populateLeagueDropdown(){
+    const sel=document.getElementById('ligaFilter');
+    if(!sel)return;
+    const prevVal=sel.value;
+    while(sel.options.length>1)sel.remove(1);
+    if(!prediksiData.length)return;
+    const leagues=[...new Set(prediksiData.map(x=>x.league))].sort((a,b)=>a.localeCompare(b));
+    leagues.forEach(lg=>{
+        const meta=gLM(lg);
+        const opt=document.createElement('option');
+        opt.value=lg;
+        opt.textContent=`${meta.ic}  ${lg}`;
+        sel.appendChild(opt);
+    });
+    if(prevVal && [...sel.options].some(o=>o.value===prevVal)){
+        sel.value=prevVal;
+    }
+}
+
 function updateLabels(){
-    const sq=document.getElementById('sIn').value.toLowerCase();
+    const ligaVal=document.getElementById('ligaFilter').value;
     const stot=document.getElementById('stot'),sl=document.getElementById('stotLabel');
-    let f=prediksiData;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
+    let f=prediksiData;
+    if(ligaVal)f=f.filter(x=>x.league===ligaVal);
     stot.textContent=f.length;sl.textContent='prediksi';
 }
 
@@ -485,9 +543,14 @@ function parseScore(s){if(!s||s==='-')return{h:'-',a:'-'};const p=s.split('-');i
 /* ===== RENDER PREDIKSI ===== */
 function renderPrediksi(data,isNew){
     const mn=document.getElementById('mnPrediksi');
-    const sq=document.getElementById('sIn').value.toLowerCase();
-    let f=data;if(sq)f=f.filter(x=>x.home.toLowerCase().includes(sq)||x.away.toLowerCase().includes(sq)||x.league.toLowerCase().includes(sq));
-    if(!f.length){mn.innerHTML=`<div class="mbx"><i class="fas fa-chart-line"></i><h3>Tidak ada prediksi</h3><p>Coba kata kunci lain</p><button onclick="document.getElementById('sIn').value='';renderAll()">Reset</button></div>`;return}
+    const ligaVal=document.getElementById('ligaFilter').value;
+    let f=data;
+    if(ligaVal)f=f.filter(x=>x.league===ligaVal);
+
+    if(!f.length){
+        mn.innerHTML=`<div class="mbx"><i class="fas fa-chart-line"></i><h3>Tidak ada prediksi</h3><p>${ligaVal?'Coba pilih liga lain':'Data belum tersedia'}</p><button onclick="document.getElementById('ligaFilter').value='';renderAll()">Lihat Semua Liga</button></div>`;
+        return;
+    }
 
     const dateGrp={};f.forEach(x=>{const dk=x.matchDate||'nodate';if(!dateGrp[dk])dateGrp[dk]={};if(!dateGrp[dk][x.league])dateGrp[dk][x.league]=[];dateGrp[dk][x.league].push(x)});
     const sortedDates=Object.keys(dateGrp).sort();
@@ -501,7 +564,6 @@ function renderPrediksi(data,isNew){
         const leagues=dateGrp[dateKey];
         for(const[league,matches]of Object.entries(leagues)){
             const m=gLM(league);
-            /* === .lco (negara) DIHAPUS dari render === */
             html+=`<div class="tw" style="animation-delay:${dl}ms">
                 <div class="lhd lh-yl"><div class="lic">${m.ic}</div><div class="linf"><div class="lnm">${league}</div></div><div class="lcnt">${matches.length} prediksi</div></div>
                 <table class="pt prediksi"><thead><tr>
@@ -509,12 +571,13 @@ function renderPrediksi(data,isNew){
                 </tr></thead><tbody>`;
             matches.forEach((d,i)=>{
                 const sc=parseScore(d.predScore);
+                /* Ikun shield (tmi) dihapus dari render Home & Away */
                 html+=`<tr class="${isNew?'nrow':''}">
                     <td class="cn">${String(i+1).padStart(2,'0')}</td>
                     <td class="ct">${d.time||'--:--'}</td>
-                    <td style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span><span class="tmi"><i class="fas fa-shield-halved"></i></span></div></td>
+                    <td style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span></div></td>
                     <td class="cv"><span class="vsb">VS</span></td>
-                    <td style="text-align:left"><div class="tmr a"><span class="tmi"><i class="fas fa-shield-halved"></i></span><span class="tmn">${d.away}</span></div></td>
+                    <td style="text-align:left"><div class="tmr a"><span class="tmn">${d.away}</span></div></td>
                     <td class="cs"><div class="sk-wrap"><span class="sk-num left">${sc.h}</span><span class="sk-sep">-</span><span class="sk-num right">${sc.a}</span></div></td>
                 </tr>`;
             });
@@ -525,7 +588,8 @@ function renderPrediksi(data,isNew){
 }
 
 function renderAll(isNew){
-    renderPrediksi(prediksiData,isNew);updateLabels();
+    renderPrediksi(prediksiData,isNew);
+    updateLabels();
 }
 
 function startCD(){if(cdT)clearInterval(cdT);cd=INT;cdT=setInterval(()=>{cd--;if(cd<=0){clearInterval(cdT);loadData()}},1000)}
@@ -545,6 +609,9 @@ async function loadData(){
             const dedupEl=document.getElementById('dedupInfo');
             if(dupCountP>0){document.getElementById('dedupCount').textContent=dupCountP;dedupEl.style.display='flex'}else dedupEl.style.display='none';
 
+            /* Populate dropdown liga setelah data dimuat */
+            populateLeagueDropdown();
+
             const nhP=hashD(prediksiData);
             const changedP=nhP!==prevHP&&prevHP!=='';
             if(changedP){toast('Data prediksi diperbarui!','upd');renderAll(true)}
@@ -556,6 +623,7 @@ async function loadData(){
         if(!prediksiData.length){
             prediksiData=fallbackPrediksi();
             const r2=dedup(prediksiData);prediksiData=r2.cleaned;dupCountP=r2.dups;
+            populateLeagueDropdown();
             renderAll(true);toast('Gagal terhubung, data sampel','er');
         }
         document.getElementById('dedupInfo').style.display='none';
@@ -563,6 +631,8 @@ async function loadData(){
     updateLabels();startCD();
 }
 
-document.getElementById('sIn').addEventListener('input',()=>renderAll(false));
+/* Event listener dropdown liga */
+document.getElementById('ligaFilter').addEventListener('change',()=>renderAll(false));
+
 loadData();
 </script>
