@@ -74,7 +74,6 @@
         .hbadge .pd{width:6px;height:6px;background:var(--yl);border-radius:50%;animation:pls 1.5s ease-in-out infinite}
         @keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.12;transform:scale(.2)}}
         
-        /* ===== PERBAIKAN JUDUL & TAMBAHAN TANGGAL ===== */
         header h1{
             font-size:clamp(32px,7vw,52px);
             font-weight:900;
@@ -85,7 +84,7 @@
             text-transform:uppercase;
         }
         header h1 .hl{
-            color:var(--gold2); /* Warna emas premium untuk kata "Bola" */
+            color:var(--gold2);
             text-shadow:0 0 25px rgba(212,175,55,0.6), 0 0 50px rgba(212,175,55,0.3);
             font-style:italic;
         }
@@ -174,7 +173,7 @@
         .dedup-info{display:flex;align-items:center;gap:6px;padding:6px 12px;margin-bottom:12px;background:var(--yld);border:1px solid rgba(245,197,24,.12);border-radius:8px;font-size:10px;color:var(--fm);font-weight:500;justify-content:center}
         .dedup-info i{color:var(--yl);font-size:11px}.dedup-info strong{color:var(--yl)}
 
-        /* ===== TABLE WRAPPER (PREMIUM VELVET) ===== */
+        /* ===== TABLE WRAPPER ===== */
         .tw{
             background:linear-gradient(160deg, #080500 0%, #000000 100%);
             border:1px solid rgba(212, 175, 55, 0.2);
@@ -199,7 +198,7 @@
         .dhd-txt{font-size:14px;font-weight:900;color:var(--gold2);letter-spacing:.5px}
         .dhd-day{font-size:11px;font-weight:800;color:var(--gold);margin-left:auto;background:rgba(212,175,55,0.08);padding:5px 16px;border-radius:50px;border:1px solid rgba(212,175,55,0.2);text-transform:uppercase;letter-spacing:.5px}
 
-        /* ===== LIGA HEADER (LUXURY STYLE) ===== */
+        /* ===== LIGA HEADER ===== */
         .lhd{display:flex;align-items:center;gap:16px;padding:18px 22px;position:relative;overflow:hidden}
         .lhd::before{content:'';position:absolute;top:0;left:0;width:6px;height:100%;border-radius:0 6px 6px 0;background:linear-gradient(180deg,var(--gold2),var(--gold3));box-shadow:0 0 15px rgba(212,175,55,0.4)}
         .lhd.lh-yl{
@@ -229,13 +228,11 @@
             text-shadow:0 0 5px rgba(212,175,55,0.2);
         }
 
-        /* Kolom widths - Prediksi */
-        table.pt.prediksi thead th:nth-child(1){width:44px}
-        table.pt.prediksi thead th:nth-child(2){width:74px}
-        table.pt.prediksi thead th:nth-child(3){width:auto;text-align:right;padding-right:14px}
-        table.pt.prediksi thead th:nth-child(4){width:54px}
-        table.pt.prediksi thead th:nth-child(5){width:auto;text-align:left;padding-left:14px}
-        table.pt.prediksi thead th:nth-child(6){width:110px}
+        /* Kolom widths - Prediksi (Update: 4 Kolom) */
+        table.pt.prediksi thead th:nth-child(1){width:50px} /* No */
+        table.pt.prediksi thead th:nth-child(2){width:80px} /* Waktu */
+        table.pt.prediksi thead th:nth-child(3){width:auto} /* Pertandingan */
+        table.pt.prediksi thead th:nth-child(4){width:120px} /* Skor */
 
         table.pt tbody tr{
             transition:all .3s ease;
@@ -255,25 +252,25 @@
         .cn{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:rgba(212, 175, 55, 0.5);white-space:nowrap}
         .ct{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;white-space:nowrap;color:var(--gold2);text-shadow:0 0 12px rgba(212,175,55,0.3)}
 
-        .ctm{white-space:normal;word-break:break-word;line-height:1.3;text-align:inherit}
-        .tmr{display:flex;align-items:center}
-        .tmr.h{justify-content:flex-end}
-        .tmr.a{justify-content:flex-start}
-        .tmn{font-size:16px;font-weight:700;color:#d4d4d4;letter-spacing:.5px;white-space:normal;word-break:break-word;line-height:1.3;transition:color 0.2s, text-shadow 0.2s}
+        /* ===== LAYOUT PERTANDINGAN (FLEXBOX) ===== */
+        .mc{text-align:center!important; padding:12px 6px;}
+        .mi{display:flex;align-items:center;justify-content:center;gap:12px}
+        .tmn{font-size:16px;font-weight:700;color:#d4d4d4;letter-spacing:.5px;white-space:normal;word-break:break-word;line-height:1.3;transition:color 0.2s, text-shadow 0.2s;flex:1;}
+        .tmn-h{text-align:right}
+        .tmn-a{text-align:left}
         tr:hover .tmn{color:#fff; text-shadow:0 0 8px rgba(255,255,255,0.2)}
 
-        .cv{text-align:center!important}
         .vsb{
             width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-            font-size:9px;font-weight:900;letter-spacing:.5px;
+            font-size:9px;font-weight:900;letter-spacing:.5px;flex-shrink:0;
             background:radial-gradient(circle at 30% 30%, #1a1a1a, #000000);
             border:2px solid var(--gold3);
-            color:var(--gold);flex-shrink:0;
+            color:var(--gold);
             box-shadow:0 0 15px rgba(212,175,55,0.3), inset 0 0 8px rgba(212,175,55,0.1);
             text-shadow:0 0 5px rgba(212,175,55,0.5);
         }
 
-        /* ===== SKOR PREDIKSI (GOLD METALLIC) ===== */
+        /* ===== SKOR PREDIKSI ===== */
         .cs{text-align:center!important}
         .sk-wrap{
             display:inline-flex;align-items:stretch;
@@ -325,7 +322,7 @@
 
         @media(max-width:640px){
             .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-            table.pt{min-width:580px}
+            table.pt{min-width:500px}
             .sk-num{width:34px;font-size:18px}
             .sk-sep{width:16px;font-size:12px}
             .logo-wrap img{height:56px}
@@ -385,7 +382,7 @@
 <p>SELAMAT BERMAIN DAN SEMOGA BERUNTUNG</p>
 </footer>
 <script>
-/* ===== SET TANGGAL HEADER (HARI INI - BESOK) ===== */
+/* ===== SET TANGGAL HEADER ===== */
 (function() {
     const months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
     const today = new Date();
@@ -662,16 +659,21 @@ function renderPrediksi(data,isNew){
             html+=`<div class="tw" style="animation-delay:${dl}ms">
                 <div class="lhd lh-yl"><div class="lic"><i class="fas fa-trophy"></i></div><div class="linf"><div class="lnm">${league}</div></div><div class="lcnt">${matches.length} prediksi</div></div>
                 <table class="pt prediksi"><thead><tr>
-                    <th>No</th><th>Waktu</th><th style="text-align:right">Home</th><th>VS</th><th style="text-align:left">Away</th><th>Skor</th>
+                    <th>No</th><th>Waktu</th><th>Pertandingan</th><th>Skor</th>
                 </tr></thead><tbody>`;
             matches.forEach((d,i)=>{
                 const sc=parseScore(d.predScore);
+                /* Gabungkan Home, VS, Away dalam 1 kolom menggunakan Flexbox */
                 html+=`<tr class="${isNew?'nrow':''}">
                     <td class="cn">${String(i+1).padStart(2,'0')}</td>
                     <td class="ct">${d.time||'--:--'}</td>
-                    <td style="text-align:right"><div class="tmr h"><span class="tmn">${d.home}</span></div></td>
-                    <td class="cv"><span class="vsb">VS</span></td>
-                    <td style="text-align:left"><div class="tmr a"><span class="tmn">${d.away}</span></div></td>
+                    <td class="mc">
+                        <div class="mi">
+                            <span class="tmn tmn-h">${d.home}</span>
+                            <span class="vsb">VS</span>
+                            <span class="tmn tmn-a">${d.away}</span>
+                        </div>
+                    </td>
                     <td class="cs"><div class="sk-wrap"><span class="sk-num left">${sc.h}</span><span class="sk-sep">-</span><span class="sk-num right">${sc.a}</span></div></td>
                 </tr>`;
             });
