@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekap E-Wallet</title>
+    <style>
+        :root {
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --primary: #2c3e50;
+            --dana: #108ee9;
+            --linkaja: #e53935;
+            --ovo: #4c3494;
+            --gopay: #00aed6;
+        }
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .paste-area {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .paste-area:focus {
+            border-color: var(--primary);
+        }
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 4px solid #ccc;
+        }
+        .card.dana { border-top-color: var(--dana); }
+        .card.linkaja { border-top-color: var(--linkaja); }
+        .card.ovo { border-top-color: var(--ovo); }
+        .card.gopay { border-top-color: var(--gopay); }
+        .card.total { border-top-color: var(--primary); background: #f0f4f8; }
+        
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .card .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .card .count {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 5px;
+        }
+        .btn-clear {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-clear:hover {
+            background: #1a252f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Rekap Total E-Wallet</h1>
+    <p class="subtitle">Paste (Ctrl+V) data tabel dari website di kolom di bawah ini. Rekap akan otomatis muncul.</p>
+
+    <textarea id="pasteArea" class="paste-area" placeholder="Klik di sini lalu paste (Ctrl+V) data Anda..."></textarea>
+
+    <div class="results" id="results">
+        <div class="card dana">
+            <h3>DANA</h3>
+            <p class="amount" id="total-dana">0,00</p>
+            <p class="count" id="count-dana">0 transaksi</p>
+        </div>
+        <div class="card linkaja">
+            <h3>LINKAJA</h3>
+            <p class="amount" id="total-linkaja">0,00</p>
+            <p class="count" id="count-linkaja">0 transaksi</p>
+        </div>
+        <div class="card ovo">
+            <h3>OVO</h3>
+            <p class="amount" id="total-ovo">0,00</p>
+            <p class="count" id="count-ovo">0 transaksi</p>
+        </div>
+        <div class="card gopay">
+            <h3>GOPAY</h3>
+            <p class="amount" id="total-gopay">0,00</p>
+            <p class="count" id="count-gopay">0 transaksi</p>
+        </div>
+        <div class="card total" style="grid-column: 1 / -1;">
+            <h3>TOTAL KESELURUHAN E-WALLET</h3>
+            <p class="amount" id="total-all" style="font-size: 2rem; color: var(--primary);">0,00</p>
+        </div>
+    </div>
+
+    <button class="btn-clear" onclick="clearData()">Hapus Data</button>
+</div>
+
+<script>
+    const pasteArea = document.getElementById('pasteArea');
+    
+    // Format angka ke Rupiah (Indonesia)
+    const formatRupiah = (amount) => {
+        return new Intl.NumberFormat('id-ID', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amount);
+    };
+
+    // Event listener ketika user paste data
+    pasteArea.addEventListener('paste', () => {
+        // Timeout 100ms agar browser sempat memasukkan teks ke textarea sebelum di baca
+        setTimeout(() => {
+            processData();
+        }, 100);
+    });
+
+    function processData() {
+        const text = pasteArea.value;
+        if (!text.trim()) return;
+
+        const lines = text.split('\n');
+        
+        let bankCodeIndex = -1;
+        let debitIndex = -1;
+        
+        // Inisialisasi penampung
+        const wallets = {
+            'DANA': { total: 0, count: 0 },
+            'LINKAJA': { total: 0, count: 0 },
+            'OVO': { total: 0, count: 0 },
+            'GOPAY': { total: 0, count: 0 }
+        };
+
+        for (let i = 0; i < lines.length; i++) {
+            // Pecah baris berdasarkan Tab (karena hasil copy tabel biasanya tab-separated)
+            const cols = lines[i].split('\t').map(col => col.trim());
+
+            // Cari index kolom "Bank Code" dan "Debit" dari header
+            if (cols.includes('Bank Code') && cols.includes('Debit')) {
+                bankCodeIndex = cols.indexOf('Bank Code');
+                debitIndex = cols.indexOf('Debit');
+                continue; // Lewati baris header
+            }
+
+            // Jika index sudah ditemukan, proses data baris tersebut
+            if (bankCodeIndex !== -1 && cols.length > Math.max(bankCodeIndex, debitIndex)) {
+                const bankCode = cols[bankCodeIndex].toUpperCase();
+                
+                // Cek apakah bank code termasuk e-wallet
+                if (wallets.hasOwnProperty(bankCode)) {
+                    const debitStr = cols[debitIndex];
+                    // Bersihkan format angka dari koma (contoh: 1,800,000.00 -> 1800000.00)
+                    const debitNum = parseFloat(debitStr.replace(/,/g, '')) || 0;
+                    
+                    wallets[bankCode].total += debitNum;
+                    wallets[bankCode].count += 1;
+                }
+            }
+        }
+
+        // Update UI
+        let grandTotal = 0;
+        let ewalletFound = false;
+
+        for (const [key, value] of Object.entries(wallets)) {
+            const keyLower = key.toLowerCase();
+            document.getElementById(`total-${keyLower}`).innerText = formatRupiah(value.total);
+            document.getElementById(`count-${keyLower}`).innerText = `${value.count} transaksi`;
+            grandTotal += value.total;
+            if(value.count > 0) ewalletFound = true;
+        }
+
+        document.getElementById('total-all').innerText = formatRupiah(grandTotal);
+
+        if(!ewalletFound) {
+            alert("Tidak ada transaksi E-Wallet (DANA/LINKAJA/OVO/GOPAY) yang terbaca. Pastikan Anda copy seluruh tabel beserta headernya.");
+        }
+    }
+
+    function clearData() {
+        pasteArea.value = '';
+        const wallets = ['dana', 'linkaja', 'ovo', 'gopay'];
+        wallets.forEach(w => {
+            document.getElementById(`total-${w}`).innerText = '0,00';
+            document.getElementById(`count-${w}`).innerText = '0 transaksi';
+        });
+        document.getElementById('total-all').innerText = '0,00';
+    }
+</script>
+
+</body>
+</html>
