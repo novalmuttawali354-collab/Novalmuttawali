@@ -3,150 +3,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekap E-Wallet</title>
+    <title>Smart E-Wallet Recapper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #f4f7f6;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --primary: #2c3e50;
+            --bg-dark: #0a0a12;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #6b7280;
             --dana: #108ee9;
             --linkaja: #e53935;
             --ovo: #4c3494;
             --gopay: #00aed6;
+            --gold: #ffd700;
         }
+
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: 'Space Grotesk', sans-serif;
         }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animated Mesh Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(at 20% 30%, rgba(76, 52, 148, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(0, 174, 214, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(232, 57, 53, 0.05) 0px, transparent 50%);
+            z-index: -1;
+        }
+
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 1100px;
+            width: 100%;
         }
-        h1 {
+
+        header {
             text-align: center;
-            color: var(--primary);
-            margin-bottom: 5px;
+            margin-bottom: 50px;
         }
-        p.subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
         }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: var(--gold);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Paste Area */
+        .paste-wrapper {
+            position: relative;
+            margin-bottom: 50px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .paste-wrapper:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
         .paste-area {
             width: 100%;
-            height: 200px;
+            height: 120px;
             padding: 15px;
-            border: 2px dashed #ccc;
-            border-radius: 8px;
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: 16px;
+            color: #fff;
             font-size: 14px;
-            resize: vertical;
+            resize: none;
             outline: none;
             transition: border-color 0.3s;
         }
+
         .paste-area:focus {
-            border-color: var(--primary);
+            border-color: var(--gold);
+            background: rgba(0,0,0,0.6);
         }
+
+        .paste-area::placeholder {
+            color: rgba(255,255,255,0.2);
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        /* Results Grid */
         .results {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
         }
+
         .card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            text-align: center;
-            border-top: 4px solid #ccc;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 28px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .card.dana { border-top-color: var(--dana); }
-        .card.linkaja { border-top-color: var(--linkaja); }
-        .card.ovo { border-top-color: var(--ovo); }
-        .card.gopay { border-top-color: var(--gopay); }
-        .card.total { border-top-color: var(--primary); background: #f0f4f8; }
-        
-        .card h3 {
-            margin: 0 0 10px 0;
+
+        .card.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.2rem;
+        }
+        
+        .card.dana .card-icon { background: rgba(16, 142, 233, 0.15); color: var(--dana); }
+        .card.linkaja .card-icon { background: rgba(229, 57, 53, 0.15); color: var(--linkaja); }
+        .card.ovo .card-icon { background: rgba(76, 52, 148, 0.15); color: var(--ovo); }
+        .card.gopay .card-icon { background: rgba(0, 174, 214, 0.15); color: var(--gopay); }
+
+        .card h3 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .card .amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
         }
+
         .card .count {
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }
+
+        /* Progress Bar */
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 1.5s ease-out;
+        }
+
+        .card.dana .progress-fill { background: var(--dana); }
+        .card.linkaja .progress-fill { background: var(--linkaja); }
+        .card.ovo .progress-fill { background: var(--ovo); }
+        .card.gopay .progress-fill { background: var(--gopay); }
+
+        /* Grand Total Card */
+        .card.total {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,215,0,0.01));
+            border: 1px solid rgba(255,215,0,0.2);
+            text-align: center;
+            padding: 40px 28px;
+        }
+
+        .card.total .amount {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #fff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .btn-clear {
             display: block;
-            margin: 20px auto 0;
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
+            margin: 0 auto;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s ease;
         }
+
         .btn-clear:hover {
-            background: #1a252f;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .toast.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .card.total .amount { font-size: 2.5rem; }
+            .card .amount { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Rekap Total E-Wallet</h1>
-    <p class="subtitle">Paste (Ctrl+V) data tabel dari website di kolom di bawah ini. Rekap akan otomatis muncul.</p>
+    <div class="bg-mesh"></div>
 
-    <textarea id="pasteArea" class="paste-area" placeholder="Klik di sini lalu paste (Ctrl+V) data Anda..."></textarea>
+    <div class="container">
+        <header>
+            <div class="date-badge">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span id="todayDate"></span>
+            </div>
+            <h1>E-Wallet Recapper</h1>
+            <p>Sistem hanya merekap transaksi yang terjadi pada hari ini.</p>
+        </header>
 
-    <div class="results" id="results">
-        <div class="card dana">
-            <h3>DANA</h3>
-            <p class="amount" id="total-dana">0,00</p>
-            <p class="count" id="count-dana">0 transaksi</p>
+        <div class="paste-wrapper">
+            <textarea id="pasteArea" class="paste-area" placeholder="Klik di sini, lalu Paste (Ctrl+V) data tabel dari sistem Anda...&#10;Data tanggal kemarin/berikutnya akan otomatis diabaikan."></textarea>
         </div>
-        <div class="card linkaja">
-            <h3>LINKAJA</h3>
-            <p class="amount" id="total-linkaja">0,00</p>
-            <p class="count" id="count-linkaja">0 transaksi</p>
+
+        <div class="results" id="results">
+            <div class="card dana" id="card-dana">
+                <div class="card-header">
+                    <h3>Dana</h3>
+                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                </div>
+                <p class="amount" id="total-dana">0,00</p>
+                <p class="count" id="count-dana">0 transaksi</p>
+                <div class="progress-track"><div class="progress-fill" id="progress-dana"></div></div>
+            </div>
+
+            <div class="card linkaja" id="card-linkaja">
+                <div class="card-header">
+                    <h3>LinkAja</h3>
+                    <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                </div>
+                <p class="amount" id="total-linkaja">0,00</p>
+                <p class="count" id="count-linkaja">0 transaksi</p>
+                <div class="progress-track"><div class="progress-fill" id="progress-linkaja"></div></div>
+            </div>
+
+            <div class="card ovo" id="card-ovo">
+                <div class="card-header">
+                    <h3>Ovo</h3>
+                    <div class="card-icon"><i class="fa-solid fa-circle-notch"></i></div>
+                </div>
+                <p class="amount" id="total-ovo">0,00</p>
+                <p class="count" id="count-ovo">0 transaksi</p>
+                <div class="progress-track"><div class="progress-fill" id="progress-ovo"></div></div>
+            </div>
+
+            <div class="card gopay" id="card-gopay">
+                <div class="card-header">
+                    <h3>Gopay</h3>
+                    <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                </div>
+                <p class="amount" id="total-gopay">0,00</p>
+                <p class="count" id="count-gopay">0 transaksi</p>
+                <div class="progress-track"><div class="progress-fill" id="progress-gopay"></div></div>
+            </div>
+            
+            <div class="card total" id="card-total">
+                <h3 style="color: var(--gold); margin-bottom: 10px;">Total E-Wallet Hari Ini</h3>
+                <p class="amount" id="total-all">0,00</p>
+            </div>
         </div>
-        <div class="card ovo">
-            <h3>OVO</h3>
-            <p class="amount" id="total-ovo">0,00</p>
-            <p class="count" id="count-ovo">0 transaksi</p>
-        </div>
-        <div class="card gopay">
-            <h3>GOPAY</h3>
-            <p class="amount" id="total-gopay">0,00</p>
-            <p class="count" id="count-gopay">0 transaksi</p>
-        </div>
-        <div class="card total" style="grid-column: 1 / -1;">
-            <h3>TOTAL KESELURUHAN E-WALLET</h3>
-            <p class="amount" id="total-all" style="font-size: 2rem; color: var(--primary);">0,00</p>
-        </div>
+
+        <button class="btn-clear" onclick="clearData()"><i class="fa-solid fa-rotate-left"></i> Reset Data</button>
     </div>
 
-    <button class="btn-clear" onclick="clearData()">Hapus Data</button>
-</div>
+    <div id="toast" class="toast"></div>
 
 <script>
+    // Set today's date on the badge
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('todayDate').innerText = today.toLocaleDateString('id-ID', options);
+
     const pasteArea = document.getElementById('pasteArea');
     
-    // Format angka ke Rupiah (Indonesia)
     const formatRupiah = (amount) => {
         return new Intl.NumberFormat('id-ID', {
             minimumFractionDigits: 2,
@@ -154,13 +372,46 @@
         }).format(amount);
     };
 
-    // Event listener ketika user paste data
+    // Toast Notification function
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    // Counting Up Animation
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        const range = end - start;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out quad
+            const value = start + range * (1 - Math.pow(1 - progress, 3));
+            obj.innerText = formatRupiah(value);
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                obj.innerText = formatRupiah(end); // Ensure final exact value
+            }
+        }
+        requestAnimationFrame(update);
+    }
+
     pasteArea.addEventListener('paste', () => {
-        // Timeout 100ms agar browser sempat memasukkan teks ke textarea sebelum di baca
-        setTimeout(() => {
-            processData();
-        }, 100);
+        setTimeout(() => { processData(); }, 100);
     });
+
+    function showCards() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            setTimeout(() => { card.classList.add('active'); }, 150 * index);
+        });
+    }
 
     function processData() {
         const text = pasteArea.value;
@@ -170,8 +421,8 @@
         
         let bankCodeIndex = -1;
         let debitIndex = -1;
+        let transferTimeIndex = -1;
         
-        // Inisialisasi penampung
         const wallets = {
             'DANA': { total: 0, count: 0 },
             'LINKAJA': { total: 0, count: 0 },
@@ -179,49 +430,101 @@
             'GOPAY': { total: 0, count: 0 }
         };
 
+        // Get today's date components for comparison
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth() + 1; // JS months are 0-indexed
+        const currentYear = today.getFullYear();
+
+        let isToday = false;
+        let ewalletFound = false;
+
         for (let i = 0; i < lines.length; i++) {
-            // Pecah baris berdasarkan Tab (karena hasil copy tabel biasanya tab-separated)
             const cols = lines[i].split('\t').map(col => col.trim());
 
-            // Cari index kolom "Bank Code" dan "Debit" dari header
-            if (cols.includes('Bank Code') && cols.includes('Debit')) {
+            // Find Header Indices
+            if (cols.includes('Bank Code') && cols.includes('Debit') && cols.includes('Transfer Time')) {
                 bankCodeIndex = cols.indexOf('Bank Code');
                 debitIndex = cols.indexOf('Debit');
-                continue; // Lewati baris header
+                transferTimeIndex = cols.indexOf('Transfer Time');
+                continue; 
             }
 
-            // Jika index sudah ditemukan, proses data baris tersebut
-            if (bankCodeIndex !== -1 && cols.length > Math.max(bankCodeIndex, debitIndex)) {
+            // Process Data Rows
+            if (bankCodeIndex !== -1 && cols.length > Math.max(bankCodeIndex, debitIndex, transferTimeIndex)) {
                 const bankCode = cols[bankCodeIndex].toUpperCase();
                 
-                // Cek apakah bank code termasuk e-wallet
+                // Check if e-wallet
                 if (wallets.hasOwnProperty(bankCode)) {
-                    const debitStr = cols[debitIndex];
-                    // Bersihkan format angka dari koma (contoh: 1,800,000.00 -> 1800000.00)
-                    const debitNum = parseFloat(debitStr.replace(/,/g, '')) || 0;
+                    ewalletFound = true;
                     
-                    wallets[bankCode].total += debitNum;
-                    wallets[bankCode].count += 1;
+                    // Date Validation (Filter Hari Ini)
+                    isToday = false; // Reset flag
+                    const timeStr = cols[transferTimeIndex];
+                    
+                    if (timeStr) {
+                        // Sample format: 10/06/2026 12:53:33
+                        const datePart = timeStr.split(' ')[0];
+                        const dateParts = datePart.split('/');
+                        
+                        if(dateParts.length === 3) {
+                            const day = parseInt(dateParts[0], 10);
+                            const month = parseInt(dateParts[1], 10);
+                            const year = parseInt(dateParts[2], 10);
+                            
+                            if (day === currentDay && month === currentMonth && year === currentYear) {
+                                isToday = true;
+                            }
+                        }
+                    }
+
+                    // If transaction is today, sum it!
+                    if (isToday) {
+                        const debitStr = cols[debitIndex];
+                        const debitNum = parseFloat(debitStr.replace(/,/g, '')) || 0;
+                        
+                        wallets[bankCode].total += debitNum;
+                        wallets[bankCode].count += 1;
+                    }
                 }
             }
         }
 
-        // Update UI
-        let grandTotal = 0;
-        let ewalletFound = false;
-
-        for (const [key, value] of Object.entries(wallets)) {
-            const keyLower = key.toLowerCase();
-            document.getElementById(`total-${keyLower}`).innerText = formatRupiah(value.total);
-            document.getElementById(`count-${keyLower}`).innerText = `${value.count} transaksi`;
-            grandTotal += value.total;
-            if(value.count > 0) ewalletFound = true;
+        if(!ewalletFound) {
+            showToast('Tidak ada E-Wallet terdeteksi pada data!', 'warning');
+            return;
         }
 
-        document.getElementById('total-all').innerText = formatRupiah(grandTotal);
+        let grandTotal = 0;
+        let hasTodayTransaction = false;
 
-        if(!ewalletFound) {
-            alert("Tidak ada transaksi E-Wallet (DANA/LINKAJA/OVO/GOPAY) yang terbaca. Pastikan Anda copy seluruh tabel beserta headernya.");
+        // Update UI & Animation
+        for (const [key, value] of Object.entries(wallets)) {
+            const keyLower = key.toLowerCase();
+            
+            animateValue(`total-${keyLower}`, 0, value.total, 1500);
+            document.getElementById(`count-${keyLower}`).innerText = `${value.count} transaksi`;
+            
+            grandTotal += value.total;
+            if(value.count > 0) hasTodayTransaction = true;
+        }
+
+        animateValue('total-all', 0, grandTotal, 2000);
+
+        // Animate Progress Bars
+        setTimeout(() => {
+            for (const [key, value] of Object.entries(wallets)) {
+                const keyLower = key.toLowerCase();
+                const percent = grandTotal > 0 ? (value.total / grandTotal) * 100 : 0;
+                document.getElementById(`progress-${keyLower}`).style.width = `${percent}%`;
+            }
+        }, 300);
+
+        showCards();
+
+        if(hasTodayTransaction) {
+            showToast('Rekap hari ini berhasil dibuat!', 'success');
+        } else {
+            showToast('Tidak ada transaksi E-Wallet hari ini.', 'warning');
         }
     }
 
@@ -231,8 +534,11 @@
         wallets.forEach(w => {
             document.getElementById(`total-${w}`).innerText = '0,00';
             document.getElementById(`count-${w}`).innerText = '0 transaksi';
+            document.getElementById(`progress-${w}`).style.width = '0%';
+            document.getElementById(`card-${w}`).classList.remove('active');
         });
         document.getElementById('total-all').innerText = '0,00';
+        document.getElementById('card-total').classList.remove('active');
     }
 </script>
 
