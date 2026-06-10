@@ -28,7 +28,6 @@
         }
 
         body {
-            /* Background Image */
             background-image: url('https://i0.wp.com/esportsnesia.com/wp-content/uploads/2024/02/2.jpg');
             background-size: cover;
             background-position: center;
@@ -43,31 +42,30 @@
             position: relative;
         }
 
-        /* Soft dark overlay to make white text/glass pop slightly better without being dark */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.4));
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.5));
             z-index: -1;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px; /* Diperlebar sedikit untuk menampung foto samping */
             width: 100%;
             z-index: 1;
         }
 
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         header h1 {
             font-size: 3rem;
             font-weight: 800;
             color: var(--text-light);
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
             margin-bottom: 10px;
             letter-spacing: -1px;
         }
@@ -98,7 +96,7 @@
         /* Paste Area */
         .paste-wrapper {
             position: relative;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
@@ -138,18 +136,82 @@
             padding-top: 20px;
         }
 
-        /* Results Grid */
+        /* ================= LAYOUT UTAMA (FOTO + REKAP) ================= */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr 1fr; /* Kiri 1, Tengah 2.5, Kanan 1 */
+            gap: 20px;
+            align-items: stretch; /* Membuat tinggi kiri, tengah, kanan sejajar */
+            margin-bottom: 30px;
+        }
+
+        .gallery-side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .img-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            flex: 1; /* Membagi ruang secara merata untuk 2 foto di tiap sisi */
+            aspect-ratio: auto;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+        }
+
+        .img-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .img-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .img-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.1) saturate(1.2);
+        }
+
+        .img-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Results Grid (Tengah) */
+        .results-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .results {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 1fr; /* 2 Kartu per baris */
+            gap: 20px;
         }
 
         .card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 28px;
+            padding: 24px;
             border-radius: 24px;
             backdrop-filter: blur(20px) saturate(180%);
             position: relative;
@@ -166,18 +228,17 @@
         }
 
         .card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
-        /* Glow effect under cards */
         .card::after {
             content: '';
             position: absolute;
             bottom: 0; left: 0; width: 100%; height: 6px;
             opacity: 0.8;
             filter: blur(8px);
-            transition: height 0.3s;
+            transition: height 0.3s, filter 0.3s;
         }
         .card:hover::after { height: 10px; filter: blur(12px); }
 
@@ -191,17 +252,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             background: rgba(255,255,255,0.5);
         }
         
@@ -211,7 +272,7 @@
         .card.gopay .card-icon { color: var(--gopay); }
 
         .card h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -219,7 +280,7 @@
         }
 
         .card .amount {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--text-dark);
             margin-bottom: 5px;
@@ -227,25 +288,24 @@
         }
 
         .card .count {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: 600;
         }
 
-        /* Progress Bar */
         .progress-track {
             width: 100%;
-            height: 6px;
+            height: 5px;
             background: rgba(0,0,0,0.05);
-            border-radius: 6px;
+            border-radius: 5px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
             width: 0%;
-            border-radius: 6px;
+            border-radius: 5px;
             transition: width 1.5s ease-out;
         }
 
@@ -256,26 +316,27 @@
 
         /* Grand Total Card */
         .card.total {
-            grid-column: 1 / -1;
+            grid-column: 1 / -1; /* Memenuhi lebar tengah */
             background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
             border: 1px solid rgba(255,255,255,0.6);
             text-align: center;
-            padding: 40px 28px;
+            padding: 30px 28px;
         }
 
         .card.total h3 {
-            font-size: 1.2rem;
-            color: #b45309; /* Darker gold for readability */
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #b45309;
+            margin-bottom: 8px;
             letter-spacing: 2px;
         }
 
         .card.total .amount {
-            font-size: 3.5rem;
+            font-size: 3rem;
             background: linear-gradient(to right, #b45309, #d97706, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        /* ================================================================ */
 
         .btn-clear {
             display: block;
@@ -298,7 +359,6 @@
             transform: translateY(-2px);
         }
 
-        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -317,10 +377,27 @@
         .toast.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9)); }
         .toast.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9)); color: #1e293b; }
 
-        @media (max-width: 768px) {
+        /* Responsif untuk Tablet dan HP */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr; /* Jadikan 1 kolom utuh */
+            }
+            .gallery-side {
+                flex-direction: row; /* Foto jadi horizontal di atas/bawah */
+            }
+            /* Susun ulang: Kiri di atas, Tengah, Kanan di bawah */
+            .gallery-side.left { order: 1; }
+            .results-wrapper { order: 2; }
+            .gallery-side.right { order: 3; }
+            
+            .img-card { height: 200px; }
+        }
+
+        @media (max-width: 600px) {
             header h1 { font-size: 2rem; }
+            .results { grid-template-columns: 1fr; } /* Kartu 1 kolom penuh di HP */
             .card.total .amount { font-size: 2.5rem; }
-            .card .amount { font-size: 1.5rem; }
+            .card .amount { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -340,52 +417,81 @@
             <textarea id="pasteArea" class="paste-area" placeholder="Klik di sini, lalu Paste (Ctrl+V) data tabel dari sistem Anda...&#10;Data tanggal kemarin/berikutnya akan otomatis diabaikan."></textarea>
         </div>
 
-        <div class="results" id="results">
-            <div class="card dana" id="card-dana">
-                <div class="card-header">
-                    <h3>Dana</h3>
-                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
-                </div>
-                <p class="amount" id="total-dana">0,00</p>
-                <p class="count" id="count-dana">0 transaksi</p>
-                <div class="progress-track"><div class="progress-fill" id="progress-dana"></div></div>
-            </div>
-
-            <div class="card linkaja" id="card-linkaja">
-                <div class="card-header">
-                    <h3>LinkAja</h3>
-                    <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
-                </div>
-                <p class="amount" id="total-linkaja">0,00</p>
-                <p class="count" id="count-linkaja">0 transaksi</p>
-                <div class="progress-track"><div class="progress-fill" id="progress-linkaja"></div></div>
-            </div>
-
-            <div class="card ovo" id="card-ovo">
-                <div class="card-header">
-                    <h3>Ovo</h3>
-                    <div class="card-icon"><i class="fa-solid fa-circle-notch"></i></div>
-                </div>
-                <p class="amount" id="total-ovo">0,00</p>
-                <p class="count" id="count-ovo">0 transaksi</p>
-                <div class="progress-track"><div class="progress-fill" id="progress-ovo"></div></div>
-            </div>
-
-            <div class="card gopay" id="card-gopay">
-                <div class="card-header">
-                    <h3>Gopay</h3>
-                    <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
-                </div>
-                <p class="amount" id="total-gopay">0,00</p>
-                <p class="count" id="count-gopay">0 transaksi</p>
-                <div class="progress-track"><div class="progress-fill" id="progress-gopay"></div></div>
-            </div>
+        <!-- LAYOUT UTAMA SAMPING -->
+        <div class="main-layout">
             
-            <div class="card total" id="card-total">
-                <h3>Total E-Wallet Hari Ini</h3>
-                <p class="amount" id="total-all">0,00</p>
+            <!-- KOLOM KIRI (2 FOTO) -->
+            <div class="gallery-side left">
+                <div class="img-card">
+                    <img src="https://awsimages.detik.net.id/community/media/visual/2024/01/15/citra-tri-kumala.jpeg?w=1200" alt="Citra Tri Kumala">
+                </div>
+                <div class="img-card">
+                    <img src="https://i.pinimg.com/736x/60/0c/13/600c138f2e91e36b182211d5c7fce547.jpg" alt="Spotlight Left 2">
+                </div>
             </div>
+
+            <!-- KOLOM TENGAH (REKAP E-WALLET) -->
+            <div class="results-wrapper">
+                <div class="results" id="results">
+                    <div class="card dana" id="card-dana">
+                        <div class="card-header">
+                            <h3>Dana</h3>
+                            <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                        </div>
+                        <p class="amount" id="total-dana">0,00</p>
+                        <p class="count" id="count-dana">0 transaksi</p>
+                        <div class="progress-track"><div class="progress-fill" id="progress-dana"></div></div>
+                    </div>
+
+                    <div class="card linkaja" id="card-linkaja">
+                        <div class="card-header">
+                            <h3>LinkAja</h3>
+                            <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                        </div>
+                        <p class="amount" id="total-linkaja">0,00</p>
+                        <p class="count" id="count-linkaja">0 transaksi</p>
+                        <div class="progress-track"><div class="progress-fill" id="progress-linkaja"></div></div>
+                    </div>
+
+                    <div class="card ovo" id="card-ovo">
+                        <div class="card-header">
+                            <h3>Ovo</h3>
+                            <div class="card-icon"><i class="fa-solid fa-circle-notch"></i></div>
+                        </div>
+                        <p class="amount" id="total-ovo">0,00</p>
+                        <p class="count" id="count-ovo">0 transaksi</p>
+                        <div class="progress-track"><div class="progress-fill" id="progress-ovo"></div></div>
+                    </div>
+
+                    <div class="card gopay" id="card-gopay">
+                        <div class="card-header">
+                            <h3>Gopay</h3>
+                            <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        </div>
+                        <p class="amount" id="total-gopay">0,00</p>
+                        <p class="count" id="count-gopay">0 transaksi</p>
+                        <div class="progress-track"><div class="progress-fill" id="progress-gopay"></div></div>
+                    </div>
+                    
+                    <div class="card total" id="card-total">
+                        <h3>Total E-Wallet Hari Ini</h3>
+                        <p class="amount" id="total-all">0,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KOLOM KANAN (2 FOTO) -->
+            <div class="gallery-side right">
+                <div class="img-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSINZoz3XAdq7T0Mn6mgdrzwYA5fznsZzm5SQ&s" alt="Spotlight Right 1">
+                </div>
+                <div class="img-card">
+                    <img src="https://i.pinimg.com/736x/88/34/3d/88343d20aab2cf53b674613737f46001.jpg" alt="Spotlight Right 2">
+                </div>
+            </div>
+
         </div>
+        <!-- AKHIR LAYOUT UTAMA -->
 
         <button class="btn-clear" onclick="clearData()"><i class="fa-solid fa-rotate-left"></i> Reset Data</button>
     </div>
@@ -407,7 +513,6 @@
         }).format(amount);
     };
 
-    // Toast Notification function
     function showToast(message, type) {
         const toast = document.getElementById('toast');
         toast.className = `toast ${type}`;
@@ -416,7 +521,6 @@
         setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
-    // Counting Up Animation
     function animateValue(id, start, end, duration) {
         const obj = document.getElementById(id);
         const range = end - start;
@@ -425,7 +529,6 @@
         function update(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
             const value = start + range * (1 - Math.pow(1 - progress, 3));
             obj.innerText = formatRupiah(value);
             if (progress < 1) {
@@ -465,9 +568,8 @@
             'GOPAY': { total: 0, count: 0 }
         };
 
-        // Get today's date components for comparison
         const currentDay = today.getDate();
-        const currentMonth = today.getMonth() + 1; // JS months are 0-indexed
+        const currentMonth = today.getMonth() + 1;
         const currentYear = today.getFullYear();
 
         let isToday = false;
@@ -476,7 +578,6 @@
         for (let i = 0; i < lines.length; i++) {
             const cols = lines[i].split('\t').map(col => col.trim());
 
-            // Find Header Indices
             if (cols.includes('Bank Code') && cols.includes('Debit') && cols.includes('Transfer Time')) {
                 bankCodeIndex = cols.indexOf('Bank Code');
                 debitIndex = cols.indexOf('Debit');
@@ -484,16 +585,12 @@
                 continue; 
             }
 
-            // Process Data Rows
             if (bankCodeIndex !== -1 && cols.length > Math.max(bankCodeIndex, debitIndex, transferTimeIndex)) {
                 const bankCode = cols[bankCodeIndex].toUpperCase();
                 
-                // Check if e-wallet
                 if (wallets.hasOwnProperty(bankCode)) {
                     ewalletFound = true;
-                    
-                    // Date Validation (Filter Hari Ini)
-                    isToday = false; // Reset flag
+                    isToday = false; 
                     const timeStr = cols[transferTimeIndex];
                     
                     if (timeStr) {
@@ -511,7 +608,6 @@
                         }
                     }
 
-                    // If transaction is today, sum it!
                     if (isToday) {
                         const debitStr = cols[debitIndex];
                         const debitNum = parseFloat(debitStr.replace(/,/g, '')) || 0;
@@ -531,7 +627,6 @@
         let grandTotal = 0;
         let hasTodayTransaction = false;
 
-        // Update UI & Animation
         for (const [key, value] of Object.entries(wallets)) {
             const keyLower = key.toLowerCase();
             
@@ -544,7 +639,6 @@
 
         animateValue('total-all', 0, grandTotal, 2000);
 
-        // Animate Progress Bars
         setTimeout(() => {
             for (const [key, value] of Object.entries(wallets)) {
                 const keyLower = key.toLowerCase();
