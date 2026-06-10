@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Info Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --card: #141820;
+      --border: #252a35;
+      --fg: #e8ecf1;
+      --muted: #7a8394;
+      --accent: #e8793a;
+      --accent-hover: #f09050;
+      --accent-glow: rgba(232,121,58,0.2);
+      --success: #34c759;
+      --field-bg: #0f1219;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* === Background === */
+    .bg-glow {
+      position: fixed;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      filter: blur(160px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .bg-glow.a { background: rgba(232,121,58,0.18); top: -200px; left: -150px; animation: drift 12s ease-in-out infinite alternate; }
+    .bg-glow.b { background: rgba(52,199,89,0.1); bottom: -200px; right: -150px; animation: drift 12s ease-in-out infinite alternate-reverse; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      100% { transform: translate(50px,40px) scale(1.2); }
+    }
+
+    .bg-dots {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(232,121,58,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    /* === Card === */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      margin: 16px;
+      overflow: hidden;
+      animation: cardSlide 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes cardSlide {
+      0% { opacity: 0; transform: translateY(30px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Accent bar atas */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover), var(--accent));
+    }
+
+    .card-inner {
+      padding: 40px 36px 36px;
+    }
+
+    /* === Header === */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), #c45e1e);
+      box-shadow: 0 6px 24px var(--accent-glow);
+      margin-bottom: 16px;
+    }
+
+    .header-icon i { font-size: 24px; color: #fff; }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* === Info Display === */
+    .info-block {
+      background: var(--field-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      min-width: 90px;
+    }
+
+    .info-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--fg);
+      letter-spacing: 1px;
+      background: none;
+      border: none;
+      outline: none;
+      width: 100%;
+      padding: 0;
+      cursor: text;
+    }
+
+    .info-value.password-val {
+      color: var(--accent);
+      letter-spacing: 3px;
+    }
+
+    .info-value::placeholder {
+      color: #3a3f4a;
+      letter-spacing: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+    }
+
+    /* Divider */
+    .info-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 16px 0;
+    }
+
+    /* === Message area === */
+    .msg-area {
+      padding: 0 4px;
+      margin-bottom: 24px;
+    }
+
+    .msg-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    .msg-line i {
+      margin-top: 3px;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .msg-line.main i { color: var(--success); }
+    .msg-line.note i { color: var(--accent); }
+
+    .msg-line .label-tag {
+      font-weight: 700;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .msg-line.note .note-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* === Buttons === */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s, box-shadow 0.25s, background 0.25s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #c45e1e);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 28px rgba(232,121,58,0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--field-bg);
+      border: 1px solid var(--border);
+      color: var(--fg);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(232,121,58,0.06);
+    }
+
+    /* === Toast === */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      transform: translateX(120%);
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .toast.show { transform: translateX(0); }
+    .toast.success { border-left: 3px solid var(--success); }
+    .toast.success i { color: var(--success); }
+
+    /* === Shake animation untuk error === */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake { animation: shake 0.4s ease; }
+
+    /* === Responsive === */
+    @media (max-width: 480px) {
+      .card-inner { padding: 32px 24px 28px; }
+      .info-label { min-width: 78px; font-size: 13px; }
+      .info-value { font-size: 15px; }
+      .btn-row { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-glow a"></div>
+  <div class="bg-glow b"></div>
+  <div class="bg-dots"></div>
+
+  <!-- Card -->
+  <main class="card" role="main">
+    <div class="card-inner">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="header-icon"><i class="fas fa-key"></i></div>
+        <h1>Login Credentials</h1>
+        <p>Password di-generate otomatis 6 karakter</p>
+      </div>
+
+      <!-- Info Block -->
+      <div class="info-block" id="infoBlock">
+        <div class="info-row">
+          <span class="info-label">User Id :</span>
+          <input type="text" class="info-value" id="userId" placeholder="Masukkan User Id" aria-label="User Id" autocomplete="off">
+        </div>
+        <hr class="info-divider">
+        <div class="info-row">
+          <span class="info-label">Password :</span>
+          <span class="info-value password-val" id="passwordDisplay">&bull;&bull;&bull;&bull;&bull;&bull;</span>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="msg-area" id="msgArea">
+        <div class="msg-line main">
+          <i class="fas fa-circle-check"></i>
+          <span>Silahkan di coba login ya bosku. Terima Kasih</span>
+        </div>
+        <div class="msg-line note">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span class="note-text">Note : Saran kami di simpan di memo anda.</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btnCopy" aria-label="Salin Semua">
+          <i class="fas fa-copy"></i> Salin Semua
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnRegen" aria-label="Generate Ulang">
+          <i class="fas fa-rotate"></i> Generate Ulang
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // === Elemen DOM ===
+    const userIdInput = document.getElementById('userId');
+    const passwordDisplay = document.getElementById('passwordDisplay');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnRegen = document.getElementById('btnRegen');
+
+    // === State ===
+    let currentPassword = '';
+
+    // === Generate password acak 6 digit (huruf + angka) ===
+    function generatePassword() {
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      const digits = '0123456789';
+      const all = letters + digits;
+
+      // Pastikan minimal 1 huruf dan 1 angka
+      let pass = '';
+      pass += letters[Math.floor(Math.random() * letters.length)];
+      pass += digits[Math.floor(Math.random() * digits.length)];
+
+      // Isi 4 karakter sisanya secara acak
+      for (let i = 0; i < 4; i++) {
+        pass += all[Math.floor(Math.random() * all.length)];
+      }
+
+      // Acak urutan supaya pola tidak bisa diprediksi
+      return pass.split('').sort(() => Math.random() - 0.5).join('');
+    }
+
+    // === Efek scramble saat password muncul ===
+    function animatePassword(finalPass) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let iteration = 0;
+
+      const interval = setInterval(() => {
+        passwordDisplay.textContent = finalPass
+          .split('')
+          .map((char, i) => {
+            if (i < iteration) return finalPass[i];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('');
+
+        iteration += 0.6;
+
+        if (iteration >= finalPass.length) {
+          clearInterval(interval);
+          passwordDisplay.textContent = finalPass;
+          currentPassword = finalPass;
+        }
+      }, 35);
+    }
+
+    // === Bangun teks lengkap untuk disalin ===
+    function buildCopyText() {
+      const uid = userIdInput.value.trim() || '(belum diisi)';
+      const pwd = currentPassword || '(belum di-generate)';
+      return `User Id : ${uid}\nPassword : ${pwd}\nSilahkan di coba login ya bosku. Terima Kasih\nNote : Saran kami di simpan di memo anda.`;
+    }
+
+    // === Toast ===
+    function showToast(message, type) {
+      const container = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-circle-check' : 'fa-circle-xmark'}"></i><span>${message}</span>`;
+      container.appendChild(t);
+
+      // Trigger show
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { t.classList.add('show'); });
+      });
+
+      // Hapus setelah 3 detik
+      setTimeout(() => {
+        t.classList.remove('show');
+        setTimeout(() => t.remove(), 500);
+      }, 3000);
+    }
+
+    // === Event: Generate / Re-generate ===
+    btnRegen.addEventListener('click', () => {
+      const newPass = generatePassword();
+      animatePassword(newPass);
+
+      // Animasi ikon putar
+      const icon = btnRegen.querySelector('i');
+      icon.style.transition = 'transform 0.5s';
+      icon.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        icon.style.transition = 'none';
+        icon.style.transform = '';
+      }, 520);
+    });
+
+    // === Event: Salin Semua ===
+    btnCopy.addEventListener('click', () => {
+      if (!currentPassword) {
+        // Jika belum ada password, generate dulu
+        const newPass = generatePassword();
+        animatePassword(newPass);
+        showToast('Password baru di-generate, coba salin lagi', 'success');
+        return;
+      }
+
+      const text = buildCopyText();
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Berhasil disalin ke clipboard!', 'success');
+
+        // Efek visual pada tombol
+        const icon = btnCopy.querySelector('i');
+        icon.className = 'fas fa-check';
+        setTimeout(() => { icon.className = 'fas fa-copy'; }, 1500);
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        showToast('Berhasil disalin ke clipboard!', 'success');
+      });
+    });
+
+    // === Auto-generate saat halaman dimuat ===
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const pass = generatePassword();
+        animatePassword(pass);
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>
