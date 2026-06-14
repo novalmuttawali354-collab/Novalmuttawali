@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            --text-light: #f8fafc;
+            --dana: #108ee9;
+            --linkaja: #e53935;
+            --ovo: #4c3494;
+            --gopay: #00aed6;
+            --gold: #fbbf24;
+            --primary-extractor: #3b82f6;
+            --success-extractor: #10b981;
+            --danger-extractor: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-image: url('https://i0.wp.com/esportsnesia.com/wp-content/uploads/2024/02/2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.5));
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-light);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: var(--text-light);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* ================= TAB NAVIGATION ================= */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: #1e293b;
+            border-color: var(--gold);
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInTab 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInTab {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* ================================================== */
+
+        /* SHARED GLASS WRAPPER */
+        .glass-wrapper {
+            position: relative;
+            margin-bottom: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-wrapper:hover {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+
+        .paste-area {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            background: rgba(255,255,255,0.6);
+            border: 1px dashed rgba(0,0,0,0.15);
+            border-radius: 16px;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .paste-area:focus {
+            border-color: var(--gold);
+            background: rgba(255,255,255,0.8);
+        }
+
+        .paste-area::placeholder {
+            color: rgba(0,0,0,0.4);
+            text-align: center;
+            padding-top: 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* ================= E-WALLET STYLES ================= */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+            margin-bottom: 30px;
+        }
+
+        .gallery-side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .img-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            flex: 1;
+            aspect-ratio: auto;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+        }
+
+        .img-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .img-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .img-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.1) saturate(1.2);
+        }
+
+        .img-card:hover::after {
+            opacity: 1;
+        }
+
+        .results-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px) saturate(180%);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 6px;
+            opacity: 0.8;
+            filter: blur(8px);
+            transition: height 0.3s, filter 0.3s;
+        }
+        .card:hover::after { height: 10px; filter: blur(12px); }
+
+        .card.dana::after { background: var(--dana); box-shadow: 0 5px 15px var(--dana); }
+        .card.linkaja::after { background: var(--linkaja); box-shadow: 0 5px 15px var(--linkaja); }
+        .card.ovo::after { background: var(--ovo); box-shadow: 0 5px 15px var(--ovo); }
+        .card.gopay::after { background: var(--gopay); box-shadow: 0 5px 15px var(--gopay); }
+        .card.total::after { background: var(--gold); box-shadow: 0 5px 15px var(--gold); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.5);
+        }
+        
+        .card.dana .card-icon { color: var(--dana); }
+        .card.linkaja .card-icon { color: var(--linkaja); }
+        .card.ovo .card-icon { color: var(--ovo); }
+        .card.gopay .card-icon { color: var(--gopay); }
+
+        .card h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .card .amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .card .count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 5px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 5px;
+            transition: width 1.5s ease-out;
+        }
+
+        .card.dana .progress-fill { background: var(--dana); }
+        .card.linkaja .progress-fill { background: var(--linkaja); }
+        .card.ovo .progress-fill { background: var(--ovo); }
+        .card.gopay .progress-fill { background: var(--gopay); }
+
+        .card.total {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            border: 1px solid rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 30px 28px;
+        }
+
+        .card.total h3 {
+            font-size: 1.1rem;
+            color: #b45309;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .card.total .amount {
+            font-size: 3rem;
+            background: linear-gradient(to right, #b45309, #d97706, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-clear {
+            display: block;
+            margin: 0 auto;
+            padding: 14px 35px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ================= EXTRACTOR STYLES ================= */
+        .btn-group-extractor {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .btn-process-ext, .btn-copy-ext, .btn-clear-ext {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-process-ext {
+            background: linear-gradient(135deg, var(--primary-extractor), #2563eb);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn-process-ext:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5); }
+
+        .btn-copy-ext {
+            background: linear-gradient(135deg, var(--success-extractor), #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .btn-copy-ext:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5); }
+
+        .btn-clear-ext {
+            flex: 0.4;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-extractor);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-clear-ext:hover { background: var(--danger-extractor); color: white; }
+
+        .result-label-ext {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-wrapper-ext {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.5);
+        }
+
+        .extractor-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .extractor-table thead th {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-extractor);
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .extractor-table tbody tr {
+            transition: background 0.2s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .extractor-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .extractor-table td {
+            padding: 12px 14px;
+            white-space: nowrap;
+            color: var(--text-dark);
+        }
+
+        .empty-state-ext {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        #rawData { display: none; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9)); }
+        .toast.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9)); color: #1e293b; }
+        .toast.info { background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.9)); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .gallery-side { flex-direction: row; }
+            .gallery-side.left { order: 1; }
+            .results-wrapper { order: 2; }
+            .gallery-side.right { order: 3; }
+            .img-card { height: 200px; }
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .results { grid-template-columns: 1fr; }
+            .card.total .amount { font-size: 2.5rem; }
+            .card .amount { font-size: 1.4rem; }
+            .btn-group-extractor { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="date-badge">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span id="todayDate"></span>
+            </div>
+            <h1>All-in-One Dashboard</h1>
+            <p>Sistem rekapitulasi dan ekstraksi data otomatis</p>
+        </header>
+
+        <!-- TAB BUTTONS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'TabEwallet')"><i class="fa-solid fa-wallet"></i> E-Wallet Recapper</button>
+            <button class="tab-btn" onclick="switchTab(event, 'TabExtractor')"><i class="fa-solid fa-table-list"></i> Data Extractor</button>
+        </div>
+
+        <!-- ================= TAB 1: E-WALLET ================= -->
+        <div id="TabEwallet" class="tab-content active">
+            <div class="glass-wrapper">
+                <textarea id="pasteArea" class="paste-area" placeholder="Klik di sini, lalu Paste (Ctrl+V) data tabel E-Wallet dari sistem Anda...&#10;Data tanggal kemarin/berikutnya akan otomatis diabaikan."></textarea>
+            </div>
+
+            <div class="main-layout">
+                <div class="gallery-side left">
+                    <div class="img-card"><img src="https://awsimages.detik.net.id/community/media/visual/2024/01/15/citra-tri-kumala.jpeg?w=1200" alt="Citra Tri Kumala"></div>
+                    <div class="img-card"><img src="https://i.pinimg.com/736x/60/0c/13/600c138f2e91e36b182211d5c7fce547.jpg" alt="Spotlight Left 2"></div>
+                </div>
+
+                <div class="results-wrapper">
+                    <div class="results" id="results">
+                        <div class="card dana" id="card-dana">
+                            <div class="card-header"><h3>Dana</h3><div class="card-icon"><i class="fa-solid fa-wallet"></i></div></div>
+                            <p class="amount" id="total-dana">0,00</p>
+                            <p class="count" id="count-dana">0 transaksi</p>
+                            <div class="progress-track"><div class="progress-fill" id="progress-dana"></div></div>
+                        </div>
+                        <div class="card linkaja" id="card-linkaja">
+                            <div class="card-header"><h3>LinkAja</h3><div class="card-icon"><i class="fa-solid fa-bolt"></i></div></div>
+                            <p class="amount" id="total-linkaja">0,00</p>
+                            <p class="count" id="count-linkaja">0 transaksi</p>
+                            <div class="progress-track"><div class="progress-fill" id="progress-linkaja"></div></div>
+                        </div>
+                        <div class="card ovo" id="card-ovo">
+                            <div class="card-header"><h3>Ovo</h3><div class="card-icon"><i class="fa-solid fa-circle-notch"></i></div></div>
+                            <p class="amount" id="total-ovo">0,00</p>
+                            <p class="count" id="count-ovo">0 transaksi</p>
+                            <div class="progress-track"><div class="progress-fill" id="progress-ovo"></div></div>
+                        </div>
+                        <div class="card gopay" id="card-gopay">
+                            <div class="card-header"><h3>Gopay</h3><div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div></div>
+                            <p class="amount" id="total-gopay">0,00</p>
+                            <p class="count" id="count-gopay">0 transaksi</p>
+                            <div class="progress-track"><div class="progress-fill" id="progress-gopay"></div></div>
+                        </div>
+                        <div class="card total" id="card-total">
+                            <h3>Total E-Wallet Hari Ini</h3>
+                            <p class="amount" id="total-all">0,00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-side right">
+                    <div class="img-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSINZoz3XAdq7T0Mn6mgdrzwYA5fznsZzm5SQ&s" alt="Spotlight Right 1"></div>
+                    <div class="img-card"><img src="https://i.pinimg.com/736x/88/34/3d/88343d20aab2cf53b674613737f46001.jpg" alt="Spotlight Right 2"></div>
+                </div>
+            </div>
+            <button class="btn-clear" onclick="clearEwallet()"><i class="fa-solid fa-rotate-left"></i> Reset Data E-Wallet</button>
+        </div>
+
+        <!-- ================= TAB 2: EXTRACTOR ================= -->
+        <div id="TabExtractor" class="tab-content">
+            <div class="glass-wrapper">
+                <textarea id="inputData" class="paste-area" placeholder="Tempel data mentah dari website di sini... (Ctrl+V)&#10;Script akan otomatis mengekstrak baris yang berisi data transaksi saja."></textarea>
+            </div>
+
+            <div class="btn-group-extractor">
+                <button class="btn-process-ext" onclick="processExtractor()"><i class="fa-solid fa-bolt"></i> Proses Data</button>
+                <button class="btn-copy-ext" onclick="copyExtractor()"><i class="fa-regular fa-copy"></i> Salin Hasil (Excel)</button>
+                <button class="btn-clear-ext" onclick="clearExtractor()"><i class="fa-solid fa-trash-can"></i> Hapus</button>
+            </div>
+
+            <div class="result-label-ext">
+                <i class="fa-solid fa-chart-simple" style="color: var(--primary-extractor);"></i> Hasil Ekstraksi
+            </div>
+
+            <div class="table-wrapper-ext">
+                <table class="extractor-table">
+                    <thead>
+                        <tr>
+                            <th>Bank Name</th>
+                            <th>Account No</th>
+                            <th>Member Code</th>
+                            <th>Account Name / Net Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="4" class="empty-state-ext">Belum ada data yang diproses</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <textarea id="rawData"></textarea>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+<script>
+    // ================= TAB LOGIC =================
+    function switchTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // ================= E-WALLET RECAPPER LOGIC =================
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('todayDate').innerText = today.toLocaleDateString('id-ID', options);
+
+    const pasteArea = document.getElementById('pasteArea');
+    
+    const formatRupiah = (amount) => {
+        return new Intl.NumberFormat('id-ID', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amount);
+    };
+
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        const range = end - start;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const value = start + range * (1 - Math.pow(1 - progress, 3));
+            obj.innerText = formatRupiah(value);
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                obj.innerText = formatRupiah(end);
+            }
+        }
+        requestAnimationFrame(update);
+    }
+
+    pasteArea.addEventListener('paste', () => {
+        setTimeout(() => { processEwallet(); }, 100);
+    });
+
+    function showCards() {
+        const cards = document.querySelectorAll('#TabEwallet .card');
+        cards.forEach((card, index) => {
+            setTimeout(() => { card.classList.add('active'); }, 150 * index);
+        });
+    }
+
+    function processEwallet() {
+        const text = pasteArea.value;
+        if (!text.trim()) return;
+
+        const lines = text.split('\n');
+        
+        let bankCodeIndex = -1;
+        let debitIndex = -1;
+        let transferTimeIndex = -1;
+        
+        const wallets = {
+            'DANA': { total: 0, count: 0 },
+            'LINKAJA': { total: 0, count: 0 },
+            'OVO': { total: 0, count: 0 },
+            'GOPAY': { total: 0, count: 0 }
+        };
+
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth() + 1;
+        const currentYear = today.getFullYear();
+
+        let isToday = false;
+        let ewalletFound = false;
+
+        for (let i = 0; i < lines.length; i++) {
+            const cols = lines[i].split('\t').map(col => col.trim());
+
+            if (cols.includes('Bank Code') && cols.includes('Debit') && cols.includes('Transfer Time')) {
+                bankCodeIndex = cols.indexOf('Bank Code');
+                debitIndex = cols.indexOf('Debit');
+                transferTimeIndex = cols.indexOf('Transfer Time');
+                continue; 
+            }
+
+            if (bankCodeIndex !== -1 && cols.length > Math.max(bankCodeIndex, debitIndex, transferTimeIndex)) {
+                const bankCode = cols[bankCodeIndex].toUpperCase();
+                
+                if (wallets.hasOwnProperty(bankCode)) {
+                    ewalletFound = true;
+                    isToday = false; 
+                    const timeStr = cols[transferTimeIndex];
+                    
+                    if (timeStr) {
+                        const datePart = timeStr.split(' ')[0];
+                        const dateParts = datePart.split('/');
+                        
+                        if(dateParts.length === 3) {
+                            const day = parseInt(dateParts[0], 10);
+                            const month = parseInt(dateParts[1], 10);
+                            const year = parseInt(dateParts[2], 10);
+                            
+                            if (day === currentDay && month === currentMonth && year === currentYear) {
+                                isToday = true;
+                            }
+                        }
+                    }
+
+                    if (isToday) {
+                        const debitStr = cols[debitIndex];
+                        const debitNum = parseFloat(debitStr.replace(/,/g, '')) || 0;
+                        
+                        wallets[bankCode].total += debitNum;
+                        wallets[bankCode].count += 1;
+                    }
+                }
+            }
+        }
+
+        if(!ewalletFound) {
+            showToast('Tidak ada E-Wallet terdeteksi pada data!', 'warning');
+            return;
+        }
+
+        let grandTotal = 0;
+        let hasTodayTransaction = false;
+
+        for (const [key, value] of Object.entries(wallets)) {
+            const keyLower = key.toLowerCase();
+            
+            animateValue(`total-${keyLower}`, 0, value.total, 1500);
+            document.getElementById(`count-${keyLower}`).innerText = `${value.count} transaksi`;
+            
+            grandTotal += value.total;
+            if(value.count > 0) hasTodayTransaction = true;
+        }
+
+        animateValue('total-all', 0, grandTotal, 2000);
+
+        setTimeout(() => {
+            for (const [key, value] of Object.entries(wallets)) {
+                const keyLower = key.toLowerCase();
+                const percent = grandTotal > 0 ? (value.total / grandTotal) * 100 : 0;
+                document.getElementById(`progress-${keyLower}`).style.width = `${percent}%`;
+            }
+        }, 300);
+
+        showCards();
+
+        if(hasTodayTransaction) {
+            showToast('Rekap hari ini berhasil dibuat!', 'success');
+        } else {
+            showToast('Tidak ada transaksi E-Wallet hari ini.', 'warning');
+        }
+    }
+
+    function clearEwallet() {
+        pasteArea.value = '';
+        const wallets = ['dana', 'linkaja', 'ovo', 'gopay'];
+        wallets.forEach(w => {
+            document.getElementById(`total-${w}`).innerText = '0,00';
+            document.getElementById(`count-${w}`).innerText = '0 transaksi';
+            document.getElementById(`progress-${w}`).style.width = '0%';
+            document.getElementById(`card-${w}`).classList.remove('active');
+        });
+        document.getElementById('total-all').innerText = '0,00';
+        document.getElementById('card-total').classList.remove('active');
+    }
+
+
+    // ================= DATA EXTRACTOR LOGIC =================
+    function processExtractor() {
+        const inputText = document.getElementById('inputData').value;
+        const tableBody = document.getElementById('tableBody');
+        const rawData = document.getElementById('rawData');
+
+        if (!inputText.trim()) {
+            showToast("Silakan tempel data terlebih dahulu!", "warning");
+            return;
+        }
+
+        tableBody.innerHTML = '';
+        rawData.value = '';
+
+        const regex = /(?:PENDING|PROCESS|APPROVED|REJECTED)\s+([^\s]+)\s+([^\s]+)\s+(.+?)\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+[^\s]+\s+([^\s]+)/g;
+        
+        let match;
+        let rowsHTML = '';
+        let rawCopyText = '';
+        let dataFound = false;
+
+        while ((match = regex.exec(inputText)) !== null) {
+            dataFound = true;
+            let memberCode = match[1].trim();
+            let accountNo = match[2].trim();
+            let accountName = match[3].trim();
+            let netAmountRaw = match[4].trim(); // Data mentah (contoh: 300,000.00)
+            let bankName = match[5].trim();
+
+            // Diperbarui: Hapus 2 angka nol di belakang dan titiknya (mengubah 300,000.00 menjadi 300,000)
+            // Kita gunakan regex yang menghapus titik beserta dua angka nol di akhir kalimat
+            let cleanAmount = netAmountRaw.replace(/\.00$/, '');
+
+            // Gabungkan Account Name dan Clean Amount
+            let combinedInfo = `${accountName} / ${cleanAmount}`;
+
+            // Format untuk disalin ke Excel (Pemisah Tab)
+            rawCopyText += `${bankName}\t${accountNo}\t${memberCode}\t${combinedInfo}\n`;
+
+            // Format untuk Tampilan Tabel Web
+            rowsHTML += `
+                <tr>
+                    <td>${bankName}</td>
+                    <td>${accountNo}</td>
+                    <td>${memberCode}</td>
+                    <td>${combinedInfo}</td>
+                </tr>
+            `;
+        }
+
+        if (dataFound) {
+            tableBody.innerHTML = rowsHTML;
+            rawData.value = rawCopyText.trim();
+            showToast("Data berhasil diekstrak dan dirapikan!", "info");
+        } else {
+            tableBody.innerHTML = `<tr><td colspan="4" class="empty-state-ext">Data transaksi tidak ditemukan. Pastikan format sesuai.</td></tr>`;
+            rawData.value = '';
+            showToast("Gagal menemukan pola data transaksi.", "warning");
+        }
+    }
+
+    function copyExtractor() {
+        const rawData = document.getElementById('rawData');
+        if (!rawData.value) {
+            showToast("Tidak ada data untuk disalin! Klik 'Proses Data' terlebih dahulu.", "warning");
+            return;
+        }
+
+        navigator.clipboard.writeText(rawData.value).then(() => {
+            const btn = document.querySelector('.btn-copy-ext');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Berhasil Disalin!';
+            btn.style.background = "linear-gradient(135deg, #8b5cf6, #6d28d9)";
+            
+            showToast("Hasil berhasil disalin, silakan paste ke Excel!", "success");
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+            }, 2000);
+        }).catch(err => {
+            rawData.style.display = 'block';
+            rawData.select();
+            document.execCommand('copy');
+            rawData.style.display = 'none';
+            showToast("Hasil berhasil disalin!", "success");
+        });
+    }
+
+    function clearExtractor() {
+        document.getElementById('inputData').value = '';
+        document.getElementById('rawData').value = '';
+        document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state-ext">Belum ada data yang diproses</td></tr>`;
+    }
+</script>
+
+</body>
+</html>
