@@ -3,971 +3,623 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabungan Saya</title>
+    <title>QRIS Saldo Monitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #0a0f0d;
-            --bg2: #111a16;
-            --card: #15201b;
-            --card-hover: #1a2b24;
-            --border: #243d33;
-            --fg: #e8f5ee;
-            --muted: #7a9e8c;
-            --accent: #00e68a;
-            --accent-dim: rgba(0,230,138,0.12);
-            --red: #ff5c6a;
-            --red-dim: rgba(255,92,106,0.12);
-            --gold: #ffd166;
-            --gold-dim: rgba(255,209,102,0.12);
+            --bg:#0a0e1a;--card:#141c2e;--border:#243050;--border-lt:#2e3f60;
+            --text:#e4e9f2;--dim:#7b89a5;
+            --green:#22c55e;--green-bg:rgba(34,197,94,0.08);--green-bd:rgba(34,197,94,0.3);
+            --red:#ef4444;--red-bg:rgba(239,68,68,0.08);--red-bd:rgba(239,68,68,0.3);--red-glow:rgba(239,68,68,0.35);
+            --yellow:#f59e0b;--yellow-bg:rgba(245,158,11,0.08);--yellow-bd:rgba(245,158,11,0.3);
+            --teal:#14b8a6;--blue:#60a5fa;--orange:#f97316;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg);
-            color: var(--fg);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-        .bg-glow {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; overflow: hidden;
-        }
-        .bg-glow .orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(120px); opacity: 0.2;
-            animation: orbFloat 14s ease-in-out infinite alternate;
-        }
-        .bg-glow .orb:nth-child(1) { width: 500px; height: 500px; background: var(--accent); top: -12%; left: -10%; }
-        .bg-glow .orb:nth-child(2) { width: 400px; height: 400px; background: #007a4d; bottom: -15%; right: -5%; animation-delay: -5s; animation-duration: 18s; }
-        .bg-glow .orb:nth-child(3) { width: 300px; height: 300px; background: var(--gold); top: 40%; right: 20%; opacity: 0.06; animation-delay: -9s; animation-duration: 20s; }
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -30px) scale(1.1); }
-            100% { transform: translate(-20px, 20px) scale(0.95); }
-        }
+        .bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+            background-image:radial-gradient(circle at 15% 25%,rgba(20,184,166,0.05) 0%,transparent 50%),
+            radial-gradient(circle at 85% 75%,rgba(96,165,250,0.04) 0%,transparent 50%)}
+        .bg-dots{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.2;
+            background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:30px 30px}
 
-        .app {
-            position: relative; z-index: 1;
-            max-width: 520px; margin: 0 auto;
-            padding: 20px 16px 100px;
-        }
+        .danger-ov{position:fixed;inset:0;z-index:60;pointer-events:none;border:4px solid transparent;transition:border-color .6s,box-shadow .6s}
+        .danger-ov.on{border-color:var(--red);box-shadow:inset 0 0 80px rgba(239,68,68,0.06);animation:ovPulse 2s ease-in-out infinite}
+        @keyframes ovPulse{0%,100%{box-shadow:inset 0 0 50px rgba(239,68,68,0.04)}50%{box-shadow:inset 0 0 90px rgba(239,68,68,0.1)}}
 
-        /* Header */
-        .header { text-align: center; padding: 28px 0 24px; }
-        .header .icon-wrap {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 60px; height: 60px; border-radius: 16px;
-            background: var(--accent-dim); border: 1px solid rgba(0,230,138,0.2);
-            margin-bottom: 14px; font-size: 24px; color: var(--accent);
-            animation: iconPulse 3s ease-in-out infinite;
-        }
-        @keyframes iconPulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(0,230,138,0.15); }
-            50% { box-shadow: 0 0 0 14px rgba(0,230,138,0); }
-        }
-        .header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
-        .header p { color: var(--muted); font-size: 13px; margin-top: 5px; line-height: 1.5; }
+        .top-bar{position:sticky;top:0;z-index:50;background:rgba(10,14,26,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:border-color .6s}
+        .top-bar.danger{border-bottom-color:var(--red)}
+        .logo-box{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--teal),#0d9488);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.65rem;color:var(--bg);letter-spacing:1px;transition:background .6s}
+        .logo-box.danger{background:linear-gradient(135deg,var(--red),#dc2626)}
 
-        /* Status koneksi */
-        .conn-status {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 10px; padding: 9px 14px; margin-bottom: 14px;
-            font-size: 11px; color: var(--muted); transition: all 0.3s;
-        }
-        .conn-status .dot {
-            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-            transition: background 0.3s;
-        }
-        .conn-status .dot.on { background: var(--accent); box-shadow: 0 0 8px rgba(0,230,138,0.5); }
-        .conn-status .dot.off { background: var(--red); box-shadow: 0 0 8px rgba(255,92,106,0.5); }
-        .conn-status .dot.loading { background: var(--gold); animation: blink 1s infinite; }
-        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-        .conn-status.connected { border-color: rgba(0,230,138,0.2); }
-        .conn-status.disconnected { border-color: rgba(255,92,106,0.2); }
+        .ring-wrap{position:relative;width:200px;height:200px}
+        .ring-wrap svg{transform:rotate(-90deg);width:100%;height:100%}
+        .ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+        .ring-fg{fill:none;stroke:var(--teal);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .6s;filter:drop-shadow(0 0 6px rgba(20,184,166,0.4))}
+        .ring-fg.warn{stroke:var(--yellow);filter:drop-shadow(0 0 6px rgba(245,158,11,0.4))}
+        .ring-fg.danger{stroke:var(--red);filter:drop-shadow(0 0 8px var(--red-glow))}
+        .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .ring-time{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;transition:color .6s}
+        .ring-label{font-size:.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:3px;margin-top:2px}
 
-        /* Balance card */
-        .balance-card {
-            background: linear-gradient(135deg, #0d3326 0%, #153a2c 50%, #1a3028 100%);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 26px 22px; margin-bottom: 18px; position: relative; overflow: hidden;
-        }
-        .balance-card::before {
-            content: ''; position: absolute; top: -50%; right: -30%;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(0,230,138,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .balance-card .label {
-            font-size: 12px; color: var(--muted);
-            text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 6px;
-        }
-        .balance-card .amount {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 34px; font-weight: 700; line-height: 1.1;
-            transition: color 0.4s, text-shadow 0.4s;
-        }
-        .balance-card .amount.flash-up { color: var(--accent); text-shadow: 0 0 30px rgba(0,230,138,0.4); }
-        .balance-card .amount.flash-down { color: var(--red); text-shadow: 0 0 30px rgba(255,92,106,0.4); }
-        .balance-card .sub-info {
-            display: flex; gap: 20px; margin-top: 16px;
-            padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
-        }
-        .sub-info .item { display: flex; align-items: center; gap: 7px; font-size: 12px; }
-        .sub-info .item .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-        .sub-info .item .dot.green { background: var(--accent); }
-        .sub-info .item .dot.red { background: var(--red); }
-        .sub-info .item span { color: var(--muted); }
-        .sub-info .item strong { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 12px; }
+        .pbar{height:3px;border-radius:2px;background:var(--border);overflow:hidden}
+        .pbar-f{height:100%;border-radius:2px;transition:width 1s linear,background .6s;background:var(--teal)}
+        .pbar-f.warn{background:var(--yellow)}.pbar-f.danger{background:var(--red)}
 
-        /* Input section */
-        .input-section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-        .input-group { position: relative; }
-        .input-group .prefix {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            font-family: 'JetBrains Mono', monospace; font-size: 15px;
-            font-weight: 600; color: var(--muted); pointer-events: none;
-        }
-        .input-group input, .input-group textarea {
-            width: 100%; background: var(--card); border: 1.5px solid var(--border);
-            border-radius: 14px; padding: 13px 14px 13px 38px;
-            font-family: 'JetBrains Mono', monospace; font-size: 15px;
-            font-weight: 600; color: var(--fg); outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
-        .input-group input::placeholder { color: rgba(122,158,140,0.5); font-weight: 400; }
-        .input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-        .input-group textarea {
-            padding-left: 14px; font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px; font-weight: 400; resize: none; min-height: 44px; border-radius: 14px;
-        }
-        .input-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-        .input-group textarea::placeholder { color: rgba(122,158,140,0.5); }
+        .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;transition:border-color .6s,box-shadow .6s}
+        .card.danger{border-color:var(--red);box-shadow:0 0 40px rgba(239,68,68,0.1)}
 
-        /* Tombol aksi */
-        .btn-row { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn {
-            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 14px 16px; border: none; border-radius: 14px;
-            font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
-        }
-        .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0); transition: background 0.25s; }
-        .btn:active::after { background: rgba(255,255,255,0.08); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn:disabled:hover { transform: none !important; box-shadow: none !important; }
-        .btn-in { background: var(--accent); color: #052e1a; }
-        .btn-in:hover:not(:disabled) { box-shadow: 0 4px 24px rgba(0,230,138,0.3); transform: translateY(-1px); }
-        .btn-out { background: var(--red); color: #2a0a0e; }
-        .btn-out:hover:not(:disabled) { box-shadow: 0 4px 24px rgba(255,92,106,0.3); transform: translateY(-1px); }
-        .btn:active:not(:disabled) { transform: translateY(0) !important; }
+        .inp-label{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px}
+        .inp-wrap{position:relative}
+        .inp-pfx{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--dim);font-weight:600;pointer-events:none}
+        .inp{width:100%;padding:12px 14px 12px 38px;background:rgba(0,0,0,0.35);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:600;outline:none;transition:border-color .3s,box-shadow .3s}
+        .inp:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(20,184,166,0.2)}
+        .inp::placeholder{color:rgba(123,137,165,0.3);font-weight:400}
 
-        /* Toolbar */
-        .toolbar { display: flex; gap: 8px; margin-bottom: 18px; }
-        .tool-btn {
-            flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
-            padding: 10px 10px; border: 1.5px solid var(--border); border-radius: 12px;
-            background: var(--card); color: var(--muted); font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.25s;
-        }
-        .tool-btn:hover { background: var(--card-hover); color: var(--fg); border-color: rgba(255,255,255,0.1); }
-        .tool-btn.export-btn:hover { border-color: rgba(0,230,138,0.3); color: var(--accent); }
-        .tool-btn.import-btn:hover { border-color: rgba(255,209,102,0.3); color: var(--gold); }
-        .tool-btn.danger-btn:hover { border-color: rgba(255,92,106,0.3); color: var(--red); }
-        .tool-btn.user-btn:hover { border-color: rgba(0,230,138,0.3); color: var(--accent); }
+        /* Input keterangan */
+        .ket-area{width:100%;padding:12px 14px;background:rgba(0,0,0,0.35);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;outline:none;resize:vertical;min-height:44px;max-height:120px;transition:border-color .3s,box-shadow .3s;line-height:1.5}
+        .ket-area:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(20,184,166,0.2)}
+        .ket-area::placeholder{color:rgba(123,137,165,0.3)}
 
-        /* Riwayat */
-        .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .history-header h2 { font-size: 16px; font-weight: 600; }
-        .history-header .tx-count { font-size: 12px; color: var(--muted); font-weight: 400; }
+        .qris-group{background:rgba(20,184,166,0.03);border:1px solid rgba(20,184,166,0.12);border-radius:12px;padding:16px}
+        .qris-total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:10px 14px;background:rgba(0,0,0,0.25);border-radius:8px;border:1px dashed rgba(20,184,166,0.25)}
+        .qris-total-lbl{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+        .qris-total-val{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--teal);font-size:1.05rem;transition:color .3s}
 
-        .history-list { display: flex; flex-direction: column; gap: 6px; }
-        .tx-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 13px 14px; background: var(--card);
-            border: 1px solid var(--border); border-radius: 14px;
-            transition: all 0.25s ease; animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .tx-item:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.08); }
-        .tx-icon {
-            width: 40px; height: 40px; border-radius: 11px;
-            display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;
-        }
-        .tx-icon.in { background: var(--accent-dim); color: var(--accent); }
-        .tx-icon.out { background: var(--red-dim); color: var(--red); }
-        .tx-detail { flex: 1; min-width: 0; }
-        .tx-note { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .tx-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
-        .tx-amount { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; flex-shrink: 0; }
-        .tx-amount.in { color: var(--accent); }
-        .tx-amount.out { color: var(--red); }
-        .tx-del {
-            width: 30px; height: 30px; border-radius: 8px; background: none; border: none;
-            color: var(--muted); cursor: pointer; display: flex; align-items: center;
-            justify-content: center; font-size: 12px; transition: all 0.2s; flex-shrink: 0; opacity: 0;
-        }
-        .tx-item:hover .tx-del { opacity: 1; }
-        .tx-del:hover { background: var(--red-dim); color: var(--red); }
+        .btn-cek{width:100%;padding:14px;background:linear-gradient(135deg,var(--teal),#0d9488);color:var(--bg);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;border:none;border-radius:10px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+        .btn-cek:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(20,184,166,0.3)}
+        .btn-cek:active{transform:translateY(0) scale(.98)}
+        .btn-cek.danger{background:linear-gradient(135deg,var(--red),#dc2626);animation:btnPulse 1.5s ease-in-out infinite}
+        @keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 var(--red-glow)}50%{box-shadow:0 0 0 10px transparent}}
 
-        .empty-state { text-align: center; padding: 44px 20px; color: var(--muted); }
-        .empty-state i { font-size: 44px; margin-bottom: 14px; opacity: 0.25; display: block; }
-        .empty-state p { font-size: 13px; line-height: 1.6; }
+        .badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:100px;font-size:.78rem;font-weight:600;transition:all .6s}
+        .badge-safe{background:rgba(20,184,166,0.1);color:var(--teal);border:1px solid rgba(20,184,166,0.25)}
+        .badge-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-bd)}
+        .badge-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);animation:bPulse 1s ease-in-out infinite}
+        @keyframes bPulse{0%,100%{opacity:1}50%{opacity:.55}}
+        .badge-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+        .badge-danger .badge-dot{animation:dotBlink .7s ease-in-out infinite}
+        @keyframes dotBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.6)}}
 
-        /* Toast */
-        .toast-container {
-            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;
-            width: calc(100% - 32px); max-width: 480px;
-        }
-        .toast {
-            background: var(--bg2); border: 1px solid var(--border); color: var(--fg);
-            padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 500;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.4s forwards;
-            pointer-events: auto;
-        }
-        .toast.success { border-color: rgba(0,230,138,0.3); }
-        .toast.success i { color: var(--accent); }
-        .toast.error { border-color: rgba(255,92,106,0.3); }
-        .toast.error i { color: var(--red); }
-        .toast.warn { border-color: rgba(255,209,102,0.3); }
-        .toast.warn i { color: var(--gold); }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-14px); } }
+        .cmp{border-radius:12px;padding:0;margin-top:0;transition:all .4s;opacity:0;transform:translateY(6px);max-height:0;overflow:hidden;border:1.5px solid transparent}
+        .cmp.show{opacity:1;transform:translateY(0);max-height:420px;padding:18px;margin-top:18px}
+        .cmp.klop{background:var(--green-bg);border-color:var(--green-bd)}
+        .cmp.klop-toleran{background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.25)}
+        .cmp.tidak{background:var(--red-bg);border-color:var(--red-bd)}
 
-        /* Modal */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(6px); z-index: 8000;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .modal-overlay.show { opacity: 1; pointer-events: auto; }
-        .modal-box {
-            background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
-            padding: 26px 22px; max-width: 380px; width: 100%; text-align: center;
-            transform: scale(0.9); transition: transform 0.3s;
-        }
-        .modal-overlay.show .modal-box { transform: scale(1); }
-        .modal-box h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
-        .modal-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
-        .modal-input {
-            width: 100%; background: var(--card); border: 1.5px solid var(--border);
-            border-radius: 12px; padding: 12px 14px; font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px; font-weight: 500; color: var(--fg); outline: none;
-            margin-bottom: 20px; text-align: center; transition: border-color 0.25s, box-shadow 0.25s;
-        }
-        .modal-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-        .modal-input::placeholder { color: var(--muted); font-weight: 400; }
-        .modal-btns { display: flex; gap: 10px; }
-        .modal-btns button {
-            flex: 1; padding: 11px; border-radius: 12px;
-            font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
-            cursor: pointer; border: none; transition: all 0.2s;
-        }
-        .modal-btns .btn-cancel { background: var(--card); color: var(--muted); border: 1px solid var(--border); }
-        .modal-btns .btn-cancel:hover { background: var(--card-hover); color: var(--fg); }
-        .modal-btns .btn-primary { background: var(--accent); color: #052e1a; }
-        .modal-btns .btn-primary:hover { box-shadow: 0 4px 20px rgba(0,230,138,0.3); }
-        .modal-btns .btn-danger { background: var(--red); color: #2a0a0e; }
-        .modal-btns .btn-danger:hover { box-shadow: 0 4px 20px rgba(255,92,106,0.3); }
+        .cmp-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+        .cmp-icon.klop{background:rgba(34,197,94,0.15);color:var(--green)}
+        .cmp-icon.klop-toleran{background:rgba(245,158,11,0.15);color:var(--yellow)}
+        .cmp-icon.tidak{background:rgba(239,68,68,0.15);color:var(--red);animation:iconShake .5s ease}
+        @keyframes iconShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
 
-        /* Loading spinner */
-        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.6s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .sel-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:8px}
+        .sel-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem}
 
-        /* User badge */
-        .user-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--accent-dim); border: 1px solid rgba(0,230,138,0.15);
-            border-radius: 20px; padding: 4px 12px 4px 8px;
-            font-size: 11px; color: var(--accent); font-weight: 500;
+        .det-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin-top:10px;align-items:center}
+        .det-cell{text-align:center;padding:8px;border-radius:8px;background:rgba(0,0,0,0.15)}
+        .det-cell .dl{font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+        .det-cell .dv{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.82rem}
+
+        .toleran-note{margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.08);border-radius:8px;font-size:.76rem;color:var(--yellow);text-align:center;border:1px solid rgba(245,158,11,0.15)}
+
+        .htable{width:100%;border-collapse:separate;border-spacing:0}
+        .htable thead th{text-align:left;padding:10px 10px;font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap}
+        .htable tbody tr{transition:background .15s}
+        .htable tbody tr:hover{background:rgba(255,255,255,0.015)}
+        .htable tbody td{padding:11px 10px;font-size:.8rem;border-bottom:1px solid rgba(36,48,80,0.5);vertical-align:top}
+        .htable tbody tr:last-child td{border-bottom:none}
+
+        .ket-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem;color:var(--text);font-style:italic}
+        .ket-cell:hover{white-space:normal;word-break:break-word}
+        .ket-cell.empty{color:var(--dim);font-style:italic;opacity:.5}
+
+        .toast-box{position:fixed;top:20px;right:20px;z-index:100;display:flex;flex-direction:column;gap:10px}
+        .toast{padding:14px 20px;border-radius:10px;font-size:.84rem;font-weight:500;display:flex;align-items:flex-start;gap:10px;transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);min-width:300px;max-width:460px;box-shadow:0 10px 40px rgba(0,0,0,0.5)}
+        .toast.show{transform:translateX(0)}
+        .toast-ok{background:linear-gradient(135deg,#065f46,#064e3b);border:1px solid rgba(34,197,94,0.3);color:#a7f3d0}
+        .toast-err{background:linear-gradient(135deg,#7f1d1d,#991b1b);border:1px solid rgba(239,68,68,0.4);color:#fca5a5}
+        .toast-inf{background:linear-gradient(135deg,#1e3a5f,#1a2e4a);border:1px solid rgba(96,165,250,0.3);color:#93c5fd}
+
+        .empty{text-align:center;padding:36px 20px;color:var(--dim)}
+        .snd-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:.85rem}
+        .snd-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+        .stat{text-align:center;padding:12px 6px;background:rgba(0,0,0,0.15);border-radius:10px;border:1px solid rgba(36,48,80,0.4)}
+        .stat-v{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700}
+        .stat-l{font-size:.62rem;color:var(--dim);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+
+        .last-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:8px;background:rgba(0,0,0,0.2);margin-bottom:6px}
+        .last-row .ll{font-size:.78rem;color:var(--dim);display:flex;align-items:center;gap:5px}
+        .last-row .lv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem}
+
+        .last-ket{margin-top:12px;padding:12px 14px;background:rgba(0,0,0,0.2);border-radius:8px;border-left:3px solid var(--teal)}
+        .last-ket .lkl{font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+        .last-ket .lkv{font-size:.88rem;line-height:1.5;color:var(--text);word-break:break-word}
+        .last-ket .lkv.empty{color:var(--dim);font-style:italic}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+        @media(max-width:860px){
+            .mg{grid-template-columns:1fr!important}
+            .ring-wrap{width:170px;height:170px}.ring-time{font-size:2rem}
+            .ig{grid-template-columns:1fr!important}
+            .ket-cell{max-width:120px}
         }
-        .user-badge i { font-size: 10px; }
-
-        #importFile { display: none; }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-        @media (max-width: 400px) {
-            .balance-card .amount { font-size: 28px; }
-            .header h1 { font-size: 22px; }
-            .toolbar { flex-wrap: wrap; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
 </head>
 <body>
 
-<div class="bg-glow">
-    <div class="orb"></div>
-    <div class="orb"></div>
-    <div class="orb"></div>
-</div>
+<div class="bg-fx"></div>
+<div class="bg-dots"></div>
+<div class="danger-ov" id="ov"></div>
+<div class="toast-box" id="toasts"></div>
 
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- Modal user setup -->
-<div class="modal-overlay" id="userModal">
-    <div class="modal-box">
-        <h3><i class="fa-solid fa-user-pen" style="color:var(--accent);margin-right:6px;"></i> Nama Pengguna</h3>
-        <p>Masukkan nama untuk mengelola data tabunganmu. Data tersimpan di cloud Firebase.</p>
-        <input type="text" class="modal-input" id="usernameInput" placeholder="Contoh: Budi" maxlength="30" autocomplete="off">
-        <div class="modal-btns">
-            <button class="btn-primary" onclick="saveUsername()">Lanjutkan</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal hapus semua -->
-<div class="modal-overlay" id="clearModal">
-    <div class="modal-box">
-        <h3>Hapus Semua Riwayat</h3>
-        <p>Semua data transaksi akan dihapus permanen dari Firebase. Pastikan sudah <strong>export backup</strong> sebelum melanjutkan.</p>
-        <div class="modal-btns">
-            <button class="btn-cancel" onclick="closeClearModal()">Batal</button>
-            <button class="btn-danger" onclick="confirmClearAll()">Hapus Semua</button>
-        </div>
-    </div>
-</div>
-
-<input type="file" id="importFile" accept=".json">
-
-<div class="app">
-
-    <header class="header">
-        <div class="icon-wrap"><i class="fa-solid fa-wallet"></i></div>
-        <h1>Tabungan Saya</h1>
-        <p>Catat uang masuk & keluar dengan mudah</p>
-    </header>
-
-    <!-- Status koneksi & user -->
-    <div class="conn-status" id="connStatus">
-        <div class="dot loading" id="connDot"></div>
-        <span id="connText">Menghubungkan ke Firebase...</span>
-        <span style="margin-left:auto;" id="userBadgeSlot"></span>
-    </div>
-
-    <!-- Saldo -->
-    <section class="balance-card">
-        <div class="label">Total Saldo</div>
-        <div class="amount" id="balanceDisplay">Rp 0</div>
-        <div class="sub-info">
-            <div class="item">
-                <div class="dot green"></div>
-                <span>Masuk:</span>
-                <strong id="totalIn">Rp 0</strong>
-            </div>
-            <div class="item">
-                <div class="dot red"></div>
-                <span>Keluar:</span>
-                <strong id="totalOut">Rp 0</strong>
+<header class="top-bar" id="tBar">
+    <div style="max-width:1140px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <div class="logo-box" id="logo">QRIS</div>
+            <div>
+                <div style="font-weight:700;font-size:1rem;">Saldo Monitor</div>
+                <div style="font-size:.63rem;color:var(--dim);letter-spacing:1px;">DOCK vs QRIS (ACTIVE + PENDING) &middot; TOLERANSI Rp 200.000</div>
             </div>
         </div>
-    </section>
-
-    <!-- Input -->
-    <section class="input-section">
-        <div class="input-group">
-            <span class="prefix">Rp</span>
-            <input type="text" id="nominalInput" placeholder="Masukkan nominal..." inputmode="numeric" autocomplete="off" disabled>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <div class="badge badge-safe" id="badge"><span class="badge-dot"></span><span id="badgeTxt">Aman</span></div>
+            <button class="snd-btn" id="sndBtn" aria-label="Toggle suara" title="Toggle suara alarm"><i class="fas fa-volume-up" id="sndIco"></i></button>
         </div>
-        <div class="input-group">
-            <textarea id="noteInput" placeholder="Catatan (opsional)" rows="1" disabled></textarea>
-        </div>
-    </section>
-
-    <div class="btn-row">
-        <button class="btn btn-in" id="btnIn" onclick="addTransaction('in')" disabled>
-            <i class="fa-solid fa-arrow-down"></i> Uang Masuk
-        </button>
-        <button class="btn btn-out" id="btnOut" onclick="addTransaction('out')" disabled>
-            <i class="fa-solid fa-arrow-up"></i> Uang Keluar
-        </button>
     </div>
+</header>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <button class="tool-btn export-btn" onclick="exportBackup()">
-            <i class="fa-solid fa-download"></i> Export
-        </button>
-        <button class="tool-btn import-btn" onclick="triggerImport()">
-            <i class="fa-solid fa-upload"></i> Import
-        </button>
-        <button class="tool-btn user-btn" onclick="showUserModal()">
-            <i class="fa-solid fa-user-gear"></i> Ganti User
-        </button>
-        <button class="tool-btn danger-btn" id="btnClearAll" onclick="showClearModal()" style="display:none;">
-            <i class="fa-solid fa-trash-can"></i> Hapus
-        </button>
-    </div>
+<main style="position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:28px 20px;">
 
-    <!-- Riwayat -->
-    <section>
-        <div class="history-header">
-            <h2>Riwayat Transaksi <span class="tx-count" id="txCount"></span></h2>
-        </div>
-        <div class="history-list" id="historyList">
-            <div class="empty-state" id="emptyState">
-                <i class="fa-solid fa-receipt"></i>
-                <p>Belum ada transaksi.<br>Mulai catat uang masuk atau keluar.</p>
+    <div class="mg" style="display:grid;grid-template-columns:300px 1fr;gap:20px;margin-bottom:20px;">
+
+        <!-- KIRI: TIMER + STATS -->
+        <div class="card" id="tCard">
+            <div style="margin-bottom:14px;">
+                <div style="font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:2px;">Sisa Waktu</div>
+                <div style="font-weight:600;margin-top:3px;">Cek Berikutnya</div>
             </div>
-        </div>
-    </section>
-
-</div>
-
-<!-- Firebase SDK -->
-<script type="module">
-    // ========================================
-    // ========== IMPORT FIREBASE SDK ==========
-    // ========================================
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getDatabase, ref, push, set, remove, onValue, onDisconnect, goOnline, goOffline } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-
-    // ========================================
-    // ======= TEMPATKAN CONFIG FIREBASE ======
-    // ========================================
-    // Ganti nilai di bawah ini dengan config dari Firebase Console kamu
-    // (Project Settings → Aplikasi web Anda → blok firebaseConfig)
-const firebaseConfig = {
-  apiKey: "AIzaSyDmorgTsaxoF7BdQblGY7w9h6WpD6tvACM",
-  authDomain: "tabungansaya.firebaseapp.com",
-  databaseURL: "https://tabungansaya-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "tabungansaya",
-  storageBucket: "tabungansaya.firebasestorage.app",
-  messagingSenderId: "667193996078",
-  appId: "1:667193996078:web:3af18e68574436350e80bf",
-  measurementId: "G-07SMVT7445"
-};
-
-    // ========================================
-
-    // Inisialisasi Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // ========================================
-    // ========== STATE & ELEMEN DOM ==========
-    // ========================================
-    const USER_ID_KEY = 'tabungan_firebase_uid';
-    let userId = null;
-    let userRef = null;       // ref ke path user: users/{uid}
-    let transactions = [];     // array lokal (sinkron dari Firebase)
-    let isWriting = false;     // mencegah double-write dari onValue
-
-    const nominalInput = document.getElementById('nominalInput');
-    const noteInput = document.getElementById('noteInput');
-    const btnIn = document.getElementById('btnIn');
-    const btnOut = document.getElementById('btnOut');
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const totalInEl = document.getElementById('totalIn');
-    const totalOutEl = document.getElementById('totalOut');
-    const historyList = document.getElementById('historyList');
-    const emptyState = document.getElementById('emptyState');
-    const btnClearAll = document.getElementById('btnClearAll');
-    const clearModal = document.getElementById('clearModal');
-    const userModal = document.getElementById('userModal');
-    const usernameInput = document.getElementById('usernameInput');
-    const importFile = document.getElementById('importFile');
-    const toastContainer = document.getElementById('toastContainer');
-    const txCount = document.getElementById('txCount');
-    const connStatus = document.getElementById('connStatus');
-    const connDot = document.getElementById('connDot');
-    const connText = document.getElementById('connText');
-    const userBadgeSlot = document.getElementById('userBadgeSlot');
-
-    // ========================================
-    // ========== UTILITAS ====================
-    // ========================================
-    // Buat ID aman untuk Firebase key dari nama user
-    function slugify(name) {
-        return name.toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .trim()
-            .replace(/[\s-]+/g, '_')
-            .replace(/^_|_$/g, '');
-    }
-
-    function formatRp(n) {
-        return 'Rp ' + Math.abs(n).toLocaleString('id-ID');
-    }
-
-    function formatDate(ts) {
-        const d = new Date(ts);
-        const h = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-        const b = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
-        return `${h[d.getDay()]}, ${d.getDate()} ${b[d.getMonth()]} ${d.getFullYear()} \u00B7 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-    }
-
-    function esc(s) {
-        const d = document.createElement('div');
-        d.textContent = s;
-        return d.innerHTML;
-    }
-
-    // ========================================
-    // ========== KONEKSI STATUS ==============
-    // ========================================
-    function setConnStatus(state) {
-        connDot.className = 'dot ' + state;
-        if (state === 'on') {
-            connStatus.classList.add('connected');
-            connStatus.classList.remove('disconnected');
-            connText.textContent = 'Terhubung ke Firebase';
-        } else if (state === 'off') {
-            connStatus.classList.remove('connected');
-            connStatus.classList.add('disconnected');
-            connText.textContent = 'Koneksi terputus';
-        } else {
-            connStatus.classList.remove('connected','disconnected');
-            connText.textContent = 'Menghubungkan ke Firebase...';
-        }
-    }
-
-    // ========================================
-    // ========== USER MANAGEMENT =============
-    // ========================================
-    function getUsername() {
-        try { return localStorage.getItem(USER_ID_KEY) || ''; } catch(e) { return ''; }
-    }
-    function setUsername(name) {
-        try { localStorage.setItem(USER_ID_KEY, name); } catch(e) {}
-    }
-    function clearUsername() {
-        try { localStorage.removeItem(USER_ID_KEY); } catch(e) {}
-    }
-
-    function showUserModal() {
-        usernameInput.value = getUsername();
-        userModal.classList.add('show');
-        setTimeout(() => usernameInput.focus(), 300);
-    }
-    function closeUserModal() {
-        userModal.classList.remove('show');
-    }
-
-    // Simpan username dan mulai koneksi
-    window.saveUsername = function() {
-        const name = usernameInput.value.trim();
-        if (!name) {
-            showToast('Masukkan nama pengguna', 'error');
-            usernameInput.focus();
-            return;
-        }
-        const uid = slugify(name);
-        if (!uid) {
-            showToast('Nama tidak valid, gunakan huruf/angka', 'error');
-            return;
-        }
-        setUsername(name);
-        closeUserModal();
-        startListening(uid);
-        enableInputs(true);
-        updateUserBadge(name);
-        showToast(`Selamat datang, ${esc(name)}!`, 'success');
-    };
-
-    function updateUserBadge(name) {
-        userBadgeSlot.innerHTML = `<span class="user-badge"><i class="fa-solid fa-user"></i> ${esc(name)}</span>`;
-    }
-
-    // ========================================
-    // ========== FIREBASE LISTENER ===========
-    // ========================================
-    function startListening(uid) {
-        // Lepas listener sebelumnya jika ada
-        if (userRef) {
-            onValue(userRef, () => {}, { onlyOnce: true }); // no-op unsub
-        }
-
-        userId = uid;
-        userRef = ref(db, 'users/' + uid);
-
-        // Real-time listener — setiap perubahan data langsung update UI
-        onValue(userRef, (snapshot) => {
-            setConnStatus('on');
-
-            if (isWriting) return; // hindari echo dari write sendiri
-
-            const data = snapshot.val();
-            if (data) {
-                // Konversi object dari Firebase menjadi array
-                transactions = Object.entries(data).map(([key, val]) => ({
-                    id: key,
-                    type: val.type,
-                    amount: val.amount,
-                    note: val.note || '',
-                    ts: val.ts
-                }));
-            } else {
-                transactions = [];
-            }
-            render();
-        }, (error) => {
-            setConnStatus('off');
-            console.error('Firebase read error:', error);
-            showToast('Gagal membaca data dari Firebase', 'error');
-        });
-    }
-
-    // ========================================
-    // ========== HITUNG & UPDATE UI ==========
-    // ========================================
-    function calc() {
-        let i = 0, o = 0;
-        transactions.forEach(t => {
-            if (t.type === 'in') i += t.amount;
-            else o += t.amount;
-        });
-        return { i, o, bal: i - o };
-    }
-
-    function updateUI() {
-        const { i, o, bal } = calc();
-        balanceDisplay.textContent = (bal < 0 ? '-' : '') + formatRp(bal);
-        totalInEl.textContent = formatRp(i);
-        totalOutEl.textContent = formatRp(o);
-        txCount.textContent = transactions.length > 0 ? `(${transactions.length})` : '';
-    }
-
-    function flashBalance(type) {
-        balanceDisplay.classList.remove('flash-up', 'flash-down');
-        void balanceDisplay.offsetWidth;
-        balanceDisplay.classList.add(type === 'in' ? 'flash-up' : 'flash-down');
-        setTimeout(() => balanceDisplay.classList.remove('flash-up', 'flash-down'), 600);
-    }
-
-    // ========================================
-    // ========== RENDER RIWAYAT ==============
-    // ========================================
-    function render() {
-        const sorted = [...transactions].sort((a, b) => b.ts - a.ts);
-        if (sorted.length === 0) {
-            historyList.innerHTML = '';
-            historyList.appendChild(emptyState);
-            emptyState.style.display = '';
-            btnClearAll.style.display = 'none';
-            updateUI();
-            return;
-        }
-        emptyState.style.display = 'none';
-        btnClearAll.style.display = '';
-        historyList.innerHTML = sorted.map(t => {
-            const isIn = t.type === 'in';
-            return `<div class="tx-item" data-id="${t.id}">
-                <div class="tx-icon ${t.type}"><i class="fa-solid ${isIn ? 'fa-arrow-down' : 'fa-arrow-up'}"></i></div>
-                <div class="tx-detail">
-                    <div class="tx-note">${esc(t.note || (isIn ? 'Uang masuk' : 'Uang keluar'))}</div>
-                    <div class="tx-date">${formatDate(t.ts)}</div>
+            <div style="display:flex;justify-content:center;margin-bottom:14px;">
+                <div class="ring-wrap">
+                    <svg viewBox="0 0 200 200">
+                        <circle class="ring-bg" cx="100" cy="100" r="88"></circle>
+                        <circle class="ring-fg" id="rFg" cx="100" cy="100" r="88" stroke-dasharray="553" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="ring-center">
+                        <div class="ring-time" id="rTime">20:00</div>
+                        <div class="ring-label">menit</div>
+                    </div>
                 </div>
-                <div class="tx-amount ${t.type}">${isIn ? '+' : '-'}${formatRp(t.amount)}</div>
-                <button class="tx-del" onclick="window._delTx('${t.id}')" aria-label="Hapus"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="pbar"><div class="pbar-f" id="pF" style="width:100%"></div></div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:18px;">
+                <div class="stat"><div class="stat-v" style="color:var(--teal)" id="sT">0</div><div class="stat-l">Cek</div></div>
+                <div class="stat"><div class="stat-v" style="color:var(--red)" id="sL">0</div><div class="stat-l">Lambat</div></div>
+                <div class="stat"><div class="stat-v" style="color:var(--green)" id="sK">0</div><div class="stat-l">Klop</div></div>
+            </div>
+
+            <div style="margin-top:18px;padding:12px 14px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:10px;">
+                <div style="font-size:.72rem;color:var(--yellow);font-weight:600;margin-bottom:4px;"><i class="fas fa-shield-alt" style="margin-right:4px;"></i>Toleransi Selisih</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--yellow);">Rp 200.000</div>
+                <div style="font-size:.7rem;color:var(--dim);margin-top:4px;">Selisih ≤ Rp 200.000 tetap dianggap KLOP/AMAN</div>
+            </div>
+
+            <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+                <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="color:var(--dim);font-size:.8rem;">Merchant</span><span style="font-size:.8rem;font-weight:600;">Toko Sejahtera</span></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="color:var(--dim);font-size:.8rem;">MID</span><span style="font-size:.8rem;font-family:'JetBrains Mono',monospace;">QRIS-2024-001</span></div>
+                <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim);font-size:.8rem;">NNS</span><span style="font-size:.8rem;font-family:'JetBrains Mono',monospace;">93600801</span></div>
+            </div>
+        </div>
+
+        <!-- KANAN: INPUT + BANDING + TERAKHIR -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+            <!-- Card Input -->
+            <div class="card" id="iCard">
+                <div style="margin-bottom:18px;">
+                    <div style="font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:2px;">Input Manual</div>
+                    <div style="font-weight:600;margin-top:3px;">Masukkan Nominal Saldo</div>
+                </div>
+
+                <div class="ig" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+
+                    <!-- KOLOM KIRI: Saldo Dock -->
+                    <div>
+                        <div style="margin-bottom:14px;">
+                            <div class="inp-label"><i class="fas fa-warehouse" style="color:var(--blue)"></i> Saldo Dock</div>
+                            <div class="inp-wrap">
+                                <span class="inp-pfx">Rp</span>
+                                <input type="text" class="inp" id="iDock" placeholder="0" inputmode="numeric" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <button class="btn-cek" id="btnCk" onclick="cekSaldo()">
+                            <i class="fas fa-search-dollar" style="margin-right:8px;"></i>Cek & Simpan Saldo
+                        </button>
+                    </div>
+
+                    <!-- KOLOM KANAN: QRIS -->
+                    <div class="qris-group">
+                        <div style="font-size:.72rem;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
+                            <i class="fas fa-qrcode" style="margin-right:4px;"></i> Saldo QRIS
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <div class="inp-label"><i class="fas fa-bolt" style="color:var(--green);font-size:.7rem;"></i> Active Balance</div>
+                            <div class="inp-wrap">
+                                <span class="inp-pfx">Rp</span>
+                                <input type="text" class="inp" id="iActive" placeholder="0" inputmode="numeric" autocomplete="off">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="inp-label"><i class="fas fa-hourglass-half" style="color:var(--orange);font-size:.7rem;"></i> Pending Balance</div>
+                            <div class="inp-wrap">
+                                <span class="inp-pfx">Rp</span>
+                                <input type="text" class="inp" id="iPending" placeholder="0" inputmode="numeric" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="qris-total">
+                            <span class="qris-total-lbl">Total QRIS</span>
+                            <span class="qris-total-val" id="qrisTotal">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KETERANGAN -->
+                <div style="margin-top:16px;">
+                    <div class="inp-label"><i class="fas fa-pen" style="color:var(--teal);font-size:.7rem;"></i> Keterangan</div>
+                    <textarea class="ket-area" id="iKet" placeholder="Contoh: Cek saldo setelah transaksi jam 10 pagi, ada 3 trx baru..." rows="2"></textarea>
+                </div>
+
+                <!-- Hasil Perbandingan -->
+                <div class="cmp" id="cmpBox"></div>
+            </div>
+
+            <!-- Card Saldo Terakhir -->
+            <div class="card" id="lCard">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                    <div><div style="font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:2px;">Terakhir</div><div style="font-weight:600;margin-top:3px;">Pengecekan</div></div>
+                    <div style="font-size:.78rem;color:var(--dim);font-family:'JetBrains Mono',monospace" id="lTime">--:--:--</div>
+                </div>
+                <div class="last-row">
+                    <span class="ll"><i class="fas fa-warehouse" style="color:var(--blue);font-size:.72rem"></i> Dock</span>
+                    <span class="lv" id="lDock" style="color:#93c5fd">Rp 0</span>
+                </div>
+                <div class="last-row">
+                    <span class="ll"><i class="fas fa-bolt" style="color:var(--green);font-size:.72rem"></i> QRIS Active</span>
+                    <span class="lv" id="lActive" style="color:var(--green)">Rp 0</span>
+                </div>
+                <div class="last-row">
+                    <span class="ll"><i class="fas fa-hourglass-half" style="color:var(--orange);font-size:.72rem"></i> QRIS Pending</span>
+                    <span class="lv" id="lPending" style="color:var(--orange)">Rp 0</span>
+                </div>
+                <div class="last-row" style="border:1px dashed rgba(20,184,166,0.2);margin-bottom:0;">
+                    <span class="ll"><i class="fas fa-qrcode" style="color:var(--teal);font-size:.72rem"></i> Total QRIS</span>
+                    <span class="lv" id="lQrisTotal" style="color:var(--teal)">Rp 0</span>
+                </div>
+                <div id="lStatus" style="margin-top:12px;text-align:center;font-size:.82rem;color:var(--dim);font-style:italic;">Belum ada data</div>
+
+                <!-- Keterangan terakhir -->
+                <div class="last-ket" id="lastKetBox" style="display:none;">
+                    <div class="lkl"><i class="fas fa-pen" style="margin-right:4px;"></i>Keterangan</div>
+                    <div class="lkv" id="lKet"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIWAYAT -->
+    <div class="card" id="hCard">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div><div style="font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:2px;">Log</div><div style="font-weight:600;margin-top:3px;">Riwayat Pengecekan Saldo</div></div>
+            <button style="background:transparent;border:1px solid var(--border);color:var(--dim);padding:7px 14px;border-radius:8px;cursor:pointer;font-family:'Space Grotesk';font-size:.78rem;transition:all .3s;" onclick="hapusHist()" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'"><i class="fas fa-trash-alt" style="margin-right:5px;"></i>Hapus Semua</button>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="htable">
+                <thead><tr>
+                    <th>No</th><th>Jam Cek</th><th>Dock</th><th>QRIS Active</th><th>QRIS Pending</th><th>Total QRIS</th><th>Selisih</th><th>Status</th><th>Keterangan</th>
+                </tr></thead>
+                <tbody id="hBody"></tbody>
+            </table>
+            <div class="empty" id="emp"><i class="fas fa-clipboard-list" style="font-size:1.8rem;margin-bottom:10px;opacity:.25"></i><div>Belum ada riwayat pengecekan</div><div style="font-size:.78rem;margin-top:4px;">Isi saldo Dock & QRIS, lalu klik "Cek & Simpan Saldo"</div></div>
+        </div>
+    </div>
+</main>
+
+<script>
+const INTV=20*60*1000,CIRC=2*Math.PI*88,TOL=200000;
+let sisa=INTV,dng=false,sndOn=true,sndPlay=false,aCtx=null,lateC=0,klopC=0,hist=[];
+const $=id=>document.getElementById(id);
+
+const rFg=$('rFg'),rTime=$('rTime'),pF=$('pF'),badge=$('badge'),badgeTxt=$('badgeTxt');
+const ov=$('ov'),tBar=$('tBar'),logo=$('logo'),btnCk=$('btnCk');
+const tCard=$('tCard'),iCard=$('iCard'),lCard=$('lCard'),hCard=$('hCard');
+const iDock=$('iDock'),iActive=$('iActive'),iPending=$('iPending'),iKet=$('iKet');
+const qrisTotalEl=$('qrisTotal'),cmpBox=$('cmpBox');
+const lDock=$('lDock'),lActive=$('lActive'),lPending=$('lPending'),lQrisTotal=$('lQrisTotal');
+const lTime=$('lTime'),lStatus=$('lStatus'),hBody=$('hBody'),emp=$('emp');
+const lastKetBox=$('lastKetBox'),lKet=$('lKet');
+
+rFg.style.strokeDasharray=CIRC;rFg.style.strokeDashoffset=0;
+
+const fT=ms=>{const s=Math.max(0,Math.floor(ms/1000));return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`};
+const fR=n=>new Intl.NumberFormat('id-ID').format(n);
+const fJ=d=>d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+function fInp(el){let v=el.value.replace(/\D/g,'');if(v)v=parseInt(v,10).toLocaleString('id-ID');el.value=v}
+function pN(s){return parseInt(s.replace(/\D/g,''),10)||0}
+
+function updateQrisTotal(){
+    const a=pN(iActive.value),p=pN(iPending.value),t=a+p;
+    qrisTotalEl.textContent='Rp '+fR(t);
+    qrisTotalEl.style.color=t>0?'var(--teal)':'var(--dim)';
+}
+
+iDock.addEventListener('input',()=>fInp(iDock));
+iActive.addEventListener('input',()=>{fInp(iActive);updateQrisTotal()});
+iPending.addEventListener('input',()=>{fInp(iPending);updateQrisTotal()});
+[iDock,iActive,iPending,iKet].forEach(el=>{
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&el!==iKet){e.preventDefault();cekSaldo()}});
+});
+// Shift+Enter di keterangan untuk baris baru, Enter saja tetap cek saldo
+
+// ====== TIMER ======
+function tick(){
+    sisa-=1000;
+    if(sisa<=0){sisa=0;goDng()}
+    const p=Math.max(0,sisa/INTV);
+    rTime.textContent=fT(sisa);
+    rFg.style.strokeDashoffset=CIRC*(1-p);
+    pF.style.width=(p*100)+'%';
+    if(sisa<=0)setDng();else if(sisa<=5*60*1000)setWrn();else setSaf();
+}
+
+function setSaf(){
+    if(dng){dng=false;stopSnd()}
+    rTime.style.color='var(--text)';rFg.className='ring-fg';pF.className='pbar-f';
+    badge.className='badge badge-safe';badgeTxt.textContent='Aman';
+    btnCk.classList.remove('danger');ov.classList.remove('on');
+    tBar.classList.remove('danger');logo.classList.remove('danger');
+    [tCard,iCard,lCard,hCard].forEach(c=>c.classList.remove('danger'));
+}
+function setWrn(){
+    if(dng){dng=false;stopSnd()}
+    rTime.style.color='var(--yellow)';rFg.className='ring-fg warn';pF.className='pbar-f warn';
+    badge.className='badge badge-warn';badgeTxt.textContent='Segera Cek';
+    btnCk.classList.remove('danger');ov.classList.remove('on');
+    tBar.classList.remove('danger');logo.classList.remove('danger');
+    [tCard,iCard,lCard,hCard].forEach(c=>c.classList.remove('danger'));
+}
+function setDng(){
+    if(!dng){dng=true;lateC++;$('sL').textContent=lateC;playSnd();toast('WAKTU PENGECEKAN MELEBIHI 20 MENIT! Segera cek saldo Anda.','err')}
+    rTime.style.color='var(--red)';rTime.textContent='00:00';
+    rFg.className='ring-fg danger';pF.className='pbar-f danger';
+    badge.className='badge badge-danger';badgeTxt.textContent='TERLAMBAT!';
+    btnCk.classList.add('danger');ov.classList.add('on');
+    tBar.classList.add('danger');logo.classList.add('danger');
+    [tCard,iCard,lCard,hCard].forEach(c=>c.classList.add('danger'));
+}
+function goDng(){setDng()}
+
+// ====== CEK SALDO ======
+function cekSaldo(){
+    const dock=pN(iDock.value),active=pN(iActive.value),pending=pN(iPending.value);
+    const qrisTotal=active+pending;
+    const ket=iKet.value.trim();
+
+    if(dock===0&&qrisTotal===0){
+        toast('Isi minimal salah satu saldo (Dock atau QRIS).','inf');
+        iDock.focus();
+        iCard.style.animation='none';iCard.offsetHeight;iCard.style.animation='iconShake .4s ease';
+        return;
+    }
+
+    const wasLate=dng;
+    const selisih=Math.abs(dock-qrisTotal);
+    const isKlop=selisih===0;
+    const isToleran=!isKlop&&selisih<=TOL;
+    const isTidakKlop=selisih>TOL;
+
+    if(isKlop||isToleran)klopC++;
+
+    const now=new Date();
+    hist.unshift({no:hist.length+1,waktu:now,dock,active,pending,qrisTotal,selisih,isKlop,isToleran,isTidakKlop,terlambat:wasLate,ket});
+
+    // Update tampilan terakhir
+    lDock.textContent='Rp '+fR(dock);
+    lActive.textContent='Rp '+fR(active);
+    lPending.textContent='Rp '+fR(pending);
+    lQrisTotal.textContent='Rp '+fR(qrisTotal);
+    lTime.textContent=fJ(now);
+
+    if(isKlop){
+        lStatus.innerHTML='<span style="color:var(--green);font-weight:700;font-style:normal"><i class="fas fa-check-circle" style="margin-right:4px"></i>SALDO KLOP</span>';
+    }else if(isToleran){
+        lStatus.innerHTML=`<span style="color:var(--yellow);font-weight:700;font-style:normal"><i class="fas fa-shield-alt" style="margin-right:4px"></i>AMAN (Toleransi) — Selisih Rp ${fR(selisih)}</span>`;
+    }else{
+        lStatus.innerHTML=`<span style="color:var(--red);font-weight:700;font-style:normal"><i class="fas fa-times-circle" style="margin-right:4px"></i>TIDAK KLOP — Selisih Rp ${fR(selisih)}</span>`;
+    }
+
+    // Keterangan terakhir
+    if(ket){
+        lastKetBox.style.display='block';
+        lKet.textContent=ket;
+        lKet.className='lkv';
+    }else{
+        lastKetBox.style.display='block';
+        lKet.textContent='Tidak ada keterangan';
+        lKet.className='lkv empty';
+    }
+
+    showCmp(dock,active,pending,qrisTotal,selisih,isKlop,isToleran);
+    $('sT').textContent=hist.length;$('sK').textContent=klopC;
+
+    // Reset timer
+    sisa=INTV;setSaf();
+    renderHist();
+
+    // Toast
+    if(wasLate){
+        toast(`Dicek terlambat! Dock: Rp ${fR(dock)} | QRIS: Rp ${fR(qrisTotal)} | Selisih: Rp ${fR(selisih)}`,'err');
+    }else if(isKlop){
+        toast(`Saldo KLOP tersimpan — ${fJ(now)}`,'ok');
+    }else if(isToleran){
+        toast(`Tersimpan — Selisih Rp ${fR(selisih)} dalam toleransi (AMAN) — ${fJ(now)}`,'inf');
+    }else{
+        toast(`Tersimpan — TIDAK KLOP, selisih Rp ${fR(selisih)} — ${fJ(now)}`,'err');
+    }
+
+    // Kosongkan input setelah simpan
+    iDock.value='';iActive.value='';iPending.value='';iKet.value='';
+    updateQrisTotal();
+
+    btnCk.style.transform='scale(.96)';setTimeout(()=>btnCk.style.transform='',120);
+}
+
+// ====== PERBANDINGAN ======
+function showCmp(dock,active,pending,qrisTotal,selisih,isKlop,isToleran){
+    if(isKlop){
+        cmpBox.className='cmp show klop';
+        cmpBox.innerHTML=`
+            <div style="display:flex;align-items:center;gap:12px">
+                <div class="cmp-icon klop"><i class="fas fa-check"></i></div>
+                <div><div style="font-weight:700;color:var(--green);font-size:1rem">SALDO KLOP</div>
+                <div style="font-size:.8rem;color:rgba(34,197,94,0.6)">Saldo Dock dan Total QRIS sama persis</div></div>
+            </div>
+            <div class="sel-row"><span style="font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px">Selisih</span>
+            <span class="sel-val" style="color:var(--green)">Rp 0</span></div>
+            <div class="det-grid">
+                <div class="det-cell"><div class="dl">Dock</div><div class="dv" style="color:#93c5fd">Rp ${fR(dock)}</div></div>
+                <div style="color:var(--green);text-align:center;font-size:.8rem"><i class="fas fa-equals"></i></div>
+                <div class="det-cell"><div class="dl">Total QRIS</div><div class="dv" style="color:var(--teal)">Rp ${fR(qrisTotal)}</div></div>
             </div>`;
-        }).join('');
-        updateUI();
+    }else if(isToleran){
+        cmpBox.className='cmp show klop-toleran';
+        cmpBox.innerHTML=`
+            <div style="display:flex;align-items:center;gap:12px">
+                <div class="cmp-icon klop-toleran"><i class="fas fa-shield-alt"></i></div>
+                <div><div style="font-weight:700;color:var(--yellow);font-size:1rem">AMAN — DALAM TOLERANSI</div>
+                <div style="font-size:.8rem;color:rgba(245,158,11,0.6)">Selisih ≤ Rp 200.000, tetap dianggap KLOP</div></div>
+            </div>
+            <div class="sel-row"><span style="font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px">Selisih</span>
+            <span class="sel-val" style="color:var(--yellow)">Rp ${fR(selisih)}</span></div>
+            <div class="det-grid">
+                <div class="det-cell"><div class="dl">Dock</div><div class="dv" style="color:#93c5fd">Rp ${fR(dock)}</div></div>
+                <div style="color:var(--dim);text-align:center;font-size:.8rem"><i class="fas fa-arrows-left-right"></i></div>
+                <div class="det-cell"><div class="dl">Total QRIS</div><div class="dv" style="color:var(--teal)">Rp ${fR(qrisTotal)}</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                <div class="det-cell"><div class="dl">Active</div><div class="dv" style="color:var(--green)">Rp ${fR(active)}</div></div>
+                <div class="det-cell"><div class="dl">Pending</div><div class="dv" style="color:var(--orange)">Rp ${fR(pending)}</div></div>
+            </div>
+            <div class="toleran-note"><i class="fas fa-info-circle" style="margin-right:4px"></i>Selisih Rp ${fR(selisih)} masih dalam batas toleransi Rp 200.000 — status tetap AMAN/KLOP</div>`;
+    }else{
+        const dockBesar=dock>qrisTotal;
+        cmpBox.className='cmp show tidak';
+        cmpBox.innerHTML=`
+            <div style="display:flex;align-items:center;gap:12px">
+                <div class="cmp-icon tidak"><i class="fas fa-exclamation-triangle"></i></div>
+                <div><div style="font-weight:700;color:var(--red);font-size:1rem">SALDO TIDAK KLOP</div>
+                <div style="font-size:.8rem;color:rgba(239,68,68,0.6)">Selisih melebihi batas toleransi Rp 200.000</div></div>
+            </div>
+            <div class="sel-row"><span style="font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px">Selisih</span>
+            <span class="sel-val" style="color:var(--red)">Rp ${fR(selisih)}</span></div>
+            <div class="det-grid">
+                <div class="det-cell"><div class="dl">Dock</div><div class="dv" style="color:#93c5fd">Rp ${fR(dock)}</div></div>
+                <div style="color:var(--dim);text-align:center;font-size:.8rem"><i class="fas fa-arrows-left-right"></i></div>
+                <div class="det-cell"><div class="dl">Total QRIS</div><div class="dv" style="color:var(--teal)">Rp ${fR(qrisTotal)}</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                <div class="det-cell"><div class="dl">Active</div><div class="dv" style="color:var(--green)">Rp ${fR(active)}</div></div>
+                <div class="det-cell"><div class="dl">Pending</div><div class="dv" style="color:var(--orange)">Rp ${fR(pending)}</div></div>
+            </div>
+            <div style="margin-top:10px;font-size:.78rem;color:var(--red);text-align:center">
+                <i class="fas fa-info-circle" style="margin-right:4px"></i>
+                Saldo ${dockBesar?'Dock lebih besar':'QRIS lebih besar'} sebesar <strong>Rp ${fR(selisih)}</strong> (melebihi toleransi)
+            </div>`;
     }
+}
 
-    // ========================================
-    // ========== INPUT FORMATTING ============
-    // ========================================
-    nominalInput.addEventListener('input', function () {
-        const c = this.value.replace(/[^0-9]/g, '');
-        this.value = c ? parseInt(c, 10).toLocaleString('id-ID') : '';
-    });
-    noteInput.addEventListener('input', function () {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 80) + 'px';
-    });
+// ====== HISTORY ======
+function renderHist(){
+    if(!hist.length){emp.style.display='block';hBody.innerHTML='';return}
+    emp.style.display='none';
+    hBody.innerHTML=hist.map((h,i)=>{
+        const sC=h.isKlop?'var(--green)':h.isToleran?'var(--yellow)':'var(--red)';
+        const sT=h.selisih===0?'Rp 0':'Rp '+fR(h.selisih);
 
-    function enableInputs(enabled) {
-        nominalInput.disabled = !enabled;
-        noteInput.disabled = !enabled;
-        btnIn.disabled = !enabled;
-        btnOut.disabled = !enabled;
-    }
-
-    // ========================================
-    // ========== TAMBAH TRANSAKSI ============
-    // ========================================
-    window.addTransaction = async function (type) {
-        const raw = nominalInput.value.replace(/[^0-9]/g, '');
-        const amount = parseInt(raw, 10);
-        if (!amount || amount <= 0) {
-            showToast('Masukkan nominal yang valid', 'error');
-            nominalInput.focus();
-            return;
-        }
-        if (type === 'out') {
-            const { bal } = calc();
-            if (amount > bal) {
-                showToast('Saldo tidak mencukupi', 'error');
-                return;
-            }
+        // Keterangan di tabel
+        let ketHtml;
+        if(h.ket){
+            ketHtml=`<span class="ket-cell" title="${h.ket.replace(/"/g,'&quot;')}">${h.ket}</span>`;
+        }else{
+            ketHtml=`<span class="ket-cell empty">—</span>`;
         }
 
-        // Disable tombol sementara proses write
-        enableInputs(false);
-        isWriting = true;
+        let st;
+        if(h.terlambat&&h.isTidakKlop) st='<span style="color:var(--red);font-weight:600;font-size:.72rem;white-space:nowrap"><i class="fas fa-exclamation-triangle" style="margin-right:3px"></i>Lambat & Tidak Klop</span>';
+        else if(h.terlambat&&(h.isKlop||h.isToleran)) st='<span style="color:var(--yellow);font-weight:600;font-size:.72rem;white-space:nowrap"><i class="fas fa-clock" style="margin-right:3px"></i>Lambat, Tapi Aman</span>';
+        else if(h.isKlop) st='<span style="color:var(--green);font-size:.72rem;white-space:nowrap"><i class="fas fa-check-circle" style="margin-right:3px"></i>Klop</span>';
+        else if(h.isToleran) st='<span style="color:var(--yellow);font-size:.72rem;white-space:nowrap"><i class="fas fa-shield-alt" style="margin-right:3px"></i>Aman</span>';
+        else st='<span style="color:var(--red);font-size:.72rem;white-space:nowrap"><i class="fas fa-times-circle" style="margin-right:3px"></i>Tidak Klop</span>';
 
-        try {
-            // Buat key baru di Firebase
-            const newRef = push(userRef);
-            const txData = {
-                type: type,
-                amount: amount,
-                note: noteInput.value.trim(),
-                ts: Date.now()
-            };
-            await set(newRef, txData);
+        return`<tr style="animation:fadeUp .3s ease ${i*.03}s both">
+            <td style="color:var(--dim);font-family:'JetBrains Mono';font-size:.72rem;white-space:nowrap">${h.no}</td>
+            <td style="font-size:.76rem;font-family:'JetBrains Mono';white-space:nowrap">${fJ(h.waktu)}</td>
+            <td style="font-family:'JetBrains Mono';font-weight:600;color:#93c5fd;white-space:nowrap">Rp ${fR(h.dock)}</td>
+            <td style="font-family:'JetBrains Mono';font-weight:600;color:var(--green);white-space:nowrap">Rp ${fR(h.active)}</td>
+            <td style="font-family:'JetBrains Mono';font-weight:600;color:var(--orange);white-space:nowrap">Rp ${fR(h.pending)}</td>
+            <td style="font-family:'JetBrains Mono';font-weight:600;color:var(--teal);white-space:nowrap">Rp ${fR(h.qrisTotal)}</td>
+            <td style="font-family:'JetBrains Mono';font-weight:600;color:${sC};white-space:nowrap">${sT}</td>
+            <td>${st}</td>
+            <td>${ketHtml}</td>
+        </tr>`;
+    }).join('');
+}
 
-            // Sukses — update lokal langsung agar responsif
-            transactions.push({ id: newRef.key, ...txData });
-            isWriting = false;
-            flashBalance(type);
-            render();
+function hapusHist(){
+    if(!hist.length)return;
+    hist=[];lateC=0;klopC=0;
+    $('sT').textContent='0';$('sL').textContent='0';$('sK').textContent='0';
+    lDock.textContent='Rp 0';lActive.textContent='Rp 0';lPending.textContent='Rp 0';
+    lQrisTotal.textContent='Rp 0';lTime.textContent='--:--:--';
+    lStatus.innerHTML='Belum ada data';lStatus.style.color='var(--dim)';lStatus.style.fontStyle='italic';
+    lastKetBox.style.display='none';
+    cmpBox.className='cmp';renderHist();
+    toast('Riwayat pengecekan telah dihapus.','ok');
+}
 
-            nominalInput.value = '';
-            noteInput.value = '';
-            noteInput.style.height = 'auto';
-            nominalInput.focus();
+// ====== SOUND ======
+function gA(){if(!aCtx)aCtx=new(window.AudioContext||window.webkitAudioContext)();return aCtx}
+function playSnd(){if(!sndOn)return;const c=gA();if(c.state==='suspended')c.resume();sndPlay=true;beep(c)}
+function beep(c){if(!sndPlay||!dng)return;const t=c.currentTime;for(let i=0;i<3;i++){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='square';o.frequency.setValueAtTime(880,t+i*.25);g.gain.setValueAtTime(.06,t+i*.25);g.gain.exponentialRampToValueAtTime(.001,t+i*.25+.18);o.start(t+i*.25);o.stop(t+i*.25+.2)}setTimeout(()=>{if(sndPlay&&dng)beep(c)},1500)}
+function stopSnd(){sndPlay=false}
+ $('sndBtn').addEventListener('click',()=>{sndOn=!sndOn;$('sndIco').className=sndOn?'fas fa-volume-up':'fas fa-volume-mute';if(!sndOn)stopSnd();else if(dng)playSnd()});
 
-            showToast(`${type === 'in' ? 'Uang masuk' : 'Uang keluar'} ${formatRp(amount)} dicatat`, 'success');
-        } catch (err) {
-            isWriting = false;
-            setConnStatus('off');
-            console.error('Write error:', err);
-            showToast('Gagal menyimpan ke Firebase. Cek koneksi.', 'error');
-        }
+// ====== TOAST ======
+function toast(m,t){
+    const c=$('toasts'),el=document.createElement('div');
+    const cl={ok:'toast-ok',err:'toast-err',inf:'toast-inf'},ic={ok:'fa-check-circle',err:'fa-exclamation-circle',inf:'fa-info-circle'};
+    el.className=`toast ${cl[t]||'toast-inf'}`;
+    el.innerHTML=`<i class="fas ${ic[t]||'fa-info-circle'}" style="font-size:1rem;flex-shrink:0;margin-top:1px"></i><span>${m}</span>`;
+    c.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));
+    setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400)},4500);
+}
 
-        enableInputs(true);
-    };
+// ====== RESPONSIVE ======
+function onR(){const m=document.querySelector('.mg'),g=document.querySelector('.ig');if(window.innerWidth<860){m.style.gridTemplateColumns='1fr';g.style.gridTemplateColumns='1fr'}else{m.style.gridTemplateColumns='300px 1fr';g.style.gridTemplateColumns='1fr 1fr'}}
+window.addEventListener('resize',onR);onR();
 
-    // ========================================
-    // ========== HAPUS SATU TRANSAKSI ========
-    // ========================================
-    window._delTx = async function (id) {
-        // Disable sementara
-        enableInputs(false);
-        isWriting = true;
-
-        try {
-            const txRef = ref(db, 'users/' + userId + '/' + id);
-            await remove(txRef);
-
-            // Update lokal
-            const idx = transactions.findIndex(t => t.id === id);
-            if (idx !== -1) transactions.splice(idx, 1);
-            isWriting = false;
-            render();
-            showToast('Transaksi dihapus', 'warn');
-        } catch (err) {
-            isWriting = false;
-            setConnStatus('off');
-            console.error('Delete error:', err);
-            showToast('Gagal menghapus dari Firebase', 'error');
-        }
-
-        enableInputs(true);
-    };
-
-    // ========================================
-    // ========== HAPUS SEMUA ================
-    // ========================================
-    window.showClearModal = function () { clearModal.classList.add('show'); };
-    window.closeClearModal = function () { clearModal.classList.remove('show'); };
-
-    window.confirmClearAll = async function () {
-        enableInputs(false);
-        isWriting = true;
-
-        try {
-            await remove(userRef);
-            transactions = [];
-            isWriting = false;
-            render();
-            closeClearModal();
-            showToast('Semua riwayat dihapus dari Firebase', 'warn');
-        } catch (err) {
-            isWriting = false;
-            setConnStatus('off');
-            console.error('Clear error:', err);
-            showToast('Gagal menghapus data dari Firebase', 'error');
-        }
-
-        enableInputs(true);
-    };
-
-    clearModal.addEventListener('click', function (e) { if (e.target === clearModal) closeClearModal(); });
-    userModal.addEventListener('click', function (e) { if (e.target === userModal) closeUserModal(); });
-
-    // ========================================
-    // ========== EXPORT BACKUP ===============
-    // ========================================
-    window.exportBackup = function () {
-        if (transactions.length === 0) {
-            showToast('Tidak ada data untuk di-export', 'warn');
-            return;
-        }
-        const { i, o, bal } = calc();
-        const backup = {
-            app: 'Tabungan Saya',
-            version: 'firebase',
-            exported: new Date().toISOString(),
-            user: getUsername(),
-            summary: { total_masuk: i, total_keluar: o, saldo: bal, jumlah_transaksi: transactions.length },
-            transactions: transactions
-        };
-        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        const date = new Date();
-        const fname = `tabungan_backup_${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}.json`;
-        a.href = url;
-        a.download = fname;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast(`Backup "${fname}" berhasil diunduh`, 'success');
-    };
-
-    // ========================================
-    // ========== IMPORT BACKUP ===============
-    // ========================================
-    window.triggerImport = function () { importFile.click(); };
-
-    importFile.addEventListener('change', async function (e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = async function (ev) {
-            try {
-                const data = JSON.parse(ev.target.result);
-                let txArr = null;
-
-                // Support format lama (array) dan baru (object dengan transactions)
-                if (Array.isArray(data)) {
-                    txArr = data;
-                } else if (data && Array.isArray(data.transactions)) {
-                    txArr = data.transactions;
-                } else {
-                    showToast('Format file tidak dikenali', 'error');
-                    return;
-                }
-
-                // Validasi item
-                const valid = txArr.filter(t =>
-                    t && (t.type === 'in' || t.type === 'out') &&
-                    typeof t.amount === 'number' && t.amount > 0 &&
-                    typeof t.ts === 'number'
-                );
-
-                if (valid.length === 0) {
-                    showToast('File tidak berisi data transaksi valid', 'error');
-                    return;
-                }
-
-                enableInputs(false);
-                isWriting = true;
-
-                // Tulis setiap transaksi ke Firebase
-                let imported = 0;
-                for (const tx of valid) {
-                    const newRef = push(userRef);
-                    await set(newRef, {
-                        type: tx.type,
-                        amount: tx.amount,
-                        note: tx.note || '',
-                        ts: tx.ts
-                    });
-                    imported++;
-                }
-
-                isWriting = false;
-                enableInputs(true);
-                render();
-                showToast(`Berhasil import ${imported} transaksi ke Firebase`, 'success');
-            } catch (err) {
-                isWriting = false;
-                enableInputs(true);
-                console.error('Import error:', err);
-                showToast('Gagal membaca file backup', 'error');
-            }
-        };
-        reader.readAsText(file);
-        this.value = ''; // reset agar bisa pilih file sama lagi
-    });
-
-    // ========================================
-    // ========== TOAST =======================
-    // ========================================
-    function showToast(msg, type) {
-        const icons = {
-            success: 'fa-circle-check',
-            error: 'fa-circle-exclamation',
-            warn: 'fa-triangle-exclamation'
-        };
-        const t = document.createElement('div');
-        t.className = `toast ${type || ''}`;
-        t.innerHTML = `<i class="fa-solid ${icons[type] || icons.success}"></i> ${esc(msg)}`;
-        toastContainer.appendChild(t);
-        setTimeout(() => { if (t.parentNode) t.remove(); }, 2800);
-    }
-
-    // ========================================
-    // ========== KEYBOARD SHORTCUT ===========
-    // ========================================
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeClearModal();
-            closeUserModal();
-        }
-        if (e.key === 'Enter' && !e.shiftKey && document.activeElement === nominalInput) {
-            e.preventDefault();
-            if (!nominalInput.disabled) window.addTransaction('in');
-        }
-        if (e.key === 'Enter' && !e.shiftKey && document.activeElement === usernameInput) {
-            e.preventDefault();
-            window.saveUsername();
-        }
-    });
-
-    // ========================================
-    // ========== INISIALISASI ================
-    // ========================================
-    (function init() {
-        const savedName = getUsername();
-
-        if (savedName) {
-            // Sudah punya username — langsung connect
-            const uid = slugify(savedName);
-            if (uid) {
-                startListening(uid);
-                enableInputs(true);
-                updateUserBadge(savedName);
-            } else {
-                // Username tidak valid setelah slugify
-                clearUsername();
-                userModal.classList.add('show');
-                setTimeout(() => usernameInput.focus(), 300);
-            }
-        } else {
-            // Belum ada username — tampilkan modal
-            userModal.classList.add('show');
-            setTimeout(() => usernameInput.focus(), 300);
-        }
-    })();
-
+// ====== MULAI ======
+setInterval(tick,1000);
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();cekSaldo()}});
+setInterval(()=>{document.title=dng?'TERLAMBAT! — QRIS Monitor':`${fT(sisa)} — QRIS Monitor`},1000);
 </script>
 </body>
 </html>
