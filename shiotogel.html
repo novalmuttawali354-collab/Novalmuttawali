@@ -27,11 +27,10 @@
       --cream: #F5E6D3;
       --cream-dim: #D4C4A8;
       --bg-dark: #0a0608;
-      --bg-card: #14100c; /* Background kartu agar teks tetap terbaca menumpang background luar */
+      --bg-card: #14100c;
       --sanskrit: #C9A961;
     }
 
-    /* BACKGROUND MENYELURUH - JELAS TANPA DIGELAPIN */
     body {
       background-image: url('https://cdn.areabermain.club/assets/cdn/az5/2026/06/09/20260609/3e71a633ed7ffadee362b956742e55d0/citawin-backgroundweb.png');
       background-size: cover;
@@ -40,13 +39,8 @@
       background-repeat: no-repeat;
       font-family: 'Cormorant Garamond', 'Inter', serif;
       min-height: 100vh;
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: flex-start;
-      padding: 2rem; 
-      position: relative; 
-      color: var(--cream);
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 2rem; position: relative; color: var(--cream);
       overflow-x: hidden;
     }
 
@@ -59,19 +53,17 @@
     }
 
     .btn-action {
-      padding: 1rem 2.2rem; border-radius: 4px; 
+      padding: 1rem 2.2rem; border-radius: 4px;
       font-weight: 600; font-size: 0.9rem;
       font-family: 'Cinzel', serif;
       letter-spacing: 4px;
       color: var(--cream); display: flex; align-items: center; justify-content: center;
-      gap: 12px; cursor: pointer; 
+      gap: 12px; cursor: pointer;
       border: 1px solid var(--gold-primary);
       background: linear-gradient(135deg, rgba(20, 16, 12, 0.90), rgba(10, 6, 8, 0.90));
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(212, 175, 55, 0.25);
-      transition: all 0.3s ease; 
-      position: relative;
-      text-transform: uppercase;
-      overflow: hidden;
+      transition: all 0.3s ease; position: relative;
+      text-transform: uppercase; overflow: hidden;
       backdrop-filter: blur(4px);
     }
     .btn-action::before {
@@ -86,16 +78,17 @@
       transition: left 0.6s ease;
     }
     .btn-action:hover::after { left: 100%; }
-    .btn-putar:hover { 
+    .btn-action:disabled {
+      opacity: 0.7; cursor: not-allowed; transform: none !important;
+    }
+    .btn-putar:hover {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.5), rgba(139, 105, 20, 0.4));
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(244, 208, 63, 0.5);
       color: var(--gold-bright);
     }
-    .btn-foto { 
-      border-color: var(--crimson);
-    }
-    .btn-foto:hover { 
+    .btn-foto { border-color: var(--crimson); }
+    .btn-foto:hover {
       background: linear-gradient(135deg, rgba(139, 26, 26, 0.6), rgba(60, 14, 14, 0.5));
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(139, 26, 26, 0.4), inset 0 1px 0 rgba(255, 120, 120, 0.3);
@@ -106,13 +99,11 @@
     .mystic-card {
       position: relative; z-index: 2; max-width: 1200px; width: 100%;
       background: var(--bg-card);
-      border-radius: 8px; 
+      border-radius: 8px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(212, 175, 55, 0.3);
-      overflow: hidden; 
-      border: 3px solid var(--gold-primary);
+      overflow: hidden; border: 3px solid var(--gold-primary);
     }
 
-    /* Ornate corner brackets */
     .corner-ornament {
       position: absolute; width: 50px; height: 50px;
       pointer-events: none; z-index: 5;
@@ -123,18 +114,13 @@
     .corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
     .corner-br { bottom: 10px; right: 10px; transform: scale(-1, -1); }
 
-    /* Sanskrit top banner */
     .sanskrit-banner {
-      position: relative;
-      padding: 0.8rem 2rem;
-      text-align: center;
+      position: relative; padding: 0.8rem 2rem; text-align: center;
       background: linear-gradient(to bottom, rgba(212, 175, 55, 0.15), transparent);
       border-bottom: 1px solid rgba(212, 175, 55, 0.4);
       font-family: 'Noto Sans Devanagari', serif;
-      color: var(--gold-light);
-      letter-spacing: 12px;
-      font-size: 1.1rem;
-      font-weight: 500;
+      color: var(--gold-light); letter-spacing: 12px;
+      font-size: 1.1rem; font-weight: 500;
       text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
     }
     .sanskrit-banner-bottom {
@@ -143,18 +129,46 @@
       background: linear-gradient(to top, rgba(212, 175, 55, 0.15), transparent);
     }
 
-    /* ================= CAPTURING (FOTO) ================= */
+    /* ================= CAPTURING STATE ================= */
     .mystic-card.capturing .tab-nav { display: none !important; }
     .mystic-card.capturing .tab-content { padding-top: 0.5rem; }
 
-    /* ================= THEMES (Pancha Mahabhuta) ================= */
-    /* Agni - Fire */
+    /* ================= TOAST NOTIFICATION ================= */
+    .toast-notification {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      padding: 1rem 2.5rem; border-radius: 6px;
+      font-family: 'Cinzel', serif; font-size: 0.85rem;
+      letter-spacing: 2px; z-index: 99999;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+      animation: toastSlideIn 0.4s ease, toastSlideOut 0.4s ease 2.6s forwards;
+      text-align: center;
+    }
+    .toast-success {
+      color: var(--cream);
+      background: linear-gradient(135deg, rgba(20, 16, 12, 0.95), rgba(10, 6, 8, 0.95));
+      border: 1px solid var(--gold-primary);
+    }
+    .toast-error {
+      color: #ff8080;
+      background: linear-gradient(135deg, rgba(26, 8, 8, 0.95), rgba(10, 6, 8, 0.95));
+      border: 1px solid #a02828;
+    }
+    @keyframes toastSlideIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes toastSlideOut {
+      from { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to { opacity: 0; transform: translateX(-50%) translateY(30px); }
+    }
+
+    /* ================= THEMES ================= */
     .mystic-card.agni { background: #1a0c08; }
     .mystic-card.agni .corner-ornament { color: #ff8c3a; }
     .mystic-card.agni .sanskrit-banner { color: #ffb87a; border-color: rgba(212, 103, 31, 0.5); }
     .mystic-card.agni .shio-container, .mystic-card.agni .syair-container,
     .mystic-card.agni .angka-card, .mystic-card.agni .pasaran-area {
-      border-color: #d4671f; 
+      border-color: #d4671f;
       box-shadow: inset 0 0 0 1px rgba(212, 103, 31, 0.25), 0 6px 14px rgba(0,0,0,0.5);
     }
     .mystic-card.agni .shio-container { background: linear-gradient(145deg, #2a1408, #1a0a04); }
@@ -164,7 +178,6 @@
     .mystic-card.agni .syair-label { color: #ffb87a; }
     .mystic-card.agni .angka-card span { color: #ffb87a; }
 
-    /* Surya - Sun (Gold) */
     .mystic-card.surya { background: #1a1408; }
     .mystic-card.surya .corner-ornament { color: #FFD700; }
     .mystic-card.surya .sanskrit-banner { color: #F4D03F; border-color: rgba(212, 175, 55, 0.5); }
@@ -177,7 +190,6 @@
     .mystic-card.surya .syair-label { color: #F4D03F; }
     .mystic-card.surya .angka-card span { color: #F4D03F; }
 
-    /* Jala - Water */
     .mystic-card.jala { background: #08111a; }
     .mystic-card.jala .corner-ornament { color: #5fb8e0; }
     .mystic-card.jala .sanskrit-banner { color: #8fd4f5; border-color: rgba(44, 122, 158, 0.5); }
@@ -190,7 +202,6 @@
     .mystic-card.jala .syair-label { color: #8fd4f5; }
     .mystic-card.jala .angka-card span { color: #8fd4f5; }
 
-    /* Prithvi - Earth */
     .mystic-card.prithvi { background: #0f1208; }
     .mystic-card.prithvi .corner-ornament { color: #8fbf4a; }
     .mystic-card.prithvi .sanskrit-banner { color: #b5d680; border-color: rgba(90, 122, 44, 0.5); }
@@ -203,7 +214,6 @@
     .mystic-card.prithvi .syair-label { color: #b5d680; }
     .mystic-card.prithvi .angka-card span { color: #b5d680; }
 
-    /* Akasha - Ether */
     .mystic-card.akasha { background: #12081a; }
     .mystic-card.akasha .corner-ornament { color: #b85fd0; }
     .mystic-card.akasha .sanskrit-banner { color: #d88fe8; border-color: rgba(122, 44, 142, 0.5); }
@@ -216,7 +226,6 @@
     .mystic-card.akasha .syair-label { color: #d88fe8; }
     .mystic-card.akasha .angka-card span { color: #d88fe8; }
 
-    /* Vayu - Air */
     .mystic-card.vayu { background: #141418; }
     .mystic-card.vayu .corner-ornament { color: #a0a0c0; }
     .mystic-card.vayu .sanskrit-banner { color: #c5c5e0; border-color: rgba(106, 106, 126, 0.5); }
@@ -229,7 +238,6 @@
     .mystic-card.vayu .syair-label { color: #c5c5e0; }
     .mystic-card.vayu .angka-card span { color: #c5c5e0; }
 
-    /* Rudra - Crimson */
     .mystic-card.rudra { background: #1a0808; }
     .mystic-card.rudra .corner-ornament { color: #e05050; }
     .mystic-card.rudra .sanskrit-banner { color: #ff8080; border-color: rgba(160, 40, 40, 0.5); }
@@ -243,16 +251,18 @@
     .mystic-card.rudra .angka-card span { color: #ff8080; }
 
     /* ================= TAB NAVIGATION ================= */
-    .tab-nav { 
-      display: flex; width: 100%; 
+    .tab-nav {
+      display: flex; width: 100%;
       background: linear-gradient(to bottom, rgba(212, 175, 55, 0.08), rgba(0,0,0,0.5));
       border-bottom: 1px solid rgba(212, 175, 55, 0.3);
       position: relative;
     }
     .tab-btn {
-      flex: 1; padding: 1.4rem; background: transparent; border: none; color: rgba(245, 230, 211, 0.6);
-      font-family: 'Cinzel', serif; font-weight: 600; font-size: 0.95rem; text-transform: uppercase;
-      letter-spacing: 4px; cursor: pointer; transition: all 0.3s ease; position: relative;
+      flex: 1; padding: 1.4rem; background: transparent; border: none;
+      color: rgba(245, 230, 211, 0.6);
+      font-family: 'Cinzel', serif; font-weight: 600; font-size: 0.95rem;
+      text-transform: uppercase; letter-spacing: 4px; cursor: pointer;
+      transition: all 0.3s ease; position: relative;
     }
     .tab-btn:hover { color: var(--cream); background: rgba(212, 175, 55, 0.05); }
     .tab-btn.active { color: var(--gold-bright); }
@@ -282,7 +292,7 @@
     .title-section h1 {
       font-size: 2.8rem; font-weight: 900;
       font-family: 'Cinzel Decorative', serif;
-      color: var(--gold-bright); 
+      color: var(--gold-bright);
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       display: inline-flex; align-items: center; gap: 18px;
       letter-spacing: 6px;
@@ -291,11 +301,10 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .title-section h1 i { 
-      color: var(--gold-bright); 
+    .title-section h1 i {
+      color: var(--gold-bright);
       -webkit-text-fill-color: var(--gold-bright);
-      text-shadow: 0 0 15px rgba(255, 215, 0, 0.7); 
-      font-size: 2rem;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.7); font-size: 2rem;
     }
     .ornament-divider {
       display: flex; align-items: center; justify-content: center; gap: 1rem;
@@ -317,24 +326,20 @@
       padding: 0.6rem 2rem; border-radius: 2px; font-size: 0.85rem;
       font-family: 'Cinzel', serif; font-weight: 600;
       margin-top: 16px; letter-spacing: 3px;
-      box-shadow: inset 0 1px 0 rgba(212,175,55,0.15), 0 2px 8px rgba(0,0,0,0.5); 
-      border: 1px solid;
-      text-transform: uppercase;
-      position: relative;
+      box-shadow: inset 0 1px 0 rgba(212,175,55,0.15), 0 2px 8px rgba(0,0,0,0.5);
+      border: 1px solid; text-transform: uppercase; position: relative;
     }
     .pasaran-area::before, .pasaran-area::after {
       content: '◆'; font-size: 0.55rem; opacity: 0.7;
     }
 
-    /* PERUBAHAN: HERO SPLIT JADI FLEX NO-WRAP (MENYAMPING SEPENUHNYA) */
     .hero-split { display: flex; flex-wrap: nowrap; gap: 2rem; margin: 1.5rem 0 2.5rem; }
-    
+
     .shio-container {
-      flex: 0 0 320px; /* Lebar tetap untuk Shio */
-      min-width: 280px;
+      flex: 0 0 320px; min-width: 280px;
       border-radius: 6px; padding: 2rem 1.4rem; text-align: center;
       box-shadow: 0 12px 25px -8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(212,175,55,0.15);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       border: 1px solid;
       background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
       position: relative;
@@ -358,24 +363,21 @@
     .animal-name {
       font-size: 1.8rem; font-weight: 700; margin-top: 20px;
       font-family: 'Cinzel', serif;
-      color: var(--gold-bright); 
+      color: var(--gold-bright);
       text-shadow: 0 0 12px rgba(255, 215, 0, 0.5), 0 2px 4px rgba(0,0,0,0.8);
       letter-spacing: 4px;
     }
-    .shio-sub { 
-      font-size: 0.85rem; font-weight: 500; color: var(--cream-dim); 
-      margin-top: 10px; 
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8); 
+    .shio-sub {
+      font-size: 0.85rem; font-weight: 500; color: var(--cream-dim);
+      margin-top: 10px; font-family: 'Cormorant Garamond', serif;
+      font-style: italic; letter-spacing: 1px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
     .syair-container {
-      flex: 1 1 auto; /* Mengisi sisa ruang ke samping */
-      border-radius: 6px; padding: 2rem 2.5rem; 
+      flex: 1 1 auto; border-radius: 6px; padding: 2rem 2.5rem;
       border-left-width: 4px; border-left-style: solid;
-      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.7); 
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.7);
       display: flex; flex-direction: column; justify-content: center;
       border: 1px solid; border-left-width: 4px; position: relative;
     }
@@ -384,15 +386,14 @@
       font-family: 'Noto Sans Devanagari', serif;
       color: var(--gold-primary); opacity: 0.5; font-size: 1.2rem;
     }
-    
-    .syair-header { 
-      display: flex; justify-content: space-between; align-items: center; 
-      width: 100%; margin-bottom: 1.5rem; 
-      padding-bottom: 1rem;
+
+    .syair-header {
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; margin-bottom: 1.5rem; padding-bottom: 1rem;
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
-    .syair-label { 
-      font-size: 0.8rem; text-transform: uppercase; font-weight: 600; 
+    .syair-label {
+      font-size: 0.8rem; text-transform: uppercase; font-weight: 600;
       color: var(--gold-primary); letter-spacing: 4px; text-align: left; margin: 0; flex: 1;
       font-family: 'Cinzel', serif;
     }
@@ -400,58 +401,52 @@
       font-family: 'Noto Sans Devanagari', serif;
       margin-right: 8px; opacity: 0.9;
     }
-    
-    .pasaran-logo { 
-      height: 70px; width: auto; max-width: 170px; object-fit: contain; margin-left: 1.5rem; 
+
+    .pasaran-logo {
+      height: 70px; width: auto; max-width: 170px; object-fit: contain; margin-left: 1.5rem;
       filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)) brightness(1.2) contrast(1.1);
       transition: all 0.3s ease;
     }
 
     .bait-text {
-      font-family: 'Cormorant Garamond', serif; 
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.4rem; line-height: 1.85; font-weight: 500;
-      color: var(--cream); 
+      color: var(--cream);
       text-shadow: 0 2px 4px rgba(0,0,0,0.9);
       white-space: pre-line; text-align: center; letter-spacing: 0.8px;
-      font-style: italic;
-      padding: 0.5rem 0;
+      font-style: italic; padding: 0.5rem 0;
     }
     .bait-text::first-letter {
       font-size: 1.6em; color: var(--gold-bright);
       font-family: 'Cinzel Decorative', serif;
-      font-style: normal; font-weight: 700;
-      margin-right: 2px;
+      font-style: normal; font-weight: 700; margin-right: 2px;
       text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     }
 
-    /* PERUBAHAN: ANGKA DUA GRID JADI 4 KOLOM 1 BARIS ( horizontal penuh ) */
     .angka-dua-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 2rem 0 1.8rem; }
     .angka-card {
-      border-radius: 6px; padding: 1.3rem 0.5rem; text-align: center; 
+      border-radius: 6px; padding: 1.3rem 0.5rem; text-align: center;
       box-shadow: 0 6px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(212,175,55,0.1);
-      border: 1px solid; transition: all 0.3s;
-      position: relative;
+      border: 1px solid; transition: all 0.3s; position: relative;
     }
     .angka-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.2);
     }
     .angka-card span {
-      font-size: 0.78rem; font-weight: 600; text-transform: uppercase; 
-      color: var(--gold-primary);
-      display: block; margin-bottom: 14px; letter-spacing: 3px;
-      font-family: 'Cinzel', serif;
+      font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+      color: var(--gold-primary); display: block; margin-bottom: 14px;
+      letter-spacing: 3px; font-family: 'Cinzel', serif;
     }
     .double-numbers { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; align-items: baseline; }
     .double-numbers strong {
-      font-size: 1.8rem; font-family: 'Cinzel', serif; 
-      color: var(--gold-bright); 
-      text-shadow: 0 0 15px rgba(255, 215, 0, 0.6), 0 2px 4px rgba(0,0,0,0.8); 
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-size: 1.8rem; font-family: 'Cinzel', serif;
+      color: var(--gold-bright);
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.6), 0 2px 4px rgba(0,0,0,0.8);
+      font-weight: 700; letter-spacing: 2px;
     }
-    .separator-dot { 
-      font-size: 1.2rem; font-weight: 700; color: var(--gold-primary); 
+    .separator-dot {
+      font-size: 1.2rem; font-weight: 700; color: var(--gold-primary);
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
       font-family: 'Noto Sans Devanagari', serif;
     }
@@ -459,117 +454,87 @@
     /* ================= PREDIKSI COMPONENTS ================= */
     .prediksi-wrapper { padding: 3rem 3rem 1.5rem; }
     .prediksi-header { text-align: center; margin-bottom: 2rem; position: relative; }
-    .prediksi-title { 
-      font-size: 2rem; font-weight: 700; 
+    .prediksi-title {
+      font-size: 2rem; font-weight: 700;
       font-family: 'Cinzel Decorative', serif;
-      color: var(--gold-bright); margin-bottom: 10px; 
-      text-transform: uppercase; 
-      letter-spacing: 4px;
+      color: var(--gold-bright); margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 4px;
       background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .prediksi-date { 
-      font-size: 0.95rem; color: var(--cream-dim); font-weight: 500; 
-      margin-bottom: 15px; 
-      font-family: 'Cormorant Garamond', serif;
+    .prediksi-date {
+      font-size: 0.95rem; color: var(--cream-dim); font-weight: 500;
+      margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;
       font-style: italic; letter-spacing: 1px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8); 
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
     }
-    .prediksi-logo-img { 
-      height: 65px; object-fit: contain; 
+    .prediksi-logo-img {
+      height: 65px; object-fit: contain;
       filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)) brightness(1.2);
     }
-    
-    .prediksi-body-split { display: flex; gap: 2rem; align-items: flex-start; }
 
+    .prediksi-body-split { display: flex; gap: 2rem; align-items: flex-start; }
     .prediksi-left { flex: 1.5; width: 100%; }
-    
-    /* RAPIKAN TABEL JADI 2 KOLOM AGAR TIDAK PANJANG KE BAWAH */
-    .prediksi-table { 
-      width: 100%; 
-      display: block; 
-    }
+
+    .prediksi-table { width: 100%; display: block; }
     .prediksi-table tbody {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr); /* MEMANJANG KE SAMPING */
-      gap: 1rem;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
     }
-    .prediksi-row { 
-      display: flex; 
-      align-items: stretch;
-      width: 100%;
+    .prediksi-row {
+      display: flex; align-items: stretch; width: 100%;
       background: linear-gradient(90deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02), rgba(212, 175, 55, 0.08));
-      transition: all 0.3s; 
-      border-left: 2px solid var(--gold-primary);
-      border-radius: 4px;
-      overflow: hidden;
+      transition: all 0.3s; border-left: 2px solid var(--gold-primary);
+      border-radius: 4px; overflow: hidden;
     }
-    .prediksi-row:hover { 
-      transform: scale(1.02); 
+    .prediksi-row:hover {
+      transform: scale(1.02);
       background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.15));
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
-    .prediksi-cell { 
-      padding: 1rem 1.2rem; 
-      font-size: 1rem; 
-      display: flex; 
-      align-items: center;
-    }
+    .prediksi-cell { padding: 1rem 1.2rem; font-size: 1rem; display: flex; align-items: center; }
     .p-label {
-      width: 40%; 
-      color: var(--cream-dim); font-weight: 600; text-transform: uppercase;
-      border-right: 1px solid rgba(212, 175, 55, 0.2); 
+      width: 40%; color: var(--cream-dim); font-weight: 600; text-transform: uppercase;
+      border-right: 1px solid rgba(212, 175, 55, 0.2);
       background: rgba(0,0,0,0.15);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-      letter-spacing: 1.5px;
-      font-family: 'Cinzel', serif;
-      font-size: 0.8rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8); letter-spacing: 1.5px;
+      font-family: 'Cinzel', serif; font-size: 0.8rem;
     }
     .p-value {
-      width: 60%; 
-      color: var(--gold-bright); font-family: 'Cinzel', serif; 
-      letter-spacing: 1.5px; font-size: 1.05rem; font-weight: 700; 
+      width: 60%; color: var(--gold-bright); font-family: 'Cinzel', serif;
+      letter-spacing: 1.5px; font-size: 1.05rem; font-weight: 700;
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-      justify-content: flex-start;
-      padding-left: 1rem;
+      justify-content: flex-start; padding-left: 1rem;
     }
-    .p-value.long-text { 
-      font-family: 'Cormorant Garamond', serif; 
-      font-size: 0.95rem; 
-      color: var(--cream); 
-      font-weight: 500;
-      font-style: italic;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8); 
-      letter-spacing: 1px;
-      line-height: 1.4;
+    .p-value.long-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 0.95rem;
+      color: var(--cream); font-weight: 500; font-style: italic;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8); letter-spacing: 1px; line-height: 1.4;
     }
 
     .prediksi-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px; position: relative; }
     .prediksi-right::before {
       content: ''; position: absolute; inset: 20%;
-      border: 1px solid rgba(212, 175, 55, 0.15);
-      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 50%;
       animation: rotateMandala 60s linear infinite;
     }
     .prediksi-right::after {
       content: ''; position: absolute; inset: 10%;
-      border: 1px dashed rgba(212, 175, 55, 0.1);
-      border-radius: 50%;
+      border: 1px dashed rgba(212, 175, 55, 0.1); border-radius: 50%;
       animation: rotateMandala 80s linear infinite reverse;
     }
     @keyframes rotateMandala { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    
+
     .prediksi-random-img {
       width: 100%; max-width: 320px; height: auto; object-fit: contain;
-      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.55)) brightness(1.1); 
+      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.55)) brightness(1.1);
       animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative; z-index: 2;
     }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 
-    footer { 
-      text-align: center; font-size: 1.3rem; margin-top: 2.5rem; 
-      color: var(--gold-primary); letter-spacing: 3px; 
+    footer {
+      text-align: center; font-size: 1.3rem; margin-top: 2.5rem;
+      color: var(--gold-primary); letter-spacing: 3px;
       font-family: 'Cinzel', serif; font-weight: 500;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       padding: 1rem 0 0.5rem;
@@ -579,33 +544,29 @@
       opacity: 0.6; font-size: 0.8em;
     }
     .footer-sanskrit {
-      text-align: center;
-      font-family: 'Noto Sans Devanagari', serif;
-      color: var(--sanskrit);
-      opacity: 0.6;
-      font-size: 0.9rem;
-      letter-spacing: 4px;
-      padding-bottom: 1rem;
+      text-align: center; font-family: 'Noto Sans Devanagari', serif;
+      color: var(--sanskrit); opacity: 0.6;
+      font-size: 0.9rem; letter-spacing: 4px; padding-bottom: 1rem;
     }
 
     /* ================= RESPONSIVE ================= */
     @media (max-width: 1000px) {
-      .hero-split { flex-direction: column; flex-wrap: wrap; } /* Balik ke bawah di tablet/mobile */
+      .hero-split { flex-direction: column; flex-wrap: wrap; }
       .shio-container { flex: 1 1 auto; max-width: 100%; }
       .prediksi-body-split { flex-direction: column-reverse; }
       .prediksi-right { width: 100%; min-height: auto; margin-bottom: 1rem; }
       .prediksi-random-img { max-width: 240px; }
       .title-section h1 { font-size: 2.2rem; letter-spacing: 4px; }
       .card-padding, .prediksi-wrapper { padding: 2rem 1.5rem; }
-      .prediksi-table tbody { grid-template-columns: 1fr; } /* BALIK 1 KOLOM DI MOBILE */
-      .angka-dua-grid { grid-template-columns: repeat(2, 1fr); } /* BALIK 2 KOLOM DI TABLET */
+      .prediksi-table tbody { grid-template-columns: 1fr; }
+      .angka-dua-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 650px) {
       body { padding: 1rem; }
       .controls-wrapper { gap: 0.6rem; }
       .btn-action { width: 100%; padding: 0.8rem 1rem; font-size: 0.8rem; letter-spacing: 2px; }
       .mystic-card { border-radius: 4px; border-width: 2px; }
-      .angka-dua-grid { grid-template-columns: 1fr; } /* BALIK 1 KOLOM DI MOBILE */
+      .angka-dua-grid { grid-template-columns: 1fr; }
       .bait-text { font-size: 1.1rem; }
       .animal-name { font-size: 1.4rem; letter-spacing: 2px; }
       .title-section h1 { font-size: 1.6rem; letter-spacing: 3px; gap: 10px; }
@@ -627,7 +588,7 @@
   <svg width="0" height="0" style="position:absolute">
     <defs>
       <symbol id="corner-deco" viewBox="0 0 50 50">
-        <path d="M 2 2 L 25 2 M 2 2 L 2 25 M 2 2 L 12 12 M 8 2 L 8 8 L 2 8 M 18 2 L 18 6 L 14 6 M 2 18 L 6 18 L 6 14 M 25 2 L 22 5 M 2 25 L 5 22" 
+        <path d="M 2 2 L 25 2 M 2 2 L 2 25 M 2 2 L 12 12 M 8 2 L 8 8 L 2 8 M 18 2 L 18 6 L 14 6 M 2 18 L 6 18 L 6 14 M 25 2 L 22 5 M 2 25 L 5 22"
               stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
         <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.6"/>
         <circle cx="2" cy="2" r="1.5" fill="currentColor"/>
@@ -648,19 +609,17 @@
   <!-- KARTU UTAMA -->
   <div class="mystic-card agni" id="mysticCard">
 
-    <!-- Ornamen sudut -->
     <svg class="corner-ornament corner-tl"><use href="#corner-deco"/></svg>
     <svg class="corner-ornament corner-tr"><use href="#corner-deco"/></svg>
     <svg class="corner-ornament corner-bl"><use href="#corner-deco"/></svg>
     <svg class="corner-ornament corner-br"><use href="#corner-deco"/></svg>
-    
-    <!-- BANNER SANSKERTA ATAS -->
+
     <div class="sanskrit-banner">॥ श्री गणेशाय नमः ॥</div>
-    
+
     <!-- TAB NAVIGATION -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('syair')">SYAIR TOGEL</button>
-      <button class="tab-btn" onclick="switchTab('prediksi')">PREDIKSI TOGEL</button>
+      <button class="tab-btn active" data-tab="syair">SYAIR TOGEL</button>
+      <button class="tab-btn" data-tab="prediksi">PREDIKSI TOGEL</button>
     </div>
 
     <!-- TAB 1: SYAIR TOGEL -->
@@ -683,7 +642,7 @@
 
         <div class="hero-split">
           <div class="shio-container">
-            <img id="realAnimalImg" class="animal-img" src="" alt="Shio" crossorigin="anonymous">
+            <img id="realAnimalImg" class="animal-img" src="" alt="Shio">
             <div class="animal-name" id="realShioName">TIKUS</div>
             <div class="shio-sub"><i class="fas fa-moon"></i> penunggu mimpi malam ini</div>
           </div>
@@ -691,7 +650,7 @@
           <div class="syair-container" id="syairContainer">
             <div class="syair-header">
               <div class="syair-label"><span class="deva">ॐ</span> SYAIR BERTUAH · BERSEMI</div>
-              <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran" crossorigin="anonymous">
+              <img id="pasaranLogo" class="pasaran-logo" src="" alt="Logo Pasaran">
             </div>
             <div class="bait-text" id="syair4Bait">
               Tikus kecil berlari sunyi,<br>Membawa mimpi tanpa arti.<br>Embun pagi basahi bumi,<br>Hati tenang, rezeki pasti.
@@ -745,7 +704,7 @@
             <span class="line right"></span>
           </div>
           <div class="prediksi-date" id="predDateDisplay">Hari Sabtu, 11 April 2026</div>
-          <img id="predLogo" class="prediksi-logo-img" src="" alt="Logo Pasaran" crossorigin="anonymous">
+          <img id="predLogo" class="prediksi-logo-img" src="" alt="Logo Pasaran">
         </div>
 
         <div class="prediksi-body-split">
@@ -793,7 +752,7 @@
           </div>
 
           <div class="prediksi-right">
-            <img id="predRandomImg" class="prediksi-random-img" src="" alt="Karakter Acak" crossorigin="anonymous">
+            <img id="predRandomImg" class="prediksi-random-img" src="" alt="Karakter Acak">
           </div>
         </div>
 
@@ -802,30 +761,28 @@
       </div>
     </div>
 
-    <!-- BANNER SANSKERTA BAWAH -->
     <div class="sanskrit-banner sanskrit-banner-bottom">॥ सर्वे भवन्तु सुखिनः ॥</div>
   </div>
 
 <script>
   // ======================= DATA GAMBAR ACAK =======================
- const randomPrediksiImages = [
-  "https://i.postimg.cc/157xt3jL/tikus.png",	
-"https://i.postimg.cc/qM1tv2rb/kerbau23.png",
-"https://i.postimg.cc/YCTJ6yk6/harimau.png",
-"https://i.postimg.cc/K816gyXy/kelinci.png",
-"https://i.postimg.cc/65P9Pctv/naga23655.png",
-"https://i.postimg.cc/5tx8Rfx6/ular22.png",
-"https://i.postimg.cc/fbh8T4Dg/kuda111.png",
-"https://i.postimg.cc/SQ53FvYN/kambing2222.png",
-"https://i.postimg.cc/Gh8KF3pQ/mmm1234.png",
-"https://i.postimg.cc/C5Vhcxg6/ayam12.png",
-"https://i.postimg.cc/zGYQ3HkP/anjing222.png",
-"https://i.postimg.cc/CxR3fVyn/babi.png",
-
+  const randomPrediksiImages = [
+    "https://i.postimg.cc/157xt3jL/tikus.png",
+    "https://i.postimg.cc/qM1tv2rb/kerbau23.png",
+    "https://i.postimg.cc/YCTJ6yk6/harimau.png",
+    "https://i.postimg.cc/K816gyXy/kelinci.png",
+    "https://i.postimg.cc/65P9Pctv/naga23655.png",
+    "https://i.postimg.cc/5tx8Rfx6/ular22.png",
+    "https://i.postimg.cc/fbh8T4Dg/kuda111.png",
+    "https://i.postimg.cc/SQ53FvYN/kambing2222.png",
+    "https://i.postimg.cc/Gh8KF3pQ/mmm1234.png",
+    "https://i.postimg.cc/C5Vhcxg6/ayam12.png",
+    "https://i.postimg.cc/zGYQ3HkP/anjing222.png",
+    "https://i.postimg.cc/CxR3fVyn/babi.png"
   ];
 
-  // ======================= DATA SHIO & LAINNYA =======================
-const shioRealList = [
+  // ======================= DATA SHIO =======================
+  const shioRealList = [
     { nama: "TIKUS", img: "https://i.postimg.cc/157xt3jL/tikus.png" },
     { nama: "KERBAU", img: "https://i.postimg.cc/qM1tv2rb/kerbau23.png" },
     { nama: "HARIMAU", img: "https://i.postimg.cc/YCTJ6yk6/harimau.png" },
@@ -838,8 +795,7 @@ const shioRealList = [
     { nama: "AYAM", img: "https://i.postimg.cc/C5Vhcxg6/ayam12.png" },
     { nama: "ANJING", img: "https://i.postimg.cc/zGYQ3HkP/anjing222.png" },
     { nama: "BABI", img: "https://i.postimg.cc/CxR3fVyn/babi.png" }
-  ];					
-
+  ];
 
   const syairPerShio = {
     "TIKUS": [
@@ -888,15 +844,15 @@ const shioRealList = [
     ],
     "BABI": [
       "Babi berguling di lumpur basah,<br>Nikmati hidup tanpa beban.<br>Gemintang malam jatuh berderai,<br>Kebahagiaan dari hal-hal sederhana.",
-      "Hidung pesek mengendus tanah,<br>Babi berjalan perlahan tenang.<br>Alam memberkahi rezeki melimpah,<br>Bersyukur dalam setiap karunia."
+      "Hidung pesek mengendus tanah,<br>Babi berlari perlahan tenang.<br>Alam memberkahi rezeki melimpah,<br>Bersyukur dalam setiap karunia."
     ]
   };
 
   const daftarPasaran = [
-    "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK", 
-    "KENTUCKY", "NORTH CAROLINA DAY", "CAROLINA EVENING", "CAMBODIA", 
-    "CHELSEA", "POIPET", "TOTO MACAU", "BULLSEYE", "SYDNEY", "BRUNEI", 
-    "TOTOMALI", "HUAHIN", "KINGKONG", "PCSO", "NEVADA", "HONGKONG", 
+    "HOKIDRAW", "CALIFORNIA", "FLORIDA", "OREGON", "BANGKOK", "NEW YORK",
+    "KENTUCKY", "NORTH CAROLINA DAY", "CAROLINA EVENING", "CAMBODIA",
+    "CHELSEA", "POIPET", "TOTO MACAU", "BULLSEYE", "SYDNEY", "BRUNEI",
+    "TOTOMALI", "HUAHIN", "KINGKONG", "PCSO", "NEVADA", "HONGKONG",
     "SINGAPORE", "MAGNUM"
   ];
 
@@ -932,7 +888,7 @@ const shioRealList = [
   function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function generateSet(digit, count) {
     let set = [];
-    for(let i=0; i<count; i++) {
+    for (let i = 0; i < count; i++) {
       let num = Math.floor(Math.random() * Math.pow(10, digit)).toString().padStart(digit, '0');
       set.push(num);
     }
@@ -953,40 +909,214 @@ const shioRealList = [
     return randomTheme;
   }
 
+  // ======================= KONVERSI GAMBAR KE DATA URL (HINDARI CORS ERROR) =======================
+  function imgToDataUrl(src) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () {
+        try {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth || img.width;
+          c.height = img.naturalHeight || img.height;
+          c.getContext('2d').drawImage(img, 0, 0);
+          resolve(c.toDataURL('image/png'));
+        } catch (e) {
+          // Canvas tainted — gunakan proxy fallback
+          proxyToDataUrl(src).then(resolve).catch(() => resolve(null));
+        }
+      };
+      img.onerror = function () {
+        // Gagal load langsung — coba proxy
+        proxyToDataUrl(src).then(resolve).catch(() => resolve(null));
+      };
+      img.src = src;
+    });
+  }
+
+  // Fallback: ambil gambar via CORS proxy, konversi ke data URL
+  async function proxyToDataUrl(src) {
+    try {
+      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(src);
+      const resp = await fetch(proxyUrl);
+      if (!resp.ok) throw new Error('Proxy fetch failed');
+      const blob = await resp.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ======================= TOAST NOTIFICATION =======================
+  function showToast(message, type) {
+    // Hapus toast lama jika ada
+    document.querySelectorAll('.toast-notification').forEach(t => t.remove());
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification toast-' + type;
+    toast.innerHTML = (type === 'success' ? '<i class="fas fa-check-circle" style="margin-right:10px"></i>' : '<i class="fas fa-exclamation-circle" style="margin-right:10px"></i>') + message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      if (toast.parentNode) toast.remove();
+    }, 3200);
+  }
+
+  // ======================= SIMPAN HASIL HD (PERBAIKAN UTAMA) =======================
+  async function captureCardHD() {
+    const card = document.getElementById('mysticCard');
+    const btn = document.getElementById('btnPhoto');
+
+    // Lock button — tampilkan loading
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES HD...';
+
+    // Tambah class capturing (sembunyikan tab nav)
+    card.classList.add('capturing');
+
+    // Tunggu DOM update
+    await new Promise(r => setTimeout(r, 400));
+
+    // === LANGKAH KRITIS: Konversi semua gambar eksternal ke data URL ===
+    // Ini menghindari SecurityError (tainted canvas) di html2canvas
+    const allImages = card.querySelectorAll('img[src]');
+    const backupList = [];
+
+    for (let i = 0; i < allImages.length; i++) {
+      const imgEl = allImages[i];
+      const origSrc = imgEl.src;
+      const origCross = imgEl.getAttribute('crossorigin');
+
+      backupList.push({ el: imgEl, src: origSrc, cross: origCross });
+
+      // Skip jika sudah data URL atau kosong
+      if (!origSrc || origSrc.startsWith('data:') || origSrc.startsWith('blob:')) continue;
+
+      const dataUrl = await imgToDataUrl(origSrc);
+      if (dataUrl && dataUrl.startsWith('data:')) {
+        imgEl.removeAttribute('crossorigin');
+        imgEl.src = dataUrl;
+      } else {
+        // Konversi gagal — tetap coba dengan crossorigin
+        imgEl.setAttribute('crossorigin', 'anonymous');
+        imgEl.src = origSrc;
+      }
+    }
+
+    // Tunggu semua gambar selesai load
+    await new Promise(r => setTimeout(r, 600));
+
+    // === CAPTURE dengan html2canvas ===
+    try {
+      const canvas = await html2canvas(card, {
+        scale: 3,              // HD: 3x resolusi (3600px untuk kartu 1200px)
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: '#0a0608',
+        logging: false,
+        width: card.scrollWidth,
+        height: card.scrollHeight
+      });
+
+      // Buat link download
+      const link = document.createElement('a');
+      const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      link.download = 'CITAWIN-Ramalan-HD-' + ts + '.png';
+      link.href = canvas.toDataURL('image/png', 1.0);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast('Hasil berhasil disimpan dalam HD!', 'success');
+    } catch (err) {
+      console.error('Capture error:', err);
+
+      // Fallback: coba dengan allowTaint + workaround
+      try {
+        const canvas2 = await html2canvas(card, {
+          scale: 3,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#0a0608',
+          logging: false
+        });
+        // allowTaint bisa membuat toDataURL throw SecurityError
+        const dataStr = canvas2.toDataURL('image/png', 1.0);
+        const link2 = document.createElement('a');
+        link2.download = 'CITAWIN-Ramalan-HD-' + Date.now() + '.png';
+        link2.href = dataStr;
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+        showToast('Hasil berhasil disimpan dalam HD!', 'success');
+      } catch (err2) {
+        console.error('Fallback capture error:', err2);
+        showToast('Gagal menyimpan hasil. Coba lagi atau screenshot manual.', 'error');
+      }
+    }
+
+    // === RESTORE: Kembalikan semua gambar ke URL asli ===
+    for (let i = 0; i < backupList.length; i++) {
+      const b = backupList[i];
+      b.el.src = b.src;
+      if (b.cross) {
+        b.el.setAttribute('crossorigin', b.cross);
+      } else {
+        b.el.removeAttribute('crossorigin');
+      }
+    }
+
+    // Hapus class capturing
+    card.classList.remove('capturing');
+
+    // Unlock button
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-camera"></i> SIMPAN HASIL (HD)';
+  }
+
   // ======================= UPDATE SYAIR =======================
   function updateSyairRamalan() {
     applyRandomTheme();
+
     const shioNow = getRandomItem(shioRealList);
     const animalImg = document.getElementById('realAnimalImg');
     const shioNameSpan = document.getElementById('realShioName');
-    animalImg.crossOrigin = "Anonymous"; 
     animalImg.src = shioNow.img;
     shioNameSpan.innerText = shioNow.nama;
-    
+
     const syairElement = document.getElementById('syair4Bait');
     const options = syairPerShio[shioNow.nama] || ["Syair belum tersedia."];
     syairElement.innerHTML = getRandomItem(options);
-    
+
     const pasaranNow = getRandomItem(daftarPasaran);
     document.getElementById('namaPasaran').innerText = pasaranNow;
     const logoImg = document.getElementById('pasaranLogo');
     const logoUrl = mapLogoPasaran[pasaranNow];
     if (logoUrl) {
-      logoImg.style.opacity = '0'; logoImg.crossOrigin = "Anonymous";
+      logoImg.style.opacity = '0';
       setTimeout(() => { logoImg.src = logoUrl; logoImg.style.opacity = '1'; }, 200);
     }
-    
-    const [main1, main2] = [getRandomInt(10,99), getRandomInt(10,99)];
-    document.getElementById('angkaMainDual').innerHTML = `<strong>${main1}</strong><span class="separator-dot">ॐ</span><strong>${main2}</strong>`;
-    
-    const [colok1, colok2] = [getRandomInt(0,9), getRandomInt(0,9)];
-    document.getElementById('colokDual').innerHTML = `<strong>${colok1}</strong><span class="separator-dot">ॐ</span><strong>${colok2}</strong>`;
-    
-    const [four1, four2] = [getRandomInt(1000,9999), getRandomInt(1000,9999)];
-    document.getElementById('empatDDual').innerHTML = `<strong>${four1}</strong><span class="separator-dot">ॐ</span><strong>${four2}</strong>`;
-    
-    const [jitu1, jitu2] = [getRandomInt(100,999), getRandomInt(100,999)];
-    document.getElementById('jituDual').innerHTML = `<strong>${jitu1}</strong><span class="separator-dot">ॐ</span><strong>${jitu2}</strong>`;
+
+    const main1 = getRandomInt(10, 99), main2 = getRandomInt(10, 99);
+    document.getElementById('angkaMainDual').innerHTML =
+      '<strong>' + main1 + '</strong><span class="separator-dot">ॐ</span><strong>' + main2 + '</strong>';
+
+    const colok1 = getRandomInt(0, 9), colok2 = getRandomInt(0, 9);
+    document.getElementById('colokDual').innerHTML =
+      '<strong>' + colok1 + '</strong><span class="separator-dot">ॐ</span><strong>' + colok2 + '</strong>';
+
+    const four1 = getRandomInt(1000, 9999), four2 = getRandomInt(1000, 9999);
+    document.getElementById('empatDDual').innerHTML =
+      '<strong>' + four1 + '</strong><span class="separator-dot">ॐ</span><strong>' + four2 + '</strong>';
+
+    const jitu1 = getRandomInt(100, 999), jitu2 = getRandomInt(100, 999);
+    document.getElementById('jituDual').innerHTML =
+      '<strong>' + jitu1 + '</strong><span class="separator-dot">ॐ</span><strong>' + jitu2 + '</strong>';
   }
 
   // ======================= UPDATE PREDIKSI =======================
@@ -996,109 +1126,73 @@ const shioRealList = [
     const pasaranNow = getRandomItem(daftarPasaran);
     document.getElementById('predPasaranName').innerText = pasaranNow;
     const logoUrl = mapLogoPasaran[pasaranNow];
-    const logoImg = document.getElementById('predLogo');
-    logoImg.crossOrigin = "Anonymous";
-    logoImg.src = logoUrl || "";
+    document.getElementById('predLogo').src = logoUrl || "";
 
     document.getElementById('predDateDisplay').innerText = getCurrentDateIndo();
 
-    let bbfs = ""; for(let i=0; i<7; i++) bbfs += getRandomInt(0,9);
+    let bbfs = ""; for (let i = 0; i < 7; i++) bbfs += getRandomInt(0, 9);
     document.getElementById('valBBFS').innerText = bbfs;
-    let amai = ""; for(let i=0; i<5; i++) amai += getRandomInt(0,9);
+    let amai = ""; for (let i = 0; i < 5; i++) amai += getRandomInt(0, 9);
     document.getElementById('valAMAI').innerText = amai;
     document.getElementById('val4D').innerText = generateSet(4, 4);
     document.getElementById('val3D').innerText = generateSet(3, 4);
     document.getElementById('val2D').innerText = generateSet(2, 10);
-    document.getElementById('valCB').innerText = `${getRandomInt(0,9)} / ${getRandomInt(0,9)}`;
+    document.getElementById('valCB').innerText = getRandomInt(0, 9) + ' / ' + getRandomInt(0, 9);
     document.getElementById('valCB2D').innerText = generateSet(2, 3).replace(/ /g, ' / ');
-    let twinNum = getRandomInt(0,9);
-    document.getElementById('valTwin').innerText = `${twinNum}${twinNum} / ${twinNum}${twinNum} / ${twinNum}${twinNum}`;
-    
+    let twinNum = getRandomInt(0, 9);
+    document.getElementById('valTwin').innerText = twinNum + twinNum + ' / ' + twinNum + twinNum + ' / ' + twinNum + twinNum;
+
     let shios = [];
-    while(shios.length < 3) {
+    while (shios.length < 3) {
       let s = getRandomItem(shioRealList).nama;
-      if(!shios.includes(s)) shios.push(s);
+      if (!shios.includes(s)) shios.push(s);
     }
     document.getElementById('valShio').innerText = shios.join(' / ');
 
     const randomImgUrl = randomPrediksiImages[Math.floor(Math.random() * randomPrediksiImages.length)];
-    const randomImg = document.getElementById('predRandomImg');
-    randomImg.crossOrigin = "Anonymous";
-    randomImg.src = randomImgUrl;
+    document.getElementById('predRandomImg').src = randomImgUrl;
   }
 
-  // ======================= TAB SWITCHING =======================
+  // ======================= TAB SWITCHING (FIX: tanpa event global) =======================
   let currentTab = 'syair';
+
   function switchTab(tabName) {
     currentTab = tabName;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+
+    // Update tombol aktif via data-tab attribute
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+    });
+
+    // Update konten tab
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.getElementById(`tab-${tabName}`).classList.add('active');
-    if(tabName === 'syair') updateSyairRamalan();
+    document.getElementById('tab-' + tabName).classList.add('active');
+
+    // Load data sesuai tab
+    if (tabName === 'syair') updateSyairRamalan();
     else updatePrediksiRamalan();
   }
 
-  // ======================= EVENT & INIT =======================
-  const btnAcak = document.getElementById('btnRamalAcak');
-  btnAcak.addEventListener('click', () => {
-    btnAcak.style.transform = "scale(0.95)";
-    setTimeout(() => { btnAcak.style.transform = ""; }, 100);
-    if(currentTab === 'syair') updateSyairRamalan();
+  // ======================= EVENT LISTENERS =======================
+  document.getElementById('btnRamalAcak').addEventListener('click', function () {
+    if (currentTab === 'syair') updateSyairRamalan();
     else updatePrediksiRamalan();
   });
-  
-  // ======================= FITUR FOTO HD =======================
-  document.getElementById('btnPhoto').addEventListener('click', async () => {
-    const element = document.getElementById('mysticCard');
-    const pasaran = currentTab === 'syair' ? document.getElementById('namaPasaran').innerText : document.getElementById('predPasaranName').innerText;
-    const btn = document.getElementById('btnPhoto');
-    const originalText = btn.innerHTML;
 
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES HD...';
-    btn.style.cursor = 'wait';
-
-    try {
-      await document.fonts.ready;
-      const images = element.getElementsByTagName('img');
-      const imagePromises = Array.from(images).map(img => {
-        if (img.complete) return Promise.resolve();
-        return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
-      });
-      await Promise.all(imagePromises);
-
-      element.classList.add('capturing');
-      await new Promise(r => setTimeout(r, 200));
-
-      const canvas = await html2canvas(element, {
-        scale: 4,              
-        useCORS: true,         
-        backgroundColor: '#14100c', 
-        logging: false,
-        imageTimeout: 5000,
-        allowTaint: false,
-        removeContainer: true
-      });
-
-      element.classList.remove('capturing');
-
-      const link = document.createElement('a');
-      link.download = `CITAWIN-${currentTab.toUpperCase()}-${pasaran}-${Date.now()}.png`;
-      link.href = canvas.toDataURL("image/png", 1.0); 
-      link.click();
-
-    } catch (err) {
-      console.error("Gagal memotret:", err);
-      element.classList.remove('capturing');
-      alert("Gagal mengambil foto. Pastikan koneksi internet stabil.");
-    } finally {
-      btn.innerHTML = originalText;
-      btn.style.cursor = 'pointer';
-    }
+  document.getElementById('btnPhoto').addEventListener('click', function () {
+    captureCardHD();
   });
 
-  // Initial load
+  // Tab buttons — gunakan data-tab attribute
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      switchTab(this.getAttribute('data-tab'));
+    });
+  });
+
+  // ======================= INIT: Load data pertama kali =======================
   updateSyairRamalan();
 </script>
+
 </body>
 </html>
