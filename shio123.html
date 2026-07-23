@@ -92,9 +92,7 @@
       overflow: hidden; border: 3px solid var(--gold-primary);
     }
 
-    /* Tambahkan: saat capturing, pastikan tab-nav hidden dan overflow visible */
     .mystic-card.capturing .tab-nav { display: none !important; }
-    .mystic-card.capturing { overflow: visible !important; }
 
     .corner-ornament {
       position: absolute; width: 50px; height: 50px;
@@ -119,7 +117,6 @@
       background: linear-gradient(to top, rgba(212,175,55,0.15), transparent);
     }
 
-    /* ================= TOAST ================= */
     .toast-box {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
       padding: 1rem 2.5rem; border-radius: 6px;
@@ -134,7 +131,6 @@
     @keyframes toastIn { from { opacity:0; transform: translateX(-50%) translateY(30px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
     @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
 
-    /* ================= THEMES ================= */
     .mystic-card.agni { background: #1a0c08; }
     .mystic-card.agni .corner-ornament { color: #ff8c3a; }
     .mystic-card.agni .sanskrit-banner { color: #ffb87a; border-color: rgba(212,103,31,0.5); }
@@ -221,7 +217,6 @@
     .mystic-card.rudra .syair-label { color: #ff8080; }
     .mystic-card.rudra .angka-card span { color: #ff8080; }
 
-    /* ================= TAB NAV ================= */
     .tab-nav {
       display: flex; width: 100%;
       background: linear-gradient(to bottom, rgba(212,175,55,0.08), rgba(0,0,0,0.5));
@@ -249,7 +244,6 @@
     .tab-content.active { display: block; }
     @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
-    /* ================= SYAIR ================= */
     .card-padding { padding: 3rem 3rem 1.5rem; }
     .title-section { text-align: center; margin-bottom: 2.5rem; position: relative; }
     .title-section .sanskrit-top {
@@ -337,7 +331,6 @@
     .double-numbers strong { font-size: 1.8rem; font-family: 'Cinzel', serif; color: var(--gold-bright); font-weight: 700; letter-spacing: 2px; text-shadow: 0 0 15px rgba(255,215,0,0.6), 0 2px 4px rgba(0,0,0,0.8); }
     .separator-dot { font-size: 1.2rem; font-weight: 700; color: var(--gold-primary); text-shadow: 0 0 8px rgba(212,175,55,0.6); font-family: 'Noto Sans Devanagari', serif; }
 
-    /* ================= PREDIKSI ================= */
     .prediksi-wrapper { padding: 3rem 3rem 1.5rem; }
     .prediksi-header { text-align: center; margin-bottom: 2rem; position: relative; }
     .prediksi-title { font-size: 2rem; font-weight: 700; font-family: 'Cinzel Decorative', serif; color: var(--gold-bright); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 4px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -589,27 +582,33 @@
     card.classList.add(warnaThemes[Math.floor(Math.random() * warnaThemes.length)]);
   }
 
-  // ======================= CACHE DATA URL =======================
+  // ======================= CACHE & KONVERSI GAMBAR =======================
   const dataUrlCache = {};
+  // Transparent 1x1 pixel — fallback untuk gambar yang gagal CORS
+  const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-  // ======================= KONVERSI GAMBAR → DATA URL =======================
   async function getImageDataUrl(url) {
     if (!url || url.startsWith('data:') || url.startsWith('blob:')) return url;
     if (dataUrlCache[url]) return dataUrlCache[url];
     const cleanUrl = url.split('?')[0];
 
-    // Strategi 1: Canvas langsung (CORS)
-    let result = await _canvasConvert(cleanUrl);
-    if (result) { dataUrlCache[url] = result; return result; }
+    // Strategi 1: Canvas langsung
+    let r = await _canvasCORS(cleanUrl);
+    if (r) { dataUrlCache[url] = r; return r; }
 
-    // Strategi 2: CORS proxy
-    result = await _proxyConvert(cleanUrl);
-    if (result) { dataUrlCache[url] = result; return result; }
+    // Strategi 2: CORS proxy (coba semua)
+    r = await _proxyFetch(cleanUrl);
+    if (r) { dataUrlCache[url] = r; return r; }
 
+    // Strategi 3: Canvas tanpa crossOrigin (risk of taint, tapi dicoba)
+    r = await _canvasNoCORS(cleanUrl);
+    if (r) { dataUrlCache[url] = r; return r; }
+
+    console.warn('Gagal konversi:', url);
     return null;
   }
 
-  function _canvasConvert(url) {
+  function _canvasCORS(url) {
     return new Promise(resolve => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
@@ -627,7 +626,7 @@
     });
   }
 
-  async function _proxyConvert(url) {
+  async function _proxyFetch(url) {
     const proxies = [
       'https://api.codetabs.com/v1/proxy/?url=',
       'https://corsproxy.io/?url=',
@@ -639,20 +638,58 @@
         if (!resp.ok) continue;
         const blob = await resp.blob();
         if (blob.size < 500) continue;
-        const du = await _blobToDataUrl(blob);
+        const du = await _blobToDu(blob);
         if (du && du.startsWith('data:image')) return du;
       } catch(e) { continue; }
     }
     return null;
   }
 
-  function _blobToDataUrl(blob) {
+  function _canvasNoCORS(url) {
+    return new Promise(resolve => {
+      const img = new Image();
+      // TANPA crossOrigin — bisa taint tapi setidaknya gambar load
+      img.onload = function() {
+        try {
+          const c = document.createElement('canvas');
+          c.width = Math.max(img.naturalWidth, 1);
+          c.height = Math.max(img.naturalHeight, 1);
+          c.getContext('2d').drawImage(img, 0, 0);
+          resolve(c.toDataURL('image/png'));
+        } catch(e) {
+          // Tainted canvas — gagal
+          resolve(null);
+        }
+      };
+      img.onerror = function() { resolve(null); };
+      img.src = url;
+    });
+  }
+
+  function _blobToDu(blob) {
     return new Promise(resolve => {
       const r = new FileReader();
       r.onloadend = () => resolve(r.result);
       r.onerror = () => resolve(null);
       r.readAsDataURL(blob);
     });
+  }
+
+  // ======================= PRE-CACHE GAMBAR SAAT HALAMAN LOAD =======================
+  async function preCacheAllImages() {
+    const allUrls = [];
+    shioRealList.forEach(s => allUrls.push(s.img));
+    randomPrediksiImages.forEach(u => allUrls.push(u));
+    Object.values(mapLogoPasaran).forEach(u => allUrls.push(u));
+
+    console.log('[PRE-CACHE] Mulai cache ' + allUrls.length + ' gambar...');
+    let ok = 0, fail = 0;
+    for (const url of allUrls) {
+      const du = await getImageDataUrl(url);
+      if (du && du.startsWith('data:image')) ok++;
+      else fail++;
+    }
+    console.log('[PRE-CACHE] Selesai: ' + ok + ' sukses, ' + fail + ' gagal');
   }
 
   // ======================= TOAST =======================
@@ -665,28 +702,48 @@
     setTimeout(() => { if (t.parentNode) t.remove(); }, 3200);
   }
 
+  // ======================= DOWNLOAD HELPER =======================
+  function _downloadPng(dataUrl, filename) {
+    const a = document.createElement('a');
+    a.download = filename;
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   // ================================================================
-  //  SIMPAN HASIL HD — FUNGSI UTAMA (SUDAH DIPERBAIKI TOTAL)
+  //  SIMPAN HASIL HD — 5 STRATEGI BERTINGKAT (ROBUST)
   // ================================================================
   async function captureCardHD() {
     const card = document.getElementById('mysticCard');
     const btn  = document.getElementById('btnPhoto');
 
-    // ── Disable button & mulai proses ──
+    // ── Cek library ──
+    const hasH2C = typeof html2canvas === 'function';
+    const hasDTI = typeof domtoimage !== 'undefined' && typeof domtoimage.toPng === 'function';
+
+    console.log('[CAPTURE] html2canvas:', hasH2C, '| domtoimage:', hasDTI);
+
+    if (!hasH2C && !hasDTI) {
+      showToast('Library screenshot gagal load. Refresh halaman!', 'err');
+      return;
+    }
+
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MENYIAPKAN...';
     card.classList.add('capturing');
 
-    // ── Pause semua animasi ──
-    const animatedEls = card.querySelectorAll('*');
-    animatedEls.forEach(el => { el.style.animationPlayState = 'paused'; });
-
+    // ── Pause animasi ──
+    const animEls = card.querySelectorAll('*');
+    animEls.forEach(el => { el.style.animationPlayState = 'paused'; });
     await new Promise(r => setTimeout(r, 300));
 
-    // ── STEP 1: Konversi semua <img> ke data URL ──
+    // ── STEP 1: Konversi gambar ke data URL ──
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KONVERSI GAMBAR...';
     const imgs = card.querySelectorAll('img');
     const imgBackups = [];
+    let failCount = 0;
 
     for (const imgEl of imgs) {
       const origSrc = imgEl.src;
@@ -694,192 +751,220 @@
         el: imgEl,
         src: origSrc,
         vis: imgEl.style.visibility,
+        w: imgEl.style.width,
+        h: imgEl.style.height,
+        mw: imgEl.style.maxWidth,
         co: imgEl.getAttribute('crossorigin')
       });
 
       if (!origSrc || origSrc.startsWith('data:') || origSrc.startsWith('blob:')) continue;
 
       const dataUrl = await getImageDataUrl(origSrc);
-      if (dataUrl) {
+      if (dataUrl && dataUrl.startsWith('data:image')) {
         imgEl.removeAttribute('crossorigin');
         imgEl.src = dataUrl;
-        // Tunggu gambar selesai load
+        // Tunggu load
         await new Promise(resolve => {
           if (imgEl.complete && imgEl.naturalWidth > 0) return resolve();
           imgEl.onload = resolve;
           imgEl.onerror = resolve;
-          setTimeout(resolve, 4000);
+          setTimeout(resolve, 3000);
         });
       } else {
-        imgEl.style.visibility = 'hidden';
+        // GAGAL konversi → ganti src ke transparent pixel (prevent canvas taint)
+        failCount++;
+        imgEl.removeAttribute('crossorigin');
+        imgEl.src = TRANSPARENT_PIXEL;
       }
     }
+
+    console.log('[CAPTURE] Gambar: ' + (imgs.length - failCount) + '/' + imgs.length + ' sukses konversi');
 
     await new Promise(r => setTimeout(r, 600));
 
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> RENDERING HD...';
-
-    // ── STEP 2: html2canvas dengan onclone ──
     let captured = false;
 
-    try {
-      const canvas = await html2canvas(card, {
-        scale: 4,
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#0a0608',
-        logging: false,
-        width: card.scrollWidth,
-        height: card.scrollHeight,
-        removeContainer: true,
-        imageTimeout: 15000,
+    // ══════════════════════════════════════
+    //  ATTEMPT 1: html2canvas — SIMPLE (tanpa onclone)
+    // ══════════════════════════════════════
+    if (hasH2C && !captured) {
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ATTEMPT 1...';
+      try {
+        console.log('[CAPTURE] Attempt 1: html2canvas simple');
+        const canvas = await html2canvas(card, {
+          scale: 3,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#0a0608',
+          logging: false,
+          width: card.scrollWidth,
+          height: card.scrollHeight
+        });
 
-        // ═══════════════════════════════════════════
-        //  onclone: PERBAIKI CSS yang html2canvas GAGAL RENDER
-        // ═══════════════════════════════════════════
-        onclone: function(clonedDoc, clonedCard) {
-
-          // ── FIX #1: Gradient text ──
-          // background-clip: text TIDAK didukung html2canvas
-          // Ganti ke solid gold yang mirip gradient asli
-          clonedCard.querySelectorAll('.title-section h1').forEach(el => {
-            el.style.setProperty('-webkit-text-fill-color', '#D4AF37', 'important');
-            el.style.setProperty('color', '#D4AF37', 'important');
-            el.style.setProperty('background', 'none', 'important');
-            el.style.setProperty('-webkit-background-clip', 'unset', 'important');
-            el.style.setProperty('background-clip', 'unset', 'important');
-          });
-          clonedCard.querySelectorAll('.prediksi-title').forEach(el => {
-            el.style.setProperty('-webkit-text-fill-color', '#D4AF37', 'important');
-            el.style.setProperty('color', '#D4AF37', 'important');
-            el.style.setProperty('background', 'none', 'important');
-            el.style.setProperty('-webkit-background-clip', 'unset', 'important');
-            el.style.setProperty('background-clip', 'unset', 'important');
-          });
-
-          // ── FIX #2: CSS filter drop-shadow() ──
-          // html2canvas gagal render drop-shadow
-          // Ganti ke brightness + contrast yang DIDUKUNG
-          clonedCard.querySelectorAll('.animal-img').forEach(el => {
-            el.style.filter = 'brightness(1.2) contrast(1.05)';
-          });
-          clonedCard.querySelectorAll('.pasaran-logo').forEach(el => {
-            el.style.filter = 'brightness(1.3) contrast(1.1)';
-          });
-          clonedCard.querySelectorAll('.prediksi-logo-img').forEach(el => {
-            el.style.filter = 'brightness(1.3) contrast(1.1)';
-          });
-          clonedCard.querySelectorAll('.prediksi-random-img').forEach(el => {
-            el.style.filter = 'brightness(1.2) contrast(1.1)';
-          });
-
-          // ── FIX #3: SVG corner ornaments ──
-          clonedCard.querySelectorAll('.corner-ornament').forEach(svg => {
-            svg.style.overflow = 'visible';
-            svg.style.display = 'block';
-            svg.style.width = '50px';
-            svg.style.height = '50px';
-          });
-
-          // ── FIX #4: Freeze animasi di clone ──
-          clonedCard.querySelectorAll('*').forEach(el => {
-            el.style.animation = 'none';
-            el.style.transition = 'none';
-            el.style.animationPlayState = 'paused';
-          });
-
-          // ── FIX #5: Hapus backdrop-filter ──
-          // (tidak didukung html2canvas)
-          clonedCard.querySelectorAll('[style*="backdrop"], .btn-action').forEach(el => {
-            el.style.backdropFilter = 'none';
-            el.style.webkitBackdropFilter = 'none';
-          });
-
-          // ── FIX #6: Pastikan img tanpa crossorigin ──
-          clonedCard.querySelectorAll('img').forEach(img => {
-            img.removeAttribute('crossorigin');
-          });
-
-          // ── FIX #7: Border card ──
-          clonedCard.style.border = '3px solid #D4AF37';
-          clonedCard.style.borderRadius = '8px';
-          clonedCard.style.overflow = 'visible';
-
-          // ── FIX #8: Icon <i> di dalam h1 ──
-          // Pastikan icon tetap berwarna gold
-          clonedCard.querySelectorAll('.title-section h1 i').forEach(el => {
-            el.style.setProperty('color', '#FFD700', 'important');
-            el.style.setProperty('-webkit-text-fill-color', '#FFD700', 'important');
-          });
-
-          // ── FIX #9: Rotating mandala borders ──
-          // Hapus pseudo-element animation yang bikin render error
-          const predRight = clonedCard.querySelector('.prediksi-right');
-          if (predRight) {
-            // Ganti animated border dengan static border yang terlihat
-            predRight.style.position = 'relative';
-            predRight.style.border = '1px solid rgba(212,175,55,0.15)';
-            predRight.style.borderRadius = '50%';
+        try {
+          const dataStr = canvas.toDataURL('image/png', 1.0);
+          if (dataStr && dataStr.startsWith('data:image') && dataStr.length > 1000) {
+            _downloadPng(dataStr, 'CITAWIN-HD-' + Date.now() + '.png');
+            captured = true;
+            showToast('✓ Hasil HD berhasil disimpan!', 'ok');
+            console.log('[CAPTURE] Attempt 1 SUKSES');
+          } else {
+            console.warn('[CAPTURE] Attempt 1: toDataURL return kosong/kecil');
           }
+        } catch(taintErr) {
+          console.warn('[CAPTURE] Attempt 1: Canvas TAINTED —', taintErr.message);
         }
-      });
-
-      // ── Download ──
-      const dataStr = canvas.toDataURL('image/png', 1.0);
-      if (dataStr && dataStr.startsWith('data:image')) {
-        const a = document.createElement('a');
-        a.download = 'CITAWIN-Ramalan-HD-' + Date.now() + '.png';
-        a.href = dataStr;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        captured = true;
-        showToast('✓ Hasil HD berhasil disimpan!', 'ok');
+      } catch(err) {
+        console.error('[CAPTURE] Attempt 1 GAGAL:', err.message || err);
       }
-    } catch(err) {
-      console.error('html2canvas gagal:', err.message || err);
     }
 
-    // ── STEP 3: Fallback dom-to-image-more ──
-    if (!captured && typeof domtoimage !== 'undefined') {
+    // ══════════════════════════════════════
+    //  ATTEMPT 2: html2canvas — DENGAN onclone (CSS fix)
+    // ══════════════════════════════════════
+    if (hasH2C && !captured) {
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ATTEMPT 2...';
       try {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> FALLBACK...';
+        console.log('[CAPTURE] Attempt 2: html2canvas + onclone');
+        const canvas = await html2canvas(card, {
+          scale: 3,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#0a0608',
+          logging: false,
+          width: card.scrollWidth,
+          height: card.scrollHeight,
+          onclone: function(clonedDoc, clonedCard) {
+            try {
+              // Fix gradient text → solid gold
+              clonedCard.querySelectorAll('.title-section h1, .prediksi-title').forEach(el => {
+                el.style.setProperty('-webkit-text-fill-color', '#D4AF37', 'important');
+                el.style.setProperty('color', '#D4AF37', 'important');
+                el.style.setProperty('background', 'none', 'important');
+                el.style.setProperty('-webkit-background-clip', 'unset', 'important');
+                el.style.setProperty('background-clip', 'unset', 'important');
+              });
+              // Fix icon dalam h1
+              clonedCard.querySelectorAll('.title-section h1 i').forEach(el => {
+                el.style.setProperty('color', '#FFD700', 'important');
+                el.style.setProperty('-webkit-text-fill-color', '#FFD700', 'important');
+              });
+              // Fix CSS filter
+              clonedCard.querySelectorAll('.animal-img, .pasaran-logo, .prediksi-logo-img, .prediksi-random-img').forEach(el => {
+                el.style.filter = 'brightness(1.15) contrast(1.05)';
+              });
+              // Freeze animasi
+              clonedCard.querySelectorAll('*').forEach(el => {
+                el.style.animation = 'none';
+                el.style.transition = 'none';
+              });
+              // Fix SVG ornaments
+              clonedCard.querySelectorAll('.corner-ornament').forEach(svg => {
+                svg.style.overflow = 'visible';
+                svg.style.display = 'block';
+              });
+            } catch(e) {
+              console.warn('[CAPTURE] onclone warning:', e.message);
+            }
+          }
+        });
 
-        // Perbaiki gradient text di original SEBELUM dom-to-image
-        const cssFixBackups = [];
-        card.querySelectorAll('.title-section h1').forEach(el => {
-          cssFixBackups.push({ el, css: el.style.cssText });
+        try {
+          const dataStr = canvas.toDataURL('image/png', 1.0);
+          if (dataStr && dataStr.startsWith('data:image') && dataStr.length > 1000) {
+            _downloadPng(dataStr, 'CITAWIN-HD-' + Date.now() + '.png');
+            captured = true;
+            showToast('✓ Hasil HD berhasil disimpan!', 'ok');
+            console.log('[CAPTURE] Attempt 2 SUKSES');
+          }
+        } catch(taintErr) {
+          console.warn('[CAPTURE] Attempt 2: Canvas TAINTED —', taintErr.message);
+        }
+      } catch(err) {
+        console.error('[CAPTURE] Attempt 2 GAGAL:', err.message || err);
+      }
+    }
+
+    // ══════════════════════════════════════
+    //  ATTEMPT 3: html2canvas — allowTaint:true
+    // ══════════════════════════════════════
+    if (hasH2C && !captured) {
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ATTEMPT 3...';
+      try {
+        console.log('[CAPTURE] Attempt 3: html2canvas allowTaint');
+        const canvas = await html2canvas(card, {
+          scale: 2,
+          useCORS: false,
+          allowTaint: true,
+          backgroundColor: '#0a0608',
+          logging: false,
+          width: card.scrollWidth,
+          height: card.scrollHeight
+        });
+
+        try {
+          const dataStr = canvas.toDataURL('image/png', 1.0);
+          if (dataStr && dataStr.startsWith('data:image') && dataStr.length > 1000) {
+            _downloadPng(dataStr, 'CITAWIN-HD-' + Date.now() + '.png');
+            captured = true;
+            showToast('✓ Hasil berhasil disimpan!', 'ok');
+            console.log('[CAPTURE] Attempt 3 SUKSES (allowTaint)');
+          }
+        } catch(taintErr) {
+          // Canvas tainted — buka di window baru untuk manual save
+          console.warn('[CAPTURE] Attempt 3: Tainted, opening new window');
+          const newWin = window.open('', '_blank');
+          if (newWin) {
+            newWin.document.title = 'CITAWIN Screenshot';
+            newWin.document.body.style.background = '#0a0608';
+            newWin.document.body.style.margin = '0';
+            newWin.document.body.style.display = 'flex';
+            newWin.document.body.style.justifyContent = 'center';
+            newWin.document.body.appendChild(canvas);
+            const tip = newWin.document.createElement('div');
+            tip.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#14100c;color:#F5E6D3;padding:12px 24px;border:1px solid #D4AF37;font:14px Cinzel,serif;letter-spacing:2px;z-index:999;';
+            tip.textContent = 'Klik kanan gambar → Save Image As...';
+            newWin.document.body.appendChild(tip);
+            captured = true;
+            showToast('Screenshot ditampilkan di tab baru. Simpan manual: Right-Click → Save.', 'ok');
+          }
+        }
+      } catch(err) {
+        console.error('[CAPTURE] Attempt 3 GAGAL:', err.message || err);
+      }
+    }
+
+    // ══════════════════════════════════════
+    //  ATTEMPT 4: dom-to-image-more
+    // ══════════════════════════════════════
+    if (hasDTI && !captured) {
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ATTEMPT 4...';
+      try {
+        console.log('[CAPTURE] Attempt 4: dom-to-image-more');
+
+        // Fix CSS di original SEBELUM dom-to-image
+        const cssBackups = [];
+        card.querySelectorAll('.title-section h1, .prediksi-title').forEach(el => {
+          cssBackups.push({ el, css: el.style.cssText });
           el.style.setProperty('-webkit-text-fill-color', '#D4AF37', 'important');
           el.style.setProperty('color', '#D4AF37', 'important');
           el.style.setProperty('background', 'none', 'important');
           el.style.setProperty('-webkit-background-clip', 'unset', 'important');
           el.style.setProperty('background-clip', 'unset', 'important');
         });
-        card.querySelectorAll('.prediksi-title').forEach(el => {
-          cssFixBackups.push({ el, css: el.style.cssText });
-          el.style.setProperty('-webkit-text-fill-color', '#D4AF37', 'important');
-          el.style.setProperty('color', '#D4AF37', 'important');
-          el.style.setProperty('background', 'none', 'important');
-          el.style.setProperty('-webkit-background-clip', 'unset', 'important');
-          el.style.setProperty('background-clip', 'unset', 'important');
+        card.querySelectorAll('.title-section h1 i').forEach(el => {
+          cssBackups.push({ el, css: el.style.cssText });
+          el.style.setProperty('color', '#FFD700', 'important');
+          el.style.setProperty('-webkit-text-fill-color', '#FFD700', 'important');
         });
-        // Fix filters
-        card.querySelectorAll('.animal-img').forEach(el => {
-          cssFixBackups.push({ el, css: el.style.cssText });
-          el.style.filter = 'brightness(1.2) contrast(1.05)';
-        });
-        card.querySelectorAll('.pasaran-logo').forEach(el => {
-          cssFixBackups.push({ el, css: el.style.cssText });
-          el.style.filter = 'brightness(1.3) contrast(1.1)';
-        });
-        card.querySelectorAll('.prediksi-random-img').forEach(el => {
-          cssFixBackups.push({ el, css: el.style.cssText });
-          el.style.filter = 'brightness(1.2) contrast(1.1)';
+        card.querySelectorAll('.animal-img, .pasaran-logo, .prediksi-logo-img, .prediksi-random-img').forEach(el => {
+          cssBackups.push({ el, css: el.style.cssText });
+          el.style.filter = 'brightness(1.15) contrast(1.05)';
         });
 
         const w = card.offsetWidth;
         const h = card.offsetHeight;
-        const sc = 4;
+        const sc = 3;
 
         const du = await domtoimage.toPng(card, {
           quality: 1.0,
@@ -893,38 +978,59 @@
           }
         });
 
-        // Restore CSS original
-        cssFixBackups.forEach(b => { b.el.style.cssText = b.css; });
+        // Restore CSS
+        cssBackups.forEach(b => { b.el.style.cssText = b.css; });
 
-        if (du && du.startsWith('data:image')) {
-          const a = document.createElement('a');
-          a.download = 'CITAWIN-Ramalan-HD-' + Date.now() + '.png';
-          a.href = du;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+        if (du && du.startsWith('data:image') && du.length > 1000) {
+          _downloadPng(du, 'CITAWIN-HD-' + Date.now() + '.png');
           captured = true;
           showToast('✓ Hasil HD berhasil disimpan!', 'ok');
+          console.log('[CAPTURE] Attempt 4 SUKSES');
+        } else {
+          console.warn('[CAPTURE] Attempt 4: dataURL kosong/kecil');
         }
-      } catch(err2) {
-        console.error('dom-to-image gagal:', err2.message || err2);
+      } catch(err) {
+        console.error('[CAPTURE] Attempt 4 GAGAL:', err.message || err);
       }
     }
 
+    // ══════════════════════════════════════
+    //  ATTEMPT 5: EMERGENCY — Canvas API manual
+    // ══════════════════════════════════════
     if (!captured) {
-      showToast('Gagal menyimpan. Coba lagi.', 'err');
+      console.log('[CAPTURE] Attempt 5: Emergency fallback');
+      showToast('Auto-save gagal. Buka tab baru untuk simpan manual.', 'err');
+
+      // Buka card dalam window baru (tanpa CORS issue)
+      try {
+        const newWin = window.open('', '_blank');
+        if (newWin) {
+          // Copy card HTML ke window baru
+          newWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CITAWIN Screenshot</title>');
+          // Copy semua stylesheet
+          document.querySelectorAll('style, link[rel="stylesheet"]').forEach(s => {
+            newWin.document.write(s.outerHTML);
+          });
+          newWin.document.write('</head><body style="background:#0a0608;display:flex;justify-content:center;padding:2rem;">');
+          newWin.document.write(card.outerHTML);
+          newWin.document.write('<div style="position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#14100c;color:#F5E6D3;padding:12px 24px;border:1px solid #D4AF37;font:14px Cinzel,serif;letter-spacing:2px;z-index:999;">Screenshot manual: Ctrl+Shift+S atau Right-Click → Save</div>');
+          newWin.document.write('</body></html>');
+          newWin.document.close();
+        }
+      } catch(e) {
+        console.error('[CAPTURE] Emergency fallback gagal:', e);
+      }
     }
 
-    // ── RESTORE semua ke state asli ──
+    // ── RESTORE semua ──
     for (const b of imgBackups) {
       b.el.src = b.src;
       b.el.style.visibility = b.vis || '';
       if (b.co) b.el.setAttribute('crossorigin', b.co);
       else b.el.removeAttribute('crossorigin');
     }
-    animatedEls.forEach(el => { el.style.animationPlayState = ''; });
+    animEls.forEach(el => { el.style.animationPlayState = ''; });
     card.classList.remove('capturing');
-    card.style.overflow = '';
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-camera"></i> SIMPAN HASIL (HD)';
   }
@@ -1011,9 +1117,13 @@
 
   document.getElementById('btnPhoto').addEventListener('click', captureCardHD);
 
-  // ======================= INIT =======================
+  // ======================= INIT + PRE-CACHE =======================
   updateSyairRamalan();
   updatePrediksiRamalan();
+
+  // Pre-cache semua gambar saat halaman load
+  // Ini memberi waktu proxy untuk bekerja SEBELUM user klik screenshot
+  preCacheAllImages();
 </script>
 </body>
 </html>
