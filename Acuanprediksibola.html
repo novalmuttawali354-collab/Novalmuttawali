@@ -1,0 +1,1064 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Generator Prediksi Bola ESPN - 2 Tanggal</title>
+  <style>
+    :root {
+      --bg: #051718;
+      --bg2: #0a2628;
+      --panel: rgba(12, 35, 38, .94);
+      --panel2: #0d2b2f;
+      --line: rgba(130, 231, 207, .18);
+      --mint: #75e6c6;
+      --mint2: #35bda0;
+      --gold: #ffd76a;
+      --text: #f7f3e8;
+      --muted: #9fc2ba;
+      --danger: #ff8c86;
+      --shadow: 0 25px 60px rgba(0, 0, 0, .42);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(53, 189, 160, .16), transparent 30%),
+        radial-gradient(circle at 90% 5%, rgba(255, 215, 106, .10), transparent 25%),
+        linear-gradient(145deg, var(--bg), var(--bg2));
+      font-family: Inter, Poppins, "Segoe UI", Arial, sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .app {
+      width: min(1680px, 100%);
+      margin: 0 auto;
+      padding: 26px 18px 40px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(14, 49, 51, .94), rgba(8, 28, 31, .92));
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -100px;
+      top: -150px;
+      border-radius: 50%;
+      background: rgba(255, 215, 106, .11);
+      filter: blur(2px);
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(1.55rem, 4vw, 2.75rem);
+      line-height: 1.15;
+      letter-spacing: .02em;
+      background: linear-gradient(100deg, #fff2c7, #76efd0 54%, #ffd76a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 12px auto 0;
+      color: #c5ddd6;
+      line-height: 1.65;
+      font-size: .93rem;
+    }
+
+    .notice {
+      margin: 14px auto 0;
+      width: fit-content;
+      max-width: 100%;
+      padding: 8px 15px;
+      border: 1px solid rgba(255, 215, 106, .25);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .23);
+      color: #ffe9a6;
+      font-size: .76rem;
+      font-weight: 700;
+    }
+
+    .global-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: white;
+      background: #245f59;
+      font-size: .78rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .20);
+      transition: transform .18s ease, background .18s ease, opacity .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); background: #318275; }
+    .btn:active { transform: translateY(0) scale(.98); }
+    .btn:disabled { opacity: .55; cursor: wait; transform: none; }
+    .btn.gold { background: #91652d; }
+    .btn.gold:hover { background: #b47e35; }
+    .btn.blue { background: #245c72; }
+    .btn.blue:hover { background: #337f9b; }
+    .btn.dark { background: #3a4547; }
+    .btn.dark:hover { background: #536164; }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .card-head {
+      padding: 16px;
+      background: linear-gradient(135deg, #102f32, #0b2225);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card h2 {
+      margin: 0;
+      color: #ffe4a0;
+      font-size: 1.05rem;
+      letter-spacing: .02em;
+    }
+
+    .counter {
+      flex: 0 0 auto;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(117, 230, 198, .12);
+      color: var(--mint);
+      font-size: .7rem;
+      font-weight: 800;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr);
+      gap: 9px;
+    }
+
+    .date-wrap, .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      padding: 7px 10px;
+      border: 1px solid rgba(117, 230, 198, .16);
+      border-radius: 13px;
+      background: rgba(2, 18, 20, .55);
+    }
+
+    .date-wrap span, .search-wrap span { font-size: .78rem; }
+
+    .date-input, .search-input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: none;
+      color: var(--text);
+      background: transparent;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .date-input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .75; }
+    .search-input::placeholder { color: #6f9991; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .actions .btn { padding: 8px 12px; font-size: .69rem; }
+
+    .source-status {
+      min-height: 35px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: var(--muted);
+      background: rgba(0,0,0,.13);
+      font-size: .71rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #7f938f;
+      box-shadow: 0 0 0 4px rgba(127, 147, 143, .08);
+    }
+
+    .dot.ok { background: #5fe1b8; box-shadow: 0 0 0 4px rgba(95, 225, 184, .10); }
+    .dot.load { background: #ffd76a; box-shadow: 0 0 0 4px rgba(255, 215, 106, .10); animation: pulse 1s infinite; }
+    .dot.err { background: var(--danger); box-shadow: 0 0 0 4px rgba(255, 140, 134, .10); }
+
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.8); } }
+
+    .content { padding: 14px; }
+
+    .empty, .error-box {
+      padding: 28px 18px;
+      border: 1px dashed rgba(117, 230, 198, .18);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.65;
+      background: rgba(0, 0, 0, .15);
+      font-size: .82rem;
+    }
+
+    .error-box { border-color: rgba(255, 140, 134, .24); color: #ffc3bd; }
+
+    .league {
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 1px solid rgba(117, 230, 198, .10);
+      border-radius: 18px;
+      background: rgba(2, 22, 24, .42);
+    }
+
+    .league:last-child { margin-bottom: 0; }
+
+    .league-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 13px;
+      color: var(--gold);
+      background: rgba(0, 0, 0, .20);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: .83rem;
+      font-weight: 900;
+      letter-spacing: .025em;
+    }
+
+    .league-title small { color: #779e96; font-size: .65rem; }
+
+    .match {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, .045);
+    }
+
+    .match:last-child { border-bottom: 0; }
+    .match:hover { background: rgba(117, 230, 198, .035); }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #8eb6ad;
+      font-size: .64rem;
+    }
+
+    .pill {
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(117, 230, 198, .08);
+      color: #a9d8cd;
+    }
+
+    .teams {
+      display: grid;
+      gap: 6px;
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .team img {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      object-fit: contain;
+      border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+
+    .team-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .home-tag {
+      margin-left: auto;
+      color: #72988f;
+      font-size: .57rem;
+      font-weight: 700;
+    }
+
+    .prediction {
+      min-width: 82px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 215, 106, .17);
+      border-radius: 15px;
+      background: #020f11;
+      text-align: center;
+      box-shadow: inset 0 0 25px rgba(255, 215, 106, .025);
+    }
+
+    .prediction small {
+      display: block;
+      margin-bottom: 3px;
+      color: #9d8d5e;
+      font-size: .53rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .score {
+      color: var(--gold);
+      font-family: Consolas, Monaco, monospace;
+      font-size: 1.22rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 16px;
+      color: #71968e;
+      text-align: center;
+      font-size: .7rem;
+      line-height: 1.6;
+    }
+
+    .footer a { color: #8cdac7; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 9999;
+      max-width: min(92vw, 600px);
+      padding: 10px 18px;
+      border: 1px solid rgba(117, 230, 198, .18);
+      border-radius: 999px;
+      color: #eafff9;
+      background: rgba(12, 42, 44, .96);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .45);
+      font-size: .76rem;
+      font-weight: 800;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 15px);
+      transition: .2s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 980px) {
+      .columns { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .app { padding: 12px 10px 28px; }
+      .hero { padding: 22px 14px; border-radius: 20px; }
+      .controls { grid-template-columns: 1fr; }
+      .match { grid-template-columns: minmax(0, 1fr) 76px; gap: 8px; padding: 10px; }
+      .prediction { min-width: 72px; padding: 6px; }
+      .score { font-size: 1.05rem; }
+      .team { font-size: .72rem; }
+      .actions .btn { flex: 1 1 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <h1>⚽ GENERATOR PREDIKSI BOLA ESPN</h1>
+      <p>Jadwal pertandingan diambil otomatis berdasarkan tanggal. Nama liga, tim, jam, lokasi, dan status berasal dari data ESPN; skor prediksi dibuat otomatis oleh generator simulasi.</p>
+      <div class="notice">⚠️ Skor yang tampil adalah prediksi/simulasi otomatis, bukan skor resmi ESPN dan bukan jaminan hasil pertandingan.</div>
+    </section>
+
+    <div class="global-bar">
+      <button class="btn" id="loadBothBtn">🔄 Muat Dua Tanggal</button>
+      <button class="btn gold" id="regenerateBothBtn">🎲 Generate Ulang Semua Skor</button>
+      <button class="btn blue" id="copyBothBtn">📋 Copy Dua Tanggal</button>
+      <button class="btn dark" id="todayTomorrowBtn">📅 Set Hari Ini + Besok</button>
+    </div>
+
+    <section class="columns" id="columns"></section>
+
+    <footer class="footer">
+      Sumber jadwal: <a href="https://www.espn.com/soccer/fixtures" target="_blank" rel="noopener noreferrer">ESPN Soccer Fixtures</a>.<br>
+      Generator mencoba <strong>espn_proxy.php</strong> terlebih dahulu, lalu akses langsung dan proxy publik sebagai cadangan.
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    "use strict";
+
+    const ESPN_PAGE = "https://www.espn.com/soccer/fixtures";
+    const ESPN_API = "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard";
+    const DISPLAY_TIMEZONE = "Asia/Jakarta";
+    const DISPLAY_ZONE_LABEL = "WIB";
+    const MAX_GOALS = 6;
+
+    const states = {
+      left: createState("left", "TANGGAL 1"),
+      right: createState("right", "TANGGAL 2")
+    };
+
+    function createState(id, title) {
+      return {
+        id,
+        title,
+        date: "",
+        query: "",
+        matches: [],
+        source: "",
+        loading: false,
+        error: "",
+        generation: 0
+      };
+    }
+
+    function dateInTimeZone(offsetDays = 0) {
+      const now = new Date();
+      now.setDate(now.getDate() + offsetDays);
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: DISPLAY_TIMEZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(now);
+      const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
+      return `${map.year}-${map.month}-${map.day}`;
+    }
+
+    function compactDate(isoDate) {
+      return String(isoDate || "").replaceAll("-", "");
+    }
+
+    function formatDisplayDate(isoDate) {
+      if (!isoDate) return "-";
+      const [y, m, d] = isoDate.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function setInitialDates() {
+      states.left.date = dateInTimeZone(0);
+      states.right.date = dateInTimeZone(1);
+    }
+
+    function buildUI() {
+      const columns = document.getElementById("columns");
+      columns.innerHTML = Object.values(states).map(state => `
+        <article class="card" id="card-${state.id}">
+          <header class="card-head">
+            <div class="card-title-row">
+              <h2>📆 ${escapeHtml(state.title)}</h2>
+              <span class="counter" id="counter-${state.id}">0 pertandingan</span>
+            </div>
+            <div class="controls">
+              <label class="date-wrap">
+                <span>📅</span>
+                <input class="date-input" type="date" id="date-${state.id}" value="${escapeHtml(state.date)}">
+              </label>
+              <label class="search-wrap">
+                <span>🔎</span>
+                <input class="search-input" type="search" id="search-${state.id}" placeholder="Cari liga atau tim...">
+              </label>
+            </div>
+            <div class="actions">
+              <button class="btn" id="load-${state.id}">🔄 Muat Jadwal</button>
+              <button class="btn gold" id="generate-${state.id}">🎲 Generate Skor</button>
+              <button class="btn blue" id="copy-${state.id}">📋 Copy Jadwal</button>
+              <button class="btn dark" id="open-${state.id}">🌐 Buka ESPN</button>
+            </div>
+          </header>
+          <div class="source-status" id="status-${state.id}">
+            <span class="dot"></span>
+            <span>Belum memuat jadwal.</span>
+          </div>
+          <div class="content" id="content-${state.id}">
+            <div class="empty">Pilih tanggal lalu tekan <strong>Muat Jadwal</strong>.</div>
+          </div>
+        </article>
+      `).join("");
+
+      for (const state of Object.values(states)) bindCardEvents(state);
+    }
+
+    function bindCardEvents(state) {
+      const dateInput = document.getElementById(`date-${state.id}`);
+      const searchInput = document.getElementById(`search-${state.id}`);
+      const loadBtn = document.getElementById(`load-${state.id}`);
+      const generateBtn = document.getElementById(`generate-${state.id}`);
+      const copyBtn = document.getElementById(`copy-${state.id}`);
+      const openBtn = document.getElementById(`open-${state.id}`);
+
+      dateInput.addEventListener("change", async event => {
+        state.date = event.target.value;
+        await loadSchedule(state);
+      });
+
+      searchInput.addEventListener("input", event => {
+        state.query = event.target.value.trim().toLowerCase();
+        renderState(state);
+      });
+
+      loadBtn.addEventListener("click", () => loadSchedule(state));
+      generateBtn.addEventListener("click", () => regeneratePredictions(state));
+      copyBtn.addEventListener("click", () => copyState(state));
+      openBtn.addEventListener("click", () => {
+        const dateKey = compactDate(state.date);
+        const url = dateKey ? `${ESPN_PAGE}/_/date/${dateKey}` : ESPN_PAGE;
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    }
+
+    function setCardBusy(state, busy) {
+      state.loading = busy;
+      [`load-${state.id}`, `generate-${state.id}`, `copy-${state.id}`].forEach(id => {
+        const button = document.getElementById(id);
+        if (button) button.disabled = busy;
+      });
+    }
+
+    function setStatus(state, type, message) {
+      const node = document.getElementById(`status-${state.id}`);
+      if (!node) return;
+      const dotClass = type === "ok" ? "ok" : type === "load" ? "load" : type === "err" ? "err" : "";
+      node.innerHTML = `<span class="dot ${dotClass}"></span><span>${escapeHtml(message)}</span>`;
+    }
+
+    async function loadSchedule(state) {
+      const dateInput = document.getElementById(`date-${state.id}`);
+      state.date = dateInput?.value || state.date;
+      state.error = "";
+      state.matches = [];
+      setCardBusy(state, true);
+      setStatus(state, "load", "Mengambil jadwal dari ESPN...");
+      renderState(state);
+
+      try {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(state.date)) throw new Error("Tanggal belum valid.");
+        const result = await fetchEspnData(compactDate(state.date));
+        state.matches = normalizeEspnEvents(result.payload);
+        state.source = result.source;
+        state.generation = 0;
+        applyPredictions(state);
+
+        if (!state.matches.length) {
+          setStatus(state, "ok", `Tidak ada pertandingan yang ditemukan untuk ${formatDisplayDate(state.date)}.`);
+        } else {
+          setStatus(state, "ok", `${state.matches.length} pertandingan dimuat melalui ${state.source}.`);
+        }
+      } catch (error) {
+        console.error(error);
+        state.error = error?.message || "Gagal mengambil jadwal ESPN.";
+        setStatus(state, "err", state.error);
+      } finally {
+        setCardBusy(state, false);
+        renderState(state);
+      }
+    }
+
+    async function fetchEspnData(dateKey) {
+      const params = new URLSearchParams({
+        region: "us",
+        lang: "en",
+        contentorigin: "espn",
+        isqualified: "true",
+        limit: "1000",
+        dates: dateKey
+      });
+      const apiUrl = `${ESPN_API}?${params.toString()}`;
+
+      const candidates = [
+        {
+          name: "proxy PHP lokal",
+          url: `espn_proxy.php?date=${encodeURIComponent(dateKey)}`,
+          unwrap: async response => response.json()
+        },
+        {
+          name: "ESPN API langsung",
+          url: apiUrl,
+          unwrap: async response => response.json()
+        },
+        {
+          name: "AllOrigins raw",
+          url: `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`,
+          unwrap: async response => response.json()
+        },
+        {
+          name: "AllOrigins get",
+          url: `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`,
+          unwrap: async response => {
+            const wrapped = await response.json();
+            return JSON.parse(wrapped.contents || "{}");
+          }
+        },
+        {
+          name: "CorsProxy",
+          url: `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`,
+          unwrap: async response => response.json()
+        }
+      ];
+
+      const errors = [];
+      for (const candidate of candidates) {
+        try {
+          const response = await fetchWithTimeout(candidate.url, 18000);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await candidate.unwrap(response);
+          if (!payload || !Array.isArray(payload.events)) throw new Error("Format data tidak sesuai.");
+          return { payload, source: candidate.name };
+        } catch (error) {
+          errors.push(`${candidate.name}: ${error.message}`);
+        }
+      }
+
+      throw new Error(`Semua jalur data gagal. Upload espn_proxy.php bersama file HTML. Detail: ${errors.join(" | ")}`);
+    }
+
+    async function fetchWithTimeout(url, timeoutMs) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, {
+          signal: controller.signal,
+          cache: "no-store",
+          headers: { "Accept": "application/json,text/plain,*/*" }
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function normalizeEspnEvents(payload) {
+      const leagues = Array.isArray(payload.leagues) ? payload.leagues : [];
+      const events = Array.isArray(payload.events) ? payload.events : [];
+      const normalized = [];
+      const seen = new Set();
+
+      for (const event of events) {
+        const competition = event?.competitions?.[0] || {};
+        const competitors = Array.isArray(competition.competitors) ? competition.competitors : [];
+        if (competitors.length < 2) continue;
+
+        const homeRaw = competitors.find(item => item.homeAway === "home") || competitors[0];
+        const awayRaw = competitors.find(item => item.homeAway === "away") || competitors[1];
+        const home = normalizeTeam(homeRaw);
+        const away = normalizeTeam(awayRaw);
+        if (!home.name || !away.name) continue;
+
+        const league = resolveLeagueName(event, competition, leagues);
+        const kickoff = competition.date || event.date || "";
+        const statusType = competition?.status?.type || event?.status?.type || {};
+        const venue = competition?.venue?.fullName || "";
+        const address = competition?.venue?.address || {};
+        const location = [venue, address.city, address.country].filter(Boolean).join(", ");
+        const note = competition?.notes?.[0]?.headline || competition?.note || "";
+        const eventLink = event?.links?.find(link => link?.href)?.href || "";
+        const key = String(event.id || `${league}|${kickoff}|${home.name}|${away.name}`);
+        if (seen.has(key)) continue;
+        seen.add(key);
+
+        normalized.push({
+          id: key,
+          league,
+          kickoff,
+          time: formatKickoff(kickoff),
+          home,
+          away,
+          status: statusType.shortDetail || statusType.detail || statusType.description || "Scheduled",
+          statusState: statusType.state || "pre",
+          completed: Boolean(statusType.completed),
+          location,
+          note,
+          eventLink,
+          predHome: 0,
+          predAway: 0
+        });
+      }
+
+      return normalized.sort((a, b) => {
+        const timeCompare = new Date(a.kickoff || 0) - new Date(b.kickoff || 0);
+        if (timeCompare !== 0) return timeCompare;
+        return a.league.localeCompare(b.league, "id");
+      });
+    }
+
+    function normalizeTeam(raw) {
+      const team = raw?.team || raw || {};
+      const logos = Array.isArray(team.logos) ? team.logos : [];
+      return {
+        id: String(team.id || raw?.id || ""),
+        name: team.displayName || team.shortDisplayName || team.name || raw?.displayName || "",
+        abbreviation: team.abbreviation || raw?.abbreviation || "",
+        logo: team.logo || logos[0]?.href || ""
+      };
+    }
+
+    function resolveLeagueName(event, competition, leagues) {
+      const direct = event?.league?.name || event?.league?.displayName || competition?.league?.name || competition?.league?.displayName;
+      if (direct) return direct;
+
+      const uid = String(event?.uid || competition?.uid || "");
+      const matchingLeague = leagues.find(league => {
+        const leagueUid = String(league?.uid || "");
+        return leagueUid && uid.startsWith(leagueUid);
+      });
+      if (matchingLeague?.name) return matchingLeague.name;
+
+      const slug = event?.season?.slug || competition?.type?.text || "";
+      return slug ? String(slug).replaceAll("-", " ").toUpperCase() : "SOCCER FIXTURES";
+    }
+
+    function formatKickoff(isoDate) {
+      if (!isoDate) return "TBD";
+      const date = new Date(isoDate);
+      if (Number.isNaN(date.getTime())) return "TBD";
+      return new Intl.DateTimeFormat("id-ID", {
+        timeZone: DISPLAY_TIMEZONE,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(date).replace(".", ":");
+    }
+
+    function hashString(text) {
+      let hash = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function mulberry32(seed) {
+      return function() {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function poisson(lambda, rng) {
+      const limit = Math.exp(-lambda);
+      let product = 1;
+      let count = 0;
+      do {
+        count++;
+        product *= rng();
+      } while (product > limit && count < 20);
+      return Math.max(0, count - 1);
+    }
+
+    function createPrediction(match, generation) {
+      const seedText = `${match.id}|${match.home.name}|${match.away.name}|${generation}`;
+      const rng = mulberry32(hashString(seedText));
+      const homeStrength = .72 + (hashString(match.home.name) % 1000) / 2500;
+      const awayStrength = .72 + (hashString(match.away.name) % 1000) / 2500;
+      const homeLambda = 1.08 + homeStrength * .68 + rng() * .35;
+      const awayLambda = .88 + awayStrength * .60 + rng() * .30;
+
+      let homeGoals = Math.min(MAX_GOALS, poisson(homeLambda, rng));
+      let awayGoals = Math.min(MAX_GOALS, poisson(awayLambda, rng));
+
+      if (homeGoals === 0 && awayGoals === 0 && rng() > .62) {
+        if (rng() > .52) homeGoals = 1;
+        else awayGoals = 1;
+      }
+
+      return [homeGoals, awayGoals];
+    }
+
+    function applyPredictions(state) {
+      state.matches.forEach(match => {
+        const [home, away] = createPrediction(match, state.generation);
+        match.predHome = home;
+        match.predAway = away;
+      });
+    }
+
+    function regeneratePredictions(state) {
+      if (!state.matches.length) {
+        showToast("Belum ada jadwal untuk digenerate.");
+        return;
+      }
+      state.generation += 1;
+      applyPredictions(state);
+      renderState(state);
+      showToast(`Skor ${state.title.toLowerCase()} berhasil digenerate ulang.`);
+    }
+
+    function getFilteredMatches(state) {
+      if (!state.query) return state.matches;
+      return state.matches.filter(match => {
+        const haystack = `${match.league} ${match.home.name} ${match.away.name} ${match.location}`.toLowerCase();
+        return haystack.includes(state.query);
+      });
+    }
+
+    function groupMatches(matches) {
+      const groups = new Map();
+      for (const match of matches) {
+        if (!groups.has(match.league)) groups.set(match.league, []);
+        groups.get(match.league).push(match);
+      }
+      return groups;
+    }
+
+    function renderState(state) {
+      const content = document.getElementById(`content-${state.id}`);
+      const counter = document.getElementById(`counter-${state.id}`);
+      if (!content || !counter) return;
+
+      const visibleMatches = getFilteredMatches(state);
+      counter.textContent = `${visibleMatches.length} pertandingan`;
+
+      if (state.loading) {
+        content.innerHTML = `<div class="empty">⏳ Sedang mengambil jadwal ESPN untuk <strong>${escapeHtml(formatDisplayDate(state.date))}</strong>...</div>`;
+        return;
+      }
+
+      if (state.error) {
+        content.innerHTML = `<div class="error-box"><strong>Gagal memuat jadwal.</strong><br>${escapeHtml(state.error)}<br><br>Untuk hasil paling stabil, upload file <strong>generator_prediksi_espn.html</strong> dan <strong>espn_proxy.php</strong> pada folder hosting yang sama.</div>`;
+        return;
+      }
+
+      if (!state.matches.length) {
+        content.innerHTML = `<div class="empty">Tidak ada jadwal yang tersedia untuk tanggal <strong>${escapeHtml(formatDisplayDate(state.date))}</strong>.</div>`;
+        return;
+      }
+
+      if (!visibleMatches.length) {
+        content.innerHTML = `<div class="empty">Tidak ada pertandingan yang cocok dengan pencarian.</div>`;
+        return;
+      }
+
+      const groups = groupMatches(visibleMatches);
+      content.innerHTML = [...groups.entries()].map(([leagueName, matches]) => `
+        <section class="league">
+          <div class="league-title">
+            <span>${escapeHtml(leagueName)}</span>
+            <small>${matches.length} laga</small>
+          </div>
+          ${matches.map(renderMatch).join("")}
+        </section>
+      `).join("");
+    }
+
+    function renderMatch(match) {
+      const status = match.completed ? `Selesai • ${match.status}` : match.status;
+      const note = match.note ? `<span class="pill">${escapeHtml(match.note)}</span>` : "";
+      const location = match.location ? `<span class="pill">📍 ${escapeHtml(match.location)}</span>` : "";
+      return `
+        <article class="match">
+          <div>
+            <div class="meta">
+              <span class="pill">🕒 ${escapeHtml(match.time)} ${DISPLAY_ZONE_LABEL}</span>
+              <span class="pill">${escapeHtml(status)}</span>
+              ${location}
+              ${note}
+            </div>
+            <div class="teams">
+              ${renderTeam(match.home, "HOME")}
+              ${renderTeam(match.away, "AWAY")}
+            </div>
+          </div>
+          <div class="prediction" title="Prediksi otomatis, bukan skor resmi">
+            <small>PREDIKSI</small>
+            <div class="score">${match.predHome} : ${match.predAway}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderTeam(team, tag) {
+      const logo = team.logo
+        ? `<img src="${escapeHtml(team.logo)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+        : `<span style="width:22px;text-align:center">⚽</span>`;
+      return `
+        <div class="team">
+          ${logo}
+          <span class="team-name" title="${escapeHtml(team.name)}">${escapeHtml(team.name)}</span>
+          <span class="home-tag">${tag}</span>
+        </div>
+      `;
+    }
+
+    function buildPlainText(state) {
+      const matches = getFilteredMatches(state);
+      const groups = groupMatches(matches);
+      const lines = [
+        `PREDIKSI BOLA ${formatDisplayDate(state.date)}`,
+        `Sumber Jadwal: ESPN | Waktu: ${DISPLAY_ZONE_LABEL}`,
+        ""
+      ];
+
+      for (const [league, leagueMatches] of groups.entries()) {
+        lines.push(league.toUpperCase());
+        for (const match of leagueMatches) {
+          lines.push(`${formatDisplayDate(state.date)} ${match.time} ${DISPLAY_ZONE_LABEL}`);
+          lines.push(`${match.home.name} VS ${match.away.name}`);
+          lines.push(`PREDIKSI SKOR: ${match.predHome} - ${match.predAway}`);
+          if (match.location) lines.push(`LOKASI: ${match.location}`);
+          lines.push("");
+        }
+      }
+
+      while (lines.at(-1) === "") lines.pop();
+      return lines.join("\n");
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+    }
+
+    async function copyState(state) {
+      if (!state.matches.length) {
+        showToast("Belum ada jadwal untuk dicopy.");
+        return;
+      }
+      await copyText(buildPlainText(state));
+      showToast(`${state.title} berhasil disalin.`);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2300);
+    }
+
+    async function loadBoth() {
+      const button = document.getElementById("loadBothBtn");
+      button.disabled = true;
+      try {
+        await Promise.allSettled([loadSchedule(states.left), loadSchedule(states.right)]);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function setTodayTomorrow() {
+      states.left.date = dateInTimeZone(0);
+      states.right.date = dateInTimeZone(1);
+      document.getElementById("date-left").value = states.left.date;
+      document.getElementById("date-right").value = states.right.date;
+      loadBoth();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setInitialDates();
+      buildUI();
+
+      document.getElementById("loadBothBtn").addEventListener("click", loadBoth);
+      document.getElementById("regenerateBothBtn").addEventListener("click", () => {
+        regeneratePredictions(states.left);
+        regeneratePredictions(states.right);
+      });
+      document.getElementById("copyBothBtn").addEventListener("click", async () => {
+        const available = Object.values(states).filter(state => state.matches.length);
+        if (!available.length) return showToast("Belum ada jadwal untuk dicopy.");
+        await copyText(available.map(buildPlainText).join("\n\n==============================\n\n"));
+        showToast("Jadwal dua tanggal berhasil disalin.");
+      });
+      document.getElementById("todayTomorrowBtn").addEventListener("click", setTodayTomorrow);
+
+      loadBoth();
+    });
+  </script>
+</body>
+</html>
