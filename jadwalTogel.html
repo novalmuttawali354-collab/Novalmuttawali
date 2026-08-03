@@ -1,618 +1,1547 @@
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadwal Pasaran Togel | Neon Dashboard System</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕹️</text></svg>">
-  <!-- Google Fonts: Orbitron & Rajdhani for Cyberpunk feel -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jadwal Pasaran Togel</title>
+  <meta name="theme-color" content="#050714" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20x2%3D%221%22%20y1%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23FFD66B%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23FFAE36%22/%3E%3C/linearGradient%3E%3CradialGradient%20id%3D%22b%22%20cx%3D%22.35%22%20cy%3D%22.25%22%20r%3D%22.8%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2324305f%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23050714%22/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2224%22%20fill%3D%22url%28%23b%29%22/%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2242%22%20r%3D%2222%22%20fill%3D%22url%28%23g%29%22/%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2255%22%20r%3D%2224%22%20fill%3D%22%23f8fbff%22/%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2255%22%20r%3D%2219%22%20fill%3D%22url%28%23g%29%22/%3E%3Ctext%20x%3D%2236%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22900%22%20fill%3D%22%23050714%22%3E4%3C/text%3E%3Ctext%20x%3D%2262%22%20y%3D%2264%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2225%22%20font-weight%3D%22900%22%20fill%3D%22%23050714%22%3ED%3C/text%3E%3C/svg%3E" />
+
   <style>
-    /* ========== NEON CYBERPUNK VARIABLES ========== */
     :root {
-      --bg-dark: #050508;
-      --bg-panel: rgba(10, 10, 16, 0.65);
-      --neon-cyan: #00f3ff;
-      --neon-pink: #bc13fe;
-      --neon-purple: #5e17eb;
-      --neon-green: #0aff0a;
-      --text-main: #e0e0ff;
-      --text-dim: #8892b0;
-      --glass-border: 1px solid rgba(0, 243, 255, 0.2);
-      --shadow-glow: 0 0 15px rgba(0, 243, 255, 0.3);
-      --font-head: 'Orbitron', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
+      --bg-1: #050714;
+      --bg-2: #090b1f;
+      --surface: rgba(15, 18, 39, 0.78);
+      --surface-strong: rgba(18, 22, 48, 0.92);
+      --surface-soft: rgba(255, 255, 255, 0.055);
+      --line: rgba(255, 255, 255, 0.105);
+      --line-strong: rgba(255, 215, 90, 0.24);
+      --text: #f8fbff;
+      --muted: #a7b0cf;
+      --muted-2: #7680a3;
+      --gold: #ffd66b;
+      --gold-2: #ffae36;
+      --violet: #8c5cff;
+      --violet-2: #5b38ff;
+      --cyan: #42e8ff;
+      --green: #4ade80;
+      --red: #fb7185;
+      --orange: #fb923c;
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --shadow-xl: 0 30px 100px rgba(0, 0, 0, 0.55);
+      --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.35);
+      --font-main: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
     }
 
-    /* ========== RESET & BASE ========== */
-    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: text;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font-body);
       min-height: 100vh;
+      color: var(--text);
+      font-family: var(--font-main);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(140, 92, 255, 0.28), transparent 30%),
+        radial-gradient(circle at 85% 16%, rgba(66, 232, 255, 0.13), transparent 28%),
+        radial-gradient(circle at 78% 82%, rgba(255, 214, 107, 0.16), transparent 30%),
+        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 47%, #050611 100%);
       overflow-x: hidden;
-      position: relative;
+      text-rendering: optimizeLegibility;
     }
 
-    /* Scrollbar Holographic */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #020205; }
-    ::-webkit-scrollbar-thumb { 
-      background: linear-gradient(180deg, var(--neon-purple), var(--neon-cyan)); 
-      border-radius: 4px;
-    }
-
-    /* ========== BACKGROUND ANIMATION (GRID & PARTICLES) ========== */
-    .cyber-bg {
+    body::before {
+      content: '';
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      inset: 0;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 82%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
       z-index: -2;
-      background: 
-        linear-gradient(rgba(5, 5, 8, 0.95), rgba(5, 5, 8, 0.95)),
-        repeating-linear-gradient(0deg, transparent 0, transparent 1px, rgba(0, 243, 255, 0.03) 1px, rgba(0, 243, 255, 0.03) 2px),
-        repeating-linear-gradient(90deg, transparent 0, transparent 1px, rgba(188, 19, 254, 0.03) 1px, rgba(188, 19, 254, 0.03) 2px);
-      background-size: 100% 100%, 40px 40px, 40px 40px;
-      perspective: 500px;
-      transform-style: preserve-3d;
-      animation: gridMove 20s linear infinite;
+      background: linear-gradient(180deg, rgba(5, 7, 20, 0.08), rgba(5, 7, 20, 0.75));
+      pointer-events: none;
     }
 
-    @keyframes gridMove {
-      0% { background-position: center, 0 0, 0 0; }
-      100% { background-position: center, 0 40px, 0 40px; }
+    ::selection {
+      background: rgba(255, 214, 107, 0.42);
+      color: #ffffff;
     }
 
-    .glowing-orb {
+    button, a, i, .stat-icon, .status-dot, .floating-orb, .particle {
+      user-select: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .animated-bg, .particle-system {
       position: fixed;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      filter: blur(100px);
+      inset: 0;
       z-index: -1;
-      opacity: 0.4;
-      animation: orbFloat 10s infinite ease-in-out alternate;
-    }
-    .orb-1 { top: -100px; left: -100px; background: var(--neon-purple); }
-    .orb-2 { bottom: -100px; right: -100px; background: var(--neon-cyan); animation-delay: -5s; }
-
-    @keyframes orbFloat {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
+      overflow: hidden;
+      pointer-events: none;
     }
 
-    /* ========== LAYOUT & CONTAINERS ========== */
+    .floating-element {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 999px;
+      filter: blur(36px);
+      opacity: 0.62;
+      animation: floatOrb 24s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) {
+      top: 7%;
+      left: 3%;
+      background: radial-gradient(circle, rgba(140, 92, 255, 0.30), transparent 70%);
+    }
+
+    .floating-element:nth-child(2) {
+      top: 48%;
+      right: -5%;
+      animation-delay: -8s;
+      background: radial-gradient(circle, rgba(255, 214, 107, 0.20), transparent 70%);
+    }
+
+    .floating-element:nth-child(3) {
+      bottom: 8%;
+      left: 19%;
+      animation-delay: -15s;
+      background: radial-gradient(circle, rgba(66, 232, 255, 0.19), transparent 70%);
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); }
+      35% { transform: translate3d(45px,-35px,0) scale(1.08); }
+      70% { transform: translate3d(-35px,42px,0) scale(0.94); }
+    }
+
+    .particle {
+      contain: layout paint;
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255, 214, 107, 0.72);
+      box-shadow: 0 0 16px rgba(255, 214, 107, 0.55);
+    }
+
+    .particle:nth-child(3n) {
+      background: rgba(66, 232, 255, 0.62);
+      box-shadow: 0 0 16px rgba(66, 232, 255, 0.45);
+    }
+
     .container {
-      max-width: 1400px;
+      width: min(1380px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 20px;
+      padding: 22px 0 42px;
       position: relative;
       z-index: 1;
     }
 
-    /* ========== HEADER (GLITCH EFFECT) ========== */
-    .header {
-      text-align: center;
-      margin: 40px 0 50px;
-      position: relative;
+    .top-status {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.85rem;
     }
 
-    .header h1 {
-      font-family: var(--font-head);
-      font-size: 3rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: #fff;
-      letter-spacing: 4px;
-      text-shadow: 
-        0 0 10px var(--neon-cyan),
-        0 0 20px var(--neon-cyan),
-        0 0 40px var(--neon-purple);
-      position: relative;
-      display: inline-block;
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.048);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.24);
     }
-    
-    /* Subtle glitch animation */
-    .header h1::before, .header h1::after {
-      content: attr(data-text);
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(74, 222, 128, 0.12), 0 0 20px rgba(74, 222, 128, 0.65);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.105), rgba(255,255,255,0.034)),
+        radial-gradient(circle at 12% 0%, rgba(140, 92, 255, 0.26), transparent 42%),
+        radial-gradient(circle at 88% 12%, rgba(255, 214, 107, 0.18), transparent 36%),
+        rgba(13, 16, 36, 0.78);
+      box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,0.12);
+      padding: 34px;
+      margin-bottom: 22px;
+      backdrop-filter: blur(24px);
+    }
+
+    .hero::before {
+      content: '';
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-dark);
-    }
-    .header h1::before {
-      left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim 5s infinite linear alternate-reverse;
-    }
-    .header h1::after {
-      left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim2 5s infinite linear alternate-reverse;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.10) 42%, transparent 58%);
+      transform: translateX(-110%);
+      animation: heroShine 8s ease-in-out infinite;
+      pointer-events: none;
     }
 
-    @keyframes glitch-anim {
-      0% { clip: rect(12px, 9999px, 32px, 0); }
-      100% { clip: rect(65px, 9999px, 80px, 0); }
-    }
-    @keyframes glitch-anim2 {
-      0% { clip: rect(82px, 9999px, 92px, 0); }
-      100% { clip: rect(2px, 9999px, 12px, 0); }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -110px;
+      top: -120px;
+      width: 330px;
+      height: 330px;
+      border: 1px solid rgba(255, 214, 107, 0.20);
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 214, 107, 0.16), transparent 64%);
+      pointer-events: none;
     }
 
-    .header p {
-      color: var(--neon-cyan);
-      font-size: 1.2rem;
-      margin-top: 15px;
+    @keyframes heroShine {
+      0%, 62% { transform: translateX(-120%); opacity: 0; }
+      76% { opacity: 1; }
+      100% { transform: translateX(120%); opacity: 0; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 214, 107, 0.24);
+      background: rgba(255, 214, 107, 0.075);
+      color: #ffe39a;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 0.76rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 0 0 5px var(--neon-cyan);
+      margin-bottom: 16px;
     }
 
-    /* ========== STATS CARDS (HUD STYLE) ========== */
+    .hero h1 {
+      max-width: 870px;
+      font-size: clamp(2rem, 5vw, 4.55rem);
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #ffd66b 42%, #42e8ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 760px;
+      color: rgba(230, 236, 255, 0.76);
+      font-size: clamp(0.98rem, 1.7vw, 1.14rem);
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .mini-panel {
+      position: relative;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(3, 6, 20, 0.42);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 50px rgba(0,0,0,0.26);
+      padding: 18px;
+    }
+
+    .mini-panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .mini-panel-time {
+      font-family: var(--font-mono);
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
+      line-height: 1;
+      color: var(--gold);
+      letter-spacing: -0.06em;
+      text-shadow: 0 0 28px rgba(255, 214, 107, 0.25);
+      margin-bottom: 12px;
+    }
+
+    .mini-panel-caption {
+      color: rgba(230, 236, 255, 0.64);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #ffffff;
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+      text-decoration: none;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 214, 107, 0.38);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.28);
+    }
+
+    .btn-primary {
+      border: none;
+      color: #161204;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow: 0 18px 38px rgba(255, 174, 54, 0.22);
+    }
+
+    .btn-secondary {
+      border-color: rgba(140, 92, 255, 0.28);
+      background: linear-gradient(135deg, rgba(140, 92, 255, 0.26), rgba(66, 232, 255, 0.08));
+    }
+
+    .silent-update-indicator, .last-update-time {
+      position: fixed;
+      right: 18px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(13, 16, 36, 0.72);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.32);
+      color: rgba(245, 248, 255, 0.82);
+      font-size: 0.84rem;
+    }
+
+    .silent-update-indicator {
+      top: 18px;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: .25s ease;
+      pointer-events: none;
+    }
+
+    .silent-update-indicator.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .silent-pulse {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(74, 222, 128, 0.12), 0 0 20px rgba(74,222,128,0.66);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+
+    .last-update-time {
+      bottom: 18px;
+      font-family: var(--font-mono);
+      color: rgba(255,255,255,0.65);
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 0.72; }
+      50% { transform: scale(1.25); opacity: 1; }
+    }
+
     .stats-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
     .stat-card {
-      background: var(--bg-panel);
-      backdrop-filter: blur(12px);
-      border: var(--glass-border);
-      padding: 20px;
-      border-radius: 8px;
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.075), rgba(255,255,255,0.026)),
+        rgba(15, 18, 39, 0.70);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: 18px;
+      min-height: 126px;
       display: flex;
-      align-items: center;
-      gap: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      transition: all 0.3s ease;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
     }
 
-    .stat-card::before {
+    .stat-card::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 4px; height: 100%;
-      background: var(--neon-cyan);
-      box-shadow: 0 0 10px var(--neon-cyan);
+      inset: auto 16px 0 16px;
+      height: 3px;
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--cyan), transparent);
+      opacity: .75;
     }
 
     .stat-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
-      border-color: var(--neon-cyan);
-    }
-
-    .stat-icon {
-      width: 60px; height: 60px;
-      border: 2px solid var(--neon-purple);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      color: var(--neon-purple);
-      box-shadow: 0 0 10px var(--neon-purple);
-      background: rgba(94, 23, 235, 0.1);
+      border-color: rgba(255, 214, 107, 0.28);
+      background: rgba(22, 26, 54, 0.78);
     }
 
     .stat-content h3 {
-      color: var(--text-dim);
-      font-size: 0.9rem;
+      color: var(--muted);
+      font-size: 0.82rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.08em;
+      margin-bottom: 11px;
+      font-weight: 900;
     }
 
-    .stat-content .stat-value {
-      font-family: var(--font-head);
-      font-size: 1.8rem;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: clamp(1.65rem, 3vw, 2.34rem);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      color: var(--text);
     }
 
-    /* ========== SEARCH SECTION ========== */
-    .search-container {
-      background: var(--bg-panel);
-      border: var(--glass-border);
-      padding: 30px;
-      border-radius: 12px;
-      margin-bottom: 40px;
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #151104;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow: 0 18px 30px rgba(255,174,54,.18);
+      flex: 0 0 auto;
+    }
+
+    .notification-container {
+      margin-bottom: 18px;
+    }
+
+    .next-result-notification {
       position: relative;
-      backdrop-filter: blur(12px);
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      border: 1px solid rgba(255, 214, 107, 0.22);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255, 214, 107, 0.13), rgba(140, 92, 255, 0.13)),
+        rgba(15, 18, 39, 0.72);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.09);
+      padding: 17px;
     }
 
-    .search-container::after {
-      content: "SEARCH_SYSTEM_V.2.0";
-      position: absolute;
-      top: -10px; right: 20px;
-      background: var(--bg-dark);
-      color: var(--neon-pink);
-      padding: 0 10px;
-      font-size: 0.7rem;
-      font-family: var(--font-head);
-      border: 1px solid var(--neon-pink);
+    .notification-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .notification-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #151104;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      flex: 0 0 auto;
+    }
+
+    .notification-text {
+      color: rgba(245,248,255,.86);
+      line-height: 1.55;
+    }
+
+    .notification-pasaran, .notification-time {
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .notification-pasaran {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 7px;
+      vertical-align: middle;
+    }
+
+    .notification-pasaran-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(255, 214, 107, 0.28);
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: rgba(255, 214, 107, 0.085);
+      color: var(--gold);
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .notification-pasaran-item:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 214, 107, 0.16);
+      border-color: rgba(255, 214, 107, 0.48);
+      box-shadow: 0 8px 22px rgba(255, 214, 107, 0.11);
+    }
+
+    .notification-pasaran-item::after {
+      content: '\f063';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: .72rem;
+      opacity: .86;
+    }
+
+    tr.is-next-result-row td:first-child {
+      position: relative;
+    }
+
+    tr.is-next-result-row td:first-child::after {
+      content: 'NEXT';
+      margin-left: 8px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      color: #151104;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      font-size: .62rem;
+      font-weight: 950;
+      letter-spacing: .04em;
+      vertical-align: middle;
+    }
+
+    tr.next-result-target td {
+      background: rgba(255, 214, 107, 0.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 214, 107, 0.22), inset 0 -1px 0 rgba(255, 214, 107, 0.16);
+      animation: targetRowPulse 1.15s ease-in-out 3;
+    }
+
+    tr.next-result-target td:first-child {
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(255, 214, 107, 0.42);
+    }
+
+    @keyframes targetRowPulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.24); }
+    }
+
+    .notification-countdown {
+      font-family: var(--font-mono);
+      font-size: 1.18rem;
+      font-weight: 900;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: #07101a;
+      background: linear-gradient(135deg, var(--cyan), #b8fbff);
+      box-shadow: 0 14px 28px rgba(66,232,255,.16);
+      white-space: nowrap;
+    }
+
+    .search-container {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(15, 18, 39, 0.72);
+      backdrop-filter: blur(22px);
+      box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: 16px;
+      margin-bottom: 18px;
     }
 
     .search-box {
-      display: flex; gap: 15px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
     }
 
     .search-input-wrapper {
-      flex: 1; position: relative;
+      position: relative;
     }
 
     .search-input {
       width: 100%;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid #333;
-      color: var(--neon-cyan);
-      padding: 15px 20px;
-      font-family: var(--font-body);
-      font-size: 1.1rem;
-      border-radius: 4px;
-      transition: 0.3s;
+      min-height: 54px;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 17px;
+      background: rgba(3, 6, 20, 0.58);
+      outline: none;
+      padding: 0 48px 0 18px;
+      font-size: 1rem;
+      transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+
+    .search-input::placeholder {
+      color: rgba(167, 176, 207, 0.72);
     }
 
     .search-input:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      border-color: rgba(255, 214, 107, 0.54);
+      box-shadow: 0 0 0 5px rgba(255, 214, 107, 0.10);
+      background: rgba(3, 6, 20, 0.78);
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.055);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .clear-btn:hover {
+      color: var(--gold);
+      border-color: rgba(255,214,107,.30);
+    }
+
+    .search-btn, .table-action-btn {
+      min-height: 54px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 17px;
+      padding: 0 18px;
+      color: #fff;
+      background: rgba(255,255,255,0.07);
+      cursor: pointer;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: transform .22s ease, background .22s ease, border-color .22s ease;
     }
 
     .search-btn {
-      background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+      color: #161204;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
       border: none;
-      color: white;
-      padding: 0 30px;
-      font-family: var(--font-head);
-      font-weight: 700;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: 0.3s;
-      letter-spacing: 1px;
+      box-shadow: 0 15px 35px rgba(255, 174, 54, 0.20);
     }
 
-    .search-btn:hover {
-      box-shadow: 0 0 20px var(--neon-pink);
-      filter: brightness(1.2);
+    .search-btn:hover, .table-action-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 214, 107, 0.34);
     }
 
-    /* ========== TABLE (DATA HUD) ========== */
-    .table-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+    .search-result-info {
+      display: none;
+      margin-bottom: 18px;
+      padding: 15px;
+      color: rgba(245,248,255,.84);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      background: rgba(15,18,39,.74);
+      backdrop-filter: blur(20px);
     }
 
-    .table-header h2 {
-      font-family: var(--font-head);
-      color: #fff;
-      text-shadow: 0 0 10px var(--neon-cyan);
-    }
-
-    .table-container {
-      background: var(--bg-panel);
-      border: var(--glass-border);
+    #reset-search-btn {
+      margin-left: 12px;
+      border: 1px solid rgba(255,214,107,.28);
+      color: var(--gold);
+      background: rgba(255,214,107,.09);
+      padding: 8px 14px;
       border-radius: 12px;
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    }
-
-    table { width: 100%; border-collapse: collapse; min-width: 800px; }
-
-    thead {
-      background: rgba(0, 243, 255, 0.1);
-      border-bottom: 2px solid var(--neon-cyan);
-    }
-
-    th {
-      padding: 20px;
-      text-align: left;
-      color: var(--neon-cyan);
-      font-family: var(--font-head);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    td {
-      padding: 18px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-main);
-      font-weight: 500;
-    }
-
-    tr:hover {
-      background: rgba(188, 19, 254, 0.1);
-    }
-
-    /* Table Links */
-    .link {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--neon-pink);
-      text-decoration: none;
-      padding: 8px 16px;
-      border: 1px solid var(--neon-pink);
-      border-radius: 4px;
-      transition: 0.3s;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .link:hover {
-      background: var(--neon-pink);
-      color: #fff;
-      box-shadow: 0 0 15px var(--neon-pink);
-    }
-
-    .copy-btn {
-      background: transparent;
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
-      width: 35px; height: 35px;
-      border-radius: 4px;
       cursor: pointer;
-      margin-left: 10px;
-      transition: 0.3s;
+      font-weight: 800;
     }
 
-    .copy-btn:hover {
-      background: var(--neon-cyan);
-      color: #000;
-      box-shadow: 0 0 15px var(--neon-cyan);
-    }
-
-    /* ========== NOTIFICATION BAR ========== */
-    .next-result-notification {
-      background: rgba(5, 5, 8, 0.9);
-      border: 1px solid var(--neon-green);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 0 20px rgba(10, 255, 10, 0.2);
+    .loading, .error {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,214,107,0.16), transparent 34%),
+        radial-gradient(circle at 12% 25%, rgba(36,214,255,0.13), transparent 34%),
+        linear-gradient(135deg, rgba(12,15,34,0.92), rgba(17,19,43,0.74));
+      backdrop-filter: blur(24px);
+      box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: clamp(34px, 5vw, 62px) 22px;
+      text-align: center;
+      margin: 22px 0;
       position: relative;
       overflow: hidden;
     }
-    
-    /* Scanning line effect */
-    .next-result-notification::after {
+
+    .loading::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 2px;
-      background: var(--neon-green);
-      box-shadow: 0 0 10px var(--neon-green);
-      animation: scan 2s linear infinite;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+      opacity: .55;
+      pointer-events: none;
     }
 
-    @keyframes scan {
-      0% { top: 0; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: -80%;
+      left: -35%;
+      width: 70%;
+      height: 260%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      transform: rotate(22deg);
+      animation: loadingShine 2.8s infinite ease-in-out;
+      pointer-events: none;
     }
 
-    .notification-pasaran { color: var(--neon-green); font-weight: 700; text-shadow: 0 0 5px var(--neon-green); }
-    .notification-countdown { 
-      font-family: var(--font-head); 
-      font-size: 1.5rem; 
-      color: #fff; 
-      text-shadow: 0 0 10px var(--neon-green);
-      border-left: 1px solid var(--neon-green);
-      padding-left: 20px;
-      margin-left: 20px;
+    .loading-panel {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
     }
 
-    /* ========== ACTION BUTTONS ========== */
+    .loader-halo {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+    }
+
+    .loader-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      border: 3px solid rgba(255,255,255,.08);
+    }
+
+    .loader-ring.one {
+      border-top-color: var(--gold);
+      border-right-color: var(--cyan);
+      animation: spin 1.15s linear infinite;
+      box-shadow: 0 0 28px rgba(36,214,255,.14);
+    }
+
+    .loader-ring.two {
+      inset: 12px;
+      border-bottom-color: rgba(255,214,107,.9);
+      border-left-color: rgba(36,214,255,.8);
+      animation: spinReverse 1.7s linear infinite;
+    }
+
+    .loader-core {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #100d03;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow: 0 16px 40px rgba(255,174,54,.28);
+      font-size: 1.25rem;
+      animation: corePulse 1.6s infinite ease-in-out;
+    }
+
+    .loading-kicker {
+      width: fit-content;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: var(--gold);
+      background: rgba(255,214,107,.08);
+      border: 1px solid rgba(255,214,107,.20);
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .loading h2, .error h2 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .loading p, .error p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .loading-progress {
+      width: min(420px, 86%);
+      height: 8px;
+      margin: 22px auto 0;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .loading-progress span {
+      display: block;
+      width: 42%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--gold), var(--gold-2));
+      box-shadow: 0 0 25px rgba(255,214,107,.35);
+      animation: loadingBar 1.55s infinite ease-in-out;
+    }
+
+    .loading-steps {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .loading-steps span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: rgba(245,248,255,.78);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .loading-steps i {
+      color: var(--gold);
+    }
+
+    .loading-dots span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--gold);
+      margin-left: 4px;
+      animation: dotBounce 1.2s infinite ease-in-out both;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: .15s; }
+    .loading-dots span:nth-child(3) { animation-delay: .3s; }
+
+    .error {
+      border-color: rgba(251,113,133,.24);
+      background: rgba(45, 13, 25, 0.50);
+    }
+
+    .error-icon {
+      color: var(--red);
+      font-size: 3rem;
+      margin-bottom: 14px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spinReverse { to { transform: rotate(-360deg); } }
+    @keyframes corePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    @keyframes dotBounce { 0%,80%,100% { transform: scale(.35); opacity:.4;} 40% { transform: scale(1); opacity:1;} }
+    @keyframes loadingBar { 0% { transform: translateX(-120%); } 55% { transform: translateX(85%); } 100% { transform: translateX(245%); } }
+    @keyframes loadingShine { 0% { transform: translateX(-80%) rotate(22deg); opacity: 0; } 35% { opacity: .95; } 100% { transform: translateX(260%) rotate(22deg); opacity: 0; } }
+
+    .table-section {
+      margin-top: 18px;
+    }
+
+    .table-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .table-title-block h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      letter-spacing: -0.04em;
+      margin-bottom: 5px;
+    }
+
+    .table-title-block p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .table-action-btn {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--text-dim);
-      color: var(--text-main);
-      padding: 10px 20px;
+      min-height: 42px;
+      border-radius: 14px;
+      padding: 0 14px;
+      font-size: .9rem;
+    }
+
+    .table-action-btn.active {
+      color: #08111d;
+      background: linear-gradient(135deg, var(--cyan), #baf9ff);
+      border: none;
+    }
+
+    .table-container {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg);
+      background: rgba(15, 18, 39, 0.72);
+      backdrop-filter: blur(22px);
+      box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,0.08);
+      overflow-x: auto;
+      overflow-y: visible;
+      max-height: none;
+      height: auto;
+    }
+
+    .table-container.silent-update {
+      animation: tablePulse 1.8s ease;
+    }
+
+    @keyframes tablePulse {
+      0%,100% { border-color: rgba(255,255,255,0.12); }
+      50% { border-color: rgba(74,222,128,0.50); box-shadow: 0 0 0 5px rgba(74,222,128,0.06), var(--shadow-xl); }
+    }
+
+    table {
+      width: 100%;
+      min-width: 1080px;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(10, 13, 31, 0.96);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+    }
+
+    th {
+      padding: 13px 10px;
+      text-align: center;
+      color: #ffe6a5;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+      border-right: 1px solid rgba(255,255,255,.08);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 950;
+      white-space: nowrap;
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+      vertical-align: middle;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    .th-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: #ffe9ae;
+      background: rgba(255,214,107,.07);
+      border: 1px solid rgba(255,214,107,.16);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      line-height: 1;
+    }
+
+    td {
+      padding: 16px 14px;
+      color: rgba(247,250,255,.90);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      border-right: 1px solid rgba(255,255,255,.06);
+      line-height: 1.55;
+      vertical-align: middle;
+      cursor: text;
+      word-break: break-word;
+      max-width: 430px;
+      text-align: center;
+      background: rgba(9, 12, 31, .26);
+      transition: background .18s ease, box-shadow .18s ease;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(255,255,255,0.034);
+    }
+
+    tbody tr:hover td {
+      background: rgba(255, 214, 107, 0.075);
+    }
+
+    th:nth-child(1), td:nth-child(1) { width: 230px; }
+    th:nth-child(2), td:nth-child(2) { width: 132px; }
+    th:nth-child(3), td:nth-child(3) { width: 170px; }
+    th:nth-child(4), td:nth-child(4) { width: 210px; }
+    th:nth-child(5), td:nth-child(5) { width: 220px; }
+    th:nth-child(6), td:nth-child(6) { width: 130px; }
+    th:nth-child(7), td:nth-child(7) { width: 135px; }
+
+    tbody td:first-child {
+      font-weight: 850;
+      color: rgba(247,250,255,.86);
+    }
+
+    .new-data-row {
+      animation: newRowHighlight 1.5s ease-out;
+    }
+
+    @keyframes newRowHighlight {
+      0% { background-color: rgba(74,222,128,.16); }
+      100% { background-color: transparent; }
+    }
+
+    .link-cell {
+      min-width: 190px;
+    }
+
+    .link-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .link {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,214,107,.24);
+      border-radius: 13px;
+      color: var(--gold);
+      background: rgba(255,214,107,.075);
+      text-decoration: none;
+      overflow: hidden;
+      transition: .2s ease;
+      white-space: nowrap;
+      min-width: 150px;
+    }
+
+    .link:hover {
+      background: rgba(255,214,107,.13);
+      border-color: rgba(255,214,107,.38);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    .link-label {
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .link-url {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: rgba(255,255,255,.67);
+      font-family: var(--font-mono);
+      font-size: .76rem;
+    }
+
+    .mini-copy-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255, 214, 107, 0.24);
+      border-radius: 10px;
+      background: rgba(255, 214, 107, 0.085);
+      color: var(--gold);
+      display: inline-grid;
+      place-items: center;
       cursor: pointer;
-      border-radius: 4px;
-      font-family: var(--font-body);
-      font-weight: 600;
-      transition: 0.3s;
-      display: flex; align-items: center; gap: 8px;
+      flex: 0 0 auto;
+      transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      font-size: .78rem;
     }
 
-    .table-action-btn:hover {
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    .mini-copy-btn:hover {
+      transform: translateY(-1px) scale(1.03);
+      filter: brightness(1.06);
+      background: rgba(255, 214, 107, 0.14);
+      border-color: rgba(255, 214, 107, 0.38);
     }
 
-    /* ========== LOADING & ERROR STATES ========== */
-    .loading, .error {
+    .mini-copy-btn.copied {
+      color: #ffffff;
+      border-color: rgba(74, 222, 128, 0.55);
+      background: rgba(74, 222, 128, 0.2);
+    }
+
+    .copy-btn, .row-copy-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      color: #161204;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      display: inline-grid;
+      place-items: center;
+      transition: transform .18s ease, filter .18s ease;
+      flex: 0 0 auto;
+    }
+
+    .copy-btn:hover, .row-copy-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .open-btn {
+      width: 40px;
+      height: 40px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 13px;
+      border: 1px solid rgba(66,232,255,.22);
+      color: var(--cyan);
+      background: rgba(66,232,255,.075);
+      text-decoration: none;
+    }
+
+    .row-copy-btn {
+      width: auto;
+      min-width: 94px;
+      padding: 0 12px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: .83rem;
+    }
+
+    .empty-cell {
       text-align: center;
-      padding: 60px;
-      background: var(--bg-panel);
-      border: var(--glass-border);
-      border-radius: 12px;
-      margin: 20px 0;
+      color: rgba(255,255,255,.52);
+      padding: 42px 16px;
     }
 
-    .loading-spinner {
-      width: 60px; height: 60px;
-      border: 3px solid rgba(0, 243, 255, 0.1);
-      border-top: 3px solid var(--neon-cyan);
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    /* ========== SILENT UPDATE INDICATOR ========== */
-    .silent-update-indicator {
-      position: fixed; top: 20px; right: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      border: 1px solid var(--neon-green);
-      color: var(--neon-green);
-      padding: 8px 15px;
-      border-radius: 4px;
-      font-family: var(--font-head);
-      font-size: 0.8rem;
-      z-index: 100;
-      display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 0 15px rgba(10, 255, 10, 0.2);
-      transform: translateX(200%);
-      transition: transform 0.5s ease;
-    }
-    .silent-update-indicator.show { transform: translateX(0); }
-    .silent-pulse { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green); animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* ========== NOTIFICATION TOAST ========== */
-    .notification-toast {
-      position: fixed; top: 80px; right: 20px;
-      background: rgba(5, 5, 8, 0.95);
-      border-left: 4px solid var(--neon-cyan);
-      padding: 15px 25px;
-      border-radius: 4px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.8);
-      z-index: 1000;
-      color: #fff;
-      font-family: var(--font-body);
-      animation: slideInRight 0.5s forwards;
-    }
-    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
-    /* ========== FOOTER ========== */
     .footer {
+      margin-top: 28px;
+      padding: 26px 12px 48px;
       text-align: center;
-      margin-top: 50px;
-      padding: 30px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-dim);
-      font-size: 0.9rem;
+      color: rgba(167,176,207,.74);
+      line-height: 1.7;
+      font-size: .9rem;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header h1 { font-size: 2rem; }
-      .search-box { flex-direction: column; }
-      .next-result-notification { flex-direction: column; text-align: center; gap: 15px; }
-      .notification-countdown { border-left: none; padding-left: 0; margin-left: 0; border-top: 1px solid var(--neon-green); padding-top: 15px; width: 100%; }
+    .notification-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      left: auto;
+      transform: translateX(24px) translateY(0);
+      z-index: 2000;
+      width: auto;
+      min-width: 320px;
+      max-width: min(430px, calc(100% - 48px));
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(18,22,48,.92);
+      color: #fff;
+      box-shadow: 0 20px 55px rgba(0,0,0,.42);
+      backdrop-filter: blur(22px);
+      animation: toastIn .25s ease forwards, toastOut .32s ease 2.75s forwards;
+      font-weight: 800;
+      line-height: 1.45;
+      pointer-events: none;
     }
+
+    .notification-toast.success { border-color: rgba(74,222,128,.28); }
+    .notification-toast.error { border-color: rgba(251,113,133,.28); }
+    .notification-toast.warning { border-color: rgba(251,146,60,.28); }
+    .notification-toast.info { border-color: rgba(66,232,255,.28); }
+
+    .notification-toast.success i { color: var(--green); }
+    .notification-toast.error i { color: var(--red); }
+    .notification-toast.warning i { color: var(--orange); }
+    .notification-toast.info i { color: var(--cyan); }
+
+    @keyframes toastIn {
+      to { transform: translateX(0) translateY(0); opacity: 1; }
+    }
+
+    @keyframes toastOut {
+      to { transform: translateX(24px) translateY(0); opacity: 0; }
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.035);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--gold), var(--violet));
+      border-radius: 999px;
+    }
+
+    @media (max-width: 1180px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: min(100% - 20px, 1380px);
+        padding-top: 12px;
+      }
+
+      .top-status {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .status-pill {
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 24px 18px;
+        border-radius: 24px;
+      }
+
+      .hero h1 {
+        letter-spacing: -0.05em;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .table-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .table-actions {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .table-action-btn {
+        flex: 1 1 135px;
+      }
+
+      .next-result-notification {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .notification-countdown {
+        width: 100%;
+        text-align: center;
+      }
+
+      .silent-update-indicator, .last-update-time {
+        right: 10px;
+        font-size: .74rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .stat-card {
+        min-height: 112px;
+      }
+
+      .link-container {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .open-btn {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* FIX: tabel tidak memakai scroll vertikal sendiri. Scroll utama mengikuti halaman/browser. */
+    .table-container,
+    .table-container.silent-update {
+      max-height: none !important;
+      height: auto !important;
+      overflow-y: visible !important;
+    }
+
+  
+    /* Hapus tombol kecil di kolom link dan bubble update pojok kanan. */
+    #last-update-time,
+    .last-update-time,
+    #silent-update-indicator,
+    .silent-update-indicator {
+      display: none !important;
+    }
+
+    .link-container .open-btn,
+    .link-container .copy-btn {
+      display: none !important;
+    }
+
   </style>
 </head>
 <body>
-  
-  <!-- Background Elements -->
-  <div class="cyber-bg"></div>
-  <div class="glowing-orb orb-1"></div>
-  <div class="glowing-orb orb-2"></div>
-  
-  <!-- Silent Update Indicator (Custom Style) -->
-  <div class="silent-update-indicator" id="silent-update-indicator">
-    <div class="silent-pulse"></div>
-    <span>SYSTEM UPDATED</span>
+  <div class="animated-bg" aria-hidden="true">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
   </div>
+  <div class="particle-system" id="particle-system" aria-hidden="true"></div>
 
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <h1 data-text="TOGEL SCHEDULE">TOGEL SCHEDULE</h1>
-      <p><i class="fas fa-satellite-dish"></i> LIVE DATA FEED // REAL-TIME MONITORING</p>
+  <main class="container">
+    <header class="hero">
+      <div class="hero-content">
+        <section>
+          <h1><span class="gradient-text">Jadwal Pasaran Togel</span></h1>
+        </section>
+
+        <aside class="mini-panel">
+          <div class="mini-panel-title">
+            <span><i class="fa-regular fa-clock"></i> Next Result</span>
+            <span id="mini-total-label">0 Pasaran</span>
+          </div>
+          <div class="mini-panel-time" id="mini-next-time">--:--</div>
+          <div class="mini-panel-caption" id="mini-next-caption">Data akan tampil otomatis setelah berhasil dimuat.</div>
+        </aside>
+      </div>
     </header>
-    
-    <!-- Stats Cards -->
-    <div class="stats-container">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-database"></i></div>
+
+    <section class="stats-container" aria-label="Statistik jadwal">
+      <article class="stat-card">
         <div class="stat-content">
           <h3>Total Pasaran</h3>
           <div class="stat-value" id="total-pasaran">0</div>
         </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-video"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+      </article>
+
+      <article class="stat-card">
         <div class="stat-content">
-          <h3>Live Streams</h3>
+          <h3>Live Streaming</h3>
           <div class="stat-value" id="live-streams">0</div>
         </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-sync-alt"></i></div>
-        <div class="stat-content">
-          <h3>Last Update</h3>
-          <div class="stat-value" id="last-update">--:--</div>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-icon"><i class="fa-brands fa-youtube"></i></div>
+      </article>
+
+      <article class="stat-card">
         <div class="stat-content">
           <h3>Next Result</h3>
-          <div class="stat-value" id="next-result-time">--:--</div>
+          <div class="stat-value" id="next-result-time">-</div>
         </div>
-      </div>
-    </div>
-    
-    <!-- Next Result Notification -->
-    <div id="next-result-notification" class="next-result-notification" style="display:none;">
-      <div style="display:flex; align-items:center; gap:15px;">
-        <i class="fas fa-exclamation-triangle" style="color:var(--neon-green); font-size:1.5rem; animation: blink 1s infinite;"></i>
-        <div>
-          <div style="font-size:0.9rem; color:var(--text-dim); text-transform:uppercase;">Upcoming Result</div>
-          <div style="font-size:1.2rem;">
-            <span class="notification-pasaran" id="notification-pasaran">-</span> 
-            <span style="color:#fff; font-size:0.9rem;">at</span> 
-            <span style="color:#fff;" id="notification-time">-</span>
+        <div class="stat-icon"><i class="fa-solid fa-stopwatch"></i></div>
+      </article>
+    </section>
+
+    <section class="notification-container">
+      <div id="next-result-notification" class="next-result-notification" style="display:none;">
+        <div class="notification-content">
+          <div class="notification-icon"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="notification-text">
+            <strong>NEXT RESULT:</strong>
+            <span class="notification-pasaran" id="notification-pasaran" role="button" tabindex="0" title="Klik untuk menuju baris pasaran di tabel">-</span>
+            akan keluar pada <span class="notification-time" id="notification-time">-</span>
           </div>
         </div>
+        <div class="notification-countdown" id="notification-countdown">--:--:--</div>
       </div>
-      <div class="notification-countdown" id="notification-countdown">00:00:00</div>
-    </div>
-    
-    <!-- Search Section -->
-    <div class="search-container">
+    </section>
+
+    <section class="search-container">
       <div class="search-box">
         <div class="search-input-wrapper">
-          <input type="text" id="search-input" class="search-input" placeholder="ENTER QUERY TO SEARCH DATABASE..." autocomplete="off">
-          <button id="clear-btn" class="copy-btn" style="position:absolute; right:10px; top:10px; display:none; border:none;"><i class="fas fa-times"></i></button>
+          <input type="text" id="search-input" class="search-input" placeholder="Cari pasaran, jam result, link, youtube, atau kata lainnya..." autocomplete="off" />
+          <button id="clear-btn" class="clear-btn" type="button" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i> SCAN</button>
+        <button id="search-btn" class="search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
       </div>
-      <div id="search-result-info" style="display:none; margin-top:15px; padding:10px; border:1px dashed var(--neon-pink); color:var(--neon-pink); font-size:0.9rem;">
-        RESULTS FOUND: <span id="result-count">0</span> FOR "<span id="search-query"></span>"
-        <button id="reset-search-btn" style="background:transparent; border:none; color:var(--text-dim); cursor:pointer; margin-left:10px; text-decoration:underline;">[RESET]</button>
+    </section>
+
+    <div id="search-result-info" class="search-result-info">
+      Menampilkan <strong><span id="result-count">0</span></strong> hasil dari pencarian "<strong><span id="search-query"></span></strong>"
+      <button id="reset-search-btn" type="button"><i class="fa-solid fa-xmark"></i> Reset</button>
+    </div>
+
+    <section id="loading" class="loading">
+      <div class="loading-panel">
+        <div class="loader-halo" aria-hidden="true">
+          <span class="loader-ring one"></span>
+          <span class="loader-ring two"></span>
+          <div class="loader-core"><i class="fa-solid fa-bolt"></i></div>
+        </div>
+        <div class="loading-kicker"><i class="fa-solid fa-signal"></i> Live Dashboard</div>
+        <h2>Menyiapkan Jadwal Pasaran</h2>
+        <p>Sedang menyusun data terbaru dan menampilkan dashboard secara otomatis.</p>
+        <div class="loading-progress"><span></span></div>
+        <div class="loading-steps">
+          <span><i class="fa-solid fa-rotate"></i> Update Otomatis</span>
+          <span><i class="fa-solid fa-gauge-high"></i> Cepat & Ringan</span>
+          <span><i class="fa-solid fa-copy"></i> Copy Siap Pakai</span>
+        </div>
       </div>
-    </div>
-    
-    <!-- Loading -->
-    <div id="loading" class="loading">
-      <div class="loading-spinner"></div>
-      <h2 style="font-family:var(--font-head); color:var(--neon-cyan);">INITIALIZING SYSTEM...</h2>
-      <p style="color:var(--text-dim);">CONNECTING TO SECURE DATA STREAM</p>
-    </div>
-    
-    <!-- Error -->
-    <div id="error" class="error" style="display:none; border-color: #ff3333;">
-      <i class="fas fa-skull-crossbones" style="font-size:3rem; color:#ff3333; margin-bottom:20px;"></i>
-      <h2 style="color:#ff3333; font-family:var(--font-head);">CONNECTION FAILED</h2>
-      <p id="error-message" style="color:#fff; margin:10px 0;">Error establishing link.</p>
-      <button onclick="loadData()" style="background:var(--neon-purple); border:none; padding:10px 20px; color:#fff; cursor:pointer; font-weight:bold; margin-top:10px;">RETRY CONNECTION</button>
-    </div>
-    
-    <!-- Table Section -->
-    <div id="table-section" class="table-section" style="display:none;">
+    </section>
+
+    <section id="error" class="error" style="display:none;">
+      <div class="error-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h2>Terjadi Kesalahan</h2>
+      <p id="error-message">Gagal memuat data jadwal pasaran.</p>
+      <button onclick="loadData()" class="btn btn-primary" type="button" style="margin-top:18px;"><i class="fa-solid fa-rotate-right"></i> Coba Lagi</button>
+    </section>
+
+    <section id="table-section" class="table-section" style="display:none;">
       <div class="table-header">
-        <h2><i class="fas fa-table"></i> DATABASE</h2>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button id="refresh-btn" class="table-action-btn"><i class="fas fa-sync"></i> REFRESH</button>
-          <button id="export-btn" class="table-action-btn"><i class="fas fa-download"></i> EXPORT</button>
+        <div class="table-title-block">
+          <h2><i class="fa-solid fa-table-list"></i> Data Jadwal Pasaran</h2>
+        </div>
+        <div class="table-actions">
+          <button id="export-btn" class="table-action-btn" type="button"><i class="fa-solid fa-file-arrow-down"></i> Export</button>
+          <button id="filter-btn" class="table-action-btn" type="button"><i class="fa-solid fa-filter"></i> Live Only</button>
         </div>
       </div>
-      
+
       <div class="table-container">
         <table id="jadwal-table">
           <thead>
@@ -621,607 +1550,1162 @@
           <tbody id="table-body"></tbody>
         </table>
       </div>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="footer">
-      <p>© 2025 NEON TOGEL SYSTEM // SECURE CONNECTION ESTABLISHED</p>
-      <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">LAST SYNC: <span id="footer-update">-</span></p>
-    </footer>
-  </div>
+    </section>
+
+  </main>
 
   <script>
-    // ========== KONFIGURASI GOOGLE SHEETS (ORIGINAL LOGIC PRESERVED) ==========
+    // ========== KONFIGURASI SUMBER DATA ==========
     const SPREADSHEET_ID = '10LXglc7cEh3MhS9CStG5sEazXz-G6dKpXP_8vTLAW-c';
     const SHEET_NAME = 'Jadwal Pasaran';
-    
+
     // ========== VARIABEL GLOBAL ==========
     let allData = [];
     let filteredData = [];
     let headers = [];
     let lastDataHash = '';
-    let realTimeInterval;
-    let currentDataVersion = 0;
+    let realTimeInterval = null;
+    let countdownInterval = null;
+    let nextResultAutoInterval = null;
+    let smartNextResultListenersBound = false;
+    let currentNextResult = null;
+    let currentNextResultKey = '';
     let isFirstLoad = true;
-    
-    // ========== INITIALIZATION ==========
+    let liveOnlyMode = false;
+    let isCheckingUpdate = false;
+
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('System Neon: Starting...');
-      
+      initParticles();
       setupEventListeners();
+      setupConnectionMonitoring();
       loadData();
       startSilentMonitoring();
+      startSmartNextResultAutoRefresh();
     });
-    
-    // ========== SILENT MONITORING SYSTEM ==========
-    function startSilentMonitoring() {
-      if (realTimeInterval) clearInterval(realTimeInterval);
-      realTimeInterval = setInterval(() => {
-        checkForUpdatesSilently();
-      }, 3000);
-      console.log('System Neon: Silent Monitoring Active (3s interval)');
-    }
-    
-    async function checkForUpdatesSilently() {
-      try {
-        const timestamp = new Date().getTime();
-        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&t=${timestamp}`;
-        
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-        
-        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
-        clearTimeout(timeoutId);
-        
-        if (!response.ok) return;
-        
-        const text = await response.text();
-        const json = parseGoogleSheetsResponse(text);
-        const newDataHash = generateDataHash(json);
-        
-        if (newDataHash !== lastDataHash) {
-          console.log('Neon System: Data change detected. Updating...');
-          processDataSilently(json);
-          lastDataHash = newDataHash;
-          showSilentUpdateIndicator();
-          updateLastUpdateTime();
-        }
-      } catch (error) {
-        // Silent fail
+
+    // ========== PARTICLE BACKGROUND ==========
+    function initParticles() {
+      const container = document.getElementById('particle-system');
+      if (!container) return;
+      const count = window.innerWidth < 768 ? 14 : 32;
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1.5;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.top = (Math.random() * 100) + 'vh';
+        p.style.opacity = (Math.random() * .5 + .16).toFixed(2);
+        container.appendChild(p);
+        animateParticle(p);
       }
     }
-    
-    function showSilentUpdateIndicator() {
-      const indicator = document.getElementById('silent-update-indicator');
-      indicator.classList.add('show');
-      setTimeout(() => indicator.classList.remove('show'), 2000);
-    }
-    
-    function updateLastUpdateTime() {
-      const now = new Date();
-      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                      now.getMinutes().toString().padStart(2, '0') + ':' + 
-                      now.getSeconds().toString().padStart(2, '0');
-      
-      // Visual update of time in specific element if needed
-      const lastUpdateEl = document.getElementById('last-update');
-      if(lastUpdateEl) lastUpdateEl.textContent = timeStr;
-    }
-    
-    function generateDataHash(json) {
-      try {
-        if (!json || !json.table || !json.table.rows) return '';
-        const rows = json.table.rows;
-        let hashString = '';
-        for (let i = 0; i < rows.length; i++) {
-          const row = rows[i];
-          if (row && row.c) {
-            for (let j = 0; j < row.c.length; j++) {
-              const cell = row.c[j];
-              if (cell) {
-                if (cell.v !== undefined && cell.v !== null) hashString += String(cell.v);
-                if (cell.f) hashString += String(cell.f);
-              }
-            }
-          }
+
+    function animateParticle(particle) {
+      let x = parseFloat(particle.style.left);
+      let y = parseFloat(particle.style.top);
+      const speedX = (Math.random() - .5) * .12;
+      const speedY = (Math.random() - .5) * .12;
+
+      function move() {
+        if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          requestAnimationFrame(move);
+          return;
         }
-        let hash = 0;
-        for (let i = 0; i < hashString.length; i++) {
-          const char = hashString.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
-          hash = hash & hash;
-        }
-        return hash.toString();
-      } catch (error) {
-        return '';
+        x += speedX;
+        y += speedY;
+        if (x > 100) x = 0;
+        if (x < 0) x = 100;
+        if (y > 100) y = 0;
+        if (y < 0) y = 100;
+        particle.style.left = x + 'vw';
+        particle.style.top = y + 'vh';
+        requestAnimationFrame(move);
       }
+      move();
     }
-    
-    // ========== LOAD DATA ==========
+
+    // ========== DATA LOADER ==========
     async function loadData() {
       if (isFirstLoad) {
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('error').style.display = 'none';
-        document.getElementById('table-section').style.display = 'none';
-        document.getElementById('next-result-notification').style.display = 'none';
+        showById('loading', true);
+        showById('error', false);
+        showById('table-section', false);
+        showById('next-result-notification', false);
       }
-      
+
       try {
-        const timestamp = new Date().getTime();
+        const timestamp = Date.now();
         const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&t=${timestamp}`;
-        
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000);
-        
         const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
         clearTimeout(timeoutId);
-        
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         const text = await response.text();
         const json = parseGoogleSheetsResponse(text);
+
         processGoogleSheetsData(json);
         lastDataHash = generateDataHash(json);
         isFirstLoad = false;
-        
       } catch (error) {
-        console.error('Load Error:', error);
-        showError(error);
+        showError(new Error(`Gagal memuat data: ${error.message}`));
       }
     }
-    
+
     function parseGoogleSheetsResponse(text) {
       try {
-        const jsonString = text.substring(47).slice(0, -2);
+        const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
+        const jsonString = match ? match[1] : text.substring(47).slice(0, -2);
         return JSON.parse(jsonString);
       } catch (error) {
-        throw new Error('Invalid Google Sheets Format');
+        throw new Error('Format respons data tidak valid');
       }
     }
-    
-    // ========== PROCESS DATA ==========
+
     function processGoogleSheetsData(json) {
-      if (!json || !json.table || !json.table.rows) throw new Error('No data found');
-      
-      const firstRow = json.table.rows[0];
-      const extractedHeaders = [];
-      
-      if (firstRow && firstRow.c) {
-        for (let i = 0; i < firstRow.c.length; i++) {
-          const cell = firstRow.c[i];
-          let headerValue = (cell && cell.v !== undefined && cell.v !== null) ? String(cell.v).trim() : `Col ${i+1}`;
-          if (!headerValue) {
-            const defaults = ['Pasaran', 'Jam Buka', 'Jam Tutup', 'Jam Result', 'Link Resmi', 'Link YouTube'];
-            headerValue = defaults[i] || `Col ${i+1}`;
-          }
-          extractedHeaders.push(headerValue);
-        }
-      }
-      
-      const extractedData = [];
-      for (let i = 1; i < json.table.rows.length; i++) {
-        const row = json.table.rows[i];
-        if (!row || !row.c) continue;
-        
-        const rowData = {};
-        let isEmptyRow = true;
-        
-        for (let j = 0; j < extractedHeaders.length; j++) {
-          const header = extractedHeaders[j];
-          const cell = row.c[j];
-          let cellValue = '';
-          
-          if (cell) {
-            if (cell.v !== undefined && cell.v !== null && cell.v !== '') {
-              cellValue = String(cell.v).trim();
-              isEmptyRow = false;
-            }
-            if (cell.f && !cellValue) {
-              cellValue = String(cell.f).trim();
-              isEmptyRow = false;
-            }
-          }
-          rowData[header] = cellValue;
-        }
-        
-        if (!isEmptyRow) extractedData.push(rowData);
-      }
-      
-      allData = extractedData;
-      filteredData = [...allData];
-      headers = extractedHeaders;
-      
+      const parsed = extractSheetData(json);
+      headers = parsed.headers;
+      allData = parsed.data;
+      applyCurrentFilters();
       updateStats();
       renderTable();
       setupNextResultNotification();
-      
-      if (isFirstLoad) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('table-section').style.display = 'block';
-      }
-      
-      const now = new Date();
-      document.getElementById('footer-update').textContent = now.toLocaleString('id-ID');
+      showById('loading', false);
+      showById('error', false);
+      showById('table-section', true);
+      updateFooterTime();
       updateLastUpdateTime();
+      if (isFirstLoad) showNotification(`Data berhasil dimuat: ${allData.length} pasaran`, 'success');
     }
-    
-    // ========== SILENT DATA PROCESS ==========
-    function processDataSilently(json) {
-      if (!json || !json.table || !json.table.rows) return;
-      
-      currentDataVersion++;
+
+    function extractSheetData(json) {
+      if (!json || !json.table || !json.table.rows || !json.table.rows.length) {
+        throw new Error('Data tidak ditemukan atau masih kosong.');
+      }
+
+      const defaultHeaders = ['Pasaran', 'Jam Buka', 'Jam Tutup', 'Jam Result', 'Link Resmi', 'Link YouTube'];
       const firstRow = json.table.rows[0];
       const extractedHeaders = [];
-      
+
       if (firstRow && firstRow.c) {
         for (let i = 0; i < firstRow.c.length; i++) {
           const cell = firstRow.c[i];
-          let headerValue = (cell && cell.v !== undefined) ? String(cell.v).trim() : `Col ${i+1}`;
-          if (!headerValue) headerValue = ['Pasaran', 'Jam Buka', 'Jam Tutup', 'Jam Result', 'Link Resmi', 'Link YouTube'][i] || `Col ${i+1}`;
-          extractedHeaders.push(headerValue);
+          let value = cell && cell.v !== undefined && cell.v !== null ? String(cell.v).trim() : '';
+          extractedHeaders.push(value || defaultHeaders[i] || `Kolom ${i + 1}`);
         }
       }
-      
+
       const extractedData = [];
       for (let i = 1; i < json.table.rows.length; i++) {
         const row = json.table.rows[i];
         if (!row || !row.c) continue;
         const rowData = {};
         let isEmptyRow = true;
+
         for (let j = 0; j < extractedHeaders.length; j++) {
+          const header = extractedHeaders[j];
           const cell = row.c[j];
-          let val = '';
+          let value = '';
           if (cell) {
-            if (cell.v !== undefined && cell.v !== '') { val = String(cell.v).trim(); isEmptyRow = false; }
-            else if (cell.f) { val = String(cell.f).trim(); isEmptyRow = false; }
+            if (cell.v !== undefined && cell.v !== null && cell.v !== '') value = String(cell.v).trim();
+            if (cell.f && !value) value = String(cell.f).trim();
+            if (value) isEmptyRow = false;
           }
-          rowData[extractedHeaders[j]] = val;
+          rowData[header] = value;
         }
+
         if (!isEmptyRow) extractedData.push(rowData);
       }
-      
-      const oldData = [...allData];
-      allData = extractedData;
-      headers = extractedHeaders;
-      
-      const query = document.getElementById('search-input').value.trim().toLowerCase();
-      if (query) {
-        filteredData = allData.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(query)));
-      } else {
-        filteredData = [...allData];
-      }
-      
-      updateStatsSilently();
-      updateTableSilently(oldData);
-      setupNextResultNotification();
-    }
-    
-    function updateStatsSilently() {
-      document.getElementById('total-pasaran').textContent = allData.length;
-      const liveStreams = allData.filter(item => {
-        const yt = item['Link YouTube'] || item['Link Youtube'] || item['YouTube'] || item['Youtube'];
-        return yt && yt.trim() !== '' && yt !== '-';
-      }).length;
-      document.getElementById('live-streams').textContent = liveStreams;
-      
-      const now = new Date();
-      const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      document.getElementById('last-update').textContent = timeStr;
-      
-      const nextResult = findNextResult();
-      document.getElementById('next-result-time').textContent = nextResult ? nextResult.time : '--:--';
-      document.getElementById('footer-update').textContent = now.toLocaleString('id-ID');
-      updateLastUpdateTime();
-    }
-    
-    function updateTableSilently(oldData) {
-      const tableBody = document.getElementById('table-body');
-      const scrollTop = document.querySelector('.table-container').scrollTop;
-      
-      tableBody.innerHTML = '';
-      
-      if (filteredData.length === 0) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = headers.length;
-        td.textContent = 'NO DATA FOUND';
-        td.style.textAlign = 'center';
-        td.style.padding = '40px';
-        td.style.color = 'var(--text-dim)';
-        tr.appendChild(td);
-        tableBody.appendChild(tr);
-      } else {
-        filteredData.forEach((rowData, index) => {
-          const row = document.createElement('tr');
-          const isNew = !oldData.some(old => JSON.stringify(old) === JSON.stringify(rowData));
-          if(isNew && index < allData.length - oldData.length) {
-             row.style.backgroundColor = 'rgba(10, 255, 10, 0.2)';
-             setTimeout(() => row.style.backgroundColor = '', 2000);
-          }
 
-          headers.forEach(header => {
-            const cell = document.createElement('td');
-            const val = rowData[header] || '-';
-            
-            if (header.toLowerCase().includes('link') || header.toLowerCase().includes('youtube') || header.toLowerCase().includes('url')) {
-              const div = document.createElement('div');
-              div.style.display = 'flex'; div.style.alignItems = 'center';
-              
-              if (isValidUrl(val) && val !== '-') {
-                const a = document.createElement('a');
-                a.href = val; a.target = '_blank'; a.rel = 'noopener';
-                a.className = 'link';
-                a.innerHTML = header.toLowerCase().includes('youtube') ? '<i class="fab fa-youtube"></i> LIVE' : '<i class="fas fa-external-link-alt"></i> LINK';
-                div.appendChild(a);
-                
-                const btn = document.createElement('button');
-                btn.className = 'copy-btn';
-                btn.innerHTML = '<i class="fas fa-copy"></i>';
-                btn.onclick = function() {
-                  copyToClipboard(val);
-                  const original = this.innerHTML;
-                  this.innerHTML = '<i class="fas fa-check"></i>';
-                  this.style.borderColor = 'var(--neon-green)';
-                  this.style.color = 'var(--neon-green)';
-                  setTimeout(() => {
-                    this.innerHTML = original;
-                    this.style.borderColor = ''; this.style.color = '';
-                  }, 2000);
-                };
-                div.appendChild(btn);
-              } else {
-                cell.textContent = val;
-              }
-              if(div.children.length > 0) cell.appendChild(div);
-            } else {
-              cell.textContent = val;
-            }
-            row.appendChild(cell);
+      return { headers: extractedHeaders, data: extractedData };
+    }
+
+    // ========== SILENT MONITORING ==========
+    function startSilentMonitoring() {
+      if (realTimeInterval) clearInterval(realTimeInterval);
+      realTimeInterval = setInterval(checkForUpdatesSilently, 5000);
+    }
+
+    async function checkForUpdatesSilently() {
+      if (isCheckingUpdate) return;
+      isCheckingUpdate = true;
+      try {
+        const timestamp = Date.now();
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&t=${timestamp}`;
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+        clearTimeout(timeoutId);
+        if (!response.ok) return;
+
+        const text = await response.text();
+        const json = parseGoogleSheetsResponse(text);
+        const newHash = generateDataHash(json);
+        if (newHash && newHash !== lastDataHash) {
+          const oldData = [...allData];
+          const parsed = extractSheetData(json);
+          headers = parsed.headers;
+          allData = parsed.data;
+          lastDataHash = newHash;
+          applyCurrentFilters();
+          updateStats();
+          updateTableSilently(oldData);
+          setupNextResultNotification();
+          updateFooterTime();
+          updateLastUpdateTime();
+          showSilentUpdateIndicator();
+        }
+      } catch (error) {
+        console.warn('Silent update gagal:', error.message);
+      } finally {
+        isCheckingUpdate = false;
+      }
+    }
+
+    function generateDataHash(json) {
+      try {
+        const rows = json?.table?.rows || [];
+        let str = '';
+        rows.forEach(row => {
+          (row.c || []).forEach(cell => {
+            if (!cell) return;
+            str += String(cell.v ?? '') + String(cell.f ?? '');
           });
-          tableBody.appendChild(row);
         });
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
+        }
+        return String(hash);
+      } catch (_) {
+        return '';
       }
-      
-      document.querySelector('.table-container').scrollTop = scrollTop;
     }
-    
-    // ========== STATS & NOTIFICATIONS ==========
+
+    function showSilentUpdateIndicator() {
+      const indicator = document.getElementById('silent-update-indicator');
+      if (!indicator) return;
+      indicator.classList.add('show');
+      setTimeout(() => indicator.classList.remove('show'), 2000);
+    }
+
+    // ========== STATS & NEXT RESULT ==========
     function updateStats() {
-      document.getElementById('total-pasaran').textContent = allData.length;
-      const live = allData.filter(item => {
-        const yt = item['Link YouTube'] || item['Link Youtube'] || item['YouTube'];
-        return yt && yt.trim() !== '' && yt !== '-';
-      }).length;
-      document.getElementById('live-streams').textContent = live;
-      
-      const now = new Date();
-      const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      document.getElementById('last-update').textContent = t;
-      
-      const nr = findNextResult();
-      document.getElementById('next-result-time').textContent = nr ? nr.time : '--:--';
-    }
-    
-    function setupNextResultNotification() {
+      setText('total-pasaran', allData.length);
+      setText('mini-total-label', `${allData.length} Pasaran`);
+      const liveStreams = allData.filter(row => getYoutubeLink(row)).length;
+      setText('live-streams', liveStreams);
+
       const next = findNextResult();
-      const el = document.getElementById('next-result-notification');
-      if (next) {
-        document.getElementById('notification-pasaran').textContent = next.pasaran;
-        document.getElementById('notification-time').textContent = next.time;
-        el.style.display = 'flex';
-        updateCountdown(next);
-      } else {
-        el.style.display = 'none';
+      setText('next-result-time', next ? next.time : '-');
+      setText('mini-next-time', next ? next.time : '--:--');
+      setText('mini-next-caption', next ? getNextResultCaption(next) : 'Belum ada jadwal result yang dapat dibaca.');
+    }
+
+    function setupNextResultNotification() {
+      refreshNextResultWithoutBlink(true);
+    }
+
+    function startSmartNextResultAutoRefresh() {
+      if (nextResultAutoInterval) clearInterval(nextResultAutoInterval);
+
+      // Cek ringan setiap 1 detik. Tidak reload halaman, tidak render ulang tabel,
+      // hanya mengganti teks NEXT RESULT jika waktunya sudah lewat.
+      nextResultAutoInterval = setInterval(() => {
+        refreshNextResultWithoutBlink(false);
+      }, 1000);
+
+      // Saat tab dibuka kembali / window aktif, langsung sinkron ulang.
+      // Listener cukup dipasang sekali agar tidak dobel saat koneksi online kembali.
+      if (!smartNextResultListenersBound) {
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) {
+            refreshNextResultWithoutBlink(true);
+            checkForUpdatesSilently();
+          }
+        });
+
+        window.addEventListener('focus', () => {
+          refreshNextResultWithoutBlink(true);
+          checkForUpdatesSilently();
+        });
+
+        smartNextResultListenersBound = true;
       }
     }
-    
+
+    function refreshNextResultWithoutBlink(force = false) {
+      if (!allData.length) return;
+
+      const next = findNextResult();
+      const nextKey = getNextResultKey(next);
+
+      if (!force && nextKey === currentNextResultKey) return;
+
+      currentNextResult = next;
+      currentNextResultKey = nextKey;
+      updateNextResultTexts(next);
+      updateNextResultRowMarker(next);
+      updateNextResultCountdown(next);
+    }
+
+    function getNextResultItems(next) {
+      if (!next) return [];
+      return Array.isArray(next.items) && next.items.length ? next.items : [next];
+    }
+
+    function getNextResultNames(next) {
+      return getNextResultItems(next)
+        .map(item => item.pasaran || 'Unknown')
+        .filter(Boolean);
+    }
+
+    function getNextResultCaption(next) {
+      const names = getNextResultNames(next);
+      if (!next || !names.length) return 'Belum ada jadwal result yang dapat dibaca.';
+      if (names.length === 1) return `${names[0]} adalah result terdekat dari jadwal saat ini.`;
+      return `${names.join(', ')} memiliki jam result bersamaan pada jadwal terdekat.`;
+    }
+
+    function getNextResultKey(next) {
+      if (!next) return '';
+      const keys = getNextResultItems(next)
+        .map(item => normalizePasaranKey(item.pasaran))
+        .filter(Boolean)
+        .sort()
+        .join(',');
+      return `${keys}|${next.time}`;
+    }
+
+    function updateNextResultTexts(next) {
+      const notification = document.getElementById('next-result-notification');
+      const pasaranButton = document.getElementById('notification-pasaran');
+
+      setText('next-result-time', next ? next.time : '-');
+      setText('mini-next-time', next ? next.time : '--:--');
+      setText('mini-next-caption', next ? getNextResultCaption(next) : 'Belum ada jadwal result yang dapat dibaca.');
+
+      if (!next) {
+        if (notification) notification.style.display = 'none';
+        if (pasaranButton) {
+          pasaranButton.innerHTML = '-';
+          pasaranButton.removeAttribute('data-pasaran-key');
+          pasaranButton.title = 'Belum ada next result yang bisa diarahkan';
+        }
+        setText('notification-countdown', '--:--:--');
+        return;
+      }
+
+      renderNextResultPasaranItems(next, pasaranButton);
+      setText('notification-time', next.time);
+
+      if (notification && notification.style.display !== 'flex') {
+        notification.style.display = 'flex';
+      }
+    }
+
+    function renderNextResultPasaranItems(next, container) {
+      if (!container) return;
+
+      const items = getNextResultItems(next);
+      container.innerHTML = '';
+
+      if (!items.length) {
+        container.textContent = '-';
+        return;
+      }
+
+      container.dataset.pasaranKey = normalizePasaranKey(items[0].pasaran);
+      container.title = items.length > 1
+        ? 'Klik salah satu pasaran untuk menuju barisnya di tabel'
+        : `Klik untuk menuju baris ${items[0].pasaran} di tabel`;
+
+      items.forEach(item => {
+        const pill = document.createElement('span');
+        pill.className = 'notification-pasaran-item';
+        pill.textContent = item.pasaran || 'Unknown';
+        pill.dataset.pasaranKey = normalizePasaranKey(item.pasaran);
+        pill.setAttribute('role', 'button');
+        pill.setAttribute('tabindex', '0');
+        pill.title = `Klik untuk menuju baris ${item.pasaran} di tabel`;
+
+        pill.addEventListener('click', event => {
+          event.preventDefault();
+          event.stopPropagation();
+          jumpToPasaranRow(item.pasaran);
+        });
+
+        pill.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.stopPropagation();
+            jumpToPasaranRow(item.pasaran);
+          }
+        });
+
+        container.appendChild(pill);
+      });
+    }
+
+    function updateNextResultRowMarker(next) {
+      const rows = document.querySelectorAll('#table-body tr[data-pasaran-key]');
+      if (!rows.length) return;
+
+      const keys = new Set(
+        getNextResultItems(next)
+          .map(item => normalizePasaranKey(item.pasaran))
+          .filter(Boolean)
+      );
+
+      rows.forEach(row => {
+        row.classList.toggle('is-next-result-row', keys.has(row.dataset.pasaranKey));
+      });
+    }
+
+    function updateNextResultCountdown(next) {
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      if (!next) return;
+
+      const update = () => {
+        const secondsLeft = getSecondsUntilTime(next.time);
+
+        // Begitu waktunya lewat, otomatis cari next result baru tanpa refresh halaman.
+        // Delay kecil 350ms supaya transisi halus dan tidak berkedip.
+        if (secondsLeft <= 0) {
+          setTimeout(() => refreshNextResultWithoutBlink(true), 350);
+          return;
+        }
+
+        setText('notification-countdown', formatDuration(secondsLeft));
+      };
+
+      update();
+      countdownInterval = setInterval(update, 1000);
+    }
+
     function findNextResult() {
       const now = new Date();
-      const currentMin = now.getHours() * 60 + now.getMinutes();
-      let next = null;
+      const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
       let minDiff = Infinity;
-      
-      allData.forEach(p => {
-        let t = '';
-        const cols = ['Jam Result', 'Jam Keluar', 'Result', 'Jam'];
-        for(let c of cols) { if(p[c] && p[c].trim() !== '' && p[c] !== '-') { t = p[c]; break; } }
-        if(!t) return;
-        
-        let h, m;
-        if(t.includes(':')) [h, m] = t.split(':').map(Number);
-        else if(t.includes('.')) [h, m] = t.split('.').map(Number);
-        else {
-          const n = parseInt(t); if(!isNaN(n)) { h = Math.floor(n/100); m = n%100; } else return;
+      let nextTime = '';
+      const nextItems = [];
+      const possibleColumns = ['Jam Result', 'Jam Keluar', 'Result', 'Jam', 'Waktu Result'];
+
+      allData.forEach(row => {
+        let raw = '';
+        for (const col of possibleColumns) {
+          if (row[col] && String(row[col]).trim() && row[col] !== '-') {
+            raw = String(row[col]).trim();
+            break;
+          }
         }
-        if(isNaN(h) || isNaN(m)) return;
-        
-        const resMin = h * 60 + m;
-        let diff = resMin - currentMin;
-        if(diff < 0) diff += 24*60;
-        
-        if(diff > 0 && diff < minDiff) {
+        if (!raw) return;
+
+        const parsed = parseTimeToSeconds(raw);
+        if (!parsed) return;
+
+        let diff = parsed.totalSeconds - currentSeconds;
+        if (diff <= 0) diff += 24 * 3600;
+
+        const time = `${String(parsed.hours).padStart(2, '0')}:${String(parsed.minutes).padStart(2, '0')}`;
+        const item = {
+          pasaran: row[headers[0]] || 'Unknown',
+          time,
+          secondsDiff: diff,
+          timeDiff: Math.ceil(diff / 60)
+        };
+
+        if (diff < minDiff) {
           minDiff = diff;
-          next = { pasaran: p[headers[0]] || 'Unknown', time: `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}` };
+          nextTime = time;
+          nextItems.length = 0;
+          nextItems.push(item);
+        } else if (diff === minDiff && time === nextTime) {
+          nextItems.push(item);
         }
       });
-      return next;
+
+      if (!nextItems.length) return null;
+
+      return {
+        pasaran: nextItems[0].pasaran,
+        time: nextTime,
+        secondsDiff: minDiff,
+        timeDiff: Math.ceil(minDiff / 60),
+        items: nextItems
+      };
     }
-    
-    function updateCountdown(next) {
-      function tick() {
-        const n = new Date();
-        const cur = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
-        const [h, m] = next.time.split(':').map(Number);
-        let target = h*3600 + m*60;
-        if(target <= cur) target += 24*3600;
-        
-        let diff = target - cur;
-        const hh = Math.floor(diff/3600);
-        const mm = Math.floor((diff%3600)/60);
-        const ss = diff%60;
-        
-        document.getElementById('notification-countdown').textContent = 
-          `${hh.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`;
+
+    function parseTimeToSeconds(value) {
+      const text = String(value).trim();
+      let hours, minutes;
+
+      if (/^\d{1,2}:\d{1,2}$/.test(text)) {
+        [hours, minutes] = text.split(':').map(Number);
+      } else if (/^\d{1,2}\.\d{1,2}$/.test(text)) {
+        [hours, minutes] = text.split('.').map(Number);
+      } else if (/^\d{3,4}$/.test(text)) {
+        const num = parseInt(text, 10);
+        hours = Math.floor(num / 100);
+        minutes = num % 100;
+      } else {
+        const match = text.match(/(\d{1,2})[:.](\d{1,2})/);
+        if (!match) return null;
+        hours = Number(match[1]);
+        minutes = Number(match[2]);
       }
-      tick(); setInterval(tick, 1000);
+
+      if (Number.isNaN(hours) || Number.isNaN(minutes) || hours > 23 || minutes > 59) return null;
+      return { hours, minutes, totalSeconds: (hours * 3600) + (minutes * 60) };
     }
-    
-    // ========== RENDER TABLE ==========
+
+    function getSecondsUntilTime(timeText) {
+      const now = new Date();
+      const current = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+      const [h, m] = String(timeText).split(':').map(Number);
+      let target = (h * 3600) + (m * 60);
+      let diff = target - current;
+      if (diff <= 0) diff += 24 * 3600;
+      return diff;
+    }
+
+    function formatDuration(totalSeconds) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+    }
+
+    // ========== TABLE ==========
     function renderTable() {
-      const th = document.getElementById('table-header');
-      const tb = document.getElementById('table-body');
-      th.innerHTML = ''; tb.innerHTML = '';
-      
-      headers.forEach(h => {
-        const e = document.createElement('th'); e.textContent = h; th.appendChild(e);
+      const tableHeader = document.getElementById('table-header');
+      const tableBody = document.getElementById('table-body');
+      tableHeader.innerHTML = '';
+      tableBody.innerHTML = '';
+
+      headers.forEach(header => {
+        const th = document.createElement('th');
+        const label = document.createElement('span');
+        label.className = 'th-label';
+        label.textContent = header;
+        th.appendChild(label);
+        tableHeader.appendChild(th);
       });
-      
-      if (filteredData.length === 0) {
+      const actionTh = document.createElement('th');
+      const actionLabel = document.createElement('span');
+      actionLabel.className = 'th-label';
+      actionLabel.textContent = 'Aksi';
+      actionTh.appendChild(actionLabel);
+      tableHeader.appendChild(actionTh);
+
+      if (!filteredData.length) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
-        td.colSpan = headers.length;
-        td.textContent = 'DATA NOT FOUND IN DATABASE';
-        td.style.textAlign = 'center'; td.style.padding = '40px'; td.style.color = 'var(--text-dim)';
-        tr.appendChild(td); tb.appendChild(tr);
+        td.colSpan = headers.length + 1;
+        td.className = 'empty-cell';
+        td.textContent = 'Tidak ada data yang ditemukan';
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+        return;
+      }
+
+      filteredData.forEach(rowData => {
+        const tr = document.createElement('tr');
+        const pasaranName = rowData[headers[0]] || '';
+        tr.dataset.pasaranKey = normalizePasaranKey(pasaranName);
+        tr.dataset.pasaranName = pasaranName;
+        const activeNextKeys = new Set(
+          getNextResultItems(currentNextResult)
+            .map(item => normalizePasaranKey(item.pasaran))
+            .filter(Boolean)
+        );
+        if (activeNextKeys.has(tr.dataset.pasaranKey)) {
+          tr.classList.add('is-next-result-row');
+        }
+        headers.forEach(header => tr.appendChild(createCell(header, rowData[header] || '-')));
+
+        const actionTd = document.createElement('td');
+        const rowCopyBtn = document.createElement('button');
+        rowCopyBtn.className = 'row-copy-btn';
+        rowCopyBtn.type = 'button';
+        rowCopyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
+        rowCopyBtn.title = 'Copy format kalimat jadwal';
+        rowCopyBtn.addEventListener('click', () => copyRowData(rowData));
+        actionTd.appendChild(rowCopyBtn);
+        tr.appendChild(actionTd);
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function updateTableSilently(oldData) {
+      const tableContainer = document.querySelector('.table-container');
+      const scrollTop = tableContainer.scrollTop;
+      const scrollLeft = tableContainer.scrollLeft;
+      renderTable();
+      tableContainer.scrollTop = scrollTop;
+      tableContainer.scrollLeft = scrollLeft;
+      tableContainer.classList.add('silent-update');
+      setTimeout(() => tableContainer.classList.remove('silent-update'), 1800);
+    }
+
+    function createCell(header, cellValue) {
+      const td = document.createElement('td');
+      const value = String(cellValue || '-');
+      const lower = header.toLowerCase();
+      const isLinkColumn = lower.includes('link') || lower.includes('youtube') || lower.includes('url');
+
+      if (isLinkColumn && isValidUrl(value) && value !== '-') {
+        td.classList.add('link-cell');
+        const wrap = document.createElement('div');
+        wrap.className = 'link-container';
+
+        const link = document.createElement('a');
+        link.href = value;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'link';
+        const icon = lower.includes('youtube') ? 'fa-brands fa-youtube' : 'fa-solid fa-link';
+        const label = lower.includes('youtube') ? 'Link Streaming' : 'Link Resmi';
+        link.title = value;
+        link.innerHTML = `<i class="${icon}"></i><span class="link-label">${label}</span>`;
+        wrap.appendChild(link);
+
+        const miniCopyBtn = document.createElement('button');
+        miniCopyBtn.type = 'button';
+        miniCopyBtn.className = 'mini-copy-btn';
+        miniCopyBtn.title = 'Salin link';
+        miniCopyBtn.setAttribute('aria-label', 'Salin link');
+        miniCopyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+        miniCopyBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          copyToClipboard(value, 'Link berhasil disalin');
+          miniCopyBtn.classList.add('copied');
+          miniCopyBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          setTimeout(() => {
+            miniCopyBtn.classList.remove('copied');
+            miniCopyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+          }, 1400);
+        });
+        wrap.appendChild(miniCopyBtn);
+
+        td.appendChild(wrap);
       } else {
-        filteredData.forEach((row, idx) => {
-          const tr = document.createElement('tr');
-          headers.forEach(hdr => {
-            const td = document.createElement('td');
-            const v = row[hdr] || '-';
-            
-            if (hdr.toLowerCase().includes('link') || hdr.toLowerCase().includes('youtube') || hdr.toLowerCase().includes('url')) {
-              const d = document.createElement('d');
-              d.style.display = 'flex'; d.style.alignItems = 'center';
-              
-              if (isValidUrl(v) && v !== '-') {
-                const a = document.createElement('a');
-                a.href = v; a.target = '_blank'; a.rel = 'noopener'; a.className = 'link';
-                a.innerHTML = hdr.toLowerCase().includes('youtube') ? '<i class="fab fa-youtube"></i> LIVE' : '<i class="fas fa-external-link-alt"></i> LINK';
-                d.appendChild(a);
-                
-                const b = document.createElement('button');
-                b.className = 'copy-btn';
-                b.innerHTML = '<i class="fas fa-copy"></i>';
-                b.onclick = function() {
-                  copyToClipboard(v);
-                  this.innerHTML = '<i class="fas fa-check"></i>';
-                  this.style.borderColor = 'var(--neon-green)';
-                  this.style.color = 'var(--neon-green)';
-                  setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-copy"></i>';
-                    this.style.borderColor = ''; this.style.color = '';
-                  }, 2000);
-                };
-                d.appendChild(b);
-              } else td.textContent = v;
-              if(d.children.length > 0) td.appendChild(d);
-            } else td.textContent = v;
-            tr.appendChild(td);
-          });
-          tb.appendChild(tr);
+        td.textContent = value;
+      }
+
+      return td;
+    }
+
+    // ========== SMART NEXT RESULT JUMP ==========
+    function normalizePasaranKey(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/&amp;/g, '&')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '');
+    }
+
+    function jumpToCurrentNextResult() {
+      const next = currentNextResult || findNextResult();
+      const firstItem = getNextResultItems(next)[0];
+
+      if (!firstItem || !firstItem.pasaran) {
+        showNotification('Next result belum tersedia', 'warning');
+        return;
+      }
+
+      jumpToPasaranRow(firstItem.pasaran);
+    }
+
+    function jumpToPasaranRow(pasaranName) {
+      const targetKey = normalizePasaranKey(pasaranName);
+      if (!targetKey) return;
+
+      const searchInput = document.getElementById('search-input');
+      const clearBtn = document.getElementById('clear-btn');
+      let needsRender = false;
+
+      if (searchInput && searchInput.value.trim()) {
+        searchInput.value = '';
+        if (clearBtn) clearBtn.style.display = 'none';
+        needsRender = true;
+      }
+
+      if (liveOnlyMode) {
+        liveOnlyMode = false;
+        const filterBtn = document.getElementById('filter-btn');
+        if (filterBtn) filterBtn.classList.remove('active');
+        needsRender = true;
+      }
+
+      if (needsRender) {
+        filteredData = [...allData];
+        updateSearchInfo();
+        renderTable();
+      }
+
+      requestAnimationFrame(() => {
+        const rows = Array.from(document.querySelectorAll('#table-body tr[data-pasaran-key]'));
+        const targetRow = rows.find(row => row.dataset.pasaranKey === targetKey);
+
+        if (!targetRow) {
+          showNotification(`Baris ${pasaranName} belum ditemukan di tabel`, 'warning');
+          return;
+        }
+
+        document.querySelectorAll('#table-body tr.next-result-target').forEach(row => {
+          row.classList.remove('next-result-target');
+        });
+
+        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        targetRow.classList.add('next-result-target');
+
+        setTimeout(() => {
+          targetRow.classList.remove('next-result-target');
+        }, 4200);
+
+        showNotification(`Menuju baris ${pasaranName}`, 'success');
+      });
+    }
+
+    // ========== SEARCH & FILTER ==========
+    function setupEventListeners() {
+      const searchInput = document.getElementById('search-input');
+      const searchBtn = document.getElementById('search-btn');
+      const clearBtn = document.getElementById('clear-btn');
+      const resetSearchBtn = document.getElementById('reset-search-btn');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const exportBtn = document.getElementById('export-btn');
+      const copyAllBtn = document.getElementById('copy-all-btn');
+      const filterBtn = document.getElementById('filter-btn');
+      const heroRefreshBtn = document.getElementById('hero-refresh-btn');
+      const heroCopyBtn = document.getElementById('hero-copy-btn');
+
+      searchBtn.addEventListener('click', performSearch);
+      searchInput.addEventListener('keyup', e => { if (e.key === 'Enter') performSearch(); });
+      searchInput.addEventListener('input', debounce(() => {
+        clearBtn.style.display = searchInput.value.trim() ? 'grid' : 'none';
+        applyCurrentFilters();
+        updateSearchInfo();
+        renderTable();
+      }, 220));
+
+      clearBtn.addEventListener('click', resetSearch);
+      resetSearchBtn.addEventListener('click', resetSearch);
+      if (refreshBtn) refreshBtn.addEventListener('click', () => { loadData(); showNotification('Memperbarui data manual...', 'info'); });
+      if (heroRefreshBtn) heroRefreshBtn.addEventListener('click', () => { loadData(); showNotification('Memperbarui data manual...', 'info'); });
+      if (exportBtn) exportBtn.addEventListener('click', exportData);
+      if (copyAllBtn) copyAllBtn.addEventListener('click', copyAllVisibleData);
+      if (heroCopyBtn) heroCopyBtn.addEventListener('click', copyAllVisibleData);
+      if (filterBtn) filterBtn.addEventListener('click', toggleLiveOnly);
+
+      const nextPasaranBtn = document.getElementById('notification-pasaran');
+      if (nextPasaranBtn) {
+        nextPasaranBtn.addEventListener('click', jumpToCurrentNextResult);
+        nextPasaranBtn.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            jumpToCurrentNextResult();
+          }
         });
       }
     }
-    
-    // ========== SEARCH & UTILS ==========
-    function setupEventListeners() {
-      const inp = document.getElementById('search-input');
-      const btn = document.getElementById('search-btn');
-      const clr = document.getElementById('clear-btn');
-      const rst = document.getElementById('reset-search-btn');
-      
-      btn.addEventListener('click', performSearch);
-      inp.addEventListener('keyup', e => { if(e.key === 'Enter') performSearch(); });
-      inp.addEventListener('input', function() {
-        if(this.value.trim().length > 0) clr.style.display = 'block';
-        else { clr.style.display = 'none'; resetSearch(); }
-      });
-      clr.addEventListener('click', () => { inp.value = ''; clr.style.display = 'none'; resetSearch(); });
-      if(rst) rst.addEventListener('click', resetSearch);
-      
-      document.getElementById('refresh-btn').addEventListener('click', () => { loadData(); showNotification('Refreshing database...', 'info'); });
-      document.getElementById('export-btn').addEventListener('click', exportData);
-    }
-    
+
     function performSearch() {
-      const q = document.getElementById('search-input').value.trim().toLowerCase();
-      if(!q) { resetSearch(); return; }
-      filteredData = allData.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(q)));
-      
-      document.getElementById('result-count').textContent = filteredData.length;
-      document.getElementById('search-query').textContent = q;
-      document.getElementById('search-result-info').style.display = 'block';
+      applyCurrentFilters();
+      updateSearchInfo();
       renderTable();
     }
-    
+
     function resetSearch() {
-      document.getElementById('search-input').value = '';
-      filteredData = [...allData];
-      document.getElementById('search-result-info').style.display = 'none';
+      const searchInput = document.getElementById('search-input');
+      searchInput.value = '';
       document.getElementById('clear-btn').style.display = 'none';
+      applyCurrentFilters();
+      updateSearchInfo();
       renderTable();
     }
-    
-    function isValidUrl(s) {
-      try { new URL(s); return true; } catch { return false; }
+
+    function applyCurrentFilters() {
+      const query = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
+      filteredData = allData.filter(row => {
+        const matchQuery = !query || Object.values(row).some(value => String(value).toLowerCase().includes(query));
+        const matchLive = !liveOnlyMode || !!getYoutubeLink(row);
+        return matchQuery && matchLive;
+      });
     }
-    
-    function copyToClipboard(txt) {
-      navigator.clipboard.writeText(txt).then(() => showNotification('Data copied to clipboard', 'success'))
-        .catch(() => showNotification('Failed to copy', 'error'));
+
+    function updateSearchInfo() {
+      const query = (document.getElementById('search-input')?.value || '').trim();
+      const info = document.getElementById('search-result-info');
+      if (query || liveOnlyMode) {
+        setText('result-count', filteredData.length);
+        setText('search-query', query || (liveOnlyMode ? 'Live Only' : ''));
+        info.style.display = 'block';
+      } else {
+        info.style.display = 'none';
+      }
     }
-    
-    function showError(e) {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('table-section').style.display = 'none';
-      document.getElementById('error-message').textContent = e.message || 'System Error';
-      document.getElementById('error').style.display = 'block';
+
+    function toggleLiveOnly() {
+      liveOnlyMode = !liveOnlyMode;
+      const btn = document.getElementById('filter-btn');
+      btn.classList.toggle('active', liveOnlyMode);
+      btn.innerHTML = liveOnlyMode ? '<i class="fa-solid fa-filter-circle-xmark"></i> Semua Data' : '<i class="fa-solid fa-filter"></i> Live Only';
+      applyCurrentFilters();
+      updateSearchInfo();
+      renderTable();
+      showNotification(liveOnlyMode ? 'Filter Live Only aktif' : 'Filter Live Only dimatikan', 'info');
     }
-    
-    function showNotification(msg, type) {
-      const t = document.createElement('div');
-      t.className = 'notification-toast';
-      t.style.borderLeftColor = type === 'error' ? 'var(--neon-pink)' : 'var(--neon-green)';
-      t.innerHTML = `<i class="fas ${type==='error'?'fa-times-circle':'fa-check-circle'}"></i> ${msg}`;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 3000);
+
+    // ========== COPY, EXPORT, UTILS ==========
+    function copyToClipboard(text, successMessage = 'Teks berhasil disalin') {
+      const value = String(text || '');
+      if (!value.trim()) {
+        showNotification('Tidak ada teks untuk disalin', 'warning');
+        return;
+      }
+      const done = () => showNotification(successMessage, 'success');
+      const failed = () => showNotification('Gagal menyalin. Silakan blok teks lalu tekan Ctrl+C.', 'error');
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(value).then(done).catch(() => fallbackCopy(value, done, failed));
+      } else {
+        fallbackCopy(value, done, failed);
+      }
     }
-    
+
+    function fallbackCopy(text, done, failed) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const ok = document.execCommand('copy');
+        textarea.remove();
+        ok ? done() : failed();
+      } catch (_) {
+        failed();
+      }
+    }
+
+    function copyAllVisibleData() {
+      if (!filteredData.length) {
+        showNotification('Tidak ada data untuk disalin', 'warning');
+        return;
+      }
+      const text = [
+        headers.join('\t'),
+        ...filteredData.map(row => headers.map(header => row[header] || '').join('\t'))
+      ].join('\n');
+      copyToClipboard(text, `Data berhasil disalin (${filteredData.length} baris)`);
+    }
+
+    function getSmartValue(row, candidates, fallback = '') {
+      const normalized = Object.create(null);
+      Object.keys(row || {}).forEach(key => {
+        normalized[String(key).trim().toLowerCase()] = row[key];
+      });
+
+      for (const name of candidates) {
+        const key = String(name).trim().toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(normalized, key)) {
+          const value = cleanSmartText(normalized[key]);
+          if (value) return value;
+        }
+      }
+
+      return fallback;
+    }
+
+    function cleanSmartText(value) {
+      const text = String(value ?? '').replace(/\s+/g, ' ').trim();
+      if (!text) return '';
+      const lowered = text.toLowerCase();
+      if (text === '-' || text === '–' || text === '—' || lowered === 'null' || lowered === 'undefined') return '';
+      return text;
+    }
+
+    function addWibLabel(value) {
+      const time = cleanSmartText(value);
+      if (!time) return '-';
+      if (/\bWIB\b/i.test(time)) return time;
+      return `${time} WIB`;
+    }
+
+    function buildSmartCopySentence(row) {
+      const pasaranRaw = getSmartValue(row, [
+        'Nama Pasaran',
+        'Pasaran',
+        'Nama',
+        headers[0] || ''
+      ], 'PASARAN');
+
+      const pasaranName = cleanSmartText(pasaranRaw).toUpperCase();
+      const pasaranLabel = pasaranName.replace(/^PASARAN\s+/i, '').trim() || 'PASARAN';
+
+      let betClosed = getSmartValue(row, [
+        'Bet Closed',
+        'BET CLOSED',
+        'Jam Tutup',
+        'Jam Tutup Pasaran',
+        'Tutup',
+        'Jam Close',
+        'Closed'
+      ]);
+
+      let jamResult = getSmartValue(row, [
+        'Jam Result',
+        'JAM RESULT',
+        'Jam Keluar',
+        'Result',
+        'Waktu Result',
+        'Jam Pengeluaran',
+        'Pengeluaran'
+      ]);
+
+      const linkResmi = getSmartValue(row, [
+        'Link Resmi',
+        'LINK RESMI',
+        'Official Link',
+        'Website Resmi',
+        'URL Resmi',
+        'Link Official'
+      ], '-');
+
+      const linkStreaming = getSmartValue(row, [
+        'Link Streaming',
+        'LINK STREAMING',
+        'Link YouTube',
+        'Link Youtube',
+        'YouTube',
+        'Youtube',
+        'Streaming'
+      ], '-');
+
+      let jadwalText;
+
+      // Format khusus HOKIDRAW tetap dipertahankan.
+      if (pasaranName.includes('HOKIDRAW')) {
+        jadwalText = 'Pasaran HOKIDRAW tersedia 24 kali sehari, dengan jadwal pengeluaran angka result setiap 1 jam sekali.';
+      } else {
+        betClosed = addWibLabel(betClosed);
+        jamResult = addWibLabel(jamResult);
+        jadwalText = `Jam tutup pasaran ${pasaranLabel} adalah pada pukul ${betClosed} dan pengeluaran angka result berkisar pada pukul ${jamResult}.`;
+      }
+
+      return [
+        jadwalText,
+        '',
+        `Link resmi : ${linkResmi || '-'}`,
+        `Link Streaming : ${linkStreaming || '-'}`,
+        '',
+        'Note : Jika saat mengakses link tersebut mengalami kendala, Maka silahkan akses link tersebut menggunakan VPN ya bosku'
+      ].join('\n');
+    }
+
+    function copyRowData(row) {
+      const text = buildSmartCopySentence(row);
+      copyToClipboard(text, 'Format kalimat jadwal berhasil disalin');
+    }
+
     function exportData() {
-      if(filteredData.length === 0) return showNotification('No data to export', 'error');
-      const csv = [headers.join(','), ...filteredData.map(r => headers.map(h => {
-        const v = String(r[h]||'').replace(/"/g, '""');
-        return v.includes(',') ? `"${v}"` : v;
-      }).join(','))].join('\n');
-      
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      if (!filteredData.length) {
+        showNotification('Tidak ada data untuk diexport', 'warning');
+        return;
+      }
+      const csv = [
+        headers.map(csvEscape).join(','),
+        ...filteredData.map(row => headers.map(header => csvEscape(row[header] || '')).join(','))
+      ].join('\n');
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = `neon_data_${Date.now()}.csv`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      showNotification('Database exported successfully', 'success');
+      a.href = url;
+      a.download = `jadwal-pasaran-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showNotification(`Data berhasil diexport (${filteredData.length} baris)`, 'success');
     }
-    
-    // ========== SHORTCUT BLOCKER (PRESERVED) ==========
+
+    function csvEscape(value) {
+      const str = String(value).replace(/"/g, '""');
+      return /[",\n]/.test(str) ? `"${str}"` : str;
+    }
+
+    function getYoutubeLink(row) {
+      return row['Link YouTube'] || row['Link Youtube'] || row['YouTube'] || row['Youtube'] || '';
+    }
+
+    function isValidUrl(value) {
+      try {
+        new URL(String(value));
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function showError(error) {
+      showById('loading', false);
+      showById('table-section', false);
+      const errorElement = document.getElementById('error');
+      let message = error.message || 'Terjadi kesalahan saat memuat data';
+      if (message.includes('Failed to fetch') || message.includes('NetworkError')) {
+        message = 'Gagal terhubung ke server. Periksa koneksi internet Anda.';
+      } else if (message.includes('HTTP')) {
+        message = 'Server tidak merespons. Coba lagi nanti.';
+      } else if (message.includes('kosong')) {
+        message = 'Data tidak ditemukan atau masih kosong.';
+      }
+      setText('error-message', message);
+      errorElement.style.display = 'block';
+      console.error(error);
+    }
+
+    function showNotification(message, type = 'success') {
+      const old = document.querySelector('.notification-toast');
+      if (old) old.remove();
+      const toast = document.createElement('div');
+      toast.className = `notification-toast ${type}`;
+      const icons = {
+        success: 'fa-circle-check',
+        error: 'fa-circle-exclamation',
+        warning: 'fa-triangle-exclamation',
+        info: 'fa-circle-info'
+      };
+      toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${escapeHtml(message)}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3200);
+    }
+
+    function setupConnectionMonitoring() {
+      window.addEventListener('online', () => {
+        showNotification('Koneksi internet kembali online', 'success');
+        startSilentMonitoring();
+        startSmartNextResultAutoRefresh();
+        refreshNextResultWithoutBlink(true);
+      });
+      window.addEventListener('offline', () => {
+        showNotification('Koneksi internet terputus', 'error');
+        if (realTimeInterval) clearInterval(realTimeInterval);
+        realTimeInterval = null;
+      });
+    }
+
+    function updateLastUpdateTime() {
+      setText('last-update-time', `Update: ${formatTime(new Date(), true)}`);
+    }
+
+    function updateFooterTime() {
+      const now = new Date();
+      setText('footer-update', now.toLocaleDateString('id-ID', {
+        day: '2-digit', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      }));
+    }
+
+    function formatTime(date, withSeconds = false) {
+      const h = String(date.getHours()).padStart(2, '0');
+      const m = String(date.getMinutes()).padStart(2, '0');
+      const s = String(date.getSeconds()).padStart(2, '0');
+      return withSeconds ? `${h}:${m}:${s}` : `${h}:${m}`;
+    }
+
+    function showById(id, show) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'block' : 'none';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function debounce(fn, wait) {
+      let timer;
+      return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+
+
+    // ========== SHORTCUT PROTECTION ==========
+    /**
+     * Simple keyboard shortcut handler
+     * Catatan final:
+     * - Shortcut developer seperti Ctrl+U, F12, Ctrl+Shift+I/J/C diblokir.
+     * - Klik kanan, drag, select text, dan copy manual tetap aktif agar teks tabel masih bisa diblok/copy.
+     */
     const shortcut = {
-      all_shortcuts: {}, add: function(combo, callback, options) {
-        const defaultOpts = { type: "keydown", propagate: false, disable_in_input: false, target: document, keycode: false };
+      all_shortcuts: {},
+      add: function(combo, callback, options) {
+        const defaultOpts = {
+          type: "keydown",
+          propagate: false,
+          disable_in_input: false,
+          target: document,
+          keycode: false
+        };
         const settings = Object.assign({}, defaultOpts, options || {});
-        const target = typeof settings.target === "string" ? document.getElementById(settings.target) : settings.target;
+        const target = typeof settings.target === "string"
+          ? document.getElementById(settings.target)
+          : settings.target;
+
         combo = combo.toLowerCase();
+
         const handler = function(e) {
           e = e || window.event;
+
           if (settings.disable_in_input) {
-            let el = e.target || e.srcElement; if (el.nodeType === 3) el = el.parentNode;
-            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") return;
+            let element = e.target || e.srcElement;
+            if (element.nodeType === 3) element = element.parentNode;
+            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") return;
           }
-          const code = e.keyCode || e.which; let key = String.fromCharCode(code).toLowerCase();
-          if (code === 188) key = ","; if (code === 190) key = ".";
-          const keys = combo.split("+"); let matchCount = 0;
-          const specialKeys = { esc:27, escape:27, tab:9, space:32, return:13, enter:13, backspace:8, left:37, up:38, right:39, down:40, f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123 };
+
+          const code = e.keyCode || e.which;
+          let key = String.fromCharCode(code).toLowerCase();
+          if (code === 188) key = ",";
+          if (code === 190) key = ".";
+
+          const keys = combo.split("+");
+          let matchCount = 0;
+
+          const specialKeys = {
+            esc:27, escape:27, tab:9, space:32, return:13, enter:13,
+            backspace:8, left:37, up:38, right:39, down:40,
+            f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,
+            f7:118,f8:119,f9:120,f10:121,f11:122,f12:123
+          };
+
           let ctrlReq=false, shiftReq=false, altReq=false, metaReq=false;
           let ctrl=e.ctrlKey, shift=e.shiftKey, alt=e.altKey, meta=e.metaKey;
+
           for (let i=0; i<keys.length; i++) {
             const k = keys[i];
             if (k === "ctrl" || k === "control") { ctrlReq = true; matchCount++; }
@@ -1231,15 +2715,32 @@
             else if (k.length > 1) { if (specialKeys[k] === code) matchCount++; }
             else if (settings.keycode ? settings.keycode === code : key === k) { matchCount++; }
           }
-          if (matchCount === keys.length && ctrl === ctrlReq && shift === shiftReq && alt === altReq && meta === metaReq) {
-            callback(e); if (!settings.propagate) { e.cancelBubble = true; e.returnValue = false; if (e.stopPropagation) e.stopPropagation(); if (e.preventDefault) e.preventDefault(); return false; }
+
+          if (
+            matchCount === keys.length &&
+            ctrl === ctrlReq && shift === shiftReq &&
+            alt === altReq && meta === metaReq
+          ) {
+            callback(e);
+            if (!settings.propagate) {
+              e.cancelBubble = true;
+              e.returnValue = false;
+              if (e.stopPropagation) e.stopPropagation();
+              if (e.preventDefault) e.preventDefault();
+              return false;
+            }
           }
         };
+
         this.all_shortcuts[combo] = { callback: handler, target, event: settings.type };
         target.addEventListener(settings.type, handler, false);
       }
     };
-    function doNothing(e) { console.log("Shortcut Blocked: " + (e.key || e.keyCode)); }
+
+    function doNothing(e) {
+      console.log("Shortcut diblokir: " + (e.key || e.keyCode));
+    }
+
     function setupShortcuts() {
       shortcut.add("Ctrl+U", doNothing);
       shortcut.add("f12", doNothing);
@@ -1247,17 +2748,52 @@
       shortcut.add("Ctrl+Shift+J", doNothing);
       shortcut.add("Ctrl+Shift+C", doNothing);
     }
+
     setupShortcuts();
+
     document.addEventListener('keydown', function(e) {
-      if(e.keyCode === 123) { e.preventDefault(); return false; }
-      if(e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
-      if(e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
-      if(e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
-      if(e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
-      if(e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
-    });
-    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
+      if (e.keyCode === 123) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      if (e.ctrlKey && e.keyCode === 85) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      if (e.ctrlKey && e.keyCode === 83) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, true);
+
+    // Bagian ini sengaja tidak diaktifkan supaya teks tabel tetap bisa diblok/copy:
+    // document.addEventListener('contextmenu', e => e.preventDefault());
+    // document.addEventListener('dragstart', e => e.preventDefault());
+    // document.addEventListener('selectstart', e => e.preventDefault());
+
   </script>
 </body>
 </html>
