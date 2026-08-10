@@ -1,0 +1,361 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rekap TO Pasaran</title>
+<style>
+  :root{
+    --bg:#0b1020; --panel:#121a2d; --panel2:#172138; --line:#293652;
+    --text:#eef4ff; --muted:#93a4c3; --accent:#60a5fa; --good:#34d399;
+    --warn:#fbbf24; --bad:#fb7185;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(135deg,#08101e,#111a30);color:var(--text);
+       font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  html,body{max-width:100%;overflow-x:hidden}
+  .wrap{width:100%;max-width:1200px;min-width:0;margin:0 auto;padding:28px 18px 48px;overflow:hidden}
+  h1{font-size:28px;margin:0 0 7px}
+  .sub{color:var(--muted);margin-bottom:20px;line-height:1.55}
+  .card{width:100%;max-width:100%;min-width:0;overflow:hidden;background:rgba(18,26,45,.96);border:1px solid var(--line);border-radius:18px;padding:18px;
+        box-shadow:0 18px 50px rgba(0,0,0,.25);margin-bottom:18px}
+  .label{font-weight:700;margin-bottom:9px}
+  #pasteBox{display:block;width:100%;max-width:100%;min-width:0;height:210px;min-height:210px;max-height:210px;
+            resize:none;border:1px dashed #435474;border-radius:14px;background:#0a1222;color:var(--text);
+            padding:15px;outline:none;white-space:pre-wrap;overflow-x:hidden;overflow-y:auto;
+            overflow-wrap:anywhere;word-wrap:break-word;word-break:break-all;
+            font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  #pasteBox:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(96,165,250,.12)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+  button{border:0;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer}
+  .primary{background:var(--accent);color:#07111f}
+  .secondary{background:#25324c;color:var(--text)}
+  .danger{background:#3a2230;color:#fecdd3}
+  .status{margin-top:12px;padding:10px 12px;border-radius:10px;background:#0a1222;color:var(--muted)}
+  .status.ok{color:#a7f3d0;border:1px solid rgba(52,211,153,.25)}
+  .status.warn{color:#fde68a;border:1px solid rgba(251,191,36,.25)}
+  .status.bad{color:#fecdd3;border:1px solid rgba(251,113,133,.25)}
+  .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+  .mini{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px}
+  .mini small{color:var(--muted);display:block;margin-bottom:5px}
+  .mini strong{font-size:20px}
+  .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+  table{width:100%;border-collapse:collapse;min-width:650px}
+  th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:#172138;position:sticky;top:0}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:0}
+  .okdot{color:var(--good);font-weight:800}.miss{color:var(--bad);font-weight:800}
+  .total-row td{font-weight:900;background:#0d1728}
+  .horizontal-wrap{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:14px;padding:14px;background:#0d1728}
+  .horizontal-results{display:flex;gap:10px;min-width:max-content;align-items:stretch}
+  .result-chip{min-width:150px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+  .result-chip .market{font-size:11px;color:var(--muted);margin-bottom:6px;white-space:nowrap}
+  .result-chip .to{font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .result-chip.missing .to{color:var(--bad)}
+  .hint{font-size:12px;color:var(--muted);margin-top:9px}
+  @media(max-width:720px){.summary{grid-template-columns:1fr}.wrap{padding:18px 10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Rekap TO Pasaran</h1>
+  <div class="sub">Salin tabel <b>Laporan Harian Pemain</b> dari halaman sumber, lalu tempel langsung ke kotak di bawah. Sistem akan mengambil nilai <b>TO</b> untuk 22 pasaran yang ditentukan.</div>
+
+  <div class="card">
+    <div class="label">1. Tempel template laporan di sini</div>
+    <textarea id="pasteBox" spellcheck="false"
+         placeholder="Klik di sini lalu tekan Ctrl+V..."></textarea>
+    <div class="actions">
+      <button class="primary" id="processBtn">Proses Rekap TO</button>
+      <button class="secondary" id="sampleBtn">Coba baca ulang paste terakhir</button>
+      <button class="danger" id="clearBtn">Bersihkan</button>
+    </div>
+    <div id="status" class="status">Belum ada data yang diproses.</div>
+    <div class="hint">Tips: paling akurat jika Anda copy tabel langsung dari website lalu Ctrl+V ke kotak ini, karena struktur tabel HTML ikut terbaca.</div>
+  </div>
+
+  <div class="card">
+    <div class="summary">
+      <div class="mini"><small>Pasaran ditemukan</small><strong id="foundCount">0 / 22</strong></div>
+      <div class="mini"><small>Total TO</small><strong id="grandTotal">0.00</strong></div>
+      <div class="mini"><small>Tanggal data</small><strong id="dataDate">-</strong></div>
+    </div>
+    <div class="actions" style="margin:0 0 13px">
+      <button class="secondary" id="copyBtn">Copy Nominal TO</button>
+      <button class="secondary" id="csvBtn">Download CSV</button>
+    </div>
+    <div class="horizontal-wrap">
+      <div id="horizontalResults" class="horizontal-results"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TARGETS = [
+  "POIPET12","POIPET15","POIPET19","POIPET22","NEVADA",
+  "BRUNEI02","BRUNEI14","BRUNEI21","BANGKOK 0130","BANGKOK 0930",
+  "HUAHIN0100","HUAHIN1630","HUAHIN2100","CHELSEA11","CHELSEA15",
+  "CHELSEA19","CHELSEA21","TOTO CAMBODIA LIVE","TOTOMALI1530",
+  "TOTOMALI2030","TOTOMALI2330","HOKI DRAW"
+];
+
+const box = document.getElementById('pasteBox');
+let lastClipboardHTML = '';
+let lastClipboardText = '';
+let lastResults = [];
+
+const norm = s => String(s ?? '')
+  .replace(/\u00a0/g,' ')
+  .replace(/\s+/g,' ')
+  .replace(/\*\*/g,'')
+  .trim()
+  .toUpperCase();
+
+const parseNum = v => {
+  let s = String(v ?? '').trim().replace(/[^\d,.\-]/g,'');
+  if(!s) return 0;
+  // Sumber contoh memakai koma ribuan dan titik desimal: 1,234,567.89
+  if(s.includes(',') && s.includes('.')) s = s.replace(/,/g,'');
+  else if((s.match(/,/g)||[]).length > 1) s = s.replace(/,/g,'');
+  else if(s.includes(',') && !s.includes('.')) {
+    const parts=s.split(',');
+    if(parts[parts.length-1].length===2) s=s.replace(/\./g,'').replace(',','.');
+    else s=s.replace(/,/g,'');
+  }
+  const n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+};
+
+const fmt = n => Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function expandTable(table){
+  const grid=[];
+  [...table.rows].forEach((tr,r)=>{
+    if(!grid[r]) grid[r]=[];
+    let c=0;
+    [...tr.cells].forEach(cell=>{
+      while(grid[r][c] !== undefined) c++;
+      const rs=Number(cell.rowSpan||1), cs=Number(cell.colSpan||1);
+      const txt=cell.innerText.trim();
+      for(let rr=0;rr<rs;rr++){
+        if(!grid[r+rr]) grid[r+rr]=[];
+        for(let cc=0;cc<cs;cc++){
+          grid[r+rr][c+cc]=txt;
+        }
+      }
+      c+=cs;
+    });
+  });
+  return grid;
+}
+
+function scoreTable(grid){
+  const joined = grid.slice(0,4).flat().map(norm).join(' | ');
+  let score=0;
+  TARGETS.forEach(t=>{if(joined.includes(norm(t))) score+=2});
+  if(joined.includes('PLAYER')) score++;
+  if(joined.includes('TO')) score++;
+  if(joined.includes('WIN/LOSE')) score++;
+  return score;
+}
+
+function parseHTML(html){
+  const doc = new DOMParser().parseFromString(html,'text/html');
+  const tables=[...doc.querySelectorAll('table')];
+  if(!tables.length) return null;
+
+  let best=null, bestScore=-1;
+  tables.forEach(t=>{
+    const g=expandTable(t), s=scoreTable(g);
+    if(s>bestScore){bestScore=s;best=g}
+  });
+  if(!best || bestScore<2) return null;
+  return parseGrid(best);
+}
+
+function parseGrid(grid){
+  // Cari baris header yang memuat nama pasaran.
+  let headerRow=-1;
+  let bestMatches=0;
+  for(let r=0;r<Math.min(grid.length,8);r++){
+    const vals=grid[r].map(norm);
+    const matches=TARGETS.filter(t=>vals.some(v=>v===norm(t) || v.includes(norm(t)))).length;
+    if(matches>bestMatches){bestMatches=matches;headerRow=r}
+  }
+  if(headerRow<0) return null;
+
+  // Cari baris subheader Player / TO / WIN/LOSE.
+  let subRow=-1;
+  for(let r=headerRow;r<Math.min(grid.length,headerRow+5);r++){
+    const vals=grid[r].map(norm);
+    if(vals.filter(v=>v==='TO').length>=3){subRow=r;break}
+  }
+  if(subRow<0) subRow=headerRow+1;
+
+  // Cari baris data pertama yang bukan separator / Total.
+  let dataRow=-1;
+  for(let r=subRow+1;r<grid.length;r++){
+    const vals=grid[r].map(v=>String(v??'').trim());
+    const joined=norm(vals.join(' '));
+    if(!joined || joined.startsWith('TOTAL')) continue;
+    if(vals.some(v=>/^\d{4}-\d{2}-\d{2}$/.test(v)) || /^\d+$/.test(vals[0]||'')){
+      dataRow=r; break;
+    }
+  }
+  if(dataRow<0){
+    for(let r=subRow+1;r<grid.length;r++){
+      if(norm(grid[r].join(' ')) && !norm(grid[r][0]).startsWith('TOTAL')) {dataRow=r;break}
+    }
+  }
+  if(dataRow<0) return null;
+
+  const headers=grid[headerRow].map(norm);
+  const subs=(grid[subRow]||[]).map(norm);
+  const data=grid[dataRow]||[];
+  const results=[];
+
+  for(const target of TARGETS){
+    const nt=norm(target);
+    let cols=[];
+    headers.forEach((h,i)=>{
+      if(h===nt || h.includes(nt) || nt.includes(h) && h.length>5) cols.push(i);
+    });
+
+    // Karena colspan di-expand, nama pasaran biasanya muncul di 3 kolom.
+    let toCol=-1;
+    for(const c of cols){
+      if(subs[c]==='TO'){toCol=c;break}
+    }
+    if(toCol<0 && cols.length>=2) toCol=cols[1];
+
+    results.push({
+      name:target,
+      found:toCol>=0 && toCol<data.length,
+      raw:toCol>=0 ? (data[toCol] ?? '') : '',
+      value:toCol>=0 ? parseNum(data[toCol]) : 0
+    });
+  }
+
+  let date='-';
+  for(const v of data){
+    const m=String(v??'').match(/\b\d{4}-\d{2}-\d{2}\b/);
+    if(m){date=m[0];break}
+  }
+  return {results,date,mode:'HTML tabel'};
+}
+
+function parseTSV(text){
+  const lines=text.split(/\r?\n/).filter(x=>x.trim());
+  const rows=lines.map(l=>l.split(/\t/).map(x=>x.trim()));
+  if(rows.length<2) return null;
+  return parseGrid(rows);
+}
+
+function parseMarkdown(text){
+  // Fallback hanya bila nama header dan kolom masih terpisah oleh pipe.
+  const rows=text.split(/\r?\n/)
+    .filter(l=>l.includes('|'))
+    .map(l=>l.replace(/^\s*\|/,'').replace(/\|\s*$/,'').split('|').map(x=>x.replace(/\*\*/g,'').trim()))
+    .filter(r=>r.length>3);
+
+  if(!rows.length) return null;
+  const candidate=parseGrid(rows);
+  if(candidate) {candidate.mode='Markdown'; return candidate}
+  return null;
+}
+
+function processData(){
+  let parsed=null;
+
+  if(lastClipboardHTML) parsed=parseHTML(lastClipboardHTML);
+  if(!parsed && lastClipboardText) parsed=parseTSV(lastClipboardText);
+  if(!parsed && lastClipboardText) parsed=parseMarkdown(lastClipboardText);
+
+  if(!parsed){
+    const current=box.value || '';
+    parsed=parseTSV(current) || parseMarkdown(current);
+  }
+
+  if(!parsed){
+    setStatus('Format tabel belum dapat dibaca. Copy langsung tabel dari halaman Laporan Harian Pemain, lalu paste dengan Ctrl+V ke kotak.', 'bad');
+    render(TARGETS.map(name=>({name,found:false,value:0,raw:''})),'-');
+    return;
+  }
+
+  lastResults=parsed.results;
+  render(parsed.results,parsed.date);
+  const found=parsed.results.filter(x=>x.found).length;
+  setStatus(`Berhasil membaca dengan mode ${parsed.mode}. ${found} dari ${TARGETS.length} pasaran ditemukan.`, found===TARGETS.length?'ok':'warn');
+}
+
+function render(results,date){
+  const holder=document.getElementById('horizontalResults');
+  holder.innerHTML='';
+  let total=0, found=0;
+
+  results.forEach((r,i)=>{
+    if(r.found){total+=r.value;found++}
+    const div=document.createElement('div');
+    div.className='result-chip'+(r.found?'':' missing');
+    div.innerHTML=`<div class="market">${i+1}. ${r.name}</div><div class="to">${r.found?fmt(r.value):'-'}</div>`;
+    holder.appendChild(div);
+  });
+
+  const totalDiv=document.createElement('div');
+  totalDiv.className='result-chip';
+  totalDiv.innerHTML=`<div class="market">TOTAL TO</div><div class="to">${fmt(total)}</div>`;
+  holder.appendChild(totalDiv);
+
+  document.getElementById('foundCount').textContent=`${found} / ${TARGETS.length}`;
+  document.getElementById('grandTotal').textContent=fmt(total);
+  document.getElementById('dataDate').textContent=date||'-';
+  lastResults=results;
+}
+
+function setStatus(msg,type=''){
+  const el=document.getElementById('status');
+  el.className='status '+type; el.textContent=msg;
+}
+
+box.addEventListener('paste', e=>{
+  lastClipboardHTML=e.clipboardData.getData('text/html') || '';
+  lastClipboardText=e.clipboardData.getData('text/plain') || '';
+
+  // Tampilkan versi plain text supaya halaman tetap ringan.
+  e.preventDefault();
+  box.value=lastClipboardText || 'Data tabel telah ditempel.';
+  setStatus('Template sudah ditempel. Klik “Proses Rekap TO”.','ok');
+});
+
+document.getElementById('processBtn').onclick=processData;
+document.getElementById('sampleBtn').onclick=processData;
+document.getElementById('clearBtn').onclick=()=>{
+  box.value=''; lastClipboardHTML=''; lastClipboardText=''; lastResults=[];
+  render(TARGETS.map(name=>({name,found:false,value:0,raw:''})),'-');
+  setStatus('Data sudah dibersihkan.');
+};
+
+document.getElementById('copyBtn').onclick=async()=>{
+  if(!lastResults.length) return setStatus('Belum ada hasil untuk disalin.','warn');
+  const out=lastResults.map(r=>r.found?fmt(r.value):'0.00').join('\t');
+  try{await navigator.clipboard.writeText(out);setStatus('Nominal TO berhasil disalin tanpa nama pasaran.','ok')}
+  catch{setStatus('Browser memblokir clipboard otomatis. Silakan salin hasil secara manual.','warn')}
+};
+
+document.getElementById('csvBtn').onclick=()=>{
+  if(!lastResults.length) return setStatus('Belum ada hasil untuk diunduh.','warn');
+  const rows=[['Pasaran','TO','Status']];
+  lastResults.forEach(r=>rows.push([r.name,r.found?r.value.toFixed(2):'',r.found?'Ditemukan':'Tidak ditemukan']));
+  rows.push(['TOTAL',lastResults.reduce((a,r)=>a+(r.found?r.value:0),0).toFixed(2),'']);
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='rekap-to-pasaran.csv'; a.click(); URL.revokeObjectURL(a.href);
+};
+
+render(TARGETS.map(name=>({name,found:false,value:0,raw:''})),'-');
+</script>
+</body>
+</html>
