@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -42,9 +43,10 @@
             line-height: 1.6;
             overflow: hidden; 
             height: 100vh;
-            /* UPDATED BACKGROUND: TIGER IMAGE + OVERLAY */
-            background: url('https://i.ibb.co/8DNw2MW8/advdavadvadvafdavdav.gif') no-repeat center center fixed;
-            background-size: cover;
+            /* Background CSS ringan: tidak mengunduh dan memutar GIF layar penuh */
+            background:
+                radial-gradient(circle at 50% 15%, rgba(0, 81, 255, 0.18), transparent 42%),
+                linear-gradient(135deg, #03050a 0%, #07101b 48%, #030407 100%);
         }
 
         /* Dark Overlay untuk memastikan teks terbaca di atas gambar harimau */
@@ -62,13 +64,19 @@
             pointer-events: none;
         }
 
+        /* Kurangi pekerjaan GPU untuk elemen dekoratif; spinner data tetap aktif. */
+        .logo-icon,
+        .empty-icon-center { animation: none !important; }
+
+        .data-card-large,
+        .list-item { content-visibility: auto; contain-intrinsic-size: 80px; }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); box-shadow: 0 0 10px var(--primary-color); }
 
-        .app-container { display: flex; height: 100vh; position: relative; width: 100vw; opacity: 0; transition: opacity 1s ease; }
-        .app-container.loaded { opacity: 1; }
+        .app-container { display: flex; height: 100vh; position: relative; width: 100vw; opacity: 1; }
 
         /* =========================================
            NEON GLITCH INTRO STYLES (NEW)
@@ -630,15 +638,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- NEON GLITCH INTRO OVERLAY -->
-    <div class="intro-overlay" id="introOverlay">
-        <div class="scanline"></div>
-        <div class="glitch-container" data-text="CITAWIN">
-            <i class="fas fa-microchip glitch-icon"></i>
-            <div>CITAWIN</div>
-        </div>
-    </div>
-
     <div class="app-container" id="appContainer">
         <!-- 1. LEFT SIDEBAR -->
         <aside class="sidebar" id="sidebar">
@@ -724,27 +723,6 @@
     <!-- JAVASCRIPT -->
     <script>
         // ===============================
-        // INTRO ANIMATION LOGIC (NEW)
-        // ===============================
-        window.addEventListener('load', () => {
-            const introOverlay = document.getElementById('introOverlay');
-            const appContainer = document.getElementById('appContainer');
-
-            // Intro duration matches CSS animations (approx 3.5s)
-            setTimeout(() => {
-                introOverlay.classList.add('hidden');
-                
-                // Reveal main app with fade in
-                appContainer.classList.add('loaded');
-                
-                // Remove overlay from DOM after transition to save resources
-                setTimeout(() => {
-                    introOverlay.remove();
-                }, 1000);
-            }, 3500);
-        });
-
-        // ===============================
         // CONFIG & STATE
         // ===============================
         const SPREADSHEET_ID = '1UHMo49Q1h36zO2D14xngMk_DDIlCu4C0mdIH4bvGL2U';
@@ -765,6 +743,7 @@
         let isPKMode = false; // State baru untuk PK Mode
         let searchTimeout;
         let isLoadingSet = new Set(); 
+        const sheetLoadPromises = new Map();
         
         // DOM Elements
         const appContainer = document.querySelector('.app-container');
@@ -940,7 +919,9 @@
             
             sheetNames.forEach(name => {
                 if (!sheetCache[name] && !isLoadingSet.has(name)) {
-                    loadSheetToMemory(name);
+                    loadSheetToMemory(name).catch(error => {
+                        console.warn(`Background sync gagal untuk ${name}`, error);
+                    });
                 }
             });
         }
@@ -967,12 +948,14 @@
             ];
             
             for (const url of urlFormats) {
-                for (const proxy of PROXY_SERVERS) {
+                // Coba koneksi langsung terlebih dahulu, baru gunakan proxy cadangan.
+                const endpoints = [url, ...PROXY_SERVERS.map(proxy => proxy + encodeURIComponent(url))];
+                for (const endpoint of endpoints) {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 8000); // Timeout 8 detik per attempt
 
                     try {
-                        const res = await fetch(proxy + encodeURIComponent(url), { signal: controller.signal });
+                        const res = await fetch(endpoint, { signal: controller.signal });
                         clearTimeout(timeoutId);
                         
                         if (res.ok) {
@@ -1023,39 +1006,54 @@
 
         // --- HELPER: LOAD TO MEMORY ---
         async function loadSheetToMemory(sheetName) {
-            if (sheetCache[sheetName]) return;
-            if (isLoadingSet.has(sheetName)) return; 
+            if (Array.isArray(sheetCache[sheetName])) return sheetCache[sheetName];
 
-            isLoadingSet.add(sheetName); 
+            // Jika sheet yang sama sedang dimuat, tunggu proses tersebut hingga selesai.
+            if (sheetLoadPromises.has(sheetName)) return sheetLoadPromises.get(sheetName);
 
-            try {
-                const cachedData = localStorage.getItem(`linetogel_cache_${sheetName}`);
-                if (cachedData) {
-                    sheetCache[sheetName] = JSON.parse(cachedData);
-                    cacheTimestamp[sheetName] = localStorage.getItem(`linetogel_ts_${sheetName}`);
-                    isLoadingSet.delete(sheetName);
-                    return;
+            const loadPromise = (async () => {
+                isLoadingSet.add(sheetName);
+
+                try {
+                    const cachedData = localStorage.getItem(`linetogel_cache_${sheetName}`);
+                    if (cachedData) {
+                        const parsedCache = JSON.parse(cachedData);
+                        if (Array.isArray(parsedCache)) {
+                            sheetCache[sheetName] = parsedCache;
+                            cacheTimestamp[sheetName] = localStorage.getItem(`linetogel_ts_${sheetName}`);
+                            return parsedCache;
+                        }
+                        localStorage.removeItem(`linetogel_cache_${sheetName}`);
+                    }
+                } catch (e) {
+                    try { localStorage.removeItem(`linetogel_cache_${sheetName}`); } catch (_) {}
                 }
-            } catch (e) {}
 
-            try {
                 const csv = await fetchSheetData(sheetName);
                 const parsed = parseCSVData(csv);
+                if (!Array.isArray(parsed)) throw new Error('Format data sheet tidak valid');
+
                 sheetCache[sheetName] = parsed;
                 cacheTimestamp[sheetName] = new Date().toISOString();
                 try {
                     localStorage.setItem(`linetogel_cache_${sheetName}`, JSON.stringify(parsed));
                     localStorage.setItem(`linetogel_ts_${sheetName}`, cacheTimestamp[sheetName]);
                 } catch(e) {}
-            } catch (e) {
-                console.warn(`Failed to load ${sheetName}`, e);
+                return parsed;
+            })();
+
+            sheetLoadPromises.set(sheetName, loadPromise);
+            try {
+                return await loadPromise;
             } finally {
-                isLoadingSet.delete(sheetName); 
+                isLoadingSet.delete(sheetName);
+                sheetLoadPromises.delete(sheetName);
             }
         }
 
         // --- RENDERING ---
         function renderRightList(data, isGlobal = false) {
+            data = Array.isArray(data) ? data : [];
             rightDataList.innerHTML = '';
             if (data.length === 0) {
                 rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:#555; font-weight:700;">NO DATA</div>';
@@ -1145,7 +1143,7 @@
             rightDataList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--primary-color); font-weight:700;">SCANNING...</div>';
             centerSearchInput.value = '';
 
-            if (sheetCache[sheetName]) {
+            if (Array.isArray(sheetCache[sheetName])) {
                 currentData = sheetCache[sheetName];
                 displayData = [...currentData];
                 renderRightList(displayData);
@@ -1166,8 +1164,9 @@
             }
 
             try {
-                await loadSheetToMemory(sheetName);
-                currentData = sheetCache[sheetName];
+                currentData = await loadSheetToMemory(sheetName);
+                if (!Array.isArray(currentData)) throw new Error('Data sheet tidak berhasil dibaca');
+                sheetCache[sheetName] = currentData;
                 displayData = [...currentData];
                 
                 renderRightList(displayData);
@@ -1224,7 +1223,7 @@
                 const cat = getCategory(sheetName);
                 // Cek apakah sheet ini masuk dalam category yang sedang aktif
                 if (activeCategories.includes(cat) || cat === "OTHER") {
-                    if (sheetCache[sheetName]) {
+                    if (Array.isArray(sheetCache[sheetName])) {
                         const matches = sheetCache[sheetName].filter(item => 
                             item.title.toLowerCase().includes(query) || 
                             item.content.toLowerCase().includes(query)
@@ -1371,6 +1370,5 @@
     </script>
 </body>
 </html>
-
 
 
