@@ -1,1288 +1,1492 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crosscheck Rekening</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #040806;
-            --bg-raised: rgba(8, 18, 14, 0.75);
-            --card: rgba(10, 22, 16, 0.65);
-            --card-solid: #0a1610;
-            --card-hover: rgba(18, 38, 28, 0.7);
-            --border: rgba(0, 230, 138, 0.1);
-            --border-light: rgba(0, 230, 138, 0.2);
-            --fg: #eaf6f0;
-            --fg-dim: #b8d4c6;
-            --fg-muted: #6ea88e;
-            --accent: #00e68a;
-            --accent-glow: rgba(0, 230, 138, 0.1);
-            --danger: #ff5c5c;
-            --danger-glow: rgba(255, 92, 92, 0.08);
-            --gold: #ffd966;
-            --gold-dim: rgba(255, 217, 102, 0.6);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crosscheck Rekening</title>
+<link href="[https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap](https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\&family=JetBrains+Mono:wght@400;500;600\&display=swap)" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+--bg: #040806;
+--bg-raised: rgba(8, 18, 14, 0.75);
+--card: rgba(10, 22, 16, 0.65);
+--card-solid: #0a1610;
+--card-hover: rgba(18, 38, 28, 0.7);
+--border: rgba(0, 230, 138, 0.1);
+--border-light: rgba(0, 230, 138, 0.2);
+--fg: #eaf6f0;
+--fg-dim: #b8d4c6;
+--fg-muted: #6ea88e;
+--accent: #00e68a;
+--accent-glow: rgba(0, 230, 138, 0.1);
+--danger: #ff5c5c;
+--danger-glow: rgba(255, 92, 92, 0.08);
+--gold: #ffd966;
+--gold-dim: rgba(255, 217, 102, 0.6);
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg);
-            color: var(--fg);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+body {
+font-family: 'Space Grotesk', sans-serif;
+background: var(--bg);
+color: var(--fg);
+min-height: 100vh;
+overflow-x: hidden;
+}
 
-        .video-bg {
-            position: fixed; inset: 0; z-index: 0;
-            overflow: hidden;
-        }
-        .video-bg video {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-        }
-        .video-overlay {
-            position: fixed; inset: 0; z-index: 1;
-            background:
-                linear-gradient(180deg, rgba(4, 8, 6, 0.85) 0%, rgba(4, 8, 6, 0.7) 40%, rgba(4, 8, 6, 0.8) 100%),
-                radial-gradient(ellipse at 30% 20%, rgba(0, 230, 138, 0.04), transparent 60%),
-                radial-gradient(ellipse at 70% 80%, rgba(0, 180, 110, 0.03), transparent 60%);
-            pointer-events: none;
-        }
-        .video-noise {
-            position: fixed; inset: 0; z-index: 1;
-            opacity: 0.03; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 128px 128px;
-        }
-        .video-vignette {
-            position: fixed; inset: 0; z-index: 1;
-            background: radial-gradient(ellipse 70% 65% at 50% 45%, transparent, rgba(4, 8, 6, 0.6));
-            pointer-events: none;
-        }
+.video-bg {
+position: fixed; inset: 0; z-index: 0;
+overflow: hidden;
+}
+.video-bg video {
+position: absolute;
+top: 50%; left: 50%;
+min-width: 100%; min-height: 100%;
+transform: translate(-50%, -50%);
+object-fit: cover;
+}
+.video-overlay {
+position: fixed; inset: 0; z-index: 1;
+background:
+linear-gradient(180deg, rgba(4, 8, 6, 0.85) 0%, rgba(4, 8, 6, 0.7) 40%, rgba(4, 8, 6, 0.8) 100%),
+radial-gradient(ellipse at 30% 20%, rgba(0, 230, 138, 0.04), transparent 60%),
+radial-gradient(ellipse at 70% 80%, rgba(0, 180, 110, 0.03), transparent 60%);
+pointer-events: none;
+}
+.video-noise {
+position: fixed; inset: 0; z-index: 1;
+opacity: 0.03; pointer-events: none;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+background-size: 128px 128px;
+}
+.video-vignette {
+position: fixed; inset: 0; z-index: 1;
+background: radial-gradient(ellipse 70% 65% at 50% 45%, transparent, rgba(4, 8, 6, 0.6));
+pointer-events: none;
+}
 
-        .container {
-            position: relative; z-index: 2;
-            max-width: 1380px; margin: 0 auto;
-            padding: 36px 24px 90px;
-        }
+.container {
+position: relative; z-index: 2;
+max-width: 1380px; margin: 0 auto;
+padding: 36px 24px 90px;
+}
 
-        header {
-            text-align: center; margin-bottom: 40px;
-            animation: headerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes headerIn {
-            from { opacity: 0; transform: translateY(-50px) scale(0.92); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+header {
+text-align: center; margin-bottom: 40px;
+animation: headerIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes headerIn {
+from { opacity: 0; transform: translateY(-50px) scale(0.92); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-        .header-badge {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: rgba(0, 230, 138, 0.08);
-            border: 1px solid rgba(0, 230, 138, 0.15);
-            color: var(--accent); font-size: 0.7rem; font-weight: 600;
-            padding: 6px 16px; border-radius: 20px; margin-bottom: 20px;
-            letter-spacing: 0.6px; text-transform: uppercase;
-            backdrop-filter: blur(12px);
-        }
-        .header-badge .dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent); animation: blink 2s ease-in-out infinite;
-            box-shadow: 0 0 8px var(--accent);
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+.header-badge {
+display: inline-flex; align-items: center; gap: 7px;
+background: rgba(0, 230, 138, 0.08);
+border: 1px solid rgba(0, 230, 138, 0.15);
+color: var(--accent); font-size: 0.7rem; font-weight: 600;
+padding: 6px 16px; border-radius: 20px; margin-bottom: 20px;
+letter-spacing: 0.6px; text-transform: uppercase;
+backdrop-filter: blur(12px);
+}
+.header-badge .dot {
+width: 6px; height: 6px; border-radius: 50%;
+background: var(--accent); animation: blink 2s ease-in-out infinite;
+box-shadow: 0 0 8px var(--accent);
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-        header h1 {
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
-            font-weight: 700; letter-spacing: -0.8px; margin-bottom: 10px;
-        }
-        header h1 .gt {
-            background: linear-gradient(135deg, var(--fg) 20%, var(--accent) 80%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        header p {
-            color: var(--fg-muted); font-size: 0.95rem;
-            max-width: 460px; margin: 0 auto; line-height: 1.65;
-        }
+header h1 {
+font-size: clamp(1.8rem, 4vw, 2.6rem);
+font-weight: 700; letter-spacing: -0.8px; margin-bottom: 10px;
+}
+header h1 .gt {
+background: linear-gradient(135deg, var(--fg) 20%, var(--accent) 80%);
+-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+header p {
+color: var(--fg-muted); font-size: 0.95rem;
+max-width: 460px; margin: 0 auto; line-height: 1.65;
+}
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 24px;
-            align-items: start;
-        }
-        .col-left { display: flex; flex-direction: column; gap: 22px; }
+.main-grid {
+display: grid;
+grid-template-columns: 1fr 420px;
+gap: 24px;
+align-items: start;
+}
+.col-left { display: flex; flex-direction: column; gap: 22px; }
 
-        .glass {
-            background: rgba(8, 18, 14, 0.6);
-            backdrop-filter: blur(24px) saturate(1.2);
-            -webkit-backdrop-filter: blur(24px) saturate(1.2);
-            border: 1px solid rgba(0, 230, 138, 0.08);
-            border-radius: 22px;
-            position: relative;
-            overflow: hidden;
-        }
-        .glass::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
-            pointer-events: none;
-        }
+.glass {
+background: rgba(8, 18, 14, 0.6);
+backdrop-filter: blur(24px) saturate(1.2);
+-webkit-backdrop-filter: blur(24px) saturate(1.2);
+border: 1px solid rgba(0, 230, 138, 0.08);
+border-radius: 22px;
+position: relative;
+overflow: hidden;
+}
+.glass::before {
+content: ''; position: absolute; inset: 0;
+background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+pointer-events: none;
+}
 
-        .search-panel {
-            padding: 28px;
-            animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-        }
-        .search-panel .accent-line,
-        .add-panel .accent-line {
-            position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.5;
-        }
-        @keyframes panelIn {
-            from { opacity: 0; transform: translateY(35px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.search-panel {
+padding: 28px;
+animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.search-panel .accent-line,
+.add-panel .accent-line {
+position: absolute; top: 0; left: 0; right: 0; height: 1px;
+background: linear-gradient(90deg, transparent, var(--accent), transparent);
+opacity: 0.5;
+}
+@keyframes panelIn {
+from { opacity: 0; transform: translateY(35px); }
+to { opacity: 1; transform: translateY(0); }
+}
 
-        .search-top {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
-        }
-        .search-title {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 0.88rem; font-weight: 600; color: var(--fg-dim);
-        }
-        .search-title i {
-            width: 32px; height: 32px; border-radius: 10px;
-            background: rgba(0, 230, 138, 0.1); color: var(--accent);
-            display: flex; align-items: center; justify-content: center; font-size: 0.82rem;
-            border: 1px solid rgba(0, 230, 138, 0.08);
-        }
-        .auto-tag {
-            display: flex; align-items: center; gap: 5px;
-            font-size: 0.68rem; font-weight: 500; color: var(--gold-dim);
-            background: rgba(255, 217, 102, 0.06);
-            border: 1px solid rgba(255, 217, 102, 0.08);
-            padding: 4px 12px; border-radius: 20px;
-            backdrop-filter: blur(8px);
-        }
-        .auto-tag i { font-size: 0.6rem; }
+.search-top {
+display: flex; align-items: center; justify-content: space-between;
+margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+}
+.search-title {
+display: flex; align-items: center; gap: 10px;
+font-size: 0.88rem; font-weight: 600; color: var(--fg-dim);
+}
+.search-title i {
+width: 32px; height: 32px; border-radius: 10px;
+background: rgba(0, 230, 138, 0.1); color: var(--accent);
+display: flex; align-items: center; justify-content: center; font-size: 0.82rem;
+border: 1px solid rgba(0, 230, 138, 0.08);
+}
+.auto-tag {
+display: flex; align-items: center; gap: 5px;
+font-size: 0.68rem; font-weight: 500; color: var(--gold-dim);
+background: rgba(255, 217, 102, 0.06);
+border: 1px solid rgba(255, 217, 102, 0.08);
+padding: 4px 12px; border-radius: 20px;
+backdrop-filter: blur(8px);
+}
+.auto-tag i { font-size: 0.6rem; }
 
-        .textarea-wrap textarea {
-            width: 100%; min-height: 100px;
-            background: rgba(4, 10, 8, 0.6);
-            border: 1.5px solid rgba(0, 230, 138, 0.08);
-            border-radius: 14px; padding: 16px 18px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.88rem; color: var(--fg);
-            resize: vertical; transition: all 0.3s ease; line-height: 1.8;
-            backdrop-filter: blur(8px);
-        }
-        .textarea-wrap textarea::placeholder { color: rgba(110, 168, 142, 0.4); font-size: 0.8rem; }
-        .textarea-wrap textarea:focus {
-            outline: none; border-color: rgba(0, 230, 138, 0.3);
-            box-shadow: 0 0 0 4px rgba(0, 230, 138, 0.06), 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
+.textarea-wrap textarea {
+width: 100%; min-height: 100px;
+background: rgba(4, 10, 8, 0.6);
+border: 1.5px solid rgba(0, 230, 138, 0.08);
+border-radius: 14px; padding: 16px 18px;
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.88rem; color: var(--fg);
+resize: vertical; transition: all 0.3s ease; line-height: 1.8;
+backdrop-filter: blur(8px);
+}
+.textarea-wrap textarea::placeholder { color: rgba(110, 168, 142, 0.4); font-size: 0.8rem; }
+.textarea-wrap textarea:focus {
+outline: none; border-color: rgba(0, 230, 138, 0.3);
+box-shadow: 0 0 0 4px rgba(0, 230, 138, 0.06), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
 
-        .input-meta {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 8px; min-height: 20px;
-        }
-        .meta-left { font-size: 0.66rem; color: rgba(110, 168, 142, 0.5); font-family: 'JetBrains Mono', monospace; }
-        .meta-right {
-            font-size: 0.74rem; font-family: 'JetBrains Mono', monospace;
-            display: flex; align-items: center; gap: 6px;
-            opacity: 0; transform: translateY(4px); transition: all 0.3s ease;
-        }
-        .meta-right.visible { opacity: 1; transform: translateY(0); }
-        .meta-right .num { color: var(--accent); font-weight: 600; }
-        .meta-right .label { color: var(--fg-muted); }
-        .meta-right.warn .num { color: var(--gold); }
-        .meta-right.err .num { color: var(--danger); }
+.input-meta {
+display: flex; align-items: center; justify-content: space-between;
+margin-top: 8px; min-height: 20px;
+}
+.meta-left { font-size: 0.66rem; color: rgba(110, 168, 142, 0.5); font-family: 'JetBrains Mono', monospace; }
+.meta-right {
+font-size: 0.74rem; font-family: 'JetBrains Mono', monospace;
+display: flex; align-items: center; gap: 6px;
+opacity: 0; transform: translateY(4px); transition: all 0.3s ease;
+}
+.meta-right.visible { opacity: 1; transform: translateY(0); }
+.meta-right .num { color: var(--accent); font-weight: 600; }
+.meta-right .label { color: var(--fg-muted); }
+.meta-right.warn .num { color: var(--gold); }
+.meta-right.err .num { color: var(--danger); }
 
-        .btn-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+.btn-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
 
-        .btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            padding: 11px 22px; border-radius: 12px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.84rem; font-weight: 600; border: none;
-            cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
-        }
-        .btn::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .btn:hover::after { opacity: 1; }
+.btn {
+display: inline-flex; align-items: center; gap: 7px;
+padding: 11px 22px; border-radius: 12px;
+font-family: 'Space Grotesk', sans-serif;
+font-size: 0.84rem; font-weight: 600; border: none;
+cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
+}
+.btn::after {
+content: ''; position: absolute; inset: 0;
+background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+opacity: 0; transition: opacity 0.3s;
+}
+.btn:hover::after { opacity: 1; }
 
-        .btn-main {
-            background: linear-gradient(135deg, var(--accent), #00b36b);
-            color: var(--bg);
-            box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15), inset 0 1px 0 rgba(255,255,255,0.15);
-        }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0, 230, 138, 0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
-        .btn-main:active { transform: translateY(0); }
+.btn-main {
+background: linear-gradient(135deg, var(--accent), #00b36b);
+color: var(--bg);
+box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0, 230, 138, 0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+.btn-main:active { transform: translateY(0); }
 
-        .btn-ghost {
-            background: rgba(0, 230, 138, 0.04);
-            color: var(--fg-muted); border: 1px solid rgba(0, 230, 138, 0.1);
-        }
-        .btn-ghost:hover { border-color: rgba(0, 230, 138, 0.2); color: var(--fg-dim); background: rgba(0, 230, 138, 0.08); }
-        .btn-sm { padding: 9px 16px; font-size: 0.8rem; }
+.btn-ghost {
+background: rgba(0, 230, 138, 0.04);
+color: var(--fg-muted); border: 1px solid rgba(0, 230, 138, 0.1);
+}
+.btn-ghost:hover { border-color: rgba(0, 230, 138, 0.2); color: var(--fg-dim); background: rgba(0, 230, 138, 0.08); }
+.btn-sm { padding: 9px 16px; font-size: 0.8rem; }
 
-        /* === FORMAT HINT === */
-        .format-hint {
-            display: flex; align-items: center; gap: 8px;
-            padding: 10px 14px; margin-bottom: 12px;
-            background: rgba(255, 217, 102, 0.03);
-            border: 1px solid rgba(255, 217, 102, 0.06);
-            border-radius: 10px;
-            font-size: 0.72rem; color: var(--gold-dim); line-height: 1.6;
-        }
-        .format-hint i { font-size: 0.7rem; flex-shrink: 0; opacity: 0.7; }
-        .format-hint code {
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(255, 217, 102, 0.06);
-            padding: 1px 6px; border-radius: 4px;
-            font-size: 0.68rem; color: var(--gold);
-        }
+/* === FORMAT HINT === */
+.format-hint {
+display: flex; align-items: center; gap: 8px;
+padding: 10px 14px; margin-bottom: 12px;
+background: rgba(255, 217, 102, 0.03);
+border: 1px solid rgba(255, 217, 102, 0.06);
+border-radius: 10px;
+font-size: 0.72rem; color: var(--gold-dim); line-height: 1.6;
+}
+.format-hint i { font-size: 0.7rem; flex-shrink: 0; opacity: 0.7; }
+.format-hint code {
+font-family: 'JetBrains Mono', monospace;
+background: rgba(255, 217, 102, 0.06);
+padding: 1px 6px; border-radius: 4px;
+font-size: 0.68rem; color: var(--gold);
+}
 
-        /* === ADD PREVIEW === */
-        .add-preview {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
-            opacity: 0; margin-top: 0;
-        }
-        .add-preview.open { max-height: 400px; opacity: 1; margin-top: 12px; }
+/* === ADD PREVIEW === */
+.add-preview {
+max-height: 0; overflow: hidden;
+transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+opacity: 0; margin-top: 0;
+}
+.add-preview.open { max-height: 400px; opacity: 1; margin-top: 12px; }
 
-        .add-preview-inner {
-            background: rgba(4, 10, 8, 0.4);
-            border: 1px solid rgba(0, 230, 138, 0.06);
-            border-radius: 12px; overflow: hidden;
-        }
-        .add-preview-head {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px;
-            background: rgba(0, 230, 138, 0.03);
-            border-bottom: 1px solid rgba(0, 230, 138, 0.04);
-            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .add-preview-head .count-ok { color: var(--accent); }
-        .add-preview-head .count-dup { color: var(--gold); }
-        .add-preview-head .count-err { color: var(--danger); }
+.add-preview-inner {
+background: rgba(4, 10, 8, 0.4);
+border: 1px solid rgba(0, 230, 138, 0.06);
+border-radius: 12px; overflow: hidden;
+}
+.add-preview-head {
+display: flex; align-items: center; justify-content: space-between;
+padding: 10px 14px;
+background: rgba(0, 230, 138, 0.03);
+border-bottom: 1px solid rgba(0, 230, 138, 0.04);
+font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+text-transform: uppercase; letter-spacing: 1px;
+}
+.add-preview-head .count-ok { color: var(--accent); }
+.add-preview-head .count-dup { color: var(--gold); }
+.add-preview-head .count-err { color: var(--danger); }
 
-        .add-preview-list {
-            max-height: 200px; overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0, 230, 138, 0.08) transparent;
-        }
-        .add-preview-list::-webkit-scrollbar { width: 3px; }
-        .add-preview-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.08); border-radius: 4px; }
+.add-preview-list {
+max-height: 200px; overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: rgba(0, 230, 138, 0.08) transparent;
+}
+.add-preview-list::-webkit-scrollbar { width: 3px; }
+.add-preview-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.08); border-radius: 4px; }
 
-        .apv-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 9px 14px;
-            border-bottom: 1px solid rgba(0, 230, 138, 0.03);
-            font-size: 0.78rem;
-            animation: fadeIn 0.3s ease both;
-        }
-        .apv-item:last-child { border-bottom: none; }
-        .apv-item.ok { color: var(--fg-dim); }
-        .apv-item.dup { color: var(--gold-dim); background: rgba(255, 217, 102, 0.02); }
-        .apv-item.bad { color: rgba(255, 92, 92, 0.6); background: rgba(255, 92, 92, 0.015); }
+.apv-item {
+display: flex; align-items: center; gap: 10px;
+padding: 9px 14px;
+border-bottom: 1px solid rgba(0, 230, 138, 0.03);
+font-size: 0.78rem;
+animation: fadeIn 0.3s ease both;
+}
+.apv-item:last-child { border-bottom: none; }
+.apv-item.ok { color: var(--fg-dim); }
+.apv-item.dup { color: var(--gold-dim); background: rgba(255, 217, 102, 0.02); }
+.apv-item.bad { color: rgba(255, 92, 92, 0.6); background: rgba(255, 92, 92, 0.015); }
 
-        .apv-icon {
-            width: 22px; height: 22px; border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.58rem; flex-shrink: 0;
-        }
-        .apv-item.ok .apv-icon { background: rgba(0, 230, 138, 0.1); color: var(--accent); }
-        .apv-item.dup .apv-icon { background: rgba(255, 217, 102, 0.1); color: var(--gold); }
-        .apv-item.bad .apv-icon { background: rgba(255, 92, 92, 0.08); color: var(--danger); }
+.apv-icon {
+width: 22px; height: 22px; border-radius: 6px;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.58rem; flex-shrink: 0;
+}
+.apv-item.ok .apv-icon { background: rgba(0, 230, 138, 0.1); color: var(--accent); }
+.apv-item.dup .apv-icon { background: rgba(255, 217, 102, 0.1); color: var(--gold); }
+.apv-item.bad .apv-icon { background: rgba(255, 92, 92, 0.08); color: var(--danger); }
 
-        .apv-info { flex: 1; min-width: 0; }
-        .apv-rek { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.76rem; }
-        .apv-name { font-size: 0.68rem; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .apv-bank {
-            font-size: 0.58rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.5px; opacity: 0.5; flex-shrink: 0;
-        }
-        .apv-status {
-            font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px; flex-shrink: 0; padding: 2px 8px; border-radius: 4px;
-        }
-        .apv-item.ok .apv-status { background: rgba(0, 230, 138, 0.08); color: var(--accent); }
-        .apv-item.dup .apv-status { background: rgba(255, 217, 102, 0.08); color: var(--gold); }
-        .apv-item.bad .apv-status { background: rgba(255, 92, 92, 0.06); color: var(--danger); }
+.apv-info { flex: 1; min-width: 0; }
+.apv-rek { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.76rem; }
+.apv-name { font-size: 0.68rem; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.apv-bank {
+font-size: 0.58rem; font-weight: 600; text-transform: uppercase;
+letter-spacing: 0.5px; opacity: 0.5; flex-shrink: 0;
+}
+.apv-status {
+font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+letter-spacing: 0.5px; flex-shrink: 0; padding: 2px 8px; border-radius: 4px;
+}
+.apv-item.ok .apv-status { background: rgba(0, 230, 138, 0.08); color: var(--accent); }
+.apv-item.dup .apv-status { background: rgba(255, 217, 102, 0.08); color: var(--gold); }
+.apv-item.bad .apv-status { background: rgba(255, 92, 92, 0.06); color: var(--danger); }
 
-        .add-error {
-            font-size: 0.72rem; color: var(--danger); display: none;
-            padding: 8px 12px; background: rgba(255, 92, 92, 0.05);
-            border: 1px solid rgba(255, 92, 92, 0.08);
-            border-radius: 8px; margin-top: 8px;
-        }
-        .add-error.show { display: flex; align-items: center; gap: 6px; }
-        .add-error i { font-size: 0.66rem; flex-shrink: 0; }
+.add-error {
+font-size: 0.72rem; color: var(--danger); display: none;
+padding: 8px 12px; background: rgba(255, 92, 92, 0.05);
+border: 1px solid rgba(255, 92, 92, 0.08);
+border-radius: 8px; margin-top: 8px;
+}
+.add-error.show { display: flex; align-items: center; gap: 6px; }
+.add-error i { font-size: 0.66rem; flex-shrink: 0; }
 
-        /* === STATS ROW === */
-        .stats-row {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-            animation: statsIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes statsIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+/* === STATS ROW === */
+.stats-row {
+display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+animation: statsIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes statsIn {
+from { opacity: 0; transform: translateY(20px) scale(0.96); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-        .stat-box {
-            background: rgba(8, 18, 14, 0.5);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 230, 138, 0.06);
-            border-radius: 18px; padding: 22px 16px;
-            text-align: center; overflow: hidden;
-            transition: all 0.3s ease; position: relative;
-        }
-        .stat-box:hover { transform: translateY(-3px); border-color: rgba(0, 230, 138, 0.12); }
-        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
-        .stat-box.total::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-        .stat-box.found::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
-        .stat-box.missing::before { background: linear-gradient(90deg, transparent, var(--danger), transparent); }
-        .stat-box::after {
-            content: ''; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 60px; pointer-events: none;
-        }
-        .stat-box.total::after { background: radial-gradient(ellipse, rgba(255, 217, 102, 0.05), transparent); }
-        .stat-box.found::after { background: radial-gradient(ellipse, rgba(0, 230, 138, 0.05), transparent); }
-        .stat-box.missing::after { background: radial-gradient(ellipse, rgba(255, 92, 92, 0.05), transparent); }
+.stat-box {
+background: rgba(8, 18, 14, 0.5);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(0, 230, 138, 0.06);
+border-radius: 18px; padding: 22px 16px;
+text-align: center; overflow: hidden;
+transition: all 0.3s ease; position: relative;
+}
+.stat-box:hover { transform: translateY(-3px); border-color: rgba(0, 230, 138, 0.12); }
+.stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.stat-box.total::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.stat-box.found::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.stat-box.missing::before { background: linear-gradient(90deg, transparent, var(--danger), transparent); }
+.stat-box::after {
+content: ''; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+width: 100px; height: 60px; pointer-events: none;
+}
+.stat-box.total::after { background: radial-gradient(ellipse, rgba(255, 217, 102, 0.05), transparent); }
+.stat-box.found::after { background: radial-gradient(ellipse, rgba(0, 230, 138, 0.05), transparent); }
+.stat-box.missing::after { background: radial-gradient(ellipse, rgba(255, 92, 92, 0.05), transparent); }
 
-        .stat-val {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 8px;
-        }
-        .stat-box.total .stat-val { color: var(--gold); text-shadow: 0 0 30px rgba(255, 217, 102, 0.15); }
-        .stat-box.found .stat-val { color: var(--accent); text-shadow: 0 0 30px rgba(0, 230, 138, 0.15); }
-        .stat-box.missing .stat-val { color: var(--danger); text-shadow: 0 0 30px rgba(255, 92, 92, 0.15); }
+.stat-val {
+font-family: 'JetBrains Mono', monospace;
+font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 8px;
+}
+.stat-box.total .stat-val { color: var(--gold); text-shadow: 0 0 30px rgba(255, 217, 102, 0.15); }
+.stat-box.found .stat-val { color: var(--accent); text-shadow: 0 0 30px rgba(0, 230, 138, 0.15); }
+.stat-box.missing .stat-val { color: var(--danger); text-shadow: 0 0 30px rgba(255, 92, 92, 0.15); }
 
-        .stat-label {
-            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
-            text-transform: uppercase; letter-spacing: 1.5px;
-        }
-        .stat-icon {
-            position: absolute; top: 16px; right: 14px;
-            font-size: 0.8rem; opacity: 0.15;
-        }
-        .stat-box.total .stat-icon { color: var(--gold); }
-        .stat-box.found .stat-icon { color: var(--accent); }
-        .stat-box.missing .stat-icon { color: var(--danger); }
+.stat-label {
+font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+text-transform: uppercase; letter-spacing: 1.5px;
+}
+.stat-icon {
+position: absolute; top: 16px; right: 14px;
+font-size: 0.8rem; opacity: 0.15;
+}
+.stat-box.total .stat-icon { color: var(--gold); }
+.stat-box.found .stat-icon { color: var(--accent); }
+.stat-box.missing .stat-icon { color: var(--danger); }
 
-        .result-banner {
-            background: rgba(0, 230, 138, 0.05);
-            border: 1px solid rgba(0, 230, 138, 0.1);
-            border-radius: 16px; padding: 18px 22px; margin-bottom: 16px;
-            overflow: hidden; position: relative;
-            animation: bannerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-            backdrop-filter: blur(16px);
-        }
-        .result-banner::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 0% 50%, rgba(0, 230, 138, 0.04), transparent 60%);
-            pointer-events: none;
-        }
-        @keyframes bannerIn {
-            from { opacity: 0; transform: scale(0.97) translateY(8px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .banner-content { position: relative; display: flex; align-items: center; gap: 14px; }
-        .banner-icon {
-            width: 44px; height: 44px; border-radius: 13px;
-            background: linear-gradient(135deg, var(--accent), #00b36b);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.05rem; color: var(--bg); flex-shrink: 0;
-            box-shadow: 0 4px 20px rgba(0, 230, 138, 0.25);
-        }
-        .banner-text { flex: 1; }
-        .banner-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); margin-bottom: 2px; }
-        .banner-title .hl { color: var(--accent); }
-        .banner-sub { font-size: 0.8rem; color: var(--fg-muted); }
+.result-banner {
+background: rgba(0, 230, 138, 0.05);
+border: 1px solid rgba(0, 230, 138, 0.1);
+border-radius: 16px; padding: 18px 22px; margin-bottom: 16px;
+overflow: hidden; position: relative;
+animation: bannerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+backdrop-filter: blur(16px);
+}
+.result-banner::before {
+content: ''; position: absolute; inset: 0;
+background: radial-gradient(circle at 0% 50%, rgba(0, 230, 138, 0.04), transparent 60%);
+pointer-events: none;
+}
+@keyframes bannerIn {
+from { opacity: 0; transform: scale(0.97) translateY(8px); }
+to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.banner-content { position: relative; display: flex; align-items: center; gap: 14px; }
+.banner-icon {
+width: 44px; height: 44px; border-radius: 13px;
+background: linear-gradient(135deg, var(--accent), #00b36b);
+display: flex; align-items: center; justify-content: center;
+font-size: 1.05rem; color: var(--bg); flex-shrink: 0;
+box-shadow: 0 4px 20px rgba(0, 230, 138, 0.25);
+}
+.banner-text { flex: 1; }
+.banner-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); margin-bottom: 2px; }
+.banner-title .hl { color: var(--accent); }
+.banner-sub { font-size: 0.8rem; color: var(--fg-muted); }
 
-        .result-list-header {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 12px; animation: fadeIn 0.5s ease 0.2s both;
-        }
-        .result-list-header .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,230,138,0.08), transparent); }
-        .result-list-header span {
-            font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
-            text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.result-list-header {
+display: flex; align-items: center; gap: 10px;
+margin-bottom: 12px; animation: fadeIn 0.5s ease 0.2s both;
+}
+.result-list-header .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,230,138,0.08), transparent); }
+.result-list-header span {
+font-size: 0.68rem; font-weight: 600; color: var(--fg-muted);
+text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .result-list { display: flex; flex-direction: column; gap: 8px; }
+.result-list { display: flex; flex-direction: column; gap: 8px; }
 
-        .rek-card {
-            background: rgba(8, 18, 14, 0.55);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 230, 138, 0.06);
-            border-radius: 16px; overflow: hidden;
-            animation: cardReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-            transition: all 0.3s ease;
-        }
-        .rek-card:hover {
-            border-color: rgba(0, 230, 138, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 230, 138, 0.05);
-        }
-        @keyframes cardReveal {
-            from { opacity: 0; transform: translateY(14px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+.rek-card {
+background: rgba(8, 18, 14, 0.55);
+backdrop-filter: blur(16px);
+border: 1px solid rgba(0, 230, 138, 0.06);
+border-radius: 16px; overflow: hidden;
+animation: cardReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+transition: all 0.3s ease;
+}
+.rek-card:hover {
+border-color: rgba(0, 230, 138, 0.15);
+transform: translateY(-2px);
+box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 230, 138, 0.05);
+}
+@keyframes cardReveal {
+from { opacity: 0; transform: translateY(14px) scale(0.98); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-        .rek-card-inner { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
+.rek-card-inner { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
 
-        .rek-card .bank-icon {
-            width: 46px; height: 46px; border-radius: 13px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; flex-shrink: 0; position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
+.rek-card .bank-icon {
+width: 46px; height: 46px; border-radius: 13px;
+display: flex; align-items: center; justify-content: center;
+font-size: 1rem; flex-shrink: 0; position: relative;
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
 
-        .bank-bca .bank-icon { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
-        .bank-bri .bank-icon { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
-        .bank-mandiri .bank-icon { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
-        .bank-bni .bank-icon { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
-        .bank-danamon .bank-icon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
-        .bank-cimb .bank-icon { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
-        .bank-maybank .bank-icon { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
+.bank-bca .bank-icon { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
+.bank-bri .bank-icon { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
+.bank-mandiri .bank-icon { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
+.bank-bni .bank-icon { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
+.bank-danamon .bank-icon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
+.bank-cimb .bank-icon { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
+.bank-maybank .bank-icon { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
 
-        .rek-info { flex: 1; min-width: 0; }
-        .rek-no {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem; font-weight: 600; color: var(--fg);
-            letter-spacing: 0.5px; margin-bottom: 4px;
-        }
-        .rek-name { font-size: 0.86rem; color: var(--fg-dim); margin-bottom: 2px; font-weight: 500; }
-        .rek-bank-label {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 0.68rem; color: var(--fg-muted); font-weight: 500;
-        }
-        .rek-bank-label .ds { width: 3px; height: 3px; border-radius: 50%; background: var(--fg-muted); opacity: 0.5; }
+.rek-info { flex: 1; min-width: 0; }
+.rek-no {
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.95rem; font-weight: 600; color: var(--fg);
+letter-spacing: 0.5px; margin-bottom: 4px;
+}
+.rek-name { font-size: 0.86rem; color: var(--fg-dim); margin-bottom: 2px; font-weight: 500; }
+.rek-bank-label {
+display: inline-flex; align-items: center; gap: 5px;
+font-size: 0.68rem; color: var(--fg-muted); font-weight: 500;
+}
+.rek-bank-label .ds { width: 3px; height: 3px; border-radius: 50%; background: var(--fg-muted); opacity: 0.5; }
 
-        .rek-badge { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-        .rek-status {
-            display: flex; align-items: center; gap: 5px;
-            background: rgba(0, 230, 138, 0.08); border: 1px solid rgba(0, 230, 138, 0.12);
-            color: var(--accent); font-size: 0.68rem; font-weight: 700;
-            padding: 5px 12px; border-radius: 7px; text-transform: uppercase; letter-spacing: 0.7px;
-        }
-        .rek-status i { font-size: 0.6rem; }
-        .rek-index { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: rgba(110, 168, 142, 0.35); }
+.rek-badge { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.rek-status {
+display: flex; align-items: center; gap: 5px;
+background: rgba(0, 230, 138, 0.08); border: 1px solid rgba(0, 230, 138, 0.12);
+color: var(--accent); font-size: 0.68rem; font-weight: 700;
+padding: 5px 12px; border-radius: 7px; text-transform: uppercase; letter-spacing: 0.7px;
+}
+.rek-status i { font-size: 0.6rem; }
+.rek-index { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: rgba(110, 168, 142, 0.35); }
 
-        .result-idle { text-align: center; padding: 44px 20px; animation: fadeIn 0.5s ease; }
-        .result-idle .idle-icon {
-            width: 64px; height: 64px; border-radius: 18px;
-            background: rgba(0, 230, 138, 0.04); border: 1px solid rgba(0, 230, 138, 0.06);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 16px; font-size: 1.4rem; color: var(--fg-muted); opacity: 0.4;
-        }
-        .result-idle p { color: var(--fg-muted); font-size: 0.88rem; }
-        .result-idle p span { color: var(--fg-dim); font-weight: 500; }
+.result-idle { text-align: center; padding: 44px 20px; animation: fadeIn 0.5s ease; }
+.result-idle .idle-icon {
+width: 64px; height: 64px; border-radius: 18px;
+background: rgba(0, 230, 138, 0.04); border: 1px solid rgba(0, 230, 138, 0.06);
+display: flex; align-items: center; justify-content: center;
+margin: 0 auto 16px; font-size: 1.4rem; color: var(--fg-muted); opacity: 0.4;
+}
+.result-idle p { color: var(--fg-muted); font-size: 0.88rem; }
+.result-idle p span { color: var(--fg-dim); font-weight: 500; }
 
-        .result-none { text-align: center; padding: 36px 20px; animation: fadeIn 0.5s ease; }
-        .result-none .none-icon {
-            width: 56px; height: 56px; border-radius: 16px;
-            background: var(--danger-glow); border: 1px solid rgba(255, 92, 92, 0.1);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 14px; font-size: 1.2rem; color: var(--danger);
-        }
-        .result-none .none-title { font-size: 0.95rem; font-weight: 600; color: var(--fg-dim); margin-bottom: 6px; }
-        .result-none .none-sub { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.5; }
+.result-none { text-align: center; padding: 36px 20px; animation: fadeIn 0.5s ease; }
+.result-none .none-icon {
+width: 56px; height: 56px; border-radius: 16px;
+background: var(--danger-glow); border: 1px solid rgba(255, 92, 92, 0.1);
+display: flex; align-items: center; justify-content: center;
+margin: 0 auto 14px; font-size: 1.2rem; color: var(--danger);
+}
+.result-none .none-title { font-size: 0.95rem; font-weight: 600; color: var(--fg-dim); margin-bottom: 6px; }
+.result-none .none-sub { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.5; }
 
-        /* === KOLOM KANAN === */
-        .col-right {
-            display: flex; flex-direction: column; gap: 20px;
-            position: sticky; top: 20px;
-            animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
-        }
+/* === KOLOM KANAN === */
+.col-right {
+display: flex; flex-direction: column; gap: 20px;
+position: sticky; top: 20px;
+animation: panelIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
 
-        .db-panel { overflow: hidden; }
-        .db-panel .gold-line {
-            display: block; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            opacity: 0.3;
-        }
+.db-panel { overflow: hidden; }
+.db-panel .gold-line {
+display: block; height: 1px;
+background: linear-gradient(90deg, transparent, var(--gold), transparent);
+opacity: 0.3;
+}
 
-        .db-head {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 20px 14px; border-bottom: 1px solid rgba(0, 230, 138, 0.06);
-        }
-        .db-head h2 {
-            font-size: 0.88rem; font-weight: 600; color: var(--fg-muted);
-            display: flex; align-items: center; gap: 9px;
-        }
-        .db-head h2 i { color: var(--gold); font-size: 0.85rem; }
-        .db-badge {
-            background: rgba(255, 217, 102, 0.06); border: 1px solid rgba(255, 217, 102, 0.08);
-            color: var(--gold-dim); font-size: 0.7rem;
-            font-family: 'JetBrains Mono', monospace;
-            padding: 3px 10px; border-radius: 20px; font-weight: 600;
-        }
+.db-head {
+display: flex; align-items: center; justify-content: space-between;
+padding: 18px 20px 14px; border-bottom: 1px solid rgba(0, 230, 138, 0.06);
+}
+.db-head h2 {
+font-size: 0.88rem; font-weight: 600; color: var(--fg-muted);
+display: flex; align-items: center; gap: 9px;
+}
+.db-head h2 i { color: var(--gold); font-size: 0.85rem; }
+.db-badge {
+background: rgba(255, 217, 102, 0.06); border: 1px solid rgba(255, 217, 102, 0.08);
+color: var(--gold-dim); font-size: 0.7rem;
+font-family: 'JetBrains Mono', monospace;
+padding: 3px 10px; border-radius: 20px; font-weight: 600;
+}
 
-        .db-list {
-            max-height: calc(100vh - 480px);
-            min-height: 180px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0, 230, 138, 0.1) transparent;
-        }
-        .db-list::-webkit-scrollbar { width: 3px; }
-        .db-list::-webkit-scrollbar-track { background: transparent; }
-        .db-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.1); border-radius: 4px; }
+.db-list {
+max-height: calc(100vh - 480px);
+min-height: 180px;
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: rgba(0, 230, 138, 0.1) transparent;
+}
+.db-list::-webkit-scrollbar { width: 3px; }
+.db-list::-webkit-scrollbar-track { background: transparent; }
+.db-list::-webkit-scrollbar-thumb { background: rgba(0, 230, 138, 0.1); border-radius: 4px; }
 
-        .db-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 11px 20px; border-bottom: 1px solid rgba(0, 230, 138, 0.04);
-            transition: background 0.2s;
-        }
-        .db-item:last-child { border-bottom: none; }
-        .db-item:hover { background: rgba(0, 230, 138, 0.03); }
+.db-item {
+display: flex; align-items: center; gap: 12px;
+padding: 11px 20px; border-bottom: 1px solid rgba(0, 230, 138, 0.04);
+transition: background 0.2s;
+}
+.db-item:last-child { border-bottom: none; }
+.db-item:hover { background: rgba(0, 230, 138, 0.03); }
 
-        .dbi-icon {
-            width: 34px; height: 34px; border-radius: 9px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.78rem; flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .dbi-bca { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
-        .dbi-bri { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
-        .dbi-mandiri { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
-        .dbi-bni { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
-        .dbi-danamon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
-        .dbi-cimb { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
-        .dbi-maybank { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
+.dbi-icon {
+width: 34px; height: 34px; border-radius: 9px;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.78rem; flex-shrink: 0;
+box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.dbi-bca { background: linear-gradient(145deg, #004a94, #0070d6); color: #fff; }
+.dbi-bri { background: linear-gradient(145deg, #005fa3, #0088e0); color: #fff; }
+.dbi-mandiri { background: linear-gradient(145deg, #003d7a, #005faa); color: #ffd966; }
+.dbi-bni { background: linear-gradient(145deg, #e65100, #ff7a1a); color: #fff; }
+.dbi-danamon { background: linear-gradient(145deg, #e6b800, #ffc929); color: #1a1a00; }
+.dbi-cimb { background: linear-gradient(145deg, #7b1fa2, #ab47bc); color: #fff; }
+.dbi-maybank { background: linear-gradient(145deg, #c62828, #e53935); color: #fff; }
 
-        .dbi-info { flex: 1; min-width: 0; }
-        .dbi-name { font-size: 0.8rem; color: var(--fg-dim); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .dbi-rek { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg-muted); margin-top: 1px; }
-        .dbi-bank { font-size: 0.6rem; color: rgba(110, 168, 142, 0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.dbi-info { flex: 1; min-width: 0; }
+.dbi-name { font-size: 0.8rem; color: var(--fg-dim); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dbi-rek { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg-muted); margin-top: 1px; }
+.dbi-bank { font-size: 0.6rem; color: rgba(110, 168, 142, 0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
-        .dbi-del {
-            flex-shrink: 0; width: 28px; height: 28px; border-radius: 7px;
-            background: transparent; border: 1px solid transparent;
-            color: rgba(255, 92, 92, 0.25); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.68rem; transition: all 0.2s; opacity: 0;
-        }
-        .db-item:hover .dbi-del { opacity: 1; }
-        .dbi-del:hover { background: rgba(255, 92, 92, 0.06); border-color: rgba(255, 92, 92, 0.1); color: var(--danger); }
+.dbi-del {
+flex-shrink: 0; width: 28px; height: 28px; border-radius: 7px;
+background: transparent; border: 1px solid transparent;
+color: rgba(255, 92, 92, 0.25); cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.68rem; transition: all 0.2s; opacity: 0;
+}
+.db-item:hover .dbi-del { opacity: 1; }
+.dbi-del:hover { background: rgba(255, 92, 92, 0.06); border-color: rgba(255, 92, 92, 0.1); color: var(--danger); }
 
-        .add-panel { padding: 22px; }
+.add-panel { padding: 22px; }
 
-        .toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-        .toast {
-            padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; font-weight: 500;
-            display: flex; align-items: center; gap: 9px;
-            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(16px);
-        }
-        .toast-err { background: rgba(30, 10, 10, 0.85); border: 1px solid rgba(255, 92, 92, 0.15); color: var(--danger); }
-        .toast-ok { background: rgba(10, 30, 18, 0.85); border: 1px solid rgba(0, 230, 138, 0.15); color: var(--accent); }
-        .toast-warn { background: rgba(30, 24, 10, 0.85); border: 1px solid rgba(255, 217, 102, 0.15); color: var(--gold); }
-        @keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(50px); } }
+.toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; font-weight: 500;
+display: flex; align-items: center; gap: 9px;
+animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(16px);
+}
+.toast-err { background: rgba(30, 10, 10, 0.85); border: 1px solid rgba(255, 92, 92, 0.15); color: var(--danger); }
+.toast-ok { background: rgba(10, 30, 18, 0.85); border: 1px solid rgba(0, 230, 138, 0.15); color: var(--accent); }
+.toast-warn { background: rgba(30, 24, 10, 0.85); border: 1px solid rgba(255, 217, 102, 0.15); color: var(--gold); }
+@keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(50px); } }
 
-        .searching .btn-main { animation: pulse 1s ease infinite; }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15); }
-            50% { box-shadow: 0 4px 40px rgba(0, 230, 138, 0.4); }
-        }
+.searching .btn-main { animation: pulse 1s ease infinite; }
+@keyframes pulse {
+0%, 100% { box-shadow: 0 4px 20px rgba(0, 230, 138, 0.15); }
+50% { box-shadow: 0 4px 40px rgba(0, 230, 138, 0.4); }
+}
 
-        footer {
-            text-align: center; padding: 32px 20px 16px;
-            color: rgba(110, 168, 142, 0.25); font-size: 0.68rem;
-            position: relative; z-index: 2;
-        }
+footer {
+text-align: center; padding: 32px 20px 16px;
+color: rgba(110, 168, 142, 0.25); font-size: 0.68rem;
+position: relative; z-index: 2;
+}
 
-        @media (max-width: 960px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .col-right { position: static; }
-            .db-list { max-height: 320px; }
-        }
+@media (max-width: 960px) {
+.main-grid { grid-template-columns: 1fr; }
+.col-right { position: static; }
+.db-list { max-height: 320px; }
+}
 
-        @media (max-width: 640px) {
-            .container { padding: 20px 12px 60px; }
-            .search-panel, .add-panel { padding: 20px 16px; }
-            .stats-row { gap: 8px; }
-            .stat-box { padding: 16px 10px; border-radius: 14px; }
-            .stat-val { font-size: 1.5rem; }
-            .stat-label { font-size: 0.6rem; letter-spacing: 1px; }
-            .stat-icon { display: none; }
-            .rek-card-inner { padding: 14px 16px; gap: 12px; }
-            .rek-badge { flex-direction: row; align-items: center; }
-            .db-item .dbi-del { opacity: 0.5; }
-            .format-hint { font-size: 0.66rem; padding: 8px 10px; }
-        }
+@media (max-width: 640px) {
+.container { padding: 20px 12px 60px; }
+.search-panel, .add-panel { padding: 20px 16px; }
+.stats-row { gap: 8px; }
+.stat-box { padding: 16px 10px; border-radius: 14px; }
+.stat-val { font-size: 1.5rem; }
+.stat-label { font-size: 0.6rem; letter-spacing: 1px; }
+.stat-icon { display: none; }
+.rek-card-inner { padding: 14px 16px; gap: 12px; }
+.rek-badge { flex-direction: row; align-items: center; }
+.db-item .dbi-del { opacity: 0.5; }
+.format-hint { font-size: 0.66rem; padding: 8px 10px; }
+}
 
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
-    </style>
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+
+<style id="modern-refresh">
+:root{
+  --bg:#07110f;
+  --bg-raised:rgba(11,24,20,.82);
+  --card:rgba(12,27,23,.72);
+  --card-solid:#0c1b17;
+  --card-hover:rgba(18,42,34,.82);
+  --border:rgba(69,230,166,.10);
+  --border-light:rgba(69,230,166,.22);
+  --fg:#f4fbf8;
+  --fg-dim:#c7ddd4;
+  --fg-muted:#7fa99a;
+  --accent:#45e6a6;
+  --accent-glow:rgba(69,230,166,.12);
+  --gold:#ffd778;
+}
+body{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(69,230,166,.09),transparent 30%),
+    radial-gradient(circle at 88% 12%,rgba(86,153,255,.07),transparent 28%),
+    #07110f;
+}
+.video-bg{opacity:.16;filter:saturate(.72) contrast(1.05);}
+.video-overlay{
+  background:
+    linear-gradient(180deg,rgba(7,17,15,.80),rgba(7,17,15,.95)),
+    radial-gradient(circle at 50% 0%,rgba(69,230,166,.08),transparent 48%);
+}
+.video-noise{opacity:.018}
+.container{max-width:1420px;padding-top:30px}
+header{margin-bottom:30px}
+.header-badge{
+  background:rgba(69,230,166,.08);
+  border-color:rgba(69,230,166,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+header h1{font-size:clamp(2rem,4vw,3rem);letter-spacing:-1.4px}
+.glass{
+  border-radius:24px;
+  border-color:rgba(255,255,255,.065);
+  background:linear-gradient(145deg,rgba(14,31,26,.82),rgba(8,20,17,.72));
+  box-shadow:0 22px 70px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.035);
+}
+.search-panel{padding:30px}
+.textarea-wrap textarea{
+  background:rgba(3,12,10,.64);
+  border-color:rgba(255,255,255,.07);
+  border-radius:16px;
+}
+.textarea-wrap textarea:focus{
+  border-color:rgba(69,230,166,.38);
+  box-shadow:0 0 0 4px rgba(69,230,166,.07),0 18px 50px rgba(0,0,0,.22);
+}
+.btn{border-radius:13px}
+.btn-main{
+  background:linear-gradient(135deg,#58efb5,#28c98b);
+  box-shadow:0 9px 28px rgba(40,201,139,.20);
+}
+.stat-box,.rek-card{
+  border-color:rgba(255,255,255,.055);
+  background:linear-gradient(145deg,rgba(15,33,28,.74),rgba(8,20,17,.70));
+}
+.db-head{padding:20px}
+.db-item{padding:12px 20px}
+.db-item:hover{background:rgba(69,230,166,.045)}
+.db-badge{
+  background:rgba(255,215,120,.075);
+  border-color:rgba(255,215,120,.13);
+}
+footer{color:rgba(168,204,190,.42)}
+@media(max-width:960px){
+  .main-grid{gap:18px}
+}
+</style>
+
+
+<style id="firebase-modern-v2">
+:root{
+  --accent:#54efb3;
+  --accent2:#55a8ff;
+  --surface:rgba(11,27,23,.76);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(800px 420px at 15% -5%,rgba(84,239,179,.12),transparent 62%),
+    radial-gradient(760px 400px at 88% 5%,rgba(85,168,255,.10),transparent 65%);
+}
+.header-badge{padding:7px 15px;border-radius:999px}
+header h1 .gt{
+  background:linear-gradient(100deg,#f7fffc 15%,#74f5c1 60%,#80bfff 105%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.main-grid{grid-template-columns:minmax(0,1fr) 440px;gap:26px}
+.glass{
+  box-shadow:0 24px 80px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.035) inset;
+}
+.search-panel,.add-panel{position:relative}
+.search-panel:after,.add-panel:after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.035),transparent 30%);
+}
+.db-head{align-items:center}
+.db-head>div:first-child{min-width:0}
+.cloud-state{
+  display:flex;align-items:center;gap:7px;margin-top:7px;
+  font-size:.66rem;color:var(--fg-muted);font-family:'JetBrains Mono',monospace;
+}
+.cloud-dot{
+  width:7px;height:7px;border-radius:999px;background:#ffd778;
+  box-shadow:0 0 12px rgba(255,215,120,.45);
+}
+.cloud-state.online .cloud-dot{background:var(--accent);box-shadow:0 0 14px rgba(84,239,179,.55)}
+.cloud-state.offline .cloud-dot{background:var(--danger);box-shadow:0 0 14px rgba(255,92,92,.45)}
+.cloud-state.online{color:#8eddbd}
+.cloud-state.offline{color:#e99494}
+.dbi-icon{border:1px solid rgba(255,255,255,.06)}
+.db-item{position:relative}
+.db-item:before{
+  content:"";position:absolute;left:0;top:20%;bottom:20%;width:2px;border-radius:4px;
+  background:var(--accent);opacity:0;transition:.2s;
+}
+.db-item:hover:before{opacity:.65}
+.add-panel .btn-main{min-height:42px}
+.format-hint{
+  background:linear-gradient(135deg,rgba(255,215,120,.05),rgba(84,239,179,.025));
+  border-color:rgba(255,255,255,.06);
+}
+@media(max-width:960px){.main-grid{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 
-    <div class="video-bg">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="https://v1.pinimg.com/videos/iht/expMp4/e9/c2/61/e9c261e918070db580a52b0519e3887b_720w.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
-    <div class="video-noise"></div>
-    <div class="video-vignette"></div>
+<div class="video-bg">
+<video autoplay muted loop playsinline preload="auto">
+<source src="https://v1.pinimg.com/videos/iht/expMp4/e9/c2/61/e9c261e918070db580a52b0519e3887b_720w.mp4" type="video/mp4">
+</video>
+</div>
+<div class="video-overlay"></div>
+<div class="video-noise"></div>
+<div class="video-vignette"></div>
 
-    <div class="toast-wrap" id="toastWrap"></div>
+<div class="toast-wrap" id="toastWrap"></div>
 
-    <div class="container">
+<div class="container">
 
-        <header>
-            <div class="header-badge"><span class="dot"></span> Live Matching</div>
-            <h1><span class="gt">Crosscheck Rekening</span></h1>
-            <p>Tempelkan nomor rekening — hasil langsung muncul otomatis</p>
-        </header>
+<header>
+<div class="header-badge"><span class="dot"></span> Live Matching</div>
+<h1><span class="gt">Crosscheck Rekening</span></h1>
+<p>Tempelkan nomor rekening — hasil langsung muncul otomatis</p>
+</header>
 
-        <div class="main-grid">
+<div class="main-grid">
 
-            <div class="col-left">
+<div class="col-left">
 
-                <section class="search-panel glass" id="searchPanel" aria-label="Form pencarian">
-                    <div class="accent-line"></div>
-                    <div class="search-top">
-                        <div class="search-title"><i class="fas fa-keyboard"></i><span>Tempel Nomor Rekening</span></div>
-                        <div class="auto-tag"><i class="fas fa-bolt"></i> Auto-detect</div>
-                    </div>
-                    <div class="textarea-wrap">
-                        <textarea id="searchInput" placeholder="Langsung tempel (Ctrl+V) nomor rekening di sini...&#10;Bisa dipisahkan baris baru, koma, tab, atau spasi." aria-label="Masukkan nomor rekening" spellcheck="false" autocomplete="off"></textarea>
-                    </div>
-                    <div class="input-meta">
-                        <span class="meta-left" id="metaLeft">0 karakter</span>
-                        <span class="meta-right" id="metaRight"><span class="num" id="metaNum">0</span><span class="label">terdeteksi</span></span>
-                    </div>
-                    <div class="btn-row">
-                        <button class="btn btn-main" id="btnSearch"><i class="fas fa-search"></i> Cek Sekarang</button>
-                        <button class="btn btn-ghost btn-sm" id="btnClear"><i class="fas fa-eraser"></i> Bersihkan</button>
-                    </div>
-                </section>
+<section class="search-panel glass" id="searchPanel" aria-label="Form pencarian">
+<div class="accent-line"></div>
+<div class="search-top">
+<div class="search-title"><i class="fas fa-keyboard"></i><span>Tempel Nomor Rekening</span></div>
+<div class="auto-tag"><i class="fas fa-bolt"></i> Auto-detect</div>
+</div>
+<div class="textarea-wrap">
+<textarea id="searchInput" placeholder="Langsung tempel (Ctrl+V) nomor rekening di sini...&#10;Bisa dipisahkan baris baru, koma, tab, atau spasi." aria-label="Masukkan nomor rekening" spellcheck="false" autocomplete="off"></textarea>
+</div>
+<div class="input-meta">
+<span class="meta-left" id="metaLeft">0 karakter</span>
+<span class="meta-right" id="metaRight"><span class="num" id="metaNum">0</span><span class="label">terdeteksi</span></span>
+</div>
+<div class="btn-row">
+<button class="btn btn-main" id="btnSearch"><i class="fas fa-search"></i> Cek Sekarang</button>
+<button class="btn btn-ghost btn-sm" id="btnClear"><i class="fas fa-eraser"></i> Bersihkan</button>
+</div>
+</section>
 
-                <section class="result-area" id="resultArea" aria-live="polite">
-                    <div class="result-idle">
-                        <div class="idle-icon"><i class="fas fa-inbox"></i></div>
-                        <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
-                    </div>
-                </section>
+<section class="result-area" id="resultArea" aria-live="polite">
+<div class="result-idle">
+<div class="idle-icon"><i class="fas fa-inbox"></i></div>
+<p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+</div>
+</section>
 
-            </div>
+</div>
 
-            <div class="col-right">
+<div class="col-right">
 
-                <div class="db-panel glass">
-                    <div class="gold-line"></div>
-                    <div class="db-head">
-                        <h2><i class="fas fa-database"></i> Database Rekening</h2>
-                        <span class="db-badge" id="dbBadge">0 data</span>
-                    </div>
-                    <div class="db-list" id="dbList"></div>
-                </div>
+<div class="db-panel glass">
+<div class="gold-line"></div>
+<div class="db-head">
+<div>
+<h2><i class="fas fa-cloud"></i> Database Rekening</h2>
+<div class="cloud-state" id="cloudState"><span class="cloud-dot"></span><span id="cloudText">Menyiapkan database...</span></div>
+</div>
+<span class="db-badge" id="dbBadge">0 data</span>
+</div>
+<div class="db-list" id="dbList"></div>
+</div>
 
-                <div class="add-panel glass">
-                    <div class="accent-line"></div>
-                    <div class="search-top" style="margin-bottom:14px;">
-                        <div class="search-title" style="font-size:0.85rem;">
-                            <i class="fas fa-file-import"></i>
-                            <span>Tambah Rekening</span>
-                        </div>
-                        <div class="auto-tag"><i class="fas fa-layer-group"></i> Multi-add</div>
-                    </div>
+<div class="add-panel glass">
+<div class="accent-line"></div>
+<div class="search-top" style="margin-bottom:14px;">
+<div class="search-title" style="font-size:0.85rem;">
+<i class="fas fa-file-import"></i>
+<span>Tambah Rekening</span>
+</div>
+<div class="auto-tag"><i class="fas fa-layer-group"></i> Multi-add</div>
+</div>
 
-                    <div class="format-hint">
-                        <i class="fas fa-circle-info"></i>
-                        <span>Format per baris: <code>Bank</code> dipisah <code>|</code> lalu <code>NoRek</code> dipisah <code>|</code> lalu <code>Nama</code>. Bisa juga pakai <code>Tab</code> dari Excel/Spreadsheet.</span>
-                    </div>
+<div class="format-hint">
+<i class="fas fa-circle-info"></i>
+<span>Format per baris: <code>Bank</code> dipisah <code>|</code> lalu <code>NoRek</code> dipisah <code>|</code> lalu <code>Nama</code>. Bisa juga pakai <code>Tab</code> dari Excel/Spreadsheet.</span>
+</div>
 
-                    <div class="textarea-wrap">
-                        <textarea id="addInput" placeholder="BCA|7402544671|UMI SALAMAH&#10;MANDIRI|1550015288148|USNA&#10;BNI|2011951619|HAN SETIAWAN&#10;BRI|330901004735507|DARILAH&#10;DANAMON|003704972490|RAKA WIBOWO" aria-label="Masukkan data rekening" spellcheck="false" autocomplete="off" style="min-height:130px;"></textarea>
-                    </div>
+<div class="textarea-wrap">
+<textarea id="addInput" placeholder="BCA|1663649713|HERIYANTO&#10;BNI|2019015457|ELIS MAHRIPAH&#10;BRI|332301009781505|SASMITA" aria-label="Masukkan data rekening" spellcheck="false" autocomplete="off" style="min-height:130px;"></textarea>
+</div>
 
-                    <div class="input-meta">
-                        <span class="meta-left" id="addMetaLeft">0 karakter</span>
-                        <span class="meta-right" id="addMetaRight">
-                            <span class="num" id="addMetaNum">0</span>
-                            <span class="label">terdeteksi</span>
-                        </span>
-                    </div>
+<div class="input-meta">
+<span class="meta-left" id="addMetaLeft">0 karakter</span>
+<span class="meta-right" id="addMetaRight">
+<span class="num" id="addMetaNum">0</span>
+<span class="label">terdeteksi</span>
+</span>
+</div>
 
-                    <div class="add-preview" id="addPreview">
-                        <div class="add-preview-inner">
-                            <div class="add-preview-head" id="addPreviewHead"></div>
-                            <div class="add-preview-list" id="addPreviewList"></div>
-                        </div>
-                    </div>
+<div class="add-preview" id="addPreview">
+<div class="add-preview-inner">
+<div class="add-preview-head" id="addPreviewHead"></div>
+<div class="add-preview-list" id="addPreviewList"></div>
+</div>
+</div>
 
-                    <div class="add-error" id="addError"><i class="fas fa-circle-exclamation"></i><span id="addErrorText"></span></div>
+<div class="add-error" id="addError"><i class="fas fa-circle-exclamation"></i><span id="addErrorText"></span></div>
 
-                    <div class="btn-row" style="margin-top:4px;">
-                        <button class="btn btn-main btn-sm" id="btnAdd" style="flex:1;justify-content:center;">
-                            <i class="fas fa-plus"></i> Simpan Semua ke Database
-                        </button>
-                        <button class="btn btn-ghost btn-sm" id="btnAddClear" title="Bersihkan"><i class="fas fa-eraser"></i></button>
-                    </div>
-                </div>
+<div class="btn-row" style="margin-top:4px;">
+<button class="btn btn-main btn-sm" id="btnAdd" style="flex:1;justify-content:center;">
+<i class="fas fa-plus"></i> Simpan Semua ke Database
+</button>
+<button class="btn btn-ghost btn-sm" id="btnAddClear" title="Bersihkan"><i class="fas fa-eraser"></i></button>
+</div>
+</div>
 
-            </div>
-        </div>
+</div>
+</div>
 
-        <footer>Data tersimpan di browser (localStorage) — tidak dikirim ke server manapun</footer>
-    </div>
+<footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• Firebase Ready</span></footer>
+</div>
 
-    <script>
-        // =====================================================
-        // DEFAULT DATABASE
-        // =====================================================
-        const DEFAULT_DB = [
-            { bank: "BCA",      nama: "UMI SALAMAH",             noRek: "7402544671" },
-            { bank: "BCA",      nama: "ANGGITA PUTRI VERATAMI",  noRek: "0155152627" },
-            { bank: "MANDIRI",  nama: "USNA",                    noRek: "1550015288148" },
-            { bank: "BNI",      nama: "HAN SETIAWAN",            noRek: "2011951619" },
-            { bank: "BRI",      nama: "DARILAH",                 noRek: "330901004735507" },
-            { bank: "BRI",      nama: "CUHAYA",                  noRek: "158101005978500" },
-            { bank: "DANAMON",  nama: "RAKA WIBOWO",             noRek: "003704972490" },
-            { bank: "MAYBANK",  nama: "AHMAD TAOFIK KAMIL",      noRek: "8743986194" },
-            { bank: "BCA",      nama: "KRISNA DWI PANGESTU",     noRek: "1680440715" },
-            { bank: "BCA",      nama: "M RIZAL THAMRIN",         noRek: "0520496114" },
-            { bank: "BCA",      nama: "KIKY SYAH PUTRA",         noRek: "1751296890" },
-            { bank: "BCA",      nama: "RIZKY PANGESTU",          noRek: "7940429522" },
-            { bank: "BNI",      nama: "RANI",                    noRek: "1958323775" },
-            { bank: "MANDIRI",  nama: "DIKI LESMANA",            noRek: "1630014487014" },
-            { bank: "BRI",      nama: "HENDRA PURNOMO",          noRek: "385401006492508" },
-            { bank: "CIMB",     nama: "MARINI",                  noRek: "708657192700" },
-            { bank: "DANAMON",  nama: "SESA",                    noRek: "003704636707" },
-            { bank: "MAYBANK",  nama: "MUHAMMAD FARDHAN",        noRek: "8789988009" },
-            { bank: "BCA",      nama: "Arie Puspitasari",        noRek: "1652887125" },
-            { bank: "DANAMON",  nama: "MUHAMAD YUNUS",           noRek: "003703528574" },
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+// =====================================================
+// FIREBASE CONFIG — GANTI DENGAN CONFIG WEB APP MILIK ANDA
+// Firebase Console > Project settings > Your apps > SDK setup and configuration
+// =====================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyBPA3250JX-kRFye6k3zeFNEEls-crwHSE",
+  authDomain: "datarek.firebaseapp.com",
+  databaseURL: "https://datarek-default-rtdb.firebaseio.com",
+  projectId: "datarek",
+  storageBucket: "datarek.firebasestorage.app",
+  messagingSenderId: "495847159852",
+  appId: "1:495847159852:web:06db7cb0b6c2340c06f989",
+  measurementId: "G-W8NBFWZGSF"
+};
+
+const FIREBASE_COLLECTION = "rekening";
+let firestore = null;
+let firebaseAuth = null;
+let cloudReady = false;
+let unsubscribeCloud = null;
+
+// =====================================================
+// DEFAULT DATABASE
+// =====================================================
+const DEFAULT_DB = [
+            { bank: "BCA", nama: "HERIYANTO", noRek: "1663649713" },
+            { bank: "BCA", nama: "RAYHAN CHALIK", noRek: "5860579962" },
+            { bank: "BCA", nama: "Rohadi Pathir Romadhoni", noRek: "5850429601" },
+            { bank: "BCA", nama: "JARIATIN", noRek: "6430344992" },
+            { bank: "BNI", nama: "ELIS MAHRIPAH", noRek: "2019015457" },
+            { bank: "BNI", nama: "Muhammad Dafa Maulana", noRek: "1977931260" },
+            { bank: "BRI", nama: "SASMITA", noRek: "332301009781505" },
+            { bank: "BRI", nama: "Mursalim", noRek: "714401018425504" },
+            { bank: "MANDIRI", nama: "Muhammad Raka Abdillah", noRek: "1550015288643" },
+            { bank: "DANAMON", nama: "Nur Agitha Sari", noRek: "903704099443" },
+            { bank: "MAYBANK", nama: "Telaga Gunawan", noRek: "8086914748" },
+            { bank: "BCA", nama: "Alfiandy Octa Vernando. H", noRek: "4660413966" },
+            { bank: "BCA", nama: "WISNU SAPUTRA", noRek: "0830281860" },
+            { bank: "BCA", nama: "FATHOLLA ADIMARTA", noRek: "7721507240" },
+            { bank: "BCA", nama: "Silviani Armanda Putri", noRek: "8681489401" },
+            { bank: "BNI", nama: "ZAHRA AYU SYAWALLIA", noRek: "2019366857" },
+            { bank: "BNI", nama: "RAHMAN", noRek: "2020436607" },
+            { bank: "BRI", nama: "Rudi Sarbini", noRek: "385401006503503" },
+            { bank: "BRI", nama: "Mulyadi", noRek: "331701003613503" },
+            { bank: "MANDIRI", nama: "Ahad Diat Nurdiansyah", noRek: "1550015361507" },
+            { bank: "MANDIRI", nama: "Mardlotillah Kamal", noRek: "1630014472560" },
+            { bank: "DANAMON", nama: "Ropita", noRek: "3704327497" },
+            { bank: "MAYBANK", nama: "Heriyanto", noRek: "8102921161" },
+            { bank: "BCA", nama: "WARSIH", noRek: "6020302443" },
+            { bank: "BCA", nama: "JUMYATI", noRek: "3130332837" },
+            { bank: "MAYBANK", nama: "SRI MAYASARI", noRek: "3703286348" }
         ];
 
-        const STORAGE_KEY = 'crosscheck_rekening_db';
+const STORAGE_KEY = 'crosscheck_rekening_fallback_v20260818_26';
 
-        function loadDB() {
-            try {
-                const s = localStorage.getItem(STORAGE_KEY);
-                if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length > 0) return p; }
-            } catch (e) {}
-            return JSON.parse(JSON.stringify(DEFAULT_DB));
-        }
+function loadLocalFallback() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) {
+      const p = JSON.parse(s);
+      if (Array.isArray(p) && p.length > 0) return p;
+    }
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_DB));
+}
 
-        function saveDB() {
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); } catch (e) {}
-        }
+function saveLocalFallback() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); } catch (e) {}
+}
 
-        let DB = loadDB();
+let DB = loadLocalFallback();
 
-        function rebuildMap() {
-            dbMap = {};
-            DB.forEach(item => { dbMap[item.noRek] = item; });
-        }
+function rebuildMap() {
+dbMap = {};
+DB.forEach(item => { dbMap[item.noRek] = item; });
+}
 
-        let dbMap = {};
-        rebuildMap();
+let dbMap = {};
+rebuildMap();
 
-        // =====================================================
-        // DOM
-        // =====================================================
-        const searchInput   = document.getElementById('searchInput');
-        const metaLeft      = document.getElementById('metaLeft');
-        const metaRight     = document.getElementById('metaRight');
-        const metaNum       = document.getElementById('metaNum');
-        const btnSearch     = document.getElementById('btnSearch');
-        const btnClear      = document.getElementById('btnClear');
-        const searchPanel   = document.getElementById('searchPanel');
-        const resultArea    = document.getElementById('resultArea');
-        const dbList        = document.getElementById('dbList');
-        const dbBadge       = document.getElementById('dbBadge');
-        const toastWrap     = document.getElementById('toastWrap');
+// =====================================================
+// DOM
+// =====================================================
+const searchInput   = document.getElementById('searchInput');
+const metaLeft      = document.getElementById('metaLeft');
+const metaRight     = document.getElementById('metaRight');
+const metaNum       = document.getElementById('metaNum');
+const btnSearch     = document.getElementById('btnSearch');
+const btnClear      = document.getElementById('btnClear');
+const searchPanel   = document.getElementById('searchPanel');
+const resultArea    = document.getElementById('resultArea');
+const dbList        = document.getElementById('dbList');
+const dbBadge       = document.getElementById('dbBadge');
+const cloudState    = document.getElementById('cloudState');
+const cloudText     = document.getElementById('cloudText');
+const toastWrap     = document.getElementById('toastWrap');
 
-        const addInput      = document.getElementById('addInput');
-        const addMetaLeft   = document.getElementById('addMetaLeft');
-        const addMetaRight  = document.getElementById('addMetaRight');
-        const addMetaNum    = document.getElementById('addMetaNum');
-        const addPreview    = document.getElementById('addPreview');
-        const addPreviewHead= document.getElementById('addPreviewHead');
-        const addPreviewList= document.getElementById('addPreviewList');
-        const btnAdd        = document.getElementById('btnAdd');
-        const btnAddClear   = document.getElementById('btnAddClear');
-        const addError      = document.getElementById('addError');
-        const addErrorText  = document.getElementById('addErrorText');
+const addInput      = document.getElementById('addInput');
+const addMetaLeft   = document.getElementById('addMetaLeft');
+const addMetaRight  = document.getElementById('addMetaRight');
+const addMetaNum    = document.getElementById('addMetaNum');
+const addPreview    = document.getElementById('addPreview');
+const addPreviewHead= document.getElementById('addPreviewHead');
+const addPreviewList= document.getElementById('addPreviewList');
+const btnAdd        = document.getElementById('btnAdd');
+const btnAddClear   = document.getElementById('btnAddClear');
+const addError      = document.getElementById('addError');
+const addErrorText  = document.getElementById('addErrorText');
 
-        let debounceTimer = null;
-        let addDebounceTimer = null;
+let debounceTimer = null;
+let addDebounceTimer = null;
 
-        // =====================================================
-        // UTILITAS BANK
-        // =====================================================
-        function bk(b) { return b.toLowerCase().replace(/\s+/g, ''); }
-        const KNOWN_BANKS = ['bca', 'bri', 'mandiri', 'bni', 'danamon', 'cimb', 'maybank'];
-        const KNOWN_BANKS_UPPER = ['BCA', 'BRI', 'MANDIRI', 'BNI', 'DANAMON', 'CIMB', 'MAYBANK'];
+// =====================================================
+// UTILITAS BANK
+// =====================================================
+function bk(b) { return b.toLowerCase().replace(/\s+/g, ''); }
+const KNOWN_BANKS = ['bca', 'bri', 'mandiri', 'bni', 'danamon', 'cimb', 'maybank'];
+const KNOWN_BANKS_UPPER = ['BCA', 'BRI', 'MANDIRI', 'BNI', 'DANAMON', 'CIMB', 'MAYBANK'];
 
-        function bankClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? k : 'default'; }
-        function bankIcon(b) {
-            const m = { bca:'fa-building-columns', bri:'fa-landmark', mandiri:'fa-shield-halved',
-                        bni:'fa-landmark-dome', danamon:'fa-coins', cimb:'fa-umbrella', maybank:'fa-building' };
-            return m[bk(b)] || 'fa-building';
-        }
-        function dbiClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? `dbi-${k}` : 'dbi-bca'; }
+function bankClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? k : 'default'; }
+function bankIcon(b) {
+const m = { bca:'fa-building-columns', bri:'fa-landmark', mandiri:'fa-shield-halved',
+bni:'fa-landmark-dome', danamon:'fa-coins', cimb:'fa-umbrella', maybank:'fa-building' };
+return m[bk(b)] || 'fa-building';
+}
+function dbiClass(b) { const k = bk(b); return KNOWN_BANKS.includes(k) ? `dbi-${k}` : 'dbi-bca'; }
 
-        // =====================================================
-        // TOAST
-        // =====================================================
-        function toast(msg, type = 'ok') {
-            const el = document.createElement('div');
-            const cls = type === 'ok' ? 'toast-ok' : type === 'warn' ? 'toast-warn' : 'toast-err';
-            const ico = type === 'ok' ? 'fa-circle-check' : type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-exclamation';
-            el.className = `toast ${cls}`;
-            el.innerHTML = `<i class="fas ${ico}"></i><span>${msg}</span>`;
-            toastWrap.appendChild(el);
-            setTimeout(() => el.remove(), 3000);
-        }
+// =====================================================
+// TOAST
+// =====================================================
+function toast(msg, type = 'ok') {
+const el = document.createElement('div');
+const cls = type === 'ok' ? 'toast-ok' : type === 'warn' ? 'toast-warn' : 'toast-err';
+const ico = type === 'ok' ? 'fa-circle-check' : type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-exclamation';
+el.className = `toast ${cls}`;
+el.innerHTML = `<i class="fas ${ico}"></i><span>${msg}</span>`;
+toastWrap.appendChild(el);
+setTimeout(() => el.remove(), 3000);
+}
 
-        // =====================================================
-        // RENDER DATABASE
-        // =====================================================
-        function renderDB() {
-            dbBadge.textContent = `${DB.length} data`;
-            if (DB.length === 0) {
-                dbList.innerHTML = `
-                    <div style="text-align:center;padding:40px 20px;color:var(--fg-muted);font-size:0.82rem;">
-                        <i class="fas fa-folder-open" style="font-size:1.6rem;opacity:0.3;display:block;margin-bottom:12px;"></i>
-                        Database kosong
-                    </div>`;
-                return;
-            }
-            dbList.innerHTML = DB.map((d, i) => `
-                <div class="db-item" data-idx="${i}">
-                    <div class="dbi-icon ${dbiClass(d.bank)}"><i class="fas ${bankIcon(d.bank)}"></i></div>
-                    <div class="dbi-info">
-                        <div class="dbi-name">${d.nama}</div>
-                        <div class="dbi-rek">${d.noRek}</div>
-                        <div class="dbi-bank">${d.bank}</div>
-                    </div>
-                    <button class="dbi-del" onclick="deleteRek(${i})" title="Hapus" aria-label="Hapus ${d.nama}">
-                        <i class="fas fa-trash-can"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
 
-        // =====================================================
-        // HAPUS
-        // =====================================================
-        function deleteRek(idx) {
-            if (idx < 0 || idx >= DB.length) return;
-            const removed = DB.splice(idx, 1)[0];
-            saveDB(); rebuildMap(); renderDB();
-            const current = parseSearch(searchInput.value);
-            if (current.length > 0) {
-                const found = [];
-                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
-                renderResult(found, current.length);
-            }
-            toast(`"${removed.nama}" dihapus`, true);
-        }
+// =====================================================
+// FIREBASE / CLOUD SYNC
+// =====================================================
+function firebaseConfigured() {
+  return firebaseConfig.apiKey &&
+         !firebaseConfig.apiKey.startsWith("ISI_") &&
+         firebaseConfig.projectId &&
+         !firebaseConfig.projectId.startsWith("ISI_");
+}
 
-        // =====================================================
-        // PARSER — PENCARIAN (hanya nomor rekening)
-        // =====================================================
-        function parseSearch(raw) {
-            if (!raw.trim()) return [];
-            let s = raw.replace(/\t/g, '\n').replace(/\r/g, '\n').replace(/[,;|]+/g, '\n');
-            return [...new Set(s.split('\n').map(l => l.replace(/\D/g, '')).filter(d => d.length >= 4))];
-        }
+function setCloudStatus(mode, text) {
+  cloudState.classList.remove('online', 'offline');
+  if (mode) cloudState.classList.add(mode);
+  cloudText.textContent = text;
+}
 
-        // =====================================================
-        // PARSER — TAMBAH REKENING (Bank|NoRek|Nama)
-        // =====================================================
-        function parseAddInput(raw) {
-            if (!raw.trim()) return { ok: [], dup: [], bad: [] };
+async function seedDefaultDatabaseIfEmpty() {
+  const ref = collection(firestore, FIREBASE_COLLECTION);
+  const snapshot = await getDocs(ref);
+  if (!snapshot.empty) return;
 
-            const lines = raw.replace(/\r/g, '\n').split('\n').filter(l => l.trim());
-            const ok = [], dup = [], bad = [];
+  for (const item of DEFAULT_DB) {
+    await setDoc(doc(firestore, FIREBASE_COLLECTION, item.noRek), {
+      bank: item.bank,
+      nama: item.nama,
+      noRek: item.noRek,
+      createdAt: serverTimestamp()
+    });
+  }
+}
 
-            lines.forEach(line => {
-                // Coba pisah dengan | dulu, lalu tab
-                let parts = line.split('|').map(s => s.trim()).filter(s => s);
-                if (parts.length < 3) {
-                    parts = line.split('\t').map(s => s.trim()).filter(s => s);
-                }
+function startRealtimeSync() {
+  const ref = collection(firestore, FIREBASE_COLLECTION);
+  unsubscribeCloud = onSnapshot(ref, snapshot => {
+    const rows = [];
+    snapshot.forEach(snap => {
+      const d = snap.data();
+      if (d && d.noRek) rows.push({
+        bank: String(d.bank || '').toUpperCase(),
+        nama: String(d.nama || ''),
+        noRek: String(d.noRek || '')
+      });
+    });
 
-                if (parts.length < 3) {
-                    bad.push({ line: line.trim(), reason: 'Format salah — butuh 3 kolom' });
-                    return;
-                }
+    rows.sort((a,b) => {
+      const ai = DEFAULT_DB.findIndex(x => x.noRek === a.noRek);
+      const bi = DEFAULT_DB.findIndex(x => x.noRek === b.noRek);
+      if (ai >= 0 && bi >= 0) return ai - bi;
+      if (ai >= 0) return -1;
+      if (bi >= 0) return 1;
+      return a.bank.localeCompare(b.bank) || a.nama.localeCompare(b.nama);
+    });
 
-                const bank = parts[0].toUpperCase().replace(/\s+/g, '');
-                const rek  = parts[1].replace(/\D/g, '');
-                const nama = parts.slice(2).join(' ').trim().toUpperCase();
+    DB = rows;
+    saveLocalFallback();
+    rebuildMap();
+    renderDB();
 
-                if (!KNOWN_BANKS_UPPER.includes(bank)) {
-                    bad.push({ line: line.trim(), reason: `Bank "${parts[0].trim()}" tidak dikenali` });
-                    return;
-                }
-                if (rek.length < 4) {
-                    bad.push({ line: line.trim(), reason: 'Nomor rekening terlalu pendek (min 4 digit)' });
-                    return;
-                }
-                if (!nama) {
-                    bad.push({ line: line.trim(), reason: 'Nama rekening kosong' });
-                    return;
-                }
-                if (dbMap[rek]) {
-                    dup.push({ bank: bank, noRek: rek, nama: nama, existingName: dbMap[rek].nama, line: line.trim() });
-                    return;
-                }
+    const current = parseSearch(searchInput.value);
+    if (current.length > 0) {
+      const found = [];
+      current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+      renderResult(found, current.length);
+    }
 
-                ok.push({ bank: bank, noRek: rek, nama: nama, line: line.trim() });
-            });
+    cloudReady = true;
+    setCloudStatus('online', 'Cloud online • sinkron realtime');
+  }, err => {
+    console.error("Firestore listener error:", err);
+    cloudReady = false;
+    setCloudStatus('offline', 'Cloud gagal • memakai cache lokal');
+    toast('Firebase tidak dapat dibaca. Cache lokal tetap digunakan.', 'warn');
+  });
+}
 
-            return { ok, dup, bad };
-        }
+async function initFirebase() {
+  if (!firebaseConfigured()) {
+    setCloudStatus('offline', 'Firebase belum dikonfigurasi • mode lokal');
+    renderDB();
+    return;
+  }
 
-        // =====================================================
-        // META PENCARIAN
-        // =====================================================
-        function updateSearchMeta() {
-            metaLeft.textContent = `${searchInput.value.length} karakter`;
-            const n = parseSearch(searchInput.value).length;
-            metaNum.textContent = n;
-            metaRight.classList.toggle('visible', n > 0);
-            metaRight.classList.remove('warn', 'err');
-        }
+  try {
+    setCloudStatus('', 'Menghubungkan ke Firebase...');
+    const app = initializeApp(firebaseConfig);
+    firestore = getFirestore(app);
+    firebaseAuth = getAuth(app);
 
-        // =====================================================
-        // META TAMBAH
-        // =====================================================
-        function updateAddMeta() {
-            addMetaLeft.textContent = `${addInput.value.length} karakter`;
-            const parsed = parseAddInput(addInput.value);
-            const total = parsed.ok.length + parsed.dup.length + parsed.bad.length;
-            addMetaNum.textContent = total;
-            addMetaRight.classList.toggle('visible', total > 0);
+    await signInAnonymously(firebaseAuth);
+    await seedDefaultDatabaseIfEmpty();
+    startRealtimeSync();
+  } catch (err) {
+    console.error("Firebase init error:", err);
+    cloudReady = false;
+    setCloudStatus('offline', 'Firebase gagal terhubung • mode lokal');
+    renderDB();
+    toast('Gagal terhubung Firebase. Cek config, Authentication, dan Rules.', 'err');
+  }
+}
 
-            // Warna berdasarkan status
-            addMetaRight.classList.remove('warn', 'err');
-            if (parsed.bad.length > 0) {
-                addMetaRight.classList.add('err');
-            } else if (parsed.dup.length > 0) {
-                addMetaRight.classList.add('warn');
-            }
+// =====================================================
+// RENDER DATABASE
+// =====================================================
+function renderDB() {
+dbBadge.textContent = `${DB.length} data`;
+if (DB.length === 0) {
+dbList.innerHTML = `
+<div style="text-align:center;padding:40px 20px;color:var(--fg-muted);font-size:0.82rem;">
+<i class="fas fa-folder-open" style="font-size:1.6rem;opacity:0.3;display:block;margin-bottom:12px;"></i>
+Database kosong
+</div>`;
+return;
+}
+dbList.innerHTML = DB.map((d, i) => `
+<div class="db-item" data-idx="${i}">
+<div class="dbi-icon ${dbiClass(d.bank)}"><i class="fas ${bankIcon(d.bank)}"></i></div>
+<div class="dbi-info">
+<div class="dbi-name">${d.nama}</div>
+<div class="dbi-rek">${d.noRek}</div>
+<div class="dbi-bank">${d.bank}</div>
+</div>
+<button class="dbi-del" onclick="deleteRek(${i})" title="Hapus" aria-label="Hapus ${d.nama}">
+<i class="fas fa-trash-can"></i>
+</button>
+</div>
+`).join('');
+}
 
-            // Render preview
-            renderAddPreview(parsed);
-        }
+// =====================================================
+// HAPUS
+// =====================================================
+async function deleteRek(idx) {
+  if (idx < 0 || idx >= DB.length) return;
+  const removed = DB[idx];
 
-        // =====================================================
-        // PREVIEW TAMBAH
-        // =====================================================
-        function renderAddPreview(parsed) {
-            const { ok, dup, bad } = parsed;
-            const total = ok.length + dup.length + bad.length;
+  try {
+    if (cloudReady && firestore) {
+      await deleteDoc(doc(firestore, FIREBASE_COLLECTION, removed.noRek));
+      toast(`"${removed.nama}" dihapus dari cloud`, 'ok');
+      return; // onSnapshot akan merender ulang
+    }
 
-            if (total === 0) {
-                addPreview.classList.remove('open');
-                return;
-            }
+    DB.splice(idx, 1);
+    saveLocalFallback();
+    rebuildMap();
+    renderDB();
+    toast(`"${removed.nama}" dihapus dari penyimpanan lokal`, 'warn');
+  } catch (err) {
+    console.error(err);
+    toast('Gagal menghapus rekening dari Firebase', 'err');
+  }
+}
+window.deleteRek = deleteRek;
 
-            addPreview.classList.add('open');
+// =====================================================
+// PARSER — PENCARIAN (hanya nomor rekening)
+// =====================================================
+function parseSearch(raw) {
+if (!raw.trim()) return [];
+let s = raw.replace(/\t/g, '\n').replace(/\r/g, '\n').replace(/[,;|]+/g, '\n');
+return [...new Set(s.split('\n').map(l => l.replace(/\D/g, '')).filter(d => d.length >= 4))];
+}
 
-            // Header
-            let headParts = [];
-            if (ok.length > 0) headParts.push(`<span class="count-ok">${ok.length} baru</span>`);
-            if (dup.length > 0) headParts.push(`<span class="count-dup">${dup.length} duplikat</span>`);
-            if (bad.length > 0) headParts.push(`<span class="count-err">${bad.length} error</span>`);
-            addPreviewHead.innerHTML = headParts.join(' <span style="color:rgba(110,168,142,0.3);margin:0 2px;">/</span> ');
+// =====================================================
+// PARSER — TAMBAH REKENING (Bank|NoRek|Nama)
+// =====================================================
+function parseAddInput(raw) {
+if (!raw.trim()) return { ok: [], dup: [], bad: [] };
 
-            // List
-            let html = '';
+const lines = raw.replace(/\r/g, '\n').split('\n').filter(l => l.trim());
+const ok = [], dup = [], bad = [];
 
-            ok.forEach((item, i) => {
-                html += `
-                    <div class="apv-item ok" style="animation-delay:${i * 0.04}s">
-                        <div class="apv-icon"><i class="fas fa-plus"></i></div>
-                        <div class="apv-info">
-                            <div class="apv-rek">${item.noRek}</div>
-                            <div class="apv-name">${item.nama}</div>
-                        </div>
-                        <div class="apv-bank">${item.bank}</div>
-                        <div class="apv-status">Baru</div>
-                    </div>`;
-            });
+lines.forEach(line => {
+// Coba pisah dengan | dulu, lalu tab
+let parts = line.split('|').map(s => s.trim()).filter(s => s);
+if (parts.length < 3) {
+parts = line.split('\t').map(s => s.trim()).filter(s => s);
+}
 
-            dup.forEach((item, i) => {
-                html += `
-                    <div class="apv-item dup" style="animation-delay:${(ok.length + i) * 0.04}s">
-                        <div class="apv-icon"><i class="fas fa-copy"></i></div>
-                        <div class="apv-info">
-                            <div class="apv-rek">${item.noRek}</div>
-                            <div class="apv-name">${item.nama} <span style="opacity:0.5;">→ ${item.existingName}</span></div>
-                        </div>
-                        <div class="apv-bank">${item.bank}</div>
-                        <div class="apv-status">Duplikat</div>
-                    </div>`;
-            });
+if (parts.length < 3) {
+bad.push({ line: line.trim(), reason: 'Format salah — butuh 3 kolom' });
+return;
+}
 
-            bad.forEach((item, i) => {
-                html += `
-                    <div class="apv-item bad" style="animation-delay:${(ok.length + dup.length + i) * 0.04}s">
-                        <div class="apv-icon"><i class="fas fa-xmark"></i></div>
-                        <div class="apv-info">
-                            <div class="apv-rek" style="opacity:0.5;">${item.line}</div>
-                            <div class="apv-name">${item.reason}</div>
-                        </div>
-                        <div class="apv-status">Error</div>
-                    </div>`;
-            });
+const bank = parts[0].toUpperCase().replace(/\s+/g, '');
+const rek  = parts[1].replace(/\D/g, '');
+const nama = parts.slice(2).join(' ').trim().toUpperCase();
 
-            addPreviewList.innerHTML = html;
-        }
+if (!KNOWN_BANKS_UPPER.includes(bank)) {
+bad.push({ line: line.trim(), reason: `Bank "${parts[0].trim()}" tidak dikenali` });
+return;
+}
+if (rek.length < 4) {
+bad.push({ line: line.trim(), reason: 'Nomor rekening terlalu pendek (min 4 digit)' });
+return;
+}
+if (!nama) {
+bad.push({ line: line.trim(), reason: 'Nama rekening kosong' });
+return;
+}
+if (dbMap[rek]) {
+dup.push({ bank: bank, noRek: rek, nama: nama, existingName: dbMap[rek].nama, line: line.trim() });
+return;
+}
 
-        // =====================================================
-        // AUTO-CHECK PENCARIAN
-        // =====================================================
-        function scheduleCheck() {
-            updateSearchMeta();
-            clearTimeout(debounceTimer);
-            const list = parseSearch(searchInput.value);
-            if (list.length === 0) {
-                resultArea.innerHTML = `
-                    <div class="result-idle">
-                        <div class="idle-icon"><i class="fas fa-inbox"></i></div>
-                        <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
-                    </div>`;
-                return;
-            }
-            debounceTimer = setTimeout(() => runCheck(list), 700);
-        }
+ok.push({ bank: bank, noRek: rek, nama: nama, line: line.trim() });
+});
 
-        function manualCheck() {
-            const list = parseSearch(searchInput.value);
-            if (!searchInput.value.trim()) { toast('Masukkan nomor rekening dulu', 'err'); return; }
-            if (list.length === 0) { toast('Tidak ada nomor valid (min. 4 digit)', 'err'); return; }
-            clearTimeout(debounceTimer);
-            searchPanel.classList.add('searching');
-            btnSearch.disabled = true;
-            setTimeout(() => { searchPanel.classList.remove('searching'); btnSearch.disabled = false; runCheck(list); }, 300);
-        }
+return { ok, dup, bad };
+}
 
-        function runCheck(searchList) {
-            const found = [];
-            searchList.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
-            renderResult(found, searchList.length);
-        }
+// =====================================================
+// META PENCARIAN
+// =====================================================
+function updateSearchMeta() {
+metaLeft.textContent = `${searchInput.value.length} karakter`;
+const n = parseSearch(searchInput.value).length;
+metaNum.textContent = n;
+metaRight.classList.toggle('visible', n > 0);
+metaRight.classList.remove('warn', 'err');
+}
 
-        // =====================================================
-        // TAMBAH REKENING SEKALIGUS
-        // =====================================================
-        function doAddAll() {
-            hideAddError();
-            const raw = addInput.value.trim();
-            if (!raw) { showAddError('Masukkan data rekening terlebih dahulu'); addInput.focus(); return; }
+// =====================================================
+// META TAMBAH
+// =====================================================
+function updateAddMeta() {
+addMetaLeft.textContent = `${addInput.value.length} karakter`;
+const parsed = parseAddInput(addInput.value);
+const total = parsed.ok.length + parsed.dup.length + parsed.bad.length;
+addMetaNum.textContent = total;
+addMetaRight.classList.toggle('visible', total > 0);
 
-            const { ok, dup, bad } = parseAddInput(raw);
+// Warna berdasarkan status
+addMetaRight.classList.remove('warn', 'err');
+if (parsed.bad.length > 0) {
+addMetaRight.classList.add('err');
+} else if (parsed.dup.length > 0) {
+addMetaRight.classList.add('warn');
+}
 
-            if (ok.length === 0 && dup.length === 0) {
-                showAddError('Tidak ada data valid untuk disimpan. Periksa format: Bank|NoRek|Nama');
-                return;
-            }
+// Render preview
+renderAddPreview(parsed);
+}
 
-            if (ok.length === 0) {
-                if (dup.length > 0) {
-                    showAddError(`Semua ${dup.length} data sudah terdaftar (duplikat). Tidak ada data baru.`);
-                } else {
-                    showAddError('Tidak ada data valid. Periksa format: Bank|NoRek|Nama');
-                }
-                return;
-            }
+// =====================================================
+// PREVIEW TAMBAH
+// =====================================================
+function renderAddPreview(parsed) {
+const { ok, dup, bad } = parsed;
+const total = ok.length + dup.length + bad.length;
 
-            // Simpan yang valid
-            ok.forEach(item => {
-                DB.push({ bank: item.bank, nama: item.nama, noRek: item.noRek });
-            });
-            saveDB();
-            rebuildMap();
-            renderDB();
+if (total === 0) {
+addPreview.classList.remove('open');
+return;
+}
 
-            // Bersihkan input & preview
-            addInput.value = '';
-            addMetaLeft.textContent = '0 karakter';
-            addMetaRight.classList.remove('visible', 'warn', 'err');
-            addPreview.classList.remove('open');
+addPreview.classList.add('open');
 
-            // Toast summary
-            let msg = `${ok.length} rekening berhasil ditambahkan`;
-            if (dup.length > 0) msg += ` · ${dup.length} duplikat dilewati`;
-            if (bad.length > 0) msg += ` · ${bad.length} error`;
-            toast(msg, ok.length > 0 ? 'ok' : 'warn');
+// Header
+let headParts = [];
+if (ok.length > 0) headParts.push(`<span class="count-ok">${ok.length} baru</span>`);
+if (dup.length > 0) headParts.push(`<span class="count-dup">${dup.length} duplikat</span>`);
+if (bad.length > 0) headParts.push(`<span class="count-err">${bad.length} error</span>`);
+addPreviewHead.innerHTML = headParts.join(' <span style="color:rgba(110,168,142,0.3);margin:0 2px;">/</span> ');
 
-            if (dup.length > 0) {
-                setTimeout(() => toast(`${dup.length} nomor sudah ada di database`, 'warn'), 400);
-            }
+// List
+let html = '';
 
-            // Re-check pencarian jika ada
-            const current = parseSearch(searchInput.value);
-            if (current.length > 0) {
-                const found = [];
-                current.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
-                renderResult(found, current.length);
-            }
+ok.forEach((item, i) => {
+html += `
+<div class="apv-item ok" style="animation-delay:${i * 0.04}s">
+<div class="apv-icon"><i class="fas fa-plus"></i></div>
+<div class="apv-info">
+<div class="apv-rek">${item.noRek}</div>
+<div class="apv-name">${item.nama}</div>
+</div>
+<div class="apv-bank">${item.bank}</div>
+<div class="apv-status">Baru</div>
+</div>`;
+});
 
-            dbList.scrollTop = dbList.scrollHeight;
-        }
+dup.forEach((item, i) => {
+html += `
+<div class="apv-item dup" style="animation-delay:${(ok.length + i) * 0.04}s">
+<div class="apv-icon"><i class="fas fa-copy"></i></div>
+<div class="apv-info">
+<div class="apv-rek">${item.noRek}</div>
+<div class="apv-name">${item.nama} <span style="opacity:0.5;">→ ${item.existingName}</span></div>
+</div>
+<div class="apv-bank">${item.bank}</div>
+<div class="apv-status">Duplikat</div>
+</div>`;
+});
 
-        function clearAddInput() {
-            addInput.value = '';
-            addMetaLeft.textContent = '0 karakter';
-            addMetaRight.classList.remove('visible', 'warn', 'err');
-            addPreview.classList.remove('open');
-            hideAddError();
-            addInput.focus();
-        }
+bad.forEach((item, i) => {
+html += `
+<div class="apv-item bad" style="animation-delay:${(ok.length + dup.length + i) * 0.04}s">
+<div class="apv-icon"><i class="fas fa-xmark"></i></div>
+<div class="apv-info">
+<div class="apv-rek" style="opacity:0.5;">${item.line}</div>
+<div class="apv-name">${item.reason}</div>
+</div>
+<div class="apv-status">Error</div>
+</div>`;
+});
 
-        function showAddError(msg) { addErrorText.textContent = msg; addError.classList.add('show'); }
-        function hideAddError() { addError.classList.remove('show'); }
+addPreviewList.innerHTML = html;
+}
 
-        // =====================================================
-        // RENDER HASIL PENCARIAN
-        // =====================================================
-        function renderResult(found, total) {
-            const missing = total - found.length;
-            let html = `
-                <div class="stats-row">
-                    <div class="stat-box total">
-                        <i class="fas fa-layer-group stat-icon"></i>
-                        <div class="stat-val">${total}</div>
-                        <div class="stat-label">Diperiksa</div>
-                    </div>
-                    <div class="stat-box found">
-                        <i class="fas fa-circle-check stat-icon"></i>
-                        <div class="stat-val">${found.length}</div>
-                        <div class="stat-label">Ditemukan</div>
-                    </div>
-                    <div class="stat-box missing">
-                        <i class="fas fa-circle-xmark stat-icon"></i>
-                        <div class="stat-val">${missing}</div>
-                        <div class="stat-label">Tidak Ada</div>
-                    </div>
-                </div>`;
+// =====================================================
+// AUTO-CHECK PENCARIAN
+// =====================================================
+function scheduleCheck() {
+updateSearchMeta();
+clearTimeout(debounceTimer);
+const list = parseSearch(searchInput.value);
+if (list.length === 0) {
+resultArea.innerHTML = `
+<div class="result-idle">
+<div class="idle-icon"><i class="fas fa-inbox"></i></div>
+<p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+</div>`;
+return;
+}
+debounceTimer = setTimeout(() => runCheck(list), 700);
+}
 
-            if (found.length === 0) {
-                html += `
-                    <div class="result-none">
-                        <div class="none-icon"><i class="fas fa-magnifying-glass"></i></div>
-                        <div class="none-title">Tidak ada rekening yang cocok</div>
-                        <div class="none-sub">Dari <strong style="color:var(--gold)">${total}</strong> nomor yang diperiksa, tidak ada yang terdaftar.</div>
-                    </div>`;
-            } else {
-                html += `
-                    <div class="result-banner">
-                        <div class="banner-content">
-                            <div class="banner-icon"><i class="fas fa-check-double"></i></div>
-                            <div class="banner-text">
-                                <div class="banner-title"><span class="hl">${found.length}</span> Rekening Ditemukan</div>
-                                <div class="banner-sub">Berikut daftar rekening yang terdaftar:</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="result-list-header"><span>Daftar Rekening</span><div class="line"></div></div>
-                    <div class="result-list">`;
+function manualCheck() {
+const list = parseSearch(searchInput.value);
+if (!searchInput.value.trim()) { toast('Masukkan nomor rekening dulu', 'err'); return; }
+if (list.length === 0) { toast('Tidak ada nomor valid (min. 4 digit)', 'err'); return; }
+clearTimeout(debounceTimer);
+searchPanel.classList.add('searching');
+btnSearch.disabled = true;
+setTimeout(() => { searchPanel.classList.remove('searching'); btnSearch.disabled = false; runCheck(list); }, 300);
+}
 
-                found.forEach((item, idx) => {
-                    html += `
-                        <div class="rek-card bank-${bankClass(item.bank)}" style="animation-delay:${idx * 0.06}s">
-                            <div class="rek-card-inner">
-                                <div class="bank-icon"><i class="fas ${bankIcon(item.bank)}"></i></div>
-                                <div class="rek-info">
-                                    <div class="rek-no">${item.noRek}</div>
-                                    <div class="rek-name">${item.nama}</div>
-                                    <div class="rek-bank-label">
-                                        <i class="fas ${bankIcon(item.bank)}" style="font-size:0.58rem;"></i>
-                                        ${item.bank} <span class="ds"></span> Terdaftar
-                                    </div>
-                                </div>
-                                <div class="rek-badge">
-                                    <div class="rek-status"><i class="fas fa-check"></i> Ada</div>
-                                    <div class="rek-index">#${idx + 1}</div>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-                html += `</div>`;
+function runCheck(searchList) {
+const found = [];
+searchList.forEach(noRek => { if (dbMap[noRek]) found.push(dbMap[noRek]); });
+renderResult(found, searchList.length);
+}
 
-                if (found.length === total) {
-                    html += `
-                        <div style="background:rgba(0,230,138,0.04);border:1px solid rgba(0,230,138,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;animation:fadeIn 0.4s ease 0.3s both;backdrop-filter:blur(12px);">
-                            <i class="fas fa-shield-check" style="color:var(--accent);font-size:1rem;flex-shrink:0;"></i>
-                            <span style="font-size:0.84rem;color:var(--fg-muted);line-height:1.5;"><strong style="color:var(--accent);">Semua cocok!</strong> Seluruh ${found.length} rekening terdaftar.</span>
-                        </div>`;
-                }
-            }
-            resultArea.innerHTML = html;
-        }
+// =====================================================
+// TAMBAH REKENING SEKALIGUS
+// =====================================================
+async function doAddAll() {
+  hideAddError();
+  const raw = addInput.value.trim();
+  if (!raw) { showAddError('Masukkan data rekening terlebih dahulu'); addInput.focus(); return; }
 
-        // =====================================================
-        // BERSIHKAN PENCARIAN
-        // =====================================================
-        function doClear() {
-            clearTimeout(debounceTimer);
-            searchInput.value = '';
-            metaLeft.textContent = '0 karakter';
-            metaRight.classList.remove('visible');
-            resultArea.innerHTML = `
-                <div class="result-idle">
-                    <div class="idle-icon"><i class="fas fa-inbox"></i></div>
-                    <p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
-                </div>`;
-            searchInput.focus();
-        }
+  const { ok, dup, bad } = parseAddInput(raw);
 
-        // =====================================================
-        // EVENTS
-        // =====================================================
-        searchInput.addEventListener('input', scheduleCheck);
-        btnSearch.addEventListener('click', manualCheck);
-        btnClear.addEventListener('click', doClear);
-        searchInput.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); clearTimeout(debounceTimer); manualCheck(); }
+  if (ok.length === 0 && dup.length === 0) {
+    showAddError('Tidak ada data valid untuk disimpan. Periksa format: Bank|NoRek|Nama');
+    return;
+  }
+
+  if (ok.length === 0) {
+    if (dup.length > 0) {
+      showAddError(`Semua ${dup.length} data sudah terdaftar (duplikat). Tidak ada data baru.`);
+    } else {
+      showAddError('Tidak ada data valid. Periksa format: Bank|NoRek|Nama');
+    }
+    return;
+  }
+
+  btnAdd.disabled = true;
+  const originalHTML = btnAdd.innerHTML;
+  btnAdd.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...';
+
+  try {
+    if (cloudReady && firestore) {
+      for (const item of ok) {
+        await setDoc(doc(firestore, FIREBASE_COLLECTION, item.noRek), {
+          bank: item.bank,
+          nama: item.nama,
+          noRek: item.noRek,
+          createdAt: serverTimestamp()
         });
+      }
+    } else {
+      ok.forEach(item => DB.push({ bank:item.bank, nama:item.nama, noRek:item.noRek }));
+      saveLocalFallback();
+      rebuildMap();
+      renderDB();
+    }
 
-        // Events panel tambah
-        addInput.addEventListener('input', () => {
-            hideAddError();
-            clearTimeout(addDebounceTimer);
-            updateAddMeta();
-        });
+    addInput.value = '';
+    addMetaLeft.textContent = '0 karakter';
+    addMetaRight.classList.remove('visible', 'warn', 'err');
+    addPreview.classList.remove('open');
 
-        btnAdd.addEventListener('click', doAddAll);
-        btnAddClear.addEventListener('click', clearAddInput);
+    let msg = `${ok.length} rekening berhasil ditambahkan`;
+    msg += cloudReady ? ' ke Firebase' : ' secara lokal';
+    if (dup.length > 0) msg += ` · ${dup.length} duplikat dilewati`;
+    if (bad.length > 0) msg += ` · ${bad.length} error`;
+    toast(msg, 'ok');
 
-        addInput.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); doAddAll(); }
-        });
+    if (dup.length > 0) {
+      setTimeout(() => toast(`${dup.length} nomor sudah ada di database`, 'warn'), 400);
+    }
+  } catch (err) {
+    console.error(err);
+    showAddError('Gagal menyimpan ke Firebase. Periksa koneksi dan Security Rules.');
+    toast('Penyimpanan Firebase gagal', 'err');
+  } finally {
+    btnAdd.disabled = false;
+    btnAdd.innerHTML = originalHTML;
+  }
+}
 
-        // =====================================================
-        // INIT
-        // =====================================================
-        renderDB();
-    </script>
+// =====================================================
+// BERSIHKAN PENCARIAN
+// =====================================================
+function doClear() {
+clearTimeout(debounceTimer);
+searchInput.value = '';
+metaLeft.textContent = '0 karakter';
+metaRight.classList.remove('visible');
+resultArea.innerHTML = `
+<div class="result-idle">
+<div class="idle-icon"><i class="fas fa-inbox"></i></div>
+<p>Tempelkan nomor rekening — hasil <span>muncul otomatis</span></p>
+</div>`;
+searchInput.focus();
+}
+
+// =====================================================
+// EVENTS
+// =====================================================
+searchInput.addEventListener('input', scheduleCheck);
+btnSearch.addEventListener('click', manualCheck);
+btnClear.addEventListener('click', doClear);
+searchInput.addEventListener('keydown', e => {
+if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); clearTimeout(debounceTimer); manualCheck(); }
+});
+
+// Events panel tambah
+addInput.addEventListener('input', () => {
+hideAddError();
+clearTimeout(addDebounceTimer);
+updateAddMeta();
+});
+
+btnAdd.addEventListener('click', doAddAll);
+btnAddClear.addEventListener('click', clearAddInput);
+
+addInput.addEventListener('keydown', e => {
+if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); doAddAll(); }
+});
+
+// =====================================================
+// INIT
+// =====================================================
+renderDB();
+initFirebase();
+</script>
 </body>
 </html>
