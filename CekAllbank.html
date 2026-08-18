@@ -766,6 +766,18 @@ header h1 .gt{
 @media(max-width:960px){.main-grid{grid-template-columns:1fr}}
 </style>
 
+
+<style id="firebase-fix-ui">
+.firebase-note{
+  display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;padding:11px 12px;
+  border-radius:12px;background:rgba(85,168,255,.055);
+  border:1px solid rgba(85,168,255,.10);color:var(--fg-muted);
+}
+.firebase-note>i{color:#75baff;margin-top:2px;font-size:.78rem}
+.firebase-note b{display:block;color:var(--fg-dim);font-size:.72rem;margin-bottom:2px}
+.firebase-note span{display:block;font-size:.65rem;line-height:1.45}
+</style>
+
 </head>
 <body>
 
@@ -836,6 +848,11 @@ header h1 .gt{
 
 <div class="add-panel glass">
 <div class="accent-line"></div>
+<div class="firebase-note" id="firebaseNote">
+  <i class="fas fa-shield-halved"></i>
+  <div><b>Cloud Sync</b><span>Firebase config sudah terpasang • Aktifkan Anonymous Auth + Firestore Rules untuk sinkronisasi cloud.</span></div>
+</div>
+
 <div class="search-top" style="margin-bottom:14px;">
 <div class="search-title" style="font-size:0.85rem;">
 <i class="fas fa-file-import"></i>
@@ -884,10 +901,22 @@ header h1 .gt{
 <footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• Firebase Ready</span></footer>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+<script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore-compat.js"></script>
+<script>
+// Compatibility helpers so this file also works when opened directly from file://
+const initializeApp = (config) => firebase.initializeApp(config);
+const getFirestore = () => firebase.firestore();
+const getAuth = () => firebase.auth();
+const signInAnonymously = (auth) => auth.signInAnonymously();
+const collection = (db, name) => db.collection(name);
+const doc = (db, name, id) => db.collection(name).doc(id);
+const setDoc = (ref, data) => ref.set(data);
+const deleteDoc = (ref) => ref.delete();
+const onSnapshot = (ref, next, error) => ref.onSnapshot(next, error);
+const getDocs = (ref) => ref.get();
+const serverTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
 
 // =====================================================
 // FIREBASE CONFIG — GANTI DENGAN CONFIG WEB APP MILIK ANDA
@@ -1106,8 +1135,16 @@ function startRealtimeSync() {
 }
 
 async function initFirebase() {
+  if (typeof firebase === 'undefined') {
+    cloudReady = false;
+    setCloudStatus('offline', 'SDK Firebase gagal dimuat • mode lokal');
+    renderDB();
+    toast('SDK Firebase tidak dapat dimuat. Cek koneksi internet atau buka melalui hosting.', 'warn');
+    return;
+  }
+
   if (!firebaseConfigured()) {
-    setCloudStatus('offline', 'Firebase belum dikonfigurasi • mode lokal');
+    setCloudStatus('offline', 'Firebase belum dikonfigurasi • 26 data lokal siap');
     renderDB();
     return;
   }
@@ -1486,6 +1523,14 @@ if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); doAddAl
 // INIT
 // =====================================================
 renderDB();
+setCloudStatus('', 'Memeriksa koneksi Firebase...');
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (!cloudReady && cloudText.textContent.includes('Memeriksa')) {
+      setCloudStatus('offline', 'Firebase belum aktif • 26 data lokal siap');
+    }
+  }, 1800);
+});
 initFirebase();
 </script>
 </body>
