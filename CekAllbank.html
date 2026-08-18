@@ -898,7 +898,7 @@ header h1 .gt{
 </div>
 </div>
 
-<footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• Firebase Ready</span></footer>
+<footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• FIX v3</span></footer>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-app-compat.js"></script>
@@ -1129,8 +1129,9 @@ function startRealtimeSync() {
   }, err => {
     console.error("Firestore listener error:", err);
     cloudReady = false;
-    setCloudStatus('offline', 'Cloud gagal • memakai cache lokal');
-    toast('Firebase tidak dapat dibaca. Cache lokal tetap digunakan.', 'warn');
+    const code = err && err.code ? err.code : 'unknown-error';
+    setCloudStatus('offline', `Firestore gagal • ${code}`);
+    toast(`Firestore gagal: ${code}`, 'warn');
   });
 }
 
@@ -1161,9 +1162,10 @@ async function initFirebase() {
   } catch (err) {
     console.error("Firebase init error:", err);
     cloudReady = false;
-    setCloudStatus('offline', 'Firebase gagal terhubung • mode lokal');
+    const code = err && err.code ? err.code : 'unknown-error';
+    setCloudStatus('offline', `Firebase gagal • ${code}`);
     renderDB();
-    toast('Gagal terhubung Firebase. Cek config, Authentication, dan Rules.', 'err');
+    toast(`Firebase gagal: ${code}`, 'err');
   }
 }
 
@@ -1193,6 +1195,109 @@ dbList.innerHTML = DB.map((d, i) => `
 </button>
 </div>
 `).join('');
+}
+
+
+// =====================================================
+// HELPER PANEL TAMBAH
+// =====================================================
+function clearAddInput() {
+  addInput.value = '';
+  addMetaLeft.textContent = '0 karakter';
+  addMetaRight.classList.remove('visible', 'warn', 'err');
+  addPreview.classList.remove('open');
+  hideAddError();
+  addInput.focus();
+}
+
+function showAddError(msg) {
+  addErrorText.textContent = msg;
+  addError.classList.add('show');
+}
+
+function hideAddError() {
+  addError.classList.remove('show');
+}
+
+// =====================================================
+// RENDER HASIL PENCARIAN
+// =====================================================
+function renderResult(found, total) {
+  const missing = total - found.length;
+  let html = `
+  <div class="stats-row">
+    <div class="stat-box total">
+      <i class="fas fa-layer-group stat-icon"></i>
+      <div class="stat-val">${total}</div>
+      <div class="stat-label">Diperiksa</div>
+    </div>
+    <div class="stat-box found">
+      <i class="fas fa-circle-check stat-icon"></i>
+      <div class="stat-val">${found.length}</div>
+      <div class="stat-label">Ditemukan</div>
+    </div>
+    <div class="stat-box missing">
+      <i class="fas fa-circle-xmark stat-icon"></i>
+      <div class="stat-val">${missing}</div>
+      <div class="stat-label">Tidak Ada</div>
+    </div>
+  </div>`;
+
+  if (found.length === 0) {
+    html += `
+    <div class="result-none">
+      <div class="none-icon"><i class="fas fa-magnifying-glass"></i></div>
+      <div class="none-title">Tidak ada rekening yang cocok</div>
+      <div class="none-sub">Dari <strong style="color:var(--gold)">${total}</strong> nomor yang diperiksa, tidak ada yang terdaftar.</div>
+    </div>`;
+  } else {
+    html += `
+    <div class="result-banner">
+      <div class="banner-content">
+        <div class="banner-icon"><i class="fas fa-check-double"></i></div>
+        <div class="banner-text">
+          <div class="banner-title"><span class="hl">${found.length}</span> Rekening Ditemukan</div>
+          <div class="banner-sub">Berikut daftar rekening yang terdaftar:</div>
+        </div>
+      </div>
+    </div>
+    <div class="result-list-header"><span>Daftar Rekening</span><div class="line"></div></div>
+    <div class="result-list">`;
+
+    found.forEach((item, idx) => {
+      html += `
+      <div class="rek-card bank-${bankClass(item.bank)}" style="animation-delay:${idx * 0.06}s">
+        <div class="rek-card-inner">
+          <div class="bank-icon"><i class="fas ${bankIcon(item.bank)}"></i></div>
+          <div class="rek-info">
+            <div class="rek-no">${item.noRek}</div>
+            <div class="rek-name">${item.nama}</div>
+            <div class="rek-bank-label">
+              <i class="fas ${bankIcon(item.bank)}" style="font-size:0.58rem;"></i>
+              ${item.bank} <span class="ds"></span> Terdaftar
+            </div>
+          </div>
+          <div class="rek-badge">
+            <div class="rek-status"><i class="fas fa-check"></i> Ada</div>
+            <div class="rek-index">#${idx + 1}</div>
+          </div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+
+    if (found.length === total) {
+      html += `
+      <div style="background:rgba(84,239,179,0.05);border:1px solid rgba(84,239,179,0.10);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;animation:fadeIn 0.4s ease 0.3s both;backdrop-filter:blur(12px);">
+        <i class="fas fa-shield-halved" style="color:var(--accent);font-size:1rem;flex-shrink:0;"></i>
+        <span style="font-size:0.84rem;color:var(--fg-muted);line-height:1.5;">
+          <strong style="color:var(--accent);">Semua cocok!</strong> Seluruh ${found.length} rekening terdaftar.
+        </span>
+      </div>`;
+    }
+  }
+
+  resultArea.innerHTML = html;
 }
 
 // =====================================================
