@@ -863,11 +863,11 @@ header h1 .gt{
 
 <div class="format-hint">
 <i class="fas fa-circle-info"></i>
-<span>Format per baris: <code>Bank</code> dipisah <code>|</code> lalu <code>NoRek</code> dipisah <code>|</code> lalu <code>Nama</code>. Bisa juga pakai <code>Tab</code> dari Excel/Spreadsheet.</span>
+<span>Format fleksibel: <code>BNI 454164 ELIS MAHRIPAH</code> atau <code>BNI|454164|ELIS MAHRIPAH</code>. Bisa juga paste langsung dari Excel/Spreadsheet.</span>
 </div>
 
 <div class="textarea-wrap">
-<textarea id="addInput" placeholder="BCA|1663649713|HERIYANTO&#10;BNI|2019015457|ELIS MAHRIPAH&#10;BRI|332301009781505|SASMITA" aria-label="Masukkan data rekening" spellcheck="false" autocomplete="off" style="min-height:130px;"></textarea>
+<textarea id="addInput" placeholder="BNI 454164 ELIS MAHRIPAH&#10;BCA 1663649713 HERIYANTO&#10;BRI|332301009781505|SASMITA" aria-label="Masukkan data rekening" spellcheck="false" autocomplete="off" style="min-height:130px;"></textarea>
 </div>
 
 <div class="input-meta">
@@ -898,7 +898,7 @@ header h1 .gt{
 </div>
 </div>
 
-<footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• FIX v3</span></footer>
+<footer>Cloud Database • Sinkron antar browser & perangkat <span style="opacity:.65">• FIX v4</span></footer>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-app-compat.js"></script>
@@ -1345,14 +1345,30 @@ const lines = raw.replace(/\r/g, '\n').split('\n').filter(l => l.trim());
 const ok = [], dup = [], bad = [];
 
 lines.forEach(line => {
-// Coba pisah dengan | dulu, lalu tab
-let parts = line.split('|').map(s => s.trim()).filter(s => s);
-if (parts.length < 3) {
-parts = line.split('\t').map(s => s.trim()).filter(s => s);
+const cleanLine = line.trim();
+let parts = [];
+
+// Format 1: BNI|454164|ELIS MAHRIPAH
+if (cleanLine.includes('|')) {
+  parts = cleanLine.split('|').map(s => s.trim()).filter(Boolean);
+}
+// Format 2: hasil paste Excel/Spreadsheet (TAB)
+else if (cleanLine.includes('\t')) {
+  parts = cleanLine.split('\t').map(s => s.trim()).filter(Boolean);
+}
+// Format 3: BNI 454164 ELIS MAHRIPAH
+else {
+  const match = cleanLine.match(/^([A-Za-z]+)\s+([0-9][0-9 .-]*)\s+(.+)$/);
+  if (match) {
+    parts = [match[1], match[2], match[3]];
+  }
 }
 
 if (parts.length < 3) {
-bad.push({ line: line.trim(), reason: 'Format salah — butuh 3 kolom' });
+bad.push({
+  line: cleanLine,
+  reason: 'Format tidak terbaca — contoh: BNI 454164 ELIS MAHRIPAH'
+});
 return;
 }
 
