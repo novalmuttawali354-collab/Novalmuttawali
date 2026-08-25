@@ -1,0 +1,298 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Indonesia Link Verifier V2</title>
+<style>
+:root{
+  --bg:#050c15;--panel:#0b1726;--panel2:#0f2034;--line:#1e3852;
+  --txt:#edf7ff;--muted:#8fa9bd;--cyan:#50d7ff;--blue:#6b8cff;
+  --green:#42df98;--yellow:#ffd166;--red:#ff637c;--orange:#ff9f43;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(80,215,255,.14),transparent 28%),
+    radial-gradient(circle at 90% 0%,rgba(107,140,255,.12),transparent 26%),
+    linear-gradient(180deg,#050c15,#07111d 65%,#050c15);
+  min-height:100vh
+}
+.wrap{width:min(1240px,calc(100% - 28px));margin:32px auto 64px}
+header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}
+h1{margin:0;font-size:clamp(28px,4.5vw,48px);letter-spacing:-1.6px}
+.sub{margin:9px 0 0;color:var(--muted);line-height:1.65;max-width:860px}
+.version{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:var(--cyan);background:rgba(80,215,255,.06);font-size:12px}
+.panel{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(15,32,52,.97),rgba(8,22,36,.97));box-shadow:0 18px 60px rgba(0,0,0,.25)}
+.search{padding:18px;display:grid;grid-template-columns:1fr auto;gap:12px}
+input{height:55px;border-radius:14px;border:1px solid #284861;background:#061522;color:var(--txt);padding:0 16px;font-size:16px;outline:none}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(80,215,255,.08)}
+button,.btn{min-height:50px;border:0;border-radius:13px;padding:0 18px;font-weight:850;cursor:pointer;transition:.18s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+button:hover,.btn:hover{transform:translateY(-1px)}
+.primary{background:linear-gradient(135deg,var(--cyan),#72a3ff);color:#03101b}
+.secondary{background:#102a43;color:var(--txt);border:1px solid #2a4c69}
+.warnbtn{background:rgba(255,209,102,.08);color:var(--yellow);border:1px solid rgba(255,209,102,.28)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.main-result{padding:22px;margin-top:16px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.eyebrow{font-size:12px;letter-spacing:1px;color:#9cb4c6;text-transform:uppercase;font-weight:800}
+.verdict{font-size:clamp(24px,4vw,40px);font-weight:950;letter-spacing:-1px;margin:8px 0 4px}
+.verdict.ok{color:var(--green)}.verdict.bad{color:var(--red)}.verdict.mix{color:var(--yellow)}.verdict.unk{color:#b3c5d3}
+.reason{color:#a7bdcd;line-height:1.6;max-width:850px}
+.conf{width:130px;height:130px;border-radius:50%;border:8px solid #173852;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#071827}
+.conf b{font-size:31px}.conf span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.card{padding:18px;min-height:160px}
+.card h3{margin:0 0 7px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.big{margin-top:20px;font-size:20px;font-weight:900}.okc{color:var(--green)}.badc{color:var(--red)}.warnc{color:var(--yellow)}.mutec{color:#a5bacb}
+.detail{font-size:12px;line-height:1.55;color:#aac0d0;margin-top:8px;word-break:break-word}
+.section{margin-top:15px;padding:20px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section-head h2{font-size:17px;margin:0}
+.pill{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:6px 9px;color:#9db6c9}
+.tablewrap{overflow:auto;border:1px solid #173550;border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:900px;background:#071624}
+th,td{padding:11px 12px;border-bottom:1px solid #153149;text-align:left;font-size:12px;vertical-align:top}
+th{color:#94aec2;text-transform:uppercase;font-size:10px;letter-spacing:.7px;background:#0b1e31;position:sticky;top:0}
+tr:last-child td{border-bottom:0}.status-dot{font-weight:850}.status-dot.good{color:var(--green)}.status-dot.bad{color:var(--red)}.status-dot.warn{color:var(--yellow)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.notice{margin-top:15px;border:1px solid rgba(255,209,102,.27);background:rgba(255,209,102,.06);border-radius:15px;padding:15px 17px;color:#d9cba0;font-size:12px;line-height:1.6}
+details{margin-top:10px}summary{cursor:pointer;font-weight:850;color:#cbe1ef}
+pre{white-space:pre-wrap;word-break:break-word;background:#04111c;border:1px solid #17344e;border-radius:13px;padding:13px;max-height:430px;overflow:auto;color:#afc5d4;font-size:11px}
+.loader{display:none;width:18px;height:18px;border-radius:50%;border:2px solid rgba(0,0,0,.2);border-top-color:#03101b;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;color:#59768e;font-size:11px;margin-top:20px}
+@media(max-width:950px){.grid4{grid-template-columns:1fr 1fr}.main-result{grid-template-columns:1fr}.conf{width:105px;height:105px}.search{grid-template-columns:1fr}header{flex-direction:column}}
+@media(max-width:600px){.grid4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Indonesia Link Verifier V2</h1>
+    <p class="sub">Pemeriksaan berlapis untuk mendeteksi indikasi Nawala/TrustPositif dan menguji akses dari sampel jaringan Indonesia. Sistem sengaja memakai status <b>TIDAK CUKUP BUKTI</b> bila data belum memadai agar tidak memberi kepastian palsu.</p>
+  </div>
+  <div class="version">RULESET • 26 AUG 2026</div>
+</header>
+
+<div class="panel search">
+  <input id="url" placeholder="https://domain.com/path" autocomplete="off" spellcheck="false">
+  <button id="go" class="primary" onclick="checkNow()"><span id="gotxt">VERIFIKASI LINK</span><span id="load" class="loader"></span></button>
+</div>
+
+<div class="panel main-result">
+  <div>
+    <div class="eyebrow">Keputusan utama</div>
+    <div id="verdict" class="verdict unk">BELUM DIPERIKSA</div>
+    <div id="reason" class="reason">Masukkan URL. Hasil utama tidak akan menyatakan “aman/terbuka di seluruh Indonesia”; hanya menyimpulkan bukti yang benar-benar berhasil dikumpulkan.</div>
+  </div>
+  <div id="conf" class="conf"><b id="confnum">—</b><span>confidence</span></div>
+</div>
+
+<div class="grid4">
+  <div class="panel card">
+    <h3>TrustPositif / Nawala</h3>
+    <p>Marker eksplisit DNS seperti EDE 15, trustpositif, internetpositif.</p>
+    <div id="dnsSum" class="big mutec">Belum dicek</div>
+    <div id="dnsDet" class="detail">Tidak ada data.</div>
+  </div>
+  <div class="panel card">
+    <h3>Probe Indonesia</h3>
+    <p>HTTP/DNS dari beberapa probe Indonesia dan ASN berbeda bila tersedia.</p>
+    <div id="idSum" class="big mutec">Belum dicek</div>
+    <div id="idDet" class="detail">Tidak ada data.</div>
+  </div>
+  <div class="panel card">
+    <h3>Kontrol Luar Indonesia</h3>
+    <p>Pembanding untuk membedakan blokir regional dari situs yang memang down.</p>
+    <div id="ctlSum" class="big mutec">Belum dicek</div>
+    <div id="ctlDet" class="detail">Tidak ada data.</div>
+  </div>
+  <div class="panel card">
+    <h3>Koneksi PC / VPN</h3>
+    <p>Hanya sinyal tambahan; bukan bukti seluruh Indonesia.</p>
+    <div id="locSum" class="big mutec">Belum dicek</div>
+    <div id="locDet" class="detail">Tidak ada data.</div>
+  </div>
+</div>
+
+<div class="panel section">
+  <div class="section-head"><h2>Probe Indonesia</h2><span id="idPill" class="pill">0 probe</span></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Kota</th><th>Network / ASN</th><th>HTTP</th><th>DNS</th><th>Marker blokir</th><th>Resolver</th><th>Catatan</th></tr></thead>
+      <tbody id="idRows"><tr><td colspan="7">Belum ada hasil.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel section">
+  <div class="section-head"><h2>Resolver / sinyal DNS langsung</h2><span class="pill">positive evidence only</span></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Resolver</th><th>Jenis</th><th>Respons</th><th>Jawaban</th><th>EDE</th><th>Marker</th></tr></thead>
+      <tbody id="dnsRows"><tr><td colspan="6">Belum ada hasil.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel section">
+  <div class="section-head"><h2>Probe kontrol luar Indonesia</h2><span id="ctlPill" class="pill">0 probe</span></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Negara/Kota</th><th>Network / ASN</th><th>HTTP</th><th>Marker</th><th>Catatan</th></tr></thead>
+      <tbody id="ctlRows"><tr><td colspan="5">Belum ada hasil.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel section">
+  <div class="section-head"><h2>Detail teknis</h2><span class="pill">audit trail</span></div>
+  <details><summary>Lihat JSON hasil lengkap</summary><pre id="raw">Belum ada hasil.</pre></details>
+  <div class="actions">
+    <button class="secondary" onclick="copySummary()">SALIN RINGKASAN</button>
+    <button class="secondary" onclick="downloadJson()">DOWNLOAD JSON</button>
+    <button class="secondary" onclick="openUrl()">BUKA URL</button>
+    <a class="btn warnbtn" href="https://globalping.io/" target="_blank" rel="noopener">GLOBALPING</a>
+  </div>
+</div>
+
+<div class="notice">
+<b>Penting:</b> tidak ada checker publik yang dapat menjamin hasil identik di seluruh ISP Indonesia dari satu titik. Tool ini memakai beberapa probe jaringan Indonesia, DNS probe, resolver pemblokiran yang dikenal, kontrol luar negeri, dan koneksi lokal. Jika hasil antar-jaringan berbeda, status akan menjadi <b>MIXED</b>. Jika probe/data tidak cukup, status akan menjadi <b>TIDAK CUKUP BUKTI</b>, bukan dipaksa “terbuka”.
+</div>
+<footer>Indonesia Link Verifier V2 • local backend + multi-vantage network evidence</footer>
+</div>
+
+<script>
+let LAST=null;
+const e=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function cls(el,c){el.className=c}
+function setBig(id,text,type='mute'){const el=e(id);el.textContent=text;el.className='big '+({ok:'okc',bad:'badc',warn:'warnc',mute:'mutec'}[type]||'mutec')}
+function normalize(v){v=v.trim();if(v&&!/^https?:\/\//i.test(v))v='https://'+v;return v}
+function statusText(r){
+  if(!r)return ['—','warn'];
+  if(r.explicit_block)return ['BLOKIR','bad'];
+  if(r.http_class==='success')return ['OK '+(r.http_code??''),'good'];
+  if(r.http_class==='redirect')return ['REDIRECT '+(r.http_code??''),'good'];
+  if(r.http_class==='denied')return ['DENIED '+(r.http_code??''),'warn'];
+  if(r.http_class==='server_error')return ['ERROR '+(r.http_code??''),'warn'];
+  if(r.http_class==='failed')return ['GAGAL','warn'];
+  return ['—','warn'];
+}
+function render(d){
+  LAST=d;
+  const v=e('verdict');
+  v.textContent=d.decision.label;
+  v.className='verdict '+({accessible:'ok',blocked:'bad',mixed:'mix',uncertain:'unk',error:'unk'}[d.decision.category]||'unk');
+  e('reason').textContent=d.decision.reason;
+  e('confnum').textContent=(d.decision.confidence??'—')+(d.decision.confidence!=null?'%':'');
+  e('raw').textContent=JSON.stringify(d,null,2);
+
+  const ds=d.summary.dns;
+  if(ds.blocked_count>0){setBig('dnsSum','MARKER BLOKIR TERDETEKSI','bad')}
+  else if(ds.responded_count>0){setBig('dnsSum','TIDAK ADA MARKER EKSPLISIT','ok')}
+  else{setBig('dnsSum','TIDAK CUKUP DATA','warn')}
+  e('dnsDet').textContent=`${ds.responded_count}/${ds.total_count} resolver merespons • marker kuat: ${ds.blocked_count}`;
+
+  const ids=d.summary.indonesia;
+  if(ids.explicit_block>0){setBig('idSum',`${ids.explicit_block} PROBE BLOKIR`,'bad')}
+  else if(ids.success>0){setBig('idSum',`${ids.success} PROBE BERHASIL`,'ok')}
+  else if(ids.total>0){setBig('idSum','BELUM ADA AKSES SUKSES','warn')}
+  else{setBig('idSum','PROBE TIDAK TERSEDIA','warn')}
+  e('idDet').textContent=`${ids.total} probe • ${ids.unique_asns} ASN • sukses ${ids.success} • gagal ${ids.failed} • denied/error ${ids.denied_or_error}`;
+
+  const cs=d.summary.control;
+  if(cs.success>0)setBig('ctlSum',`${cs.success} KONTROL BERHASIL`,'ok');
+  else if(cs.total>0)setBig('ctlSum','KONTROL GAGAL','warn');
+  else setBig('ctlSum','TIDAK ADA DATA','warn');
+  e('ctlDet').textContent=`${cs.total} probe kontrol • sukses ${cs.success} • gagal ${cs.failed}`;
+
+  const l=d.local;
+  if(l.network && (l.network.country_code||'').toUpperCase()==='ID'){
+    setBig('locSum','IP INDONESIA','ok');
+  }else if(l.network && l.network.country_code){
+    setBig('locSum','IP '+l.network.country_code,'warn');
+  }else setBig('locSum','IP TIDAK DIKETAHUI','warn');
+  e('locDet').textContent=`IP ${l.network?.ip||'-'} • HTTP lokal: ${l.http?.reachable?'reachable':'gagal'}${l.http?.status?' '+l.http.status:''}`;
+
+  const rows=(d.indonesia?.combined||[]);
+  e('idPill').textContent=`${rows.length} probe`;
+  e('idRows').innerHTML=rows.length?rows.map(r=>{
+    const [st,sc]=statusText(r);
+    return `<tr>
+      <td>${esc(r.city||'-')}</td>
+      <td>${esc(r.network||'-')}<br><span style="color:#7290a8">AS${esc(r.asn||'-')}</span></td>
+      <td><span class="status-dot ${sc}">${esc(st)}</span></td>
+      <td>${esc(r.dns_status||'-')}</td>
+      <td>${r.explicit_block?'<span class="status-dot bad">YA</span>':'Tidak terdeteksi'}</td>
+      <td>${esc((r.resolvers||[]).join(', ')||'-')}</td>
+      <td>${esc(r.note||'-')}</td>
+    </tr>`}).join(''):'<tr><td colspan="7">Tidak ada probe Indonesia yang berhasil dikumpulkan.</td></tr>';
+
+  const dr=d.dns_direct?.results||[];
+  e('dnsRows').innerHTML=dr.length?dr.map(r=>`<tr>
+    <td>${esc(r.name)}<br><span style="color:#7290a8">${esc(r.server)}</span></td>
+    <td>${esc(r.kind)}</td>
+    <td>${r.ok?'<span class="status-dot good">RESPOND</span>':'<span class="status-dot warn">NO DATA</span>'}</td>
+    <td>${esc((r.answers||[]).map(a=>a.type+':'+a.value).join(' | ')||r.error||'-')}</td>
+    <td>${esc((r.ede||[]).map(x=>x.info_code+(x.text?' '+x.text:'')).join(' | ')||'-')}</td>
+    <td>${r.blocked?'<span class="status-dot bad">'+esc(r.marker||'BLOCKED')+'</span>':'-'}</td>
+  </tr>`).join(''):'<tr><td colspan="6">Tidak ada data.</td></tr>';
+
+  const cr=d.control?.probes||[];
+  e('ctlPill').textContent=`${cr.length} probe`;
+  e('ctlRows').innerHTML=cr.length?cr.map(r=>{
+    const [st,sc]=statusText(r);
+    return `<tr>
+      <td>${esc((r.country||'-')+' / '+(r.city||'-'))}</td>
+      <td>${esc(r.network||'-')}<br><span style="color:#7290a8">AS${esc(r.asn||'-')}</span></td>
+      <td><span class="status-dot ${sc}">${esc(st)}</span></td>
+      <td>${r.explicit_block?'<span class="status-dot bad">YA</span>':'-'}</td>
+      <td>${esc(r.note||'-')}</td>
+    </tr>`}).join(''):'<tr><td colspan="5">Tidak ada data kontrol.</td></tr>';
+}
+async function checkNow(){
+  let url=normalize(e('url').value);
+  if(!url){alert('Masukkan URL terlebih dahulu.');return}
+  e('url').value=url;e('go').disabled=true;e('gotxt').style.display='none';e('load').style.display='inline-block';
+  e('verdict').textContent='MENGUMPULKAN BUKTI...';e('verdict').className='verdict mix';e('reason').textContent='Menghubungi resolver, probe Indonesia lintas jaringan, dan probe kontrol.';
+  try{
+    const r=await fetch('/api/check?url='+encodeURIComponent(url));
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'Pemeriksaan gagal');
+    render(d);
+  }catch(err){
+    e('verdict').textContent='PEMERIKSAAN ERROR';e('verdict').className='verdict unk';e('reason').textContent=String(err);e('raw').textContent=String(err);
+  }finally{
+    e('go').disabled=false;e('gotxt').style.display='inline';e('load').style.display='none';
+  }
+}
+async function copySummary(){
+  if(!LAST){alert('Belum ada hasil.');return}
+  const s=LAST.summary, d=LAST.decision;
+  const txt=[
+    'INDONESIA LINK VERIFIER V2',
+    'URL: '+LAST.input_url,
+    'KEPUTUSAN: '+d.label,
+    'CONFIDENCE: '+d.confidence+'%',
+    'ALASAN: '+d.reason,
+    `INDONESIA: ${s.indonesia.total} probe / ${s.indonesia.unique_asns} ASN / sukses ${s.indonesia.success} / marker blokir ${s.indonesia.explicit_block}`,
+    `DNS: ${s.dns.responded_count}/${s.dns.total_count} resolver merespons / marker kuat ${s.dns.blocked_count}`,
+    `CONTROL: ${s.control.success}/${s.control.total} berhasil`,
+    'WAKTU: '+LAST.checked_at
+  ].join('\n');
+  await navigator.clipboard.writeText(txt);alert('Ringkasan disalin.');
+}
+function downloadJson(){
+  if(!LAST){alert('Belum ada hasil.');return}
+  const b=new Blob([JSON.stringify(LAST,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='link-check-'+Date.now()+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function openUrl(){const u=normalize(e('url').value);if(u)window.open(u,'_blank','noopener')}
+e('url').addEventListener('keydown',x=>{if(x.key==='Enter')checkNow()});
+</script>
+</body>
+</html>
