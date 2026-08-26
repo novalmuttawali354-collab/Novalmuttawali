@@ -604,6 +604,61 @@
   .nav-icon i{font-weight:900!important}
 }
 
+
+
+/* ===== ULTRA SMOOTH + LIGHT FINAL OPTIMIZATION ===== */
+@media (min-width:901px){
+  /* lighter GPU/compositor footprint while keeping the same graphite + purple look */
+  .topbar{
+    box-shadow:0 10px 24px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.03)!important;
+    transition:transform .36s cubic-bezier(.16,1,.3,1),opacity .22s ease!important;
+    will-change:auto!important;
+  }
+  .brand.brand-logo-only .logo-image-wrap{
+    box-shadow:0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035)!important;
+  }
+  .nav-btn,
+  .nav-btn:nth-child(n){
+    transition:transform .16s ease,background .16s ease,border-color .16s ease,color .16s ease!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 2px 6px rgba(0,0,0,.07)!important;
+  }
+  .nav-btn:hover{
+    box-shadow:0 5px 13px rgba(45,34,76,.14),inset 0 1px 0 rgba(255,255,255,.03)!important;
+  }
+  .nav-btn.active{
+    box-shadow:0 6px 16px rgba(62,45,111,.20),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  }
+  .nav-btn.active .nav-icon{
+    box-shadow:0 6px 14px rgba(88,62,171,.30),inset 0 1px 0 rgba(255,255,255,.10)!important;
+  }
+  .workspace{
+    box-shadow:0 18px 46px rgba(47,51,56,.12),inset 0 1px 0 #fff!important;
+    transition:border-radius .20s ease,box-shadow .20s ease!important;
+    will-change:auto!important;
+    contain:layout paint;
+  }
+  .workspace.sidebar-motion{
+    will-change:transform;
+    transform-origin:left center;
+    pointer-events:none;
+  }
+  .sidebar-toggle{
+    transition:left .36s cubic-bezier(.16,1,.3,1),transform .16s ease,background .16s ease!important;
+    box-shadow:0 6px 16px rgba(0,0,0,.20)!important;
+    will-change:auto!important;
+  }
+  .sidebar-toggle:hover{
+    box-shadow:0 8px 18px rgba(0,0,0,.23),0 0 12px rgba(139,111,240,.10)!important;
+  }
+  .shell.sidebar-collapsed .workspace{
+    box-shadow:0 20px 50px rgba(47,51,56,.13),inset 0 1px 0 #fff!important;
+  }
+  .loading,.loader{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .topbar,.sidebar-toggle,.nav-btn,.workspace{transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -705,7 +760,7 @@ function syncSidebarUi(collapsed,persist=true){
 
 function applySidebarState(collapsed,persist=true,animate=true){
   if(!shell||!sidebarToggle)return;
-  if(!animate||!workspace||window.innerWidth<=900){
+  if(!animate||!workspace||window.innerWidth<=900||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     shell.classList.toggle('sidebar-collapsed',collapsed);
     syncSidebarUi(collapsed,persist);
     return;
@@ -714,32 +769,31 @@ function applySidebarState(collapsed,persist=true,animate=true){
   sidebarAnimating=true;
 
   const first=workspace.getBoundingClientRect();
-  workspace.style.transition='none';
-  workspace.style.transform='none';
-
-  /* Apply final layout once, then animate only a compositor transform (FLIP). */
   shell.classList.toggle('sidebar-collapsed',collapsed);
   syncSidebarUi(collapsed,persist);
   const last=workspace.getBoundingClientRect();
 
   const dx=first.left-last.left;
   const sx=last.width?first.width/last.width:1;
-  workspace.style.transformOrigin='left center';
-  workspace.style.transform=`translate3d(${dx}px,0,0) scaleX(${sx})`;
+  workspace.classList.add('sidebar-motion');
 
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    workspace.style.transition='transform .42s cubic-bezier(.22,1,.36,1)';
-    workspace.style.transform='translate3d(0,0,0) scaleX(1)';
-  }));
+  /* Web Animations API keeps the transition on the compositor and avoids
+     continuously resizing the iframe during the motion. */
+  const motion=workspace.animate([
+    {transform:`translate3d(${dx}px,0,0) scaleX(${sx})`},
+    {transform:'translate3d(0,0,0) scaleX(1)'}
+  ],{
+    duration:360,
+    easing:'cubic-bezier(.16,1,.3,1)',
+    fill:'both'
+  });
 
   const finish=()=>{
-    workspace.style.transition='';
-    workspace.style.transform='';
-    workspace.style.transformOrigin='';
+    workspace.classList.remove('sidebar-motion');
     sidebarAnimating=false;
   };
-  workspace.addEventListener('transitionend',finish,{once:true});
-  setTimeout(()=>{if(sidebarAnimating)finish()},520);
+  motion.addEventListener('finish',finish,{once:true});
+  motion.addEventListener('cancel',finish,{once:true});
 }
 
 if(sidebarToggle){
