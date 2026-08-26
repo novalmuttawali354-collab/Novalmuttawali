@@ -132,6 +132,234 @@
   .brand.brand-logo-only .logo-image-wrap{width:116px;height:52px}
 }
 
+
+
+/* ===== PREMIUM SIDEBAR LAYOUT ===== */
+@media (min-width: 901px){
+  body{
+    background:
+      radial-gradient(circle at 0% 0%,rgba(245,197,24,.12),transparent 24%),
+      radial-gradient(circle at 100% 100%,rgba(90,96,104,.10),transparent 28%),
+      linear-gradient(145deg,#eef1f4 0%,#fafbfc 48%,#eceff2 100%);
+  }
+  .shell{
+    grid-template-columns:282px minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);
+    gap:14px;
+    padding:14px;
+  }
+  .topbar{
+    height:100%;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    padding:12px;
+    border-radius:28px;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.98),rgba(243,244,245,.96));
+    border:1px solid #d7d9dc;
+    box-shadow:0 24px 65px rgba(47,51,56,.14),inset 0 1px 0 #fff;
+  }
+  .topbar::before{
+    content:"";
+    position:absolute;
+    inset:0 auto 0 0;
+    width:4px;
+    background:linear-gradient(180deg,#ffd84a 0%,#e0b100 45%,#777b80 100%);
+    opacity:.95;
+  }
+  .brand.brand-logo-only{
+    min-width:0;
+    width:100%;
+    padding:14px 10px 16px;
+    border-right:0;
+    border-bottom:1px solid #dcdee1;
+    position:relative;
+  }
+  .brand.brand-logo-only::after{
+    content:"";
+    position:absolute;
+    left:32px; right:32px; bottom:-1px;
+    height:2px;
+    background:linear-gradient(90deg,transparent,#f5c518,transparent);
+  }
+  .brand.brand-logo-only .brand-row{justify-content:center}
+  .brand.brand-logo-only .logo-image-wrap{
+    width:196px;
+    height:80px;
+    border:none;
+    padding:5px 8px;
+    border-radius:18px;
+    background:linear-gradient(145deg,#fff,#f2f3f4);
+    box-shadow:0 12px 28px rgba(57,60,64,.10),inset 0 1px 0 #fff;
+  }
+  .nav{
+    counter-reset:menu;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+    gap:7px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:12px 3px 10px 6px;
+    scrollbar-width:thin;
+    scrollbar-color:#d2b12e transparent;
+  }
+  .nav::-webkit-scrollbar{display:block;width:5px}
+  .nav::-webkit-scrollbar-track{background:transparent}
+  .nav::-webkit-scrollbar-thumb{background:#d9bd49;border-radius:99px}
+  .nav-section-label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:10px 7px 3px;
+    color:#8a8d91;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .nav-section-label:first-child{margin-top:2px}
+  .nav-section-label::before{
+    content:"";
+    width:7px;height:7px;border-radius:2px;
+    background:linear-gradient(135deg,#ffd84a,#d3a500);
+    box-shadow:0 0 0 3px rgba(245,197,24,.10);
+  }
+  .nav-section-label::after{
+    content:"";
+    height:1px;
+    flex:1;
+    background:linear-gradient(90deg,#d9dbde,transparent);
+  }
+  .nav-btn,
+  .nav-btn:nth-child(n){
+    counter-increment:menu;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    flex:0 0 auto;
+    min-height:61px;
+    border-radius:17px;
+    padding:9px 38px 9px 9px;
+    background:linear-gradient(145deg,#f7f8f9,#eceeef);
+    border:1px solid #dde0e3;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 5px 12px rgba(57,60,64,.035);
+  }
+  .nav-btn::before{
+    content:counter(menu, decimal-leading-zero);
+    position:absolute;
+    right:11px;
+    top:10px;
+    font-size:9px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.08em;
+    color:#adb0b4;
+    transition:.22s ease;
+  }
+  .nav-btn:after{
+    left:auto;
+    right:0;
+    top:11px;
+    bottom:11px;
+    width:4px;
+    height:auto;
+    border-radius:4px 0 0 4px;
+    background:linear-gradient(180deg,#ffd84a,#d5a700 60%,#74787d);
+    transform:scaleY(0);
+    transform-origin:center;
+  }
+  .nav-btn:hover{
+    transform:translateX(3px);
+    background:linear-gradient(135deg,#fffdf3,#f1f2f3 78%);
+    border-color:#dfc34d;
+    box-shadow:0 10px 24px rgba(83,75,37,.10),inset 0 1px 0 #fff;
+  }
+  .nav-btn:hover::before{color:#8b760c}
+  .nav-btn.active{
+    transform:translateX(4px);
+    color:#25282b;
+    background:linear-gradient(135deg,#fff5be 0%,#f8e58b 48%,#eceeef 100%);
+    border-color:#dbb827;
+    box-shadow:0 12px 28px rgba(132,105,15,.16),inset 0 1px 0 rgba(255,255,255,.95);
+  }
+  .nav-btn.active::after{transform:scaleY(1)}
+  .nav-btn.active::before{color:#705b00}
+  .nav-icon{
+    width:40px;
+    height:40px;
+    border-radius:13px;
+    background:linear-gradient(145deg,#fafbfb,#e3e5e7);
+    border-color:#d7dade;
+    box-shadow:inset 0 1px 0 #fff;
+  }
+  .nav-btn.active .nav-icon{
+    color:#2e3033;
+    background:linear-gradient(135deg,#ffe163,#e2b300);
+    border-color:#cfa400;
+    box-shadow:0 9px 18px rgba(190,145,0,.22),inset 0 1px 0 rgba(255,255,255,.55);
+  }
+  .nav-copy strong{
+    font-size:11.5px;
+    letter-spacing:.01em;
+    color:#51555a;
+  }
+  .nav-copy small{
+    font-size:8.5px;
+    color:#94989d;
+    margin-top:4px;
+  }
+  .nav-btn.active .nav-copy strong{color:#292b2e}
+  .nav-btn.active .nav-copy small{color:#6d6f72}
+  .workspace{
+    border-radius:30px;
+    border:1px solid #d7dadd;
+    background:linear-gradient(145deg,#f5f6f7,#eceff1);
+    box-shadow:0 28px 75px rgba(47,51,56,.14),inset 0 1px 0 #fff;
+  }
+  .workspace::before{
+    content:"";
+    position:absolute;
+    z-index:4;
+    top:0;left:26px;right:26px;
+    height:3px;
+    border-radius:0 0 8px 8px;
+    background:linear-gradient(90deg,transparent,#72767b 18%,#f5c518 50%,#72767b 82%,transparent);
+    pointer-events:none;
+  }
+  .tool-frame{background:#f2f4f5}
+  .loading{
+    background:linear-gradient(145deg,#f1f3f4,#fbfbfc);
+    color:#787c81;
+    letter-spacing:.14em;
+  }
+  .loader{
+    padding:22px 28px;
+    border-radius:20px;
+    background:rgba(255,255,255,.92);
+    border:1px solid #dedfe1;
+    box-shadow:0 16px 38px rgba(47,51,56,.12);
+  }
+  .spin{
+    width:36px;height:36px;
+    border-color:#e0e2e4;
+    border-top-color:#f5c518;
+    border-right-color:#74787d;
+  }
+}
+
+@media (max-width: 900px){
+  .nav-section-label{display:none}
+  .nav-btn::before{display:none}
+  .topbar::before{display:none}
+  .brand.brand-logo-only .logo-image-wrap{width:146px;height:60px}
+  .nav-btn{min-width:132px}
+}
 </style>
 </head>
 <body>
@@ -139,13 +367,16 @@
   <header class="topbar">
     <div class="brand brand-logo-only"><div class="brand-row"><div class="brand-mark logo-image-wrap"><img class="brand-logo-img" src="https://i.postimg.cc/q7QfRQJV/test-logo-markaswd.png" alt="MARKASWD Logo"></div></div></div>
     <nav class="nav" aria-label="Menu utama">
+      <div class="nav-section-label">Operasional</div>
       <button class="nav-btn active" data-page="0" type="button" title="Promo & Bank Calculator"><span class="nav-icon"><i class="fa-solid fa-coins"></i></span><span class="nav-copy"><strong>Coin Monthly</strong><small>Promo & Bank Calculator</small></span></button>
       <button class="nav-btn" data-page="1" type="button" title="Rekap TO Pasaran"><span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span><span class="nav-copy"><strong>Rekap TO</strong><small>Rekap TO Pasaran</small></span></button>
       <button class="nav-btn" data-page="2" type="button" title="Rekap Total Per Bank"><span class="nav-icon"><i class="fa-solid fa-building-columns"></i></span><span class="nav-copy"><strong>Rekap Bank</strong><small>Rekap Total Per Bank</small></span></button>
       <button class="nav-btn" data-page="3" type="button" title="Crosscheck Rekening"><span class="nav-icon"><i class="fa-solid fa-magnifying-glass-dollar"></i></span><span class="nav-copy"><strong>Crosscheck</strong><small>Crosscheck Rekening</small></span></button>
+      <div class="nav-section-label">Konten & Referensi</div>
       <button class="nav-btn" data-page="4" type="button" title="CITAWIN Ramalan Bintang"><span class="nav-icon"><i class="fa-solid fa-star"></i></span><span class="nav-copy"><strong>Syair Togel</strong><small>Tampilan original</small></span></button>
       <button class="nav-btn" data-page="5" type="button" title="ALL MEMO"><span class="nav-icon"><i class="fa-solid fa-book-open"></i></span><span class="nav-copy"><strong>ALL MEMO</strong><small>J.A.R.V.I.S Auto-Sync</small></span></button>
       <button class="nav-btn" data-page="6" type="button" title="Generator Prediksi Bola ESPN"><span class="nav-icon"><i class="fa-solid fa-futbol"></i></span><span class="nav-copy"><strong>Prediksi Bola</strong><small>Generator ESPN • 2 Tanggal</small></span></button>
+      <div class="nav-section-label">Tools Tambahan</div>
       <button class="nav-btn" data-page="7" type="button" title="Bukti JP Generator"><span class="nav-icon"><i class="fa-solid fa-image"></i></span><span class="nav-copy"><strong>Bukti JP</strong><small>Generator Bukti JP</small></span></button>
       <button class="nav-btn" data-page="8" type="button" title="Jadwal Pasaran Togel"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span><span class="nav-copy"><strong>Jadwal Pasaran</strong><small>Jadwal Pasaran Togel</small></span></button>
       <button class="nav-btn" data-page="9" type="button" title="Digital Casino Experience"><span class="nav-icon"><i class="fa-solid fa-gamepad"></i></span><span class="nav-copy"><strong>Digital Casino</strong><small>Game & Informasi</small></span></button>
